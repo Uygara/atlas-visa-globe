@@ -1,0 +1,56 @@
+// This file is appended to the auto-generated RAW_PASSPORTS definition by the
+// scraper. It contains the normalize + resolve logic that the frontend uses.
+// Keep in sync with the manual data/passports.js if you change the schema.
+
+window.PASSPORTS = {};
+Object.entries(RAW_PASSPORTS).forEach(([iso2, p]) => {
+  const norm = {
+    iso2,
+    name: p.name,
+    rank: p.rank || null,
+    default: p.default,
+    defaultDays: p.defaultDays || null,
+    map: {},
+  };
+  ["vf", "ev", "voa", "vr"].forEach(status => {
+    (p[status] || []).forEach(entry => {
+      let code, days = null;
+      if (Array.isArray(entry)) { code = entry[0]; days = entry[1]; }
+      else { code = entry; }
+      norm.map[code] = { status, days };
+    });
+  });
+  window.PASSPORTS[iso2] = norm;
+});
+
+window.resolveStatus = function(passportIso2, destIso2) {
+  if (passportIso2 === destIso2) return { status: "self", days: null };
+  let p = window.PASSPORTS[passportIso2];
+  if (!p) return { status: "na", days: null };
+  let hops = 0;
+  while (p && p.templated && p.template && hops++ < 5) {
+    const base = window.PASSPORTS[p.template];
+    if (!base) return { status: "na", days: null };
+    p = base;
+  }
+  if (!p) return { status: "na", days: null };
+  if (p.map && p.map[destIso2]) return p.map[destIso2];
+  if (p.default === "vf") return { status: "vf", days: p.defaultDays };
+  return { status: p.default || "na", days: null };
+};
+
+window.tally = function(passportIso2) {
+  const p = window.PASSPORTS[passportIso2];
+  if (!p) return null;
+  const counts = { vf: 0, ev: 0, voa: 0, vr: 0 };
+  window.COUNTRIES.forEach(c => {
+    if (c.iso2 === passportIso2) return;
+    if (c.continent === "AN") return;
+    const r = window.resolveStatus(passportIso2, c.iso2);
+    if (counts[r.status] != null) counts[r.status]++;
+  });
+  return counts;
+};
+
+window.PASSPORT_LIST = Object.values(window.PASSPORTS)
+  .sort((a, b) => a.name.localeCompare(b.name));

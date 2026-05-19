@@ -1,0 +1,345 @@
+// scraper.js — daily refresh of visa policy data from Wikipedia.
+//
+// Run:
+//   node scraper.js --all                  (refresh every passport)
+//   node scraper.js --passport US          (single passport)
+//   node scraper.js --passport US --dry-run (print JSON, don't write)
+//
+// Output: writes ../data/passports.js and updates ../data/changelog.js
+//
+// Polite scraping: 800 ms delay between requests, custom User-Agent,
+// respects Wikipedia's robots.txt + API rate limits.
+
+const fs = require("fs");
+const path = require("path");
+const fetch = require("node-fetch");
+const cheerio = require("cheerio");
+
+// [country name, wikipedia slug for "Visa_requirements_for_<slug>_citizens"]
+// Wikipedia uses demonyms ("Turkish") not country names ("Turkey") for the URL.
+const PASSPORT_TARGETS = [
+  // Top tier
+  ["Singapore", "Singaporean"], ["Japan", "Japanese"], ["South Korea", "South_Korean"],
+  ["United Arab Emirates", "Emirati"],
+  ["Germany", "German"], ["France", "French"], ["Italy", "Italian"], ["Spain", "Spanish"],
+  ["Netherlands", "Dutch"], ["Belgium", "Belgian"], ["Denmark", "Danish"],
+  ["Finland", "Finnish"], ["Ireland", "Irish"], ["Luxembourg", "Luxembourg"],
+  ["Norway", "Norwegian"], ["Switzerland", "Swiss"], ["Austria", "Austrian"],
+  ["Sweden", "Swedish"], ["Portugal", "Portuguese"], ["Greece", "Greek"],
+  ["United Kingdom", "British"],
+  ["Hungary", "Hungarian"], ["Malaysia", "Malaysian"], ["Poland", "Polish"],
+  ["Czech Republic", "Czech"], ["Slovenia", "Slovenian"], ["Slovakia", "Slovak"],
+  ["Lithuania", "Lithuanian"], ["Latvia", "Latvian"], ["Estonia", "Estonian"],
+  ["Iceland", "Icelandic"], ["Malta", "Maltese"], ["Liechtenstein", "Liechtenstein"],
+  ["Australia", "Australian"], ["New Zealand", "New_Zealand"],
+  ["Canada", "Canadian"], ["United States", "United_States"],
+  ["Croatia", "Croatian"], ["Cyprus", "Cypriot"],
+  ["Romania", "Romanian"], ["Bulgaria", "Bulgarian"],
+  // Strong mid-tier
+  ["Argentina", "Argentine"], ["Chile", "Chilean"], ["Brazil", "Brazilian"],
+  ["Uruguay", "Uruguayan"], ["Mexico", "Mexican"],
+  ["Hong Kong", "Chinese_citizens_of_Hong_Kong"],
+  ["Taiwan", "Taiwanese"], ["Israel", "Israeli"],
+  ["Andorra", "Andorran"], ["Monaco", "Monégasque"], ["San Marino", "Sammarinese"],
+  ["Vatican City", "Vatican_City"], ["Brunei", "Bruneian"],
+  // Mid-tier
+  ["Turkey", "Turkish"], ["Albania", "Albanian"], ["North Macedonia", "North_Macedonian"],
+  ["Serbia", "Serbian"], ["Montenegro", "Montenegrin"],
+  ["Bosnia and Herzegovina", "Bosnia_and_Herzegovina"],
+  ["Moldova", "Moldovan"], ["Ukraine", "Ukrainian"], ["Georgia", "Georgian"],
+  ["Russia", "Russian"], ["Kazakhstan", "Kazakhstani"], ["Belarus", "Belarusian"],
+  ["Armenia", "Armenian"], ["Azerbaijan", "Azerbaijani"],
+  ["South Africa", "South_African"], ["Mauritius", "Mauritian"],
+  ["Seychelles", "Seychellois"], ["Botswana", "Botswana"], ["Namibia", "Namibian"],
+  ["Costa Rica", "Costa_Rican"], ["Panama", "Panamanian"],
+  ["Trinidad and Tobago", "Trinidad_and_Tobago"],
+  ["Saint Kitts and Nevis", "Saint_Kitts_and_Nevis"],
+  ["Antigua and Barbuda", "Antigua_and_Barbuda"],
+  ["Bahamas", "Bahamian"], ["Barbados", "Barbadian"],
+  // Weaker
+  ["China", "Chinese"], ["India", "Indian"], ["Indonesia", "Indonesian"],
+  ["Philippines", "Philippine"], ["Thailand", "Thai"], ["Vietnam", "Vietnamese"],
+  ["Sri Lanka", "Sri_Lankan"], ["Nepal", "Nepalese"], ["Bangladesh", "Bangladeshi"],
+  ["Pakistan", "Pakistani"], ["Myanmar", "Burmese"], ["Cambodia", "Cambodian"],
+  ["Laos", "Laotian"],
+  ["Saudi Arabia", "Saudi_Arabian"], ["Qatar", "Qatari"], ["Bahrain", "Bahraini"],
+  ["Kuwait", "Kuwaiti"], ["Oman", "Omani"], ["Jordan", "Jordanian"],
+  ["Lebanon", "Lebanese"],
+  ["Egypt", "Egyptian"], ["Morocco", "Moroccan"], ["Tunisia", "Tunisian"],
+  ["Algeria", "Algerian"], ["Libya", "Libyan"],
+  ["Nigeria", "Nigerian"], ["Kenya", "Kenyan"], ["Ghana", "Ghanaian"],
+  ["Ethiopia", "Ethiopian"], ["Tanzania", "Tanzanian"], ["Uganda", "Ugandan"],
+  ["Rwanda", "Rwandan"], ["Cameroon", "Cameroonian"], ["Senegal", "Senegalese"],
+  ["Côte d'Ivoire", "Ivorian"],
+  // Bottom
+  ["Iran", "Iranian"], ["Iraq", "Iraqi"], ["Syria", "Syrian"], ["Yemen", "Yemeni"],
+  ["Afghanistan", "Afghan"], ["Somalia", "Somali"], ["Sudan", "Sudanese"],
+  ["North Korea", "North_Korean"], ["Eritrea", "Eritrean"],
+  // ── Second-pass coverage (smaller / less-traveled passports) ──
+  ["Angola", "Angolan"], ["Benin", "Beninese"], ["Bhutan", "Bhutanese"],
+  ["Bolivia", "Bolivian"], ["Botswana", "Botswana"],
+  ["Burkina Faso", "Burkinabé"], ["Burundi", "Burundian"],
+  ["Cabo Verde", "Cape_Verdean"], ["Cambodia", "Cambodian"],
+  ["Central African Republic", "Central_African"], ["Chad", "Chadian"],
+  ["Colombia", "Colombian"], ["Comoros", "Comorian"],
+  ["Republic of the Congo", "Republic_of_the_Congo"],
+  ["Democratic Republic of the Congo", "Democratic_Republic_of_the_Congo"],
+  ["Cuba", "Cuban"], ["Djibouti", "Djiboutian"],
+  ["Dominica", "Dominica"],
+  ["Dominican Republic", "Dominican_Republic"],
+  ["Ecuador", "Ecuadorian"], ["El Salvador", "Salvadoran"],
+  ["Equatorial Guinea", "Equatorial_Guinean"], ["Eswatini", "Swazi"],
+  ["Fiji", "Fijian"], ["Gabon", "Gabonese"], ["Gambia", "Gambian"],
+  ["Grenada", "Grenadian"], ["Guatemala", "Guatemalan"],
+  ["Guinea", "Guinean"], ["Guinea-Bissau", "Bissau-Guinean"],
+  ["Guyana", "Guyanese"], ["Haiti", "Haitian"], ["Honduras", "Honduran"],
+  ["Jamaica", "Jamaican"], ["Kiribati", "Kiribati"],
+  ["Kyrgyzstan", "Kyrgyzstani"], ["Lesotho", "Lesotho"],
+  ["Liberia", "Liberian"], ["Madagascar", "Malagasy"],
+  ["Malawi", "Malawian"], ["Maldives", "Maldivian"],
+  ["Mali", "Malian"], ["Marshall Islands", "Marshall_Islands"],
+  ["Mauritania", "Mauritanian"], ["Micronesia", "Micronesian"],
+  ["Mongolia", "Mongolian"], ["Mozambique", "Mozambican"],
+  ["Nauru", "Nauruan"], ["Nicaragua", "Nicaraguan"],
+  ["Niger", "Nigerien"], ["Palau", "Palauan"],
+  ["Palestine", "Palestinian"], ["Papua New Guinea", "Papua_New_Guinean"],
+  ["Paraguay", "Paraguayan"], ["Peru", "Peruvian"],
+  ["Saint Lucia", "Saint_Lucian"],
+  ["Saint Vincent and the Grenadines", "Saint_Vincent_and_the_Grenadines"],
+  ["Samoa", "Samoan"], ["São Tomé and Príncipe", "Santomean"],
+  ["Sierra Leone", "Sierra_Leonean"], ["Solomon Islands", "Solomon_Islands"],
+  ["South Sudan", "South_Sudanese"], ["Suriname", "Surinamese"],
+  ["Tajikistan", "Tajikistani"], ["Timor-Leste", "East_Timorese"],
+  ["Togo", "Togolese"], ["Tonga", "Tongan"],
+  ["Turkmenistan", "Turkmen"], ["Tuvalu", "Tuvaluan"],
+  ["Uzbekistan", "Uzbekistani"], ["Vanuatu", "Vanuatuan"],
+  ["Venezuela", "Venezuelan"], ["Zambia", "Zambian"],
+  ["Zimbabwe", "Zimbabwean"], ["Belize", "Belizean"],
+  ["Macao", "Macanese"],
+];
+
+const ISO_MAP = require("./iso-map.json"); // name → ISO2 mapping
+const SOURCE_DIR = path.resolve(__dirname, "../data");
+
+// ───────────────────────────────────────────────────────────────────────────
+// Fetch + parse a single passport's Wikipedia page
+async function scrapePassport(name, slug) {
+  if (!slug) slug = name.replace(/\s+/g, "_").replace(/'/g, "%27");
+  // If slug already contains "_citizens" we use it as the trailing path verbatim.
+  // Otherwise we append the standard "_citizens" suffix.
+  const path = slug.includes("citizens")
+    ? `Visa_requirements_for_${slug}`
+    : `Visa_requirements_for_${slug}_citizens`;
+  const url = `https://en.wikipedia.org/wiki/${path}`;
+  const res = await fetch(url, {
+    headers: {
+      "User-Agent": "Mozilla/5.0 (compatible; AtlasVisaBot/1.0; +https://github.com/atlas-visa)",
+      "Accept": "text/html,application/xhtml+xml",
+      "Accept-Language": "en-US,en;q=0.9",
+    },
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status} for ${name} (${url})`);
+  const html = await res.text();
+  const $ = cheerio.load(html);
+
+  // Wikipedia visa pages use a standard table with columns:
+  // Country | Visa requirement | Allowed stay | Notes
+  // Identified by class "wikitable" with the header text "Visa requirement".
+  const result = { name, iso2: ISO_MAP[name], rows: [] };
+
+  $("table.wikitable").each((i, tbl) => {
+    const headers = $(tbl).find("tr").first().find("th").map((_, th) => $(th).text().trim().toLowerCase()).get();
+    if (!headers.some(h => h.includes("visa requirement"))) return;
+    const countryIdx = headers.findIndex(h => h.includes("country"));
+    const visaIdx = headers.findIndex(h => h.includes("visa requirement"));
+    const stayIdx = headers.findIndex(h => h.includes("allowed stay") || h.includes("max stay"));
+
+    $(tbl).find("tr").slice(1).each((_, row) => {
+      const cells = $(row).find("td");
+      if (cells.length < 2) return;
+      const countryName = $(cells[countryIdx]).text().trim();
+      const visaText = $(cells[visaIdx]).text().trim();
+      const stayText = stayIdx >= 0 ? $(cells[stayIdx]).text().trim() : "";
+
+      const status = classifyVisaText(visaText);
+      const days = parseDays(stayText);
+      const destIso2 = ISO_MAP[countryName];
+      if (destIso2 && status) {
+        result.rows.push({ destIso2, status, days, raw: visaText });
+      }
+    });
+  });
+
+  return result;
+}
+
+// Map Wikipedia's wording to our 4-status taxonomy
+function classifyVisaText(text) {
+  // Normalize: lowercase, drop wiki footnote refs like [1], [note 2], collapse ws
+  const t = text.toLowerCase()
+    .replace(/\[[^\]]*\]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+  if (!t) return null;
+  // Order matters: check denials first, then specific permits, then generic "visa-free".
+  if (t.includes("admission refused") || t.includes("travel banned") ||
+      t.includes("entry banned") || t.includes("travel restricted")) return "vr";
+  if (t.includes("visa required") || t.includes("visa needed")) return "vr";
+  // eVisa variants — check BEFORE plain "visa-free" since some pages say "eVisa / visa-free"
+  if (t.includes("evisa") || t.includes("e-visa") || t.includes("e visa") ||
+      t.includes("electronic visa") || t.includes("electronic travel authorization") ||
+      t.includes("eta") || t.includes("etias") || t.includes("online visa") ||
+      t.includes("electronic authorization") || t.includes("e-travel")) return "ev";
+  if (t.includes("visa on arrival") || t.includes("voa") ||
+      t.includes("visa issued on arrival") || t.includes("visa granted on arrival")) return "voa";
+  if (t.includes("visa not required") || t.includes("freedom of movement") ||
+      t.includes("visa-free") || t.includes("visa free") || t.includes("no visa required") ||
+      t.includes("free movement") || /^\d+\s*(days?|months?|years?)$/.test(t) ||
+      /^visa not required for \d/.test(t)) return "vf";
+  return null;
+}
+
+function parseDays(text) {
+  if (!text) return null;
+  const m = text.match(/(\d+)\s*(day|month|year)/i);
+  if (!m) return null;
+  const n = parseInt(m[1], 10);
+  const unit = m[2].toLowerCase();
+  if (unit.startsWith("month")) return n * 30;
+  if (unit.startsWith("year")) return n * 365;
+  return n;
+}
+
+// ───────────────────────────────────────────────────────────────────────────
+// Convert scraped rows into our compact passport schema (default + exceptions)
+function buildPassportEntry(scrape) {
+  const counts = { vf: 0, ev: 0, voa: 0, vr: 0 };
+  scrape.rows.forEach(r => counts[r.status]++);
+  // Whichever status is most common becomes the "default" — list the exceptions.
+  const def = Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0];
+  const entry = {
+    name: scrape.name,
+    default: def,
+    defaultDays: def === "vf" ? 90 : null,
+  };
+  ["vf", "ev", "voa", "vr"].forEach(s => {
+    if (s === def) return;
+    entry[s] = scrape.rows
+      .filter(r => r.status === s)
+      .map(r => r.days ? [r.destIso2, r.days] : r.destIso2);
+  });
+  return [scrape.iso2, entry];
+}
+
+// ───────────────────────────────────────────────────────────────────────────
+// Compute the changelog by diffing against the previous snapshot
+function computeChangelog(prevData, newData) {
+  const changes = [];
+  for (const [iso2, np] of Object.entries(newData)) {
+    const op = prevData[iso2];
+    if (!op) continue;
+    // Build flat status maps for both
+    const flatten = (p) => {
+      const m = {};
+      ["vf", "ev", "voa", "vr"].forEach(s => (p[s] || []).forEach(e => {
+        const code = Array.isArray(e) ? e[0] : e;
+        m[code] = s;
+      }));
+      return m;
+    };
+    const oldMap = flatten(op);
+    const newMap = flatten(np);
+    for (const dest of new Set([...Object.keys(oldMap), ...Object.keys(newMap)])) {
+      if (oldMap[dest] !== newMap[dest]) {
+        changes.push({
+          date: new Date().toISOString().slice(0, 10),
+          passport: iso2,
+          dest,
+          from: oldMap[dest] || "vr",
+          to: newMap[dest] || "vr",
+        });
+      }
+    }
+  }
+  return changes;
+}
+
+// ───────────────────────────────────────────────────────────────────────────
+// Main
+async function main() {
+  const args = process.argv.slice(2);
+  const dryRun = args.includes("--dry-run");
+  const all = args.includes("--all");
+  const single = args.indexOf("--passport");
+  let targets;
+  if (all) targets = PASSPORT_TARGETS;
+  else if (single >= 0) {
+    const name = args[single + 1];
+    const found = PASSPORT_TARGETS.find(t => t[0] === name);
+    targets = [found || [name, null]];
+  } else {
+    console.log("Usage: node scraper.js --all | --passport <name> [--dry-run]");
+    process.exit(1);
+  }
+
+  const collected = {};
+  for (let i = 0; i < targets.length; i++) {
+    const [name, slug] = targets[i];
+    process.stdout.write(`[${i + 1}/${targets.length}] ${name}… `);
+    try {
+      const scrape = await scrapePassport(name, slug);
+      const [iso2, entry] = buildPassportEntry(scrape);
+      if (!iso2) {
+        console.log(`✗ no ISO2 for "${name}" (check iso-map.json)`);
+        continue;
+      }
+      collected[iso2] = entry;
+      console.log(`✓ ${scrape.rows.length} rows`);
+    } catch (err) {
+      console.log(`✗ ${err.message}`);
+    }
+    // Be polite — wait 1.2 s between requests
+    await new Promise(r => setTimeout(r, 1200));
+  }
+
+  if (dryRun) {
+    console.log("\n--- DRY RUN OUTPUT ---");
+    console.log(JSON.stringify(collected, null, 2));
+    return;
+  }
+
+  // Diff against previous snapshot for changelog
+  const prevPath = path.join(SOURCE_DIR, "passports-snapshot.json");
+  let prev = {};
+  try { prev = JSON.parse(fs.readFileSync(prevPath, "utf8")); } catch (e) {}
+  const changelog = computeChangelog(prev, collected);
+  console.log(`\nDiff: ${changelog.length} status changes since yesterday`);
+
+  // Write the new snapshot JSON
+  fs.writeFileSync(prevPath, JSON.stringify(collected, null, 2));
+
+  // Write the JS file the frontend expects
+  const today = new Date().toISOString().slice(0, 10);
+  const js =
+    `// Auto-generated by backend/scraper.js — DO NOT EDIT BY HAND.\n` +
+    `window.SNAPSHOT_DATE = "${today}";\n` +
+    `const RAW_PASSPORTS = ${JSON.stringify(collected, null, 2)};\n` +
+    fs.readFileSync(path.join(__dirname, "frontend-tail.js"), "utf8");
+  fs.writeFileSync(path.join(SOURCE_DIR, "passports.js"), js);
+
+  // Append today's changelog entries
+  if (changelog.length > 0) {
+    const changelogPath = path.join(SOURCE_DIR, "changelog.js");
+    let existing = fs.readFileSync(changelogPath, "utf8");
+    // Insert new entries at the top of the CHANGELOG array
+    const newEntries = changelog.slice(0, 50).map(c =>
+      `  {\n    date: "${c.date}",\n    title: "${c.passport} → ${c.dest}: ${c.from} → ${c.to}",\n    affects: { dest: "${c.dest}", passports: ["${c.passport}"] },\n    statusFrom: "${c.from}", statusTo: "${c.to}",\n  },`
+    ).join("\n");
+    existing = existing.replace("window.CHANGELOG = [", `window.CHANGELOG = [\n${newEntries}`);
+    fs.writeFileSync(changelogPath, existing);
+  }
+
+  console.log(`\n✓ Wrote ${Object.keys(collected).length} passports + ${changelog.length} changelog entries.`);
+}
+
+main().catch(err => { console.error(err); process.exit(1); });

@@ -1,0 +1,65 @@
+# GitHub Actions cron — runs once a day at 06:00 UTC.
+# Move this file to .github/workflows/daily-refresh.yml in your repo root.
+#
+# Required setup:
+#   1. Push your repo to GitHub.
+#   2. In repo Settings → Actions → General → "Workflow permissions",
+#      enable "Read and write permissions" so the workflow can commit
+#      the refreshed data back.
+#   3. (Optional) Add a Slack webhook secret SLACK_WEBHOOK if you want
+#      a daily summary posted to your channel.
+
+name: Daily visa refresh
+
+on:
+  schedule:
+    # 06:00 UTC every day. Adjust to your preferred time.
+    - cron: "0 6 * * *"
+  workflow_dispatch:  # also let me trigger manually
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install deps
+        working-directory: backend
+        run: npm ci
+
+      - name: Run scraper
+        working-directory: backend
+        run: node scraper.js --all
+        env:
+          NODE_OPTIONS: --max-old-space-size=2048
+
+      - name: Commit + push if changed
+        run: |
+          git config user.name "atlas-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add data/passports.js data/changelog.js data/passports-snapshot.json
+          if git diff --staged --quiet; then
+            echo "No changes."
+          else
+            git commit -m "data: daily refresh $(date -u +%Y-%m-%d)"
+            git push
+          fi
+
+      # Optional: ping Slack with the day's diff
+      - name: Notify Slack
+        if: ${{ env.SLACK_WEBHOOK != '' }}
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        run: |
+          CHANGES=$(grep -c '"date":' data/changelog.js | head -n 1 || echo 0)
+          curl -X POST -H "Content-type: application/json" \
+            --data "{\"text\":\"Atlas: refreshed visa data for $(date -u +%Y-%m-%d). ${CHANGES} entries in changelog.\"}" \
+            "$SLACK_WEBHOOK"

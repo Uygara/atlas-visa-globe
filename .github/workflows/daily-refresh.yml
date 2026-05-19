@@ -1,0 +1,43 @@
+name: Daily visa refresh
+
+on:
+  schedule:
+    - cron: "0 6 * * *"   # 06:00 UTC every day
+  workflow_dispatch: {}
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install scraper deps
+        working-directory: backend
+        run: npm ci
+
+      - name: Scrape Wikipedia
+        working-directory: backend
+        run: node scraper.js --all
+
+      - name: Regenerate SEO pages
+        run: node scripts/generate-seo.js
+        env:
+          SITE_URL: ${{ vars.SITE_URL }}
+
+      - name: Commit + push if changed
+        run: |
+          git config user.name "atlas-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add data/passports.js data/passports-snapshot.json data/changelog.js passport/ sitemap.xml robots.txt
+          if git diff --staged --quiet; then
+            echo "No changes."
+          else
+            git commit -m "data: daily refresh $(date -u +%Y-%m-%d)"
+            git push
+          fi
