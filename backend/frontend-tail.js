@@ -23,8 +23,26 @@ Object.entries(RAW_PASSPORTS).forEach(([iso2, p]) => {
   window.PASSPORTS[iso2] = norm;
 });
 
+// Dependent territories that have no Wikipedia "Visa requirements for X citizens"
+// page of their own. For visa purposes they inherit the parent country's policy:
+//   EH (Western Sahara)        → MA (Morocco — administers it)
+//   GL (Greenland)             → DK (Danish kingdom; passport policy follows DK)
+//   FK (Falkland Islands)      → GB (British overseas territory)
+//   PR (Puerto Rico)           → US (US territory, US visa rules)
+//   NC (New Caledonia)         → FR (French overseas territory)
+//   PF (French Polynesia)      → FR
+//   TF (French Southern Territories) → FR
+// (AQ Antarctica is left as-is; no normal visa policy applies.)
+window.TERRITORY_ALIAS = {
+  EH: "MA", GL: "DK", FK: "GB", PR: "US",
+  NC: "FR", PF: "FR", TF: "FR",
+};
+
 window.resolveStatus = function(passportIso2, destIso2) {
   if (passportIso2 === destIso2) return { status: "self", days: null };
+  // If the destination is a dependent territory, look up its parent's status instead.
+  const aliased = window.TERRITORY_ALIAS && window.TERRITORY_ALIAS[destIso2];
+  if (aliased && aliased !== passportIso2) destIso2 = aliased;
   let p = window.PASSPORTS[passportIso2];
   if (!p) return { status: "na", days: null };
   let hops = 0;

@@ -35,8 +35,17 @@ function parseCountries(js) {
   return out;
 }
 
+// Dependent territories inherit their parent country's visa policy.
+const TERRITORY_ALIAS = {
+  EH: "MA", GL: "DK", FK: "GB", PR: "US",
+  NC: "FR", PF: "FR", TF: "FR",
+};
+
 function resolveStatus(passportIso2, destIso2, snapshot) {
   if (passportIso2 === destIso2) return { status: "self", days: null };
+  if (TERRITORY_ALIAS[destIso2] && TERRITORY_ALIAS[destIso2] !== passportIso2) {
+    destIso2 = TERRITORY_ALIAS[destIso2];
+  }
   const p = snapshot[passportIso2];
   if (!p) return { status: "na", days: null };
   for (const s of ["vf", "ev", "voa", "vr"]) {

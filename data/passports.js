@@ -54541,8 +54541,17 @@ Object.entries(RAW_PASSPORTS).forEach(([iso2, p]) => {
   window.PASSPORTS[iso2] = norm;
 });
 
+// Dependent territories that have no own Wikipedia visa-requirements page.
+// They inherit the parent country's policy for visa purposes.
+window.TERRITORY_ALIAS = {
+  EH: "MA", GL: "DK", FK: "GB", PR: "US",
+  NC: "FR", PF: "FR", TF: "FR",
+};
+
 window.resolveStatus = function(passportIso2, destIso2) {
   if (passportIso2 === destIso2) return { status: "self", days: null };
+  const aliased = window.TERRITORY_ALIAS && window.TERRITORY_ALIAS[destIso2];
+  if (aliased && aliased !== passportIso2) destIso2 = aliased;
   let p = window.PASSPORTS[passportIso2];
   if (!p) return { status: "na", days: null };
   let hops = 0;
