@@ -184,14 +184,19 @@ function classifyVisaText(text) {
   // Order matters: check denials first, then specific permits, then generic "visa-free".
   if (t.includes("admission refused") || t.includes("travel banned") ||
       t.includes("entry banned") || t.includes("travel restricted")) return "vr";
-  if (t.includes("visa required") || t.includes("visa needed")) return "vr";
-  // eVisa variants — check BEFORE plain "visa-free" since some pages say "eVisa / visa-free"
+  // eVisa variants — MUST be checked before "visa required" because phrases like
+  // "Online Visa required" (Australia ETA, Canada eTA) would otherwise be miscategorised as vr.
   if (t.includes("evisa") || t.includes("e-visa") || t.includes("e visa") ||
       t.includes("electronic visa") || t.includes("electronic travel authorization") ||
-      t.includes("eta") || t.includes("etias") || t.includes("online visa") ||
-      t.includes("electronic authorization") || t.includes("e-travel")) return "ev";
+      t.includes("electronic travel authority") ||
+      t.includes("eta required") || t.includes("eta approved") || t.includes("e-ta") ||
+      t.includes(" eta ") || /^eta$/.test(t) || t.endsWith(" eta") || t.startsWith("eta ") ||
+      t.includes("etias") || t.includes("online visa") || t.includes("electronic authorization") ||
+      t.includes("e-travel") || t.includes("electronic system for travel authorization") ||
+      t.includes("esta")) return "ev";
   if (t.includes("visa on arrival") || t.includes("voa") ||
       t.includes("visa issued on arrival") || t.includes("visa granted on arrival")) return "voa";
+  if (t.includes("visa required") || t.includes("visa needed")) return "vr";
   if (t.includes("visa not required") || t.includes("freedom of movement") ||
       t.includes("visa-free") || t.includes("visa free") || t.includes("no visa required") ||
       t.includes("free movement") || /^\d+\s*(days?|months?|years?)$/.test(t) ||

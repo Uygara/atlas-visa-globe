@@ -100,23 +100,37 @@ function Globe({
       if (d) p.setAttribute("d", d);
       else p.setAttribute("d", "");
     });
-    // Also reposition micro-state markers (countries too small to draw as polygons)
+    // Also reposition micro-state markers (countries too small to draw as polygons).
+    // d3.geoOrthographic's raw projection function returns coordinates even for the
+    // back hemisphere — clipAngle only kicks in inside d3.geoPath. So for raw point
+    // projection we must check visibility manually using great-circle distance.
     if (projRef.current) {
+      const isGlobe = mode !== "flat";
+      const rot = projRef.current.rotate ? projRef.current.rotate() : [0, 0, 0];
+      const center = [-rot[0], -rot[1]];
       const markers = svgRef.current.querySelectorAll("g[data-micro-iso]");
       markers.forEach(g => {
         const iso = g.getAttribute("data-micro-iso");
         const c = window.byIso2[iso];
         if (!c) return;
+        // Back-hemisphere cull (globe modes only)
+        if (isGlobe && d3.geoDistance([c.lon, c.lat], center) >= Math.PI / 2) {
+          g.style.visibility = "hidden";
+          g.style.pointerEvents = "none";
+          return;
+        }
         const proj = projRef.current([c.lon, c.lat]);
-        if (proj) {
+        if (proj && isFinite(proj[0]) && isFinite(proj[1])) {
           g.setAttribute("transform", `translate(${proj[0]},${proj[1]})`);
           g.style.visibility = "visible";
+          g.style.pointerEvents = "auto";
         } else {
           g.style.visibility = "hidden";
+          g.style.pointerEvents = "none";
         }
       });
     }
-  }, []);
+  }, [mode]);
 
   const projection = useMemo(() => {
     const w = size.w, h = size.h;
