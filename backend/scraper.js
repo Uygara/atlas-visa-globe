@@ -116,10 +116,30 @@ const PASSPORT_TARGETS = [
   ["Venezuela", "Venezuelan"], ["Zambia", "Zambian"],
   ["Zimbabwe", "Zimbabwean"], ["Belize", "Belizean"],
   ["Macao", "Macanese"],
+  // ── Partially-recognised states with real Wikipedia visa pages ──
+  ["Kosovo", "Kosovan"],
+  ["Northern Cyprus", "Northern_Cypriot"],
 ];
 
 const ISO_MAP = require("./iso-map.json"); // name → ISO2 mapping
 const SOURCE_DIR = path.resolve(__dirname, "../data");
+
+// Manual overrides for passports whose Wikipedia page does not use the standard
+// "Country | Visa requirement" wikitable (so the parser cannot read it).
+// Source: same Wikipedia article, transcribed by hand.
+const MANUAL_OVERRIDES = {
+  // Northern Cyprus: only Turkey accepts the TRNC passport visa-free.
+  // Source: https://en.wikipedia.org/wiki/Visa_requirements_for_Northern_Cypriot_citizens
+  // The Wikipedia table is non-standard (single destination), so the scraper output
+  // would otherwise be empty.
+  XN: {
+    name: "Northern Cyprus",
+    default: "vr",
+    defaultDays: null,
+    vf: [["TR", 90]],
+    ev: [], voa: [],
+  },
+};
 
 // ───────────────────────────────────────────────────────────────────────────
 // Fetch + parse a single passport's Wikipedia page
@@ -199,7 +219,11 @@ function classifyVisaText(text) {
   if (t.includes("visa required") || t.includes("visa needed")) return "vr";
   if (t.includes("visa not required") || t.includes("freedom of movement") ||
       t.includes("visa-free") || t.includes("visa free") || t.includes("no visa required") ||
-      t.includes("free movement") || /^\d+\s*(days?|months?|years?)$/.test(t) ||
+      t.includes("free movement") ||
+      // ID-card travel within Europe (Schengen, EU, Western Balkans, Kosovo↔Albania)
+      t.includes("id card") || t.includes("identity card") ||
+      t.includes("national id") || t.includes("national identity") ||
+      /^\d+\s*(days?|months?|years?)$/.test(t) ||
       /^visa not required for \d/.test(t)) return "vf";
   return null;
 }
@@ -305,6 +329,12 @@ async function main() {
     }
     // Be polite — wait 1.2 s between requests
     await new Promise(r => setTimeout(r, 1200));
+  }
+
+  // Apply manual overrides for passports whose Wikipedia table is non-standard.
+  for (const [iso, override] of Object.entries(MANUAL_OVERRIDES)) {
+    collected[iso] = override;
+    console.log(`✓ override applied for ${iso} (${override.name})`);
   }
 
   if (dryRun) {

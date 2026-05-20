@@ -1,6 +1,7 @@
 node_modules/
 backend/scrape-log.txt
 backend/tr-dry.txt
+backend/world-*.json
 *.log
 .DS_Store
 Thumbs.db

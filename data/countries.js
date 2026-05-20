@@ -157,6 +157,8 @@ window.COUNTRIES = [
   { id: "682", iso2: "SA", name: "Saudi Arabia",               continent: "AS", lat:25.0, lon:45.0, flag:"🇸🇦" },
   { id: "686", iso2: "SN", name: "Senegal",                    continent: "AF", lat:14.0, lon:-14.0,flag:"🇸🇳" },
   { id: "688", iso2: "RS", name: "Serbia",                     continent: "EU", lat:44.0, lon:21.0, flag:"🇷🇸" },
+  { id: "XK0", iso2: "XK", name: "Kosovo",                     continent: "EU", lat:42.6, lon:20.9, flag:"🇽🇰" },
+  { id: "XN0", iso2: "XN", name: "Northern Cyprus",            continent: "EU", lat:35.3, lon:33.4, flag:"🏳️" },
   { id: "690", iso2: "SC", name: "Seychelles",                 continent: "AF", lat:-4.6, lon:55.5, flag:"🇸🇨" },
   { id: "694", iso2: "SL", name: "Sierra Leone",               continent: "AF", lat:8.5,  lon:-11.5,flag:"🇸🇱" },
   { id: "702", iso2: "SG", name: "Singapore",                  continent: "AS", lat:1.4,  lon:103.8,flag:"🇸🇬" },

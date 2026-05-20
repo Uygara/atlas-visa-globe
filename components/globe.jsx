@@ -45,7 +45,7 @@ function Globe({
   // ─── Topology load ─────────────────────────────────────────────────────────
   useEffect(() => {
     let alive = true;
-    fetch("https://unpkg.com/world-atlas@2.0.2/countries-110m.json")
+    fetch("https://unpkg.com/world-atlas@2.0.2/countries-50m.json")
       .then(r => r.json())
       .then(world => {
         if (!alive) return;
@@ -357,7 +357,7 @@ function Globe({
 
   // ─── Hover ─────────────────────────────────────────────────────────────────
   const handleEnter = (e, feature) => {
-    const iso2 = idToIso2(feature.id);
+    const iso2 = featureToIso2(feature);
     if (!iso2) return;
     const rect = wrapRef.current.getBoundingClientRect();
     setHover({ iso2, x: e.clientX - rect.left, y: e.clientY - rect.top });
@@ -373,7 +373,7 @@ function Globe({
     onCountryHover?.(null);
   };
   const handleClick = (feature) => {
-    const iso2 = idToIso2(feature.id);
+    const iso2 = featureToIso2(feature);
     if (iso2) onCountryClick?.(iso2);
   };
 
@@ -438,7 +438,7 @@ function Globe({
         {/* Countries */}
         <g>
           {features.map((f, idx) => {
-            const iso2 = idToIso2(f.id);
+            const iso2 = featureToIso2(f);
             const fill = iso2 ? fillFor(iso2) : "var(--land)";
             const op = iso2 ? opacityFor(iso2) : 1;
             const isHover = hover?.iso2 === iso2;
@@ -493,10 +493,32 @@ function Globe({
   );
 }
 
+// Fallback name → ISO2 map for topology features that have no numeric id
+// (disputed/partially recognised territories that Natural Earth labels by name only).
+const FEATURE_NAME_TO_ISO2 = {
+  "Kosovo": "XK",
+  "N. Cyprus": "XN",
+  "Northern Cyprus": "XN",
+  "Somaliland": "SO",      // de-facto Somalia visa policy
+  "Siachen Glacier": null, // unmapped, will stay neutral
+  "Indian Ocean Ter.": "AU",
+};
+
+function featureToIso2(feature) {
+  if (!feature) return null;
+  if (feature.id) {
+    const c = window.byId[feature.id] || window.byId[String(parseInt(feature.id, 10))];
+    if (c) return c.iso2;
+  }
+  const n = feature.properties && feature.properties.name;
+  if (n && FEATURE_NAME_TO_ISO2[n] !== undefined) return FEATURE_NAME_TO_ISO2[n];
+  return null;
+}
+
+// Back-compat shim used in a few legacy call sites
 function idToIso2(id) {
-  // world-atlas uses string numeric ids — try both raw and zero-padded
   if (!id) return null;
-  const c = window.byId[id] || window.byId[String(parseInt(id,10))];
+  const c = window.byId[id] || window.byId[String(parseInt(id, 10))];
   return c?.iso2;
 }
 

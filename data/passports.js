@@ -25678,7 +25678,6 @@ const RAW_PASSPORTS = {
       ],
       "FJ",
       "GA",
-      "GH",
       "GN",
       [
         "GW",
@@ -54514,6 +54513,416 @@ const RAW_PASSPORTS = {
       "VE",
       "YE"
     ]
+  },
+  "XK": {
+    "name": "Kosovo",
+    "default": "vr",
+    "defaultDays": null,
+    "vf": [
+      [
+        "AL",
+        90
+      ],
+      [
+        "AD",
+        90
+      ],
+      [
+        "AG",
+        90
+      ],
+      [
+        "AT",
+        90
+      ],
+      [
+        "BS",
+        90
+      ],
+      [
+        "BE",
+        90
+      ],
+      [
+        "BN",
+        14
+      ],
+      [
+        "BG",
+        90
+      ],
+      [
+        "HR",
+        90
+      ],
+      [
+        "CY",
+        90
+      ],
+      [
+        "CZ",
+        90
+      ],
+      [
+        "DK",
+        90
+      ],
+      [
+        "DM",
+        21
+      ],
+      [
+        "EC",
+        90
+      ],
+      [
+        "EE",
+        90
+      ],
+      [
+        "FI",
+        90
+      ],
+      [
+        "FR",
+        90
+      ],
+      [
+        "GM",
+        90
+      ],
+      [
+        "DE",
+        90
+      ],
+      [
+        "GR",
+        90
+      ],
+      [
+        "HT",
+        90
+      ],
+      [
+        "HU",
+        90
+      ],
+      [
+        "IS",
+        90
+      ],
+      [
+        "IT",
+        90
+      ],
+      [
+        "LV",
+        90
+      ],
+      [
+        "LI",
+        90
+      ],
+      [
+        "LT",
+        90
+      ],
+      [
+        "LU",
+        90
+      ],
+      [
+        "MY",
+        30
+      ],
+      [
+        "MT",
+        90
+      ],
+      [
+        "FM",
+        30
+      ],
+      [
+        "MC",
+        90
+      ],
+      [
+        "ME",
+        90
+      ],
+      [
+        "NL",
+        90
+      ],
+      [
+        "MK",
+        90
+      ],
+      [
+        "NO",
+        90
+      ],
+      [
+        "PL",
+        90
+      ],
+      [
+        "PT",
+        90
+      ],
+      [
+        "RO",
+        90
+      ],
+      [
+        "VC",
+        30
+      ],
+      [
+        "WS",
+        60
+      ],
+      [
+        "SM",
+        90
+      ],
+      [
+        "RS",
+        90
+      ],
+      [
+        "SK",
+        90
+      ],
+      [
+        "SI",
+        90
+      ],
+      [
+        "ES",
+        90
+      ],
+      [
+        "SR",
+        90
+      ],
+      [
+        "SE",
+        90
+      ],
+      [
+        "CH",
+        90
+      ],
+      [
+        "TW",
+        90
+      ],
+      [
+        "TH",
+        60
+      ],
+      [
+        "TR",
+        90
+      ],
+      [
+        "AE",
+        90
+      ],
+      [
+        "VA",
+        90
+      ]
+    ],
+    "ev": [
+      [
+        "AF",
+        30
+      ],
+      "AO",
+      "AU",
+      "BH",
+      [
+        "BJ",
+        30
+      ],
+      "BT",
+      [
+        "BO",
+        30
+      ],
+      "BF",
+      [
+        "KH",
+        30
+      ],
+      "CM",
+      "CF",
+      "TD",
+      "CO",
+      "CG",
+      [
+        "CD",
+        7
+      ],
+      [
+        "CI",
+        90
+      ],
+      [
+        "EG",
+        30
+      ],
+      "GQ",
+      [
+        "ET",
+        90
+      ],
+      "FJ",
+      [
+        "GA",
+        90
+      ],
+      [
+        "GN",
+        90
+      ],
+      [
+        "IR",
+        30
+      ],
+      "IQ",
+      "JO",
+      "LS",
+      "LR",
+      "LY",
+      [
+        "MG",
+        90
+      ],
+      [
+        "MW",
+        90
+      ],
+      [
+        "MV",
+        30
+      ],
+      "MR",
+      "MD",
+      [
+        "MZ",
+        30
+      ],
+      [
+        "NP",
+        90
+      ],
+      [
+        "NG",
+        90
+      ],
+      [
+        "PK",
+        90
+      ],
+      [
+        "PW",
+        30
+      ],
+      [
+        "PG",
+        60
+      ],
+      [
+        "RW",
+        30
+      ],
+      "KN",
+      [
+        "SL",
+        90
+      ],
+      "SG",
+      [
+        "SO",
+        30
+      ],
+      "SS",
+      "SY",
+      [
+        "TZ",
+        90
+      ],
+      [
+        "TG",
+        15
+      ],
+      "TT",
+      [
+        "UG",
+        90
+      ],
+      "VU",
+      "VE",
+      "VN",
+      "ZM",
+      [
+        "ZW",
+        90
+      ]
+    ],
+    "voa": [
+      [
+        "BD",
+        30
+      ],
+      "BI",
+      "CV",
+      [
+        "KM",
+        45
+      ],
+      [
+        "GW",
+        90
+      ],
+      [
+        "LA",
+        30
+      ],
+      [
+        "MH",
+        90
+      ],
+      [
+        "LK",
+        30
+      ],
+      [
+        "TL",
+        30
+      ],
+      [
+        "TV",
+        30
+      ]
+    ]
+  },
+  "XN": {
+    "name": "Northern Cyprus",
+    "default": "vr",
+    "defaultDays": null,
+    "vf": [
+      [
+        "TR",
+        90
+      ]
+    ],
+    "ev": [],
+    "voa": []
   }
 };
 // This file is appended to the auto-generated RAW_PASSPORTS definition by the
@@ -54541,8 +54950,16 @@ Object.entries(RAW_PASSPORTS).forEach(([iso2, p]) => {
   window.PASSPORTS[iso2] = norm;
 });
 
-// Dependent territories that have no own Wikipedia visa-requirements page.
-// They inherit the parent country's policy for visa purposes.
+// Dependent territories that have no Wikipedia "Visa requirements for X citizens"
+// page of their own. For visa purposes they inherit the parent country's policy:
+//   EH (Western Sahara)        → MA (Morocco — administers it)
+//   GL (Greenland)             → DK (Danish kingdom; passport policy follows DK)
+//   FK (Falkland Islands)      → GB (British overseas territory)
+//   PR (Puerto Rico)           → US (US territory, US visa rules)
+//   NC (New Caledonia)         → FR (French overseas territory)
+//   PF (French Polynesia)      → FR
+//   TF (French Southern Territories) → FR
+// (AQ Antarctica is left as-is; no normal visa policy applies.)
 window.TERRITORY_ALIAS = {
   EH: "MA", GL: "DK", FK: "GB", PR: "US",
   NC: "FR", PF: "FR", TF: "FR",
@@ -54550,6 +54967,7 @@ window.TERRITORY_ALIAS = {
 
 window.resolveStatus = function(passportIso2, destIso2) {
   if (passportIso2 === destIso2) return { status: "self", days: null };
+  // If the destination is a dependent territory, look up its parent's status instead.
   const aliased = window.TERRITORY_ALIAS && window.TERRITORY_ALIAS[destIso2];
   if (aliased && aliased !== passportIso2) destIso2 = aliased;
   let p = window.PASSPORTS[passportIso2];
