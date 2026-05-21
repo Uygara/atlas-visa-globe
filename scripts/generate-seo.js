@@ -110,15 +110,21 @@ function renderPage(passport, allPassports, snapshot) {
     ? `<div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="${adsenseClient}" data-ad-slot="${slotBottom}" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>`
     : "";
 
-  const otherPassports = allPassports
-    .filter(iso => iso !== passport)
-    .map(iso => {
-      const c = COUNTRIES.find(x => x.iso2 === iso);
-      const n = snapshot[iso]?.name || c?.name;
-      if (!c || !n) return "";
-      return `<li><a href="../${iso.toLowerCase()}/">${c.flag} ${escapeHtml(n)}</a></li>`;
-    })
-    .join("");
+  // Pick a curated, on-topic set of 8–10 internal links instead of dumping all 200.
+  // Google rewards relevance — too many links per page dilutes link equity and
+  // looks like spam. We pick: same-region neighbours, plus 3 high-traffic anchors.
+  const sameRegion = COUNTRIES
+    .filter(c => c.continent === country.continent && c.iso2 !== passport && snapshot[c.iso2])
+    .slice(0, 6)
+    .map(c => c.iso2);
+  const anchors = ["US", "GB", "DE", "JP"].filter(iso => iso !== passport && snapshot[iso]);
+  const related = Array.from(new Set([...sameRegion, ...anchors])).slice(0, 10);
+  const otherPassports = related.map(iso => {
+    const c = COUNTRIES.find(x => x.iso2 === iso);
+    const n = snapshot[iso]?.name || c?.name;
+    if (!c || !n) return "";
+    return `<li><a href="../${iso.toLowerCase()}/">${c.flag} ${escapeHtml(n)}</a></li>`;
+  }).join("");
 
   const rowsHtml = rows.map(r => {
     const info = STATUS_INFO[r.status];
@@ -140,11 +146,15 @@ function renderPage(passport, allPassports, snapshot) {
 <title>${escapeHtml(titleText)}</title>
 <meta name="description" content="${escapeHtml(description)}">
 <link rel="canonical" href="${canonical}">
+<link rel="icon" type="image/png" href="/assets/favicon.png">
+<link rel="apple-touch-icon" href="/assets/favicon.png">
+<meta property="og:image" content="${SITE_URL || ""}/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="${SITE_URL || ""}/assets/og.png">
 <meta property="og:title" content="${escapeHtml(titleText)}">
 <meta property="og:description" content="${escapeHtml(description)}">
 <meta property="og:type" content="article">
 ${SITE_URL ? `<meta property="og:url" content="${canonical}">` : ""}
-<meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="${escapeHtml(titleText)}">
 <meta name="twitter:description" content="${escapeHtml(description)}">
 ${adsenseLoader}
@@ -247,8 +257,11 @@ ${adsenseLoader}
   </table>
 
   <div class="other-passports">
-    <h2>Compare with other passports</h2>
+    <h2>Related passports</h2>
     <ul>${otherPassports}</ul>
+    <p style="font-size:12px;color:var(--fg-mute);margin-top:14px;">
+      Or <a href="/passport/" style="color:var(--fg-dim);">browse all 200 passports</a>.
+    </p>
   </div>
 
   ${adInsBottom}

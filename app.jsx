@@ -1,13 +1,32 @@
 // Main app — composes Globe + Panel, owns shared state, geolocation,
 // keyboard shortcuts, Tweaks integration.
 
-const { useState, useEffect, useRef, useMemo } = React;
+const { useState, useEffect, useRef, useMemo, useCallback } = React;
 
-const TWEAK_DEFAULTS = /*EDITMODE-BEGIN*/{
+const TWEAK_DEFAULTS = {
   "globeStyle": "globe3d",
   "background": "dark",
-  "compareMode": false
-}/*EDITMODE-END*/;
+  "compareMode": false,
+};
+
+// Lightweight user-preference store, persisted to localStorage so theme / mode
+// choices survive page reloads. Replaces the original iframe-host based hook.
+function useTweaks(defaults) {
+  const [values, setValues] = useState(() => {
+    try {
+      const stored = JSON.parse(localStorage.getItem("atlas.tweaks") || "{}");
+      return { ...defaults, ...stored };
+    } catch (e) { return defaults; }
+  });
+  const setTweak = useCallback((key, val) => {
+    setValues((prev) => {
+      const next = { ...prev, [key]: val };
+      try { localStorage.setItem("atlas.tweaks", JSON.stringify(next)); } catch (e) {}
+      return next;
+    });
+  }, []);
+  return [values, setTweak];
+}
 
 // Map common timezones → ISO2 codes, for default-passport detection.
 const TZ_FALLBACK = {
@@ -58,57 +77,25 @@ function App() {
   const [detailCountry, setDetailCountry] = useState(null);
   const [search, setSearch] = useState("");
   const [focusedCountry, setFocusedCountry] = useState(null);
-  const [showWelcome, setShowWelcome] = useState(true);
+  const [showWelcome, setShowWelcome] = useState(false);
   const [locationStatus, setLocationStatus] = useState("idle"); // idle | detecting | detected | denied
+  const [autoDetectedPassport, setAutoDetectedPassport] = useState(null);
 
   // ─── Default passport detection ─────────────────────────────────────────
+  // Step 1 (synchronous, no permission prompt): infer from browser time zone.
+  //   That covers ~95 % of users instantly and never blocks first paint.
+  // Step 2 (only if TZ has no mapping): show the welcome overlay with
+  //   featured passports + an opt-in "use my location" button.
   useEffect(() => {
-    // Try real geolocation as the user requested. Bail out fast on denial or
-    // sandboxed iframes that block it; the welcome overlay handles fallback.
-    if (!navigator.geolocation) {
+    const fromTZ = detectPassport();
+    if (fromTZ) {
+      setPassport(fromTZ);
+      setAutoDetectedPassport(fromTZ);
+      setLocationStatus("detected");
+      setShowWelcome(false);
+    } else {
       setShowWelcome(true);
-      return;
     }
-    setLocationStatus("detecting");
-    let resolved = false;
-    const fallbackTimer = setTimeout(() => {
-      if (!resolved) {
-        resolved = true;
-        setLocationStatus("denied");
-        setShowWelcome(true);
-      }
-    }, 4500);
-
-    navigator.geolocation.getCurrentPosition(
-      async (pos) => {
-        if (resolved) return;
-        resolved = true;
-        clearTimeout(fallbackTimer);
-        try {
-          const r = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json&zoom=3`);
-          const data = await r.json();
-          const cc = data?.address?.country_code?.toUpperCase();
-          if (cc && window.PASSPORTS[cc]) {
-            setPassport(cc);
-            setLocationStatus("detected");
-            setShowWelcome(false);
-            return;
-          }
-        } catch (e) {}
-        // Got coords but reverse-geocode failed → fall back to TZ
-        const fromTZ = detectPassport();
-        if (fromTZ) { setPassport(fromTZ); setLocationStatus("detected"); setShowWelcome(false); }
-        else { setLocationStatus("denied"); setShowWelcome(true); }
-      },
-      (err) => {
-        if (resolved) return;
-        resolved = true;
-        clearTimeout(fallbackTimer);
-        setLocationStatus("denied");
-        setShowWelcome(true);
-      },
-      { timeout: 4000, maximumAge: 600000 }
-    );
   }, []);
 
   const useLocation = () => {
@@ -230,35 +217,66 @@ function App() {
         showCompare={t.compareMode}
       />
 
-      {/* Tweaks panel */}
-      <TweaksPanel title="Tweaks">
-        <TweakSection label="Globe" />
-        <TweakRadio
-          label="Style"
-          value={t.globeStyle}
-          options={[
-            { value: "globe3d", label: "3D" },
-            { value: "flat", label: "2D" },
-          ]}
-          onChange={(v) => setTweak("globeStyle", v)}
-        />
-        <TweakSection label="Theme" />
-        <TweakRadio
-          label="Background"
-          value={t.background}
-          options={[
-            { value: "dark", label: "Dark" },
-            { value: "light", label: "Light" },
-          ]}
-          onChange={(v) => setTweak("background", v)}
-        />
-        <TweakSection label="Features" />
-        <TweakToggle
-          label="Compare two passports"
-          value={t.compareMode}
-          onChange={(v) => setTweak("compareMode", v)}
-        />
-      </TweaksPanel>
+      {/* Settings popover (live in production — replaces the iframe-only TweaksPanel) */}
+      <SettingsButton tweaks={t} setTweak={setTweak} />
+    </div>
+  );
+}
+
+// ─── Settings popover (light/dark + compare mode toggle) ──────────────────
+function SettingsButton({ tweaks, setTweak }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  useEffect(() => {
+    if (!open) return;
+    const onClick = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, [open]);
+  return (
+    <div ref={ref} style={{ position: "absolute", bottom: 16, right: 16, zIndex: 5 }}>
+      {open && (
+        <div style={{
+          position: "absolute", bottom: 44, right: 0, minWidth: 220,
+          background: "var(--panel)", backdropFilter: "blur(14px)",
+          border: "1px solid var(--panel-border-strong)", borderRadius: 12,
+          padding: 12, boxShadow: "0 12px 32px rgba(0,0,0,0.4)",
+          fontSize: 12, color: "var(--fg)",
+        }}>
+          <div style={{ fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8 }}>Theme</div>
+          <div style={{ display: "flex", gap: 6, marginBottom: 14 }}>
+            {[["dark","Dark"],["light","Light"]].map(([v,l]) => (
+              <button key={v} onClick={() => setTweak("background", v)}
+                style={{
+                  flex: 1, padding: "6px 8px", borderRadius: 6,
+                  border: "1px solid " + (tweaks.background === v ? "var(--self)" : "var(--panel-border)"),
+                  background: tweaks.background === v ? "rgba(96,165,250,0.10)" : "var(--bg-3)",
+                  color: "var(--fg)", cursor: "pointer", fontFamily: "inherit", fontSize: 12,
+                }}>{l}</button>
+            ))}
+          </div>
+          <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
+            <input type="checkbox" checked={!!tweaks.compareMode}
+                   onChange={(e) => setTweak("compareMode", e.target.checked)} />
+            <span>Compare two passports</span>
+          </label>
+        </div>
+      )}
+      <button onClick={() => setOpen(!open)}
+        aria-label="Settings"
+        style={{
+          width: 36, height: 36, borderRadius: "50%",
+          background: "var(--panel)", backdropFilter: "blur(14px)",
+          border: "1px solid var(--panel-border-strong)",
+          color: "var(--fg-dim)", cursor: "pointer",
+          display: "flex", alignItems: "center", justifyContent: "center",
+          boxShadow: "0 4px 16px rgba(0,0,0,0.30)",
+        }}>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path d="M8 5.5v5M5.5 8h5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" transform="rotate(45 8 8)"/>
+          <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.2"/>
+        </svg>
+      </button>
     </div>
   );
 }
