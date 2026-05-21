@@ -54997,6 +54997,28 @@ window.tally = function(passportIso2) {
   return counts;
 };
 
+// Group resolver. Given N passports + a destination, returns the WORST
+// status among the group — that's the strictest visa requirement the group
+// will hit if they want to travel together.
+//   vf  <  ev  <  voa  <  vr
+// (self / na are coerced to vf — the home country is always OK to enter.)
+const _GROUP_ORDER = { self: 0, vf: 0, ev: 1, voa: 2, vr: 3, na: 0 };
+window.resolveGroupStatus = function(passports, destIso2) {
+  if (!passports || passports.length === 0) return { status: "na", days: null };
+  let worst = 0, days = null;
+  for (const p of passports) {
+    const r = window.resolveStatus(p, destIso2);
+    const score = _GROUP_ORDER[r.status] ?? 0;
+    if (score > worst) {
+      worst = score;
+      days = r.days;
+    }
+    if (worst === 3) break; // can't get worse than vr
+  }
+  const status = ["vf", "ev", "voa", "vr"][worst] || "vf";
+  return { status, days };
+};
+
 // Incoming tally: how many other passports can visit *me* under each status.
 window.tallyIncoming = function(myIso2) {
   if (!window.PASSPORTS[myIso2]) return null;
@@ -55005,6 +55027,21 @@ window.tallyIncoming = function(myIso2) {
     if (c.iso2 === myIso2) return;
     if (c.continent === "AN") return;
     const r = window.resolveStatus(c.iso2, myIso2);
+    if (counts[r.status] != null) counts[r.status]++;
+  });
+  return counts;
+};
+
+// Group tally: how many destinations are reachable for the WHOLE group at each
+// strictness level. Used by the side panel's stat cards in group mode.
+window.tallyGroup = function(passports) {
+  if (!passports || passports.length === 0) return null;
+  const counts = { vf: 0, ev: 0, voa: 0, vr: 0 };
+  const own = new Set(passports);
+  window.COUNTRIES.forEach(c => {
+    if (own.has(c.iso2)) return;        // skip group members' own countries
+    if (c.continent === "AN") return;
+    const r = window.resolveGroupStatus(passports, c.iso2);
     if (counts[r.status] != null) counts[r.status]++;
   });
   return counts;

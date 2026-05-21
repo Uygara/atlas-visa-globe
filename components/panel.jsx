@@ -3,6 +3,7 @@
 function Panel({
   passport, setPassport,
   compare, setCompare, compareMode,
+  groupMode, groupPassports, setGroupPassports,
   filter, setFilter,
   detailCountry, setDetailCountry,
   search, setSearch,
@@ -12,9 +13,12 @@ function Panel({
 }) {
   const [showPicker, setShowPicker] = useState(false);
   const [showComparePicker, setShowComparePicker] = useState(false);
-  const tallyData = passport
-    ? (direction === "incoming" ? window.tallyIncoming(passport) : window.tally(passport))
-    : null;
+  const groupActive = groupMode && groupPassports && groupPassports.length > 0;
+  const tallyData = groupActive
+    ? window.tallyGroup(groupPassports)
+    : (passport
+        ? (direction === "incoming" ? window.tallyIncoming(passport) : window.tally(passport))
+        : null);
 
   return (
     <aside className="panel">
@@ -28,7 +32,7 @@ function Panel({
         onChange={(v) => { setPassport(v); setShowPicker(false); }}
       />
 
-      {showCompare && (
+      {showCompare && !groupMode && (
         <PassportPicker
           label="Compare with"
           value={compare}
@@ -41,12 +45,20 @@ function Panel({
         />
       )}
 
-      {passport && (
+      {groupMode && (
+        <GroupPicker
+          primary={passport}
+          values={groupPassports || []}
+          onChange={setGroupPassports}
+        />
+      )}
+
+      {passport && !groupMode && (
         <DirectionToggle value={direction} onChange={setDirection} />
       )}
 
-      {passport && tallyData && (
-        <Tally tally={tallyData} filter={filter} setFilter={setFilter} passport={passport} />
+      {tallyData && (
+        <Tally tally={tallyData} filter={filter} setFilter={setFilter} passport={passport} groupActive={groupActive} />
       )}
 
       <CountrySearch
@@ -56,10 +68,11 @@ function Panel({
         onPick={onPickFromSearch}
       />
 
-      {detailCountry && passport && (
+      {detailCountry && (passport || groupActive) && (
         <DetailCard
           passport={passport}
-          compare={compareMode ? compare : null}
+          compare={compareMode && !groupMode ? compare : null}
+          groupPassports={groupActive ? groupPassports : null}
           iso2={detailCountry}
           direction={direction}
           onClose={() => setDetailCountry(null)}
@@ -158,6 +171,133 @@ function DirectionToggle({ value, onChange }) {
       </div>
       <div style={{ fontSize: 11, color: "var(--fg-mute)", marginTop: 6, fontFamily: "var(--font-mono)" }}>
         {active?.hint}
+      </div>
+    </div>
+  );
+}
+
+// Group mode picker: up to 4 passports. The primary passport (top picker) is
+// auto-included if the user hasn't deselected it.
+function GroupPicker({ primary, values, onChange }) {
+  const [open, setOpen] = useState(false);
+  const [pickerOpen, setPickerOpen] = useState(false);
+  const MAX = 4;
+
+  // Auto-seed with the primary the first time the picker mounts.
+  useEffect(() => {
+    if (primary && values.length === 0) onChange([primary]);
+  }, [primary]); // eslint-disable-line
+
+  const remove = (iso) => onChange(values.filter(v => v !== iso));
+  const add = (iso) => {
+    if (values.includes(iso) || values.length >= MAX) { setPickerOpen(false); return; }
+    onChange([...values, iso]);
+    setPickerOpen(false);
+  };
+
+  return (
+    <div style={{ marginBottom: 14 }}>
+      <div style={{
+        fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
+        textTransform: "uppercase", letterSpacing: "0.10em", marginBottom: 6,
+        display: "flex", alignItems: "center", gap: 6,
+      }}>
+        <span style={{ width: 8, height: 8, borderRadius: 2, background: "var(--vf)", boxShadow: "0 0 6px var(--vf)" }} />
+        Group ({values.length}/{MAX})
+      </div>
+
+      <div style={{
+        background: "var(--bg-2)",
+        border: "1px solid var(--panel-border-strong)",
+        borderRadius: 10,
+        padding: 10,
+      }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: values.length ? 8 : 0 }}>
+          {values.map(iso => {
+            const c = window.byIso2[iso];
+            if (!c) return null;
+            return (
+              <div key={iso} style={{
+                display: "inline-flex", alignItems: "center", gap: 6,
+                background: "var(--bg-3)", border: "1px solid var(--panel-border)",
+                borderRadius: 999, padding: "5px 10px", fontSize: 12,
+              }}>
+                <span style={{ fontSize: 14 }}>{c.flag}</span>
+                <span>{c.name}</span>
+                <button
+                  onClick={() => remove(iso)}
+                  aria-label={`Remove ${c.name}`}
+                  style={{ background: "transparent", border: "none", color: "var(--fg-mute)", cursor: "pointer", fontSize: 14, padding: 0, lineHeight: 1 }}>
+                  ×
+                </button>
+              </div>
+            );
+          })}
+        </div>
+        {values.length < MAX && (
+          <button
+            onClick={() => setPickerOpen(!pickerOpen)}
+            style={{
+              width: "100%", padding: "8px 10px",
+              background: "transparent",
+              border: "1px dashed var(--panel-border-strong)",
+              borderRadius: 8, color: "var(--fg-dim)",
+              cursor: "pointer", fontFamily: "inherit", fontSize: 12,
+            }}>
+            + Add passport
+          </button>
+        )}
+      </div>
+
+      {pickerOpen && (
+        <GroupAddDropdown
+          existing={values}
+          onPick={add}
+          onClose={() => setPickerOpen(false)}
+        />
+      )}
+    </div>
+  );
+}
+
+function GroupAddDropdown({ existing, onPick, onClose }) {
+  const [q, setQ] = useState("");
+  const filtered = window.PASSPORT_LIST
+    .filter(p => !existing.includes(p.iso2))
+    .filter(p => !q || p.name.toLowerCase().includes(q.toLowerCase()) || p.iso2.toLowerCase().includes(q.toLowerCase()))
+    .slice(0, 50);
+  return (
+    <div style={{
+      marginTop: 6, background: "var(--bg-2)",
+      border: "1px solid var(--panel-border-strong)", borderRadius: 10,
+      overflow: "hidden",
+    }}>
+      <input autoFocus type="text" placeholder="Search…" value={q} onChange={(e) => setQ(e.target.value)}
+        style={{
+          width: "100%", padding: "9px 12px", background: "transparent",
+          border: "none", borderBottom: "1px solid var(--panel-border)",
+          color: "var(--fg)", fontSize: 13, outline: "none",
+        }} />
+      <div style={{ maxHeight: 200, overflow: "auto" }}>
+        {filtered.map(p => {
+          const c = window.byIso2[p.iso2];
+          return (
+            <button key={p.iso2} onClick={() => onPick(p.iso2)}
+              style={{
+                width: "100%", textAlign: "left", display: "flex", alignItems: "center", gap: 10,
+                padding: "7px 12px", background: "transparent", border: "none",
+                color: "var(--fg)", cursor: "pointer", fontSize: 13, fontFamily: "inherit",
+                borderBottom: "1px solid rgba(148,173,220,0.05)",
+              }}>
+              <span style={{ fontSize: 16 }}>{c?.flag}</span>
+              <span>{p.name}</span>
+              <span style={{ marginLeft: "auto", color: "var(--fg-mute)", fontFamily: "var(--font-mono)", fontSize: 11 }}>{p.iso2}</span>
+            </button>
+          );
+        })}
+        {filtered.length === 0 && (
+          <div style={{ padding: 14, color: "var(--fg-mute)", fontSize: 12 }}>No matches.</div>
+        )}
       </div>
     </div>
   );
@@ -346,7 +486,7 @@ function PassportDropdown({ value, onChange, allowClear, onClear }) {
   );
 }
 
-function Tally({ tally, filter, setFilter, passport }) {
+function Tally({ tally, filter, setFilter, passport, groupActive }) {
   const total = tally.vf + tally.ev + tally.voa + tally.vr;
   const rows = [
     { k: "vf",  ...STATUS_COLOR.vf,  n: tally.vf  },
@@ -373,8 +513,11 @@ function Tally({ tally, filter, setFilter, passport }) {
           {accessScore}
         </div>
         <div style={{ fontSize: 11, color: "var(--fg-mute)", letterSpacing: "0.04em" }}>
-          destinations accessible<br/>
-          <span style={{ fontFamily: "var(--font-mono)", color: "var(--fg-faint)" }}>of {total}</span>
+          {groupActive ? "destinations the group can enter" : "destinations accessible"}<br/>
+          <span style={{ fontFamily: "var(--font-mono)", color: "var(--fg-faint)" }}>
+            of {total}
+            {groupActive && " · worst-case visa"}
+          </span>
         </div>
       </div>
 
@@ -533,13 +676,19 @@ function SearchIcon() {
   );
 }
 
-function DetailCard({ passport, compare, iso2, onClose, direction }) {
+function DetailCard({ passport, compare, iso2, onClose, direction, groupPassports }) {
   const dest = window.byIso2[iso2];
   if (!dest) return null;
-  const incoming = direction === "incoming";
-  const r = incoming ? window.resolveStatus(iso2, passport) : window.resolveStatus(passport, iso2);
-  const rc = compare
+  const groupActive = Array.isArray(groupPassports) && groupPassports.length > 0;
+  const incoming = direction === "incoming" && !groupActive;
+  const r = groupActive
+    ? window.resolveGroupStatus(groupPassports, iso2)
+    : (incoming ? window.resolveStatus(iso2, passport) : window.resolveStatus(passport, iso2));
+  const rc = !groupActive && compare
     ? (incoming ? window.resolveStatus(iso2, compare) : window.resolveStatus(compare, iso2))
+    : null;
+  const groupRows = groupActive
+    ? groupPassports.map(p => ({ p, r: window.resolveStatus(p, iso2) }))
     : null;
   const sc = STATUS_COLOR[r.status];
   const myPp = window.byIso2[passport];
@@ -632,6 +781,32 @@ function DetailCard({ passport, compare, iso2, onClose, direction }) {
               {rc.days && <div style={{ fontSize: 11, color: "var(--fg-mute)", fontFamily: "var(--font-mono)" }}>Up to {rc.days} days</div>}
             </div>
           </div>
+        </div>
+      )}
+
+      {groupRows && (
+        <div style={{
+          padding: 10, borderRadius: 8,
+          border: "1px dashed var(--panel-border-strong)",
+          background: "rgba(96,165,250,0.05)",
+        }}>
+          <div style={{ fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 8 }}>Per group member</div>
+          {groupRows.map(({ p, r: rr }) => {
+            const c = window.byIso2[p];
+            const sc2 = STATUS_COLOR[rr.status];
+            return (
+              <div key={p} style={{ display: "flex", alignItems: "center", gap: 8, padding: "5px 0", borderTop: "1px solid var(--panel-border)" }}>
+                <span style={{ fontSize: 16 }}>{c?.flag}</span>
+                <span style={{ fontSize: 12, flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{c?.name}</span>
+                <span style={{
+                  width: 8, height: 8, borderRadius: "50%",
+                  background: sc2.fill,
+                }} />
+                <span style={{ fontSize: 11, color: "var(--fg-dim)", minWidth: 80, textAlign: "right" }}>{sc2.label}</span>
+                {rr.days && <span style={{ fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)" }}>{rr.days}d</span>}
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

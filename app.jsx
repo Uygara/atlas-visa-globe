@@ -7,6 +7,7 @@ const TWEAK_DEFAULTS = {
   "globeStyle": "globe3d",
   "background": "dark",
   "compareMode": false,
+  "groupMode": false,
 };
 
 // Lightweight user-preference store, persisted to localStorage so theme / mode
@@ -122,6 +123,7 @@ function App() {
   const [locationStatus, setLocationStatus] = useState("idle"); // idle | detecting | detected | denied
   const [autoDetectedPassport, setAutoDetectedPassport] = useState(null);
   const [direction, setDirection] = useState("outgoing"); // outgoing | incoming
+  const [groupPassports, setGroupPassports] = useState([]); // array of iso2 — group mode active iff non-empty
 
   // ─── Default passport detection ─────────────────────────────────────────
   // Strategy:
@@ -272,6 +274,7 @@ function App() {
         <Globe
           passport={passport}
           comparePassport={t.compareMode ? compare : null}
+          groupPassports={t.groupMode ? groupPassports : null}
           filter={filter}
           mode={t.globeStyle}
           direction={direction}
@@ -306,6 +309,9 @@ function App() {
         compare={compare}
         setCompare={setCompare}
         compareMode={t.compareMode}
+        groupMode={t.groupMode}
+        groupPassports={groupPassports}
+        setGroupPassports={setGroupPassports}
         filter={filter}
         setFilter={setFilter}
         direction={direction}
@@ -356,11 +362,20 @@ function SettingsButton({ tweaks, setTweak }) {
                 }}>{l}</button>
             ))}
           </div>
-          <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
+          <div style={{ fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8 }}>Modes</div>
+          <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", marginBottom: 8 }}>
             <input type="checkbox" checked={!!tweaks.compareMode}
                    onChange={(e) => setTweak("compareMode", e.target.checked)} />
             <span>Compare two passports</span>
           </label>
+          <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
+            <input type="checkbox" checked={!!tweaks.groupMode}
+                   onChange={(e) => setTweak("groupMode", e.target.checked)} />
+            <span>Group travel (multi-passport)</span>
+          </label>
+          <div style={{ fontSize: 10, color: "var(--fg-faint)", marginTop: 4 }}>
+            Family / business trips — paint countries by the strictest visa in the group.
+          </div>
         </div>
       )}
       <button onClick={() => setOpen(!open)}

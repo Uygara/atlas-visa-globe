@@ -16,6 +16,7 @@ const STATUS_COLOR = {
 function Globe({
   passport,        // iso2 string, or null
   comparePassport, // iso2 string, or null (compare mode)
+  groupPassports,  // string[] — when set + non-empty, group mode is active
   filter,          // "all" | "vf" | "ev" | "voa" | "vr"
   mode,            // "globe3d" | "globe2d" | "flat"
   direction,       // "outgoing" (default) | "incoming"
@@ -23,6 +24,9 @@ function Globe({
   onCountryHover,
   focusedCountry,  // iso2 string or null — highlights / centers
 }) {
+  // Group mode wins over direction when active — the question is "where can
+  // this group of people go", which is inherently outgoing.
+  const groupActive = Array.isArray(groupPassports) && groupPassports.length > 0;
   // Helper: in outgoing mode each country is coloured by (myPassport → that country).
   // In incoming mode it's coloured by (that country → myPassport) — i.e. "would
   // they need a visa to come to me?"
@@ -404,26 +408,39 @@ function Globe({
   }, [topology, projection, redrawPaths]);
 
   // ─── Fill resolution ───────────────────────────────────────────────────────
-  const fillFor = useCallback((iso2) => {
-    if (!passport) return STATUS_COLOR.na.fill;
-    const r = direction === "incoming"
+  // resolveOne picks the right resolver for the active mode. Group mode
+  // overrides direction. Self-highlight (blue) still works because the
+  // primary passport's own country comes back as "self" from resolveStatus
+  // before we ever ask the group resolver — group mode skips that special
+  // case by stripping the home-country bias.
+  const resolveOne = useCallback((iso2) => {
+    if (groupActive) {
+      // Members' own countries should still render as "self" (blue) so the
+      // user can pick them out on the map.
+      if (groupPassports.includes(iso2)) return { status: "self", days: null };
+      return window.resolveGroupStatus(groupPassports, iso2);
+    }
+    return direction === "incoming"
       ? window.resolveStatus(iso2, passport)
       : window.resolveStatus(passport, iso2);
+  }, [passport, direction, groupActive, groupPassports]);
+
+  const fillFor = useCallback((iso2) => {
+    if (!passport && !groupActive) return STATUS_COLOR.na.fill;
+    const r = resolveOne(iso2);
     if (filter !== "all" && r.status !== filter && r.status !== "self") {
       return "var(--land)"; // dim out
     }
     return STATUS_COLOR[r.status]?.fill || STATUS_COLOR.na.fill;
-  }, [passport, filter, direction]);
+  }, [passport, filter, resolveOne, groupActive]);
 
   const opacityFor = useCallback((iso2) => {
-    if (!passport) return 1;
+    if (!passport && !groupActive) return 1;
     if (filter === "all") return 1;
-    const r = direction === "incoming"
-      ? window.resolveStatus(iso2, passport)
-      : window.resolveStatus(passport, iso2);
+    const r = resolveOne(iso2);
     if (r.status === filter || r.status === "self") return 1;
     return 0.25;
-  }, [passport, filter, direction]);
+  }, [passport, filter, resolveOne, groupActive]);
 
   // Compare mode: highlight the compare passport's home country with a distinct
   // amber stroke (so it never collides with the primary passport's blue self-fill).
@@ -567,7 +584,15 @@ function Globe({
       )}
 
       {/* Hover tooltip */}
-      {hover && passport && <HoverCard hover={hover} passport={passport} compare={comparePassport} direction={direction} />}
+      {hover && (passport || groupActive) && (
+        <HoverCard
+          hover={hover}
+          passport={passport}
+          compare={comparePassport}
+          direction={direction}
+          groupPassports={groupActive ? groupPassports : null}
+        />
+      )}
     </div>
   );
 }
@@ -601,13 +626,23 @@ function idToIso2(id) {
   return c?.iso2;
 }
 
-function HoverCard({ hover, passport, compare, direction }) {
+function HoverCard({ hover, passport, compare, direction, groupPassports }) {
   const dest = window.byIso2[hover.iso2];
   if (!dest) return null;
-  const r = direction === "incoming"
-    ? window.resolveStatus(hover.iso2, passport)
-    : window.resolveStatus(passport, hover.iso2);
-  const rc = compare
+  const groupActive = Array.isArray(groupPassports) && groupPassports.length > 0;
+  const r = groupActive
+    ? window.resolveGroupStatus(groupPassports, hover.iso2)
+    : (direction === "incoming"
+        ? window.resolveStatus(hover.iso2, passport)
+        : window.resolveStatus(passport, hover.iso2));
+  // In group mode, instead of a single "compare" overlay we show each member's status.
+  const groupBreakdown = groupActive
+    ? groupPassports.map(p => ({
+        passport: p,
+        r: window.resolveStatus(p, hover.iso2),
+      }))
+    : null;
+  const rc = !groupActive && compare
     ? (direction === "incoming"
         ? window.resolveStatus(hover.iso2, compare)
         : window.resolveStatus(compare, hover.iso2))
@@ -663,6 +698,28 @@ function HoverCard({ hover, passport, compare, direction }) {
           }} />
           <span style={{ color: "var(--fg-dim)" }}>{STATUS_COLOR[rc.status].label}</span>
           {rc.days && <span style={{ marginLeft: "auto", color: "var(--fg-mute)", fontFamily: "var(--font-mono)" }}>{rc.days}d</span>}
+        </div>
+      )}
+      {groupBreakdown && (
+        <div style={{ marginTop: 6, paddingTop: 6, borderTop: "1px solid var(--panel-border)" }}>
+          <div style={{ fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4 }}>
+            Per member
+          </div>
+          {groupBreakdown.map(({ passport: p, r: rr }) => {
+            const c = window.byIso2[p];
+            const sc2 = STATUS_COLOR[rr.status];
+            return (
+              <div key={p} style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 2, fontSize: 12 }}>
+                <span style={{ fontSize: 13 }}>{c?.flag || ""}</span>
+                <span style={{
+                  width: 7, height: 7, borderRadius: "50%", display: "inline-block",
+                  background: sc2.fill,
+                }} />
+                <span style={{ color: "var(--fg-dim)" }}>{sc2.label}</span>
+                {rr.days && <span style={{ marginLeft: "auto", color: "var(--fg-mute)", fontFamily: "var(--font-mono)", fontSize: 11 }}>{rr.days}d</span>}
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
