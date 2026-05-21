@@ -138,6 +138,13 @@
   }
 </style>
 
+<!-- Google AdSense (verification + runtime loader). Must be static <script> in
+     <head> so AdSense's HTML-only verification crawler can find it. If you ever
+     swap accounts, update this client ID in three places: here, /ads.txt,
+     and data/ads.js. -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2617798720306957"
+        crossorigin="anonymous"></script>
+
 <!-- D3 + TopoJSON for the globe -->
 <script src="https://unpkg.com/d3@7.8.5/dist/d3.min.js"></script>
 <script src="https://unpkg.com/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
@@ -157,16 +164,11 @@
   <script src="data/changelog.js"></script>
   <script src="data/affiliates.js"></script>
   <script src="data/ads.js"></script>
-  <!-- Conditional AdSense loader (no-op until ADSENSE.clientId is set) -->
+  <!-- AdSense itself is loaded statically in <head> (see above). This block
+       only handles Ezoic, which has no verification crawler issue. -->
   <script>
     (function () {
-      if (window.ADSENSE && window.ADSENSE.clientId) {
-        var s = document.createElement("script");
-        s.async = true;
-        s.crossOrigin = "anonymous";
-        s.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=" + window.ADSENSE.clientId;
-        document.head.appendChild(s);
-      } else if (window.EZOIC && window.EZOIC.siteId) {
+      if (window.EZOIC && window.EZOIC.siteId) {
         var s = document.createElement("script");
         s.async = true;
         s.src = "//www.ezojs.com/ezoic/sa.min.js";
