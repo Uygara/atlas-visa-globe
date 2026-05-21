@@ -757,6 +757,10 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
 
       <AlertsCTA iso2={iso2} destName={dest.name} />
 
+      {!groupActive && (
+        <VisaFeeBox passport={passport} destIso2={iso2} status={r.status} />
+      )}
+
       <AffiliatePartners status={r.status} iso2={iso2} />
 
       <AdSlot slotKey="sidebar" />
@@ -816,6 +820,69 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
 // Renders an AdSense ad unit if (and only if) both the publisher client ID and
 // the slot's numeric ID are configured in data/ads.js. Otherwise renders nothing.
 // On mount it pushes a request to AdSense's queue, exactly as Google docs prescribe.
+// Visa fee + processing-time card. Renders only when (a) data/visa-fees.js
+// has an entry for the (passport, destination) pair AND (b) the resolved
+// status is something the user actually needs to apply for — i.e. ev / voa / vr.
+// We never show it for vf since the data wouldn't make sense ("fee: $0").
+function VisaFeeBox({ passport, destIso2, status }) {
+  if (!passport || !destIso2) return null;
+  if (status === "vf" || status === "self") return null;
+  const data = window.visaFee && window.visaFee(passport, destIso2);
+  if (!data) return null;
+
+  const labelStyle = { fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.06em" };
+  const valueStyle = { fontSize: 13, color: "var(--fg)", marginTop: 1 };
+  const row = (label, value) => value ? (
+    <div style={{ paddingTop: 6 }}>
+      <div style={labelStyle}>{label}</div>
+      <div style={valueStyle}>{value}</div>
+    </div>
+  ) : null;
+
+  return (
+    <div style={{
+      padding: 12,
+      borderRadius: 8,
+      background: "var(--bg-2)",
+      border: "1px solid var(--panel-border)",
+      marginBottom: 10,
+    }}>
+      <div style={{ fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4 }}>
+        Visa cost & timing
+      </div>
+      <div style={{ fontSize: 18, fontWeight: 600, color: "var(--fg)", marginBottom: 2 }}>
+        {data.fee}
+      </div>
+      {data.processingDays && (
+        <div style={{ fontSize: 11, color: "var(--fg-dim)" }}>
+          Processing: {data.processingDays}
+        </div>
+      )}
+      <div style={{ borderTop: "1px solid var(--panel-border)", marginTop: 8 }}>
+        {row("Type",            data.type)}
+        {row("Validity",        data.validity)}
+        {row("Duration of stay", data.durationOfStay)}
+      </div>
+      {data.notes && (
+        <div style={{ fontSize: 11, color: "var(--fg-dim)", marginTop: 8, padding: "6px 8px", background: "rgba(250,204,21,0.05)", borderLeft: "2px solid var(--voa)", borderRadius: 2 }}>
+          {data.notes}
+        </div>
+      )}
+      {data.source && (
+        <div style={{ marginTop: 8 }}>
+          <a href={data.source} target="_blank" rel="noopener nofollow"
+             style={{ fontSize: 11, color: "var(--fg-mute)", textDecoration: "none", borderBottom: "1px dotted var(--fg-faint)" }}>
+            Official source ↗
+          </a>
+        </div>
+      )}
+      <div style={{ fontSize: 9, color: "var(--fg-faint)", marginTop: 6, fontFamily: "var(--font-mono)" }}>
+        Reviewed {data.lastReviewed}. Verify before applying — fees change.
+      </div>
+    </div>
+  );
+}
+
 function AlertsCTA({ iso2, destName }) {
   // Small affordance that nudges power users to the /alerts page with the
   // current destination pre-selected (via hash). Hidden when ads.js detects
