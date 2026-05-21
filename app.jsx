@@ -238,8 +238,7 @@ function App() {
           value={t.globeStyle}
           options={[
             { value: "globe3d", label: "3D" },
-            { value: "globe2d", label: "2D" },
-            { value: "flat", label: "Map" },
+            { value: "flat", label: "2D" },
           ]}
           onChange={(v) => setTweak("globeStyle", v)}
         />
@@ -268,8 +267,7 @@ function App() {
 function ModeToggle({ value, onChange }) {
   const opts = [
     { v: "globe3d", l: "3D" },
-    { v: "globe2d", l: "2D" },
-    { v: "flat",    l: "Map" },
+    { v: "flat",    l: "2D" },
   ];
   return (
     <div style={{

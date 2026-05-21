@@ -32,7 +32,8 @@ function Globe({
   const [hover, setHover] = useState(null); // { iso2, x, y }
 
   // Mutable state that lives outside React's render loop.
-  const rotRef = useRef([20, -10, 0]);     // current rotation
+  const rotRef = useRef([20, -10, 0]);     // current rotation (globe modes)
+  const panRef = useRef([0, 0]);           // pan offset in pixels (flat mode)
   const zoomRef = useRef(1);               // 1.0 = default; multiplier on baseScale
   const baseScaleRef = useRef(1);          // base scale computed from size
   const autoRef = useRef(false);           // auto-rotate flag (starts off, kicks in after idle)
@@ -139,7 +140,7 @@ function Globe({
       base = Math.min(w / 5.5, h / 3);
       proj = d3.geoNaturalEarth1()
         .scale(base * zoomRef.current)
-        .translate([w / 2, h / 2]);
+        .translate([w / 2 + panRef.current[0], h / 2 + panRef.current[1]]);
     } else {
       base = Math.min(w, h) * 0.42;
       proj = d3.geoOrthographic()
@@ -157,12 +158,20 @@ function Globe({
   // Apply zoom changes without recomputing projection from scratch
   const applyZoom = useCallback((newZoom, animate = false) => {
     newZoom = Math.max(1, Math.min(8, newZoom));
+    // When zoom returns to 1, also reset pan offset so the map re-centers.
+    if (newZoom <= 1.001) panRef.current = [0, 0];
+    const applyScaleAndTranslate = () => {
+      if (!projRef.current) return;
+      projRef.current.scale(baseScaleRef.current * zoomRef.current);
+      // Re-apply translation (preserves pan offset for flat mode)
+      if (mode === "flat") {
+        projRef.current.translate([size.w / 2 + panRef.current[0], size.h / 2 + panRef.current[1]]);
+      }
+      redrawPaths();
+    };
     if (!animate) {
       zoomRef.current = newZoom;
-      if (projRef.current) {
-        projRef.current.scale(baseScaleRef.current * newZoom);
-        redrawPaths();
-      }
+      applyScaleAndTranslate();
       setZoomDisplay(newZoom);
       return;
     }
@@ -173,15 +182,12 @@ function Globe({
       const t = Math.min(1, (now - t0) / dur);
       const e = t < 0.5 ? 2*t*t : 1 - Math.pow(-2*t+2, 2)/2;
       zoomRef.current = start + (newZoom - start) * e;
-      if (projRef.current) {
-        projRef.current.scale(baseScaleRef.current * zoomRef.current);
-        redrawPaths();
-      }
+      applyScaleAndTranslate();
       setZoomDisplay(zoomRef.current);
       if (t < 1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);
-  }, []);
+  }, [mode, size.w, size.h]);
 
   // ─── Center on focused country ─────────────────────────────────────────────
   useEffect(() => {
@@ -235,12 +241,9 @@ function Globe({
     };
     svg.addEventListener("wheel", onWheel, { passive: false });
 
-    if (mode === "flat") {
-      return () => svg.removeEventListener("wheel", onWheel);
-    }
-
     let dragging = false;
     let startRot = null;
+    let startPan = null;
     let startPt = null;
     const sensitivity = 0.35;
 
@@ -249,6 +252,7 @@ function Globe({
       autoRef.current = false;
       lastInteractRef.current = performance.now();
       startRot = [...rotRef.current];
+      startPan = [...panRef.current];
       startPt = [e.clientX, e.clientY];
       svg.style.cursor = "grabbing";
     };
@@ -256,15 +260,24 @@ function Globe({
       if (!dragging) return;
       const dx = e.clientX - startPt[0];
       const dy = e.clientY - startPt[1];
-      const s = sensitivity / Math.max(1, zoomRef.current * 0.85);
-      rotRef.current = [
-        startRot[0] + dx * s,
-        Math.max(-90, Math.min(90, startRot[1] - dy * s)),
-        0,
-      ];
-      if (projRef.current && projRef.current.rotate) {
-        projRef.current.rotate(rotRef.current);
-        redrawPaths();
+      if (mode === "flat") {
+        // Pan: shift the projection's translate by the mouse delta (1:1 pixels)
+        panRef.current = [startPan[0] + dx, startPan[1] + dy];
+        if (projRef.current && projRef.current.translate) {
+          projRef.current.translate([size.w / 2 + panRef.current[0], size.h / 2 + panRef.current[1]]);
+          redrawPaths();
+        }
+      } else {
+        const s = sensitivity / Math.max(1, zoomRef.current * 0.85);
+        rotRef.current = [
+          startRot[0] + dx * s,
+          Math.max(-90, Math.min(90, startRot[1] - dy * s)),
+          0,
+        ];
+        if (projRef.current && projRef.current.rotate) {
+          projRef.current.rotate(rotRef.current);
+          redrawPaths();
+        }
       }
     };
     const onUp = () => {
@@ -284,22 +297,24 @@ function Globe({
     svg.addEventListener("touchend", onUp);
     svg.style.cursor = "grab";
 
-    // Auto-rotate loop — kicks in after 60 seconds of no interaction, gentle pace
-    const tick = () => {
-      const now = performance.now();
-      const idleFor = now - lastInteractRef.current;
-      if (autoRef.current || idleFor > 60000) {
-        autoRef.current = true;
-        rotRef.current[0] += 0.035;
-        if (rotRef.current[0] > 180) rotRef.current[0] -= 360;
-        if (projRef.current && projRef.current.rotate) {
-          projRef.current.rotate(rotRef.current);
-          redrawPaths();
+    // Auto-rotate loop — only runs in globe modes (rotating a flat map makes no sense)
+    if (mode !== "flat") {
+      const tick = () => {
+        const now = performance.now();
+        const idleFor = now - lastInteractRef.current;
+        if (autoRef.current || idleFor > 60000) {
+          autoRef.current = true;
+          rotRef.current[0] += 0.035;
+          if (rotRef.current[0] > 180) rotRef.current[0] -= 360;
+          if (projRef.current && projRef.current.rotate) {
+            projRef.current.rotate(rotRef.current);
+            redrawPaths();
+          }
         }
-      }
+        rafRef.current = requestAnimationFrame(tick);
+      };
       rafRef.current = requestAnimationFrame(tick);
-    };
-    rafRef.current = requestAnimationFrame(tick);
+    }
 
     return () => {
       svg.removeEventListener("wheel", onWheel);
@@ -313,15 +328,19 @@ function Globe({
     };
   }, [topology, mode, redrawPaths]);
 
-  // Reset zoom when mode changes so the new projection starts fresh.
+  // Reset zoom + pan when mode changes so the new projection starts fresh.
   useEffect(() => {
     zoomRef.current = 1;
+    panRef.current = [0, 0];
     setZoomDisplay(1);
     if (projRef.current) {
       projRef.current.scale(baseScaleRef.current);
+      if (mode === "flat" && projRef.current.translate) {
+        projRef.current.translate([size.w / 2, size.h / 2]);
+      }
       redrawPaths();
     }
-  }, [mode, redrawPaths]);
+  }, [mode, redrawPaths, size.w, size.h]);
 
   // Initial paint after topology load
   useEffect(() => {
