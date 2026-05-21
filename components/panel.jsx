@@ -558,6 +558,8 @@ function DetailCard({ passport, compare, iso2, onClose }) {
 
       <AffiliatePartners status={r.status} iso2={iso2} />
 
+      <AdSlot slotKey="sidebar" />
+
       {rc && compare && (
         <div style={{
           padding: 10,
@@ -580,6 +582,37 @@ function DetailCard({ passport, compare, iso2, onClose }) {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+// Renders an AdSense ad unit if (and only if) both the publisher client ID and
+// the slot's numeric ID are configured in data/ads.js. Otherwise renders nothing.
+// On mount it pushes a request to AdSense's queue, exactly as Google docs prescribe.
+function AdSlot({ slotKey }) {
+  const ref = React.useRef(null);
+  const pushed = React.useRef(false);
+  const ads = window.ADSENSE || {};
+  const clientId = ads.clientId;
+  const slot = ads.slots && ads.slots[slotKey];
+  React.useEffect(() => {
+    if (!clientId || !slot || pushed.current) return;
+    try {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+      pushed.current = true;
+    } catch (e) { /* swallow — adsbygoogle.js may not be loaded yet */ }
+  }, [clientId, slot]);
+  if (!clientId || !slot) return null;
+  return (
+    <div style={{ margin: "10px 0", textAlign: "center" }}>
+      <ins ref={ref}
+           className="adsbygoogle"
+           style={{ display: "block", minHeight: 100 }}
+           data-ad-client={clientId}
+           data-ad-slot={slot}
+           data-ad-format="auto"
+           data-full-width-responsive="true" />
+      <div style={{ fontSize: 9, color: "var(--fg-faint)", marginTop: 2, fontFamily: "var(--font-mono)" }}>Ad</div>
     </div>
   );
 }

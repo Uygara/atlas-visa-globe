@@ -1,0 +1,11 @@
+# Authorized digital sellers (IAB tech-lab ads.txt format).
+# Required by Google AdSense once your publisher ID is set. Until then this file
+# can stay empty — it has no effect.
+#
+# When AdSense approves you and gives you a publisher ID (ca-pub-xxxxxxxxxxxxxxxx),
+# REPLACE this file with the single line:
+#
+#   google.com, pub-xxxxxxxxxxxxxxxx, DIRECT, f08c47fec0942fa0
+#
+# (Use only the digits after "pub-" — drop the "ca-" prefix that appears in the
+# JavaScript snippets.)

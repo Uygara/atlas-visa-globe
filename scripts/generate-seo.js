@@ -93,6 +93,23 @@ function renderPage(passport, allPassports, snapshot) {
 
   const canonical = SITE_URL ? `${SITE_URL}/passport/${slug}/` : `/passport/${slug}/`;
 
+  // Ad configuration is read from ../data/ads.js at build time.
+  // The file declares window.ADSENSE = { clientId, slots: { seoTop, seoBottom, … } }.
+  // Until clientId is set, the ad markup is omitted entirely.
+  const adsJs = fs.readFileSync(path.join(ROOT, "data", "ads.js"), "utf8");
+  const adsenseClient = (adsJs.match(/clientId:\s*"([^"]*)"/) || [])[1] || "";
+  const slotTop       = (adsJs.match(/seoTop:\s*"([^"]*)"/) || [])[1] || "";
+  const slotBottom    = (adsJs.match(/seoBottom:\s*"([^"]*)"/) || [])[1] || "";
+  const adsenseLoader = adsenseClient
+    ? `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClient}" crossorigin="anonymous"></script>`
+    : "";
+  const adInsTop = (adsenseClient && slotTop)
+    ? `<div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="${adsenseClient}" data-ad-slot="${slotTop}" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>`
+    : "";
+  const adInsBottom = (adsenseClient && slotBottom)
+    ? `<div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="${adsenseClient}" data-ad-slot="${slotBottom}" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>`
+    : "";
+
   const otherPassports = allPassports
     .filter(iso => iso !== passport)
     .map(iso => {
@@ -130,6 +147,7 @@ ${SITE_URL ? `<meta property="og:url" content="${canonical}">` : ""}
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="${escapeHtml(titleText)}">
 <meta name="twitter:description" content="${escapeHtml(description)}">
+${adsenseLoader}
 <script type="application/ld+json">${JSON.stringify({
   "@context": "https://schema.org",
   "@type": "Article",
@@ -220,6 +238,8 @@ ${SITE_URL ? `<meta property="og:url" content="${canonical}">` : ""}
 
   <p><a class="back" href="../../">← Explore on the interactive globe</a></p>
 
+  ${adInsTop}
+
   <h2 style="margin-top:32px;font-size:16px;">All destinations</h2>
   <table>
     <thead><tr><th></th><th>Country</th><th>Status</th></tr></thead>
@@ -230,6 +250,8 @@ ${SITE_URL ? `<meta property="og:url" content="${canonical}">` : ""}
     <h2>Compare with other passports</h2>
     <ul>${otherPassports}</ul>
   </div>
+
+  ${adInsBottom}
 
   <footer>
     Data scraped daily from Wikipedia's "Visa requirements for ${escapeHtml(name)} citizens" article.

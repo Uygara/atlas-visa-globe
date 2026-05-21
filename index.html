@@ -156,6 +156,25 @@
   <script src="data/passports.js"></script>
   <script src="data/changelog.js"></script>
   <script src="data/affiliates.js"></script>
+  <script src="data/ads.js"></script>
+  <!-- Conditional AdSense loader (no-op until ADSENSE.clientId is set) -->
+  <script>
+    (function () {
+      if (window.ADSENSE && window.ADSENSE.clientId) {
+        var s = document.createElement("script");
+        s.async = true;
+        s.crossOrigin = "anonymous";
+        s.src = "https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=" + window.ADSENSE.clientId;
+        document.head.appendChild(s);
+      } else if (window.EZOIC && window.EZOIC.siteId) {
+        var s = document.createElement("script");
+        s.async = true;
+        s.src = "//www.ezojs.com/ezoic/sa.min.js";
+        s.dataset.ezsai = window.EZOIC.siteId;
+        document.head.appendChild(s);
+      }
+    })();
+  </script>
   <script type="text/babel" src="components/tweaks-panel.jsx"></script>
   <script type="text/babel" src="components/globe.jsx"></script>
   <script type="text/babel" src="components/panel.jsx"></script>

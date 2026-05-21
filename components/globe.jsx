@@ -289,13 +289,60 @@ function Globe({
     svg.addEventListener("mousedown", onDown);
     window.addEventListener("mousemove", onMove);
     window.addEventListener("mouseup", onUp);
-    // touch
-    const onTouchStart = (e) => onDown({ clientX: e.touches[0].clientX, clientY: e.touches[0].clientY });
-    const onTouchMove = (e) => { if (dragging) { e.preventDefault(); onMove({ clientX: e.touches[0].clientX, clientY: e.touches[0].clientY }); } };
+
+    // Touch: single-finger drag (pan/rotate) + two-finger pinch (zoom)
+    let pinching = false;
+    let pinchStartDist = 0;
+    let pinchStartZoom = 1;
+    const dist = (t) => Math.hypot(
+      t[0].clientX - t[1].clientX,
+      t[0].clientY - t[1].clientY,
+    );
+    const onTouchStart = (e) => {
+      lastInteractRef.current = performance.now();
+      autoRef.current = false;
+      if (e.touches.length === 2) {
+        pinching = true;
+        dragging = false;
+        pinchStartDist = dist(e.touches);
+        pinchStartZoom = zoomRef.current;
+      } else if (e.touches.length === 1) {
+        pinching = false;
+        onDown({ clientX: e.touches[0].clientX, clientY: e.touches[0].clientY });
+      }
+    };
+    const onTouchMove = (e) => {
+      if (pinching && e.touches.length >= 2) {
+        e.preventDefault();
+        const d = dist(e.touches);
+        if (pinchStartDist > 0) {
+          const factor = d / pinchStartDist;
+          applyZoom(pinchStartZoom * factor, false);
+        }
+        return;
+      }
+      if (dragging && e.touches.length === 1) {
+        e.preventDefault();
+        onMove({ clientX: e.touches[0].clientX, clientY: e.touches[0].clientY });
+      }
+    };
+    const onTouchEnd = (e) => {
+      if (e.touches.length === 0) {
+        pinching = false;
+        onUp();
+      } else if (e.touches.length === 1 && pinching) {
+        // Transition from pinch → single-finger drag
+        pinching = false;
+        onDown({ clientX: e.touches[0].clientX, clientY: e.touches[0].clientY });
+      }
+    };
     svg.addEventListener("touchstart", onTouchStart, { passive: true });
     svg.addEventListener("touchmove", onTouchMove, { passive: false });
-    svg.addEventListener("touchend", onUp);
+    svg.addEventListener("touchend", onTouchEnd);
+    svg.addEventListener("touchcancel", onTouchEnd);
     svg.style.cursor = "grab";
+    // Prevent browser default pinch-zoom on the globe area
+    svg.style.touchAction = "none";
 
     // Auto-rotate loop — only runs in globe modes (rotating a flat map makes no sense)
     if (mode !== "flat") {
@@ -323,10 +370,11 @@ function Globe({
       window.removeEventListener("mouseup", onUp);
       svg.removeEventListener("touchstart", onTouchStart);
       svg.removeEventListener("touchmove", onTouchMove);
-      svg.removeEventListener("touchend", onUp);
+      svg.removeEventListener("touchend", onTouchEnd);
+      svg.removeEventListener("touchcancel", onTouchEnd);
       cancelAnimationFrame(rafRef.current);
     };
-  }, [topology, mode, redrawPaths]);
+  }, [topology, mode, redrawPaths, applyZoom, size.w, size.h]);
 
   // Reset zoom + pan when mode changes so the new projection starts fresh.
   useEffect(() => {
@@ -642,10 +690,11 @@ const MICRO_STATES = [
   "BN", // Brunei
   "HK", // Hong Kong
   "MO", // Macao
-  // Partially-recognised states + Palestine — not rendered as polygons in 110m
-  "XK", // Kosovo
-  "XN", // Northern Cyprus
-  "PS", // Palestine (West Bank + Gaza)
+  // Palestine — 110m polygon is small (Gaza only). Marker stays so West Bank is clickable.
+  "PS",
+  // Kosovo (XK) and Northern Cyprus (XN) are NOT shown as dots — they're selectable
+  // from the passport dropdown instead. On the map their territory inherits the
+  // colour of Serbia / Cyprus respectively (since 110m has no separate polygons).
 ];
 
 function MicroStateMarkers({
