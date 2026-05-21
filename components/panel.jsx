@@ -762,6 +762,11 @@ function ChangelogItem({ entry }) {
 }
 
 function PanelFooter() {
+  const linkStyle = {
+    color: "var(--fg-mute)",
+    textDecoration: "none",
+    borderBottom: "1px dotted var(--fg-faint)",
+  };
   return (
     <footer style={{
       marginTop: "auto",
@@ -770,9 +775,17 @@ function PanelFooter() {
       fontSize: 10,
       color: "var(--fg-faint)",
       fontFamily: "var(--font-mono)",
-      lineHeight: 1.5,
+      lineHeight: 1.6,
     }}>
-      Data sourced from public visa policy archives, embassy notices, and IATA Travel Centre. Verify before travel.
+      <div style={{ marginBottom: 6 }}>
+        Daily refresh from Wikipedia. Verify with the destination embassy before travel.
+      </div>
+      <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+        <a href="/about/" style={linkStyle}>About</a>
+        <a href="/privacy/" style={linkStyle}>Privacy</a>
+        <a href="/passport/" style={linkStyle}>All passports</a>
+        <a href="https://github.com/Uygara/atlas-visa-globe" target="_blank" rel="noopener" style={linkStyle}>Source</a>
+      </div>
     </footer>
   );
 }

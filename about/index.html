@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>About — Atlas / TravelNow</title>
+<meta name="description" content="Atlas is a free, daily-refreshed visa-requirements tool. Built on top of Wikipedia's open visa policy articles.">
+<link rel="canonical" href="https://travelnow.info/about/">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2617798720306957" crossorigin="anonymous"></script>
+<style>
+  :root { --bg:#05070d; --panel:#111827; --fg:#e7ecf5; --fg-dim:#aab4c8; --fg-mute:#6b7591; --border:rgba(148,173,220,0.15); --link:#60a5fa; --vf:#22c55e; --ev:#a3e635; --voa:#facc15; --vr:#ef4444; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif; line-height:1.65; }
+  .wrap { max-width:740px; margin:0 auto; padding:32px 20px 80px; }
+  a { color:var(--link); }
+  h1 { font-size:28px; letter-spacing:-0.01em; margin:0 0 4px; }
+  h2 { font-size:17px; margin-top:32px; color:#fff; }
+  p, li { font-size:14px; color:var(--fg-dim); }
+  ul { padding-left:18px; }
+  .meta { font-size:12px; color:var(--fg-mute); margin-bottom:24px; }
+  .back { display:inline-block; padding:10px 16px; background:var(--panel); border:1px solid var(--border); border-radius:8px; color:var(--fg); text-decoration:none; font-size:13px; margin-bottom:28px; }
+  .legend { display:flex; gap:14px; flex-wrap:wrap; margin:14px 0; font-size:13px; }
+  .legend span { display:inline-flex; align-items:center; gap:6px; }
+  .dot { width:10px; height:10px; border-radius:50%; display:inline-block; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="/">← Back to Atlas</a>
+  <h1>About Atlas</h1>
+  <p class="meta">Free · Open data · Daily refresh</p>
+
+  <p>Atlas is an interactive visa-requirements explorer. Pick your passport
+  and see at a glance which of the world's 200+ countries you can enter
+  visa-free, which need an eVisa, which issue a visa on arrival, and which
+  require a full embassy application. We do this for every passport — not
+  just the major ones.</p>
+
+  <div class="legend">
+    <span><span class="dot" style="background:var(--vf)"></span> Visa-free</span>
+    <span><span class="dot" style="background:var(--ev)"></span> eVisa</span>
+    <span><span class="dot" style="background:var(--voa)"></span> Visa on arrival</span>
+    <span><span class="dot" style="background:var(--vr)"></span> Visa required</span>
+  </div>
+
+  <h2>Where the data comes from</h2>
+  <p>Atlas reads Wikipedia's "Visa requirements for X citizens" articles.
+  These are maintained by a global community of contributors who update
+  them whenever a country announces a policy change (usually within
+  24–48 hours). A GitHub Action on our repo re-scrapes every passport
+  every morning at 06:00 UTC, diffs against the previous day, and rebuilds
+  the dataset. The "Recently changed" feed on the side panel reflects the
+  diff.</p>
+  <p>If you spot an entry that doesn't match the underlying Wikipedia
+  article, please email us — we'd like to fix it (or fix Wikipedia).</p>
+
+  <h2>What Atlas is not</h2>
+  <ul>
+    <li><strong>Not an official source.</strong> Visa policies change
+    frequently and unevenly. Always confirm with the destination's
+    embassy or consulate before booking.</li>
+    <li><strong>Not a visa application service.</strong> We don't apply on
+    your behalf. When a destination needs an eVisa or VR, we may link to
+    a trusted partner (iVisa, VisaHQ) who handles applications — those
+    are clearly marked "Sponsored".</li>
+  </ul>
+
+  <h2>Why it's free</h2>
+  <p>Server costs are negligible (Cloudflare Pages free tier). We cover
+  them through unobtrusive ads served by Google AdSense and occasional
+  affiliate commissions when readers sign up for travel services we'd
+  recommend anyway (eSIMs, insurance, visa-application help).</p>
+
+  <h2>Built with</h2>
+  <ul>
+    <li>Static HTML + React (UMD, no build step)</li>
+    <li>D3 + TopoJSON for the globe</li>
+    <li>Hosted on <a href="https://pages.cloudflare.com" rel="noopener">Cloudflare Pages</a></li>
+    <li>Source code: <a href="https://github.com/Uygara/atlas-visa-globe" rel="noopener">github.com/Uygara/atlas-visa-globe</a></li>
+  </ul>
+
+  <h2>Contact</h2>
+  <p>Email: <a href="mailto:hello@travelnow.info">hello@travelnow.info</a><br>
+  General feedback, data corrections, partnership inquiries — all welcome.</p>
+
+  <h2>Legal</h2>
+  <p>Visa data: CC-BY-SA from <a href="https://en.wikipedia.org">Wikipedia</a>.
+  Atlas code: MIT licence. Country flags are Unicode emoji.</p>
+  <p><a href="/privacy/">Privacy Policy</a></p>
+</div>
+</body>
+</html>
