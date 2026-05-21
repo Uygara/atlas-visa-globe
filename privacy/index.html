@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Privacy Policy — Atlas / TravelNow</title>
-<meta name="description" content="Privacy policy for travelnow.info — what data we collect, what we don't, and how third-party ads work.">
+<meta name="description" content="Privacy policy for travelnow.info — what we collect, what we don't, and how third-party services work.">
 <link rel="canonical" href="https://travelnow.info/privacy/">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2617798720306957" crossorigin="anonymous"></script>
 <style>
@@ -29,15 +29,18 @@
 
   <h2>What this site is</h2>
   <p>Atlas (travelnow.info) is a free reference tool that shows visa
-  requirements for travelers worldwide. Visa data is scraped automatically
-  every day from Wikipedia's "Visa requirements for X citizens" articles.
-  We do not require an account, and we do not ask for personal information.</p>
+  requirements for travelers worldwide. The dataset is rebuilt every 24
+  hours from authoritative public sources. We do not require an account,
+  and we do not ask for personal information.</p>
 
   <h2>Information we collect ourselves</h2>
-  <p>Almost nothing. We don't run our own analytics or trackers. The only
-  signal we read is your browser's IANA time zone — used <em>locally in your
-  browser</em> to pre-select a likely passport on the welcome screen. This
-  detection happens entirely client-side; the time zone is never sent to us.</p>
+  <p>Almost nothing. We don't run our own analytics or trackers. With your
+  permission, the browser's geolocation API may be used to pre-select a
+  likely passport — the coordinates are sent only to OpenStreetMap's
+  Nominatim reverse-geocode endpoint and immediately discarded by us. If
+  you deny the prompt, we fall back to your browser's IANA time zone, used
+  <em>locally in your browser</em> for the same purpose; that value is
+  never sent to us.</p>
 
   <h2>Information third parties collect</h2>
   <p>We use the following third-party services, each with their own privacy policy:</p>
@@ -78,7 +81,9 @@
   provider, please contact them directly using the policy links above.</p>
 
   <h2>Contact</h2>
-  <p>Questions about this policy: email <a href="mailto:hello@travelnow.info">hello@travelnow.info</a>.</p>
+  <p>Questions about this policy: please open an issue at
+  <a href="https://github.com/Uygara/atlas-visa-globe/issues" rel="noopener">github.com/Uygara/atlas-visa-globe</a>
+  (a dedicated email address is being set up).</p>
 
   <h2>Changes to this policy</h2>
   <p>If we change anything material we'll update the "Last updated" date at

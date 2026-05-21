@@ -29,34 +29,75 @@ function useTweaks(defaults) {
 }
 
 // Map common timezones → ISO2 codes, for default-passport detection.
+// Browsers (especially mobile + Firefox) sometimes return non-canonical names,
+// so we list every variant we've seen in the wild.
 const TZ_FALLBACK = {
+  // North America
   "America/New_York": "US", "America/Chicago": "US", "America/Denver": "US",
   "America/Los_Angeles": "US", "America/Phoenix": "US", "America/Anchorage": "US",
+  "America/Detroit": "US", "America/Indianapolis": "US", "America/Honolulu": "US",
   "America/Toronto": "CA", "America/Vancouver": "CA", "America/Halifax": "CA",
-  "America/Mexico_City": "MX", "America/Monterrey": "MX",
-  "America/Sao_Paulo": "BR", "America/Recife": "BR",
-  "America/Argentina/Buenos_Aires": "AR",
-  "America/Santiago": "CL",
-  "America/Lima": "PE",
-  "America/Bogota": "CO",
+  "America/Edmonton": "CA", "America/Winnipeg": "CA", "America/Montreal": "CA",
+  "America/Mexico_City": "MX", "America/Monterrey": "MX", "America/Cancun": "MX",
+  // South America
+  "America/Sao_Paulo": "BR", "America/Recife": "BR", "America/Manaus": "BR",
+  "America/Argentina/Buenos_Aires": "AR", "America/Buenos_Aires": "AR",
+  "America/Santiago": "CL", "America/Lima": "PE", "America/Bogota": "CO",
+  "America/Caracas": "VE", "America/La_Paz": "BO", "America/Asuncion": "PY",
+  "America/Montevideo": "UY", "America/Guayaquil": "EC",
+  // Europe — Western
   "Europe/London": "GB", "Europe/Dublin": "IE",
   "Europe/Paris": "FR", "Europe/Berlin": "DE", "Europe/Madrid": "ES",
   "Europe/Rome": "IT", "Europe/Amsterdam": "NL", "Europe/Brussels": "BE",
-  "Europe/Zurich": "CH", "Europe/Vienna": "AT",
+  "Europe/Zurich": "CH", "Europe/Vienna": "AT", "Europe/Luxembourg": "LU",
   "Europe/Stockholm": "SE", "Europe/Oslo": "NO", "Europe/Copenhagen": "DK",
-  "Europe/Helsinki": "FI", "Europe/Lisbon": "PT",
-  "Europe/Moscow": "RU", "Europe/Warsaw": "PL", "Europe/Athens": "GR",
-  "Europe/Istanbul": "TR",
-  "Asia/Tokyo": "JP", "Asia/Seoul": "KR", "Asia/Shanghai": "CN", "Asia/Hong_Kong": "HK",
+  "Europe/Helsinki": "FI", "Europe/Lisbon": "PT", "Europe/Reykjavik": "IS",
+  // Europe — Central / Eastern
+  "Europe/Warsaw": "PL", "Europe/Prague": "CZ", "Europe/Bratislava": "SK",
+  "Europe/Budapest": "HU", "Europe/Bucharest": "RO", "Europe/Sofia": "BG",
+  "Europe/Athens": "GR", "Europe/Riga": "LV", "Europe/Tallinn": "EE",
+  "Europe/Vilnius": "LT", "Europe/Ljubljana": "SI", "Europe/Zagreb": "HR",
+  "Europe/Malta": "MT", "Europe/Andorra": "AD", "Europe/Monaco": "MC",
+  "Europe/San_Marino": "SM", "Europe/Vatican": "VA",
+  "Europe/Moscow": "RU", "Europe/Kaliningrad": "RU", "Europe/Samara": "RU",
+  "Europe/Minsk": "BY", "Europe/Kyiv": "UA", "Europe/Kiev": "UA",
+  "Europe/Chisinau": "MD",
+  // Europe — Balkans / Turkey (the one that bit us)
+  "Europe/Istanbul": "TR", "Asia/Istanbul": "TR", "Turkey": "TR",
+  "Europe/Tirane": "AL", "Europe/Sarajevo": "BA", "Europe/Belgrade": "RS",
+  "Europe/Podgorica": "ME", "Europe/Skopje": "MK",
+  "Europe/Pristina": "XK", "Asia/Nicosia": "CY", "Europe/Nicosia": "CY",
+  // Asia
+  "Asia/Tokyo": "JP", "Asia/Seoul": "KR", "Asia/Pyongyang": "KP",
+  "Asia/Shanghai": "CN", "Asia/Chongqing": "CN", "Asia/Urumqi": "CN",
+  "Asia/Hong_Kong": "HK", "Asia/Macau": "MO", "Asia/Taipei": "TW",
   "Asia/Singapore": "SG", "Asia/Kuala_Lumpur": "MY", "Asia/Jakarta": "ID",
   "Asia/Manila": "PH", "Asia/Bangkok": "TH", "Asia/Ho_Chi_Minh": "VN",
-  "Asia/Kolkata": "IN", "Asia/Calcutta": "IN", "Asia/Karachi": "PK", "Asia/Dhaka": "BD",
-  "Asia/Tehran": "IR", "Asia/Riyadh": "SA", "Asia/Dubai": "AE", "Asia/Qatar": "QA",
-  "Asia/Tel_Aviv": "IL", "Asia/Jerusalem": "IL",
+  "Asia/Saigon": "VN", "Asia/Phnom_Penh": "KH", "Asia/Vientiane": "LA",
+  "Asia/Yangon": "MM", "Asia/Rangoon": "MM",
+  "Asia/Kolkata": "IN", "Asia/Calcutta": "IN", "Asia/Karachi": "PK",
+  "Asia/Dhaka": "BD", "Asia/Kathmandu": "NP", "Asia/Colombo": "LK",
+  "Asia/Thimphu": "BT", "Asia/Male": "MV",
+  "Asia/Tehran": "IR", "Asia/Baghdad": "IQ", "Asia/Damascus": "SY",
+  "Asia/Beirut": "LB", "Asia/Amman": "JO", "Asia/Jerusalem": "IL",
+  "Asia/Tel_Aviv": "IL", "Asia/Gaza": "PS", "Asia/Hebron": "PS",
+  "Asia/Riyadh": "SA", "Asia/Dubai": "AE", "Asia/Qatar": "QA",
+  "Asia/Bahrain": "BH", "Asia/Kuwait": "KW", "Asia/Muscat": "OM",
+  "Asia/Aden": "YE", "Asia/Kabul": "AF",
+  "Asia/Tashkent": "UZ", "Asia/Almaty": "KZ", "Asia/Bishkek": "KG",
+  "Asia/Dushanbe": "TJ", "Asia/Ashgabat": "TM", "Asia/Ulaanbaatar": "MN",
+  "Asia/Yerevan": "AM", "Asia/Baku": "AZ", "Asia/Tbilisi": "GE",
+  // Africa
   "Africa/Cairo": "EG", "Africa/Lagos": "NG", "Africa/Johannesburg": "ZA",
   "Africa/Nairobi": "KE", "Africa/Algiers": "DZ", "Africa/Casablanca": "MA",
+  "Africa/Tunis": "TN", "Africa/Tripoli": "LY", "Africa/Khartoum": "SD",
+  "Africa/Addis_Ababa": "ET", "Africa/Dar_es_Salaam": "TZ", "Africa/Kampala": "UG",
+  "Africa/Kigali": "RW", "Africa/Accra": "GH", "Africa/Dakar": "SN",
+  "Africa/Abidjan": "CI", "Africa/Douala": "CM",
+  // Oceania
   "Australia/Sydney": "AU", "Australia/Melbourne": "AU", "Australia/Perth": "AU",
-  "Pacific/Auckland": "NZ",
+  "Australia/Brisbane": "AU", "Australia/Adelaide": "AU", "Australia/Darwin": "AU",
+  "Pacific/Auckland": "NZ", "Pacific/Fiji": "FJ",
 };
 
 function detectPassport() {
@@ -80,22 +121,79 @@ function App() {
   const [showWelcome, setShowWelcome] = useState(false);
   const [locationStatus, setLocationStatus] = useState("idle"); // idle | detecting | detected | denied
   const [autoDetectedPassport, setAutoDetectedPassport] = useState(null);
+  const [direction, setDirection] = useState("outgoing"); // outgoing | incoming
 
   // ─── Default passport detection ─────────────────────────────────────────
-  // Step 1 (synchronous, no permission prompt): infer from browser time zone.
-  //   That covers ~95 % of users instantly and never blocks first paint.
-  // Step 2 (only if TZ has no mapping): show the welcome overlay with
-  //   featured passports + an opt-in "use my location" button.
+  // Strategy:
+  //   1. Try the geolocation API with a 4 s soft timeout — most accurate.
+  //      Permission prompt is fine; user explicitly asked for this.
+  //   2. On denial / unsupported / timeout → fall back to browser time-zone.
+  //   3. If TZ is also unmapped → leave passport unset and show the welcome
+  //      overlay. NEVER auto-pick the alphabetically-first passport.
   useEffect(() => {
-    const fromTZ = detectPassport();
-    if (fromTZ) {
-      setPassport(fromTZ);
-      setAutoDetectedPassport(fromTZ);
-      setLocationStatus("detected");
-      setShowWelcome(false);
-    } else {
-      setShowWelcome(true);
+    // Kick off TZ resolve immediately so we have something to render against
+    // even before the geolocation prompt resolves. We do NOT setPassport from
+    // it yet — only stash as a candidate — so if the user denies geolocation
+    // we adopt it; if they accept, the precise answer wins.
+    const tzCandidate = detectPassport();
+
+    let resolved = false;
+    const adoptTZ = () => {
+      if (resolved) return;
+      resolved = true;
+      if (tzCandidate) {
+        setPassport(tzCandidate);
+        setAutoDetectedPassport(tzCandidate);
+        setLocationStatus("detected");
+        setShowWelcome(false);
+      } else {
+        setShowWelcome(true);
+        setLocationStatus("denied");
+      }
+    };
+
+    if (!navigator.geolocation) {
+      adoptTZ();
+      return;
     }
+
+    setLocationStatus("detecting");
+    const timer = setTimeout(adoptTZ, 4000);
+
+    navigator.geolocation.getCurrentPosition(
+      async (pos) => {
+        if (resolved) return;
+        try {
+          const r = await fetch(
+            "https://nominatim.openstreetmap.org/reverse" +
+            "?lat=" + pos.coords.latitude +
+            "&lon=" + pos.coords.longitude +
+            "&format=json&zoom=3",
+            { headers: { "Accept-Language": "en" } }
+          );
+          const data = await r.json();
+          const cc = data?.address?.country_code?.toUpperCase();
+          if (cc && window.PASSPORTS[cc]) {
+            resolved = true;
+            clearTimeout(timer);
+            setPassport(cc);
+            setAutoDetectedPassport(cc);
+            setLocationStatus("detected");
+            setShowWelcome(false);
+            return;
+          }
+        } catch (e) { /* network blocked → TZ */ }
+        clearTimeout(timer);
+        adoptTZ();
+      },
+      () => {
+        clearTimeout(timer);
+        adoptTZ();
+      },
+      { timeout: 4000, maximumAge: 600000 }
+    );
+
+    return () => clearTimeout(timer);
   }, []);
 
   const useLocation = () => {
@@ -176,6 +274,7 @@ function App() {
           comparePassport={t.compareMode ? compare : null}
           filter={filter}
           mode={t.globeStyle}
+          direction={direction}
           onCountryClick={onCountryClick}
           focusedCountry={focusedCountry}
         />
@@ -209,6 +308,8 @@ function App() {
         compareMode={t.compareMode}
         filter={filter}
         setFilter={setFilter}
+        direction={direction}
+        setDirection={setDirection}
         detailCountry={detailCountry}
         setDetailCountry={setDetailCountry}
         search={search}

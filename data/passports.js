@@ -54997,5 +54997,18 @@ window.tally = function(passportIso2) {
   return counts;
 };
 
+// Incoming tally: how many other passports can visit *me* under each status.
+window.tallyIncoming = function(myIso2) {
+  if (!window.PASSPORTS[myIso2]) return null;
+  const counts = { vf: 0, ev: 0, voa: 0, vr: 0 };
+  window.COUNTRIES.forEach(c => {
+    if (c.iso2 === myIso2) return;
+    if (c.continent === "AN") return;
+    const r = window.resolveStatus(c.iso2, myIso2);
+    if (counts[r.status] != null) counts[r.status]++;
+  });
+  return counts;
+};
+
 window.PASSPORT_LIST = Object.values(window.PASSPORTS)
   .sort((a, b) => a.name.localeCompare(b.name));

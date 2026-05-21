@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>About — Atlas / TravelNow</title>
-<meta name="description" content="Atlas is a free, daily-refreshed visa-requirements tool. Built on top of Wikipedia's open visa policy articles.">
+<meta name="description" content="Atlas is a free, daily-refreshed visa-requirements tool covering 200+ passports worldwide.">
 <link rel="canonical" href="https://travelnow.info/about/">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2617798720306957" crossorigin="anonymous"></script>
 <style>
@@ -43,16 +43,14 @@
     <span><span class="dot" style="background:var(--vr)"></span> Visa required</span>
   </div>
 
-  <h2>Where the data comes from</h2>
-  <p>Atlas reads Wikipedia's "Visa requirements for X citizens" articles.
-  These are maintained by a global community of contributors who update
-  them whenever a country announces a policy change (usually within
-  24–48 hours). A GitHub Action on our repo re-scrapes every passport
-  every morning at 06:00 UTC, diffs against the previous day, and rebuilds
-  the dataset. The "Recently changed" feed on the side panel reflects the
-  diff.</p>
-  <p>If you spot an entry that doesn't match the underlying Wikipedia
-  article, please email us — we'd like to fix it (or fix Wikipedia).</p>
+  <h2>How the data is built</h2>
+  <p>Atlas aggregates visa-policy information from authoritative,
+  regularly-updated public sources covering every recognised passport. The
+  full dataset is rebuilt every 24 hours so the map you see is never more
+  than a day behind the latest announcements. The "Recently changed" feed
+  in the side panel surfaces the previous day's diff.</p>
+  <p>If something on a country page looks off, get in touch — we'd like to
+  hear about it and fix it quickly.</p>
 
   <h2>What Atlas is not</h2>
   <ul>
@@ -71,21 +69,16 @@
   affiliate commissions when readers sign up for travel services we'd
   recommend anyway (eSIMs, insurance, visa-application help).</p>
 
-  <h2>Built with</h2>
-  <ul>
-    <li>Static HTML + React (UMD, no build step)</li>
-    <li>D3 + TopoJSON for the globe</li>
-    <li>Hosted on <a href="https://pages.cloudflare.com" rel="noopener">Cloudflare Pages</a></li>
-    <li>Source code: <a href="https://github.com/Uygara/atlas-visa-globe" rel="noopener">github.com/Uygara/atlas-visa-globe</a></li>
-  </ul>
-
   <h2>Contact</h2>
-  <p>Email: <a href="mailto:hello@travelnow.info">hello@travelnow.info</a><br>
-  General feedback, data corrections, partnership inquiries — all welcome.</p>
+  <p>A dedicated contact address is being set up.
+  Until then, please open an issue at
+  <a href="https://github.com/Uygara/atlas-visa-globe/issues" rel="noopener">github.com/Uygara/atlas-visa-globe</a>
+  for feedback, data corrections, or partnership inquiries.</p>
 
   <h2>Legal</h2>
-  <p>Visa data: CC-BY-SA from <a href="https://en.wikipedia.org">Wikipedia</a>.
-  Atlas code: MIT licence. Country flags are Unicode emoji.</p>
+  <p>Country flags are Unicode emoji. All other content on this site is
+  provided as-is for reference; verify any visa requirement with the
+  destination embassy before booking.</p>
   <p><a href="/privacy/">Privacy Policy</a></p>
 </div>
 </body>

@@ -18,10 +18,18 @@ function Globe({
   comparePassport, // iso2 string, or null (compare mode)
   filter,          // "all" | "vf" | "ev" | "voa" | "vr"
   mode,            // "globe3d" | "globe2d" | "flat"
+  direction,       // "outgoing" (default) | "incoming"
   onCountryClick,
   onCountryHover,
   focusedCountry,  // iso2 string or null — highlights / centers
 }) {
+  // Helper: in outgoing mode each country is coloured by (myPassport → that country).
+  // In incoming mode it's coloured by (that country → myPassport) — i.e. "would
+  // they need a visa to come to me?"
+  const resolveDirected = (iso2) =>
+    direction === "incoming"
+      ? window.resolveStatus(iso2, passport)
+      : window.resolveStatus(passport, iso2);
   const svgRef = useRef(null);
   const wrapRef = useRef(null);
   const [topology, setTopology] = useState(null);
@@ -398,20 +406,24 @@ function Globe({
   // ─── Fill resolution ───────────────────────────────────────────────────────
   const fillFor = useCallback((iso2) => {
     if (!passport) return STATUS_COLOR.na.fill;
-    const r = window.resolveStatus(passport, iso2);
+    const r = direction === "incoming"
+      ? window.resolveStatus(iso2, passport)
+      : window.resolveStatus(passport, iso2);
     if (filter !== "all" && r.status !== filter && r.status !== "self") {
       return "var(--land)"; // dim out
     }
     return STATUS_COLOR[r.status]?.fill || STATUS_COLOR.na.fill;
-  }, [passport, filter]);
+  }, [passport, filter, direction]);
 
   const opacityFor = useCallback((iso2) => {
     if (!passport) return 1;
     if (filter === "all") return 1;
-    const r = window.resolveStatus(passport, iso2);
+    const r = direction === "incoming"
+      ? window.resolveStatus(iso2, passport)
+      : window.resolveStatus(passport, iso2);
     if (r.status === filter || r.status === "self") return 1;
     return 0.25;
-  }, [passport, filter]);
+  }, [passport, filter, direction]);
 
   // Compare mode: highlight the compare passport's home country with a distinct
   // amber stroke (so it never collides with the primary passport's blue self-fill).
@@ -555,7 +567,7 @@ function Globe({
       )}
 
       {/* Hover tooltip */}
-      {hover && passport && <HoverCard hover={hover} passport={passport} compare={comparePassport} />}
+      {hover && passport && <HoverCard hover={hover} passport={passport} compare={comparePassport} direction={direction} />}
     </div>
   );
 }
@@ -589,11 +601,17 @@ function idToIso2(id) {
   return c?.iso2;
 }
 
-function HoverCard({ hover, passport, compare }) {
+function HoverCard({ hover, passport, compare, direction }) {
   const dest = window.byIso2[hover.iso2];
   if (!dest) return null;
-  const r = window.resolveStatus(passport, hover.iso2);
-  const rc = compare ? window.resolveStatus(compare, hover.iso2) : null;
+  const r = direction === "incoming"
+    ? window.resolveStatus(hover.iso2, passport)
+    : window.resolveStatus(passport, hover.iso2);
+  const rc = compare
+    ? (direction === "incoming"
+        ? window.resolveStatus(hover.iso2, compare)
+        : window.resolveStatus(compare, hover.iso2))
+    : null;
   const sc = STATUS_COLOR[r.status];
   const ofs = 18;
   return (

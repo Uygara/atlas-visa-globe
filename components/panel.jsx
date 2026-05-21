@@ -8,10 +8,13 @@ function Panel({
   search, setSearch,
   onPickFromSearch,
   showCompare,
+  direction, setDirection,
 }) {
   const [showPicker, setShowPicker] = useState(false);
   const [showComparePicker, setShowComparePicker] = useState(false);
-  const tallyData = passport ? window.tally(passport) : null;
+  const tallyData = passport
+    ? (direction === "incoming" ? window.tallyIncoming(passport) : window.tally(passport))
+    : null;
 
   return (
     <aside className="panel">
@@ -38,6 +41,10 @@ function Panel({
         />
       )}
 
+      {passport && (
+        <DirectionToggle value={direction} onChange={setDirection} />
+      )}
+
       {passport && tallyData && (
         <Tally tally={tallyData} filter={filter} setFilter={setFilter} passport={passport} />
       )}
@@ -54,6 +61,7 @@ function Panel({
           passport={passport}
           compare={compareMode ? compare : null}
           iso2={detailCountry}
+          direction={direction}
           onClose={() => setDetailCountry(null)}
         />
       )}
@@ -113,6 +121,45 @@ function Logomark() {
       <path d="M2 12 H22" stroke="var(--self)" strokeWidth="1.4" />
       <circle cx="12" cy="12" r="2" fill="var(--vf)" />
     </svg>
+  );
+}
+
+function DirectionToggle({ value, onChange }) {
+  // "outgoing" — colour each country by what *I* need to enter it.
+  // "incoming" — colour each country by what *its citizens* need to visit me.
+  const opts = [
+    { v: "outgoing", l: "Outgoing", hint: "Where can I go?" },
+    { v: "incoming", l: "Incoming", hint: "Who can visit me?" },
+  ];
+  const active = opts.find(o => o.v === (value || "outgoing"));
+  return (
+    <div style={{ marginBottom: 14 }}>
+      <div style={{
+        fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
+        textTransform: "uppercase", letterSpacing: "0.10em", marginBottom: 6,
+      }}>Direction</div>
+      <div style={{ display: "flex", gap: 4, padding: 3, background: "var(--bg-2)", borderRadius: 10, border: "1px solid var(--panel-border)" }}>
+        {opts.map(o => {
+          const on = o.v === (value || "outgoing");
+          return (
+            <button key={o.v} onClick={() => onChange(o.v)}
+              style={{
+                flex: 1, padding: "7px 8px", borderRadius: 7,
+                border: "none",
+                background: on ? "var(--self)" : "transparent",
+                color: on ? "#05070d" : "var(--fg-dim)",
+                fontFamily: "inherit", fontSize: 12,
+                fontWeight: on ? 600 : 500,
+                cursor: "pointer",
+                transition: "background 160ms ease, color 160ms ease",
+              }}>{o.l}</button>
+          );
+        })}
+      </div>
+      <div style={{ fontSize: 11, color: "var(--fg-mute)", marginTop: 6, fontFamily: "var(--font-mono)" }}>
+        {active?.hint}
+      </div>
+    </div>
   );
 }
 
@@ -486,11 +533,14 @@ function SearchIcon() {
   );
 }
 
-function DetailCard({ passport, compare, iso2, onClose }) {
+function DetailCard({ passport, compare, iso2, onClose, direction }) {
   const dest = window.byIso2[iso2];
   if (!dest) return null;
-  const r = window.resolveStatus(passport, iso2);
-  const rc = compare ? window.resolveStatus(compare, iso2) : null;
+  const incoming = direction === "incoming";
+  const r = incoming ? window.resolveStatus(iso2, passport) : window.resolveStatus(passport, iso2);
+  const rc = compare
+    ? (incoming ? window.resolveStatus(iso2, compare) : window.resolveStatus(compare, iso2))
+    : null;
   const sc = STATUS_COLOR[r.status];
   const myPp = window.byIso2[passport];
 
