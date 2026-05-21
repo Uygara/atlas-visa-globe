@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Schengen 90/180 Day Calculator — free, instant · Atlas</title>
+<meta name="description" content="Free Schengen short-stay calculator. Add your past trips, see exactly how many of the 90 days you've used in the last 180 days, and plan future trips so you stay within the rule.">
+<link rel="canonical" href="https://travelnow.info/schengen-calculator/">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<link rel="icon" type="image/png" href="/assets/favicon.png">
+<meta property="og:title" content="Schengen 90/180 Day Calculator">
+<meta property="og:description" content="Track your Schengen short-stay days and plan future trips without breaking the rule.">
+<meta property="og:image" content="https://travelnow.info/assets/og.png">
+<meta property="og:url" content="https://travelnow.info/schengen-calculator/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://travelnow.info/assets/og.png">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2617798720306957" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Schengen 90/180 Calculator",
+  "applicationCategory": "TravelApplication",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+  "url": "https://travelnow.info/schengen-calculator/"
+}
+</script>
+<style>
+  :root {
+    --bg:#05070d; --panel:#111827; --bg3:#1a2236;
+    --fg:#e7ecf5; --fg-dim:#aab4c8; --fg-mute:#6b7591; --fg-faint:#4a5269;
+    --border:rgba(148,173,220,0.15); --border-strong:rgba(148,173,220,0.28);
+    --self:#60a5fa; --vf:#22c55e; --voa:#facc15; --vr:#ef4444;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin:0; background:var(--bg); color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+    line-height:1.55;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 20%, rgba(40,80,150,0.18), transparent 70%),
+      var(--bg);
+  }
+  a { color:var(--self); text-decoration:none; }
+  a:hover { text-decoration:underline; }
+  .wrap { max-width:780px; margin:0 auto; padding:32px 20px 96px; }
+  .back { display:inline-block; padding:8px 14px; background:var(--panel); border:1px solid var(--border); border-radius:8px; color:var(--fg-dim); font-size:12px; margin-bottom:22px; }
+  h1 { font-size:30px; font-weight:600; letter-spacing:-0.02em; margin:0 0 6px; }
+  .sub { font-size:14px; color:var(--fg-dim); margin:0 0 22px; }
+
+  .hero {
+    background:var(--panel); border:1px solid var(--border-strong);
+    border-radius:14px; padding:24px; margin-bottom:18px;
+    display:flex; align-items:center; gap:24px; flex-wrap:wrap;
+  }
+  .ring { position:relative; width:140px; height:140px; flex-shrink:0; }
+  .ring svg { transform:rotate(-90deg); }
+  .ring .label {
+    position:absolute; inset:0; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; pointer-events:none;
+  }
+  .ring .num { font-size:34px; font-weight:600; letter-spacing:-0.02em; line-height:1; }
+  .ring .small { font-size:11px; color:var(--fg-mute); font-family:ui-monospace,monospace; text-transform:uppercase; letter-spacing:0.08em; margin-top:4px; }
+  .hero .info { flex:1; min-width:200px; }
+  .hero .info h2 { margin:0 0 6px; font-size:18px; }
+  .hero .info p { margin:0; color:var(--fg-dim); font-size:13px; }
+  .hero.danger { border-color:rgba(239,68,68,0.5); }
+  .hero.ok { border-color:rgba(34,197,94,0.4); }
+
+  .card {
+    background:var(--panel); border:1px solid var(--border);
+    border-radius:12px; padding:18px; margin-bottom:14px;
+  }
+  .card h3 { margin:0 0 12px; font-size:14px; color:var(--fg-dim); font-weight:500; }
+
+  .trip-form { display:flex; gap:8px; align-items:end; flex-wrap:wrap; }
+  .trip-form .field { display:flex; flex-direction:column; gap:4px; }
+  .trip-form label { font-size:10px; color:var(--fg-mute); font-family:ui-monospace,monospace; text-transform:uppercase; letter-spacing:0.06em; }
+  .trip-form input[type=date] {
+    background:var(--bg3); border:1px solid var(--border-strong); border-radius:7px;
+    color:var(--fg); padding:8px 10px; font-family:inherit; font-size:13px;
+    color-scheme: dark;
+  }
+  .trip-form input[type=date]:focus { outline:none; border-color:var(--self); }
+  .trip-form button {
+    padding:9px 16px; background:var(--self); color:#05070d;
+    border:none; border-radius:7px; font-weight:600; font-size:13px;
+    cursor:pointer; font-family:inherit;
+  }
+  .trip-form button:hover { opacity:0.92; }
+
+  .trips { list-style:none; padding:0; margin:0; }
+  .trip {
+    display:flex; align-items:center; gap:10px;
+    padding:10px 12px; border-bottom:1px solid var(--border);
+    font-size:13px;
+  }
+  .trip:last-child { border-bottom:none; }
+  .trip .dates { font-family:ui-monospace,monospace; color:var(--fg); flex:1; min-width:0; }
+  .trip .days { color:var(--fg-mute); font-size:11px; font-family:ui-monospace,monospace; }
+  .trip button.del {
+    background:transparent; border:none; color:var(--fg-mute); cursor:pointer;
+    font-size:16px; padding:0; line-height:1;
+  }
+  .trip button.del:hover { color:var(--vr); }
+
+  .timeline {
+    margin-top:12px; padding:14px; background:var(--bg3); border-radius:8px;
+    border:1px solid var(--border); position:relative;
+  }
+  .timeline-track { height:24px; position:relative; background:rgba(148,173,220,0.08); border-radius:4px; overflow:hidden; }
+  .timeline-stay { position:absolute; top:0; bottom:0; background:linear-gradient(180deg, var(--self), #4f86d4); border-right:1px solid rgba(0,0,0,0.3); }
+  .timeline-stay.future { background:linear-gradient(180deg, var(--voa), #d4a514); }
+  .timeline-today { position:absolute; top:-6px; bottom:-6px; width:2px; background:var(--vr); box-shadow:0 0 6px var(--vr); }
+  .timeline-labels { display:flex; justify-content:space-between; margin-top:6px; font-size:10px; color:var(--fg-mute); font-family:ui-monospace,monospace; }
+
+  .msg { padding:10px 12px; border-radius:8px; font-size:13px; margin-top:12px; }
+  .msg.ok { background:rgba(34,197,94,0.10); color:#bbf7d0; border:1px solid rgba(34,197,94,0.30); }
+  .msg.warn { background:rgba(250,204,21,0.10); color:#fde68a; border:1px solid rgba(250,204,21,0.30); }
+  .msg.err { background:rgba(239,68,68,0.10); color:#fecaca; border:1px solid rgba(239,68,68,0.30); }
+
+  .ref-row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .ref-row label { font-size:11px; color:var(--fg-mute); text-transform:uppercase; letter-spacing:0.06em; }
+  .ref-row input[type=date] {
+    background:var(--bg3); border:1px solid var(--border-strong); border-radius:7px;
+    color:var(--fg); padding:7px 10px; font-family:inherit; font-size:13px;
+    color-scheme: dark;
+  }
+
+  .ad-slot { margin:18px 0; text-align:center; min-height:90px; }
+  .empty { padding:16px; color:var(--fg-mute); font-size:13px; text-align:center; font-style:italic; }
+  .footnote { font-size:12px; color:var(--fg-mute); margin-top:24px; line-height:1.6; }
+
+  details { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:14px 16px; margin-top:14px; }
+  details summary { cursor:pointer; font-weight:500; font-size:14px; color:var(--fg); }
+  details summary::marker { color:var(--fg-mute); }
+  details p { font-size:13px; color:var(--fg-dim); margin:10px 0 4px; }
+  details ul { font-size:13px; color:var(--fg-dim); padding-left:18px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="/">← Back to globe</a>
+  <h1>Schengen 90 / 180 Day Calculator</h1>
+  <p class="sub">Free, instant, no signup. Enter your past trips into the Schengen Area — see exactly how many of your 90 days you've already used in the rolling 180-day window, and plan future visits without breaking the rule.</p>
+
+  <div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2617798720306957" data-ad-slot="" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+
+  <div id="hero" class="hero"><!-- filled by JS --></div>
+
+  <div class="card">
+    <h3>Add a trip</h3>
+    <form id="trip-form" class="trip-form">
+      <div class="field"><label for="entry">Entry date</label><input type="date" id="entry" required></div>
+      <div class="field"><label for="exit">Exit date</label><input type="date" id="exit" required></div>
+      <button type="submit">+ Add trip</button>
+    </form>
+    <p style="font-size:11px; color:var(--fg-mute); margin:10px 0 0;">Include both the day you crossed into Schengen and the day you crossed out — both count.</p>
+  </div>
+
+  <div class="card">
+    <h3>Your trips</h3>
+    <ul id="trips" class="trips"></ul>
+    <div id="timeline"></div>
+  </div>
+
+  <div class="card">
+    <h3>Check a specific date</h3>
+    <div class="ref-row">
+      <label for="ref">Reference date:</label>
+      <input type="date" id="ref">
+      <button id="ref-today" style="padding:6px 12px; background:var(--bg3); border:1px solid var(--border-strong); border-radius:7px; color:var(--fg-dim); cursor:pointer; font-size:12px;">Today</button>
+    </div>
+    <div id="ref-result" style="margin-top:14px;"></div>
+  </div>
+
+  <div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2617798720306957" data-ad-slot="" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+
+  <details>
+    <summary>How the 90 / 180 rule actually works</summary>
+    <p>Under <strong>Regulation (EU) 2018/1806</strong>, short-stay travellers in
+    the Schengen Area may stay a maximum of <strong>90 days within any rolling
+    180-day window</strong>. The window is not a fixed calendar period: each day
+    you are physically in Schengen you "spend" one of your 90 days; that day
+    will be "refunded" exactly 180 days later.</p>
+    <p>This calculator counts every day between entry and exit inclusive (the
+    rule treats partial days as full days). It is intended for travellers on a
+    short-stay Schengen visa or visa-exempt nationals visiting Schengen — it
+    does not apply to long-stay national visas or residence permits.</p>
+    <p>Schengen members covered: Austria, Belgium, Bulgaria, Croatia, Czech
+    Republic, Denmark, Estonia, Finland, France, Germany, Greece, Hungary,
+    Iceland, Italy, Latvia, Liechtenstein, Lithuania, Luxembourg, Malta,
+    Netherlands, Norway, Poland, Portugal, Romania, Slovakia, Slovenia,
+    Spain, Sweden, Switzerland.</p>
+  </details>
+
+  <details>
+    <summary>What about UK, Ireland, EU residency cards?</summary>
+    <p>The UK and Ireland are <strong>not</strong> in Schengen — time spent
+    there doesn't count toward the 90/180 limit. Holding an EU residence
+    card (e.g. Spain Non-Lucrative, Portugal D7) means you live there
+    legally and aren't subject to the short-stay rule for that country, but
+    days in <em>other</em> Schengen countries still count.</p>
+  </details>
+
+  <div class="footnote">
+    Data lives only in your browser (localStorage). We never send your trip
+    history anywhere. This tool is for planning only — at the border, the
+    officer's stamp count is what matters.
+  </div>
+</div>
+
+<script>
+(function () {
+  const LS_KEY = "atlas.schengen.trips";
+  const WINDOW_DAYS = 180;
+  const MAX_DAYS = 90;
+  const MS_PER_DAY = 86_400_000;
+
+  function todayISO() { return new Date().toISOString().slice(0, 10); }
+  function parseDate(s) {
+    const [y, m, d] = (s || "").split("-").map(Number);
+    if (!y) return null;
+    return new Date(Date.UTC(y, m - 1, d));
+  }
+  function fmt(d) {
+    if (!d) return "";
+    return d.toISOString().slice(0, 10);
+  }
+  function fmtPretty(d) {
+    if (!d) return "";
+    return d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+  }
+  function daysBetween(a, b) {
+    return Math.round((b - a) / MS_PER_DAY) + 1; // inclusive of both endpoints
+  }
+
+  // Days used within (refDate - 180, refDate] inclusive
+  function daysUsedAt(refDate, trips) {
+    const ref = parseDate(refDate);
+    if (!ref) return 0;
+    const windowStart = new Date(ref.getTime() - (WINDOW_DAYS - 1) * MS_PER_DAY);
+    let total = 0;
+    for (const t of trips) {
+      const entry = parseDate(t.entry);
+      const exit = parseDate(t.exit);
+      if (!entry || !exit) continue;
+      // Clip overlap with [windowStart, ref]
+      const start = entry > windowStart ? entry : windowStart;
+      const end = exit < ref ? exit : ref;
+      if (end >= start) total += daysBetween(start, end);
+    }
+    return total;
+  }
+
+  // Earliest day on which a future trip of length N becomes possible (one shot, no clip).
+  function nextAvailableDate(trips, length, fromDate = new Date()) {
+    if (length <= 0) return fromDate;
+    // We walk day-by-day forward up to ~1 year. Limit horizon to keep it cheap.
+    for (let i = 0; i < 400; i++) {
+      const probe = new Date(fromDate.getTime() + i * MS_PER_DAY);
+      const probeEnd = new Date(probe.getTime() + (length - 1) * MS_PER_DAY);
+      // Compute days used at probeEnd including a hypothetical trip [probe, probeEnd]
+      const refStr = fmt(probeEnd);
+      const used = daysUsedAt(refStr, [...trips, { entry: fmt(probe), exit: fmt(probeEnd) }]);
+      if (used <= MAX_DAYS) return probe;
+    }
+    return null;
+  }
+
+  // ── State ─────────────────────────────────────────────────────────────
+  let trips = [];
+  try { trips = JSON.parse(localStorage.getItem(LS_KEY) || "[]"); } catch (e) { trips = []; }
+  let refDate = todayISO();
+
+  function save() { try { localStorage.setItem(LS_KEY, JSON.stringify(trips)); } catch (e) {} }
+
+  // ── Render ────────────────────────────────────────────────────────────
+  function renderHero() {
+    const used = daysUsedAt(refDate, trips);
+    const remaining = Math.max(0, MAX_DAYS - used);
+    const pct = Math.min(1, used / MAX_DAYS);
+    const danger = used >= MAX_DAYS;
+    const warning = used >= MAX_DAYS - 10;
+    const colour = danger ? "var(--vr)" : warning ? "var(--voa)" : "var(--vf)";
+    const tone = danger ? "danger" : (warning ? "" : "ok");
+
+    const R = 60, C = 2 * Math.PI * R;
+    const offset = C * (1 - pct);
+
+    document.getElementById("hero").className = "hero " + tone;
+    document.getElementById("hero").innerHTML = `
+      <div class="ring">
+        <svg width="140" height="140" viewBox="0 0 140 140">
+          <circle cx="70" cy="70" r="${R}" fill="none" stroke="var(--bg3)" stroke-width="12"/>
+          <circle cx="70" cy="70" r="${R}" fill="none" stroke="${colour}" stroke-width="12"
+                  stroke-dasharray="${C}" stroke-dashoffset="${offset}" stroke-linecap="round"/>
+        </svg>
+        <div class="label">
+          <div class="num">${used}</div>
+          <div class="small">of ${MAX_DAYS} days</div>
+        </div>
+      </div>
+      <div class="info">
+        <h2>${danger
+          ? "You have used your 90 days"
+          : `${remaining} day${remaining === 1 ? "" : "s"} remaining`}</h2>
+        <p>${danger
+          ? "Entering Schengen now would be a breach. Wait until enough older days fall out of the 180-day window."
+          : `In the 180-day window ending ${fmtPretty(parseDate(refDate))}, you've used ${used} of your 90 short-stay days.`}</p>
+      </div>`;
+  }
+
+  function renderTrips() {
+    const ul = document.getElementById("trips");
+    if (trips.length === 0) {
+      ul.innerHTML = '<li class="empty">No trips yet. Add one above to start tracking.</li>';
+      document.getElementById("timeline").innerHTML = "";
+      return;
+    }
+    const sorted = trips.slice().sort((a, b) => a.entry.localeCompare(b.entry));
+    ul.innerHTML = sorted.map((t, i) => {
+      const e = parseDate(t.entry), x = parseDate(t.exit);
+      const n = e && x ? daysBetween(e, x) : 0;
+      return `
+        <li class="trip">
+          <div class="dates">${fmtPretty(e)} → ${fmtPretty(x)}</div>
+          <div class="days">${n} day${n === 1 ? "" : "s"}</div>
+          <button class="del" data-i="${i}" aria-label="Remove">×</button>
+        </li>`;
+    }).join("");
+
+    renderTimeline(sorted);
+  }
+
+  function renderTimeline(sorted) {
+    const ref = parseDate(refDate);
+    if (!ref) return;
+    const start = new Date(ref.getTime() - (WINDOW_DAYS - 1) * MS_PER_DAY);
+    const total = WINDOW_DAYS;
+    const bars = sorted.flatMap(t => {
+      const e = parseDate(t.entry), x = parseDate(t.exit);
+      if (!e || !x) return [];
+      const visibleStart = e > start ? e : start;
+      const visibleEnd = x < ref ? x : ref;
+      if (visibleEnd < visibleStart) return [];
+      const future = visibleStart > new Date();
+      const left = ((visibleStart - start) / MS_PER_DAY) / total * 100;
+      const width = (daysBetween(visibleStart, visibleEnd)) / total * 100;
+      return [`<div class="timeline-stay${future ? " future" : ""}" style="left:${left}%; width:${width}%;" title="${fmtPretty(visibleStart)} → ${fmtPretty(visibleEnd)}"></div>`];
+    }).join("");
+    const todayLeft = Math.min(100, Math.max(0, ((new Date() - start) / MS_PER_DAY) / total * 100));
+    document.getElementById("timeline").innerHTML = `
+      <div class="timeline">
+        <div style="font-size:11px; color:var(--fg-mute); margin-bottom:8px;">
+          180-day window ending ${fmtPretty(ref)} — your stays are the blue blocks below.
+        </div>
+        <div class="timeline-track">
+          ${bars}
+          <div class="timeline-today" style="left:${todayLeft}%;" title="today"></div>
+        </div>
+        <div class="timeline-labels">
+          <span>${fmtPretty(start)}</span>
+          <span>${fmtPretty(ref)}</span>
+        </div>
+      </div>`;
+  }
+
+  function renderRefResult() {
+    const used = daysUsedAt(refDate, trips);
+    const remaining = Math.max(0, MAX_DAYS - used);
+    let msg = "";
+    if (used > MAX_DAYS) {
+      const next = nextAvailableDate(trips, 1, parseDate(refDate) || new Date());
+      msg = `<div class="msg err">On ${fmtPretty(parseDate(refDate))} you'd be ${used - MAX_DAYS} day${used - MAX_DAYS === 1 ? "" : "s"} over the limit. ${next ? "Earliest re-entry: <strong>" + fmtPretty(next) + "</strong>" : ""}</div>`;
+    } else if (used === MAX_DAYS) {
+      msg = `<div class="msg warn">On ${fmtPretty(parseDate(refDate))} you've maxed out. Adding one more day would breach the rule.</div>`;
+    } else {
+      msg = `<div class="msg ok">${remaining} day${remaining === 1 ? "" : "s"} available on ${fmtPretty(parseDate(refDate))}.</div>`;
+    }
+    document.getElementById("ref-result").innerHTML = msg;
+  }
+
+  function rerender() {
+    renderHero();
+    renderTrips();
+    renderRefResult();
+  }
+
+  // ── Wire ──────────────────────────────────────────────────────────────
+  document.getElementById("trip-form").addEventListener("submit", (e) => {
+    e.preventDefault();
+    const entry = document.getElementById("entry").value;
+    const exit  = document.getElementById("exit").value;
+    if (!entry || !exit) return;
+    if (entry > exit) return alert("Entry date must be before exit date.");
+    trips.push({ entry, exit });
+    save();
+    document.getElementById("entry").value = "";
+    document.getElementById("exit").value = "";
+    rerender();
+  });
+  document.getElementById("trips").addEventListener("click", (e) => {
+    const i = e.target?.dataset?.i;
+    if (i == null) return;
+    const sorted = trips.slice().sort((a, b) => a.entry.localeCompare(b.entry));
+    const tripToRemove = sorted[+i];
+    trips = trips.filter(t => !(t.entry === tripToRemove.entry && t.exit === tripToRemove.exit));
+    save(); rerender();
+  });
+  document.getElementById("ref").addEventListener("change", (e) => {
+    refDate = e.target.value || todayISO();
+    rerender();
+  });
+  document.getElementById("ref-today").addEventListener("click", () => {
+    refDate = todayISO();
+    document.getElementById("ref").value = refDate;
+    rerender();
+  });
+
+  // Initial paint
+  document.getElementById("ref").value = refDate;
+  rerender();
+})();
+</script>
+</body>
+</html>

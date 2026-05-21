@@ -1100,6 +1100,8 @@ function PanelFooter() {
       </div>
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
         <a href="/alerts/" style={linkStyle}>Alerts</a>
+        <a href="/schengen-calculator/" style={linkStyle}>Schengen calc</a>
+        <a href="/itinerary/" style={linkStyle}>Itinerary</a>
         <a href="/digital-nomad-visa/" style={linkStyle}>Nomad visas</a>
         <a href="/about/" style={linkStyle}>About</a>
         <a href="/privacy/" style={linkStyle}>Privacy</a>

@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Travel itinerary visa planner — Atlas</title>
+<meta name="description" content="Add the countries you want to visit. See which visas you need, what they cost, how long they take, and the order you should apply in.">
+<link rel="canonical" href="https://travelnow.info/itinerary/">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<link rel="icon" type="image/png" href="/assets/favicon.png">
+<meta property="og:title" content="Travel itinerary visa planner — Atlas">
+<meta property="og:description" content="Plan your multi-country trip: total visa cost, lead times, application order.">
+<meta property="og:image" content="https://travelnow.info/assets/og.png">
+<meta property="og:url" content="https://travelnow.info/itinerary/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://travelnow.info/assets/og.png">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2617798720306957" crossorigin="anonymous"></script>
+<style>
+  :root {
+    --bg:#05070d; --panel:#111827; --bg3:#1a2236;
+    --fg:#e7ecf5; --fg-dim:#aab4c8; --fg-mute:#6b7591; --fg-faint:#4a5269;
+    --border:rgba(148,173,220,0.15); --border-strong:rgba(148,173,220,0.28);
+    --self:#60a5fa; --vf:#22c55e; --ev:#a3e635; --voa:#facc15; --vr:#ef4444;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin:0; background:var(--bg); color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+    line-height:1.55;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 20%, rgba(40,80,150,0.18), transparent 70%),
+      var(--bg);
+  }
+  a { color:var(--self); text-decoration:none; }
+  a:hover { text-decoration:underline; }
+  .wrap { max-width:840px; margin:0 auto; padding:32px 20px 96px; }
+  .back { display:inline-block; padding:8px 14px; background:var(--panel); border:1px solid var(--border); border-radius:8px; color:var(--fg-dim); font-size:12px; margin-bottom:22px; }
+  h1 { font-size:30px; font-weight:600; letter-spacing:-0.02em; margin:0 0 6px; }
+  .sub { font-size:14px; color:var(--fg-dim); margin:0 0 22px; max-width:680px; }
+  .ad-slot { margin:18px 0; text-align:center; min-height:90px; }
+
+  .card {
+    background:var(--panel); border:1px solid var(--border);
+    border-radius:12px; padding:18px; margin-bottom:14px;
+  }
+  .card h3 { margin:0 0 12px; font-size:13px; color:var(--fg-mute); font-weight:500; text-transform:uppercase; letter-spacing:0.08em; }
+
+  label.row { display:block; font-size:11px; color:var(--fg-mute); font-family:ui-monospace,monospace; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:6px; }
+
+  .pp-trigger, .add-trigger {
+    width:100%; padding:11px 14px; background:var(--bg3); border:1px solid var(--border-strong);
+    border-radius:8px; color:var(--fg); text-align:left; cursor:pointer;
+    font-family:inherit; font-size:14px;
+    display:flex; align-items:center; gap:10px;
+  }
+  .pp-trigger:hover, .add-trigger:hover { border-color:var(--fg-mute); }
+  .pp-trigger .flag { font-size:18px; }
+  .pp-trigger .placeholder { color:var(--fg-mute); }
+
+  .picker {
+    margin-top:6px; background:var(--bg3); border:1px solid var(--border-strong);
+    border-radius:8px; overflow:hidden;
+  }
+  .picker input.search {
+    width:100%; padding:10px 12px; background:transparent; border:none;
+    border-bottom:1px solid var(--border); color:var(--fg); font-size:13px; outline:none;
+  }
+  .picker .row {
+    width:100%; display:flex; align-items:center; gap:10px;
+    padding:8px 12px; background:transparent; border:none; cursor:pointer;
+    color:var(--fg); font-size:13px; font-family:inherit; text-align:left;
+  }
+  .picker .row:hover { background:rgba(96,165,250,0.07); }
+  .picker .list { max-height:220px; overflow:auto; }
+
+  .stop {
+    display:flex; align-items:center; gap:12px;
+    padding:12px; background:var(--panel); border:1px solid var(--border);
+    border-radius:10px; margin-bottom:8px;
+  }
+  .stop .flag { font-size:22px; }
+  .stop .name { font-size:14px; font-weight:500; flex:1; }
+  .stop .status-pill {
+    display:inline-flex; align-items:center; gap:6px;
+    padding:4px 10px; border-radius:999px; font-size:11px; font-family:ui-monospace,monospace;
+    font-weight:500;
+  }
+  .stop .meta {
+    font-size:11px; color:var(--fg-mute); font-family:ui-monospace,monospace;
+  }
+  .stop button.del { background:transparent; border:none; color:var(--fg-mute); cursor:pointer; font-size:18px; padding:0; line-height:1; margin-left:auto; }
+  .stop button.del:hover { color:var(--vr); }
+
+  .stop[data-status=vf]  .status-pill { background:rgba(34,197,94,0.12); color:#bbf7d0; border:1px solid rgba(34,197,94,0.30); }
+  .stop[data-status=ev]  .status-pill { background:rgba(163,230,53,0.10); color:#d9f99d; border:1px solid rgba(163,230,53,0.30); }
+  .stop[data-status=voa] .status-pill { background:rgba(250,204,21,0.10); color:#fde68a; border:1px solid rgba(250,204,21,0.30); }
+  .stop[data-status=vr]  .status-pill { background:rgba(239,68,68,0.10); color:#fecaca; border:1px solid rgba(239,68,68,0.30); }
+  .stop[data-status=na]  .status-pill { background:rgba(148,173,220,0.08); color:var(--fg-mute); border:1px solid var(--border); }
+
+  .stats {
+    display:grid; grid-template-columns:repeat(3, 1fr); gap:10px;
+    margin-bottom:14px;
+  }
+  .stat {
+    background:var(--panel); border:1px solid var(--border-strong);
+    border-radius:10px; padding:12px 14px;
+  }
+  .stat .label { font-size:10px; color:var(--fg-mute); font-family:ui-monospace,monospace; text-transform:uppercase; letter-spacing:0.08em; }
+  .stat .value { font-size:22px; font-weight:600; margin-top:4px; }
+
+  .order { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:14px; }
+  .order h3 { margin:0 0 10px; }
+  .order ol { padding-left:22px; margin:0; }
+  .order li { margin:6px 0; font-size:13px; color:var(--fg-dim); }
+  .order li strong { color:var(--fg); }
+
+  .empty { padding:20px; color:var(--fg-mute); font-size:13px; text-align:center; font-style:italic; }
+  .footnote { font-size:12px; color:var(--fg-mute); margin-top:24px; line-height:1.6; }
+</style>
+<script src="/data/countries.js"></script>
+<script src="/data/passports.js"></script>
+<script src="/data/visa-fees.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="/">← Back to globe</a>
+  <h1>Itinerary visa planner</h1>
+  <p class="sub">Add the countries you'll visit. We compute: which visas you need, the fee for each (where known), the longest processing time, and the order you should apply.</p>
+
+  <div class="card">
+    <label class="row">Your passport</label>
+    <button id="pp-trigger" class="pp-trigger"><span class="placeholder">Pick your passport…</span></button>
+    <div id="pp-picker"></div>
+  </div>
+
+  <div class="card">
+    <label class="row">Trip stops</label>
+    <button id="add-trigger" class="add-trigger" disabled style="opacity:0.5;">+ Add a destination (pick a passport first)</button>
+    <div id="add-picker"></div>
+    <div id="stops" style="margin-top:12px;"></div>
+  </div>
+
+  <div id="summary"></div>
+
+  <div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2617798720306957" data-ad-slot="" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+
+  <div class="footnote">
+    Costs come from our verified <a href="/passport/">visa-fee database</a> — currently covering the most-travelled pairs.
+    If a row shows "no fee data" that just means we haven't added that pair yet; check the official embassy site for the exact amount.
+    All processing-time figures are typical; allow extra buffer for peak seasons.
+  </div>
+</div>
+
+<script>
+(function () {
+  const STATUS_INFO = {
+    vf:  { label: "Visa-free",       color: "var(--vf)"  },
+    ev:  { label: "eVisa",           color: "var(--ev)"  },
+    voa: { label: "Visa on arrival", color: "var(--voa)" },
+    vr:  { label: "Visa required",   color: "var(--vr)"  },
+    na:  { label: "No data",         color: "var(--fg-mute)" },
+    self:{ label: "Home country",    color: "var(--self)" },
+  };
+
+  // ── State ──────────────────────────────────────────────────────────────
+  let passport = null;
+  let stops = []; // iso2 codes
+  const params = new URLSearchParams(location.search);
+  if (params.get("p")) passport = params.get("p").toUpperCase();
+  if (params.get("stops")) stops = params.get("stops").split(",").map(s => s.trim().toUpperCase()).filter(Boolean);
+  try {
+    const saved = JSON.parse(localStorage.getItem("atlas.itinerary") || "{}");
+    if (!passport && saved.passport) passport = saved.passport;
+    if (stops.length === 0 && Array.isArray(saved.stops)) stops = saved.stops;
+  } catch (e) {}
+  function save() {
+    try { localStorage.setItem("atlas.itinerary", JSON.stringify({ passport, stops })); } catch (e) {}
+  }
+
+  // ── DOM ───────────────────────────────────────────────────────────────
+  const ppTrigger = document.getElementById("pp-trigger");
+  const ppPicker  = document.getElementById("pp-picker");
+  const addTrigger= document.getElementById("add-trigger");
+  const addPicker = document.getElementById("add-picker");
+  const stopsEl   = document.getElementById("stops");
+  const summaryEl = document.getElementById("summary");
+  let ppOpen = false, addOpen = false;
+
+  function flagFor(iso) { return window.byIso2?.[iso]?.flag || ""; }
+  function nameFor(iso) { return window.byIso2?.[iso]?.name || iso; }
+
+  function renderPassportTrigger() {
+    if (!passport) {
+      ppTrigger.innerHTML = '<span class="placeholder">Pick your passport…</span>';
+    } else {
+      ppTrigger.innerHTML = `<span class="flag">${flagFor(passport)}</span><span>${nameFor(passport)}</span><span style="margin-left:auto; font-family:ui-monospace,monospace; color:var(--fg-mute); font-size:12px;">${passport}</span>`;
+    }
+    addTrigger.disabled = !passport;
+    addTrigger.style.opacity = passport ? "1" : "0.5";
+    addTrigger.textContent = passport ? "+ Add destination" : "+ Add destination (pick a passport first)";
+  }
+
+  function renderPicker(target, opts) {
+    const { onPick, exclude = new Set() } = opts;
+    target.innerHTML = `
+      <div class="picker">
+        <input type="text" class="search" placeholder="Search…" autocomplete="off">
+        <div class="list"></div>
+      </div>`;
+    const input = target.querySelector("input");
+    const list  = target.querySelector(".list");
+    function update(q) {
+      q = q.trim().toLowerCase();
+      const items = window.PASSPORT_LIST
+        .filter(p => !exclude.has(p.iso2))
+        .filter(p => !q || p.name.toLowerCase().includes(q) || p.iso2.toLowerCase().includes(q))
+        .slice(0, 80);
+      list.innerHTML = items.map(p => `
+        <button class="row" data-iso="${p.iso2}">
+          <span style="font-size:16px;">${flagFor(p.iso2)}</span>
+          <span>${p.name}</span>
+          <span style="margin-left:auto; font-family:ui-monospace,monospace; color:var(--fg-mute); font-size:11px;">${p.iso2}</span>
+        </button>`).join("");
+    }
+    input.addEventListener("input", e => update(e.target.value));
+    list.addEventListener("click", e => {
+      const iso = e.target?.closest(".row")?.dataset?.iso;
+      if (iso) onPick(iso);
+    });
+    input.focus();
+    update("");
+  }
+
+  function renderStops() {
+    if (stops.length === 0) {
+      stopsEl.innerHTML = '<div class="empty">No destinations yet. Use the button above to add countries to your trip.</div>';
+      return;
+    }
+    stopsEl.innerHTML = stops.map((iso, idx) => {
+      const r = window.resolveStatus(passport, iso);
+      const fee = window.visaFee(passport, iso);
+      const info = STATUS_INFO[r.status] || STATUS_INFO.na;
+      const dur = r.days ? `up to ${r.days} days` : "";
+      const feeText = fee?.fee ? fee.fee : (r.status === "vf" ? "free" : (r.status === "self" ? "—" : "fee not yet in DB"));
+      const processing = fee?.processingDays ? fee.processingDays : (r.status === "vf" || r.status === "self" ? "no application needed" : "");
+      return `
+        <div class="stop" data-status="${r.status}">
+          <span class="flag">${flagFor(iso)}</span>
+          <div style="flex:1; min-width:0;">
+            <div class="name">${nameFor(iso)}</div>
+            <div class="meta">
+              ${feeText} ${processing ? "· " + processing : ""} ${dur ? "· " + dur : ""}
+            </div>
+          </div>
+          <span class="status-pill" style="border-color:transparent;">
+            <span style="width:6px; height:6px; border-radius:50%; background:${info.color}; display:inline-block;"></span>
+            ${info.label}
+          </span>
+          <button class="del" data-i="${idx}" aria-label="Remove">×</button>
+        </div>`;
+    }).join("");
+  }
+
+  function renderSummary() {
+    if (!passport || stops.length === 0) { summaryEl.innerHTML = ""; return; }
+    // Aggregate fees + processing
+    let totalFee = 0;
+    let unknown = 0;
+    let maxProcDays = 0;
+    const visaStops = [];
+    for (const iso of stops) {
+      const r = window.resolveStatus(passport, iso);
+      if (r.status === "vf" || r.status === "self") continue;
+      visaStops.push({ iso, status: r.status });
+      const fee = window.visaFee(passport, iso);
+      if (fee?.fee) {
+        const usd = parseFloat(String(fee.fee).match(/\$([\d,]+(?:\.\d+)?)/)?.[1]?.replace(/,/g, "") || "0");
+        if (usd > 0) totalFee += usd;
+        else unknown++;
+      } else unknown++;
+      // Extract typical max days from processingDays like "3-5 weeks"
+      if (fee?.processingDays) {
+        const m = fee.processingDays.match(/(\d+)\s*(?:–|-|to)\s*(\d+)\s*(week|day|month)/i)
+               || fee.processingDays.match(/(\d+)\s*(week|day|month)/i);
+        if (m) {
+          const n = parseInt(m[m.length - 2] || m[1], 10);
+          const unit = m[m.length - 1].toLowerCase();
+          const days = unit.startsWith("week") ? n * 7 : (unit.startsWith("month") ? n * 30 : n);
+          if (days > maxProcDays) maxProcDays = days;
+        }
+      }
+    }
+    // Sort: longest-processing first (safest order to apply in)
+    const order = visaStops.slice().sort((a, b) => {
+      const da = procDays(passport, a.iso);
+      const db = procDays(passport, b.iso);
+      return db - da;
+    });
+
+    const totalStr = totalFee > 0 ? `$${totalFee.toFixed(0)} USD` : "—";
+    const procStr = maxProcDays > 0 ? `${maxProcDays} days` : "—";
+    const orderHtml = order.length === 0
+      ? '<li>No visa applications needed for this itinerary.</li>'
+      : order.map((s, i) => `
+          <li><strong>${flagFor(s.iso)} ${nameFor(s.iso)}</strong> · ${STATUS_INFO[s.status].label}
+          ${window.visaFee(passport, s.iso)?.processingDays ? "· " + window.visaFee(passport, s.iso).processingDays : ""}</li>`).join("");
+    summaryEl.innerHTML = `
+      <div class="stats">
+        <div class="stat"><div class="label">Visas needed</div><div class="value">${visaStops.length}</div></div>
+        <div class="stat"><div class="label">Estimated cost</div><div class="value">${totalStr}</div></div>
+        <div class="stat"><div class="label">Lead time</div><div class="value">${procStr}</div></div>
+      </div>
+      <div class="order">
+        <h3>Recommended application order — longest first</h3>
+        <ol>${orderHtml}</ol>
+        ${unknown ? `<p style="font-size:11px; color:var(--fg-mute); margin-top:10px;">${unknown} stop${unknown === 1 ? "" : "s"} missing fee data — true total will be higher.</p>` : ""}
+        ${maxProcDays ? `<p style="font-size:11px; color:var(--fg-mute); margin-top:6px;">Start applying at least <strong>${maxProcDays} days</strong> before your departure — that's the slowest visa on this list.</p>` : ""}
+      </div>`;
+  }
+  function procDays(p, iso) {
+    const fee = window.visaFee(p, iso);
+    if (!fee?.processingDays) return 0;
+    const m = fee.processingDays.match(/(\d+)\s*(?:–|-|to)\s*(\d+)\s*(week|day|month)/i)
+           || fee.processingDays.match(/(\d+)\s*(week|day|month)/i);
+    if (!m) return 0;
+    const n = parseInt(m[m.length - 2] || m[1], 10);
+    const unit = m[m.length - 1].toLowerCase();
+    return unit.startsWith("week") ? n * 7 : (unit.startsWith("month") ? n * 30 : n);
+  }
+
+  function rerender() {
+    renderPassportTrigger();
+    renderStops();
+    renderSummary();
+  }
+
+  // ── Wire ──────────────────────────────────────────────────────────────
+  ppTrigger.addEventListener("click", () => {
+    ppOpen = !ppOpen;
+    if (ppOpen) {
+      renderPicker(ppPicker, {
+        onPick: (iso) => { passport = iso; ppOpen = false; ppPicker.innerHTML = ""; save(); rerender(); },
+      });
+    } else { ppPicker.innerHTML = ""; }
+  });
+  addTrigger.addEventListener("click", () => {
+    if (!passport) return;
+    addOpen = !addOpen;
+    if (addOpen) {
+      renderPicker(addPicker, {
+        exclude: new Set([passport, ...stops]),
+        onPick: (iso) => { stops.push(iso); addOpen = false; addPicker.innerHTML = ""; save(); rerender(); },
+      });
+    } else { addPicker.innerHTML = ""; }
+  });
+  stopsEl.addEventListener("click", (e) => {
+    const i = e.target?.dataset?.i;
+    if (i == null) return;
+    stops.splice(+i, 1);
+    save(); rerender();
+  });
+
+  rerender();
+})();
+</script>
+</body>
+</html>
