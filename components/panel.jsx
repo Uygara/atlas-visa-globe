@@ -677,7 +677,26 @@ function Changelog() {
         }} />
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-        {items.map((c, i) => <ChangelogItem key={i} entry={c} />)}
+        {items.length === 0 ? (
+          <div style={{
+            padding: 12,
+            background: "var(--bg-2)",
+            border: "1px dashed var(--panel-border)",
+            borderRadius: 8,
+            fontSize: 11,
+            color: "var(--fg-mute)",
+            lineHeight: 1.5,
+          }}>
+            No policy changes detected in the last 24 hours.
+            <br />
+            <span style={{ color: "var(--fg-faint)" }}>
+              Atlas re-scrapes Wikipedia every morning at 06:00 UTC. Real
+              policy edits will appear here as they happen.
+            </span>
+          </div>
+        ) : (
+          items.map((c, i) => <ChangelogItem key={i} entry={c} />)
+        )}
       </div>
       {window.CHANGELOG.length > 4 && (
         <button

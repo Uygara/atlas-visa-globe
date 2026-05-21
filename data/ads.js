@@ -22,9 +22,12 @@
 // (cleaner, higher CPM in most cases).
 
 window.ADSENSE = {
-  // Publisher ID. e.g. "ca-pub-1234567890123456"
-  clientId: "",
-  // Per-slot numeric IDs from your AdSense dashboard
+  // Publisher ID (travelnow.info — registered 2026-05-21)
+  clientId: "ca-pub-2617798720306957",
+  // Per-slot numeric IDs from your AdSense dashboard.
+  // These stay empty until Google approves the account and you create Ad Units
+  // inside the AdSense dashboard. The loader script above is enough for
+  // Google's site-verification crawler to find your publisher ID.
   slots: {
     sidebar:    "", // shown under the detail card on the main map
     seoTop:     "", // top of every /passport/<iso>/ SEO page
