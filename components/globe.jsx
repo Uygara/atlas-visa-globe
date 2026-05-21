@@ -13,6 +13,25 @@ const STATUS_COLOR = {
   na:   { fill: "var(--na)",   label: "No data",          short: "—" },
 };
 
+// Localised status label. Falls through to STATUS_COLOR.label if i18n missing.
+function statusLabel(s) {
+  if (window.t) {
+    const k = "status." + s;
+    return window.t(k) !== k ? window.t(k) : (STATUS_COLOR[s]?.label || s);
+  }
+  return STATUS_COLOR[s]?.label || s;
+}
+
+// Hex equivalents for SVG patterns (CSS vars don't resolve inside <pattern> fills).
+const STATUS_HEX = {
+  vf: "#22c55e",
+  ev: "#a3e635",
+  voa: "#facc15",
+  vr: "#ef4444",
+  self: "#60a5fa",
+  na: "#2a3245",
+};
+
 function Globe({
   passport,        // iso2 string, or null
   comparePassport, // iso2 string, or null (compare mode)
@@ -431,8 +450,19 @@ function Globe({
     if (filter !== "all" && r.status !== filter && r.status !== "self") {
       return "var(--land)"; // dim out
     }
+    // Compare mode: when the two passports' statuses differ, paint the country
+    // with a diagonal 45° stripe pattern carrying both colours. This is much
+    // easier to read at a glance than the old "border colour changes" trick.
+    if (comparePassport && !groupActive && r.status !== "self" && iso2 !== comparePassport) {
+      const rc = direction === "incoming"
+        ? window.resolveStatus(iso2, comparePassport)
+        : window.resolveStatus(comparePassport, iso2);
+      if (rc.status && rc.status !== r.status && STATUS_HEX[r.status] && STATUS_HEX[rc.status]) {
+        return `url(#stripe-${r.status}-${rc.status})`;
+      }
+    }
     return STATUS_COLOR[r.status]?.fill || STATUS_COLOR.na.fill;
-  }, [passport, filter, resolveOne, groupActive]);
+  }, [passport, filter, resolveOne, groupActive, comparePassport, direction]);
 
   const opacityFor = useCallback((iso2) => {
     if (!passport && !groupActive) return 1;
@@ -509,6 +539,20 @@ function Globe({
           <filter id="globeGlow" x="-20%" y="-20%" width="140%" height="140%">
             <feGaussianBlur stdDeviation="8" />
           </filter>
+
+          {/* Diagonal-stripe patterns for compare mode. Twelve combinations:
+              every ordered (primary, compare) pair where the two statuses
+              differ. Stripe alternates between the two colours at 45°. */}
+          {["vf", "ev", "voa", "vr"].flatMap(a =>
+            ["vf", "ev", "voa", "vr"].filter(b => b !== a).map(b => (
+              <pattern key={`${a}-${b}`} id={`stripe-${a}-${b}`}
+                       width="8" height="8" patternUnits="userSpaceOnUse"
+                       patternTransform="rotate(45)">
+                <rect width="8" height="8" fill={STATUS_HEX[a]} />
+                <rect x="4" width="4" height="8" fill={STATUS_HEX[b]} />
+              </pattern>
+            ))
+          )}
         </defs>
 
         {/* Outer atmosphere */}

@@ -140,7 +140,17 @@
     <div id="stops" style="margin-top:12px;"></div>
   </div>
 
+  <div class="card">
+    <label class="row" for="depart">Departure date (optional — unlocks reminders)</label>
+    <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+      <input type="date" id="depart" style="background:var(--bg3); border:1px solid var(--border-strong); border-radius:7px; color:var(--fg); padding:9px 12px; font-family:inherit; font-size:13px; color-scheme:dark;">
+      <button id="clear-depart" style="background:transparent; border:none; color:var(--fg-mute); cursor:pointer; font-size:12px;">Clear</button>
+      <span id="depart-hint" style="font-size:12px; color:var(--fg-mute);"></span>
+    </div>
+  </div>
+
   <div id="summary"></div>
+  <div id="reminders"></div>
 
   <div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2617798720306957" data-ad-slot="" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
 
@@ -165,16 +175,19 @@
   // ── State ──────────────────────────────────────────────────────────────
   let passport = null;
   let stops = []; // iso2 codes
+  let departure = ""; // ISO yyyy-mm-dd
   const params = new URLSearchParams(location.search);
   if (params.get("p")) passport = params.get("p").toUpperCase();
   if (params.get("stops")) stops = params.get("stops").split(",").map(s => s.trim().toUpperCase()).filter(Boolean);
+  if (params.get("d")) departure = params.get("d");
   try {
     const saved = JSON.parse(localStorage.getItem("atlas.itinerary") || "{}");
     if (!passport && saved.passport) passport = saved.passport;
     if (stops.length === 0 && Array.isArray(saved.stops)) stops = saved.stops;
+    if (!departure && saved.departure) departure = saved.departure;
   } catch (e) {}
   function save() {
-    try { localStorage.setItem("atlas.itinerary", JSON.stringify({ passport, stops })); } catch (e) {}
+    try { localStorage.setItem("atlas.itinerary", JSON.stringify({ passport, stops, departure })); } catch (e) {}
   }
 
   // ── DOM ───────────────────────────────────────────────────────────────
@@ -317,6 +330,148 @@
         ${maxProcDays ? `<p style="font-size:11px; color:var(--fg-mute); margin-top:6px;">Start applying at least <strong>${maxProcDays} days</strong> before your departure — that's the slowest visa on this list.</p>` : ""}
       </div>`;
   }
+  function renderReminders() {
+    const el = document.getElementById("reminders");
+    document.getElementById("depart-hint").textContent = "";
+    if (!passport || stops.length === 0 || !departure) { el.innerHTML = ""; return; }
+
+    const dep = new Date(departure + "T00:00:00Z");
+    if (isNaN(dep)) { el.innerHTML = ""; return; }
+    const today = new Date(); today.setUTCHours(0, 0, 0, 0);
+    const daysUntilDeparture = Math.floor((dep - today) / 86400000);
+    if (daysUntilDeparture < 0) {
+      document.getElementById("depart-hint").textContent = "Date is in the past — pick a future departure.";
+      el.innerHTML = ""; return;
+    }
+    document.getElementById("depart-hint").textContent = `${daysUntilDeparture} day${daysUntilDeparture === 1 ? "" : "s"} until departure`;
+
+    // For each visa-requiring stop, compute "apply by" = departure - max(processing days + 7 day buffer, 14)
+    const items = stops.map(iso => {
+      const r = window.resolveStatus(passport, iso);
+      if (r.status === "vf" || r.status === "self") return null;
+      const fee = window.visaFee(passport, iso);
+      const proc = procDays(passport, iso) || 14;
+      const buffer = 7;
+      const lead = proc + buffer;
+      const applyBy = new Date(dep.getTime() - lead * 86400000);
+      const overdue = applyBy < today;
+      return {
+        iso, status: r.status,
+        applyBy, lead, fee, proc,
+        overdue,
+      };
+    }).filter(Boolean);
+
+    if (items.length === 0) {
+      el.innerHTML = `
+        <div class="order" style="border-color:rgba(34,197,94,0.4); background:rgba(34,197,94,0.06);">
+          <h3>Good news</h3>
+          <p style="margin:0; color:var(--fg-dim); font-size:13px;">Every stop on this itinerary is visa-free for a ${nameFor(passport)} passport. No applications needed — just pack.</p>
+        </div>`;
+      return;
+    }
+
+    items.sort((a, b) => a.applyBy - b.applyBy);
+    const earliest = items[0].applyBy;
+    const earliestDays = Math.ceil((earliest - today) / 86400000);
+
+    el.innerHTML = `
+      <div class="card">
+        <h3>Application reminders</h3>
+        <div style="font-size:13px; color:var(--fg-dim); margin-bottom:12px;">
+          ${earliestDays <= 0
+            ? `<strong style="color:var(--vr);">You're past the start window for at least one visa.</strong> Apply for everything below ASAP and consider a premium / expedited service.`
+            : `Start your first application by <strong style="color:var(--fg);">${fmtDate(earliest)}</strong> — that's <strong>${earliestDays} day${earliestDays === 1 ? "" : "s"}</strong> from today.`}
+        </div>
+        ${items.map(it => `
+          <div style="display:flex; align-items:center; gap:10px; padding:9px 0; border-top:1px solid var(--border);">
+            <span style="font-size:18px;">${flagFor(it.iso)}</span>
+            <div style="flex:1; min-width:0;">
+              <div style="font-size:13px; font-weight:500;">${nameFor(it.iso)}</div>
+              <div style="font-size:11px; color:var(--fg-mute); font-family:ui-monospace,monospace;">
+                ${it.proc}-day processing · ${it.lead}-day total lead time
+              </div>
+            </div>
+            <div style="text-align:right;">
+              <div style="font-size:12px; color:${it.overdue ? 'var(--vr)' : 'var(--fg)'}; font-weight:500;">
+                ${it.overdue ? "Apply ASAP" : "Apply by"}
+              </div>
+              <div style="font-size:11px; color:var(--fg-mute); font-family:ui-monospace,monospace;">
+                ${fmtDate(it.applyBy)}
+              </div>
+            </div>
+          </div>`).join("")}
+        <div style="margin-top:14px; display:flex; gap:8px; flex-wrap:wrap;">
+          <button id="dl-ics" style="padding:9px 14px; background:var(--self); color:#05070d; border:none; border-radius:7px; font-weight:600; font-size:13px; cursor:pointer; font-family:inherit;">
+            📅 Download calendar reminders (.ics)
+          </button>
+          <button id="copy-url" style="padding:9px 14px; background:var(--bg3); border:1px solid var(--border-strong); color:var(--fg-dim); border-radius:7px; font-size:13px; cursor:pointer; font-family:inherit;">
+            🔗 Copy share URL
+          </button>
+          <span id="share-msg" style="font-size:11px; color:var(--vf); align-self:center;"></span>
+        </div>
+      </div>`;
+
+    document.getElementById("dl-ics").addEventListener("click", () => downloadICS(items));
+    document.getElementById("copy-url").addEventListener("click", () => copyShareUrl());
+  }
+
+  function fmtDate(d) {
+    return d.toLocaleDateString(window.ATLAS_LANG || undefined,
+      { weekday: "short", day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+  }
+
+  function downloadICS(items) {
+    // RFC 5545 VCALENDAR with one VEVENT per reminder.
+    // We make them all-day events and add a reminder VALARM 1 day before.
+    const lines = [
+      "BEGIN:VCALENDAR",
+      "VERSION:2.0",
+      "PRODID:-//Atlas//Visa Reminder//EN",
+      "CALSCALE:GREGORIAN",
+    ];
+    const stamp = new Date().toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
+    for (const it of items) {
+      const d = it.applyBy;
+      const ymd = d.toISOString().slice(0, 10).replace(/-/g, "");
+      const next = new Date(d.getTime() + 86400000).toISOString().slice(0, 10).replace(/-/g, "");
+      lines.push(
+        "BEGIN:VEVENT",
+        `UID:atlas-visa-${it.iso}-${ymd}@travelnow.info`,
+        `DTSTAMP:${stamp}`,
+        `DTSTART;VALUE=DATE:${ymd}`,
+        `DTEND;VALUE=DATE:${next}`,
+        `SUMMARY:Apply for ${nameFor(it.iso)} visa`,
+        `DESCRIPTION:Submit your ${nameFor(it.iso)} visa application today. Processing typically ${it.proc} days; departure ${departure}.\\n\\nGenerated by Atlas — https://travelnow.info/itinerary/`,
+        "BEGIN:VALARM",
+        "TRIGGER:-P1D",
+        "ACTION:DISPLAY",
+        `DESCRIPTION:Reminder — apply for ${nameFor(it.iso)} visa tomorrow.`,
+        "END:VALARM",
+        "END:VEVENT",
+      );
+    }
+    lines.push("END:VCALENDAR");
+    const blob = new Blob([lines.join("\r\n")], { type: "text/calendar;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url; a.download = `atlas-visa-reminders.ics`;
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 5000);
+  }
+
+  function copyShareUrl() {
+    const u = new URL(location.href);
+    u.search = "";
+    if (passport) u.searchParams.set("p", passport);
+    if (stops.length) u.searchParams.set("stops", stops.join(","));
+    if (departure) u.searchParams.set("d", departure);
+    navigator.clipboard.writeText(u.toString()).then(() => {
+      const msg = document.getElementById("share-msg");
+      if (msg) { msg.textContent = "Copied"; setTimeout(() => { msg.textContent = ""; }, 2000); }
+    });
+  }
+
   function procDays(p, iso) {
     const fee = window.visaFee(p, iso);
     if (!fee?.processingDays) return 0;
@@ -332,6 +487,7 @@
     renderPassportTrigger();
     renderStops();
     renderSummary();
+    renderReminders();
   }
 
   // ── Wire ──────────────────────────────────────────────────────────────
@@ -358,6 +514,15 @@
     if (i == null) return;
     stops.splice(+i, 1);
     save(); rerender();
+  });
+
+  const departEl = document.getElementById("depart");
+  departEl.value = departure;
+  departEl.addEventListener("change", (e) => {
+    departure = e.target.value; save(); rerender();
+  });
+  document.getElementById("clear-depart").addEventListener("click", () => {
+    departure = ""; departEl.value = ""; save(); rerender();
   });
 
   rerender();

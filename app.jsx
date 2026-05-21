@@ -270,6 +270,12 @@ function App() {
   // ─── Render ─────────────────────────────────────────────────────────────
   return (
     <div className="layout">
+      <TopNav
+        tweaks={t}
+        setTweak={setTweak}
+        globeStyle={t.globeStyle}
+        onGlobeStyleChange={(v) => setTweak("globeStyle", v)}
+      />
       <div className="globe-stage">
         <Globe
           passport={passport}
@@ -282,7 +288,6 @@ function App() {
           focusedCountry={focusedCountry}
         />
 
-        <ModeToggle value={t.globeStyle} onChange={(v) => setTweak("globeStyle", v)} />
 
         {!passport && (
           <WelcomeOverlay
@@ -324,14 +329,86 @@ function App() {
         showCompare={t.compareMode}
       />
 
-      {/* Settings popover (live in production — replaces the iframe-only TweaksPanel) */}
-      <SettingsButton tweaks={t} setTweak={setTweak} />
     </div>
   );
 }
 
+// ─── Top nav bar ──────────────────────────────────────────────────────────
+// Persistent across all in-app interactions. Hosts feature shortcuts, the
+// language switcher, and the settings popover (no more hidden corner button).
+function TopNav({ tweaks, setTweak, globeStyle, onGlobeStyleChange }) {
+  // Re-render when language changes
+  const [, force] = useState(0);
+  useEffect(() => {
+    const onLang = () => force(x => x + 1);
+    window.addEventListener("atlas:lang", onLang);
+    return () => window.removeEventListener("atlas:lang", onLang);
+  }, []);
+  return (
+    <header className="topbar">
+      <a className="brand" href="/" aria-label="Atlas home">
+        <img src="/assets/favicon.svg" alt="" />
+        <span>Atlas</span>
+      </a>
+      <nav>
+        <a href="/schengen-calculator/">{window.t("nav.schengen")}</a>
+        <a href="/itinerary/">{window.t("nav.itinerary")}</a>
+        <a href="/digital-nomad-visa/">{window.t("nav.nomad")}</a>
+        <a href="/alerts/">{window.t("nav.alerts")}</a>
+      </nav>
+      <div className="rhs">
+        <InlineModeToggle value={globeStyle} onChange={onGlobeStyleChange} />
+        <LangSwitcher />
+        <SettingsButton tweaks={tweaks} setTweak={setTweak} inNav />
+      </div>
+    </header>
+  );
+}
+
+// Same idea as ModeToggle but slimmer and styled to live inside the nav bar.
+function InlineModeToggle({ value, onChange }) {
+  const opts = [{ v: "globe3d", l: window.t("mode.3d") }, { v: "flat", l: window.t("mode.2d") }];
+  return (
+    <div style={{ display: "inline-flex", background: "var(--bg-3)", border: "1px solid var(--panel-border)", borderRadius: 7, padding: 2, gap: 2 }}>
+      {opts.map(o => {
+        const on = value === o.v;
+        return (
+          <button key={o.v}
+            onClick={() => onChange(o.v)}
+            style={{
+              border: "none", padding: "4px 10px", borderRadius: 5,
+              background: on ? "var(--self)" : "transparent",
+              color: on ? "#05070d" : "var(--fg-dim)",
+              fontFamily: "inherit", fontSize: 11, fontWeight: on ? 600 : 500,
+              cursor: "pointer",
+            }}>
+            {o.l}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+// ─── Language switcher ────────────────────────────────────────────────────
+function LangSwitcher() {
+  const [cur, setCur] = useState(window.ATLAS_LANG || "en");
+  return (
+    <select
+      value={cur}
+      onChange={(e) => { window.setLang(e.target.value); setCur(e.target.value); }}
+      aria-label={window.t("nav.language")}
+      style={{ paddingRight: 26 }}
+    >
+      {(window.LANGS || []).map(l => (
+        <option key={l.code} value={l.code}>{l.native}</option>
+      ))}
+    </select>
+  );
+}
+
 // ─── Settings popover (light/dark + compare mode toggle) ──────────────────
-function SettingsButton({ tweaks, setTweak }) {
+function SettingsButton({ tweaks, setTweak, inNav }) {
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
   useEffect(() => {
@@ -340,19 +417,25 @@ function SettingsButton({ tweaks, setTweak }) {
     document.addEventListener("mousedown", onClick);
     return () => document.removeEventListener("mousedown", onClick);
   }, [open]);
+  const popoverPos = inNav
+    ? { position: "absolute", top: 40, right: 0, minWidth: 240 }
+    : { position: "absolute", bottom: 44, right: 0, minWidth: 220 };
+  const wrapperPos = inNav
+    ? { position: "relative" }
+    : { position: "absolute", bottom: 16, right: 16, zIndex: 5 };
   return (
-    <div ref={ref} style={{ position: "absolute", bottom: 16, right: 16, zIndex: 5 }}>
+    <div ref={ref} style={{ ...wrapperPos, zIndex: 10 }}>
       {open && (
         <div style={{
-          position: "absolute", bottom: 44, right: 0, minWidth: 220,
+          ...popoverPos,
           background: "var(--panel)", backdropFilter: "blur(14px)",
           border: "1px solid var(--panel-border-strong)", borderRadius: 12,
           padding: 12, boxShadow: "0 12px 32px rgba(0,0,0,0.4)",
           fontSize: 12, color: "var(--fg)",
         }}>
-          <div style={{ fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8 }}>Theme</div>
+          <div style={{ fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8 }}>{window.t("settings.theme")}</div>
           <div style={{ display: "flex", gap: 6, marginBottom: 14 }}>
-            {[["dark","Dark"],["light","Light"]].map(([v,l]) => (
+            {[["dark", window.t("settings.theme_dark")], ["light", window.t("settings.theme_light")]].map(([v, l]) => (
               <button key={v} onClick={() => setTweak("background", v)}
                 style={{
                   flex: 1, padding: "6px 8px", borderRadius: 6,
@@ -362,25 +445,29 @@ function SettingsButton({ tweaks, setTweak }) {
                 }}>{l}</button>
             ))}
           </div>
-          <div style={{ fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8 }}>Modes</div>
+          <div style={{ fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8 }}>{window.t("settings.modes")}</div>
           <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", marginBottom: 8 }}>
             <input type="checkbox" checked={!!tweaks.compareMode}
                    onChange={(e) => setTweak("compareMode", e.target.checked)} />
-            <span>Compare two passports</span>
+            <span>{window.t("settings.compare_two")}</span>
           </label>
           <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
             <input type="checkbox" checked={!!tweaks.groupMode}
                    onChange={(e) => setTweak("groupMode", e.target.checked)} />
-            <span>Group travel (multi-passport)</span>
+            <span>{window.t("settings.group_travel")}</span>
           </label>
           <div style={{ fontSize: 10, color: "var(--fg-faint)", marginTop: 4 }}>
-            Family / business trips — paint countries by the strictest visa in the group.
+            {window.t("settings.group_sub")}
           </div>
         </div>
       )}
       <button onClick={() => setOpen(!open)}
-        aria-label="Settings"
-        style={{
+        aria-label={window.t("nav.settings")}
+        style={inNav ? {
+          background: "var(--bg-3)", border: "1px solid var(--panel-border)",
+          color: "var(--fg-dim)", borderRadius: 7, padding: "6px 8px",
+          display: "inline-flex", alignItems: "center", cursor: "pointer",
+        } : {
           width: 36, height: 36, borderRadius: "50%",
           background: "var(--panel)", backdropFilter: "blur(14px)",
           border: "1px solid var(--panel-border-strong)",
@@ -388,7 +475,7 @@ function SettingsButton({ tweaks, setTweak }) {
           display: "flex", alignItems: "center", justifyContent: "center",
           boxShadow: "0 4px 16px rgba(0,0,0,0.30)",
         }}>
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
           <path d="M8 5.5v5M5.5 8h5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" transform="rotate(45 8 8)"/>
           <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.2"/>
         </svg>
@@ -702,12 +789,57 @@ layoutStyle.textContent = `
     width: 100vw;
     display: grid;
     grid-template-columns: 1fr 340px;
+    grid-template-rows: 48px 1fr;
+    grid-template-areas:
+      "topbar topbar"
+      "globe  panel";
   }
+  .topbar {
+    grid-area: topbar;
+    display: flex; align-items: center; gap: 4px;
+    padding: 0 14px;
+    border-bottom: 1px solid var(--panel-border);
+    background: rgba(10, 15, 28, 0.85);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    z-index: 6;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .topbar::-webkit-scrollbar { display: none; }
+  .topbar .brand {
+    display: flex; align-items: center; gap: 8px;
+    padding: 0 12px 0 0;
+    font-weight: 600; font-size: 15px; letter-spacing: -0.01em;
+    color: var(--fg); text-decoration: none;
+    white-space: nowrap;
+  }
+  .topbar .brand img { width: 22px; height: 22px; }
+  .topbar nav { display: flex; gap: 2px; flex: 1; }
+  .topbar nav a {
+    padding: 7px 10px; font-size: 13px;
+    color: var(--fg-dim); text-decoration: none;
+    border-radius: 6px;
+    white-space: nowrap;
+  }
+  .topbar nav a:hover { color: var(--fg); background: var(--bg-3); }
+  .topbar nav a.active { color: var(--fg); background: rgba(96,165,250,0.10); }
+  .topbar .rhs { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+  .topbar .rhs button, .topbar .rhs select {
+    background: var(--bg-3); border: 1px solid var(--panel-border);
+    color: var(--fg-dim); border-radius: 7px; padding: 6px 10px;
+    font-family: inherit; font-size: 12px; cursor: pointer;
+  }
+  .topbar .rhs select { background-color: var(--bg-3); }
+  .topbar .rhs button:hover { color: var(--fg); border-color: var(--border-strong); }
+  body.theme-light .topbar { background: rgba(244, 240, 230, 0.88); }
   .globe-stage {
+    grid-area: globe;
     position: relative;
     overflow: hidden;
   }
   .panel {
+    grid-area: panel;
     position: relative;
     padding: 22px 18px 18px 18px;
     background: linear-gradient(180deg,
@@ -736,8 +868,13 @@ layoutStyle.textContent = `
   .zoom-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
   @media (max-width: 900px) {
-    .layout { grid-template-columns: 1fr; grid-template-rows: 1fr auto; }
+    .layout {
+      grid-template-columns: 1fr;
+      grid-template-rows: 48px 1fr auto;
+      grid-template-areas: "topbar" "globe" "panel";
+    }
     .panel { max-height: 50vh; border-left: none; border-top: 1px solid var(--panel-border); }
+    .topbar nav a { padding: 7px 8px; font-size: 12px; }
   }
 `;
 document.head.appendChild(layoutStyle);

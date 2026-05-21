@@ -13,6 +13,13 @@ function Panel({
 }) {
   const [showPicker, setShowPicker] = useState(false);
   const [showComparePicker, setShowComparePicker] = useState(false);
+  // Force re-render whenever the user switches language.
+  const [, forceLangTick] = useState(0);
+  useEffect(() => {
+    const onLang = () => forceLangTick(x => x + 1);
+    window.addEventListener("atlas:lang", onLang);
+    return () => window.removeEventListener("atlas:lang", onLang);
+  }, []);
   const groupActive = groupMode && groupPassports && groupPassports.length > 0;
   const tallyData = groupActive
     ? window.tallyGroup(groupPassports)
@@ -25,7 +32,7 @@ function Panel({
       <PanelHeader />
 
       <PassportPicker
-        label="Your passport"
+        label={window.t("panel.your_passport")}
         value={passport}
         open={showPicker}
         setOpen={setShowPicker}
@@ -34,7 +41,7 @@ function Panel({
 
       {showCompare && !groupMode && (
         <PassportPicker
-          label="Compare with"
+          label={window.t("panel.compare_with")}
           value={compare}
           open={showComparePicker}
           setOpen={setShowComparePicker}
@@ -141,8 +148,8 @@ function DirectionToggle({ value, onChange }) {
   // "outgoing" — colour each country by what *I* need to enter it.
   // "incoming" — colour each country by what *its citizens* need to visit me.
   const opts = [
-    { v: "outgoing", l: "Outgoing", hint: "Where can I go?" },
-    { v: "incoming", l: "Incoming", hint: "Who can visit me?" },
+    { v: "outgoing", l: window.t("panel.outgoing"), hint: window.t("panel.outgoing_hint") },
+    { v: "incoming", l: window.t("panel.incoming"), hint: window.t("panel.incoming_hint") },
   ];
   const active = opts.find(o => o.v === (value || "outgoing"));
   return (
@@ -150,7 +157,7 @@ function DirectionToggle({ value, onChange }) {
       <div style={{
         fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
         textTransform: "uppercase", letterSpacing: "0.10em", marginBottom: 6,
-      }}>Direction</div>
+      }}>{window.t("panel.direction")}</div>
       <div style={{ display: "flex", gap: 4, padding: 3, background: "var(--bg-2)", borderRadius: 10, border: "1px solid var(--panel-border)" }}>
         {opts.map(o => {
           const on = o.v === (value || "outgoing");
@@ -513,10 +520,10 @@ function Tally({ tally, filter, setFilter, passport, groupActive }) {
           {accessScore}
         </div>
         <div style={{ fontSize: 11, color: "var(--fg-mute)", letterSpacing: "0.04em" }}>
-          {groupActive ? "destinations the group can enter" : "destinations accessible"}<br/>
+          {groupActive ? window.t("tally.group_label") : window.t("tally.accessible")}<br/>
           <span style={{ fontFamily: "var(--font-mono)", color: "var(--fg-faint)" }}>
-            of {total}
-            {groupActive && " · worst-case visa"}
+            {window.t("tally.of")} {total}
+            {groupActive && " · " + window.t("tally.worst_case")}
           </span>
         </div>
       </div>
@@ -601,7 +608,7 @@ function CountrySearch({ passport, search, setSearch, onPick }) {
       <div style={{ position: "relative" }}>
         <SearchIcon />
         <input
-          placeholder="Search any country…"
+          placeholder={window.t("panel.search_placeholder")}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           style={{
@@ -987,7 +994,7 @@ function Changelog() {
           color: "var(--fg-mute)",
           textTransform: "uppercase",
           letterSpacing: "0.10em",
-        }}>Recently changed</div>
+        }}>{window.t("panel.recently_changed")}</div>
         <div style={{
           width: 4, height: 4, borderRadius: "50%",
           background: "var(--vf)", boxShadow: "0 0 6px var(--vf)",
@@ -1005,11 +1012,10 @@ function Changelog() {
             color: "var(--fg-mute)",
             lineHeight: 1.5,
           }}>
-            No policy changes detected in the last 24 hours.
+            {window.t("panel.no_changes")}
             <br />
             <span style={{ color: "var(--fg-faint)" }}>
-              Atlas re-scrapes Wikipedia every morning at 06:00 UTC. Real
-              policy edits will appear here as they happen.
+              {window.t("panel.no_changes_sub")}
             </span>
           </div>
         ) : (
@@ -1096,17 +1102,17 @@ function PanelFooter() {
       lineHeight: 1.6,
     }}>
       <div style={{ marginBottom: 6 }}>
-        Daily refresh from Wikipedia. Verify with the destination embassy before travel.
+        {window.t("footer.refresh")}
       </div>
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-        <a href="/alerts/" style={linkStyle}>Alerts</a>
-        <a href="/schengen-calculator/" style={linkStyle}>Schengen calc</a>
-        <a href="/itinerary/" style={linkStyle}>Itinerary</a>
-        <a href="/digital-nomad-visa/" style={linkStyle}>Nomad visas</a>
-        <a href="/about/" style={linkStyle}>About</a>
-        <a href="/privacy/" style={linkStyle}>Privacy</a>
-        <a href="/passport/" style={linkStyle}>All passports</a>
-        <a href="https://github.com/Uygara/atlas-visa-globe" target="_blank" rel="noopener" style={linkStyle}>Source</a>
+        <a href="/alerts/" style={linkStyle}>{window.t("footer.alerts")}</a>
+        <a href="/schengen-calculator/" style={linkStyle}>{window.t("footer.schengen")}</a>
+        <a href="/itinerary/" style={linkStyle}>{window.t("footer.itinerary")}</a>
+        <a href="/digital-nomad-visa/" style={linkStyle}>{window.t("footer.nomad")}</a>
+        <a href="/about/" style={linkStyle}>{window.t("footer.about")}</a>
+        <a href="/privacy/" style={linkStyle}>{window.t("footer.privacy")}</a>
+        <a href="/passport/" style={linkStyle}>{window.t("footer.all_passports")}</a>
+        <a href="https://github.com/Uygara/atlas-visa-globe" target="_blank" rel="noopener" style={linkStyle}>{window.t("footer.source")}</a>
       </div>
     </footer>
   );
