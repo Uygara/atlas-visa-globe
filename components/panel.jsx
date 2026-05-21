@@ -606,6 +606,8 @@ function DetailCard({ passport, compare, iso2, onClose, direction }) {
         {NOTES[r.status]}
       </p>
 
+      <AlertsCTA iso2={iso2} destName={dest.name} />
+
       <AffiliatePartners status={r.status} iso2={iso2} />
 
       <AdSlot slotKey="sidebar" />
@@ -639,6 +641,30 @@ function DetailCard({ passport, compare, iso2, onClose, direction }) {
 // Renders an AdSense ad unit if (and only if) both the publisher client ID and
 // the slot's numeric ID are configured in data/ads.js. Otherwise renders nothing.
 // On mount it pushes a request to AdSense's queue, exactly as Google docs prescribe.
+function AlertsCTA({ iso2, destName }) {
+  // Small affordance that nudges power users to the /alerts page with the
+  // current destination pre-selected (via hash). Hidden when ads.js detects
+  // we're inside an embed scenario (no window.AFFILIATES).
+  const href = `/alerts/?country=${encodeURIComponent(iso2)}`;
+  return (
+    <a href={href} style={{
+      display: "flex", alignItems: "center", gap: 10,
+      padding: "10px 12px", marginBottom: 10,
+      background: "var(--bg-3)", border: "1px dashed var(--panel-border-strong)",
+      borderRadius: 8, textDecoration: "none", color: "var(--fg)",
+    }}>
+      <span style={{ fontSize: 18 }}>🔔</span>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontSize: 12, fontWeight: 500 }}>Get alerts for {destName}</div>
+        <div style={{ fontSize: 11, color: "var(--fg-mute)", marginTop: 2 }}>
+          Free email when its visa policy changes.
+        </div>
+      </div>
+      <span style={{ fontSize: 14, color: "var(--fg-mute)" }}>→</span>
+    </a>
+  );
+}
+
 function AdSlot({ slotKey }) {
   const ref = React.useRef(null);
   const pushed = React.useRef(false);
@@ -831,6 +857,7 @@ function PanelFooter() {
         Daily refresh from Wikipedia. Verify with the destination embassy before travel.
       </div>
       <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+        <a href="/alerts/" style={linkStyle}>Alerts</a>
         <a href="/about/" style={linkStyle}>About</a>
         <a href="/privacy/" style={linkStyle}>Privacy</a>
         <a href="/passport/" style={linkStyle}>All passports</a>

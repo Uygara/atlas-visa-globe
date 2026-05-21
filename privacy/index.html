@@ -42,6 +42,16 @@
   <em>locally in your browser</em> for the same purpose; that value is
   never sent to us.</p>
 
+  <h2>If you subscribe to alerts</h2>
+  <p>The Atlas alerts service stores only what's needed to deliver mail:
+  your email address, the country codes you chose to watch, your tier
+  (free or Pro), and timestamps. Pro subscribers' Stripe customer + subscription
+  IDs are also stored so we can manage billing — Stripe holds the actual card
+  data, never Atlas. Records live in Cloudflare KV in the EU region.</p>
+  <p>Every alert email contains a one-click unsubscribe link that deletes
+  your record immediately and (if applicable) cancels your Stripe
+  subscription.</p>
+
   <h2>Information third parties collect</h2>
   <p>We use the following third-party services, each with their own privacy policy:</p>
   <ul>
@@ -55,6 +65,19 @@
     logs basic request data (IP, user-agent, referrer) for ~24 hours for
     security and performance.
     <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">Cloudflare Privacy Policy</a></li>
+
+    <li><strong>Stripe</strong> handles Pro-tier billing. We never see card
+    data. Stripe sets its own cookies on the Checkout and customer portal
+    pages.
+    <a href="https://stripe.com/privacy" target="_blank" rel="noopener">Stripe Privacy Policy</a></li>
+
+    <li><strong>Resend</strong> delivers all transactional emails (confirmation,
+    digests, unsubscribe receipts). They receive your address and the
+    rendered message body. <a href="https://resend.com/legal/privacy-policy" target="_blank" rel="noopener">Resend Privacy Policy</a></li>
+
+    <li><strong>OpenStreetMap Nominatim</strong> is only contacted when you
+    explicitly grant the geolocation prompt. Your coordinates are sent there
+    once, never stored on Atlas's side.</li>
 
     <li><strong>Affiliate partners</strong> — when our service partner links
     (iVisa, Airalo, etc.) become available, clicking one takes you to the

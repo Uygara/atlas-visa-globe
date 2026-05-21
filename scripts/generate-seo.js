@@ -327,6 +327,7 @@ function renderSitemap(allPassports) {
   const today = new Date().toISOString().slice(0,10);
   const urls = [
     `<url><loc>${base}/</loc><lastmod>${today}</lastmod><priority>1.0</priority></url>`,
+    `<url><loc>${base}/alerts/</loc><lastmod>${today}</lastmod><priority>0.7</priority></url>`,
     `<url><loc>${base}/about/</loc><lastmod>${today}</lastmod><priority>0.5</priority></url>`,
     `<url><loc>${base}/privacy/</loc><lastmod>${today}</lastmod><priority>0.3</priority></url>`,
     `<url><loc>${base}/passport/</loc><lastmod>${today}</lastmod><priority>0.8</priority></url>`,
