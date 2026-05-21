@@ -45,7 +45,7 @@ function Globe({
   // ─── Topology load ─────────────────────────────────────────────────────────
   useEffect(() => {
     let alive = true;
-    fetch("https://unpkg.com/world-atlas@2.0.2/countries-50m.json")
+    fetch("https://unpkg.com/world-atlas@2.0.2/countries-110m.json")
       .then(r => r.json())
       .then(world => {
         if (!alive) return;
@@ -623,6 +623,10 @@ const MICRO_STATES = [
   "BN", // Brunei
   "HK", // Hong Kong
   "MO", // Macao
+  // Partially-recognised states + Palestine — not rendered as polygons in 110m
+  "XK", // Kosovo
+  "XN", // Northern Cyprus
+  "PS", // Palestine (West Bank + Gaza)
 ];
 
 function MicroStateMarkers({

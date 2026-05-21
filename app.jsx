@@ -193,6 +193,8 @@ function App() {
           focusedCountry={focusedCountry}
         />
 
+        <ModeToggle value={t.globeStyle} onChange={(v) => setTweak("globeStyle", v)} />
+
         {!passport && (
           <WelcomeOverlay
             onPick={(iso2) => { setPassport(iso2); setShowWelcome(false); }}
@@ -258,6 +260,61 @@ function App() {
           onChange={(v) => setTweak("compareMode", v)}
         />
       </TweaksPanel>
+    </div>
+  );
+}
+
+// ─── Globe view-mode toggle (top-right floating control) ───────────────────
+function ModeToggle({ value, onChange }) {
+  const opts = [
+    { v: "globe3d", l: "3D" },
+    { v: "globe2d", l: "2D" },
+    { v: "flat",    l: "Map" },
+  ];
+  return (
+    <div style={{
+      position: "absolute",
+      top: 16,
+      right: 16,
+      zIndex: 5,
+      display: "flex",
+      background: "var(--panel)",
+      backdropFilter: "blur(14px)",
+      border: "1px solid var(--panel-border-strong)",
+      borderRadius: 999,
+      padding: 3,
+      gap: 2,
+      fontFamily: "var(--font-mono)",
+      fontSize: 11,
+      letterSpacing: "0.04em",
+      boxShadow: "0 4px 16px rgba(0,0,0,0.30)",
+    }}>
+      {opts.map(o => {
+        const active = value === o.v;
+        return (
+          <button
+            key={o.v}
+            onClick={() => onChange(o.v)}
+            style={{
+              border: "none",
+              padding: "6px 12px",
+              borderRadius: 999,
+              cursor: "pointer",
+              background: active ? "var(--self)" : "transparent",
+              color: active ? "#05070d" : "var(--fg-dim)",
+              fontWeight: active ? 600 : 500,
+              fontFamily: "inherit",
+              fontSize: "inherit",
+              letterSpacing: "inherit",
+              transition: "background 180ms ease, color 180ms ease",
+            }}
+            aria-pressed={active}
+            title={`Switch to ${o.l} view`}
+          >
+            {o.l}
+          </button>
+        );
+      })}
     </div>
   );
 }
