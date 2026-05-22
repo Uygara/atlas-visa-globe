@@ -47,7 +47,7 @@ function Panel({
           setOpen={setShowComparePicker}
           onChange={(v) => { setCompare(v); setShowComparePicker(false); }}
           accent="var(--compare-self)"
-          placeholder="Pick a second passport…"
+          placeholder={window.t("picker.pick_second")}
           allowClear
         />
       )}
@@ -118,7 +118,7 @@ function PanelHeader() {
             boxShadow: "0 0 6px var(--vf)",
             animation: "pulse 2s ease-in-out infinite",
           }} />
-          Live · {formatted}
+          {window.t("header.live")} · {formatted}
         </div>
       </div>
       <p style={{
@@ -127,7 +127,7 @@ function PanelHeader() {
         color: "var(--fg-mute)",
         lineHeight: 1.45,
       }}>
-        Where can your passport take you?
+        {window.t("header.tagline")}
       </p>
     </header>
   );
@@ -210,7 +210,7 @@ function GroupPicker({ primary, values, onChange }) {
         display: "flex", alignItems: "center", gap: 6,
       }}>
         <span style={{ width: 8, height: 8, borderRadius: 2, background: "var(--vf)", boxShadow: "0 0 6px var(--vf)" }} />
-        Group ({values.length}/{MAX})
+        {window.t("group.label")} ({values.length}/{MAX})
       </div>
 
       <div style={{
@@ -233,7 +233,7 @@ function GroupPicker({ primary, values, onChange }) {
                 <span>{c.name}</span>
                 <button
                   onClick={() => remove(iso)}
-                  aria-label={`Remove ${c.name}`}
+                  aria-label={window.t("group.remove", { name: c.name })}
                   style={{ background: "transparent", border: "none", color: "var(--fg-mute)", cursor: "pointer", fontSize: 14, padding: 0, lineHeight: 1 }}>
                   ×
                 </button>
@@ -251,7 +251,7 @@ function GroupPicker({ primary, values, onChange }) {
               borderRadius: 8, color: "var(--fg-dim)",
               cursor: "pointer", fontFamily: "inherit", fontSize: 12,
             }}>
-            + Add passport
+            {window.t("group.add_passport")}
           </button>
         )}
       </div>
@@ -279,7 +279,7 @@ function GroupAddDropdown({ existing, onPick, onClose }) {
       border: "1px solid var(--panel-border-strong)", borderRadius: 10,
       overflow: "hidden",
     }}>
-      <input autoFocus type="text" placeholder="Search…" value={q} onChange={(e) => setQ(e.target.value)}
+      <input autoFocus type="text" placeholder={window.t("picker.search")} value={q} onChange={(e) => setQ(e.target.value)}
         style={{
           width: "100%", padding: "9px 12px", background: "transparent",
           border: "none", borderBottom: "1px solid var(--panel-border)",
@@ -303,7 +303,7 @@ function GroupAddDropdown({ existing, onPick, onClose }) {
           );
         })}
         {filtered.length === 0 && (
-          <div style={{ padding: 14, color: "var(--fg-mute)", fontSize: 12 }}>No matches.</div>
+          <div style={{ padding: 14, color: "var(--fg-mute)", fontSize: 12 }}>{window.t("picker.no_matches_short")}</div>
         )}
       </div>
     </div>
@@ -367,7 +367,7 @@ function PassportPicker({ label, value, open, setOpen, onChange, accent, placeho
             </div>
           </>
         ) : (
-          <span style={{ color: "var(--fg-mute)" }}>{placeholder || "Select a passport…"}</span>
+          <span style={{ color: "var(--fg-mute)" }}>{placeholder || window.t("picker.select_passport")}</span>
         )}
         <Caret rotated={open} />
       </button>
@@ -411,7 +411,7 @@ function PassportDropdown({ value, onChange, allowClear, onClear }) {
     }}>
       <input
         autoFocus
-        placeholder="Search passports…"
+        placeholder={window.t("picker.search_passports")}
         value={q}
         onChange={(e) => setQ(e.target.value)}
         style={{
@@ -447,7 +447,7 @@ function PassportDropdown({ value, onChange, allowClear, onClear }) {
               fontStyle: "italic",
             }}
           >
-            Clear selection
+            {window.t("picker.clear")}
           </button>
         )}
         {list.map(p => {
@@ -485,7 +485,7 @@ function PassportDropdown({ value, onChange, allowClear, onClear }) {
         })}
         {list.length === 0 && (
           <div style={{ padding: 16, color: "var(--fg-mute)", fontSize: 13, textAlign: "center" }}>
-            No passports match
+            {window.t("picker.no_matches")}
           </div>
         )}
       </div>
@@ -496,10 +496,10 @@ function PassportDropdown({ value, onChange, allowClear, onClear }) {
 function Tally({ tally, filter, setFilter, passport, groupActive }) {
   const total = tally.vf + tally.ev + tally.voa + tally.vr;
   const rows = [
-    { k: "vf",  ...STATUS_COLOR.vf,  n: tally.vf  },
-    { k: "ev",  ...STATUS_COLOR.ev,  n: tally.ev  },
-    { k: "voa", ...STATUS_COLOR.voa, n: tally.voa },
-    { k: "vr",  ...STATUS_COLOR.vr,  n: tally.vr  },
+    { k: "vf",  ...STATUS_COLOR.vf,  n: tally.vf,  label: window.t("status.vf")  },
+    { k: "ev",  ...STATUS_COLOR.ev,  n: tally.ev,  label: window.t("status.ev")  },
+    { k: "voa", ...STATUS_COLOR.voa, n: tally.voa, label: window.t("status.voa") },
+    { k: "vr",  ...STATUS_COLOR.vr,  n: tally.vr,  label: window.t("status.vr")  },
   ];
   const accessScore = tally.vf + tally.ev + tally.voa;
   return (
@@ -553,7 +553,7 @@ function Tally({ tally, filter, setFilter, passport, groupActive }) {
           style={filterRowStyle(filter === "all")}
         >
           <span style={{ width: 8, height: 8, borderRadius: 2, background: "var(--fg-mute)" }} />
-          <span style={{ flex: 1, textAlign: "left" }}>All</span>
+          <span style={{ flex: 1, textAlign: "left" }}>{window.t("tally.filter_all")}</span>
           <span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--fg-mute)" }}>{total}</span>
         </button>
         {rows.map(r => (
@@ -701,12 +701,17 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
   const myPp = window.byIso2[passport];
 
   const NOTES = {
-    vf:  "No visa needed. Present a valid passport on arrival.",
-    ev:  "Apply online before travel. Approval is typically issued in 24–72 hours.",
-    voa: "Obtain visa at the border. Carry passport photos, fee in USD, and proof of onward travel.",
-    vr:  "Apply for a visa at an embassy or consulate before travel.",
-    self: "You are at home.",
-    na:  "No data available for this passport / destination pair.",
+    vf:   window.t("detail.note.vf"),
+    ev:   window.t("detail.note.ev"),
+    voa:  window.t("detail.note.voa"),
+    vr:   window.t("detail.note.vr"),
+    self: window.t("detail.note.self"),
+    na:   window.t("detail.note.na"),
+  };
+  const localizedStatusLabel = (s) => {
+    const k = "status." + s;
+    const tr = window.t(k);
+    return tr === k ? (STATUS_COLOR[s]?.label || s) : tr;
   };
   return (
     <div style={{
@@ -719,7 +724,7 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
     }}>
       <button
         onClick={onClose}
-        aria-label="Close"
+        aria-label={window.t("detail.close")}
         style={{
           position: "absolute", top: 10, right: 10,
           background: "transparent", border: "none", color: "var(--fg-mute)",
@@ -734,7 +739,7 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
         <div>
           <div style={{ fontSize: 16, fontWeight: 600, letterSpacing: "-0.01em" }}>{dest.name}</div>
           <div style={{ fontSize: 11, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
-            {dest.continent === "EU" ? "Europe" : dest.continent === "AS" ? "Asia" : dest.continent === "AF" ? "Africa" : dest.continent === "NA" ? "N. America" : dest.continent === "SA" ? "S. America" : dest.continent === "OC" ? "Oceania" : "—"}
+            {dest.continent ? (window.t("cont." + dest.continent) !== ("cont." + dest.continent) ? window.t("cont." + dest.continent) : dest.continent) : "—"}
           </div>
         </div>
       </div>
@@ -753,8 +758,8 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
           background: sc.fill, boxShadow: `0 0 10px ${sc.fill}`,
         }}/>
         <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 13, fontWeight: 500 }}>{sc.label}</div>
-          {r.days && <div style={{ fontSize: 11, color: "var(--fg-mute)", fontFamily: "var(--font-mono)" }}>Up to {r.days} days</div>}
+          <div style={{ fontSize: 13, fontWeight: 500 }}>{localizedStatusLabel(r.status)}</div>
+          {r.days && <div style={{ fontSize: 11, color: "var(--fg-mute)", fontFamily: "var(--font-mono)" }}>{window.t("detail.up_to_days", { n: r.days })}</div>}
         </div>
       </div>
 
@@ -779,7 +784,7 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
           border: "1px dashed var(--panel-border-strong)",
           background: "rgba(96,165,250,0.05)",
         }}>
-          <div style={{ fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6 }}>Compare</div>
+          <div style={{ fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6 }}>{window.t("detail.compare")}</div>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <span style={{ fontSize: 18 }}>{window.byIso2[compare]?.flag}</span>
             <Arrow />
@@ -788,8 +793,8 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
               background: STATUS_COLOR[rc.status].fill, boxShadow: `0 0 10px ${STATUS_COLOR[rc.status].fill}`,
             }}/>
             <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 13, fontWeight: 500 }}>{STATUS_COLOR[rc.status].label}</div>
-              {rc.days && <div style={{ fontSize: 11, color: "var(--fg-mute)", fontFamily: "var(--font-mono)" }}>Up to {rc.days} days</div>}
+              <div style={{ fontSize: 13, fontWeight: 500 }}>{localizedStatusLabel(rc.status)}</div>
+              {rc.days && <div style={{ fontSize: 11, color: "var(--fg-mute)", fontFamily: "var(--font-mono)" }}>{window.t("detail.up_to_days", { n: rc.days })}</div>}
             </div>
           </div>
         </div>
@@ -801,7 +806,7 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
           border: "1px dashed var(--panel-border-strong)",
           background: "rgba(96,165,250,0.05)",
         }}>
-          <div style={{ fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 8 }}>Per group member</div>
+          <div style={{ fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 8 }}>{window.t("detail.per_group_member")}</div>
           {groupRows.map(({ p, r: rr }) => {
             const c = window.byIso2[p];
             const sc2 = STATUS_COLOR[rr.status];
@@ -813,7 +818,7 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
                   width: 8, height: 8, borderRadius: "50%",
                   background: sc2.fill,
                 }} />
-                <span style={{ fontSize: 11, color: "var(--fg-dim)", minWidth: 80, textAlign: "right" }}>{sc2.label}</span>
+                <span style={{ fontSize: 11, color: "var(--fg-dim)", minWidth: 80, textAlign: "right" }}>{localizedStatusLabel(rr.status)}</span>
                 {rr.days && <span style={{ fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)" }}>{rr.days}d</span>}
               </div>
             );
@@ -855,20 +860,20 @@ function VisaFeeBox({ passport, destIso2, status }) {
       marginBottom: 10,
     }}>
       <div style={{ fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4 }}>
-        Visa cost & timing
+        {window.t("detail.visa_cost")}
       </div>
       <div style={{ fontSize: 18, fontWeight: 600, color: "var(--fg)", marginBottom: 2 }}>
         {data.fee}
       </div>
       {data.processingDays && (
         <div style={{ fontSize: 11, color: "var(--fg-dim)" }}>
-          Processing: {data.processingDays}
+          {window.t("detail.processing")}: {data.processingDays}
         </div>
       )}
       <div style={{ borderTop: "1px solid var(--panel-border)", marginTop: 8 }}>
-        {row("Type",            data.type)}
-        {row("Validity",        data.validity)}
-        {row("Duration of stay", data.durationOfStay)}
+        {row(window.t("detail.type"),             data.type)}
+        {row(window.t("detail.validity"),         data.validity)}
+        {row(window.t("detail.duration_of_stay"), data.durationOfStay)}
       </div>
       {data.notes && (
         <div style={{ fontSize: 11, color: "var(--fg-dim)", marginTop: 8, padding: "6px 8px", background: "rgba(250,204,21,0.05)", borderLeft: "2px solid var(--voa)", borderRadius: 2 }}>
@@ -879,12 +884,12 @@ function VisaFeeBox({ passport, destIso2, status }) {
         <div style={{ marginTop: 8 }}>
           <a href={data.source} target="_blank" rel="noopener nofollow"
              style={{ fontSize: 11, color: "var(--fg-mute)", textDecoration: "none", borderBottom: "1px dotted var(--fg-faint)" }}>
-            Official source ↗
+            {window.t("detail.official_source")}
           </a>
         </div>
       )}
       <div style={{ fontSize: 9, color: "var(--fg-faint)", marginTop: 6, fontFamily: "var(--font-mono)" }}>
-        Reviewed {data.lastReviewed}. Verify before applying — fees change.
+        {window.t("detail.reviewed", { date: data.lastReviewed })}
       </div>
     </div>
   );
@@ -904,9 +909,9 @@ function AlertsCTA({ iso2, destName }) {
     }}>
       <span style={{ fontSize: 18 }}>🔔</span>
       <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: 12, fontWeight: 500 }}>Get alerts for {destName}</div>
+        <div style={{ fontSize: 12, fontWeight: 500 }}>{window.t("detail.get_alerts_for", { name: destName })}</div>
         <div style={{ fontSize: 11, color: "var(--fg-mute)", marginTop: 2 }}>
-          Free email when its visa policy changes.
+          {window.t("detail.get_alerts_sub")}
         </div>
       </div>
       <span style={{ fontSize: 14, color: "var(--fg-mute)" }}>→</span>
@@ -950,7 +955,7 @@ function AffiliatePartners({ status, iso2 }) {
       <div style={{
         fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
         textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6,
-      }}>Plan your trip</div>
+      }}>{window.t("detail.plan_your_trip")}</div>
       <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
         {partners.map(p => (
           <a key={p.id} href={p.href} target="_blank" rel="sponsored noopener noreferrer"
@@ -966,7 +971,7 @@ function AffiliatePartners({ status, iso2 }) {
         ))}
       </div>
       <div style={{ fontSize: 9, color: "var(--fg-faint)", marginTop: 4, fontFamily: "var(--font-mono)" }}>
-        Sponsored. Atlas may earn a commission.
+        {window.t("detail.sponsored")}
       </div>
     </div>
   );
@@ -1032,7 +1037,7 @@ function Changelog() {
             textTransform: "uppercase", letterSpacing: "0.08em",
           }}
         >
-          {expanded ? "Show less" : `+ ${window.CHANGELOG.length - 4} more changes`}
+          {expanded ? window.t("changelog.show_less") : window.t("changelog.more", { n: window.CHANGELOG.length - 4 })}
         </button>
       )}
     </div>

@@ -5,7 +5,10 @@ const { useState, useEffect, useRef, useMemo, useCallback } = React;
 
 const TWEAK_DEFAULTS = {
   "globeStyle": "globe3d",
-  "background": "dark",
+  // Light by default — most readers find it easier on the eyes for data-dense
+  // panels. The brand stays distinctive via the accent palette, not the bg.
+  // Returning users keep whatever they last set (atlas.tweaks localStorage).
+  "background": "light",
   "compareMode": false,
   "groupMode": false,
 };
@@ -339,28 +342,48 @@ function App() {
 function TopNav({ tweaks, setTweak, globeStyle, onGlobeStyleChange }) {
   // Re-render when language changes
   const [, force] = useState(0);
+  const [menuOpen, setMenuOpen] = useState(false);
   useEffect(() => {
     const onLang = () => force(x => x + 1);
     window.addEventListener("atlas:lang", onLang);
     return () => window.removeEventListener("atlas:lang", onLang);
   }, []);
+  // Close mobile menu when clicking a link inside it
+  const closeMenu = () => setMenuOpen(false);
   return (
-    <header className="topbar">
+    <header className={"topbar" + (menuOpen ? " menu-open" : "")}>
       <a className="brand" href="/" aria-label="Atlas home">
         <img src="/assets/favicon.svg" alt="" />
         <span>Atlas</span>
       </a>
-      <nav>
-        <a href="/schengen-calculator/">{window.t("nav.schengen")}</a>
-        <a href="/itinerary/">{window.t("nav.itinerary")}</a>
-        <a href="/digital-nomad-visa/">{window.t("nav.nomad")}</a>
-        <a href="/alerts/">{window.t("nav.alerts")}</a>
-      </nav>
-      <div className="rhs">
-        <InlineModeToggle value={globeStyle} onChange={onGlobeStyleChange} />
-        <LangSwitcher />
-        <SettingsButton tweaks={tweaks} setTweak={setTweak} inNav />
+      <div className="topbar-sheet">
+        <nav className="primary-nav">
+          <a href="/schengen-calculator/" onClick={closeMenu}>{window.t("nav.schengen")}</a>
+          <a href="/itinerary/" onClick={closeMenu}>{window.t("nav.itinerary")}</a>
+          <a href="/digital-nomad-visa/" onClick={closeMenu}>{window.t("nav.nomad")}</a>
+          <a href="/alerts/" onClick={closeMenu}>{window.t("nav.alerts")}</a>
+        </nav>
+        <div className="rhs">
+          <InlineModeToggle value={globeStyle} onChange={onGlobeStyleChange} />
+          <LangSwitcher />
+          <SettingsButton tweaks={tweaks} setTweak={setTweak} inNav />
+        </div>
       </div>
+      {/* Hamburger only shown on mobile via CSS */}
+      <button
+        className="hamburger"
+        aria-label={window.t("nav.menu")}
+        aria-expanded={menuOpen}
+        onClick={() => setMenuOpen(v => !v)}
+      >
+        <svg width="18" height="18" viewBox="0 0 18 18">
+          {menuOpen ? (
+            <path d="M4 4 L14 14 M14 4 L4 14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+          ) : (
+            <path d="M3 5 H15 M3 9 H15 M3 13 H15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+          )}
+        </svg>
+      </button>
     </header>
   );
 }
@@ -569,7 +592,7 @@ function WelcomeOverlay({ onPick, onUseLocation, locationStatus }) {
           textTransform: "uppercase",
           letterSpacing: "0.12em",
           marginBottom: 8,
-        }}>Pick your passport to begin</div>
+        }}>{window.t("welcome.hint")}</div>
         <h1 style={{
           fontSize: 28,
           fontWeight: 600,
@@ -577,8 +600,8 @@ function WelcomeOverlay({ onPick, onUseLocation, locationStatus }) {
           margin: "0 0 8px 0",
           lineHeight: 1.1,
         }}>
-          Where in the world<br/>
-          <span style={{ color: "var(--fg-mute)" }}>can you go without a visa?</span>
+          {window.t("welcome.title_1")}<br/>
+          <span style={{ color: "var(--fg-mute)" }}>{window.t("welcome.title_2")}</span>
         </h1>
         <p style={{
           fontSize: 13,
@@ -586,8 +609,7 @@ function WelcomeOverlay({ onPick, onUseLocation, locationStatus }) {
           lineHeight: 1.5,
           margin: "0 0 20px 0",
         }}>
-          Select the passport you hold. The globe will paint every other country
-          by what you'd need to enter today: visa-free, eVisa, visa on arrival, or visa required.
+          {window.t("welcome.body")}
         </p>
 
         <div style={{
@@ -647,9 +669,9 @@ function WelcomeOverlay({ onPick, onUseLocation, locationStatus }) {
           className="welcome-loc"
         >
           <LocateIcon />
-          {locationStatus === "detecting" ? "Detecting…" :
-           locationStatus === "denied" ? "Couldn't detect location — pick one above" :
-           "Use my current location"}
+          {locationStatus === "detecting" ? window.t("welcome.detecting") :
+           locationStatus === "denied" ? window.t("welcome.couldnt_detect") :
+           window.t("welcome.use_location")}
         </button>
 
         <div style={{
@@ -661,7 +683,7 @@ function WelcomeOverlay({ onPick, onUseLocation, locationStatus }) {
           textTransform: "uppercase",
           letterSpacing: "0.08em",
         }}>
-          Or open the panel for the full list of {window.PASSPORT_LIST.length} passports
+          {window.t("welcome.or_open_panel", { n: window.PASSPORT_LIST.length })}
         </div>
       </div>
     </div>
@@ -681,10 +703,10 @@ function LocateIcon() {
 // ─── Legend ─────────────────────────────────────────────────────────────────
 function Legend() {
   const items = [
-    { k: "vf",  ...STATUS_COLOR.vf  },
-    { k: "ev",  ...STATUS_COLOR.ev  },
-    { k: "voa", ...STATUS_COLOR.voa },
-    { k: "vr",  ...STATUS_COLOR.vr  },
+    { k: "vf",  fill: STATUS_COLOR.vf.fill,  label: window.t("status.vf")  },
+    { k: "ev",  fill: STATUS_COLOR.ev.fill,  label: window.t("status.ev")  },
+    { k: "voa", fill: STATUS_COLOR.voa.fill, label: window.t("status.voa") },
+    { k: "vr",  fill: STATUS_COLOR.vr.fill,  label: window.t("status.vr")  },
   ];
   return (
     <div style={{
@@ -748,7 +770,7 @@ function CompareFloater({ enabled, passport, compare }) {
         <span style={{ fontSize: 18 }}>{a.flag}</span>
         <div>
           <div style={{ fontWeight: 500, color: "var(--fg)" }}>{a.name}</div>
-          <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--vf)" }}>{sa} open</div>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--vf)" }}>{sa} {window.t("compare.open")}</div>
         </div>
       </div>
       <div style={{ width: 1, background: "var(--panel-border-strong)" }} />
@@ -756,7 +778,7 @@ function CompareFloater({ enabled, passport, compare }) {
         <span style={{ fontSize: 18 }}>{b.flag}</span>
         <div>
           <div style={{ fontWeight: 500, color: "var(--fg)" }}>{b.name}</div>
-          <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--vf)" }}>{sb} open</div>
+          <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--vf)" }}>{sb} {window.t("compare.open")}</div>
         </div>
       </div>
       <div style={{
@@ -796,6 +818,7 @@ layoutStyle.textContent = `
   }
   .topbar {
     grid-area: topbar;
+    position: relative;
     display: flex; align-items: center; gap: 4px;
     padding: 0 14px;
     border-bottom: 1px solid var(--panel-border);
@@ -803,7 +826,6 @@ layoutStyle.textContent = `
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     z-index: 6;
-    overflow-x: auto;
     scrollbar-width: none;
   }
   .topbar::-webkit-scrollbar { display: none; }
@@ -815,15 +837,16 @@ layoutStyle.textContent = `
     white-space: nowrap;
   }
   .topbar .brand img { width: 22px; height: 22px; }
-  .topbar nav { display: flex; gap: 2px; flex: 1; }
-  .topbar nav a {
+  .topbar-sheet { display: flex; align-items: center; gap: 4px; flex: 1; }
+  .topbar .primary-nav { display: flex; gap: 2px; flex: 1; }
+  .topbar .primary-nav a {
     padding: 7px 10px; font-size: 13px;
     color: var(--fg-dim); text-decoration: none;
     border-radius: 6px;
     white-space: nowrap;
   }
-  .topbar nav a:hover { color: var(--fg); background: var(--bg-3); }
-  .topbar nav a.active { color: var(--fg); background: rgba(96,165,250,0.10); }
+  .topbar .primary-nav a:hover { color: var(--fg); background: var(--bg-3); }
+  .topbar .primary-nav a.active { color: var(--fg); background: rgba(96,165,250,0.10); }
   .topbar .rhs { display: flex; align-items: center; gap: 6px; margin-left: auto; }
   .topbar .rhs button, .topbar .rhs select {
     background: var(--bg-3); border: 1px solid var(--panel-border);
@@ -833,6 +856,18 @@ layoutStyle.textContent = `
   .topbar .rhs select { background-color: var(--bg-3); }
   .topbar .rhs button:hover { color: var(--fg); border-color: var(--border-strong); }
   body.theme-light .topbar { background: rgba(244, 240, 230, 0.88); }
+
+  /* Hamburger lives in the DOM but is invisible by default — only mobile gets it */
+  .topbar .hamburger {
+    display: none;
+    background: var(--bg-3);
+    border: 1px solid var(--panel-border);
+    color: var(--fg-dim);
+    border-radius: 7px;
+    padding: 6px 8px;
+    cursor: pointer;
+    align-items: center; justify-content: center;
+  }
   .globe-stage {
     grid-area: globe;
     position: relative;
@@ -874,7 +909,50 @@ layoutStyle.textContent = `
       grid-template-areas: "topbar" "globe" "panel";
     }
     .panel { max-height: 50vh; border-left: none; border-top: 1px solid var(--panel-border); }
-    .topbar nav a { padding: 7px 8px; font-size: 12px; }
+
+    /* Compact mobile topbar: brand + mode toggle on the bar, everything else
+       collapses into a dropdown opened by the hamburger.
+       Nav + lang + settings live in a slide-down sheet so users no longer have
+       to side-scroll to reach the language picker. */
+    .topbar { padding: 0 10px; gap: 6px; }
+    .topbar .brand span { display: none; }
+    .topbar .hamburger { display: inline-flex; margin-left: auto; }
+
+    /* Nav + lang/settings collapse into a slide-down sheet behind the hamburger */
+    .topbar-sheet { display: none; }
+    .topbar.menu-open .topbar-sheet {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 8px;
+      position: absolute;
+      top: 48px;
+      right: 0;
+      width: min(280px, 92vw);
+      background: rgba(10, 15, 28, 0.97);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid var(--panel-border-strong);
+      border-top: none;
+      border-radius: 0 0 12px 12px;
+      padding: 10px;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+      z-index: 7;
+    }
+    body.theme-light .topbar.menu-open .topbar-sheet {
+      background: rgba(244, 240, 230, 0.97);
+    }
+    .topbar.menu-open .primary-nav {
+      flex-direction: column; align-items: stretch; gap: 2px; flex: none;
+    }
+    .topbar.menu-open .primary-nav a { padding: 10px 12px; font-size: 14px; border-radius: 8px; }
+    .topbar.menu-open .rhs {
+      flex-direction: column; align-items: stretch; gap: 8px;
+      margin-left: 0; padding-top: 8px; border-top: 1px solid var(--panel-border);
+    }
+    .topbar.menu-open .rhs select { padding: 10px 12px; font-size: 14px; width: 100%; }
+    .topbar.menu-open .rhs > div { width: 100%; }
+    .topbar.menu-open .rhs > div > button { flex: 1; }
   }
 `;
 document.head.appendChild(layoutStyle);

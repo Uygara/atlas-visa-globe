@@ -169,9 +169,15 @@ function Globe({
     let proj, base;
     if (mode === "flat") {
       base = Math.min(w / 5.5, h / 3);
-      proj = d3.geoNaturalEarth1()
+      // Use d3.geoEquirectangular for the flat view — it's a true cylindrical
+      // projection so rotation in longitude wraps the world infinitely. Pseudo-
+      // cylindrical NaturalEarth1 also wraps, but its meridians curve, which
+      // makes the seam visible at the antimeridian. Equirectangular keeps the
+      // wrap seamless and reads cleanly as a "flat" world map.
+      proj = d3.geoEquirectangular()
         .scale(base * zoomRef.current)
-        .translate([w / 2 + panRef.current[0], h / 2 + panRef.current[1]]);
+        .translate([w / 2, h / 2 + panRef.current[1]])
+        .rotate([rotRef.current[0], 0, 0]);
     } else {
       base = Math.min(w, h) * 0.42;
       proj = d3.geoOrthographic()
@@ -194,9 +200,10 @@ function Globe({
     const applyScaleAndTranslate = () => {
       if (!projRef.current) return;
       projRef.current.scale(baseScaleRef.current * zoomRef.current);
-      // Re-apply translation (preserves pan offset for flat mode)
+      // Re-apply translation (preserves Y-pan offset for flat mode; X comes
+      // from rotation, not translate, so the world wraps horizontally).
       if (mode === "flat") {
-        projRef.current.translate([size.w / 2 + panRef.current[0], size.h / 2 + panRef.current[1]]);
+        projRef.current.translate([size.w / 2, size.h / 2 + panRef.current[1]]);
       }
       redrawPaths();
     };
@@ -292,10 +299,19 @@ function Globe({
       const dx = e.clientX - startPt[0];
       const dy = e.clientY - startPt[1];
       if (mode === "flat") {
-        // Pan: shift the projection's translate by the mouse delta (1:1 pixels)
-        panRef.current = [startPan[0] + dx, startPan[1] + dy];
-        if (projRef.current && projRef.current.translate) {
-          projRef.current.translate([size.w / 2 + panRef.current[0], size.h / 2 + panRef.current[1]]);
+        // Horizontal pan → longitude rotation so the world wraps. Vertical pan
+        // stays as a translate (limited by clamping later if needed).
+        // Pixels-per-degree at the equator: scale * π / 180.
+        const scale = projRef.current ? projRef.current.scale() : baseScaleRef.current;
+        const degPerPx = 180 / (Math.PI * scale);
+        let lambda = (startRot[0] + dx * degPerPx) % 360;
+        if (lambda > 180) lambda -= 360;
+        if (lambda < -180) lambda += 360;
+        rotRef.current = [lambda, 0, 0];
+        panRef.current = [0, startPan[1] + dy];
+        if (projRef.current) {
+          projRef.current.rotate(rotRef.current);
+          projRef.current.translate([size.w / 2, size.h / 2 + panRef.current[1]]);
           redrawPaths();
         }
       } else {
@@ -723,10 +739,10 @@ function HoverCard({ hover, passport, compare, direction, groupPassports }) {
           width: 8, height: 8, borderRadius: "50%", display: "inline-block",
           background: sc.fill, boxShadow: `0 0 8px ${sc.fill}`,
         }} />
-        <span style={{ color: "var(--fg-dim)" }}>{sc.label}</span>
+        <span style={{ color: "var(--fg-dim)" }}>{statusLabel(r.status)}</span>
         {r.days && (
           <span style={{ marginLeft: "auto", color: "var(--fg-mute)", fontFamily: "var(--font-mono)" }}>
-            {r.days} days
+            {window.t("detail.up_to_days", { n: r.days })}
           </span>
         )}
       </div>
@@ -735,19 +751,19 @@ function HoverCard({ hover, passport, compare, direction, groupPassports }) {
           display: "flex", alignItems: "center", gap: 6, marginTop: 6,
           paddingTop: 6, borderTop: "1px solid var(--panel-border)",
         }}>
-          <span style={{ fontSize: 11, color: "var(--fg-mute)", marginRight: 4 }}>vs {window.byIso2[compare]?.flag}</span>
+          <span style={{ fontSize: 11, color: "var(--fg-mute)", marginRight: 4 }}>{window.t("detail.vs")} {window.byIso2[compare]?.flag}</span>
           <span style={{
             width: 8, height: 8, borderRadius: "50%", display: "inline-block",
             background: STATUS_COLOR[rc.status].fill, boxShadow: `0 0 8px ${STATUS_COLOR[rc.status].fill}`,
           }} />
-          <span style={{ color: "var(--fg-dim)" }}>{STATUS_COLOR[rc.status].label}</span>
+          <span style={{ color: "var(--fg-dim)" }}>{statusLabel(rc.status)}</span>
           {rc.days && <span style={{ marginLeft: "auto", color: "var(--fg-mute)", fontFamily: "var(--font-mono)" }}>{rc.days}d</span>}
         </div>
       )}
       {groupBreakdown && (
         <div style={{ marginTop: 6, paddingTop: 6, borderTop: "1px solid var(--panel-border)" }}>
           <div style={{ fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4 }}>
-            Per member
+            {window.t("detail.per_member")}
           </div>
           {groupBreakdown.map(({ passport: p, r: rr }) => {
             const c = window.byIso2[p];
@@ -759,7 +775,7 @@ function HoverCard({ hover, passport, compare, direction, groupPassports }) {
                   width: 7, height: 7, borderRadius: "50%", display: "inline-block",
                   background: sc2.fill,
                 }} />
-                <span style={{ color: "var(--fg-dim)" }}>{sc2.label}</span>
+                <span style={{ color: "var(--fg-dim)" }}>{statusLabel(rr.status)}</span>
                 {rr.days && <span style={{ marginLeft: "auto", color: "var(--fg-mute)", fontFamily: "var(--font-mono)", fontSize: 11 }}>{rr.days}d</span>}
               </div>
             );
@@ -889,7 +905,7 @@ function ZoomControls({ zoom, onZoomIn, onZoomOut, onReset }) {
     }} className="zoom-controls">
       <button
         onClick={onZoomIn}
-        title="Zoom in"
+        title={window.t("zoom.in")}
         style={{ ...btnStyle, borderRadius: "8px 8px 0 0", borderBottom: "none" }}
         className="zoom-btn"
       >
@@ -899,7 +915,7 @@ function ZoomControls({ zoom, onZoomIn, onZoomOut, onReset }) {
       </button>
       <button
         onClick={onZoomOut}
-        title="Zoom out"
+        title={window.t("zoom.out")}
         style={{ ...btnStyle, borderRadius: 0, borderTop: "none", borderBottom: "none" }}
         className="zoom-btn"
       >
@@ -908,7 +924,7 @@ function ZoomControls({ zoom, onZoomIn, onZoomOut, onReset }) {
         </svg>
       </button>
       <div
-        title="Current zoom"
+        title={window.t("zoom.current")}
         style={{
           ...btnStyle,
           borderRadius: 0,
@@ -925,7 +941,7 @@ function ZoomControls({ zoom, onZoomIn, onZoomOut, onReset }) {
       </div>
       <button
         onClick={onReset}
-        title="Reset"
+        title={window.t("zoom.reset")}
         style={{ ...btnStyle, borderRadius: "0 0 8px 8px", borderTop: "none" }}
         className="zoom-btn"
         disabled={zoom === 1}
