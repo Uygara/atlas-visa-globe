@@ -16,38 +16,44 @@ tier for paid email alerts ($2/mo via Stripe Checkout).
 
 ## What you're picking up — active issues from the user (2026-05-22)
 
-Pick these up in order. The user reported them at the end of the previous
-session and they are NOT yet implemented.
+All five issues from the previous handoff are SHIPPED in commits `0aeccf9`,
+`5071bbf`, `6d20c58`:
 
-1. **Mobile top-bar stability.** The horizontal-scroll bar at the top is
-   awkward on phones — users have to scroll the bar sideways to reach the
-   language dropdown. Make the nav more compact: collapse to a hamburger
-   button on small screens, OR put the lang switcher + settings in a
-   single overflow menu accessible without scrolling.
-2. **Theme — should default be light, not dark?** The user is asking
-   whether most people find the light theme more usable. Investigate (no
-   need for fancy A/B test — just a thoughtful UX recommendation) and
-   propose a change. Likely answer: keep dark as the brand mark but make
-   the light theme a one-click swap that's actually discoverable.
-3. **Mobile pinch-zoom should only zoom the globe, not the whole page.**
-   Right now `<meta name=viewport>` lets the browser do native page zoom.
-   We need `user-scalable=no` on the main app — the globe component already
-   has its own pinch handler — but keep page-zoom available on the static
-   landing pages (alerts, schengen-calculator, itinerary, etc.) where it's
-   useful for reading.
-4. **i18n gaps.** Many strings still show in English when the user picks
-   Turkish / Spanish / German / French / Arabic. Audit `components/panel.jsx`
-   and `components/globe.jsx` (DetailCard, HoverCard, AffiliatePartners,
-   AlertsCTA, VisaFeeBox, Tally filter buttons, Legend) — add `window.t()`
-   wrappers and corresponding keys in `data/i18n.js`. Also fully translate
-   the static pages: `alerts/`, `schengen-calculator/`, `itinerary/`,
-   `digital-nomad-visa/`, `about/`, `privacy/`, `404.html`.
-5. **2D map should wrap horizontally (cylindrical).** When the user pans
-   the flat (Natural Earth) view far left or right, currently they hit
-   empty space. Should infinite-scroll: keep showing the world. Probably
-   easiest with d3-geo's `clipExtent` removed and a wrap-around translation
-   in the pan handler, or by switching to `d3.geoEquirectangular` with
-   manual repeats. Test on mobile.
+1. ~~Mobile top-bar stability~~ — hamburger menu, no more side-scrolling.
+2. ~~Theme default~~ — switched to light (returning users keep their pref).
+3. ~~Mobile pinch-zoom~~ — `user-scalable=no` on the SPA only.
+4. ~~i18n gaps~~ — DetailCard, Hover, AlertsCTA, VisaFeeBox, Affiliate,
+   picker placeholders, group, zoom controls, legend, welcome overlay all
+   wrapped in `window.t()`. Country names localised via
+   `data/country-names.js` (TR full, ES/DE/FR/AR major). Static pages
+   share `data/static-i18n.js` — one script does DOM walking + lang
+   switcher, persists choice via `localStorage.atlas.lang`.
+5. ~~2D wrap~~ — switched flat-mode projection from `geoNaturalEarth1` to
+   `geoEquirectangular` with rotation-based horizontal pan. World cycles
+   infinitely.
+
+## New active issues (2026-05-23)
+
+1. **Conditional / nested visa rules.** Wikipedia's visa-policy tables often
+   include important conditions next to the raw status, e.g. "Indian
+   citizens normally need a visa for Türkiye, but holders of a valid UK,
+   US, Schengen or Irish visa can obtain an eVisa." We currently flatten
+   each (passport, dest) pair to a single status with `days` — the
+   conditional is dropped on the floor. Surface these in the DetailCard
+   under the primary verdict, e.g. an "Eligibility shortcuts" / "Koşullu
+   istisnalar" block. Three sub-tasks:
+   - **Scraper:** extend `backend/scraper.js` to also capture the "if you
+     hold X, you can do Y" sentence/list-item adjacent to each row. Store
+     as `conditions: [{ ifHolds: ["UK","US","SG","IE","Schengen"],
+     then: "ev", days: 30, source: "..." }]` on the resolved row in
+     `data/passports.js`.
+   - **Renderer:** in `DetailCard` (panel.jsx), if the resolved pair has
+     `conditions[]`, render a callout: "Have one of these? Easier path
+     available." with flags + new status pill.
+   - **i18n:** add Turkish strings for the callout title + condition
+     phrasings.
+   - Test on (IN → TR), (PK → various), (CN → schengen) — known cases
+     with conditional eVisa.
 
 ## What's done — quick map of the codebase
 
