@@ -317,6 +317,7 @@ function App() {
         compare={compare}
         setCompare={setCompare}
         compareMode={t.compareMode}
+        setCompareMode={(v) => setTweak("compareMode", v)}
         groupMode={t.groupMode}
         groupPassports={groupPassports}
         setGroupPassports={setGroupPassports}
@@ -352,9 +353,8 @@ function TopNav({ tweaks, setTweak, globeStyle, onGlobeStyleChange }) {
   const closeMenu = () => setMenuOpen(false);
   return (
     <header className={"topbar" + (menuOpen ? " menu-open" : "")}>
-      <a className="brand" href="/" aria-label="Atlas home">
-        <img src="/assets/favicon.svg" alt="" />
-        <span>Atlas</span>
+      <a className="brand" href="/" aria-label="travelnow.info home">
+        <span>travelnow.info</span>
       </a>
       <div className="topbar-sheet">
         <nav className="primary-nav">
@@ -822,7 +822,7 @@ layoutStyle.textContent = `
     display: flex; align-items: center; gap: 4px;
     padding: 0 14px;
     border-bottom: 1px solid var(--panel-border);
-    background: rgba(10, 15, 28, 0.85);
+    background: var(--panel);
     backdrop-filter: blur(14px);
     -webkit-backdrop-filter: blur(14px);
     z-index: 6;
@@ -830,13 +830,14 @@ layoutStyle.textContent = `
   }
   .topbar::-webkit-scrollbar { display: none; }
   .topbar .brand {
-    display: flex; align-items: center; gap: 8px;
+    display: flex; align-items: center; gap: 6px;
     padding: 0 12px 0 0;
     font-weight: 600; font-size: 15px; letter-spacing: -0.01em;
     color: var(--fg); text-decoration: none;
     white-space: nowrap;
+    font-family: var(--font-mono);
   }
-  .topbar .brand img { width: 22px; height: 22px; }
+  .topbar .brand span { color: var(--fg); }
   .topbar-sheet { display: flex; align-items: center; gap: 4px; flex: 1; }
   .topbar .primary-nav { display: flex; gap: 2px; flex: 1; }
   .topbar .primary-nav a {
@@ -855,7 +856,7 @@ layoutStyle.textContent = `
   }
   .topbar .rhs select { background-color: var(--bg-3); }
   .topbar .rhs button:hover { color: var(--fg); border-color: var(--border-strong); }
-  body.theme-light .topbar { background: rgba(244, 240, 230, 0.88); }
+  /* (light/dark sheets pick up --panel automatically) */
 
   /* Hamburger lives in the DOM but is invisible by default — only mobile gets it */
   .topbar .hamburger {
@@ -877,9 +878,7 @@ layoutStyle.textContent = `
     grid-area: panel;
     position: relative;
     padding: 22px 18px 18px 18px;
-    background: linear-gradient(180deg,
-      rgba(15, 22, 38, 0.5) 0%,
-      rgba(10, 15, 28, 0.85) 100%);
+    background: var(--panel);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-left: 1px solid var(--panel-border);
@@ -887,11 +886,6 @@ layoutStyle.textContent = `
     display: flex;
     flex-direction: column;
     z-index: 2;
-  }
-  body.theme-light .panel, body.theme-paper .panel {
-    background: linear-gradient(180deg,
-      rgba(255, 252, 246, 0.5) 0%,
-      rgba(240, 235, 220, 0.85) 100%);
   }
   .dropdown-item:hover { background: rgba(96,165,250,0.10) !important; }
   .filter-row:hover { background: rgba(96,165,250,0.05) !important; }
@@ -915,7 +909,7 @@ layoutStyle.textContent = `
        Nav + lang + settings live in a slide-down sheet so users no longer have
        to side-scroll to reach the language picker. */
     .topbar { padding: 0 10px; gap: 6px; }
-    .topbar .brand span { display: none; }
+    .topbar .brand { font-size: 13px; }
     .topbar .hamburger { display: inline-flex; margin-left: auto; }
 
     /* Nav + lang/settings collapse into a slide-down sheet behind the hamburger */
@@ -929,18 +923,15 @@ layoutStyle.textContent = `
       top: 48px;
       right: 0;
       width: min(280px, 92vw);
-      background: rgba(10, 15, 28, 0.97);
+      background: var(--panel);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       border: 1px solid var(--panel-border-strong);
       border-top: none;
       border-radius: 0 0 12px 12px;
       padding: 10px;
-      box-shadow: 0 12px 32px rgba(0,0,0,0.4);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.20);
       z-index: 7;
-    }
-    body.theme-light .topbar.menu-open .topbar-sheet {
-      background: rgba(244, 240, 230, 0.97);
     }
     .topbar.menu-open .primary-nav {
       flex-direction: column; align-items: stretch; gap: 2px; flex: none;

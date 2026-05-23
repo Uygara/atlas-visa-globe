@@ -10,9 +10,11 @@
 <title>Atlas — Where can your passport take you?</title>
 <meta name="description" content="Interactive visa-requirements globe for 200+ passports. Updated daily from Wikipedia. See where your passport gets you visa-free, eVisa, on arrival, or visa-required." />
 <link rel="canonical" href="https://travelnow.info/" />
+<!-- SVG favicon is authoritative — modern browsers all support it. The old
+     PNG fallback rendered dark in some browsers because it predates the
+     white-globe redesign; intentionally dropped. -->
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
-<link rel="icon" type="image/png" href="/assets/favicon.png" />
-<link rel="apple-touch-icon" href="/assets/favicon.png" />
+<link rel="apple-touch-icon" href="/assets/favicon.svg" />
 <meta property="og:title" content="Atlas — Where can your passport take you?" />
 <meta property="og:description" content="See visa requirements for 200+ passports on an interactive globe. Free, daily-refreshed from Wikipedia." />
 <meta property="og:image" content="https://travelnow.info/assets/og.png" />
@@ -132,29 +134,49 @@
     50% { transform: scale(1.1); opacity: 1; }
   }
 
-  /* Light theme override */
+  /* Light theme override — cleaner, less yellow than the old paper tone */
   body.theme-light {
     background:
-      radial-gradient(ellipse 80% 60% at 70% 40%, rgba(120, 160, 220, 0.25), transparent 70%),
-      #f4f1ea;
+      radial-gradient(ellipse 80% 60% at 70% 40%, rgba(96, 165, 250, 0.10), transparent 70%),
+      #f5f7fb;
   }
   body.theme-light::before { opacity: 0; }
   body.theme-light {
-    --bg-0: #f4f1ea;
-    --bg-1: #ece7dc;
-    --bg-2: #e1dbcc;
-    --panel: rgba(255, 252, 246, 0.88);
-    --panel-border: rgba(70, 60, 40, 0.10);
-    --panel-border-strong: rgba(70, 60, 40, 0.18);
-    --fg: #1a1a1f;
-    --fg-dim: #4a4a55;
-    --fg-mute: #767685;
-    --fg-faint: #a5a5b0;
-    --land: #d8d0bd;
-    --land-stroke: #c0b69f;
-    --graticule: rgba(120, 100, 60, 0.08);
-    --na: #cdc4b0;
+    --bg-0: #f5f7fb;
+    --bg-1: #eef2f8;
+    --bg-2: #e6ecf4;
+    --bg-3: #dde4ee;
+    --panel: rgba(255, 255, 255, 0.92);
+    --panel-border: rgba(30, 40, 60, 0.10);
+    --panel-border-strong: rgba(30, 40, 60, 0.18);
+    --fg: #0f1722;
+    --fg-dim: #3d4a5e;
+    --fg-mute: #6b7791;
+    --fg-faint: #9aa3b5;
+    /* Lighter, brighter land/sea so the globe doesn't look murky in light mode */
+    --land: #d6dee9;
+    --land-stroke: #b8c3d2;
+    --graticule: rgba(60, 90, 130, 0.10);
+    --na: #c8d0dc;
+    /* Sphere = visible ocean blue in light mode (the dark gradient is illegible) */
+    --sphere-1: #cfe3f5;
+    --sphere-2: #a9c8e4;
+    --sphere-3: #82a8cf;
+    --atm-mid: rgba(96, 165, 250, 0.30);
   }
+  /* Dark theme defaults for the sphere stops, so the SVG references them
+     too — keeps light/dark switching as a one-class flip. */
+  :root {
+    --sphere-1: #1a2540;
+    --sphere-2: #0d1426;
+    --sphere-3: #06091a;
+    --atm-mid: rgba(96, 165, 250, 0.18);
+  }
+  /* CSS-driven gradient stop colors so the SVG sphere flips with the theme */
+  #sphere stop:nth-child(1) { stop-color: var(--sphere-1); }
+  #sphere stop:nth-child(2) { stop-color: var(--sphere-2); }
+  #sphere stop:nth-child(3) { stop-color: var(--sphere-3); }
+  #atm stop:nth-child(2) { stop-color: var(--atm-mid); }
 </style>
 
 <!-- Google AdSense (verification + runtime loader). Must be static <script> in

@@ -537,17 +537,19 @@ function Globe({
         onMouseMove={handleMove}
       >
         <defs>
-          {/* Outer glow ring */}
+          {/* Outer glow ring. Colors come from CSS (--atm-mid) so the ring
+              tones down in light mode. */}
           <radialGradient id="atm" cx="50%" cy="50%" r="50%">
-            <stop offset="80%" stopColor="rgba(96,165,250,0)" />
-            <stop offset="92%" stopColor="rgba(96,165,250,0.18)" />
+            <stop offset="80%"  stopColor="rgba(96,165,250,0)" />
+            <stop offset="92%" />
             <stop offset="100%" stopColor="rgba(96,165,250,0)" />
           </radialGradient>
-          {/* Subtle ocean / sphere */}
+          {/* Ocean / sphere. Stop colors are CSS-driven (--sphere-1/2/3) so the
+              sphere flips light/dark with the theme — see index.html. */}
           <radialGradient id="sphere" cx="35%" cy="35%" r="75%">
-            <stop offset="0%"  stopColor="#1a2540" />
-            <stop offset="60%" stopColor="#0d1426" />
-            <stop offset="100%" stopColor="#06091a" />
+            <stop offset="0%"  />
+            <stop offset="60%" />
+            <stop offset="100%" />
           </radialGradient>
           <filter id="countryGlow" x="-50%" y="-50%" width="200%" height="200%">
             <feGaussianBlur stdDeviation="1.4" />

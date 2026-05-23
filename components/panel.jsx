@@ -2,7 +2,7 @@
 
 function Panel({
   passport, setPassport,
-  compare, setCompare, compareMode,
+  compare, setCompare, compareMode, setCompareMode,
   groupMode, groupPassports, setGroupPassports,
   filter, setFilter,
   detailCountry, setDetailCountry,
@@ -52,6 +52,26 @@ function Panel({
         />
       )}
 
+      {/* Dual-citizenship hint: discoverable shortcut to compare mode without
+          digging through the Settings popover. Only appears once a primary
+          passport is chosen and neither compare nor group mode is active. */}
+      {passport && !compareMode && !groupMode && setCompareMode && (
+        <button
+          onClick={() => setCompareMode(true)}
+          style={{
+            width: "100%", padding: "8px 10px", marginBottom: 14,
+            background: "transparent",
+            border: "1px dashed var(--panel-border-strong)",
+            borderRadius: 8, color: "var(--fg-mute)",
+            cursor: "pointer", fontFamily: "inherit", fontSize: 12,
+            textAlign: "left", display: "flex", alignItems: "center", gap: 8,
+          }}
+        >
+          <span style={{ color: "var(--compare-self)", fontSize: 14 }}>+</span>
+          {window.t("panel.dual_citizenship")}
+        </button>
+      )}
+
       {groupMode && (
         <GroupPicker
           primary={passport}
@@ -99,8 +119,10 @@ function PanelHeader() {
   return (
     <header style={{ marginBottom: 18 }}>
       <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        <Logomark />
-        <div style={{ fontSize: 18, fontWeight: 600, letterSpacing: "-0.01em" }}>Atlas</div>
+        <a href="/" style={{
+          fontSize: 15, fontWeight: 600, letterSpacing: "-0.01em",
+          fontFamily: "var(--font-mono)", color: "var(--fg)", textDecoration: "none",
+        }}>travelnow.info</a>
         <div style={{
           marginLeft: "auto",
           fontSize: 10,
@@ -1236,6 +1258,9 @@ function PanelFooter() {
         <a href="/privacy/" style={linkStyle}>{window.t("footer.privacy")}</a>
         <a href="/passport/" style={linkStyle}>{window.t("footer.all_passports")}</a>
         <a href="https://github.com/Uygara/atlas-visa-globe" target="_blank" rel="noopener" style={linkStyle}>{window.t("footer.source")}</a>
+      </div>
+      <div style={{ marginTop: 8, color: "var(--fg-faint)" }}>
+        © {new Date().getFullYear()} travelnow.info · {window.t("footer.rights")}
       </div>
     </footer>
   );
