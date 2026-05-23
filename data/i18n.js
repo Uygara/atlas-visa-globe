@@ -159,6 +159,12 @@ const T = {
 
     // Mobile menu
     "nav.menu":                  "Menu",
+
+    // Conditional visa rules ("Eligibility shortcuts")
+    "cond.title":                "Easier path available",
+    "cond.subtitle":             "If you also hold one of these, the status improves:",
+    "cond.becomes":              "becomes",
+    "cond.source":               "Source ↗",
   },
 
   tr: {
@@ -288,6 +294,11 @@ const T = {
     "welcome.or_open_panel":     "Veya {n} pasaportun tam listesi için paneli aç",
 
     "nav.menu":                  "Menü",
+
+    "cond.title":                "Daha kolay yol mevcut",
+    "cond.subtitle":             "Aşağıdakilerden birine de sahipseniz statü iyileşir:",
+    "cond.becomes":              "olur",
+    "cond.source":               "Kaynak ↗",
   },
 
   es: {
@@ -366,6 +377,9 @@ const T = {
     "changelog.show_less": "Mostrar menos", "changelog.more": "+ {n} cambios más",
     "zoom.in": "Acercar", "zoom.out": "Alejar", "zoom.current": "Zoom actual", "zoom.reset": "Restablecer",
     "nav.menu": "Menú",
+    "cond.title": "Vía más fácil disponible",
+    "cond.subtitle": "Si también tienes uno de estos, el estado mejora:",
+    "cond.becomes": "se vuelve", "cond.source": "Fuente ↗",
   },
 
   de: {
@@ -444,6 +458,9 @@ const T = {
     "changelog.show_less": "Weniger zeigen", "changelog.more": "+ {n} weitere Änderungen",
     "zoom.in": "Vergrößern", "zoom.out": "Verkleinern", "zoom.current": "Zoom-Stufe", "zoom.reset": "Zurücksetzen",
     "nav.menu": "Menü",
+    "cond.title": "Einfacherer Weg verfügbar",
+    "cond.subtitle": "Wenn du auch eines davon besitzt, verbessert sich der Status:",
+    "cond.becomes": "wird zu", "cond.source": "Quelle ↗",
   },
 
   fr: {
@@ -522,6 +539,9 @@ const T = {
     "changelog.show_less": "Voir moins", "changelog.more": "+ {n} autres changements",
     "zoom.in": "Zoom +", "zoom.out": "Zoom -", "zoom.current": "Zoom actuel", "zoom.reset": "Réinitialiser",
     "nav.menu": "Menu",
+    "cond.title": "Voie plus simple disponible",
+    "cond.subtitle": "Si tu détiens aussi l'un de ces visas, le statut s'améliore :",
+    "cond.becomes": "devient", "cond.source": "Source ↗",
   },
 
   ar: {
@@ -599,6 +619,9 @@ const T = {
     "changelog.show_less": "عرض أقل", "changelog.more": "+ {n} تغييرات أخرى",
     "zoom.in": "تكبير", "zoom.out": "تصغير", "zoom.current": "مستوى الزوم", "zoom.reset": "إعادة",
     "nav.menu": "القائمة",
+    "cond.title": "مسار أسهل متاح",
+    "cond.subtitle": "إذا كنت تحمل أيضًا أحد ما يلي، يتحسن الوضع:",
+    "cond.becomes": "يصبح", "cond.source": "المصدر ↗",
   },
 };
 

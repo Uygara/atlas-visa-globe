@@ -780,6 +780,10 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
       <AlertsCTA iso2={iso2} destName={window.countryName(iso2)} />
 
       {!groupActive && (
+        <ConditionsBox passport={passport} destIso2={iso2} baseStatus={r.status} />
+      )}
+
+      {!groupActive && (
         <VisaFeeBox passport={passport} destIso2={iso2} status={r.status} />
       )}
 
@@ -835,6 +839,110 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
           })}
         </div>
       )}
+    </div>
+  );
+}
+
+// Conditional-visa box: surfaces Wikipedia's "if you also hold X" footnotes
+// (e.g. "Indian citizens normally need a visa for Türkiye, but holders of a
+// valid US / UK / Ireland / Schengen visa can obtain an eVisa"). Reads from
+// data/visa-conditions.js. Only shown when an actual upgrade path exists for
+// the resolved status — i.e. when the base status is something other than vf
+// or self and the conditional `then` is strictly better.
+function ConditionsBox({ passport, destIso2, baseStatus }) {
+  if (!passport || !destIso2) return null;
+  if (baseStatus === "self" || baseStatus === "vf") return null;
+  const rows = window.visaCondition && window.visaCondition(passport, destIso2);
+  if (!rows || rows.length === 0) return null;
+  // Only show rows whose resulting status is strictly better than the base.
+  const ORDER = { vf: 0, ev: 1, voa: 2, vr: 3, na: 4 };
+  const useful = rows.filter(r => ORDER[r.then] < ORDER[baseStatus]);
+  if (useful.length === 0) return null;
+
+  const lang = window.ATLAS_LANG || "en";
+  return (
+    <div style={{
+      padding: 12,
+      borderRadius: 8,
+      background: "rgba(34,197,94,0.06)",
+      border: "1px solid rgba(34,197,94,0.30)",
+      marginBottom: 10,
+    }}>
+      <div style={{
+        fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
+        textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6,
+        display: "flex", alignItems: "center", gap: 6,
+      }}>
+        <span style={{
+          width: 8, height: 8, borderRadius: "50%",
+          background: "var(--vf)", boxShadow: "0 0 6px var(--vf)",
+        }} />
+        {window.t("cond.title")}
+      </div>
+      <div style={{ fontSize: 12, color: "var(--fg-dim)", marginBottom: 8 }}>
+        {window.t("cond.subtitle")}
+      </div>
+      {useful.map((row, i) => {
+        const labels = (window.conditionHoldsLabels && window.conditionHoldsLabels(row.ifHolds)) || row.ifHolds;
+        const thenColor = STATUS_COLOR[row.then]?.fill || "var(--vf)";
+        const thenLabel = (() => {
+          const k = "status." + row.then;
+          const tr = window.t(k);
+          return tr === k ? (STATUS_COLOR[row.then]?.label || row.then) : tr;
+        })();
+        const note = lang === "en" ? (row.noteEn || row.note) : (row.note || row.noteEn);
+        return (
+          <div key={i} style={{
+            marginTop: i === 0 ? 0 : 8,
+            paddingTop: i === 0 ? 0 : 8,
+            borderTop: i === 0 ? "none" : "1px solid rgba(34,197,94,0.18)",
+          }}>
+            {/* Chip row of required visas */}
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 6 }}>
+              {labels.map((l, j) => (
+                <span key={j} style={{
+                  fontSize: 11, padding: "3px 8px",
+                  background: "var(--bg-3)", border: "1px solid var(--panel-border)",
+                  borderRadius: 999, color: "var(--fg)",
+                  fontFamily: "var(--font-mono)",
+                }}>
+                  {row.ifHolds[j] === "SCHENGEN" ? "🇪🇺 " : ""}{l}
+                </span>
+              ))}
+            </div>
+            {/* Resulting status */}
+            <div style={{
+              display: "flex", alignItems: "center", gap: 8,
+              fontSize: 12,
+            }}>
+              <span style={{ color: "var(--fg-mute)" }}>→ {window.t("cond.becomes")}</span>
+              <span style={{
+                width: 8, height: 8, borderRadius: "50%",
+                background: thenColor, boxShadow: `0 0 6px ${thenColor}`,
+              }} />
+              <span style={{ color: "var(--fg)", fontWeight: 500 }}>{thenLabel}</span>
+              {row.days && (
+                <span style={{ marginLeft: "auto", color: "var(--fg-mute)", fontFamily: "var(--font-mono)", fontSize: 11 }}>
+                  {window.t("detail.up_to_days", { n: row.days })}
+                </span>
+              )}
+            </div>
+            {note && (
+              <div style={{ fontSize: 11, color: "var(--fg-dim)", marginTop: 6, lineHeight: 1.5 }}>
+                {note}
+              </div>
+            )}
+            {row.source && (
+              <a href={row.source} target="_blank" rel="noopener nofollow"
+                 style={{ fontSize: 11, color: "var(--fg-mute)", textDecoration: "none",
+                          borderBottom: "1px dotted var(--fg-faint)", display: "inline-block",
+                          marginTop: 6 }}>
+                {window.t("cond.source")}
+              </a>
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 }
