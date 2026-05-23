@@ -35,7 +35,7 @@ All five issues from the previous handoff are SHIPPED in commits `0aeccf9`,
 ## New active issues (2026-05-23)
 
 1. ~~Conditional / nested visa rules~~ — shipped in commits `4aab6ff` +
-   `<next>`. Surface in DetailCard via `ConditionsBox`; data from
+   `b1a5704`. Surface in DetailCard via `ConditionsBox`; data from
    `data/visa-conditions.js` (hand-curated) merged with scraper output
    on `PASSPORTS[iso2].cond` (extracted from Wikipedia Notes column by
    `extractConditions()` in `backend/scraper.js`). Manual entries win
@@ -43,6 +43,69 @@ All five issues from the previous handoff are SHIPPED in commits `0aeccf9`,
    pattern needs to be exercised on the next daily refresh — verify
    the auto-extracted set on a known case (e.g. IN → TR) and broaden
    the keyword list if it misses obvious matches.
+
+2. ~~Theme fixes / brand simplification~~ — shipped in `d228435`.
+   Light-theme sphere now flips to ocean blue (CSS vars drive SVG
+   gradient stops). Topbar / panel / mobile menu sheet drop the
+   hardcoded dark backgrounds. Brand mark replaced with bare
+   `travelnow.info` text. Favicon rewritten + PNG fallback dropped.
+   Footer carries © year + 'All rights reserved'.
+
+3. **Passport type variants (ordinary / service / diplomatic / special).**
+   Many countries issue multiple passport types and the visa policy for
+   each is very different. Turkey example: bordo (ordinary), hususi
+   (yeşil — civil servants), hizmet (gri — service), siyah (diplomatic).
+   Wikipedia has separate articles for each: 'Visa requirements for
+   holders of Turkish diplomatic passports' etc. Atlas currently only
+   reads the ordinary passport. Needs:
+   - **Schema:** `PASSPORTS[iso2].variants = { ordinary: {...},
+     diplomatic: {...}, service: {...} }` keyed identically to the
+     current top-level fields.
+   - **Scraper:** new `PASSPORT_TARGETS_VARIANTS` list with the
+     diplomatic/service slugs (the Wikipedia URL pattern is well-known).
+     Roughly +400 fetches at the current rate — ~8 minutes per daily
+     cron run, acceptable.
+   - **UI:** below the primary picker, when the active passport has
+     variants populated, show a small segmented control (Bordo / Yeşil /
+     Gri / Siyah for TR; Ordinary / Diplomatic / Service / Special for
+     others). Default to ordinary. Persist choice in localStorage.
+   - **i18n:** `passport_type.ordinary` / `.diplomatic` / `.service` /
+     `.special` for the segmented control labels.
+   - Affects the same recompute path as the regular picker — `tally`,
+     `resolveStatus`, `resolveGroupStatus` need to look up the variant
+     map first, then fall back to ordinary.
+
+4. **Real multi-passport (dual citizenship) experience.** Inline
+   "+ Compare with another passport" promotion shipped in `d228435`,
+   but it currently piggybacks on `compareMode` (stripe overlay). For
+   dual citizens the more useful question is "which passport should I
+   use for this destination?" — i.e. surface the BEST of the two,
+   not the diff. Possible UI:
+   - When two passports are active, DetailCard could lead with a
+     "Recommended: 🇹🇷 ordinary visa-free" pill and only secondarily
+     show the second passport's status.
+   - Group mode is a separate use case (family travel — worst-case
+     visa). Keep distinct from dual citizenship.
+
+## Older queued items (still open)
+
+- **Conditional rules — KEYWORDS expansion.** After the first nightly
+  cron with the new scraper, audit the auto-extracted entries against
+  the manual ones and broaden the regex set in
+  `backend/scraper.js → extractConditions()`. Especially watch for
+  EU/EEA wording, GCC visa wording, and ASEAN visa wording.
+- **Citizenship-by-investment comparison page.** Malta / Türkiye /
+  Karayipler / Vanuatu / Antigua. High affiliate value.
+- **Visa application reminder email channel.** When Pro tier ships,
+  send 7/3/1 day reminders before the apply-by date. Reuse the
+  existing dispatcher.
+- **Full static-page i18n.** The shared static-i18n.js now translates
+  the major surfaces; tail strings (long paragraphs in /about/,
+  /privacy/, /alerts/) still fall through to English. Add them to
+  `data/static-i18n.js` DICT as time allows.
+- **More cities/countries in the visa-fee database.** Currently TR /
+  US / GB / DE / IN sources only. Add CN / JP / KR / BR / AE for ~10
+  popular destinations each.
 
 ## What's done — quick map of the codebase
 
