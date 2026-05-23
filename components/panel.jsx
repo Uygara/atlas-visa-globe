@@ -230,10 +230,10 @@ function GroupPicker({ primary, values, onChange }) {
                 borderRadius: 999, padding: "5px 10px", fontSize: 12,
               }}>
                 <span style={{ fontSize: 14 }}>{c.flag}</span>
-                <span>{c.name}</span>
+                <span>{window.countryName(iso)}</span>
                 <button
                   onClick={() => remove(iso)}
-                  aria-label={window.t("group.remove", { name: c.name })}
+                  aria-label={window.t("group.remove", { name: window.countryName(iso) })}
                   style={{ background: "transparent", border: "none", color: "var(--fg-mute)", cursor: "pointer", fontSize: 14, padding: 0, lineHeight: 1 }}>
                   ×
                 </button>
@@ -271,7 +271,13 @@ function GroupAddDropdown({ existing, onPick, onClose }) {
   const [q, setQ] = useState("");
   const filtered = window.PASSPORT_LIST
     .filter(p => !existing.includes(p.iso2))
-    .filter(p => !q || p.name.toLowerCase().includes(q.toLowerCase()) || p.iso2.toLowerCase().includes(q.toLowerCase()))
+    .filter(p => {
+      if (!q) return true;
+      const ql = q.toLowerCase();
+      return p.name.toLowerCase().includes(ql)
+          || window.countryName(p.iso2).toLowerCase().includes(ql)
+          || p.iso2.toLowerCase().includes(ql);
+    })
     .slice(0, 50);
   return (
     <div style={{
@@ -297,7 +303,7 @@ function GroupAddDropdown({ existing, onPick, onClose }) {
                 borderBottom: "1px solid rgba(148,173,220,0.05)",
               }}>
               <span style={{ fontSize: 16 }}>{c?.flag}</span>
-              <span>{p.name}</span>
+              <span>{window.countryName(p.iso2)}</span>
               <span style={{ marginLeft: "auto", color: "var(--fg-mute)", fontFamily: "var(--font-mono)", fontSize: 11 }}>{p.iso2}</span>
             </button>
           );
@@ -358,7 +364,7 @@ function PassportPicker({ label, value, open, setOpen, onChange, accent, placeho
             <span style={{ fontSize: 20 }}>{country.flag}</span>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div style={{ fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                {country.name}
+                {window.countryName(value)}
               </div>
               <div style={{ fontSize: 11, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", display: "flex", alignItems: "center", gap: 6 }}>
                 {current?.rank && <span>Rank #{current.rank}</span>}
@@ -397,7 +403,9 @@ function PassportDropdown({ value, onChange, allowClear, onClear }) {
     const ql = q.toLowerCase().trim();
     return window.PASSPORT_LIST.filter(p => {
       if (!ql) return true;
-      return p.name.toLowerCase().includes(ql) || p.iso2.toLowerCase().includes(ql);
+      return p.name.toLowerCase().includes(ql)
+          || window.countryName(p.iso2).toLowerCase().includes(ql)
+          || p.iso2.toLowerCase().includes(ql);
     });
   }, [q]);
   return (
@@ -474,7 +482,7 @@ function PassportDropdown({ value, onChange, allowClear, onClear }) {
               }}
             >
               <span style={{ fontSize: 16 }}>{c?.flag}</span>
-              <span style={{ flex: 1 }}>{p.name}</span>
+              <span style={{ flex: 1 }}>{window.countryName(p.iso2)}</span>
               {p.rank && (
                 <span style={{ fontSize: 11, color: "var(--fg-mute)", fontFamily: "var(--font-mono)" }}>
                   #{p.rank}
@@ -599,7 +607,9 @@ function CountrySearch({ passport, search, setSearch, onPick }) {
     const q = search.toLowerCase().trim();
     if (!q) return [];
     return window.COUNTRIES.filter(c =>
-      c.name.toLowerCase().includes(q) || c.iso2.toLowerCase() === q
+      c.name.toLowerCase().includes(q)
+      || window.countryName(c.iso2).toLowerCase().includes(q)
+      || c.iso2.toLowerCase() === q
     ).slice(0, 6);
   }, [search]);
 
@@ -656,7 +666,7 @@ function CountrySearch({ passport, search, setSearch, onPick }) {
                 className="dropdown-item"
               >
                 <span style={{ fontSize: 16 }}>{c.flag}</span>
-                <span style={{ flex: 1 }}>{c.name}</span>
+                <span style={{ flex: 1 }}>{window.countryName(c.iso2)}</span>
                 <span style={{
                   width: 6, height: 6, borderRadius: "50%",
                   background: sc.fill,
@@ -737,7 +747,7 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
       <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
         <span style={{ fontSize: 32, lineHeight: 1 }}>{dest.flag}</span>
         <div>
-          <div style={{ fontSize: 16, fontWeight: 600, letterSpacing: "-0.01em" }}>{dest.name}</div>
+          <div style={{ fontSize: 16, fontWeight: 600, letterSpacing: "-0.01em" }}>{window.countryName(iso2)}</div>
           <div style={{ fontSize: 11, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
             {dest.continent ? (window.t("cont." + dest.continent) !== ("cont." + dest.continent) ? window.t("cont." + dest.continent) : dest.continent) : "—"}
           </div>
@@ -767,7 +777,7 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
         {NOTES[r.status]}
       </p>
 
-      <AlertsCTA iso2={iso2} destName={dest.name} />
+      <AlertsCTA iso2={iso2} destName={window.countryName(iso2)} />
 
       {!groupActive && (
         <VisaFeeBox passport={passport} destIso2={iso2} status={r.status} />
@@ -813,7 +823,7 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
             return (
               <div key={p} style={{ display: "flex", alignItems: "center", gap: 8, padding: "5px 0", borderTop: "1px solid var(--panel-border)" }}>
                 <span style={{ fontSize: 16 }}>{c?.flag}</span>
-                <span style={{ fontSize: 12, flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{c?.name}</span>
+                <span style={{ fontSize: 12, flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{window.countryName(p)}</span>
                 <span style={{
                   width: 8, height: 8, borderRadius: "50%",
                   background: sc2.fill,
@@ -1066,7 +1076,7 @@ function ChangelogItem({ entry }) {
         {dest && <>
           <span style={{ color: "var(--fg-faint)", margin: "0 1px" }}>·</span>
           <span style={{ fontSize: 14 }}>{dest.flag}</span>
-          <span style={{ fontSize: 11, color: "var(--fg-dim)" }}>{dest.name}</span>
+          <span style={{ fontSize: 11, color: "var(--fg-dim)" }}>{window.countryName(entry.affects.dest)}</span>
         </>}
       </div>
       <div style={{ fontSize: 12, color: "var(--fg)", lineHeight: 1.4, fontWeight: 500, marginBottom: 4 }}>

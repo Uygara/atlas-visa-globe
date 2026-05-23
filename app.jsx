@@ -769,7 +769,7 @@ function CompareFloater({ enabled, passport, compare }) {
       <div style={{ padding: "10px 14px", display: "flex", alignItems: "center", gap: 8, borderLeft: "3px solid var(--self)" }}>
         <span style={{ fontSize: 18 }}>{a.flag}</span>
         <div>
-          <div style={{ fontWeight: 500, color: "var(--fg)" }}>{a.name}</div>
+          <div style={{ fontWeight: 500, color: "var(--fg)" }}>{window.countryName(passport)}</div>
           <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--vf)" }}>{sa} {window.t("compare.open")}</div>
         </div>
       </div>
@@ -777,7 +777,7 @@ function CompareFloater({ enabled, passport, compare }) {
       <div style={{ padding: "10px 14px", display: "flex", alignItems: "center", gap: 8, borderLeft: "3px solid var(--compare-self)" }}>
         <span style={{ fontSize: 18 }}>{b.flag}</span>
         <div>
-          <div style={{ fontWeight: 500, color: "var(--fg)" }}>{b.name}</div>
+          <div style={{ fontWeight: 500, color: "var(--fg)" }}>{window.countryName(compare)}</div>
           <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--vf)" }}>{sb} {window.t("compare.open")}</div>
         </div>
       </div>

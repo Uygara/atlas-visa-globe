@@ -732,7 +732,7 @@ function HoverCard({ hover, passport, compare, direction, groupPassports }) {
     >
       <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
         <span style={{ fontSize: 18 }}>{dest.flag}</span>
-        <strong style={{ fontSize: 14, fontWeight: 600 }}>{dest.name}</strong>
+        <strong style={{ fontSize: 14, fontWeight: 600 }}>{window.countryName(hover.iso2)}</strong>
       </div>
       <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 2 }}>
         <span style={{
