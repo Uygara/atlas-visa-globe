@@ -43,6 +43,19 @@ jobs:
           SITE_URL:                   ${{ vars.SITE_URL }}
           FROM_EMAIL:                 ${{ vars.FROM_EMAIL }}
 
+      - name: Dispatch itinerary apply-by reminders (Pro tier)
+        # Same soft-fail behaviour. Sends apply-in-N-days emails for any
+        # itinerary stored via POST /api/reminders on Pro subscribers.
+        run: node backend/dispatch-reminders.js
+        env:
+          CLOUDFLARE_API_TOKEN:       ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID:      ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          CLOUDFLARE_KV_NAMESPACE_ID: ${{ secrets.CLOUDFLARE_KV_NAMESPACE_ID }}
+          RESEND_API_KEY:             ${{ secrets.RESEND_API_KEY }}
+          JWT_SECRET:                 ${{ secrets.JWT_SECRET }}
+          SITE_URL:                   ${{ vars.SITE_URL }}
+          FROM_EMAIL:                 ${{ vars.FROM_EMAIL }}
+
       - name: Commit + push if changed
         run: |
           git config user.name "atlas-bot"

@@ -5,12 +5,15 @@
 //   {
 //     email:       "uygar@example.com",
 //     tier:        "free" | "pro",
-//     countries:   ["TR", "DE"],         // ISO2 codes
+//     countries:   ["TR", "DE"],         // ISO2 codes — visa-change watch-list
 //     confirmedAt: 1716_336_000,          // unix seconds, set on email confirm
 //     createdAt:   1716_335_900,
 //     stripeCustomerId: "cus_...",        // present once user upgraded
 //     stripeSubId:      "sub_...",
 //     updatedAt:   ...,
+//     reminders:   [                       // Pro only; written by /api/reminders
+//       { destIso: "DE", applyBy: "2026-08-01", label: "Schengen tourist" },
+//     ],
 //   }
 
 const FREE_COUNTRY_LIMIT = 1;
