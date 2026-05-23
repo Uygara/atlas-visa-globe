@@ -127,6 +127,17 @@ function App() {
   const [autoDetectedPassport, setAutoDetectedPassport] = useState(null);
   const [direction, setDirection] = useState("outgoing"); // outgoing | incoming
   const [groupPassports, setGroupPassports] = useState([]); // array of iso2 — group mode active iff non-empty
+  const [passportVariant, setPassportVariant] = useState(() => {
+    try { return localStorage.getItem("atlas.variant") || "ordinary"; }
+    catch (e) { return "ordinary"; }
+  });
+  const updatePassportVariant = useCallback((v) => {
+    setPassportVariant(v);
+    try { localStorage.setItem("atlas.variant", v); } catch (e) {}
+  }, []);
+  // Reset variant whenever the primary passport changes (variants don't carry
+  // across passports — diplomatic of TR ≠ diplomatic of US).
+  useEffect(() => { updatePassportVariant("ordinary"); }, [passport, updatePassportVariant]);
 
   // ─── Default passport detection ─────────────────────────────────────────
   // Strategy:
@@ -287,6 +298,7 @@ function App() {
           filter={filter}
           mode={t.globeStyle}
           direction={direction}
+          variant={passportVariant}
           onCountryClick={onCountryClick}
           focusedCountry={focusedCountry}
         />
@@ -331,6 +343,8 @@ function App() {
         setSearch={setSearch}
         onPickFromSearch={onPickFromSearch}
         showCompare={t.compareMode}
+        variant={passportVariant}
+        setVariant={updatePassportVariant}
       />
 
     </div>

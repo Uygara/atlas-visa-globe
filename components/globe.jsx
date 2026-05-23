@@ -39,6 +39,7 @@ function Globe({
   filter,          // "all" | "vf" | "ev" | "voa" | "vr"
   mode,            // "globe3d" | "globe2d" | "flat"
   direction,       // "outgoing" (default) | "incoming"
+  variant,         // "ordinary" | "diplomatik" | "hususi" | "hizmet" | ...
   onCountryClick,
   onCountryHover,
   focusedCountry,  // iso2 string or null — highlights / centers
@@ -455,10 +456,14 @@ function Globe({
       if (groupPassports.includes(iso2)) return { status: "self", days: null };
       return window.resolveGroupStatus(groupPassports, iso2);
     }
-    return direction === "incoming"
-      ? window.resolveStatus(iso2, passport)
-      : window.resolveStatus(passport, iso2);
-  }, [passport, direction, groupActive, groupPassports]);
+    if (direction === "incoming") {
+      return window.resolveStatus(iso2, passport);
+    }
+    if (variant && variant !== "ordinary") {
+      return window.resolveVariantStatus(passport, iso2, variant);
+    }
+    return window.resolveStatus(passport, iso2);
+  }, [passport, direction, groupActive, groupPassports, variant]);
 
   const fillFor = useCallback((iso2) => {
     if (!passport && !groupActive) return STATUS_COLOR.na.fill;

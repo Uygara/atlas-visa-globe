@@ -10,6 +10,7 @@ function Panel({
   onPickFromSearch,
   showCompare,
   direction, setDirection,
+  variant, setVariant,
 }) {
   const [showPicker, setShowPicker] = useState(false);
   const [showComparePicker, setShowComparePicker] = useState(false);
@@ -24,7 +25,11 @@ function Panel({
   const tallyData = groupActive
     ? window.tallyGroup(groupPassports)
     : (passport
-        ? (direction === "incoming" ? window.tallyIncoming(passport) : window.tally(passport))
+        ? (direction === "incoming"
+            ? window.tallyIncoming(passport)
+            : (variant && variant !== "ordinary"
+                ? window.tallyVariant(passport, variant)
+                : window.tally(passport)))
         : null);
 
   return (
@@ -38,6 +43,14 @@ function Panel({
         setOpen={setShowPicker}
         onChange={(v) => { setPassport(v); setShowPicker(false); }}
       />
+
+      {passport && setVariant && window.passportVariants && window.passportVariants(passport).length > 0 && (
+        <PassportTypeSelector
+          passport={passport}
+          value={variant || "ordinary"}
+          onChange={setVariant}
+        />
+      )}
 
       {showCompare && !groupMode && (
         <PassportPicker
@@ -102,6 +115,7 @@ function Panel({
           groupPassports={groupActive ? groupPassports : null}
           iso2={detailCountry}
           direction={direction}
+          variant={variant}
           onClose={() => setDetailCountry(null)}
         />
       )}
@@ -163,6 +177,88 @@ function Logomark() {
       <path d="M2 12 H22" stroke="var(--self)" strokeWidth="1.4" />
       <circle cx="12" cy="12" r="2" fill="var(--vf)" />
     </svg>
+  );
+}
+
+// Segmented control under the passport picker for passports that have
+// type variants (TR has hususi / hizmet / diplomatik on top of bordo;
+// other countries will appear here as the scraper populates them).
+// Ordinary is always first and is the implicit default.
+function PassportTypeSelector({ passport, value, onChange }) {
+  const variants = window.passportVariants(passport);
+  if (!variants.length) return null;
+  const lang = window.ATLAS_LANG || "en";
+  const opts = [
+    { key: "ordinary",
+      label: window.passportVariantLabel(passport, "ordinary"),
+      sub: null,
+      source: null,
+    },
+    ...variants.map(k => {
+      const e = window.PASSPORT_VARIANTS[passport][k];
+      return {
+        key: k,
+        label: window.passportVariantLabel(passport, k),
+        sub: lang === "tr" ? (e.sub || null) : (e.subEn || e.sub || null),
+        source: e.source || null,
+      };
+    }),
+  ];
+  const active = opts.find(o => o.key === value) || opts[0];
+  return (
+    <div style={{ marginBottom: 14 }}>
+      <div style={{
+        fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
+        textTransform: "uppercase", letterSpacing: "0.10em", marginBottom: 6,
+      }}>{window.t("panel.passport_type")}</div>
+      <div style={{
+        display: "flex", flexWrap: "wrap", gap: 4, padding: 3,
+        background: "var(--bg-2)", borderRadius: 10,
+        border: "1px solid var(--panel-border)",
+      }}>
+        {opts.map(o => {
+          const on = o.key === value;
+          return (
+            <button key={o.key} onClick={() => onChange(o.key)}
+              style={{
+                flex: "1 1 0", minWidth: 0, padding: "7px 6px", borderRadius: 7,
+                border: "none",
+                background: on ? "var(--self)" : "transparent",
+                color: on ? "#05070d" : "var(--fg-dim)",
+                fontFamily: "inherit", fontSize: 11,
+                fontWeight: on ? 600 : 500, cursor: "pointer",
+                whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
+              }}
+              title={o.label}>
+              {o.label}
+            </button>
+          );
+        })}
+      </div>
+      {(active.sub || active.source) && (
+        <div style={{
+          marginTop: 6, fontSize: 11, color: "var(--fg-mute)",
+          lineHeight: 1.5,
+        }}>
+          {active.sub}
+          {active.source && (
+            <> · <a href={active.source} target="_blank" rel="noopener nofollow"
+                    style={{ color: "var(--fg-mute)", textDecoration: "none",
+                             borderBottom: "1px dotted var(--fg-faint)" }}>
+              {window.t("cond.source")}
+            </a></>
+          )}
+        </div>
+      )}
+      {value !== "ordinary" && (
+        <div style={{
+          marginTop: 6, fontSize: 10, color: "var(--fg-faint)",
+          fontFamily: "var(--font-mono)",
+        }}>
+          {window.t("panel.variant_disclaimer")}
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -715,14 +811,21 @@ function SearchIcon() {
   );
 }
 
-function DetailCard({ passport, compare, iso2, onClose, direction, groupPassports }) {
+function DetailCard({ passport, compare, iso2, onClose, direction, groupPassports, variant }) {
   const dest = window.byIso2[iso2];
   if (!dest) return null;
   const groupActive = Array.isArray(groupPassports) && groupPassports.length > 0;
   const incoming = direction === "incoming" && !groupActive;
+  // Variant only applies to outgoing single-passport mode; group + incoming
+  // fall back to the ordinary lookup so the math composes cleanly.
+  const variantActive = !!variant && variant !== "ordinary" && !groupActive && !incoming;
   const r = groupActive
     ? window.resolveGroupStatus(groupPassports, iso2)
-    : (incoming ? window.resolveStatus(iso2, passport) : window.resolveStatus(passport, iso2));
+    : (incoming
+        ? window.resolveStatus(iso2, passport)
+        : (variantActive
+            ? window.resolveVariantStatus(passport, iso2, variant)
+            : window.resolveStatus(passport, iso2)));
   const rc = !groupActive && compare
     ? (incoming ? window.resolveStatus(iso2, compare) : window.resolveStatus(compare, iso2))
     : null;
