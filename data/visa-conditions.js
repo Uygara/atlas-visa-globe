@@ -254,13 +254,31 @@ window.VISA_CONDITIONS = {
 // ── Helpers ────────────────────────────────────────────────────────────────
 // Returns the array of conditional rows for a given (passport, destination)
 // pair, or null if none. Walks territory aliases (e.g. PR→US) so that a
-// dependent territory inherits its parent's conditional table.
+// dependent territory inherits its parent's conditional table. Merges two
+// sources:
+//   1. Hand-curated VISA_CONDITIONS in this file (richer notes + sources).
+//   2. Scraper output stored on PASSPORTS[iso2].cond (auto-extracted from
+//      Wikipedia Notes columns).
+// Manual entries win on key collision because they're verified.
 window.visaCondition = function (passportIso2, destIso2) {
   if (!passportIso2 || !destIso2) return null;
   const aliased = (window.TERRITORY_ALIAS && window.TERRITORY_ALIAS[destIso2]) || destIso2;
-  const table = window.VISA_CONDITIONS[passportIso2];
-  if (!table) return null;
-  return table[aliased] || table[destIso2] || null;
+  const manualTable = window.VISA_CONDITIONS[passportIso2] || {};
+  const manual = manualTable[aliased] || manualTable[destIso2] || null;
+  const passport = window.PASSPORTS && window.PASSPORTS[passportIso2];
+  const scraped = passport && passport.cond
+    ? (passport.cond[aliased] || passport.cond[destIso2] || null)
+    : null;
+  if (!manual && !scraped) return null;
+  if (manual && !scraped) return manual;
+  if (scraped && !manual) return scraped;
+  // De-dup by (then + sorted ifHolds). Manual entries kept; scraped rows added
+  // only when their signature isn't already in the manual set.
+  const sig = (row) => row.then + ":" + [...row.ifHolds].sort().join(",");
+  const seen = new Set(manual.map(sig));
+  const merged = [...manual];
+  scraped.forEach(row => { if (!seen.has(sig(row))) merged.push(row); });
+  return merged;
 };
 
 // Human-readable list of the `ifHolds` codes for the active language.

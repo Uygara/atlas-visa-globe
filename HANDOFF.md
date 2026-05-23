@@ -34,26 +34,15 @@ All five issues from the previous handoff are SHIPPED in commits `0aeccf9`,
 
 ## New active issues (2026-05-23)
 
-1. **Conditional / nested visa rules.** Wikipedia's visa-policy tables often
-   include important conditions next to the raw status, e.g. "Indian
-   citizens normally need a visa for Türkiye, but holders of a valid UK,
-   US, Schengen or Irish visa can obtain an eVisa." We currently flatten
-   each (passport, dest) pair to a single status with `days` — the
-   conditional is dropped on the floor. Surface these in the DetailCard
-   under the primary verdict, e.g. an "Eligibility shortcuts" / "Koşullu
-   istisnalar" block. Three sub-tasks:
-   - **Scraper:** extend `backend/scraper.js` to also capture the "if you
-     hold X, you can do Y" sentence/list-item adjacent to each row. Store
-     as `conditions: [{ ifHolds: ["UK","US","SG","IE","Schengen"],
-     then: "ev", days: 30, source: "..." }]` on the resolved row in
-     `data/passports.js`.
-   - **Renderer:** in `DetailCard` (panel.jsx), if the resolved pair has
-     `conditions[]`, render a callout: "Have one of these? Easier path
-     available." with flags + new status pill.
-   - **i18n:** add Turkish strings for the callout title + condition
-     phrasings.
-   - Test on (IN → TR), (PK → various), (CN → schengen) — known cases
-     with conditional eVisa.
+1. ~~Conditional / nested visa rules~~ — shipped in commits `4aab6ff` +
+   `<next>`. Surface in DetailCard via `ConditionsBox`; data from
+   `data/visa-conditions.js` (hand-curated) merged with scraper output
+   on `PASSPORTS[iso2].cond` (extracted from Wikipedia Notes column by
+   `extractConditions()` in `backend/scraper.js`). Manual entries win
+   on key collision since they're verified + sourced. The scraper
+   pattern needs to be exercised on the next daily refresh — verify
+   the auto-extracted set on a known case (e.g. IN → TR) and broaden
+   the keyword list if it misses obvious matches.
 
 ## What's done — quick map of the codebase
 

@@ -11,6 +11,7 @@ Object.entries(RAW_PASSPORTS).forEach(([iso2, p]) => {
     default: p.default,
     defaultDays: p.defaultDays || null,
     map: {},
+    cond: p.cond || null,   // optional: conditional shortcuts emitted by scraper
   };
   ["vf", "ev", "voa", "vr"].forEach(status => {
     (p[status] || []).forEach(entry => {

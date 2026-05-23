@@ -173,6 +173,7 @@ async function scrapePassport(name, slug) {
     const countryIdx = headers.findIndex(h => h.includes("country"));
     const visaIdx = headers.findIndex(h => h.includes("visa requirement"));
     const stayIdx = headers.findIndex(h => h.includes("allowed stay") || h.includes("max stay"));
+    const notesIdx = headers.findIndex(h => h.includes("notes") || h.includes("note"));
 
     $(tbl).find("tr").slice(1).each((_, row) => {
       const cells = $(row).find("td");
@@ -180,12 +181,16 @@ async function scrapePassport(name, slug) {
       const countryName = $(cells[countryIdx]).text().trim();
       const visaText = $(cells[visaIdx]).text().trim();
       const stayText = stayIdx >= 0 ? $(cells[stayIdx]).text().trim() : "";
+      const notesText = notesIdx >= 0 ? $(cells[notesIdx]).text().trim() : "";
 
       const status = classifyVisaText(visaText);
       const days = parseDays(stayText);
       const destIso2 = ISO_MAP[countryName];
       if (destIso2 && status) {
-        result.rows.push({ destIso2, status, days, raw: visaText });
+        const r = { destIso2, status, days, raw: visaText };
+        const cond = notesText ? extractConditions(notesText, status) : [];
+        if (cond.length) r.conditions = cond;
+        result.rows.push(r);
       }
     });
   });
@@ -228,6 +233,68 @@ function classifyVisaText(text) {
   return null;
 }
 
+// Heuristic parser for the Notes column: looks for "holders of valid X visa
+// can obtain Y" patterns and surfaces them as structured conditions. Returns
+// an array of { ifHolds, then, days, note }. Defensive — returns [] when the
+// note doesn't match a well-known pattern, so we never invent rules.
+//
+// Only emits a condition when the resulting status (`then`) is strictly
+// better than the row's base status; otherwise the note isn't actionable.
+function extractConditions(notesText, baseStatus) {
+  if (!notesText) return [];
+  const raw = notesText;
+  const t = notesText.toLowerCase().replace(/\[[^\]]*\]/g, "").replace(/\s+/g, " ").trim();
+  if (!t) return [];
+  // Anchor on a "valid X visa" pattern before doing more work.
+  if (!/valid\s+[a-z]/.test(t)) return [];
+
+  // Document-source keywords → ISO2 (or SCHENGEN virtual code).
+  const KEYWORDS = [
+    [/\bschengen\b/, "SCHENGEN"],
+    [/\beu\s+(visa|residence|member)/, "SCHENGEN"],
+    [/\bunited\s+states\b|\bus\s+(visa|residence)|\busa\b|\bamerican\s+visa\b/, "US"],
+    [/\bunited\s+kingdom\b|\buk\s+(visa|residence)\b|\bbritish\s+visa\b/, "GB"],
+    [/\birish\s+(visa|residence)\b|\bireland\b/, "IE"],
+    [/\bcanadian\s+(visa|residence)\b|\bcanada\s+visa\b/, "CA"],
+    [/\bjapanese\s+(visa|residence)\b|\bjapan\s+visa\b/, "JP"],
+    [/\baustralian\s+(visa|residence)\b|\baustralia\s+visa\b/, "AU"],
+    [/\bnew\s+zealand\s+(visa|residence)\b/, "NZ"],
+    [/\b(south\s+korean|korean)\s+(visa|residence)\b/, "KR"],
+    [/\bsingaporean?\s+(visa|residence)\b|\bsingapore\s+visa\b/, "SG"],
+    [/\bgerman\s+(visa|residence)\b/, "DE"],
+    [/\bswiss\s+(visa|residence)\b/, "CH"],
+    [/\bisraeli?\s+(visa|residence)\b/, "IL"],
+  ];
+  const found = new Set();
+  KEYWORDS.forEach(([re, code]) => { if (re.test(t)) found.add(code); });
+  if (found.size === 0) return [];
+
+  let then = null;
+  if (/\b(evisa|e-visa|e\s+visa|electronic\s+visa|electronic\s+travel\s+authori[sz]ation)\b/.test(t)) then = "ev";
+  else if (/\bvisa\s+on\s+arrival\b/.test(t)) then = "voa";
+  else if (/\b(visa-?free|no\s+visa\s+required|without\s+a?\s*visa)\b/.test(t)) then = "vf";
+  if (!then) return [];
+
+  // Don't emit if the conditional path isn't actually an upgrade.
+  const ORDER = { vf: 0, ev: 1, voa: 2, vr: 3 };
+  if (ORDER[then] >= ORDER[baseStatus]) return [];
+
+  let days = null;
+  const m = t.match(/(\d+)\s*(day|month|year)/);
+  if (m) {
+    const n = parseInt(m[1], 10);
+    const unit = m[2];
+    days = unit.startsWith("year") ? n * 365 : unit.startsWith("month") ? n * 30 : n;
+  }
+
+  return [{
+    ifHolds: Array.from(found),
+    then,
+    days,
+    note: raw.replace(/\[[^\]]*\]/g, "").trim(),
+  }];
+}
+
 function parseDays(text) {
   if (!text) return null;
   const m = text.match(/(\d+)\s*(day|month|year)/i);
@@ -257,6 +324,13 @@ function buildPassportEntry(scrape) {
       .filter(r => r.status === s)
       .map(r => r.days ? [r.destIso2, r.days] : r.destIso2);
   });
+  // Collect any conditional shortcuts the Notes parser found. Stored as a flat
+  // map keyed by destination ISO2 so the frontend can look up in O(1).
+  const cond = {};
+  scrape.rows.forEach(r => {
+    if (r.conditions && r.conditions.length) cond[r.destIso2] = r.conditions;
+  });
+  if (Object.keys(cond).length) entry.cond = cond;
   return [scrape.iso2, entry];
 }
 
