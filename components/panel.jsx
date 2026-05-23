@@ -848,6 +848,23 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
     const tr = window.t(k);
     return tr === k ? (STATUS_COLOR[s]?.label || s) : tr;
   };
+
+  // ── Dual-citizenship "recommended passport" ────────────────────────────
+  // When two passports are active (compare mode, outgoing, no group), pick
+  // the one with the strictly better status for this destination and lead
+  // with a recommendation pill. The compare detail row below still shows
+  // both statuses so users can sanity-check the choice.
+  const ORDER = { self: 0, vf: 1, ev: 2, voa: 3, vr: 4, na: 5 };
+  let recommended = null;
+  if (compare && rc && !groupActive && !incoming) {
+    const rScore = ORDER[r.status] ?? 5;
+    const cScore = ORDER[rc.status] ?? 5;
+    if (rScore !== cScore) {
+      recommended = rScore < cScore
+        ? { passport, r, label: window.countryName(passport), flag: myPp?.flag }
+        : { passport: compare, r: rc, label: window.countryName(compare), flag: window.byIso2[compare]?.flag };
+    }
+  }
   return (
     <div style={{
       background: "var(--bg-2)",
@@ -878,6 +895,40 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
           </div>
         </div>
       </div>
+
+      {recommended && (
+        <div style={{
+          display: "flex", alignItems: "center", gap: 8,
+          padding: "8px 10px",
+          background: "rgba(34,197,94,0.10)",
+          border: "1px solid rgba(34,197,94,0.40)",
+          borderRadius: 8,
+          marginBottom: 10,
+          fontSize: 12,
+        }}>
+          <span style={{
+            fontSize: 9, fontFamily: "var(--font-mono)", color: "var(--vf)",
+            textTransform: "uppercase", letterSpacing: "0.10em",
+            background: "rgba(34,197,94,0.18)", padding: "2px 6px",
+            borderRadius: 4,
+          }}>
+            {window.t("detail.recommended")}
+          </span>
+          <span style={{ fontSize: 16 }}>{recommended.flag}</span>
+          <span style={{ color: "var(--fg)", fontWeight: 500, flex: 1, minWidth: 0,
+                         overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+            {recommended.label}
+          </span>
+          <span style={{
+            width: 8, height: 8, borderRadius: "50%",
+            background: STATUS_COLOR[recommended.r.status]?.fill,
+            boxShadow: `0 0 6px ${STATUS_COLOR[recommended.r.status]?.fill}`,
+          }} />
+          <span style={{ color: "var(--fg)", fontWeight: 500 }}>
+            {localizedStatusLabel(recommended.r.status)}
+          </span>
+        </div>
+      )}
 
       <div style={{
         display: "flex", alignItems: "center", gap: 10,
