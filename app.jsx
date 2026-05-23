@@ -375,6 +375,7 @@ function TopNav({ tweaks, setTweak, globeStyle, onGlobeStyleChange }) {
           <a href="/schengen-calculator/" onClick={closeMenu}>{window.t("nav.schengen")}</a>
           <a href="/itinerary/" onClick={closeMenu}>{window.t("nav.itinerary")}</a>
           <a href="/digital-nomad-visa/" onClick={closeMenu}>{window.t("nav.nomad")}</a>
+          <a href="/citizenship-by-investment/" onClick={closeMenu}>{window.t("nav.cbi")}</a>
           <a href="/alerts/" onClick={closeMenu}>{window.t("nav.alerts")}</a>
         </nav>
         <div className="rhs">

@@ -329,6 +329,7 @@ function renderSitemap(allPassports) {
     `<url><loc>${base}/</loc><lastmod>${today}</lastmod><priority>1.0</priority></url>`,
     `<url><loc>${base}/alerts/</loc><lastmod>${today}</lastmod><priority>0.7</priority></url>`,
     `<url><loc>${base}/digital-nomad-visa/</loc><lastmod>${today}</lastmod><priority>0.9</priority></url>`,
+    `<url><loc>${base}/citizenship-by-investment/</loc><lastmod>${today}</lastmod><priority>0.95</priority></url>`,
     `<url><loc>${base}/schengen-calculator/</loc><lastmod>${today}</lastmod><priority>0.95</priority></url>`,
     `<url><loc>${base}/itinerary/</loc><lastmod>${today}</lastmod><priority>0.8</priority></url>`,
     `<url><loc>${base}/about/</loc><lastmod>${today}</lastmod><priority>0.5</priority></url>`,

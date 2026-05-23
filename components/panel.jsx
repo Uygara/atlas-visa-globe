@@ -1408,6 +1408,7 @@ function PanelFooter() {
         <a href="/schengen-calculator/" style={linkStyle}>{window.t("footer.schengen")}</a>
         <a href="/itinerary/" style={linkStyle}>{window.t("footer.itinerary")}</a>
         <a href="/digital-nomad-visa/" style={linkStyle}>{window.t("footer.nomad")}</a>
+        <a href="/citizenship-by-investment/" style={linkStyle}>{window.t("footer.cbi")}</a>
         <a href="/about/" style={linkStyle}>{window.t("footer.about")}</a>
         <a href="/privacy/" style={linkStyle}>{window.t("footer.privacy")}</a>
         <a href="/passport/" style={linkStyle}>{window.t("footer.all_passports")}</a>
