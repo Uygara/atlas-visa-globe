@@ -248,26 +248,55 @@ function extractConditions(notesText, baseStatus) {
   // Anchor on a "valid X visa" pattern before doing more work.
   if (!/valid\s+[a-z]/.test(t)) return [];
 
-  // Document-source keywords → ISO2 (or SCHENGEN virtual code).
+  // Document-source keywords → ISO2 (or SCHENGEN / GCC virtual codes).
+  // Each regex is paired with one or more codes; permanent-resident / green
+  // card / "EEA" / "EU member" wording is treated as equivalent to a visa
+  // for the same group. GCC matches any of the six Gulf states.
   const KEYWORDS = [
-    [/\bschengen\b/, "SCHENGEN"],
-    [/\beu\s+(visa|residence|member)/, "SCHENGEN"],
-    [/\bunited\s+states\b|\bus\s+(visa|residence)|\busa\b|\bamerican\s+visa\b/, "US"],
-    [/\bunited\s+kingdom\b|\buk\s+(visa|residence)\b|\bbritish\s+visa\b/, "GB"],
-    [/\birish\s+(visa|residence)\b|\bireland\b/, "IE"],
-    [/\bcanadian\s+(visa|residence)\b|\bcanada\s+visa\b/, "CA"],
-    [/\bjapanese\s+(visa|residence)\b|\bjapan\s+visa\b/, "JP"],
-    [/\baustralian\s+(visa|residence)\b|\baustralia\s+visa\b/, "AU"],
-    [/\bnew\s+zealand\s+(visa|residence)\b/, "NZ"],
-    [/\b(south\s+korean|korean)\s+(visa|residence)\b/, "KR"],
-    [/\bsingaporean?\s+(visa|residence)\b|\bsingapore\s+visa\b/, "SG"],
-    [/\bgerman\s+(visa|residence)\b/, "DE"],
-    [/\bswiss\s+(visa|residence)\b/, "CH"],
-    [/\bisraeli?\s+(visa|residence)\b/, "IL"],
+    // Schengen / EU / EEA — collapse to SCHENGEN since the visa policy is the
+    // same. Catches "any Schengen state", "EU member state", "European Union",
+    // "EEA national/visa", "European Economic Area", "EU long-stay".
+    [/\bschengen\b/, ["SCHENGEN"]],
+    [/\b(any\s+)?eu\s+(visa|residence|member|long.?stay)\b/, ["SCHENGEN"]],
+    [/\beuropean\s+union\b/, ["SCHENGEN"]],
+    [/\bee[ae]\s+(visa|national|residence|long.?stay)\b/, ["SCHENGEN"]],
+    [/\beuropean\s+economic\s+area\b/, ["SCHENGEN"]],
+    // US — visa, residence permit, green card, permanent resident
+    [/\bunited\s+states\b|\bus\s+(visa|residence|green\s+card|permanent\s+resident)\b|\busa\b|\bamerican\s+(visa|residence|green\s+card)\b|\bgreen\s+card\b/, ["US"]],
+    // UK — visa, residence permit, ILR
+    [/\bunited\s+kingdom\b|\buk\s+(visa|residence|indefinite\s+leave)\b|\bbritish\s+(visa|residence)\b|\bindefinite\s+leave\s+to\s+remain\b/, ["GB"]],
+    // Ireland
+    [/\birish\s+(visa|residence|long.?stay)\b|\bireland\s+(visa|residence)\b/, ["IE"]],
+    // Canada (incl. PR card)
+    [/\bcanadian\s+(visa|residence|permanent\s+resident|pr\s+card)\b|\bcanada\s+(visa|residence)\b/, ["CA"]],
+    // Japan
+    [/\bjapanese\s+(visa|residence|long.?stay)\b|\bjapan\s+(visa|residence)\b/, ["JP"]],
+    // Australia / New Zealand
+    [/\baustralian\s+(visa|residence|pr)\b|\baustralia\s+(visa|residence)\b/, ["AU"]],
+    [/\bnew\s+zealand\s+(visa|residence|pr)\b/, ["NZ"]],
+    // South Korea
+    [/\b(south\s+korean|korean)\s+(visa|residence)\b/, ["KR"]],
+    // Singapore
+    [/\bsingaporean?\s+(visa|residence|pr)\b|\bsingapore\s+(visa|residence)\b/, ["SG"]],
+    // Germany / Switzerland on their own (some pages list specific Schengen
+    // members rather than the umbrella Schengen term)
+    [/\bgerman\s+(visa|residence)\b/, ["DE"]],
+    [/\bswiss\s+(visa|residence)\b/, ["CH"]],
+    // Israel
+    [/\bisraeli?\s+(visa|residence)\b/, ["IL"]],
+    // GCC umbrella → emit all six member states
+    [/\bgcc\s+(visa|resident|residence|national)\b|\bgulf\s+cooperation\s+council\b/, ["AE","SA","KW","QA","BH","OM"]],
+    // ASEAN-specific bilaterals are too varied to umbrella; surface only the
+    // common per-state notes (already covered by individual keyword groups).
   ];
   const found = new Set();
-  KEYWORDS.forEach(([re, code]) => { if (re.test(t)) found.add(code); });
+  KEYWORDS.forEach(([re, codes]) => {
+    if (re.test(t)) codes.forEach(c => found.add(c));
+  });
   if (found.size === 0) return [];
+  // Dedup: SCHENGEN already implies DE and CH (and 27 others). Drop the
+  // narrow members so the UI shows one "Schengen" chip instead of three.
+  if (found.has("SCHENGEN")) { found.delete("DE"); found.delete("CH"); }
 
   let then = null;
   if (/\b(evisa|e-visa|e\s+visa|electronic\s+visa|electronic\s+travel\s+authori[sz]ation)\b/.test(t)) then = "ev";
