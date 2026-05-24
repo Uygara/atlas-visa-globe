@@ -124,21 +124,68 @@ Tracked in ALERTS-SETUP.md. Status:
 | Stripe + Resend + Cloudflare KV (for Pro alerts + reminders) | Not done | ~45 min — follow ALERTS-SETUP.md. Once configured, both `dispatch-alerts` and `dispatch-reminders` start sending. |
 | Search Console | Done — sitemap submitted | Google indexes ~1 week. /citizenship-by-investment/ was added to sitemap.xml + scripts/generate-seo.js so it'll appear on the next refresh. |
 
-## New active issues (2026-05-24)
+## Strategic pivot 2026-05-24 — Utility-first
 
-1. **Passport expiry reminder email (Pro tier).** Users who entered a
-   passport on the SPA could opt in to "remind me 6/3/1 month before my
-   passport expires". Many countries require ≥6 months validity at entry,
-   so missing the window blocks travel.
-   - **Capture:** add a "Save my passport details" form somewhere (likely
-     under the picker, or in the Pro upgrade page) that takes
-     `{passportIso, expiryDate}` and POSTs to `/api/passport-expiry`.
-   - **Store:** new field on the subscriber KV record:
-     `passport: { iso2, expiry, addedAt }`.
-   - **Dispatch:** extend `backend/dispatch-reminders.js` (or new sibling)
-     to scan for `expiry - today ∈ {180, 90, 30, 7}` days and send a
-     templated email with the renewal embassy link.
-   - **Pro-gate** like the itinerary reminders.
+Pre-Premium, the site needs traffic + perceived utility. Plan switched
+from Pro-tier packaging to a "Faz A" of 9 free utility features that
+solve real visa pain points and pull organic search traffic. Premium
+("reklamsız + e-posta servisleri") is **Faz B**, deferred until
+Faz A is live + Cloudflare Email Routing / Stripe / Resend are set up.
+
+### Faz A — Free utility features (ALL SHIPPED)
+
+| # | Commit | Feature | What it solves |
+|---|---|---|---|
+| 0 | `049f40b` | Bug fix: HoverCard variant, variants audit, DirectionToggle visibility | Pre-Faz A clean-up |
+| A2 | `39ecefd` | **Transit Visa Checker** `/transit-visa/` | Schengen ATV, UK DATV, US C-1, TWOV — the most-missed rule |
+| A4 | `2134777` | **ETIAS Countdown** `/etias/` | 60+ visa-free nationalities affected from late 2026 |
+| A3 | `30d7a25` | **6-month Passport Validity** `/passport-validity/` | "I bought my flight, my passport expires in 4 months" trap |
+| A1 | `bd634f8` | **Schengen Cascade** (added to /schengen-calculator/) | Visa Code Article 24 — most applicants don't know |
+| A5 | `e9c8e41` | **Visa Shortcuts directory** `/visa-shortcuts/` | Standalone SEO surface for conditional eVisa rules |
+| A6+7+8 | `a49ab45` | **ESTA / Israel-stamp / LOI** | Three DetailCard widgets + `/esta-rules/` page |
+| A9 | `125adc3` | **Visa Checklist pilot (TR → Schengen)** `/visa-checklist/tr-schengen/` | Step-by-step doc list, bilingual, printable, conditional by profile |
+
+**New static pages**: `/transit-visa/`, `/etias/`, `/passport-validity/`,
+`/visa-shortcuts/`, `/esta-rules/`, `/visa-checklist/tr-schengen/`.
+**New DetailCard widgets**: TransitVisaHint, EtiasHint, ValidityHint,
+EstaHint, IsraelStampHint, LoiHint — all context-aware, hidden when
+not relevant.
+
+### Pre-Faz B — setup the user still needs to do
+
+1. **Cloudflare Email Routing** (~5 min)
+   - Dashboard → `travelnow.info` zone → Email → Email Routing → Enable
+   - Destination: personal email (verify)
+   - Custom address: `hello@travelnow.info` → forward to verified destination
+2. **Resend domain verification** — DKIM + SPF DNS records (auto-suggested
+   when you add `travelnow.info` to Resend)
+3. **Stripe products** (one-time, in dashboard):
+   - "travelnow.info Pro — Annual" €9.90 recurring
+   - "travelnow.info Pro — Monthly" €1.90 recurring
+   - (opsiyonel) Lifetime €39 one-off
+   - (opsiyonel) `FOUNDER100` coupon €4.99/yıl, max 100 redemption
+   - Webhook endpoint: `https://travelnow.info/api/webhook/stripe`
+4. **Cloudflare Pages env vars**: `STRIPE_PRO_PRICE_ANNUAL`,
+   `STRIPE_PRO_PRICE_MONTHLY`, `STRIPE_WEBHOOK_SECRET`,
+   `STRIPE_SECRET_KEY`, `RESEND_API_KEY`, `FROM_EMAIL`, `JWT_SECRET`,
+   plus the existing `CLOUDFLARE_KV_NAMESPACE_ID` / etc. for the cron
+   scripts.
+
+### Faz B — Sade Premium (next, after pre-Faz B setup)
+
+Pro paketi: **reklamsız + e-posta servisleri**. Hepsi bu.
+
+| # | Commit | Feature |
+|---|---|---|
+| B1 | (next) | Tier detection altyapısı: `/api/me`, frontend cache, `AdSlot` Pro check |
+| B2 | (next) | Reklamsız mod live (B1 ile aynı commit'te de gidebilir) |
+| B3 | (next) | Sınırsız vize değişikliği uyarısı (mevcut backend; UI promotion) |
+| B4 | (next) | Pasaport süresi reminder (`data/passport-rules.js`, `/api/passport-expiry`, `backend/dispatch-passport-expiry.js`) |
+| B5 | (next) | Apply-by reminder UI (`/itinerary/`'a form ekle; backend zaten var) |
+| B6 | (next) | Schengen kalıcı takip + alarm (`/api/schengen-trips`, dispatcher) |
+| B7 | (next) | Weekly policy digest (`dispatch-alerts.js`'e `--mode=weekly` ekle) |
+| B8 | (next) | Fiyat değişiklik uyarısı (`visa-fees-snapshot.json` daily diff) |
+| B9 | (next) | Bölgesel travel advisory feed (UK FCO scrape) |
 
 ## Open follow-ups (small, not blocking)
 
