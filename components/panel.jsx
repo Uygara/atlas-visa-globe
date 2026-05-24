@@ -974,29 +974,28 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
         {NOTES[r.status]}
       </p>
 
-      <AlertsCTA iso2={iso2} destName={window.countryName(iso2)} />
+      {/* Order: good-news first, then trip warnings (grouped), then
+          practical info, then sponsored slots, then secondary CTA at
+          the bottom. Keeps the most actionable items above the fold. */}
 
       {!groupActive && (
         <ConditionsBox passport={passport} destIso2={iso2} baseStatus={r.status} />
       )}
 
-      {!groupActive && <TransitVisaHint passport={passport} destIso2={iso2} />}
-
-      {!groupActive && <EtiasHint passport={passport} destIso2={iso2} />}
-
-      {!groupActive && <ValidityHint destIso2={iso2} />}
-
-      {!groupActive && iso2 === "US" && <EstaHint passport={passport} />}
-
-      {!groupActive && <IsraelStampHint destIso2={iso2} />}
-
-      {!groupActive && <LoiHint destIso2={iso2} />}
+      {!groupActive && (
+        <TripNotesGroup
+          passport={passport}
+          destIso2={iso2}
+        />
+      )}
 
       {!groupActive && (
         <VisaFeeBox passport={passport} destIso2={iso2} status={r.status} />
       )}
 
       <AffiliatePartners status={r.status} iso2={iso2} />
+
+      <AlertsCTA iso2={iso2} destName={window.countryName(iso2)} />
 
       <AdSlot slotKey="sidebar" />
 
@@ -1152,6 +1151,70 @@ function ConditionsBox({ passport, destIso2, baseStatus }) {
           </div>
         );
       })}
+    </div>
+  );
+}
+
+// TripNotesGroup — bundles the per-trip rule reminders (transit visa,
+// ETIAS, passport-validity rule, ESTA, Israel stamp, LOI) so they're
+// visually grouped instead of stacked as 6 standalone dashed boxes.
+// Pre-checks each widget's "would-render" condition so the section
+// header doesn't appear with no widgets under it.
+function TripNotesGroup({ passport, destIso2 }) {
+  if (!passport || !destIso2) return null;
+
+  // Replicate each widget's render guard so we know whether to draw
+  // the section header at all. Yes, this is duplicated logic; the
+  // alternative (post-render counting from React) is more fragile.
+  const transitWouldRender = (function () {
+    const rules = window.TRANSIT_RULES || {};
+    const HUBS = ["SCHENGEN", "GB", "US", "CA"];
+    const risky = HUBS.filter(area => {
+      const r = rules[area];
+      if (!r) return false;
+      if (r.requiredFor === "*") return true;
+      return Array.isArray(r.requiredFor) && r.requiredFor.includes(passport);
+    });
+    if (risky.length === 0) return false;
+    // Skip when the only risky hub is the destination itself.
+    if (risky.length === 1 && (
+      risky[0] === destIso2 ||
+      (risky[0] === "SCHENGEN" && window.byIso2[destIso2]?.continent === "EU")
+    )) return false;
+    return true;
+  })();
+  const estaWouldRender     = destIso2 === "US" && !!window.estaEligible;
+  const etiasWouldRender    = !!(window.etiasStatus && window.etiasStatus(passport, destIso2)?.kind === "required");
+  const validityWouldRender = !!(window.PASSPORT_VALIDITY && window.PASSPORT_VALIDITY[destIso2] != null);
+  const israelWouldRender   = !!(window.israelStampWarning && window.israelStampWarning(destIso2));
+  const loiWouldRender      = !!(window.loiRule && window.loiRule(destIso2));
+
+  const total = [transitWouldRender, estaWouldRender, etiasWouldRender,
+                 validityWouldRender, israelWouldRender, loiWouldRender]
+    .filter(Boolean).length;
+  if (total === 0) return null;
+
+  return (
+    <div>
+      {total >= 2 && (
+        <div style={{
+          fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
+          textTransform: "uppercase", letterSpacing: "0.10em", marginBottom: 6,
+          display: "flex", alignItems: "center", gap: 6,
+        }}>
+          <span style={{
+            width: 8, height: 8, borderRadius: 2,
+            background: "var(--voa)", boxShadow: "0 0 6px var(--voa)",
+          }} />
+          {window.t("detail.trip_notes")}
+        </div>
+      )}
+      {transitWouldRender  && <TransitVisaHint passport={passport} destIso2={destIso2} />}
+      {estaWouldRender     && <EstaHint passport={passport} />}
+      {etiasWouldRender    && <EtiasHint passport={passport} destIso2={destIso2} />}
+      {validityWouldRender && <ValidityHint destIso2={destIso2} />}
+      {israelWouldRender   && <IsraelStampHint destIso2={destIso2} />}
+      {loiWouldRender      && <LoiHint destIso2={destIso2} />}
     </div>
   );
 }

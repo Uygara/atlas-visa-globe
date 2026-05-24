@@ -122,6 +122,7 @@ const T = {
 
     "detail.loi_required":         "Letter of Invitation (LOI) required",
     "detail.loi_cost":             "Typical cost: {cost}",
+    "detail.trip_notes":           "Important notes for this trip",
 
     "mode.3d":   "3D",
     "mode.2d":   "2D",
@@ -302,6 +303,7 @@ const T = {
 
     "detail.loi_required":         "Davet Mektubu (LOI) zorunlu",
     "detail.loi_cost":             "Tipik maliyet: {cost}",
+    "detail.trip_notes":           "Bu yolculuk için önemli notlar",
 
     "mode.3d":   "3B",
     "mode.2d":   "2B",
@@ -464,6 +466,7 @@ const T = {
     "detail.israel_normalized":    "Nota: el sello de Israel ya no bloquea la entrada aquí",
     "detail.loi_required":         "Carta de Invitación requerida",
     "detail.loi_cost":             "Coste típico: {cost}",
+    "detail.trip_notes":           "Notas importantes para este viaje",
     "picker.select_passport": "Selecciona un pasaporte…", "picker.search_passports": "Buscar pasaportes…",
     "picker.clear": "Limpiar selección", "picker.no_matches": "Sin coincidencias",
     "picker.search": "Buscar…", "picker.no_matches_short": "Sin coincidencias.",
@@ -575,6 +578,7 @@ const T = {
     "detail.israel_normalized":    "Hinweis: Israel-Stempel blockieren die Einreise hier nicht mehr",
     "detail.loi_required":         "Einladungsschreiben (LOI) erforderlich",
     "detail.loi_cost":             "Typische Kosten: {cost}",
+    "detail.trip_notes":           "Wichtige Hinweise für diese Reise",
     "picker.select_passport": "Pass auswählen…", "picker.search_passports": "Pässe suchen…",
     "picker.clear": "Auswahl löschen", "picker.no_matches": "Keine Treffer",
     "picker.search": "Suchen…", "picker.no_matches_short": "Keine Treffer.",
@@ -686,6 +690,7 @@ const T = {
     "detail.israel_normalized":    "Note : les tampons Israël ne bloquent plus l'entrée ici",
     "detail.loi_required":         "Lettre d'invitation (LOI) requise",
     "detail.loi_cost":             "Coût typique : {cost}",
+    "detail.trip_notes":           "Notes importantes pour ce voyage",
     "picker.select_passport": "Choisir un passeport…", "picker.search_passports": "Rechercher passeports…",
     "picker.clear": "Effacer la sélection", "picker.no_matches": "Aucune correspondance",
     "picker.search": "Rechercher…", "picker.no_matches_short": "Aucun résultat.",
@@ -796,6 +801,7 @@ const T = {
     "detail.israel_normalized":    "ملاحظة: ختم إسرائيل لم يعد يمنع الدخول هنا",
     "detail.loi_required":         "خطاب دعوة (LOI) مطلوب",
     "detail.loi_cost":             "التكلفة النموذجية: {cost}",
+    "detail.trip_notes":           "ملاحظات مهمة لهذه الرحلة",
     "picker.select_passport": "اختر جواز سفر…", "picker.search_passports": "ابحث عن الجوازات…",
     "picker.clear": "مسح الاختيار", "picker.no_matches": "لا توجد نتائج",
     "picker.search": "ابحث…", "picker.no_matches_short": "لا نتائج.",

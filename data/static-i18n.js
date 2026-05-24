@@ -224,6 +224,95 @@
         de:"Veraltete Zahl oder fehlendes Programm entdeckt? Öffne ein Issue auf:",
         fr:"Repéré un chiffre obsolète ou un programme manquant ? Ouvre un ticket sur :",
         ar:"رأيت رقمًا قديمًا أو برنامجًا مفقودًا؟ افتح issue على:" },
+
+    // ─── Transit Visa page ───────────────────────────────────────────────
+    "Airport Transit Visa Checker": { tr:"Havalimanı Transit Vize Kontrolü", es:"Comprobador de visa de tránsito aeroportuario", de:"Flughafen-Transit-Visa-Checker", fr:"Vérificateur de visa de transit aéroportuaire", ar:"فاحص تأشيرة العبور بالمطار" },
+    "Your trip": { tr:"Yolculuğunuz", es:"Tu viaje", de:"Deine Reise", fr:"Ton voyage", ar:"رحلتك" },
+    "Transit through": { tr:"Aktarma yapılan yer", es:"Tránsito por", de:"Transit durch", fr:"Transit via", ar:"العبور عبر" },
+    "Do you also hold any of these? (visa or residence permit)": { tr:"Aşağıdakilerden birine sahip misin? (vize veya oturum izni)", es:"¿También tienes alguno de estos? (visa o residencia)", de:"Hast du auch eines davon? (Visum oder Aufenthaltstitel)", fr:"Détiens-tu aussi l'un de ces visas / titres ?", ar:"هل لديك أي من هذه أيضًا؟ (تأشيرة أو إقامة)" },
+    "Common transit hubs at a glance": { tr:"Yaygın aktarma noktalarına bakış", es:"Hubs de tránsito comunes de un vistazo", de:"Häufige Transit-Hubs auf einen Blick", fr:"Principaux hubs de transit en un coup d'œil", ar:"محطات العبور الشائعة بنظرة واحدة" },
+    "Pick a hub above. Below are quick summaries of every hub's policy.":
+      { tr:"Yukarıdan bir hub seç. Aşağıda her hub'ın politikası özetlenmiştir.", es:"Elige un hub arriba. Abajo verás un resumen rápido de cada política.", de:"Wähle oben einen Hub. Unten siehst du eine Kurzfassung der Politik jedes Hubs.", fr:"Choisis un hub ci-dessus. Ci-dessous, un résumé rapide de chaque politique.", ar:"اختر محطة أعلاه. أدناه ملخصات سريعة لسياسة كل محطة." },
+    "Apply before you fly.": { tr:"Uçmadan önce başvur.", es:"Solicita antes de volar.", de:"Vor dem Flug beantragen.", fr:"Demande avant de voler.", ar:"قدّم قبل السفر." },
+    "Official source ↗": { tr:"Resmi kaynak ↗", es:"Fuente oficial ↗", de:"Offizielle Quelle ↗", fr:"Source officielle ↗", ar:"المصدر الرسمي ↗" },
+
+    // ─── ETIAS page ──────────────────────────────────────────────────────
+    "ETIAS — Europe's new travel authorization": { tr:"ETIAS — Avrupa'nın yeni seyahat otorizasyonu", es:"ETIAS — La nueva autorización de viaje de Europa", de:"ETIAS — Europas neue Reisegenehmigung", fr:"ETIAS — la nouvelle autorisation de voyage de l'Europe", ar:"ETIAS — تصريح السفر الأوروبي الجديد" },
+    "Days until ETIAS launch": { tr:"ETIAS başlangıcına kalan gün", es:"Días para el lanzamiento de ETIAS", de:"Tage bis zum ETIAS-Start", fr:"Jours avant le lancement d'ETIAS", ar:"أيام حتى انطلاق ETIAS" },
+    "Do I need ETIAS?": { tr:"ETIAS gerekli mi?", es:"¿Necesito ETIAS?", de:"Brauche ich ETIAS?", fr:"Ai-je besoin d'ETIAS ?", ar:"هل أحتاج ETIAS؟" },
+    "The key facts": { tr:"Önemli bilgiler", es:"Datos clave", de:"Die wichtigsten Fakten", fr:"Les faits clés", ar:"الحقائق الأساسية" },
+    "Who's affected": { tr:"Kim etkileniyor", es:"A quién afecta", de:"Wer ist betroffen", fr:"Qui est concerné", ar:"من المتأثر" },
+    "What's NOT covered by ETIAS": { tr:"ETIAS'ın kapsamadığı durumlar", es:"Lo que ETIAS NO cubre", de:"Was ETIAS NICHT abdeckt", fr:"Ce qu'ETIAS NE couvre PAS", ar:"ما لا تغطيه ETIAS" },
+    "How to apply (when launched)": { tr:"Nasıl başvurulur (başladığında)", es:"Cómo solicitar (cuando se lance)", de:"Antragstellung (nach Start)", fr:"Comment postuler (au lancement)", ar:"كيفية التقديم (عند الإطلاق)" },
+    "Common questions": { tr:"Sık sorulan sorular", es:"Preguntas comunes", de:"Häufige Fragen", fr:"Questions fréquentes", ar:"أسئلة شائعة" },
+    "Application fee": { tr:"Başvuru ücreti", es:"Tarifa de solicitud", de:"Antragsgebühr", fr:"Frais de demande", ar:"رسوم الطلب" },
+    "Validity": { tr:"Geçerlilik", es:"Validez", de:"Gültigkeit", fr:"Validité", ar:"الصلاحية" },
+    "Days per stay": { tr:"Konaklama başına gün", es:"Días por estancia", de:"Tage pro Aufenthalt", fr:"Jours par séjour", ar:"أيام لكل إقامة" },
+    "Approval time": { tr:"Onay süresi", es:"Tiempo de aprobación", de:"Genehmigungsdauer", fr:"Délai d'approbation", ar:"وقت الموافقة" },
+    "Fee waived": { tr:"Ücretsiz", es:"Sin tarifa", de:"Gebührenfrei", fr:"Sans frais", ar:"معفى من الرسوم" },
+    "Schengen states covered": { tr:"Kapsanan Schengen ülkesi", es:"Estados Schengen cubiertos", de:"Abgedeckte Schengen-Staaten", fr:"États Schengen couverts", ar:"دول شنغن المشمولة" },
+    "Yes — you'll need ETIAS from late 2026": { tr:"Evet — 2026 sonundan itibaren ETIAS gerekecek", es:"Sí — necesitarás ETIAS desde finales de 2026", de:"Ja — ab Ende 2026 brauchst du ETIAS", fr:"Oui — tu auras besoin d'ETIAS dès fin 2026", ar:"نعم — ستحتاج ETIAS من أواخر 2026" },
+    "ETIAS required": { tr:"ETIAS gerekli", es:"ETIAS requerido", de:"ETIAS erforderlich", fr:"ETIAS requis", ar:"ETIAS مطلوب" },
+    "No ETIAS needed": { tr:"ETIAS gerekmiyor", es:"No necesita ETIAS", de:"Kein ETIAS nötig", fr:"Pas besoin d'ETIAS", ar:"لا حاجة لـ ETIAS" },
+    "Exempt — EU / EEA / Swiss citizen": { tr:"Muaf — AB / EEA / İsviçre vatandaşı", es:"Exento — ciudadano UE / EEE / suizo", de:"Befreit — EU / EWR / Schweizer Bürger", fr:"Exempté — citoyen UE / EEE / suisse", ar:"معفى — مواطن الاتحاد الأوروبي / EEA / السويسري" },
+
+    // ─── Passport Validity page ──────────────────────────────────────────
+    "Passport Validity Checker": { tr:"Pasaport Geçerlilik Kontrolü", es:"Comprobador de validez del pasaporte", de:"Pass-Gültigkeitsprüfer", fr:"Vérificateur de validité du passeport", ar:"فاحص صلاحية جواز السفر" },
+    "Check your passport against a destination": { tr:"Pasaportunu bir destinasyona karşı kontrol et", es:"Comprueba tu pasaporte contra un destino", de:"Pass gegen ein Ziel prüfen", fr:"Vérifie ton passeport contre une destination", ar:"تحقق من جواز سفرك مقابل وجهة" },
+    "Destination": { tr:"Destinasyon", es:"Destino", de:"Ziel", fr:"Destination", ar:"الوجهة" },
+    "Your passport expiry date": { tr:"Pasaport son kullanma tarihi", es:"Fecha de caducidad del pasaporte", de:"Pass-Ablaufdatum", fr:"Date d'expiration du passeport", ar:"تاريخ انتهاء جواز السفر" },
+    "Planned exit date (optional)": { tr:"Planlanan çıkış tarihi (opsiyonel)", es:"Fecha de salida planeada (opcional)", de:"Geplantes Ausreisedatum (optional)", fr:"Date de sortie prévue (optionnel)", ar:"تاريخ المغادرة المخطط (اختياري)" },
+    "The three rule tiers": { tr:"Üç kural seviyesi", es:"Los tres niveles de regla", de:"Die drei Regelstufen", fr:"Les trois paliers de règle", ar:"المستويات الثلاثة للقاعدة" },
+    "Full list by destination": { tr:"Destinasyona göre tam liste", es:"Lista completa por destino", de:"Vollständige Liste nach Ziel", fr:"Liste complète par destination", ar:"القائمة الكاملة حسب الوجهة" },
+    "Validity required": { tr:"Gerekli geçerlilik", es:"Validez requerida", de:"Erforderliche Gültigkeit", fr:"Validité requise", ar:"الصلاحية المطلوبة" },
+    "Cleared": { tr:"Onaylandı", es:"Aprobado", de:"Bestanden", fr:"Validé", ar:"مقبول" },
+    "Will be refused boarding": { tr:"Uçuşa kabul edilmeyecek", es:"Te denegarán el embarque", de:"Beförderung wird verweigert", fr:"Embarquement refusé", ar:"سيُرفض الصعود" },
+    "Rule": { tr:"Kural", es:"Regla", de:"Regel", fr:"Règle", ar:"قاعدة" },
+
+    // ─── Visa Shortcuts page ─────────────────────────────────────────────
+    "Visa Shortcuts — easier entry with the visas you already hold": { tr:"Vize Kestirmeleri — elindeki vizelerle daha kolay giriş", es:"Atajos de visa — entrada más fácil con visas que ya tienes", de:"Visa-Abkürzungen — leichtere Einreise mit bereits vorhandenen Visa", fr:"Raccourcis visa — entrée facilitée avec les visas que tu détiens", ar:"اختصارات التأشيرة — دخول أسهل بتأشيراتك الحالية" },
+    "Show shortcuts for": { tr:"Kestirmeleri göster", es:"Mostrar atajos para", de:"Abkürzungen zeigen für", fr:"Afficher les raccourcis pour", ar:"إظهار اختصارات لـ" },
+    "All passports": { tr:"Tüm pasaportlar", es:"Todos los pasaportes", de:"Alle Pässe", fr:"Tous les passeports", ar:"جميع الجوازات" },
+    "→ becomes": { tr:"→ olur", es:"→ se vuelve", de:"→ wird zu", fr:"→ devient", ar:"→ يصبح" },
+
+    // ─── ESTA page ───────────────────────────────────────────────────────
+    "ESTA Disqualifier Checker": { tr:"ESTA Diskalifiye Kontrolü", es:"Verificador de descalificadores ESTA", de:"ESTA-Disqualifikations-Checker", fr:"Vérificateur de disqualifications ESTA", ar:"فاحص موانع أهلية ESTA" },
+    "Check your ESTA eligibility": { tr:"ESTA uygunluğunu kontrol et", es:"Comprueba tu elegibilidad ESTA", de:"ESTA-Berechtigung prüfen", fr:"Vérifie ton éligibilité ESTA", ar:"تحقق من أهليتك لـ ESTA" },
+    "Tick anything that applies to you": { tr:"Sana uyan her şeyi işaretle", es:"Marca todo lo que se aplique a ti", de:"Markiere alles, was auf dich zutrifft", fr:"Coche tout ce qui te concerne", ar:"حدّد كل ما ينطبق عليك" },
+    "The 41 VWP countries": { tr:"41 VWP ülkesi", es:"Los 41 países VWP", de:"Die 41 VWP-Länder", fr:"Les 41 pays VWP", ar:"41 دولة VWP" },
+    "What if I'm disqualified?": { tr:"Diskalifiye olursam ne olur?", es:"¿Y si soy descalificado?", de:"Was, wenn ich disqualifiziert bin?", fr:"Et si je suis disqualifié ?", ar:"ماذا لو تم استبعادي؟" },
+    "Likely ESTA-eligible": { tr:"Muhtemelen ESTA için uygun", es:"Probablemente elegible para ESTA", de:"Wahrscheinlich ESTA-berechtigt", fr:"Probablement éligible ESTA", ar:"على الأرجح مؤهل لـ ESTA" },
+    "Not VWP-eligible": { tr:"VWP için uygun değil", es:"No elegible para VWP", de:"Nicht VWP-berechtigt", fr:"Pas éligible au VWP", ar:"غير مؤهل لـ VWP" },
+    "ESTA disqualifier hit": { tr:"ESTA diskalifiye nedeni mevcut", es:"Descalificador ESTA detectado", de:"ESTA-Disqualifikation getroffen", fr:"Disqualification ESTA détectée", ar:"تم رصد مانع لأهلية ESTA" },
+    "You'll need a full B1/B2 visa": { tr:"Tam B1/B2 vizesi gerekli", es:"Necesitas una visa B1/B2 completa", de:"Du brauchst ein volles B1/B2-Visum", fr:"Tu auras besoin d'un visa B1/B2 complet", ar:"ستحتاج تأشيرة B1/B2 كاملة" },
+    "Apply for a B1/B2 visa instead": { tr:"Onun yerine B1/B2 vizesi için başvur", es:"Solicita una visa B1/B2 en su lugar", de:"Beantrage stattdessen ein B1/B2-Visum", fr:"Demande plutôt un visa B1/B2", ar:"تقدّم بطلب تأشيرة B1/B2 بدلاً من ذلك" },
+
+    // ─── Visa Checklist page ─────────────────────────────────────────────
+    "Your situation": { tr:"Durumun", es:"Tu situación", de:"Deine Situation", fr:"Ta situation", ar:"وضعك" },
+    "Employed": { tr:"Çalışan", es:"Empleado", de:"Angestellt", fr:"Salarié", ar:"موظف" },
+    "Self-employed": { tr:"Serbest meslek", es:"Autónomo", de:"Selbstständig", fr:"Indépendant", ar:"عمل حر" },
+    "Student": { tr:"Öğrenci", es:"Estudiante", de:"Student", fr:"Étudiant", ar:"طالب" },
+    "Retired": { tr:"Emekli", es:"Jubilado", de:"Rentner", fr:"Retraité", ar:"متقاعد" },
+    "With minor child": { tr:"Reşit olmayan çocukla", es:"Con menor a cargo", de:"Mit minderjährigem Kind", fr:"Avec enfant mineur", ar:"مع طفل قاصر" },
+    "🖨 Print / save PDF": { tr:"🖨 Yazdır / PDF kaydet", es:"🖨 Imprimir / guardar PDF", de:"🖨 Drucken / als PDF speichern", fr:"🖨 Imprimer / PDF", ar:"🖨 طباعة / حفظ PDF" },
+    "↺ Reset ticks": { tr:"↺ İşaretleri temizle", es:"↺ Restablecer marcas", de:"↺ Häkchen zurücksetzen", fr:"↺ Réinitialiser cases", ar:"↺ إعادة العلامات" },
+    "Sources": { tr:"Kaynaklar", es:"Fuentes", de:"Quellen", fr:"Sources", ar:"المصادر" },
+
+    // ─── Cross-page UI common strings ────────────────────────────────────
+    "Select…": { tr:"Seç…", es:"Selecciona…", de:"Auswählen…", fr:"Choisir…", ar:"اختر…" },
+    "Search…": { tr:"Ara…", es:"Buscar…", de:"Suchen…", fr:"Rechercher…", ar:"بحث…" },
+    "Today": { tr:"Bugün", es:"Hoy", de:"Heute", fr:"Aujourd'hui", ar:"اليوم" },
+    "Type": { tr:"Tür", es:"Tipo", de:"Typ", fr:"Type", ar:"النوع" },
+    "Region": { tr:"Bölge", es:"Región", de:"Region", fr:"Région", ar:"المنطقة" },
+    "Status": { tr:"Durum", es:"Estado", de:"Status", fr:"Statut", ar:"الحالة" },
+    "Open": { tr:"Açık", es:"Abierto", de:"Offen", fr:"Ouvert", ar:"مفتوح" },
+    "Include closed": { tr:"Kapanmışları dahil et", es:"Incluir cerrados", de:"Geschlossene einschließen", fr:"Inclure les fermés", ar:"تضمين المغلقة" },
+    "Family": { tr:"Aile", es:"Familia", de:"Familie", fr:"Famille", ar:"العائلة" },
+    "Family OK": { tr:"Aile OK", es:"Familia OK", de:"Familie OK", fr:"Famille OK", ar:"العائلة مقبولة" },
+    "Solo only": { tr:"Sadece tek başına", es:"Solo individual", de:"Nur Solo", fr:"Solo seulement", ar:"فردي فقط" },
+    "Any": { tr:"Herhangi", es:"Cualquiera", de:"Beliebig", fr:"N'importe", ar:"أي" },
+    "Free": { tr:"Ücretsiz", es:"Gratis", de:"Kostenlos", fr:"Gratuit", ar:"مجاني" },
+    "Toggle theme": { tr:"Temayı değiştir", es:"Cambiar tema", de:"Theme wechseln", fr:"Changer thème", ar:"تبديل السمة" },
   };
 
   // Attribute-translation map: { selector: ["attr1", "attr2"] }
