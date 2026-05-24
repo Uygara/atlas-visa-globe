@@ -986,6 +986,12 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
 
       {!groupActive && <ValidityHint destIso2={iso2} />}
 
+      {!groupActive && iso2 === "US" && <EstaHint passport={passport} />}
+
+      {!groupActive && <IsraelStampHint destIso2={iso2} />}
+
+      {!groupActive && <LoiHint destIso2={iso2} />}
+
       {!groupActive && (
         <VisaFeeBox passport={passport} destIso2={iso2} status={r.status} />
       )}
@@ -1192,6 +1198,107 @@ function TransitVisaHint({ passport, destIso2 }) {
       </div>
       <span style={{ fontSize: 14, color: "var(--fg-mute)" }}>→</span>
     </a>
+  );
+}
+
+// ESTA hint: shown only when destination = US. Tells VWP-eligible
+// passport holders they CAN use ESTA, and warns non-VWP holders they
+// need a full B1/B2 visa. Links to /esta-rules/ for the disqualifier
+// checklist (post-2011 travel to Iran/Iraq/etc, dual citizenship,
+// arrests, etc.).
+function EstaHint({ passport }) {
+  if (!passport || !window.estaEligible) return null;
+  const eligible = window.estaEligible(passport);
+  const tone = eligible ? "rgba(34,197,94,0.40)" : "rgba(96,165,250,0.40)";
+  const bg   = eligible ? "rgba(34,197,94,0.06)" : "rgba(96,165,250,0.08)";
+  return (
+    <a href="/esta-rules/" style={{
+      display: "flex", alignItems: "center", gap: 10,
+      padding: "10px 12px", marginBottom: 10,
+      background: bg, border: `1px dashed ${tone}`,
+      borderRadius: 8, textDecoration: "none", color: "var(--fg)",
+    }}>
+      <span style={{ fontSize: 18 }}>🇺🇸</span>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontSize: 12, fontWeight: 500 }}>
+          {window.t(eligible ? "detail.esta_eligible" : "detail.esta_not_vwp")}
+        </div>
+        <div style={{ fontSize: 11, color: "var(--fg-mute)", marginTop: 2 }}>
+          {window.t(eligible ? "detail.esta_check_disq" : "detail.esta_visa_path")}
+        </div>
+      </div>
+      <span style={{ fontSize: 14, color: "var(--fg-mute)" }}>→</span>
+    </a>
+  );
+}
+
+// Israel-stamp warning: when destination has a known historical refusal
+// pattern (Iran, Lebanon, Syria, Libya, Yemen — strict; Saudi/UAE/Bahrain
+// — normalized; Algeria/Iraq/Pakistan/Kuwait — relaxed). Tone scales
+// with the severity. Doesn't ask whether the user actually has an
+// Israeli stamp — surfacing the rule is the value.
+function IsraelStampHint({ destIso2 }) {
+  if (!destIso2 || !window.israelStampWarning) return null;
+  const r = window.israelStampWarning(destIso2);
+  if (!r) return null;
+  const tone = r.level === "strict" ? "rgba(239,68,68,0.40)"
+             : r.level === "relaxed" ? "rgba(250,204,21,0.40)"
+             : "rgba(96,165,250,0.30)";
+  const bg   = r.level === "strict" ? "rgba(239,68,68,0.07)"
+             : r.level === "relaxed" ? "rgba(250,204,21,0.08)"
+             : "rgba(96,165,250,0.05)";
+  const label = r.level === "strict"     ? window.t("detail.israel_strict")
+              : r.level === "relaxed"    ? window.t("detail.israel_relaxed")
+              : window.t("detail.israel_normalized");
+  return (
+    <div style={{
+      display: "flex", alignItems: "flex-start", gap: 10,
+      padding: "10px 12px", marginBottom: 10,
+      background: bg, border: `1px dashed ${tone}`,
+      borderRadius: 8, color: "var(--fg)",
+    }}>
+      <span style={{ fontSize: 18 }}>🇮🇱</span>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontSize: 12, fontWeight: 500 }}>{label}</div>
+        <div style={{ fontSize: 11, color: "var(--fg-mute)", marginTop: 2, lineHeight: 1.5 }}>
+          {r.note}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// Letter of Invitation requirement: surfaces destinations that demand
+// a formal sponsor letter (Russia, Belarus, Turkmenistan). Includes a
+// typical cost range so users know what third-party service to budget
+// for.
+function LoiHint({ destIso2 }) {
+  if (!destIso2 || !window.loiRule) return null;
+  const r = window.loiRule(destIso2);
+  if (!r) return null;
+  return (
+    <div style={{
+      display: "flex", alignItems: "flex-start", gap: 10,
+      padding: "10px 12px", marginBottom: 10,
+      background: "rgba(250,204,21,0.08)",
+      border: "1px dashed rgba(250,204,21,0.40)",
+      borderRadius: 8, color: "var(--fg)",
+    }}>
+      <span style={{ fontSize: 18 }}>📨</span>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontSize: 12, fontWeight: 500 }}>
+          {window.t("detail.loi_required")}
+        </div>
+        <div style={{ fontSize: 11, color: "var(--fg-mute)", marginTop: 2, lineHeight: 1.5 }}>
+          {r.note}
+        </div>
+        {r.typicalCost && (
+          <div style={{ fontSize: 10, color: "var(--fg-faint)", fontFamily: "var(--font-mono)", marginTop: 4 }}>
+            {window.t("detail.loi_cost", { cost: r.typicalCost })}
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
 
