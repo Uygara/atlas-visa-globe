@@ -1555,6 +1555,7 @@ function PanelFooter() {
         <a href="/transit-visa/" style={linkStyle}>{window.t("footer.transit")}</a>
         <a href="/etias/" style={linkStyle}>{window.t("footer.etias")}</a>
         <a href="/passport-validity/" style={linkStyle}>{window.t("footer.validity")}</a>
+        <a href="/visa-shortcuts/" style={linkStyle}>{window.t("footer.shortcuts")}</a>
         <a href="/digital-nomad-visa/" style={linkStyle}>{window.t("footer.nomad")}</a>
         <a href="/citizenship-by-investment/" style={linkStyle}>{window.t("footer.cbi")}</a>
         <a href="/about/" style={linkStyle}>{window.t("footer.about")}</a>
