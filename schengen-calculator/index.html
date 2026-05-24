@@ -177,6 +177,38 @@
 
   <div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2617798720306957" data-ad-slot="" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
 
+  <div class="card" id="cascade-card">
+    <h3>Schengen multi-entry visa "cascade" check</h3>
+    <p style="font-size:13px; color:var(--fg-dim); margin:0 0 14px;">
+      Under <strong>Visa Code Article 24</strong>, consulates issue
+      progressively longer multi-entry visas (MEV) to applicants with
+      a clean travel history. Most travellers don't know this rule
+      exists, then apply for single-entry every time and pay €90 each.
+      Tell us how many Schengen visas you've used correctly in the
+      last 2 years and we'll suggest what to ask for.
+    </p>
+    <div style="display:flex; flex-wrap:wrap; gap:10px; align-items:end; margin-bottom:14px;">
+      <div style="display:flex; flex-direction:column; gap:4px;">
+        <label for="cascade-prior" style="font-size:11px; color:var(--fg-mute); font-family:ui-monospace,monospace; text-transform:uppercase; letter-spacing:0.06em;">Prior visas used correctly</label>
+        <input id="cascade-prior" type="number" min="0" max="20" value="0" style="background:var(--bg3); border:1px solid var(--border-strong); border-radius:7px; color:var(--fg); padding:8px 10px; font-size:14px; font-family:inherit; width:120px;">
+      </div>
+      <div style="display:flex; flex-direction:column; gap:4px;">
+        <label for="cascade-last-len" style="font-size:11px; color:var(--fg-mute); font-family:ui-monospace,monospace; text-transform:uppercase; letter-spacing:0.06em;">Most recent visa was…</label>
+        <select id="cascade-last-len" style="background:var(--bg3); border:1px solid var(--border-strong); border-radius:7px; color:var(--fg); padding:8px 10px; font-size:14px; font-family:inherit;">
+          <option value="0">— None yet</option>
+          <option value="single">Single-entry / short MEV (under 1 year)</option>
+          <option value="1y">1-year MEV</option>
+          <option value="2y">2-year MEV</option>
+          <option value="5y">5-year MEV</option>
+        </select>
+      </div>
+      <label style="display:inline-flex; align-items:center; gap:6px; font-size:13px; color:var(--fg-dim); cursor:pointer;">
+        <input id="cascade-clean" type="checkbox" checked> Always exited Schengen on time (no overstays)
+      </label>
+    </div>
+    <div id="cascade-verdict"></div>
+  </div>
+
   <details>
     <summary>How the 90 / 180 rule actually works</summary>
     <p>Under <strong>Regulation (EU) 2018/1806</strong>, short-stay travellers in
@@ -422,6 +454,68 @@
   // Initial paint
   document.getElementById("ref").value = refDate;
   rerender();
+
+  // ── Cascade calculator ───────────────────────────────────────────────
+  // Visa Code Article 24 progression:
+  //   first MEV   →  6 months (single-entry as fallback)
+  //   1 visa OK   →  1-year MEV
+  //   2 visas OK in 2 years →  2-year MEV (some consulates 3-year)
+  //   used 2-year correctly  →  5-year MEV
+  // Overstay or refusal in the last 2 years resets the cascade.
+  const cascadePrior = document.getElementById("cascade-prior");
+  const cascadeLast  = document.getElementById("cascade-last-len");
+  const cascadeClean = document.getElementById("cascade-clean");
+  const cascadeOut   = document.getElementById("cascade-verdict");
+
+  function cascadeTier() {
+    const prior = parseInt(cascadePrior.value, 10) || 0;
+    const last  = cascadeLast.value;
+    const clean = cascadeClean.checked;
+    if (!clean) {
+      return { tier: "reset", label: "Cascade reset", note: "If any overstay, refusal, or rule breach occurred in the last 2 years, the cascade restarts. Consulates may also issue a single-entry visa as a probationary measure. Be especially clean with your next stay." };
+    }
+    if (last === "5y") {
+      return { tier: "5y-renew", label: "Renew the 5-year MEV", note: "You already hold the top-tier MEV. On expiry, apply again — the same 5-year MEV should be granted as long as the cascade is clean. No downgrade unless your circumstances changed." };
+    }
+    if (last === "2y") {
+      return { tier: "5y", label: "Request a 5-year multi-entry visa", note: "You've successfully used a 2-year MEV. Article 24 entitles you to request a 5-year MEV on the next application. Mention 'cascade rule under VC Article 24' explicitly on the application form — consulates don't always volunteer it." };
+    }
+    if (last === "1y" || prior >= 2) {
+      return { tier: "2y", label: "Request a 2-year multi-entry visa", note: "Two or more correctly-used short-stay visas in the last 2 years qualify you for a 2-year MEV. Some consulates issue 3-year; either is fine. Request explicitly — single-entry should not be your default at this point." };
+    }
+    if (prior >= 1 || last === "single") {
+      return { tier: "1y", label: "Request a 1-year multi-entry visa", note: "One correctly-used short-stay visa qualifies you for a 1-year MEV under the cascade. Mention your prior visa numbers and 'cascade rule' on the application." };
+    }
+    return { tier: "first", label: "First-time applicant", note: "Most consulates issue a single-entry or short MEV (6 months) for first-time applicants. Use it within the validity, exit on time, and you'll be in the cascade for your next application." };
+  }
+
+  function renderCascade() {
+    const r = cascadeTier();
+    let toneCls = "ok", badge = "Tier";
+    if (r.tier === "5y" || r.tier === "5y-renew") { toneCls = "ok"; badge = "5-YEAR MEV"; }
+    else if (r.tier === "2y") { toneCls = "ok"; badge = "2-YEAR MEV"; }
+    else if (r.tier === "1y") { toneCls = "ok"; badge = "1-YEAR MEV"; }
+    else if (r.tier === "first") { toneCls = ""; badge = "FIRST APPLICATION"; }
+    else if (r.tier === "reset") { toneCls = "warn"; badge = "CASCADE RESET"; }
+    const bg  = toneCls === "ok" ? "rgba(34,197,94,0.10)"
+              : toneCls === "warn" ? "rgba(250,204,21,0.10)"
+              : "rgba(96,165,250,0.10)";
+    const bd  = toneCls === "ok" ? "rgba(34,197,94,0.40)"
+              : toneCls === "warn" ? "rgba(250,204,21,0.40)"
+              : "rgba(96,165,250,0.40)";
+    cascadeOut.innerHTML = `<div style="background:${bg}; border:1px solid ${bd}; border-radius:10px; padding:14px;">
+      <div style="font-size:11px; font-family:ui-monospace,monospace; color:var(--fg-mute); text-transform:uppercase; letter-spacing:0.06em; font-weight:600; margin-bottom:6px;">${badge}</div>
+      <div style="font-size:15px; font-weight:600; color:var(--fg); margin-bottom:6px;">${r.label}</div>
+      <div style="font-size:13px; color:var(--fg-dim); line-height:1.55;">${r.note}</div>
+      <div style="font-size:11px; color:var(--fg-mute); margin-top:8px; font-family:ui-monospace,monospace;">
+        Source: <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32009R0810" target="_blank" rel="noopener" style="color:var(--fg-mute);">EU Visa Code, Article 24</a>
+      </div>
+    </div>`;
+  }
+  cascadePrior.addEventListener("input", renderCascade);
+  cascadeLast.addEventListener("change", renderCascade);
+  cascadeClean.addEventListener("change", renderCascade);
+  renderCascade();
 })();
 </script>
 <script src="/data/static-i18n.js" defer></script>
