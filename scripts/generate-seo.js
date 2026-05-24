@@ -335,6 +335,7 @@ function renderSitemap(allPassports) {
     `<url><loc>${base}/passport-validity/</loc><lastmod>${today}</lastmod><priority>0.95</priority></url>`,
     `<url><loc>${base}/visa-shortcuts/</loc><lastmod>${today}</lastmod><priority>0.9</priority></url>`,
     `<url><loc>${base}/esta-rules/</loc><lastmod>${today}</lastmod><priority>0.9</priority></url>`,
+    `<url><loc>${base}/visa-checklist/tr-schengen/</loc><lastmod>${today}</lastmod><priority>0.9</priority></url>`,
     `<url><loc>${base}/schengen-calculator/</loc><lastmod>${today}</lastmod><priority>0.95</priority></url>`,
     `<url><loc>${base}/itinerary/</loc><lastmod>${today}</lastmod><priority>0.8</priority></url>`,
     `<url><loc>${base}/about/</loc><lastmod>${today}</lastmod><priority>0.5</priority></url>`,
