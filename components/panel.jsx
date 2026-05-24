@@ -984,6 +984,8 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
 
       {!groupActive && <EtiasHint passport={passport} destIso2={iso2} />}
 
+      {!groupActive && <ValidityHint destIso2={iso2} />}
+
       {!groupActive && (
         <VisaFeeBox passport={passport} destIso2={iso2} status={r.status} />
       )}
@@ -1186,6 +1188,47 @@ function TransitVisaHint({ passport, destIso2 }) {
         </div>
         <div style={{ fontSize: 11, color: "var(--fg-mute)", marginTop: 2 }}>
           {window.t("detail.transit_heads_up_sub", { hubs: labels })}
+        </div>
+      </div>
+      <span style={{ fontSize: 14, color: "var(--fg-mute)" }}>→</span>
+    </a>
+  );
+}
+
+// Passport validity hint: surfaces the destination's "must be valid for N
+// months past your stay" rule. Generic note — we don't ask for the user's
+// expiry here (that's the dedicated /passport-validity/ tool). Showing the
+// rule alone already prevents a lot of bad bookings.
+function ValidityHint({ destIso2 }) {
+  if (!destIso2 || !window.passportValidityCheck) return null;
+  const res = window.passportValidityCheck(destIso2, {});
+  if (!res) return null;
+  const sevKey = res.rule === 6 ? "validity.rule6"
+              : res.rule === 3 ? "validity.rule3"
+              : res.rule === 0 ? "validity.rule0"
+              : null;
+  if (!sevKey) return null;
+  const tone = res.rule >= 6 ? "rgba(239,68,68,0.40)"
+             : res.rule >= 3 ? "rgba(250,204,21,0.40)"
+             : "rgba(34,197,94,0.40)";
+  const bg   = res.rule >= 6 ? "rgba(239,68,68,0.06)"
+             : res.rule >= 3 ? "rgba(250,204,21,0.08)"
+             : "rgba(34,197,94,0.06)";
+  return (
+    <a href="/passport-validity/" style={{
+      display: "flex", alignItems: "center", gap: 10,
+      padding: "10px 12px", marginBottom: 10,
+      background: bg,
+      border: `1px dashed ${tone}`,
+      borderRadius: 8, textDecoration: "none", color: "var(--fg)",
+    }}>
+      <span style={{ fontSize: 18 }}>📘</span>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontSize: 12, fontWeight: 500 }}>
+          {window.t(sevKey)}
+        </div>
+        <div style={{ fontSize: 11, color: "var(--fg-mute)", marginTop: 2 }}>
+          {window.t("validity.check_cta")}
         </div>
       </div>
       <span style={{ fontSize: 14, color: "var(--fg-mute)" }}>→</span>
@@ -1511,6 +1554,7 @@ function PanelFooter() {
         <a href="/itinerary/" style={linkStyle}>{window.t("footer.itinerary")}</a>
         <a href="/transit-visa/" style={linkStyle}>{window.t("footer.transit")}</a>
         <a href="/etias/" style={linkStyle}>{window.t("footer.etias")}</a>
+        <a href="/passport-validity/" style={linkStyle}>{window.t("footer.validity")}</a>
         <a href="/digital-nomad-visa/" style={linkStyle}>{window.t("footer.nomad")}</a>
         <a href="/citizenship-by-investment/" style={linkStyle}>{window.t("footer.cbi")}</a>
         <a href="/about/" style={linkStyle}>{window.t("footer.about")}</a>

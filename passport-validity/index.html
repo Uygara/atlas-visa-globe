@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Passport Validity Checker — 6-month rule, per country · travelnow.info</title>
+<meta name="description" content="Will your passport be accepted? Per-destination passport-validity rules (3 months Schengen, 6 months most of Asia + Middle East + Africa). Enter your passport expiry and get a clear ✓ or ✗ for each country.">
+<link rel="canonical" href="https://travelnow.info/passport-validity/">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<meta property="og:title" content="Passport Validity Checker — 6-month rule by country">
+<meta property="og:description" content="Don't get denied boarding. Check each country's passport-validity rule and see if yours qualifies.">
+<meta property="og:image" content="https://travelnow.info/assets/og.png">
+<meta property="og:url" content="https://travelnow.info/passport-validity/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://travelnow.info/assets/og.png">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2617798720306957" crossorigin="anonymous"></script>
+<style>
+  :root {
+    --bg:#f5f7fb; --panel:#ffffff; --bg3:#eef2f8;
+    --fg:#0f1722; --fg-dim:#3d4a5e; --fg-mute:#6b7791;
+    --border:rgba(30,40,60,0.10); --border-strong:rgba(30,40,60,0.18);
+    --self:#60a5fa; --vf:#22c55e; --voa:#facc15; --vr:#ef4444;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin:0; background:var(--bg); color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+    line-height:1.55;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 20%, rgba(96,165,250,0.10), transparent 70%),
+      var(--bg);
+  }
+  a { color:var(--self); text-decoration:none; }
+  a:hover { text-decoration:underline; }
+  .wrap { max-width:780px; margin:0 auto; padding:32px 20px 96px; }
+  .back { display:inline-block; padding:8px 14px; background:var(--panel); border:1px solid var(--border); border-radius:8px; color:var(--fg-dim); font-size:12px; margin-bottom:24px; }
+  h1 { font-size:30px; font-weight:600; letter-spacing:-0.02em; margin:0 0 6px; }
+  h2 { font-size:18px; font-weight:600; margin:28px 0 8px; }
+  .sub { font-size:14px; color:var(--fg-dim); margin:0 0 22px; }
+  .meta { font-size:11px; color:var(--fg-mute); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:18px; }
+  .ad-slot { margin:18px 0; text-align:center; min-height:90px; }
+
+  .card { background:var(--panel); border:1px solid var(--border-strong); border-radius:12px; padding:18px; margin-bottom:14px; box-shadow:0 1px 3px rgba(0,0,0,0.04); }
+
+  .row { display:flex; flex-direction:column; gap:6px; margin-bottom:14px; }
+  .row label { font-size:11px; color:var(--fg-mute); font-family:ui-monospace,monospace; text-transform:uppercase; letter-spacing:0.06em; }
+  .row select, .row input {
+    background:var(--bg3); border:1px solid var(--border-strong); border-radius:8px;
+    color:var(--fg); padding:10px 12px; font-size:14px; font-family:inherit;
+    width:100%;
+  }
+  .row select {
+    padding-right:30px;
+    -webkit-appearance:none; appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='%236b7791' d='M0 0l5 6 5-6z'/></svg>");
+    background-repeat:no-repeat; background-position:right 10px center;
+  }
+  .row select:focus, .row input:focus { outline:none; border-color:var(--self); }
+
+  .verdict { border-radius:12px; padding:18px; margin-top:14px; }
+  .verdict.ok { background:rgba(34,197,94,0.10); border:1px solid rgba(34,197,94,0.40); }
+  .verdict.bad { background:rgba(239,68,68,0.10); border:1px solid rgba(239,68,68,0.40); }
+  .verdict.info { background:rgba(96,165,250,0.10); border:1px solid rgba(96,165,250,0.40); }
+  .verdict .badge { display:inline-block; padding:3px 10px; border-radius:999px; font-size:11px; font-family:ui-monospace,monospace; text-transform:uppercase; letter-spacing:0.06em; font-weight:600; margin-bottom:6px; }
+  .verdict.ok .badge   { background:rgba(34,197,94,0.20); color:#0e7a3a; }
+  .verdict.bad .badge  { background:rgba(239,68,68,0.18); color:#a02018; }
+  .verdict.info .badge { background:rgba(96,165,250,0.18); color:#1e60c4; }
+  .verdict .title { font-size:16px; font-weight:600; color:var(--fg); margin:4px 0 8px; }
+  .verdict .body  { font-size:13px; color:var(--fg-dim); }
+
+  table { width:100%; border-collapse:collapse; font-size:13px; background:var(--panel); border-radius:12px; overflow:hidden; box-shadow:0 1px 3px rgba(0,0,0,0.04); margin-top:8px; }
+  thead { background:var(--bg3); }
+  th { text-align:left; padding:11px 12px; font-size:11px; color:var(--fg-mute); text-transform:uppercase; letter-spacing:0.06em; font-weight:600; }
+  td { padding:9px 12px; border-top:1px solid var(--border); }
+  td.rule { text-align:right; font-family:ui-monospace,monospace; font-weight:600; }
+  td.rule.r6 { color:#a02018; }
+  td.rule.r3 { color:#8a6a00; }
+  td.rule.r0 { color:#0e7a3a; }
+
+  p, li { font-size:14px; color:var(--fg-dim); }
+  ul { padding-left:18px; }
+  footer.fine-block { margin-top:30px; font-size:12px; color:var(--fg-mute); line-height:1.6; }
+</style>
+<script src="/data/countries.js"></script>
+<script src="/data/country-names.js"></script>
+<script src="/data/passport-validity-rules.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="/">← Back to globe</a>
+  <h1>Passport Validity Checker</h1>
+  <p class="sub">Most countries require your passport to be valid for
+  <strong>6 months past your intended stay</strong>. Schengen states
+  ask for 3 months. The US and Canada accept passports valid only
+  for the duration of your stay. Don't get denied boarding — check
+  each leg of your trip before you fly.</p>
+  <div class="meta">Free · Rules sourced from each country's immigration page and IATA Timatic · Last reviewed 2026-05-24</div>
+
+  <div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2617798720306957" data-ad-slot="" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+
+  <div class="card">
+    <h2 style="margin-top:0;">Check your passport against a destination</h2>
+    <div class="row">
+      <label for="dest">Destination</label>
+      <select id="dest"><option value="">Select…</option></select>
+    </div>
+    <div class="row">
+      <label for="expiry">Your passport expiry date</label>
+      <input type="date" id="expiry">
+    </div>
+    <div class="row">
+      <label for="exit">Planned exit date (optional)</label>
+      <input type="date" id="exit">
+    </div>
+    <div id="verdict"></div>
+  </div>
+
+  <h2>The three rule tiers</h2>
+  <ul>
+    <li><strong>6 months past stay</strong> — most of Asia, the Middle
+    East, Africa, Latin America, plus several others (China, India,
+    Indonesia, Türkiye, UAE, Saudi Arabia, Brazil, South Africa…).</li>
+    <li><strong>3 months past stay</strong> — the Schengen Area (all
+    29 states), plus most Balkan and North African states (Albania,
+    Bosnia, Morocco, Tunisia, Algeria, South Korea).</li>
+    <li><strong>Valid for the duration of stay only</strong> — the
+    United States, Canada, Mexico, Ireland and the United Kingdom.</li>
+  </ul>
+
+  <h2>Full list by destination</h2>
+  <table id="rules-table">
+    <thead><tr><th>Destination</th><th style="text-align:right;">Validity required</th></tr></thead>
+    <tbody></tbody>
+  </table>
+
+  <div class="ad-slot" style="margin-top:30px;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2617798720306957" data-ad-slot="" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+
+  <footer class="fine-block">
+    <p><strong>Why airlines care.</strong> If you arrive at the
+    destination with a passport that violates the rule, the airline
+    has to fly you back at their cost — plus a fine in many
+    jurisdictions. So they check at check-in and refuse boarding.</p>
+    <p><strong>Renewal lead times.</strong> US passport renewal:
+    routine ~6 weeks, expedited ~3. UK: ~3 weeks. Türkiye: same day
+    at PTT. India: 4-6 weeks. Plan accordingly — don't book the
+    flight first.</p>
+    <p><strong>Special cases.</strong> Diplomatic, service, refugee
+    travel documents have different rules per destination — always
+    check with the embassy. Children's passports often have shorter
+    validity (5 vs 10 years).</p>
+    <p>Spot a wrong rule? Open an issue at
+    <a href="https://github.com/Uygara/atlas-visa-globe/issues" rel="noopener">github.com/Uygara/atlas-visa-globe</a>.</p>
+  </footer>
+</div>
+
+<script>
+(function () {
+  const destSel  = document.getElementById("dest");
+  const expiryEl = document.getElementById("expiry");
+  const exitEl   = document.getElementById("exit");
+  const vEl      = document.getElementById("verdict");
+  const tbody    = document.querySelector("#rules-table tbody");
+
+  const countries = (window.COUNTRIES || []).slice().sort((a, b) => a.name.localeCompare(b.name));
+  countries.forEach(c => {
+    if (window.PASSPORT_VALIDITY[c.iso2] == null) return;
+    const o = document.createElement("option");
+    o.value = c.iso2;
+    o.textContent = `${c.flag || ""} ${window.countryName ? window.countryName(c.iso2) : c.name}`;
+    destSel.appendChild(o);
+  });
+
+  function render() {
+    const dest = destSel.value;
+    if (!dest) { vEl.innerHTML = ""; return; }
+    const expiry = expiryEl.value || null;
+    const exit   = exitEl.value || null;
+    const res = window.passportValidityCheck(dest, { expiry, exit });
+    if (!res) { vEl.innerHTML = ""; return; }
+    const destName = window.countryName ? window.countryName(dest) : dest;
+    if (res.ok === true) {
+      vEl.innerHTML = `<div class="verdict ok">
+        <div class="badge">Cleared</div>
+        <div class="title">Your passport satisfies ${destName}'s rule</div>
+        <div class="body"><p>${destName} requires ${res.ruleLabel}. You have ${res.monthsLeftOnExit} months left on your passport at the exit date — ${res.marginDays} days of buffer.</p></div>
+      </div>`;
+    } else if (res.ok === false) {
+      vEl.innerHTML = `<div class="verdict bad">
+        <div class="badge">Will be refused boarding</div>
+        <div class="title">Passport too short for ${destName}</div>
+        <div class="body"><p>${destName} requires ${res.ruleLabel}. Your passport only has ${res.monthsLeftOnExit} months left on the exit date — short by ${Math.abs(res.marginDays)} days. Renew your passport BEFORE booking the flight.</p></div>
+      </div>`;
+    } else {
+      vEl.innerHTML = `<div class="verdict info">
+        <div class="badge">Rule</div>
+        <div class="title">${destName}: passport must be ${res.ruleLabel}</div>
+        <div class="body"><p>Enter your passport expiry date above to check whether you qualify.</p></div>
+      </div>`;
+    }
+  }
+  destSel.addEventListener("change", render);
+  expiryEl.addEventListener("change", render);
+  exitEl.addEventListener("change", render);
+
+  // Render full table
+  const rows = [];
+  for (const c of countries) {
+    const months = window.PASSPORT_VALIDITY[c.iso2];
+    if (months == null) continue;
+    rows.push({ iso2: c.iso2, name: window.countryName ? window.countryName(c.iso2) : c.name, flag: c.flag, months });
+  }
+  rows.sort((a, b) => a.name.localeCompare(b.name));
+  tbody.innerHTML = rows.map(r => {
+    const label = r.months === 0 ? "Stay duration only"
+                : r.months === 3 ? "3 months past stay"
+                : r.months === 6 ? "6 months past stay"
+                : `${r.months} months past stay`;
+    return `<tr><td>${r.flag || ""} ${r.name}</td><td class="rule r${r.months}">${label}</td></tr>`;
+  }).join("");
+})();
+</script>
+<script src="/data/static-i18n.js" defer></script>
+</body>
+</html>
