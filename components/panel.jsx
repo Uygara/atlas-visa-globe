@@ -982,6 +982,8 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
 
       {!groupActive && <TransitVisaHint passport={passport} destIso2={iso2} />}
 
+      {!groupActive && <EtiasHint passport={passport} destIso2={iso2} />}
+
       {!groupActive && (
         <VisaFeeBox passport={passport} destIso2={iso2} status={r.status} />
       )}
@@ -1184,6 +1186,38 @@ function TransitVisaHint({ passport, destIso2 }) {
         </div>
         <div style={{ fontSize: 11, color: "var(--fg-mute)", marginTop: 2 }}>
           {window.t("detail.transit_heads_up_sub", { hubs: labels })}
+        </div>
+      </div>
+      <span style={{ fontSize: 14, color: "var(--fg-mute)" }}>→</span>
+    </a>
+  );
+}
+
+// ETIAS heads-up: when the user's passport is on the ETIAS-required list AND
+// the selected destination is a Schengen state, surface the launch countdown
+// + cost so they're not caught off guard. Only renders when actionable.
+function EtiasHint({ passport, destIso2 }) {
+  if (!passport || !destIso2 || !window.etiasStatus) return null;
+  const res = window.etiasStatus(passport, destIso2);
+  if (!res || res.kind !== "required") return null;
+  const days = window.etiasDaysUntilLaunch ? window.etiasDaysUntilLaunch() : null;
+  return (
+    <a href="/etias/" style={{
+      display: "flex", alignItems: "center", gap: 10,
+      padding: "10px 12px", marginBottom: 10,
+      background: "rgba(96,165,250,0.08)",
+      border: "1px dashed rgba(96,165,250,0.50)",
+      borderRadius: 8, textDecoration: "none", color: "var(--fg)",
+    }}>
+      <span style={{ fontSize: 18 }}>🇪🇺</span>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontSize: 12, fontWeight: 500 }}>
+          {days != null && days > 0
+            ? window.t("detail.etias_pre", { days })
+            : window.t("detail.etias_live")}
+        </div>
+        <div style={{ fontSize: 11, color: "var(--fg-mute)", marginTop: 2 }}>
+          {window.t("detail.etias_sub")}
         </div>
       </div>
       <span style={{ fontSize: 14, color: "var(--fg-mute)" }}>→</span>
@@ -1476,6 +1510,7 @@ function PanelFooter() {
         <a href="/schengen-calculator/" style={linkStyle}>{window.t("footer.schengen")}</a>
         <a href="/itinerary/" style={linkStyle}>{window.t("footer.itinerary")}</a>
         <a href="/transit-visa/" style={linkStyle}>{window.t("footer.transit")}</a>
+        <a href="/etias/" style={linkStyle}>{window.t("footer.etias")}</a>
         <a href="/digital-nomad-visa/" style={linkStyle}>{window.t("footer.nomad")}</a>
         <a href="/citizenship-by-investment/" style={linkStyle}>{window.t("footer.cbi")}</a>
         <a href="/about/" style={linkStyle}>{window.t("footer.about")}</a>

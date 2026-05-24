@@ -407,6 +407,7 @@ function TopNav({ tweaks, setTweak, globeStyle, onGlobeStyleChange }) {
       <div className="topbar-sheet">
         <nav className="primary-nav">
           <a href="/transit-visa/" onClick={closeMenu}>{window.t("nav.transit")}</a>
+          <a href="/etias/" onClick={closeMenu}>{window.t("nav.etias")}</a>
           <a href="/schengen-calculator/" onClick={closeMenu}>{window.t("nav.schengen")}</a>
           <a href="/itinerary/" onClick={closeMenu}>{window.t("nav.itinerary")}</a>
           <a href="/digital-nomad-visa/" onClick={closeMenu}>{window.t("nav.nomad")}</a>
