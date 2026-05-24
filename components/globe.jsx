@@ -786,6 +786,7 @@ function Globe({
           passport={passport}
           compare={comparePassport}
           direction={direction}
+          variant={variant}
           groupPassports={groupActive ? groupPassports : null}
         />
       )}
@@ -822,15 +823,22 @@ function idToIso2(id) {
   return c?.iso2;
 }
 
-function HoverCard({ hover, passport, compare, direction, groupPassports }) {
+function HoverCard({ hover, passport, compare, direction, variant, groupPassports }) {
   const dest = window.byIso2[hover.iso2];
   if (!dest) return null;
   const groupActive = Array.isArray(groupPassports) && groupPassports.length > 0;
+  // Variant only applies when not in group / not in incoming mode (same rule
+  // as DetailCard in panel.jsx — keeps the colouring on the map consistent
+  // with the tooltip text).
+  const variantActive = !!variant && variant !== "ordinary"
+                        && !groupActive && direction !== "incoming";
   const r = groupActive
     ? window.resolveGroupStatus(groupPassports, hover.iso2)
-    : (direction === "incoming"
+    : direction === "incoming"
         ? window.resolveStatus(hover.iso2, passport)
-        : window.resolveStatus(passport, hover.iso2));
+        : variantActive
+            ? window.resolveVariantStatus(passport, hover.iso2, variant)
+            : window.resolveStatus(passport, hover.iso2);
   // In group mode, instead of a single "compare" overlay we show each member's status.
   const groupBreakdown = groupActive
     ? groupPassports.map(p => ({

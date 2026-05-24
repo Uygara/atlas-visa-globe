@@ -113,12 +113,23 @@ window.PASSPORT_VARIANTS = {
     },
   },
 
-  // Other countries — placeholder so the scraper extension can land entries
-  // here without changing the schema. Hand-add common cases on demand:
-  //   CN: { diplomatic: {...}, service: {...} },
-  //   IN: { diplomatic: {...}, service: {...} },
-  //   RU: { diplomatic: {...}, service: {...} },
-  //   etc.
+  // ─── Other countries — NOT POPULATED YET ─────────────────────────────
+  // Only TR has hand-curated variant data. Other countries (CN, IN, RU,
+  // US, GB, etc.) all issue diplomatic / service / special passports with
+  // different visa policies, but populating those by hand is error-prone
+  // and the data goes stale quickly. The PassportTypeSelector in
+  // panel.jsx hides itself when window.passportVariants(iso) returns an
+  // empty array, so users picking these passports just see the normal
+  // (ordinary) selection — no broken UI.
+  //
+  // Real fix: a scraper extension reading the Wikipedia articles
+  // `Visa_requirements_for_holders_of_<adjective>_diplomatic_passports`
+  // and emitting variant maps the same way the main scraper emits
+  // ordinary maps. Backlog: HANDOFF "open follow-ups".
+  //
+  // If you ever hand-add an entry here, please cite an official source
+  // (each country's foreign ministry page lists current bilateral
+  // diplomatic-passport exemptions) and a `lastReviewed` ISO date.
 };
 
 // ── Helpers ────────────────────────────────────────────────────────────────

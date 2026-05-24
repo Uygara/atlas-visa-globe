@@ -265,9 +265,12 @@ function PassportTypeSelector({ passport, value, onChange }) {
 function DirectionToggle({ value, onChange }) {
   // "outgoing" — colour each country by what *I* need to enter it.
   // "incoming" — colour each country by what *its citizens* need to visit me.
+  // The toggle used to be a quiet little segmented control buried in the
+  // panel; users couldn't find it. Now it's a labelled card with an icon
+  // on each side so the meaning of each direction is unambiguous.
   const opts = [
-    { v: "outgoing", l: window.t("panel.outgoing"), hint: window.t("panel.outgoing_hint") },
-    { v: "incoming", l: window.t("panel.incoming"), hint: window.t("panel.incoming_hint") },
+    { v: "outgoing", l: window.t("panel.outgoing"),  hint: window.t("panel.outgoing_hint"),  emoji: "✈️" },
+    { v: "incoming", l: window.t("panel.incoming"),  hint: window.t("panel.incoming_hint"),  emoji: "🛬" },
   ];
   const active = opts.find(o => o.v === (value || "outgoing"));
   return (
@@ -275,14 +278,26 @@ function DirectionToggle({ value, onChange }) {
       <div style={{
         fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
         textTransform: "uppercase", letterSpacing: "0.10em", marginBottom: 6,
-      }}>{window.t("panel.direction")}</div>
-      <div style={{ display: "flex", gap: 4, padding: 3, background: "var(--bg-2)", borderRadius: 10, border: "1px solid var(--panel-border)" }}>
+        display: "flex", alignItems: "center", gap: 6,
+      }}>
+        <span style={{
+          width: 8, height: 8, borderRadius: 2,
+          background: "var(--self)", boxShadow: "0 0 6px var(--self)",
+        }} />
+        {window.t("panel.direction")}
+      </div>
+      <div style={{
+        display: "flex", gap: 4, padding: 4,
+        background: "var(--bg-2)", borderRadius: 10,
+        border: "1px solid var(--panel-border-strong)",
+      }}>
         {opts.map(o => {
           const on = o.v === (value || "outgoing");
           return (
             <button key={o.v} onClick={() => onChange(o.v)}
+              title={o.hint}
               style={{
-                flex: 1, padding: "7px 8px", borderRadius: 7,
+                flex: 1, padding: "9px 8px", borderRadius: 7,
                 border: "none",
                 background: on ? "var(--self)" : "transparent",
                 color: on ? "#05070d" : "var(--fg-dim)",
@@ -290,11 +305,17 @@ function DirectionToggle({ value, onChange }) {
                 fontWeight: on ? 600 : 500,
                 cursor: "pointer",
                 transition: "background 160ms ease, color 160ms ease",
-              }}>{o.l}</button>
+                display: "flex", flexDirection: "column",
+                alignItems: "center", gap: 2,
+                lineHeight: 1.2,
+              }}>
+              <span style={{ fontSize: 14 }}>{o.emoji}</span>
+              <span>{o.l}</span>
+            </button>
           );
         })}
       </div>
-      <div style={{ fontSize: 11, color: "var(--fg-mute)", marginTop: 6, fontFamily: "var(--font-mono)" }}>
+      <div style={{ fontSize: 11, color: "var(--fg-mute)", marginTop: 6, lineHeight: 1.5 }}>
         {active?.hint}
       </div>
     </div>
