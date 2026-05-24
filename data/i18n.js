@@ -25,6 +25,7 @@ const T = {
   en: {
     "nav.atlas":         "Atlas",
     "nav.globe":         "Globe",
+    "nav.transit":       "Transit visa",
     "nav.schengen":      "Schengen calc",
     "nav.itinerary":     "Itinerary",
     "nav.nomad":         "Nomad visas",
@@ -96,6 +97,8 @@ const T = {
     "detail.plan_your_trip":  "Plan your trip",
     "detail.sponsored":       "Sponsored. Atlas may earn a commission.",
     "detail.recommended":     "Use this",
+    "detail.transit_heads_up":     "Heads up — transit visa may be needed",
+    "detail.transit_heads_up_sub": "Your passport hits transit-visa rules for: {hubs}. Check before booking.",
 
     "mode.3d":   "3D",
     "mode.2d":   "2D",
@@ -109,6 +112,7 @@ const T = {
 
     "footer.refresh":         "Daily refresh from public sources. Verify with the destination embassy before travel.",
     "footer.alerts":          "Alerts",
+    "footer.transit":         "Transit visa",
     "footer.schengen":        "Schengen calc",
     "footer.itinerary":       "Itinerary",
     "footer.nomad":           "Nomad visas",
@@ -177,6 +181,7 @@ const T = {
   tr: {
     "nav.atlas":         "Atlas",
     "nav.globe":         "Küre",
+    "nav.transit":       "Transit vize",
     "nav.schengen":      "Schengen hesap.",
     "nav.itinerary":     "Rota planı",
     "nav.nomad":         "Nomad vizeleri",
@@ -248,6 +253,8 @@ const T = {
     "detail.plan_your_trip":  "Seyahatini planla",
     "detail.sponsored":       "Sponsorlu. Atlas komisyon kazanabilir.",
     "detail.recommended":     "Bunu kullan",
+    "detail.transit_heads_up":     "Dikkat — transit vize gerekebilir",
+    "detail.transit_heads_up_sub": "Pasaportun şu hub'larda transit vize kuralı tetikliyor: {hubs}. Bilet almadan kontrol et.",
 
     "mode.3d":   "3B",
     "mode.2d":   "2B",
@@ -261,6 +268,7 @@ const T = {
 
     "footer.refresh":         "Halka açık kaynaklardan günlük güncelleme. Seyahatten önce hedef konsoloslukla doğrula.",
     "footer.alerts":          "Uyarılar",
+    "footer.transit":         "Transit vize",
     "footer.schengen":        "Schengen hesap.",
     "footer.itinerary":       "Rota planı",
     "footer.nomad":           "Nomad vizeleri",
@@ -317,6 +325,7 @@ const T = {
 
   es: {
     "nav.globe":         "Globo",
+    "nav.transit":       "Visa de tránsito",
     "nav.schengen":      "Calc. Schengen",
     "nav.itinerary":     "Itinerario",
     "nav.nomad":         "Visas nómada",
@@ -384,6 +393,8 @@ const T = {
     "detail.get_alerts_sub": "Correo gratuito cuando cambie la política de visa.",
     "detail.plan_your_trip": "Planifica tu viaje", "detail.sponsored": "Patrocinado. Atlas puede ganar comisión.",
     "detail.recommended": "Usa este",
+    "detail.transit_heads_up":     "Atención — puede que necesites visa de tránsito",
+    "detail.transit_heads_up_sub": "Tu pasaporte activa reglas de tránsito en: {hubs}. Verifica antes de reservar.",
     "picker.select_passport": "Selecciona un pasaporte…", "picker.search_passports": "Buscar pasaportes…",
     "picker.clear": "Limpiar selección", "picker.no_matches": "Sin coincidencias",
     "picker.search": "Buscar…", "picker.no_matches_short": "Sin coincidencias.",
@@ -404,6 +415,7 @@ const T = {
 
   de: {
     "nav.globe":         "Globus",
+    "nav.transit":       "Transit-Visum",
     "nav.schengen":      "Schengen-Rech.",
     "nav.itinerary":     "Reiseplan",
     "nav.nomad":         "Nomad-Visa",
@@ -471,6 +483,8 @@ const T = {
     "detail.get_alerts_sub": "Kostenlose E-Mail bei Visum-Änderungen.",
     "detail.plan_your_trip": "Plane deine Reise", "detail.sponsored": "Gesponsert. Atlas kann Provision erhalten.",
     "detail.recommended": "Diesen nehmen",
+    "detail.transit_heads_up":     "Achtung — Transitvisum kann nötig sein",
+    "detail.transit_heads_up_sub": "Dein Pass löst Transitregeln aus für: {hubs}. Vor der Buchung prüfen.",
     "picker.select_passport": "Pass auswählen…", "picker.search_passports": "Pässe suchen…",
     "picker.clear": "Auswahl löschen", "picker.no_matches": "Keine Treffer",
     "picker.search": "Suchen…", "picker.no_matches_short": "Keine Treffer.",
@@ -491,6 +505,7 @@ const T = {
 
   fr: {
     "nav.globe":         "Globe",
+    "nav.transit":       "Visa de transit",
     "nav.schengen":      "Calc. Schengen",
     "nav.itinerary":     "Itinéraire",
     "nav.nomad":         "Visas nomades",
@@ -558,6 +573,8 @@ const T = {
     "detail.get_alerts_sub": "E-mail gratuit quand la politique de visa change.",
     "detail.plan_your_trip": "Planifie ton voyage", "detail.sponsored": "Sponsorisé. Atlas peut toucher une commission.",
     "detail.recommended": "Utilise celui-ci",
+    "detail.transit_heads_up":     "Attention — visa de transit possible",
+    "detail.transit_heads_up_sub": "Ton passeport déclenche des règles de transit à : {hubs}. Vérifie avant de réserver.",
     "picker.select_passport": "Choisir un passeport…", "picker.search_passports": "Rechercher passeports…",
     "picker.clear": "Effacer la sélection", "picker.no_matches": "Aucune correspondance",
     "picker.search": "Rechercher…", "picker.no_matches_short": "Aucun résultat.",
@@ -578,6 +595,7 @@ const T = {
 
   ar: {
     "nav.globe":         "كرة أرضية",
+    "nav.transit":       "تأشيرة العبور",
     "nav.schengen":      "حاسبة شنغن",
     "nav.itinerary":     "خطة الرحلة",
     "nav.nomad":         "تأشيرات الرحالة",
@@ -644,6 +662,8 @@ const T = {
     "detail.get_alerts_sub": "بريد مجاني عند تغيّر سياسة التأشيرة.",
     "detail.plan_your_trip": "خطّط لرحلتك", "detail.sponsored": "إعلان. قد تربح Atlas عمولة.",
     "detail.recommended": "استخدم هذا",
+    "detail.transit_heads_up":     "تنبيه — قد تحتاج تأشيرة عبور",
+    "detail.transit_heads_up_sub": "جواز سفرك يفعّل قواعد العبور في: {hubs}. تحقق قبل الحجز.",
     "picker.select_passport": "اختر جواز سفر…", "picker.search_passports": "ابحث عن الجوازات…",
     "picker.clear": "مسح الاختيار", "picker.no_matches": "لا توجد نتائج",
     "picker.search": "ابحث…", "picker.no_matches_short": "لا نتائج.",

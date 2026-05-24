@@ -980,6 +980,8 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
         <ConditionsBox passport={passport} destIso2={iso2} baseStatus={r.status} />
       )}
 
+      {!groupActive && <TransitVisaHint passport={passport} destIso2={iso2} />}
+
       {!groupActive && (
         <VisaFeeBox passport={passport} destIso2={iso2} status={r.status} />
       )}
@@ -1141,6 +1143,51 @@ function ConditionsBox({ passport, destIso2, baseStatus }) {
         );
       })}
     </div>
+  );
+}
+
+// Transit-visa heads-up: if the user's passport is on the Schengen ATV or
+// UK DATV list (or if their route includes US/Canada — which always need a
+// transit clearance), surface a small banner pointing to /transit-visa/.
+// The full check requires the route; here we just flag the risk so people
+// don't get blindsided at the gate.
+function TransitVisaHint({ passport, destIso2 }) {
+  if (!passport) return null;
+  const rules = window.TRANSIT_RULES || {};
+  // Major hub areas a traveller is most likely to connect through.
+  const HUBS = ["SCHENGEN", "GB", "US", "CA"];
+  const risky = HUBS.filter(area => {
+    const r = rules[area];
+    if (!r) return false;
+    if (r.requiredFor === "*") return true;
+    return Array.isArray(r.requiredFor) && r.requiredFor.includes(passport);
+  });
+  if (risky.length === 0) return null;
+  // Don't flag if the destination IS the hub (trivial case).
+  if (destIso2 && risky.length === 1 && (
+    risky[0] === destIso2 ||
+    (risky[0] === "SCHENGEN" && window.byIso2[destIso2]?.continent === "EU")
+  )) return null;
+  const labels = risky.map(a => rules[a].label.split(" (")[0]).join(" · ");
+  return (
+    <a href="/transit-visa/" style={{
+      display: "flex", alignItems: "center", gap: 10,
+      padding: "10px 12px", marginBottom: 10,
+      background: "rgba(250,204,21,0.08)",
+      border: "1px dashed rgba(250,204,21,0.50)",
+      borderRadius: 8, textDecoration: "none", color: "var(--fg)",
+    }}>
+      <span style={{ fontSize: 18 }}>✈️</span>
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div style={{ fontSize: 12, fontWeight: 500 }}>
+          {window.t("detail.transit_heads_up")}
+        </div>
+        <div style={{ fontSize: 11, color: "var(--fg-mute)", marginTop: 2 }}>
+          {window.t("detail.transit_heads_up_sub", { hubs: labels })}
+        </div>
+      </div>
+      <span style={{ fontSize: 14, color: "var(--fg-mute)" }}>→</span>
+    </a>
   );
 }
 
@@ -1428,6 +1475,7 @@ function PanelFooter() {
         <a href="/alerts/" style={linkStyle}>{window.t("footer.alerts")}</a>
         <a href="/schengen-calculator/" style={linkStyle}>{window.t("footer.schengen")}</a>
         <a href="/itinerary/" style={linkStyle}>{window.t("footer.itinerary")}</a>
+        <a href="/transit-visa/" style={linkStyle}>{window.t("footer.transit")}</a>
         <a href="/digital-nomad-visa/" style={linkStyle}>{window.t("footer.nomad")}</a>
         <a href="/citizenship-by-investment/" style={linkStyle}>{window.t("footer.cbi")}</a>
         <a href="/about/" style={linkStyle}>{window.t("footer.about")}</a>

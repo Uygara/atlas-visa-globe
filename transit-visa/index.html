@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Airport Transit Visa Checker — Do you need one? · travelnow.info</title>
+<meta name="description" content="Free airport transit visa checker. Schengen ATV, UK DATV, US C-1, Canada CTAS, Japan / Singapore / China TWOV. Find out if you need a transit visa for your connection — before you book the flight.">
+<link rel="canonical" href="https://travelnow.info/transit-visa/">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<meta property="og:title" content="Airport Transit Visa Checker">
+<meta property="og:description" content="Schengen ATV, UK DATV, US C-1, Canada CTAS, Japan / Singapore / China TWOV — all the airport transit rules in one tool.">
+<meta property="og:image" content="https://travelnow.info/assets/og.png">
+<meta property="og:url" content="https://travelnow.info/transit-visa/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://travelnow.info/assets/og.png">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2617798720306957" crossorigin="anonymous"></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Airport Transit Visa Checker",
+  "applicationCategory": "TravelApplication",
+  "operatingSystem": "Web",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+  "url": "https://travelnow.info/transit-visa/"
+}
+</script>
+<style>
+  :root {
+    --bg:#f5f7fb; --panel:#ffffff; --bg3:#eef2f8;
+    --fg:#0f1722; --fg-dim:#3d4a5e; --fg-mute:#6b7791;
+    --border:rgba(30,40,60,0.10); --border-strong:rgba(30,40,60,0.18);
+    --self:#60a5fa; --vf:#22c55e; --voa:#facc15; --vr:#ef4444;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin:0; background:var(--bg); color:var(--fg);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+    line-height:1.55;
+    background:
+      radial-gradient(ellipse 80% 60% at 70% 20%, rgba(96,165,250,0.10), transparent 70%),
+      var(--bg);
+  }
+  a { color:var(--self); text-decoration:none; }
+  a:hover { text-decoration:underline; }
+  .wrap { max-width:780px; margin:0 auto; padding:32px 20px 96px; }
+  .back { display:inline-block; padding:8px 14px; background:var(--panel); border:1px solid var(--border); border-radius:8px; color:var(--fg-dim); font-size:12px; margin-bottom:24px; }
+  h1 { font-size:30px; font-weight:600; letter-spacing:-0.02em; margin:0 0 6px; }
+  .sub { font-size:14px; color:var(--fg-dim); margin:0 0 22px; }
+  .meta { font-size:11px; color:var(--fg-mute); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:18px; }
+  .ad-slot { margin:18px 0; text-align:center; min-height:90px; }
+
+  .card { background:var(--panel); border:1px solid var(--border-strong); border-radius:12px; padding:18px; margin-bottom:14px; box-shadow:0 1px 3px rgba(0,0,0,0.04); }
+  .card h3 { margin:0 0 12px; font-size:14px; color:var(--fg-dim); font-weight:600; text-transform:uppercase; letter-spacing:0.08em; }
+
+  .row { display:flex; flex-direction:column; gap:6px; margin-bottom:14px; }
+  .row label { font-size:11px; color:var(--fg-mute); font-family:ui-monospace,monospace; text-transform:uppercase; letter-spacing:0.06em; }
+  .row select {
+    background:var(--bg3); border:1px solid var(--border-strong); border-radius:8px;
+    color:var(--fg); padding:10px 30px 10px 12px; font-size:14px; font-family:inherit;
+    -webkit-appearance:none; appearance:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='%236b7791' d='M0 0l5 6 5-6z'/></svg>");
+    background-repeat:no-repeat; background-position:right 10px center;
+    width:100%;
+  }
+  .row select:focus { outline:none; border-color:var(--self); }
+  .checks { display:flex; flex-wrap:wrap; gap:8px; }
+  .chk { display:inline-flex; align-items:center; gap:6px; padding:6px 12px; background:var(--bg3); border:1px solid var(--border); border-radius:999px; font-size:13px; cursor:pointer; user-select:none; }
+  .chk input { margin:0; cursor:pointer; }
+  .chk.on { background:rgba(96,165,250,0.12); border-color:var(--self); color:var(--fg); }
+
+  .verdict { border-radius:12px; padding:18px; margin-top:14px; }
+  .verdict.ok { background:rgba(34,197,94,0.10); border:1px solid rgba(34,197,94,0.40); }
+  .verdict.danger { background:rgba(239,68,68,0.10); border:1px solid rgba(239,68,68,0.40); }
+  .verdict.info { background:rgba(96,165,250,0.10); border:1px solid rgba(96,165,250,0.40); }
+  .verdict .badge { display:inline-block; padding:3px 10px; border-radius:999px; font-size:11px; font-family:ui-monospace,monospace; text-transform:uppercase; letter-spacing:0.06em; font-weight:600; margin-bottom:6px; }
+  .verdict.ok .badge     { background:rgba(34,197,94,0.20); color:#0e7a3a; }
+  .verdict.danger .badge { background:rgba(239,68,68,0.18); color:#a02018; }
+  .verdict.info .badge   { background:rgba(96,165,250,0.18); color:#1e60c4; }
+  .verdict .title { font-size:16px; font-weight:600; color:var(--fg); margin:4px 0 8px; }
+  .verdict .body  { font-size:13px; color:var(--fg-dim); line-height:1.55; }
+  .verdict a { color:inherit; border-bottom:1px dotted; }
+
+  .hub-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(180px, 1fr)); gap:8px; margin-top:6px; }
+  .hub-card { padding:10px 12px; background:var(--bg3); border:1px solid var(--border); border-radius:8px; cursor:pointer; font-size:13px; }
+  .hub-card.on { background:rgba(96,165,250,0.10); border-color:var(--self); }
+  .hub-card .small { color:var(--fg-mute); font-size:11px; font-family:ui-monospace,monospace; }
+
+  .fine { font-size:11px; color:var(--fg-mute); margin-top:12px; }
+  footer.fine-block { margin-top:30px; font-size:12px; color:var(--fg-mute); line-height:1.6; }
+</style>
+<script src="/data/countries.js"></script>
+<script src="/data/country-names.js"></script>
+<script src="/data/transit-visa-rules.js"></script>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="/">← Back to globe</a>
+  <h1>Airport Transit Visa Checker</h1>
+  <p class="sub">Do you need a visa to <em>change planes</em> in a third
+  country? Schengen, UK, US and Canada have rules that catch travellers
+  every week — costing flights, hotels and rebooking fees. Pick your
+  passport, your transit hub, and see if you're cleared.</p>
+  <div class="meta">Free · Sources linked per row · Always confirm with your airline before flying</div>
+
+  <div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2617798720306957" data-ad-slot="" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+
+  <div class="card">
+    <h3>Your trip</h3>
+    <div class="row">
+      <label for="passport">Your passport</label>
+      <select id="passport"><option value="">Select…</option></select>
+    </div>
+    <div class="row">
+      <label for="hub">Transit through</label>
+      <select id="hub"><option value="">Select a transit hub…</option></select>
+    </div>
+    <div class="row">
+      <label>Do you also hold any of these? (visa or residence permit)</label>
+      <div class="checks" id="holds"></div>
+    </div>
+  </div>
+
+  <div id="verdict"></div>
+
+  <div class="card" style="margin-top:18px;">
+    <h3>Common transit hubs at a glance</h3>
+    <p style="font-size:13px;color:var(--fg-dim);margin:0 0 10px;">
+      Pick a hub above. Below are quick summaries of every hub's policy.
+    </p>
+    <div class="hub-grid" id="hub-grid"></div>
+  </div>
+
+  <div class="ad-slot" style="margin-top:30px;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2617798720306957" data-ad-slot="" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+
+  <footer class="fine-block">
+    <p><strong>How airport transit visas work.</strong> Most countries
+    distinguish between <em>airside</em> transit (you stay in the
+    international zone, don't pass immigration) and <em>landside</em>
+    transit (you exit the terminal, e.g. to switch terminals or
+    re-check bags). Schengen, UK and a handful of others require a
+    transit visa for certain nationalities <strong>even airside</strong>.
+    The US and Canada don't have an airside option at all — every
+    transit means clearing immigration.</p>
+    <p><strong>Exemptions usually exist.</strong> If you hold a valid
+    visa or residence permit for the US, UK, Canada, Schengen, Australia
+    or Japan, you'll often qualify for an exemption that lets you transit
+    without a separate transit visa. Tick the boxes above to see
+    whether yours applies.</p>
+    <p><strong>TWOV (Transit Without Visa)</strong> programs exist in
+    Japan (72h), Singapore (96h), Hong Kong (7 days for most), China
+    (144h at major airports). These can let you exit the airport during
+    a long layover — eligibility depends on your nationality and your
+    onward ticket.</p>
+    <p>Numbers and lists are reviewed periodically against IATA Timatic
+    and each country's official source. Open an issue at
+    <a href="https://github.com/Uygara/atlas-visa-globe/issues" rel="noopener">github.com/Uygara/atlas-visa-globe</a>
+    if you spot something wrong or out of date.</p>
+  </footer>
+</div>
+
+<script>
+(function () {
+  const passportSel = document.getElementById("passport");
+  const hubSel      = document.getElementById("hub");
+  const holdsEl     = document.getElementById("holds");
+  const verdictEl   = document.getElementById("verdict");
+  const gridEl      = document.getElementById("hub-grid");
+
+  // ── Populate passport dropdown ──────────────────────────────────────
+  const passports = (window.COUNTRIES || []).slice().sort((a, b) => a.name.localeCompare(b.name));
+  passports.forEach(c => {
+    const o = document.createElement("option");
+    o.value = c.iso2;
+    o.textContent = `${c.flag || ""} ${window.countryName ? window.countryName(c.iso2) : c.name}`;
+    passportSel.appendChild(o);
+  });
+
+  // ── Populate transit hub dropdown ───────────────────────────────────
+  (window.COMMON_TRANSIT_HUBS || []).forEach(hub => {
+    const o = document.createElement("option");
+    o.value = hub.area;
+    o.textContent = `${hub.hubLabel} (${(hub.airports || []).join(" / ")})`;
+    hubSel.appendChild(o);
+  });
+
+  // ── Populate "do you also hold" checkboxes ─────────────────────────
+  const HOLDS = [
+    ["SCHENGEN", "🇪🇺 Schengen visa / residence"],
+    ["US",       "🇺🇸 US visa or green card"],
+    ["GB",       "🇬🇧 UK visa or residence"],
+    ["IE",       "🇮🇪 Irish biometric visa"],
+    ["CA",       "🇨🇦 Canadian visa"],
+    ["AU",       "🇦🇺 Australian visa / residence"],
+    ["NZ",       "🇳🇿 New Zealand visa"],
+    ["JP",       "🇯🇵 Japanese visa / residence"],
+  ];
+  HOLDS.forEach(([code, label]) => {
+    const id = "hold-" + code;
+    const lab = document.createElement("label");
+    lab.className = "chk";
+    lab.innerHTML = `<input type="checkbox" id="${id}" data-hold="${code}"> ${label}`;
+    holdsEl.appendChild(lab);
+    lab.querySelector("input").addEventListener("change", (e) => {
+      lab.classList.toggle("on", e.target.checked);
+      render();
+    });
+  });
+
+  passportSel.addEventListener("change", render);
+  hubSel.addEventListener("change", render);
+
+  // ── Render the verdict ──────────────────────────────────────────────
+  function currentHolds() {
+    return Array.from(holdsEl.querySelectorAll("input:checked")).map(i => i.dataset.hold);
+  }
+  function render() {
+    const passport = passportSel.value;
+    const hub      = hubSel.value;
+    if (!passport || !hub) {
+      verdictEl.innerHTML = "";
+      return;
+    }
+    const res = window.transitVisaRule(passport, hub, { holds: currentHolds() });
+    if (!res) { verdictEl.innerHTML = ""; return; }
+    let cls = "info", badge = "Info", title = res.label, body = res.notes || "";
+    if (res.needs && !res.exemption) {
+      cls = "danger";
+      badge = "Transit visa REQUIRED";
+      title = `You need a transit visa for ${res.label}`;
+      body = `<p>Your ${passport} passport is on the list that requires a transit visa for ${res.label}. ${res.notes || ""}</p>`;
+      body += `<p><strong>Apply before you fly.</strong> Airlines deny boarding if the documentation isn't on your booking. ` +
+              `Check the embassy of the transit country — some allow online application, others require an in-person consulate visit.</p>`;
+      if (res.source) body += `<p><a href="${res.source}" target="_blank" rel="noopener">Official source ↗</a></p>`;
+    } else if (res.exemption) {
+      cls = "ok";
+      badge = "Exemption applies";
+      title = `You're covered for ${res.label}`;
+      body = `<p>You normally would need a transit visa — but the document(s) you hold qualify for an exemption: <strong>${res.exemption.note}</strong></p>`;
+      body += `<p>Carry the relevant visa/residence permit physically (or printed e-visa) plus the passport that contains it. Airlines verify at check-in.</p>`;
+      if (res.source) body += `<p><a href="${res.source}" target="_blank" rel="noopener">Official source ↗</a></p>`;
+    } else if (res.twov && res.twovHours) {
+      cls = "ok";
+      badge = `TWOV available — up to ${res.twovHours}h`;
+      title = `Visa-free transit possible at ${res.label}`;
+      body = `<p>Your ${passport} passport qualifies for the ${res.twovHours}-hour Transit Without Visa program. ${res.notes || ""}</p>`;
+      body += `<p>Conditions: confirmed onward ticket to a third country (not back to your origin), and entry/exit through eligible airports/ports only.</p>`;
+      if (res.source) body += `<p><a href="${res.source}" target="_blank" rel="noopener">Official source ↗</a></p>`;
+    } else {
+      cls = "ok";
+      badge = "No transit visa needed";
+      title = `You can transit ${res.label} without a visa`;
+      body = `<p>${res.notes || "Airside transit is allowed for your passport — you can stay in the international zone without a transit visa."}</p>`;
+      if (res.source) body += `<p><a href="${res.source}" target="_blank" rel="noopener">Official source ↗</a></p>`;
+    }
+    verdictEl.innerHTML = `<div class="verdict ${cls}"><div class="badge">${badge}</div><div class="title">${title}</div><div class="body">${body}</div></div>`;
+  }
+
+  // ── Hub grid (always shown) ────────────────────────────────────────
+  (window.COMMON_TRANSIT_HUBS || []).forEach(hub => {
+    const rule = window.TRANSIT_RULES[hub.area];
+    if (!rule) return;
+    const card = document.createElement("div");
+    card.className = "hub-card";
+    let summary = "";
+    if (rule.requiredFor === "*") summary = "All passports need transit visa (or eligible exemption)";
+    else if (Array.isArray(rule.requiredFor) && rule.requiredFor.length) summary = `Required for ${rule.requiredFor.length} nationalities`;
+    else if (rule.twovHours) summary = `TWOV up to ${rule.twovHours}h`;
+    else summary = "Airside transit visa-free";
+    card.innerHTML = `<div><strong>${rule.label}</strong></div><div class="small">${summary}</div>`;
+    card.addEventListener("click", () => {
+      hubSel.value = hub.area;
+      render();
+      verdictEl.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+    gridEl.appendChild(card);
+  });
+})();
+</script>
+<script src="/data/static-i18n.js" defer></script>
+</body>
+</html>
