@@ -87,25 +87,59 @@ All five issues from the previous handoff are SHIPPED in commits `0aeccf9`,
    - Group mode is a separate use case (family travel — worst-case
      visa). Keep distinct from dual citizenship.
 
-## Older queued items (still open)
+## Older queued items — status
 
-- **Conditional rules — KEYWORDS expansion.** After the first nightly
-  cron with the new scraper, audit the auto-extracted entries against
-  the manual ones and broaden the regex set in
-  `backend/scraper.js → extractConditions()`. Especially watch for
-  EU/EEA wording, GCC visa wording, and ASEAN visa wording.
-- **Citizenship-by-investment comparison page.** Malta / Türkiye /
-  Karayipler / Vanuatu / Antigua. High affiliate value.
-- **Visa application reminder email channel.** When Pro tier ships,
-  send 7/3/1 day reminders before the apply-by date. Reuse the
-  existing dispatcher.
-- **Full static-page i18n.** The shared static-i18n.js now translates
-  the major surfaces; tail strings (long paragraphs in /about/,
-  /privacy/, /alerts/) still fall through to English. Add them to
-  `data/static-i18n.js` DICT as time allows.
-- **More cities/countries in the visa-fee database.** Currently TR /
-  US / GB / DE / IN sources only. Add CN / JP / KR / BR / AE for ~10
-  popular destinations each.
+- ~~**Conditional rules — KEYWORDS expansion**~~ shipped `9d778d1`.
+  EU/EEA, GCC, PR, ILR, green-card phrasings all match now.
+- ~~**Citizenship-by-investment comparison page**~~ shipped `ad53111`.
+  16-row table at /citizenship-by-investment/ with Caribbean + Malta
+  + TR + UAE + Vanuatu etc. Hand-curated; re-verify every ~6 months
+  as governments tweak thresholds.
+- ~~**Pro tier apply-by reminders**~~ backend half shipped `76a7896`.
+  /api/reminders POST + GET, backend/dispatch-reminders.js, daily
+  cron step. **Open:** the /itinerary/ page still lacks the "Email
+  me reminders" form that POSTs to the new endpoint — small UI
+  change for next session.
+- ~~**Static-page i18n tail strings**~~ shipped `1fcc8bd` for /about/
+  and /privacy/ paragraphs that are plain text (no inline tags).
+  **Open:** mixed-content paragraphs with embedded `<a>` / `<strong>`
+  still fall through to English on those pages and the alerts /
+  itinerary forms. Adding `data-i18n-key` attributes on those
+  elements + an HTML-key dictionary entry would close the gap.
+- ~~**Visa-fee database expansion**~~ shipped `4adff03`. CN / JP / KR
+  / BR / AE source passports each cover ~10 destinations; 50 new
+  rows total. Next: Southeast Asian sources (TH / VN / ID / PH) and
+  African sources (NG / EG / KE) once traffic justifies.
+
+## Setup items the user still needs to do (no code involved)
+
+Tracked in ALERTS-SETUP.md. Status:
+
+| Step | Status | Action |
+|---|---|---|
+| Google AdSense | Submitted 2026-05-21, in review | Wait. Code is on every page; auto ads will fill once approved. |
+| Cloudflare Email Routing | Not done | 5 min — set `hello@travelnow.info` forward to personal inbox; then we can wire it back into /about/ + /privacy/ contact lines. |
+| iVisa affiliate | Pending | Wait for code → paste into `data/affiliates.js`. |
+| Airalo affiliate | Pending | Wait for code → paste into `data/affiliates.js`. |
+| Stripe + Resend + Cloudflare KV (for Pro alerts + reminders) | Not done | ~45 min — follow ALERTS-SETUP.md. Once configured, both `dispatch-alerts` and `dispatch-reminders` start sending. |
+| Search Console | Done — sitemap submitted | Google indexes ~1 week. /citizenship-by-investment/ was added to sitemap.xml + scripts/generate-seo.js so it'll appear on the next refresh. |
+
+## Open follow-ups (small, not blocking)
+
+- /itinerary/ → wire the "Email me reminders" form to POST to
+  /api/reminders. UI: under the .ics download, a small "Pro:
+  email me 7/3/1 days before each apply-by" section that reads
+  email from localStorage and shows the Pro upgrade CTA if the
+  subscriber's tier is "free".
+- Static-page mixed-content paragraphs (about/privacy) — switch
+  to `data-i18n-key` attribute + DICT_HTML entry so we can
+  translate paragraphs that embed `<a>` / `<strong>`.
+- Passport type variants beyond Türkiye — scraper extension to
+  read the `Visa_requirements_for_holders_of_<adj>_diplomatic_passports`
+  Wikipedia articles and populate
+  `PASSPORTS[iso2].variants.diplomatic/.service` for the major
+  passports (CN, IN, RU, etc.) so the framework shipped in
+  `b72896a` lights up automatically.
 
 ## What's done — quick map of the codebase
 
