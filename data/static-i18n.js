@@ -150,6 +150,80 @@
     // Common shared phrases
     "Loading…":                            { tr:"Yükleniyor…", es:"Cargando…", de:"Lädt…", fr:"Chargement…", ar:"جارٍ التحميل…" },
     "Back":                                { tr:"Geri", es:"Atrás", de:"Zurück", fr:"Retour", ar:"رجوع" },
+
+    // ─── About page paragraphs ────────────────────────────────────────────
+    "Free · Open data · Daily refresh":
+      { tr:"Ücretsiz · Açık veri · Günlük güncelleme", es:"Gratis · Datos abiertos · Actualización diaria", de:"Kostenlos · Offene Daten · Tägliche Aktualisierung", fr:"Gratuit · Données ouvertes · Mise à jour quotidienne", ar:"مجاني · بيانات مفتوحة · تحديث يومي" },
+    "Atlas is an interactive visa-requirements explorer. Pick your passport\n  and see at a glance which of the world's 200+ countries you can enter\n  visa-free, which need an eVisa, which issue a visa on arrival, and which\n  require a full embassy application. We do this for every passport — not\n  just the major ones.":
+      { tr:"travelnow.info etkileşimli bir vize-gereklilikleri gezginidir. Pasaportunuzu seçin ve dünyanın 200+ ülkesinden hangilerine vizesiz, hangilerine e-vize, hangilerine varışta vize ile girebileceğinizi ve hangilerinin tam konsolosluk başvurusu gerektirdiğini bir bakışta görün. Bunu sadece büyük pasaportlar için değil, her pasaport için yapıyoruz.",
+        es:"travelnow.info es un explorador interactivo de requisitos de visa. Elige tu pasaporte y descubre de un vistazo a cuáles de los más de 200 países del mundo puedes entrar sin visa, cuáles requieren eVisa, cuáles emiten visa al llegar y cuáles exigen una solicitud completa en la embajada.",
+        de:"travelnow.info ist ein interaktiver Visa-Anforderungs-Explorer. Wähle deinen Pass und sieh auf einen Blick, in welche der 200+ Länder der Welt du visumfrei einreisen kannst, welche ein eVisa erfordern, welche ein Visum bei Ankunft ausstellen und welche einen vollständigen Botschaftsantrag verlangen.",
+        fr:"travelnow.info est un explorateur interactif des exigences de visa. Choisis ton passeport et découvre d'un coup d'œil dans quels pays (parmi 200+) tu peux entrer sans visa, lesquels nécessitent un eVisa, lesquels délivrent un visa à l'arrivée et lesquels exigent une demande consulaire complète.",
+        ar:"travelnow.info مستكشف تفاعلي لمتطلبات التأشيرة. اختر جواز سفرك واعرف بنظرة واحدة إلى أي من دول العالم الـ 200+ يمكنك الدخول بدون تأشيرة، وأيها يتطلب تأشيرة إلكترونية، وأيها يصدر تأشيرة عند الوصول، وأيها يحتاج طلبًا كاملاً من السفارة." },
+    "Atlas aggregates visa-policy information from authoritative,\n  regularly-updated public sources covering every recognised passport. The\n  full dataset is rebuilt every 24 hours so the map you see is never more\n  than a day behind the latest announcements. The \"Recently changed\" feed\n  in the side panel surfaces the previous day's diff.":
+      { tr:"travelnow.info, her tanınmış pasaportu kapsayan, otoriter ve düzenli olarak güncellenen kamu kaynaklarından vize politikası bilgilerini bir araya getirir. Tüm veri seti her 24 saatte yeniden oluşturulur, böylece gördüğünüz harita en son duyurulardan bir günden fazla geride değildir. Yan paneldeki \"Son değişiklikler\" akışı önceki günün değişikliklerini gösterir.",
+        es:"travelnow.info agrega información sobre políticas de visa de fuentes públicas autorizadas y actualizadas regularmente que cubren todos los pasaportes reconocidos. El conjunto de datos completo se reconstruye cada 24 horas, por lo que el mapa que ves nunca está a más de un día de retraso respecto a los últimos anuncios.",
+        de:"travelnow.info bündelt Informationen zur Visumpolitik aus autoritativen, regelmäßig aktualisierten öffentlichen Quellen, die jeden anerkannten Pass abdecken. Der gesamte Datensatz wird alle 24 Stunden neu erstellt, sodass die angezeigte Karte nie mehr als einen Tag hinter den neuesten Ankündigungen zurückbleibt.",
+        fr:"travelnow.info agrège les informations de politique de visa à partir de sources publiques faisant autorité et régulièrement mises à jour, couvrant tous les passeports reconnus. L'ensemble du jeu de données est reconstruit toutes les 24 heures.",
+        ar:"يجمع travelnow.info معلومات سياسة التأشيرات من مصادر عامة موثوقة ومحدثة بانتظام تغطي كل جواز سفر معترف به. يتم إعادة بناء مجموعة البيانات الكاملة كل 24 ساعة." },
+    "If something on a country page looks off, get in touch — we'd like to\n  hear about it and fix it quickly.":
+      { tr:"Bir ülke sayfasında bir şey yanlış görünüyorsa bize ulaşın — duymak ve hızla düzeltmek isteriz.",
+        es:"Si algo en la página de un país parece incorrecto, ponte en contacto — nos gustaría saberlo y corregirlo rápidamente.",
+        de:"Wenn auf einer Länderseite etwas falsch aussieht, melde dich — wir würden gerne davon erfahren und es schnell beheben.",
+        fr:"Si quelque chose semble incorrect sur une page de pays, contacte-nous — nous aimerions le savoir et le corriger rapidement.",
+        ar:"إذا بدا شيء غير صحيح في صفحة دولة، تواصل معنا — نود معرفته وإصلاحه بسرعة." },
+    "Server costs are negligible (Cloudflare Pages free tier). We cover\n  them through unobtrusive ads served by Google AdSense and occasional\n  affiliate commissions when readers sign up for travel services we'd\n  recommend anyway (eSIMs, insurance, visa-application help).":
+      { tr:"Sunucu maliyetleri ihmal edilebilir (Cloudflare Pages ücretsiz kademe). Bunları Google AdSense üzerinden gösterilen göze batmayan reklamlar ve okuyucuların zaten önereceğimiz seyahat hizmetlerine (eSIM, sigorta, vize başvuru yardımı) kaydolduğunda kazanılan ara sıra ortaklık komisyonları ile karşılıyoruz.",
+        es:"Los costes de servidor son insignificantes (capa gratuita de Cloudflare Pages). Los cubrimos con anuncios discretos de Google AdSense y comisiones de afiliados ocasionales cuando los lectores contratan servicios de viaje que recomendaríamos de todos modos (eSIM, seguros, ayuda con visados).",
+        de:"Serverkosten sind vernachlässigbar (Cloudflare Pages Free Tier). Wir decken sie durch dezente Google-AdSense-Anzeigen und gelegentliche Affiliate-Provisionen, wenn Leser Reise-Dienste buchen, die wir ohnehin empfehlen würden (eSIM, Versicherung, Visumshilfe).",
+        fr:"Les coûts de serveur sont négligeables (offre gratuite Cloudflare Pages). Nous les couvrons via des annonces Google AdSense discrètes et des commissions d'affiliation occasionnelles lorsque les lecteurs souscrivent à des services de voyage que nous recommanderions de toute façon (eSIM, assurance, aide visa).",
+        ar:"تكاليف الخادم لا تذكر (الفئة المجانية من Cloudflare Pages). نغطيها عبر إعلانات Google AdSense غير مزعجة وعمولات شراكة عرضية عند تسجيل القراء في خدمات سفر نوصي بها على أي حال." },
+    "Country flags are Unicode emoji. All other content on this site is\n  provided as-is for reference; verify any visa requirement with the\n  destination embassy before booking.":
+      { tr:"Ülke bayrakları Unicode emojilerdir. Bu sitedeki diğer tüm içerik referans amaçlı olarak \"olduğu gibi\" sağlanmıştır; herhangi bir vize gerekliliğini rezervasyon yapmadan önce hedef konsoloslukla doğrulayın.",
+        es:"Las banderas de países son emojis Unicode. El resto del contenido se proporciona \"tal cual\" como referencia; verifica cualquier requisito de visa con la embajada antes de reservar.",
+        de:"Länderflaggen sind Unicode-Emojis. Der gesamte andere Inhalt wird \"wie besehen\" zur Referenz bereitgestellt; bitte überprüfe jede Visumsanforderung bei der Botschaft, bevor du buchst.",
+        fr:"Les drapeaux des pays sont des emojis Unicode. Tout autre contenu est fourni « tel quel » à titre de référence ; vérifie toute exigence de visa auprès de l'ambassade avant de réserver.",
+        ar:"أعلام الدول هي رموز Unicode التعبيرية. جميع المحتويات الأخرى مقدمة كما هي للإشارة فقط؛ تحقق من أي متطلب تأشيرة مع سفارة الوجهة قبل الحجز." },
+
+    // ─── Privacy page paragraphs ──────────────────────────────────────────
+    "Last updated: 2026-05-21 · Operator: travelnow.info":
+      { tr:"Son güncelleme: 2026-05-21 · İşletmeci: travelnow.info",
+        es:"Última actualización: 2026-05-21 · Operador: travelnow.info",
+        de:"Zuletzt aktualisiert: 2026-05-21 · Betreiber: travelnow.info",
+        fr:"Dernière mise à jour : 2026-05-21 · Exploitant : travelnow.info",
+        ar:"آخر تحديث: 2026-05-21 · المشغّل: travelnow.info" },
+    "Atlas (travelnow.info) is a free reference tool that shows visa\n  requirements for travelers worldwide. The dataset is rebuilt every 24\n  hours from authoritative public sources. We do not require an account,\n  and we do not ask for personal information.":
+      { tr:"travelnow.info, dünyadaki seyahatçilere vize gerekliliklerini gösteren ücretsiz bir referans aracıdır. Veri seti otoriter kamu kaynaklarından her 24 saatte yeniden oluşturulur. Hesap gerektirmiyoruz ve kişisel bilgi istemiyoruz.",
+        es:"travelnow.info es una herramienta de referencia gratuita que muestra los requisitos de visa para viajeros de todo el mundo. El conjunto de datos se reconstruye cada 24 horas a partir de fuentes públicas autorizadas. No requerimos cuenta ni pedimos información personal.",
+        de:"travelnow.info ist ein kostenloses Referenzwerkzeug, das Visumsanforderungen für Reisende weltweit zeigt. Der Datensatz wird alle 24 Stunden aus autoritativen öffentlichen Quellen neu erstellt. Wir verlangen kein Konto und keine persönlichen Daten.",
+        fr:"travelnow.info est un outil de référence gratuit qui affiche les exigences de visa pour les voyageurs du monde entier. Le jeu de données est reconstruit toutes les 24 heures à partir de sources publiques officielles. Aucun compte ni information personnelle requis.",
+        ar:"travelnow.info أداة مرجعية مجانية تعرض متطلبات التأشيرة للمسافرين حول العالم. يتم إعادة بناء البيانات كل 24 ساعة من مصادر عامة موثوقة. لا نطلب حسابًا ولا معلومات شخصية." },
+    "Atlas is not directed at children under 13. We do not knowingly collect\n  data from anyone under 13.":
+      { tr:"travelnow.info 13 yaş altı çocuklara yönelik değildir. 13 yaş altı kimseden bilerek veri toplamayız.",
+        es:"travelnow.info no está dirigido a menores de 13 años. No recopilamos a sabiendas datos de menores de 13.",
+        de:"travelnow.info richtet sich nicht an Kinder unter 13 Jahren. Wir erheben wissentlich keine Daten von Personen unter 13 Jahren.",
+        fr:"travelnow.info ne s'adresse pas aux enfants de moins de 13 ans. Nous ne collectons pas sciemment de données auprès de personnes de moins de 13 ans.",
+        ar:"travelnow.info غير موجه للأطفال دون 13 عامًا. لا نجمع بيانات عمدًا من أي شخص دون 13 عامًا." },
+    "Since we don't store personal data, there is nothing for you to access,\n  rectify, or delete on our side. For data held by AdSense or our hosting\n  provider, please contact them directly using the policy links above.":
+      { tr:"Kişisel veri saklamadığımız için bizim tarafımızda erişeceğiniz, düzelteceğiniz veya sileceğiniz bir şey yok. AdSense veya barındırma sağlayıcımızın tuttuğu veriler için lütfen yukarıdaki politika bağlantılarıyla doğrudan onlara başvurun.",
+        es:"Como no almacenamos datos personales, no hay nada que puedas acceder, rectificar o eliminar de nuestro lado. Para datos en poder de AdSense o nuestro proveedor de hosting, contáctalos directamente.",
+        de:"Da wir keine personenbezogenen Daten speichern, gibt es auf unserer Seite nichts zum Einsehen, Korrigieren oder Löschen. Für Daten von AdSense oder unserem Hosting-Anbieter wende dich bitte direkt an diese.",
+        fr:"Puisque nous ne stockons pas de données personnelles, il n'y a rien à consulter, rectifier ou supprimer de notre côté. Pour les données détenues par AdSense ou notre hébergeur, contacte-les directement.",
+        ar:"بما أننا لا نخزن بيانات شخصية، فلا يوجد شيء يمكنك الوصول إليه أو تصحيحه أو حذفه من جانبنا. للبيانات التي تحتفظ بها AdSense أو مزود الاستضافة، يرجى التواصل معهم مباشرة." },
+    "If we change anything material we'll update the \"Last updated\" date at\n  the top. Substantial changes will be flagged on the site for at least 14\n  days before taking effect.":
+      { tr:"Önemli bir şeyi değiştirirsek üstteki \"Son güncelleme\" tarihini güncelleriz. Esaslı değişiklikler yürürlüğe girmeden önce en az 14 gün sitede işaretlenir.",
+        es:"Si cambiamos algo importante, actualizaremos la fecha \"Última actualización\" en la parte superior. Los cambios sustanciales se señalarán en el sitio al menos 14 días antes de entrar en vigor.",
+        de:"Bei wesentlichen Änderungen aktualisieren wir oben das Datum \"Zuletzt aktualisiert\". Wesentliche Änderungen werden mindestens 14 Tage vor Inkrafttreten auf der Website angekündigt.",
+        fr:"Si nous changeons quelque chose d'important, nous mettrons à jour la date « Dernière mise à jour » en haut. Les changements substantiels seront signalés au moins 14 jours avant leur entrée en vigueur.",
+        ar:"إذا غيّرنا أي شيء جوهري، سنحدث تاريخ \"آخر تحديث\" في الأعلى. التغييرات الجوهرية ستُعلن على الموقع لمدة 14 يومًا على الأقل قبل التنفيذ." },
+
+    // ─── CBI / nomad page footer paragraphs ──────────────────────────────
+    "Spotted an outdated figure or a missing programme? Open an issue at":
+      { tr:"Güncelliğini yitirmiş bir rakam veya eksik bir program mı gördünüz? Şu adreste sorun açın:",
+        es:"¿Detectaste un dato desactualizado o un programa que falta? Abre un issue en:",
+        de:"Veraltete Zahl oder fehlendes Programm entdeckt? Öffne ein Issue auf:",
+        fr:"Repéré un chiffre obsolète ou un programme manquant ? Ouvre un ticket sur :",
+        ar:"رأيت رقمًا قديمًا أو برنامجًا مفقودًا؟ افتح issue على:" },
   };
 
   // Attribute-translation map: { selector: ["attr1", "attr2"] }
