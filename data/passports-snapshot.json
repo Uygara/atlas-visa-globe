@@ -192,7 +192,20 @@
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "cond": {
+      "ST": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "Visitors holding a visa issued by the United States or a Schengen Member State together with a passport valid for a minimum of 3 months from the arrival date may enter visa-free for a stay of up to 15 days"
+        }
+      ]
+    }
   },
   "JP": {
     "name": "Japan",
@@ -970,7 +983,20 @@
       "MM",
       "TM",
       "US"
-    ]
+    ],
+    "cond": {
+      "BZ": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "voa",
+          "days": 90,
+          "note": "Permanent residents and holders of multiple entry visa of the United States may obtain a visa on arrival. Bearers of valid visas issued by a Schengen Member State are visa exempt for a maximum stay of 90 days."
+        }
+      ]
+    }
   },
   "DE": {
     "name": "Germany",
@@ -6929,6 +6955,7 @@
       "KP",
       "ML",
       "NR",
+      "NI",
       "NE",
       "SD",
       "TM",
@@ -8465,7 +8492,19 @@
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "cond": {
+      "RU": [
+        {
+          "ifHolds": [
+            "US"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "72-hour visa-free transit for international cruise ship/ferry passengers only if travelling with an organized tour and accompanied at all times by a tour operator.\nRegistration required after 7 business days.\nRussia signed the \"Shared Values Visa\" law on August 19, 2024, aimed at simplifying the residence permits for citizens of countries that do not conform to Russia's traditional spirit and values. This means that one can obtain a three-month temporary residency without passing the exam. The focus of this law is to simplify the residence permit for foreign citizens with traditional Russian spirit and values. As long as they comply with Russian values, foreign citizens do not need to prove their knowledge of Russian language, Russian history, or Russian law (without examination), and can obtain a temporary residence permit for three months. By simplifying the process, more people can be attracted to settle in Russia, and these foreign citizens must come from countries that oppose Russian values. This list applies to 47 regions, including United States.\nAmerican citizens may receive multiple-entry visas valid for three years.\nResidents of Alaska who are members of the indigenous population do not require a visa to visit Chukotka Autonomous Okrug if they have relatives (blood relatives, members of the same tribe, native people who have similar language and cultural heritage) in Chukotka. Individuals must be invited by a relative in Chukotka and must leave Chukotka within 90 days. Entry points are in Anadyr, Provideniya, Lavrentiya and Uelen.\nThe U.S. government advises its citizens not to visit Russia for any reason for the following reasons:\nDanger associated with the continuing war between Russia and Ukraine.\nThe risk of harassment or wrongful detention by Russian security officials.\nThe arbitrary enforcement of local laws.\nThe possibility of terrorism.\nUS citizens in Russia are advised to leave immediately."
+        }
+      ]
+    }
   },
   "HR": {
     "name": "Croatia",
@@ -10741,7 +10780,32 @@
       "TM",
       "US",
       "YE"
-    ]
+    ],
+    "cond": {
+      "OM": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "ev",
+          "days": 30,
+          "note": "Eligible for 30 days e-Visa if holding a valid Schengen visa, or a valid visa or residence permit from Australia, Canada, UK or USA."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": 90,
+          "note": "Visa or entry may be refused if the passport contains an Israeli stamp, visa or if the holder also has Israeli citizenship (see Israeli stamps).\nEligible for an e-Visa, visa on arrival or transit visa if holding a valid Schengen, USA or UK visa (used at last once) or a permanent residence visa in the European Union, UK or USA.\nEligible for an e-Visa or transit visa if holding a valid residence permit of no less than 3 months in a GCC country."
+        }
+      ]
+    }
   },
   "HK": {
     "name": "Hong Kong",
@@ -10765,7 +10829,10 @@
         "BO",
         30
       ],
-      "BI",
+      [
+        "BI",
+        14
+      ],
       [
         "KH",
         30
@@ -10923,14 +10990,35 @@
       "NR",
       "PY",
       "SN",
-      "SB",
       "SD",
       "TM",
       [
         "US",
         180
       ]
-    ]
+    ],
+    "cond": {
+      "SV": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "No visa required if holding valid visa of US, Canada, or Schengen Member State."
+        }
+      ],
+      "HN": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "No visa required if holding valid visa of US, Canada, or Schengen Member State."
+        }
+      ]
+    }
   },
   "TW": {
     "name": "Taiwan",
@@ -11264,7 +11352,32 @@
       "TM",
       "AE",
       "UY"
-    ]
+    ],
+    "cond": {
+      "CO": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "The fee varies depending on the visa type. If the country option is displayed in Spanish when filling out the form, please select 'Other Cases and TERRITORIES'.\nTaiwanese citizens holding ROC passports or valid visas to the Schengen Area or the United States are eligible for visa-free entry.\nSan Andrés and Leticia -  Visitors arriving at Gustavo Rojas Pinilla International Airport and Alfredo Vásquez Cobo International Airport must buy tourist cards on arrival."
+        }
+      ],
+      "KW": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": 180,
+          "note": "Nationals of most countries who hold a valid visa or residence permit from the United States, the Schengen Area, or the United Kingdom are eligible to apply for a simplified Kuwait e-Visa. The supporting document (visa or residence permit) must be valid for at least 6 months at the time of application.\nThe Kuwait e-Visa may be issued as a single or multiple-entry visa, with each stay allowed for a maximum of 30 days. The e-Visa itself can be valid for up to 1 year, depending on the applicant's eligibility and the type of visa issued."
+        }
+      ]
+    }
   },
   "IL": {
     "name": "Israel",
@@ -12997,7 +13110,21 @@
       "US",
       "VA",
       "YE"
-    ]
+    ],
+    "cond": {
+      "MX": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": 180,
+          "note": "Only available for ordinary passport holders when entering by air.\nHolders of Turkish special (green) and service (grey) passports must apply in the nearest consular office of Mexico for the corresponding stamped visa.\nFree of change and usually granted instantaneously.\n180 days visa-free if holding a valid visa for Canada, Japan, the USA, the United Kingdom or a Schengen member state."
+        }
+      ]
+    }
   },
   "AL": {
     "name": "Albania",
@@ -13585,7 +13712,30 @@
       "US",
       "UY",
       "YE"
-    ]
+    ],
+    "cond": {
+      "BZ": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "voa",
+          "days": 90,
+          "note": "Visa not required for A max. stay of 90 days for holders of a valid visa issued by a Schengen Member.\nHolders of a valid multiple entry visa issued by the USA can obtain a visa on arrival."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "US"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "Holders of valid visa of the United States can apply for e-Visa."
+        }
+      ]
+    }
   },
   "RS": {
     "name": "Serbia",
@@ -14173,7 +14323,21 @@
       "GB",
       "US",
       "YE"
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ]
+    }
   },
   "BA": {
     "name": "Bosnia and Herzegovina",
@@ -14457,7 +14621,43 @@
       "US",
       "UY",
       "YE"
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": 180,
+          "note": "e-Visa available for foreign nationals holding a residence or stay permit valid for at least 180 days on the date of application for the e-visa and residing in one of the EU countries, the United States, Australia, Canada, the United Kingdom, Japan, Norway, New Zealand and Switzerland as well as foreign nationals holding non-electronic visas of Schengen countries, the United States Australia, Canada, the United Kingdom, Ireland, and New Zealand, with multiple entries and that are valid for at least 90 days as of the date of submission of the e-Visa application."
+        }
+      ],
+      "NI": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Visa on arrival with valid visa issued by US, Canada, or Schengen Member State."
+        }
+      ],
+      "OM": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "To obtain an eVisa, they are required to be either residents or have a valid entry visa for one of the following countries (the United States of America, Canada, Australia,  The United Kingdom,  Schengen Agreement countries, Japan), or to be residents of one of the countries of  The GCC countries and its profession are among the professions that benefit from the resident visa."
+        }
+      ]
+    }
   },
   "MD": {
     "name": "Moldova",
@@ -14726,7 +14926,21 @@
       "US",
       "UY",
       "YE"
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ]
+    }
   },
   "UA": {
     "name": "Ukraine",
@@ -14986,7 +15200,10 @@
         "SN",
         30
       ],
-      "SY",
+      [
+        "SY",
+        15
+      ],
       [
         "TL",
         30
@@ -15026,7 +15243,21 @@
       "GB",
       "US",
       "YE"
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "Citizens of Ukraine may obtain an eVisa if they have a valid visa or permanent residency document issued by one of the following countries: any Schengen Area country, Australia, Canada, Ireland, Japan, New Zealand, the United Arab Emirates, the United Kingdom or the United States."
+        }
+      ]
+    }
   },
   "GE": {
     "name": "Georgia",
@@ -15562,7 +15793,33 @@
       "US",
       "VA",
       "YE"
-    ]
+    ],
+    "cond": {
+      "AL": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "Visa-free entry for up to 90 days for valid USA, United Kingdom or Schengen Member State ('C' or 'D' visa) visa holders."
+        }
+      ],
+      "MK": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": 15,
+          "note": "Visa-free entry for up to 15 days for valid USA, United Kingdom or Schengen Member State (multiple 'C' visa) visa holders."
+        }
+      ]
+    }
   },
   "KZ": {
     "name": "Kazakhstan",
@@ -15964,7 +16221,21 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "JM": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Visa-free for holders of a valid visa issued by Canada, United States, United Kingdom or Schengen member states and who hold a proof that they are immunized against measles, rubella and polio"
+        }
+      ]
+    }
   },
   "BY": {
     "name": "Belarus",
@@ -16363,7 +16634,42 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "BZ": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "No visa required for holders of a valid multiple entry visa or Permanent Residence Card from the US, multiple entry Schengen visa, multiple entry visa or Permanent Residence Card from Canada."
+        }
+      ],
+      "GT": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "Visa-free for a maximum stay of 90 days for holders of a valid visa issued by Canada, USA or a Schengen Member State."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": 90,
+          "note": "e-Visa is available for holders of residence permit or non-electronic visas of Schengen countries, the United States, Australia, Canada, the United Kingdom, Ireland, and New Zealand, with multiple entries and that are valid for at least 90 days as of the date of submission of the e-Visa application."
+        }
+      ]
+    }
   },
   "AM": {
     "name": "Armenia",
@@ -17083,7 +17389,27 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "OM": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB",
+            "AE",
+            "SA",
+            "KW",
+            "QA",
+            "BH",
+            "OM"
+          ],
+          "then": "vf",
+          "days": 14,
+          "note": "Visa-free for 14 days if residents or have a valid entry visa for one of the following countries (the United States of America, Canada, Australia, the United Kingdom, Schengen Agreement countries, Japan), or to be residents of one of the countries The Gulf Cooperation Council and its profession are among the professions that benefit from the resident visa."
+        }
+      ]
+    }
   },
   "ZA": {
     "name": "South Africa",
@@ -17537,7 +17863,43 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "BA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Valid multiple entry visa holders and residents of the European Union, Schengen Area member states, and United States of America can enter Bosnia and Herzegovina without a visa for a maximum stay of 30 days."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "RS": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "90 days within any 180-day period. Transfers allowed.\nVisa-free for a maximum stay of 90 days for valid visa holders or residents of the European Union member states and the United States."
+        }
+      ]
+    }
   },
   "MU": {
     "name": "Mauritius",
@@ -17746,7 +18108,19 @@
       "UY",
       "VE",
       "YE"
-    ]
+    ],
+    "cond": {
+      "AR": [
+        {
+          "ifHolds": [
+            "US"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "Electronic Travel Authorization must be approved before travel and is valid for tourism purposes. For this, they exclusively need to be holders of a valid category B2/ J / B1 / O / P (P1-P2-P3) / E / H-1B visa issued by the USA."
+        }
+      ]
+    }
   },
   "SC": {
     "name": "Seychelles",
@@ -18237,7 +18611,30 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "AR": [
+        {
+          "ifHolds": [
+            "US"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "Electronic Travel Authorization must be approved before travel and is valid for tourism purposes if holding a US Visa."
+        }
+      ],
+      "CR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Holders of a valid multiple-entry visa of any member state of the Schengen Area, Canada,  or the United States may enter Cost Rica without a visa for maximum stay of 30 days."
+        }
+      ]
+    }
   },
   "NA": {
     "name": "Namibia",
@@ -18561,7 +18958,41 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "AR": [
+        {
+          "ifHolds": [
+            "US"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "Electronic Travel Authorization must be approved before travel and is valid for tourism purposes if holding a valid category B2/J/B1/O/P (P1-P2-P3)/E/H-1B visa issued by the United States of America."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "ev",
+          "days": 90,
+          "note": "Tourist visa on arrival and eVisa for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance.\nEligible for an e-Visa or transit visa if holding a valid residence permit of no less than 3 months in a GCC country."
+        }
+      ]
+    }
   },
   "CR": {
     "name": "Costa Rica",
@@ -18797,7 +19228,31 @@
       "TM",
       "US",
       "YE"
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "PA": {
     "name": "Panama",
@@ -19045,7 +19500,33 @@
       "US",
       "VU",
       "YE"
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": 180,
+          "note": "Can be accessed to eVisa if hold a valid visa or permanent residency issued by Schengen Area, Australia, Canada, Ireland, Japan, New Zealand, United Arab Emirates, the United Kingdom or the United States. eVisa is valid up to 180 days and can stay up to 30 days"
+        }
+      ],
+      "RS": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "90 days visa free if hold a valid visa or permanent residency of the Cyprus, Ireland, Schengen Area member states, United Kingdom or the United States may enter Serbia without a visa for a maximum stay of 90 days"
+        }
+      ]
+    }
   },
   "TT": {
     "name": "Trinidad and Tobago",
@@ -19477,7 +19958,21 @@
       "TM",
       "US",
       "YE"
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if holding a valid visa or a residency document issued by one of the following countries: Schengen Area, Australia, Canada, Ireland, New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates"
+        }
+      ]
+    }
   },
   "AG": {
     "name": "Antigua and Barbuda",
@@ -19665,7 +20160,19 @@
       "US",
       "UY",
       "YE"
-    ]
+    ],
+    "cond": {
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "BS": {
     "name": "Bahamas",
@@ -19868,7 +20375,19 @@
       "TN",
       "TM",
       "YE"
-    ]
+    ],
+    "cond": {
+      "AR": [
+        {
+          "ifHolds": [
+            "US"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "Electronic Travel Authorization must be approved before travel and is valid for tourism purposes if holding a US Visa."
+        }
+      ]
+    }
   },
   "BB": {
     "name": "Barbados",
@@ -20510,7 +21029,43 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "AR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "Electronic Travel Authorization (AVE) will only be issued to those who already possess a U.S. or Schengen visa. It must be approved before travel and is valid for tourism purposes.\nAs of 1 October 2017, visas are issued with a 10-year validity period.\nAs of 22 July 2025, visa not required for holders of a valid United States visa for up to 30-day stay and may be extended once for another 30-day.\nArgentinian Ministry of Foreign Affairs website states that visa is required for Chinese citizens visiting Argentina."
+        }
+      ],
+      "MX": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": 180,
+          "note": "National visa may be substituted with a valid visa (of any category except transit) or permanent residency issued by Canada, Japan, United Kingdom, United States, or a Schengen Area member state, may enter visa-free for 180 days.\nHolders of permanent residency in Chile or Colombia may enter visa-free for 180 days.\nNote: Temporary residence cards, permits or other documents issued by those countries such as EU temporary residency card, Canadian study/work permit, or U.S. I-20 form, EAD card are NOT accepted for entering Mexico. Only valid visas (of any category, except transit visa) physically affixed in the passport are accepted."
+        }
+      ],
+      "PE": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "GB"
+          ],
+          "then": "vf",
+          "days": 180,
+          "note": "Nationals of China who have a valid US, Canada, Australia, Schengen Area, or UK visa or permanent resident permit can stay a visa-free up to 180 days for tourist or business purposes. The visa must be valid for a minimum of 6 months from the arrival date."
+        }
+      ]
+    }
   },
   "IN": {
     "name": "India",
@@ -20891,7 +21446,107 @@
       "TL",
       "TV",
       "ZW"
-    ]
+    ],
+    "cond": {
+      "AR": [
+        {
+          "ifHolds": [
+            "US"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Indian passport holders with a valid B2 US Visa can travel to Argentina visa-free."
+        }
+      ],
+      "BZ": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": 90,
+          "note": "Permanent residents and holders of multiple entry visa of the US or Canada may obtain a visa on arrival. Holders of a valid visa issued by a Schengen Member state are visa exempt for a maximum stay of 90 days."
+        }
+      ],
+      "GE": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "Reinstated from May 2023.\nNational visa may be substituted with a valid visa or residence permit issued by US, UK, Japan, Canada, Australia, New Zealand, Israel, South Korea, Ireland, Schengen, and GCC countries, whose holders may be granted visa-free entry for 90 days in any 180 days."
+        }
+      ],
+      "MD": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "GB"
+          ],
+          "then": "ev",
+          "days": 90,
+          "note": "National visa may be substituted with a valid ('C' or 'D') visa or a valid residence permit issued by the United Kingdom, Schengen Area or European Union member state for visits up to 90 days.\nExempt for Indians holding a valid residence permit or valid visas (excluding transit visas) of US, Canada.\nIndian citizens can apply for a visa online without needing an invitation letter.\ne-Visa is issued for a maximum of 90 days in the previous 180-day period plus forthcoming 90-day period (effectively, maximum 90 days in any 270-day period)."
+        }
+      ],
+      "NI": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": 30,
+          "note": "Nationals of India with a normal passport and a valid visa issued by Canada, the US, or a Schengen Member State can obtain a visa on arrival for a maximum stay of 30 days. (fee: USD 10)"
+        }
+      ],
+      "OM": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "AE",
+            "SA",
+            "KW",
+            "QA",
+            "BH",
+            "OM"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "14-days Visa on arrival for Indians holding a valid Australia, Canada, Japan, UK, US or Schengen visa or residence permit. Also for Gulf Cooperation Council residents."
+        }
+      ],
+      "PE": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "vf",
+          "days": 180,
+          "note": "Nationals of India who have a valid Australia, Canada, UK, US or Schengen Area visa or permanent resident permit can stay a visa-free up to 180 days within any 365-day period for tourist or business purposes. The visa must be valid for a minimum of 6 months from the arrival date."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "voa",
+          "days": 90,
+          "note": "Tourist visa on arrival for holders of valid Schengen, UK and US visa. Visitors must arrive through national carrier of Saudi Arabia.\nVisa on arrival if holding two or multiple entry short-stay valid visa issued by UK, US or a Schengen member state for stays of no more than 90 days.\nSaudi Arabia announced 96 hour free transit visa for passengers of saudia or flynas when stopover the country valid for 90 days.\nVisitors can get visa on arrival at any international airport in Saudi Arabia but they must have a credit card to pay a fee amounting to SR 440 (Dh 431) as cash is not accepted. They will be allowed to stay for 90 days at a stretch and can enter the Kingdom of Saudi Arabia multiple times during the validity period of their visit visa."
+        }
+      ],
+      "TR": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "ev",
+          "days": 30,
+          "note": "Conditional single-entry eVisa issued for the period of 30 days to holders of a valid visa or residence permit issued by one of the Schengen member countries, US, UK, or Ireland."
+        }
+      ]
+    }
   },
   "ID": {
     "name": "Indonesia",
@@ -21288,7 +21943,41 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "CA": [
+        {
+          "ifHolds": [
+            "US"
+          ],
+          "then": "vf",
+          "days": 3650,
+          "note": "A Transit Without Visa (TWOV) is available if the Indonesian national holds a valid US visa, is traveling on an approved airline, and enters through an approved Canadian airport..mw-parser-output .citation{word-wrap:break-word}.mw-parser-output .citation:target{background-color:rgba(0,127,255,0.133)}^ However, nationals may not leave the airport during their stopover.\nCanada Visitor Visa issued to nationals of Indonesia is valid up to 10 years or until the passport expiry whichever shorter."
+        }
+      ],
+      "EG": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "voa",
+          "days": 30,
+          "note": "Passengers with a valid and used visa issued by Australia, Canada, Japan, New Zealand, USA, United Kingdom or a Schengen Member State can obtain a visa on arrival for a maximum stay of 30 days.\nAs of April 2024, due to safety concerns, Indonesian government advises its citizens not to visit Egypt."
+        }
+      ],
+      "MD": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "A letter of invitation is required.\nCitizens holding a residence permit or a valid visa issued by one of the member states of the European Union or one of the parties to the Schengen Agreement can apply for an e-Visa without an invitation."
+        }
+      ]
+    }
   },
   "PH": {
     "name": "Philippines",
@@ -21658,7 +22347,130 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "AL": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Filipinos may travel to Albania without a visa if they are:\nresiding permanently in Schengen countries, the United Kingdom or the United States.\nholding a valid multiple-entry Schengen visa, which has been used to enter one of the Schengen countries.\nholding a valid multiple-entry visa issued by the United Kingdom or the United States, which has been used to enter the respective countries."
+        }
+      ],
+      "BH": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "Filipinos with existing Saudi Iqama (valid for at least 3 months) and Saudi Exit-ReEntry visa can enter Bahrain visa-free via King Fahad Causeway Bridge.\nValid visit visa to UAE, UK, USA, KSA (excluding Hajj & Umrah visa), Schengen or USA Green Card."
+        }
+      ],
+      "BA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Visa-free for up to 30 days for valid UK or Schengen or US visa holders used or unused."
+        }
+      ],
+      "HR": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "Visa-free for a maximum stay of 90 days for valid visa holders or residents of the Schengen member states."
+        }
+      ],
+      "EG": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": 180,
+          "note": "Visa on arrival with a valid Schengen visa or residence permit.\nThe passport must be valid for at least 6 months beyond the return date."
+        }
+      ],
+      "GE": [
+        {
+          "ifHolds": [
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "According to the Resolution of the Government of Georgia No. 256 dated June 5, 2015, the following countries whose visas and / or residence permits for foreigners can enter Georgia without a visa for the appropriate period and conditions: Australia, Austria, Bahrain, Belgium, Bulgaria, Canada, Croatia, Cyprus, Czech Republic, Denmark, Territories of the Kingdom of Denmark - the Faroe Islands and Greenland, Estonia, France, Territories of the French Republic - French Polynesia and New Caledonia, Finland, Germany, Greece, Hungary, Iceland, Ireland, Israel, Italy, Japan, Kuwait, Latvia, Lithuania, Liechtenstein, Luxembourg, Malta, Netherlands, Territories of the Kingdom of the Netherlands - Aruba and the Antilles of the Netherlands, New Zealand, Norway, Oman, Poland, Portugal, Qatar, Romania, Saudi Arabia, Slovakia, Slovenia, South Korea, Spain, Sweden, Switzerland, United Arab Emirates, United Kingdom, Foreign Territories of the United Kingdom of Great Britain and Northern Ireland - Bermuda, Cayman Islands, British Virgin Islands, Falkland Islands, Turks and Caicos Islands, Gibraltar, Dependent territories of the United Kingdom of Great Britain and Northern Ireland - Jersey, Guernsey, the Isle of Man, United States of America. Foreigners who have a visa and / or residence permit of any of the countries mentioned may enter Georgia without a visa and stay for any 180-day period for a period of 90 calendar days. In order to enter and stay in Georgia without a visa, the visa and / or residence permit of the respective country must be valid for the day of entry into Georgia (crossing the border), which must be confirmed by a travel and / or other relevant document.\nNo visa required for visit as a tourist if a valid original resident permit card from any GCC States if presented with Official English Translation (if the card has NO English Translation) and a Travel Insurance."
+        }
+      ],
+      "KR": [
+        {
+          "ifHolds": [
+            "NZ"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Visa-free transit (up to 30 days) provided holding a valid U.S., Canada, Australia, New Zealand visa, and arriving from or departing to those countries.\nVisa-free access for 30 days to Jeju Island.\nGroup tourists are allowed visa-free travel if coming in through Yangyang International Airport until June 30, 2026. Stay is limited to 15 days & movement only to around Gangwon-do region and Seoul metropolitan area."
+        }
+      ],
+      "MX": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Filipinos holding a permanent resident permit or a valid multiple-entry visa issued by the Schengen member countries, Canada, Japan, the United Kingdom and the United States can travel to Mexico without a visa."
+        }
+      ],
+      "PA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Filipinos who hold a valid visa issued by the United States, the United Kingdom, Canada, Australia, Japan, the European Union, Singapore, or South Korea can travel to Panama visa-free for stays of up to 30 days."
+        }
+      ],
+      "RS": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "Visa-free for a maximum stay of 90 days for valid visa holders or residents of the European Union member states, Switzerland and the United States.\nTravelers can enter the country with a valid Schengen visa."
+        }
+      ],
+      "TR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "ev",
+          "days": 30,
+          "note": "e-Visa for a maximum stay of 30 days available for valid visa or valid residence permit holders from one of the Schengen Countries, USA, UK or Ireland."
+        }
+      ]
+    }
   },
   "TH": {
     "name": "Thailand",
@@ -22065,7 +22877,74 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "CO": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Visa-free for holders of valid visa for Schengen area or the US."
+        }
+      ],
+      "CR": [
+        {
+          "ifHolds": [
+            "CA"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Visa-free for holders of valid U.S. visa or Canada visa."
+        }
+      ],
+      "GT": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "No visa required with a valid visa issued by Canada, Mexico, USA or a Schengen Member State for a maximum stay of 90 days."
+        }
+      ],
+      "HN": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "No visa required with a valid visa issued by Canada, Mexico, USA or a Schengen Member State for a maximum stay of 90 days."
+        }
+      ],
+      "MX": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "No visa required for holders of a valid visa issued by Canada, Japan, USA, United Kingdom or a Schengen Member State and holders of an APEC Business Travel Card if traveling on business. Residence permit from EU not recognized."
+        }
+      ],
+      "RS": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "90 days within any 180-day period. Transfers allowed.\nVisa-free for a maximum stay of 90 days for valid visa holders or residents of the European Union member states and the United States."
+        }
+      ]
+    }
   },
   "VN": {
     "name": "Vietnam",
@@ -22409,7 +23288,81 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "BZ": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "Visa-free for holders of valid visa for Schengen area up to 90 days or holders of multiple-entry US visa for up to 30 days."
+        }
+      ],
+      "CR": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Visa-free for holders of valid visa for Schengen area or the US."
+        }
+      ],
+      "CY": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Visa-free for holders of valid visa for Schengen area."
+        }
+      ],
+      "KR": [
+        {
+          "ifHolds": [
+            "NZ"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Visa free transit (up to 30 days) provided holding a valid U.S., Canada, Australia, New Zealand visa, and arriving from or departing to those countries.\nVisa-free access for 30 days to Jeju Island.\nGroup tourists can only travel to the Gangwon-do region and the metropolitan area of South Korea, and the maximum stay is 15 days."
+        }
+      ],
+      "MX": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Visa-free for holders of valid US, Schengen, Japanese, Canadian, or UK visas. Visa-free also for holders of US, Japanese, Canadian, UK, Schengen, Peru, Chilean, or Colombian residence permits."
+        }
+      ],
+      "MD": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "Citizens holding a residence permit or a valid visa issued by one of the member states of the European Union or one of the parties to the Schengen Agreement can apply for an e-Visa."
+        }
+      ],
+      "RS": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "90 days within any 180-day period. Transfers allowed.\nVisa-free for a maximum stay of 90 days for valid visa holders or residents of the European Union member states and the United States."
+        }
+      ]
+    }
   },
   "LK": {
     "name": "Sri Lanka",
@@ -22712,7 +23665,114 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "AL": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "Visa-free travel for a maximum stay of 90 days within any 180-day period for valid or previously used visa issued by a Schengen area country, the United States, or the United Kingdom."
+        }
+      ],
+      "CR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Holders of a valid multiple-entry visa of any member state of the Schengen Area, Canada,  or the United States may enter Cost Rica without a visa for maximum stay of 30 days.\nRegular passport holders are required to obtain a restricted visa with permission from Costa Rica's internal ministries."
+        }
+      ],
+      "DO": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Holders of a valid visa or a residence permit of any member state of the Schengen Area, Canada, Cyprus, Ireland, the United Kingdom or the United States may enter the Dominican Republic without a visa."
+        }
+      ],
+      "GE": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "AE",
+            "SA",
+            "KW",
+            "QA",
+            "BH",
+            "OM"
+          ],
+          "then": "ev",
+          "days": 90,
+          "note": "e-Visa available for holders of a valid visa or residence permit from a Schengen area country, OECD member country, or a GCC country can travel to Georgia visa-free for a period of 90 days. Visitors obtain an entry visa stamp to Georgia on arrival. The GCC resident permit should be at least six-months old for Georgia visa exemption."
+        }
+      ],
+      "MD": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "Citizens holding a residence permit or a valid visa issued by one of the member states of the European Union or one of the parties to the Schengen Agreement can apply for an electronic visa."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ],
+      "RS": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "90 days within any 180-day period. Transfers allowed.\nVisa-free travel for a maximum stay of 90 days for valid visa holders or residents of the European Union or the United States."
+        }
+      ],
+      "TR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "ev",
+          "days": 30,
+          "note": "May Apply conditional e-Visa. Maximum stay of 30 days for valid visa holders or residents of the European Union or the United States."
+        }
+      ]
+    }
   },
   "NP": {
     "name": "Nepal",
@@ -23012,7 +24072,44 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "RS": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "90 days within any 180-day period. Transfers allowed.\nVisa-free for a maximum stay of 90 days for valid visa holders or residents of the European Union member states and the United States."
+        }
+      ],
+      "TR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": 30,
+          "note": "May Apply conditional e-Visa. Maximum stay of 30 days for valid visa holders or residents of the European Union member states, the United States, the United Kingdom and Ireland."
+        }
+      ]
+    }
   },
   "BD": {
     "name": "Bangladesh",
@@ -23262,7 +24359,91 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "GE": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "ev",
+          "days": 15,
+          "note": "e-Visa available for holders of a valid Schengen visa or a valid visa from any of the OECD member countries or a valid residence permit of a Schengen Area|Schengen or OECD country or a valid residence permit of UAE.\nVisa on arrival for up to 15 days for valid residence permit holders of any country in the GCC (Bahrain, Kuwait, Oman, Qatar, Saudi Arabia and the UAE)."
+        }
+      ],
+      "MD": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "Citizens holding a residence permit or a valid visa issued by one of the member states of the European Union or one of the parties to the Schengen Agreement can apply for an electronic visa."
+        }
+      ],
+      "ME": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Holder of a valid travel documents containing a valid residence permit or multiple entry visa in the countries of the Schengen zone, USA, Australia, Japan, Canada, New Zealand, Ireland and the United Kingdom can pass through the territory and stay in Montenegro up to 30 days, and not longer than the expiry of visa if the period of validity of the visa is less than 30 days.\nHolder of a valid UAE 10 years' residence permit may enter without visa for seven days."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "e-Visa availability for the Schengen, USA, UK valid visa or Permanent Resident Card holders."
+        }
+      ],
+      "NI": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Visa on arrival if holding a valid visa issued by United States, Canada, or Schengen Member State."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "AE",
+            "SA",
+            "KW",
+            "QA",
+            "BH",
+            "OM"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "Visa on Arrival or eVisa for the Permanent Resident Card holders of the Schengen countries or USA, UK and any Schengen countries valid used tourist visa and the GCC residence visa holders."
+        }
+      ],
+      "TR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "No visa required for Diplomatic and Official passport holders\ne-Visa available for holders of a valid Schengen visa; a valid visa from any OECD member country (USA, Canada, etc.); or a valid residence permit of a Schengen Area|Schengen or OECD country.\nSingle entry."
+        }
+      ]
+    }
   },
   "PK": {
     "name": "Pakistan",
@@ -23531,7 +24712,56 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "BY": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "30 day visa-free access for holders of a valid multi-entry EU or Schengen visa. https://www.belarus.by/rel_image/6400"
+        }
+      ],
+      "EG": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "voa",
+          "days": 30,
+          "note": "Visa on arrival (30 days) for passengers with a valid and used visa issued by Australia, Canada, Japan, New Zealand, USA, United Kingdom or a Schengen Member State.\nPassengers with a residence permit issued by the United Arab Emirates can obtain a visa upon arrival for a maximum of 30 days. The residence permit must be valid for a minimum of 6 months from the arrival date. They must have a confirmed return ticket and sufficient funds to cover their stay.\nA \"Courtesy visa\" on arrival may be available to wives of Egyptian nationals, however, this is subject to approval by the immigration authorities and is not guaranteed. It is highly recommended to obtain a visa or confirmation before embarking."
+        }
+      ],
+      "LB": [
+        {
+          "ifHolds": [
+            "AE",
+            "SA",
+            "KW",
+            "QA",
+            "BH",
+            "OM"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Visa on arrival for Pakistani nationals holding a valid Jordanian or GCC residence permit. The residence permit issued by a GCC Member State must have a profession of businessmen, managers, company owners, doctors, engineers, and lawyers."
+        }
+      ],
+      "NI": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Visa on arrival if holding valid visas of US, Canada, or Schengen Member state."
+        }
+      ]
+    }
   },
   "MM": {
     "name": "Myanmar",
@@ -23820,7 +25050,21 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "TW": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": 3650,
+          "note": "Can apply online for an R.O.C (Taiwan) Travel Authorization Certificate eligibility criteria:\nThe applicant possesses at least one of the following documents issued by the United States, Canada, the United Kingdom, any of EU and Schengen countries, New Zealand, Australia, Japan or Korea.\nA valid resident or permanent resident certificate.\nA valid entry visa (including electronic visa).\nA resident certificate or visa that has expired less than 10 years prior to the date of arrival in Taiwan; however, applicants who use an electronic visa issued by Australia or New Zealand as the required document must present the valid Australia or New Zealand electronic visa as entering Taiwan."
+        }
+      ]
+    }
   },
   "KH": {
     "name": "Cambodia",
@@ -24143,7 +25387,76 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "AR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "ev",
+          "days": 90,
+          "note": "Electronic Travel Authorization (ETA) for a maximum stay of 90 days available for valid visa from one of the Schengen Countries or USA B2 visa."
+        }
+      ],
+      "CR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Holders of a valid multiple-entry visa of any member state of the Schengen Area, Canada,  or the United States may enter Cost Rica without a visa for maximum stay of 30 days."
+        }
+      ],
+      "DO": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Holders of a valid visa or a residence permit of any member state of the Schengen Area, Canada, Cyprus, Ireland, the United Kingdom or the United States may enter the Dominican Republic without a visa."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ],
+      "TR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "ev",
+          "days": 30,
+          "note": "e-Visa for a maximum stay of 30 days available for valid visa or valid residence permit holders from one of the Schengen Countries, USA, UK or Ireland."
+        }
+      ]
+    }
   },
   "LA": {
     "name": "Laos",
@@ -24826,7 +26139,45 @@
         "YE",
         90
       ]
-    ]
+    ],
+    "cond": {
+      "CR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "90 days visa-free if hold a valid residence permit issued by the European Union member countries, Canada, Iceland, Norway, Switzerland, the United Kingdom or the United States and multiple-entry visa issued by Canada and the United States."
+        }
+      ],
+      "MX": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "May enter without a visa if obtaining a valid visa or a permanent residency to Canada, Japan, the United Kingdom, the United States, or the Schengen area."
+        }
+      ],
+      "RS": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "90 days within any 180-day period. Transfers allowed.\n90 days visa-free if holding a valid visa or permanent residence of the Cyprus, Ireland, Schengen Area member states, United Kingdom or the United States may enter Serbia without a visa for a maximum stay of 90 days within any 180-day period."
+        }
+      ]
+    }
   },
   "QA": {
     "name": "Qatar",
@@ -25102,7 +26453,21 @@
       "TT",
       "TM",
       "VA"
-    ]
+    ],
+    "cond": {
+      "RS": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "90 days within any 180-day period. Transfers allowed.\n90 days visa-free if holding a valid visa or permanent residence of the Cyprus, Ireland, Schengen Area member states, United Kingdom or the United States may enter Serbia without a visa for a maximum stay of 90 days within any 180-day period."
+        }
+      ]
+    }
   },
   "BH": {
     "name": "Bahrain",
@@ -25440,7 +26805,21 @@
         "YE",
         90
       ]
-    ]
+    ],
+    "cond": {
+      "MX": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "May enter without a visa if obtaining a valid visa or a permanent residency to Canada, Japan, the United Kingdom, the United States, or the Schengen area."
+        }
+      ]
+    }
   },
   "KW": {
     "name": "Kuwait",
@@ -25814,7 +27193,32 @@
         "YE",
         90
       ]
-    ]
+    ],
+    "cond": {
+      "BZ": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "No visa required for holders of a valid multiple entry visa or Permanent Residence Card from the USA, multiple entry Schengen visa, multiple entry visa or Permanent Residence Card from Canada."
+        }
+      ],
+      "MX": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "May enter without a visa if obtaining a valid visa or a permanent residency to Canada, Japan, the United Kingdom, the United States, or the Schengen area."
+        }
+      ]
+    }
   },
   "OM": {
     "name": "Oman",
@@ -26200,7 +27604,20 @@
         "YE",
         90
       ]
-    ]
+    ],
+    "cond": {
+      "CR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Holders of a valid multiple-entry visa of any member state of the Schengen Area, Canada,  or the United States may enter Cost Rica without a visa for maximum stay of 30 days."
+        }
+      ]
+    }
   },
   "JO": {
     "name": "Jordan",
@@ -26508,7 +27925,42 @@
         "YE",
         90
       ]
-    ]
+    ],
+    "cond": {
+      "AL": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "Any visitor who holds a valid, multiple entry and previously used visa issued by a  Schengen Area country,  United States, or the  United Kingdom can enter Albania without a visa for 90 days. Visa must have been used at least once before arrival to Albania. The visa exemption also applies to valid Green Card holders and holders of resident permits issued by a Schengen country for a maximum allowed stay of 90 days.\nVisitors of Albanian ethnicity do not require a visa to enter Albania for a maximum allowed stay of 90 days within 180 days."
+        }
+      ],
+      "BZ": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "voa",
+          "days": 90,
+          "note": "A visa is not required for visitors with a valid visa issued by a  Schengen Area Member State for a maximum allowed stay of 90 days.\nVisitors with a US Permanent Resident/Resident Alien Card (Form I-551) or a multiple-entry visa issued by the  United States can obtain a visa on arrival for a fee of US$50 (~35 JOD).\nAll visitors are required to have sufficient funds, US$75 per day, and the documents required for their next destination."
+        }
+      ],
+      "BA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "Holders of diplomatic or official/service passports do not require a visa for a maximum allowed stay of 90 days.\nRegistration with the local police within 24 hours of arrival in Bosnia and Herzegovina is mandatory.\nValid multiple entry visa holders and residents of the  Schengen Area member states and  Monaco can enter Bosnia and Herzegovina without a visa for a maximum allowed stay of 15 days. They must arrive from one of the Schengen Area member states, Monaco or a third country that has a bilateral readmission agreement with Bosnia and Herzegovina."
+        }
+      ]
+    }
   },
   "LB": {
     "name": "Lebanon",
@@ -26811,7 +28263,40 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "BY": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": 10,
+          "note": "Visa not required for a maximum stay of 10 days at Brest (BQT), Augustów Canal, or Grodno (GNA) provided holding a confirmation issued by a travel agency.\nVisa not required for a maximum stay of 5 days for valid visa holders or residents of the European Union member states. Must arrive via Minsk International Airport.\nVisa not required for passengers visiting to Belovezhskaya Pushcha National Park for up to 3 days.\nVisa on arrival at the Minsk International Airport if the support documents were submitted to the  Consular Division at Minsk (not later than 3 (for short-term visas) or 5 working days (for long-term visas) the expected date of arrival.\nVisa on arrival at the Minsk International Airport for holders of an invitation letter issued by a Belarusian tourist company or a medical or health organization. The letter must be written on official headed paper with the passenger's name, passport details, purpose, and duration of stay. The letter must also have the original signature and official seal of the head of the inviting organization.\nPassengers are required to have a health insurance which can be purchased on arrival at the Minsk International Airport.\nTransiting without a visa is not allowed under any circumstance.\nRegistration with the local police within 7 days of arrival is mandatory."
+        }
+      ],
+      "MD": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "Citizens holding a residence permit or a valid visa issued by one of the member states of the European Union or one of the parties to the Schengen Agreement can apply for an electronic visa."
+        }
+      ],
+      "NI": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "voa",
+          "days": 30,
+          "note": "Visa on arrival for valid visa holders or residents of Canada, the European Union member states, or the United States for a maximum stay of 30 days.\nPassengers must obtain a tourist card which can be purchased on arrival for 2 USD."
+        }
+      ]
+    }
   },
   "EG": {
     "name": "Egypt",
@@ -27131,7 +28616,65 @@
         "YE",
         90
       ]
-    ]
+    ],
+    "cond": {
+      "MD": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "Citizens holding a residence permit or a valid visa issued by one of the member states of the European Union or one of the parties to the Schengen Agreement can apply for an electronic visa."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": 90,
+          "note": "Holders of a visa or residence permit from European Union, United States of America, Australia, Canada, United Kingdom, Japan, Norway, New Zealand and Switzerland valid for 90 days (or 180 days for residence permits) on application, can apply for an eVisa for 30 days. Passport must also be valid for 90 days."
+        }
+      ],
+      "OM": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "To obtain an e-Visa, they are required to be either residents or have a valid entry visa for one of the following countries (the United States of America, Canada, Australia,  The United Kingdom,  Schengen Agreement countries, Japan), or to be residents of one of the countries of  The GCC countries and its profession are among the professions that benefit from the resident visa."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "ev",
+          "days": 4,
+          "note": "e-Visa available for all Egyptian passport holders. Known as \"Stop Over Visa\", is valid for 4 days, and can be obtained when booking with FlyNas or SAUDIA (Saudi Arabian Airlines).\nVisa on arrival for holders of a valid Schengen, UK or USA visa and UK, US or EU permanent residents."
+        }
+      ],
+      "TR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "IE"
+          ],
+          "then": "ev",
+          "days": 16425,
+          "note": "Visa required unless a valid Schengen, US, UK or Ireland visa or residence permit. They can obtain a 30-day single-entry e-visa, provided that they have and that they travel to Turkey on Turkish Airlines or Egypt Air.\nEgyptians under 20 or over 45 years old can obtain e-visa."
+        }
+      ]
+    }
   },
   "MA": {
     "name": "Morocco",
@@ -27517,7 +29060,235 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "AL": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "Visa-free for a maximum stay of 90 days within 180 days for valid visa holders of the Schengen Area member states, the United Kingdom and the United States."
+        }
+      ],
+      "AG": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Visa-free for a maximum stay of 30 days for valid visa holders or residents of the Schengen Area member states, the United Kingdom, the United States and Canada."
+        }
+      ],
+      "BA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Visa-free for a maximum stay of 30 days for valid visa holders (or holding residence permit) of the Schengen Area member states, Cyprus, the United Kingdom, Ireland, and the United States."
+        }
+      ],
+      "CA": [
+        {
+          "ifHolds": [
+            "US",
+            "CA"
+          ],
+          "then": "vf",
+          "days": 3650,
+          "note": "Eligible travelers who held a Canadian visa in the past 10 years or who hold a valid United States nonimmigrant visa can enter visa-free by air with an eTA.\nA visa is still required for entry by land or sea."
+        }
+      ],
+      "CR": [
+        {
+          "ifHolds": [
+            "US"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "Visa-free for a maximum stay of 90 days for valid multiple-entry visa holders of Canada and the United States."
+        }
+      ],
+      "CY": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "Visa-free for a maximum stay of 90 days within 180 days for valid visa holders or residents of the Schengen Area member states."
+        }
+      ],
+      "EG": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB",
+            "AE",
+            "SA",
+            "KW",
+            "QA",
+            "BH",
+            "OM"
+          ],
+          "then": "voa",
+          "days": 30,
+          "note": "Holders of valid residency permits in the Schengen Area member states, Australia, Canada, Japan, New Zealand, the United Kingdom or the United States can enter Egypt without a visa in advance.\nVisa on arrival for a maximum stay of 30 days for valid visa holders or residents of the Schengen Area member states, Australia, Canada, Japan, New Zealand, the United Kingdom or the United States.\nAlso, Moroccan citizens holding valid residency permits from Gulf Cooperation Council (GCC) countries can obtain a visa upon arrival in Egypt."
+        }
+      ],
+      "SV": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "Visa-free for a maximum stay of 90 days for valid visa holders or residents of the Schengen Area member states, Canada and the United States."
+        }
+      ],
+      "GE": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB",
+            "AE",
+            "SA",
+            "KW",
+            "QA",
+            "BH",
+            "OM"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "Visa-free for a maximum stay of 90 days within 180 days for valid visa holders or residents of the Schengen Area member states, the United Kingdom, Ireland, the Gulf Cooperation Council, Australia, Canada, Israel, Japan, New Zealand, South Korea and the United States."
+        }
+      ],
+      "GT": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "Visa-free for a maximum stay of 90 days for valid visa holders or residents of the Schengen Area member states, the United States and Canada."
+        }
+      ],
+      "HN": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "Visa-free for a maximum stay of 90 days for valid visa holders or residents of the Schengen Area member states, the United States and Canada."
+        }
+      ],
+      "MX": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": 180,
+          "note": "Visa-free for a maximum stay of 180 days for valid visa holders or residents of the Schengen Area member states, the United Kingdom, the United States, Canada and Japan."
+        }
+      ],
+      "ME": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Visa-free for a maximum stay of 30 days for valid visa holders or residents of the Schengen Area member states, the United Kingdom, Ireland and the United States."
+        }
+      ],
+      "MK": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "vf",
+          "days": 15,
+          "note": "Visa-free for a maximum stay of 15 days for valid visa holders of the Schengen Area member states."
+        }
+      ],
+      "OM": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": 14,
+          "note": "Visa-free for a maximum stay of 14 days for valid visa holders of Australia, Canada, Japan, the United States, United Kingdom or the Schengen Area member states."
+        }
+      ],
+      "PA": [
+        {
+          "ifHolds": [
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Visa-free for a maximum stay of 30 days for valid visa holders or residents of Australia, the United Kingdom, the United States and Canada."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "GB"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourists eligible for Visa on Arrival must hold valid tourist or business visas from the US, United Kingdom, or Schengen countries. The visa should have been used once with an entry stamp. Permanent residents of the US, UK, or EU, along with their first-degree relatives, can also apply after confirming their presence."
+        }
+      ],
+      "RS": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "90 days within any 180-day period. Transfers allowed.\nVisa-free for a maximum stay of 90 days within 180 days for valid visa holders or residents of the Schengen Area member states, the United Kingdom, Ireland and the United States."
+        }
+      ],
+      "ES": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Spain is part of the Schengen Area, so a Schengen visa issued by any other Schengen country is valid for entry. \nResidents of Tetouan may enter Ceuta without a visa.\nResidents of Nador may enter Melilla without a visa."
+        }
+      ]
+    }
   },
   "TN": {
     "name": "Tunisia",
@@ -27855,7 +29626,63 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "DO": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Visa-free for Passengers with a valid visa issued by Bulgaria, Canada, Croatia, Cyprus, Ireland, Romania, the US, United Kingdom or a Schengen Member State."
+        }
+      ],
+      "SV": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Visa-free for holders of a valid visa issued by Canada, the United States or a Schengen member state there is a processing fee of 10 USD to enter."
+        }
+      ],
+      "GT": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Visa-free for holders of a valid visa issued by Canada, the United States or a Schengen member state."
+        }
+      ],
+      "HN": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Visa-free for holders of a valid visa issued by Canada, the United States or a Schengen member state."
+        }
+      ],
+      "MD": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "Citizens holding a residence permit or a valid visa issued by one of the member states of the European Union or one of the parties to the Schengen Agreement can apply for an e-Visa."
+        }
+      ]
+    }
   },
   "DZ": {
     "name": "Algeria",
@@ -28173,7 +30000,30 @@
         "YE",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "CR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Holders of a valid multiple-entry visa of any member state of the Schengen Area, Canada,  or the United States may enter Cost Rica without a visa for maximum stay of 30 days"
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "LY": {
     "name": "Libya",
@@ -28575,7 +30425,42 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "GE": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "eVisa available for holders of a valid Schengen visa or a valid visa from any of the OECD member countries; or a valid residence permit of a Schengen or OECD country."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "NI": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Visa on arrival if holding valid visa issued by United States, Canada, or Schengen Member State"
+        }
+      ]
+    }
   },
   "KE": {
     "name": "Kenya",
@@ -28860,7 +30745,54 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "CR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Holders of a valid multiple-entry visa of any member state of the Schengen Area, Canada,  or the United States may enter Cost Rica without a visa for maximum stay of 30 days."
+        }
+      ],
+      "DO": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Holders of a valid visa or a residence permit of any member state of the Schengen Area, Canada, Cyprus, Ireland, the United Kingdom or the United States may enter the Dominican Republic without a visa."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "GH": {
     "name": "Ghana",
@@ -29147,7 +31079,19 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "ET": {
     "name": "Ethiopia",
@@ -29373,7 +31317,32 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "CR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Holders of a valid multiple-entry visa of any member state of the Schengen Area, Canada,  or the United States may enter Cost Rica without a visa for maximum stay of 30 days."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ]
+    }
   },
   "TZ": {
     "name": "Tanzania",
@@ -29669,7 +31638,43 @@
         "TL",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "DO": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Holders of a valid visa or a residence permit of any member state of the Schengen Area, Canada, Cyprus, Ireland, the United Kingdom or the United States may enter the Dominican Republic without a visa."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "UG": {
     "name": "Uganda",
@@ -29940,7 +31945,33 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "DO": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Holders of a valid visa or a residence permit of any member state of the Schengen Area, Canada, Cyprus, Ireland, the United Kingdom or the United States may enter the Dominican Republic without a visa."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ]
+    }
   },
   "RW": {
     "name": "Rwanda",
@@ -30232,7 +32263,54 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "CR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Holders of a valid multiple-entry visa of any member state of the Schengen Area, Canada,  or the United States may enter Cost Rica without a visa for maximum stay of 30 days."
+        }
+      ],
+      "DO": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Holders of a valid visa or a residence permit of any member state of the Schengen Area, Canada, Cyprus, Ireland, the United Kingdom or the United States may enter the Dominican Republic without a visa."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "* Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "CM": {
     "name": "Cameroon",
@@ -30513,7 +32591,64 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "CR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Holders of a valid multiple-entry visa of any member state of the Schengen Area, Canada,  or the United States may enter Cost Rica without a visa for maximum stay of 30 days."
+        }
+      ],
+      "DO": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Holders of a valid visa or a residence permit of any member state of the Schengen Area, Canada, Cyprus, Ireland, the United Kingdom or the United States may enter the Dominican Republic without a visa."
+        }
+      ],
+      "GE": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "eVisa available for holders of a valid Schengen visa or a valid visa from any of the OECD member countries; or a valid residence permit of a Schengen or OECD country."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "SN": {
     "name": "Senegal",
@@ -30981,7 +33116,21 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ]
+    }
   },
   "IR": {
     "name": "Iran",
@@ -31268,7 +33417,19 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "MD": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "Citizens holding a residence permit or a valid visa issued by one of the member states of the European Union or one of the parties to the Schengen Agreement can apply for an electronic visa."
+        }
+      ]
+    }
   },
   "IQ": {
     "name": "Iraq",
@@ -31473,7 +33634,53 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "CU": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Eligible to travel to Cuba with a tourist card only without visa if hold a valid visa or permanent residence permit issued by Canada, the United States or an EU member state."
+        }
+      ],
+      "GE": [
+        {
+          "ifHolds": [
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "eVisa available if holding a valid visa or residency permit from EEA Member State, Australia, Bermuda, Canada, GCC member state, Japan, Korea (Rep.), New Zealand, Switzerland, USA or United Kingdom."
+        }
+      ],
+      "MD": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "Citizens holding a residence permit or a valid visa issued by one of the member states of the European Union or one of the parties to the Schengen Agreement can apply for an electronic visa.\nInvitation letter holders may apply for a visa electronically."
+        }
+      ],
+      "TR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": 18250,
+          "note": "Visa not required for travelers Aged less than 15 and more than 50 years old ( Effective 1st of September 2024). Holders of a valid visa or residence permit from Schengen area countries, Ireland, the United Kingdom or the United States can apply for eVisa."
+        }
+      ]
+    }
   },
   "SY": {
     "name": "Syria",
@@ -31668,7 +33875,50 @@
         "YE",
         90
       ]
-    ]
+    ],
+    "cond": {
+      "GE": [
+        {
+          "ifHolds": [
+            "US"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "Visa Exemptions:\nHolders of valid visa or residence permit of:\n\"Australia, Austria, Bahrain, Belgium, Bulgaria, Canada, Croatia, Cyprus, Czech Republic, Denmark, Estonia, Finland, France, Germany, Greece, Hungary, Iceland, Ireland, Italy, Japan, South Korea, Kuwait, Latvia, Lichtenstein, Lithuania, Luxembourg, Malta, Netherlands, New Zealand, Norway, Oman, Poland, Portugal, Qatar, Romania, Saudi Arabia, Slovakia, Slovenia, Spain, Sweden, Switzerland, UAE, UK, USA.\"\nare exempted from visa. You can enter Georgia without a visa for 90 days in any 180-day period. Please, note that you must present relevant valid visa or residence permit along with your travel document/passport at arrival.\n\nAdditional Information:\nNationals of Syria must have health insurance.\nVisitors not holding return/onward tickets could be refused entry.\nPassengers with Arabic residence permit must have an official English translation of the residence permit."
+        }
+      ],
+      "MD": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "Citizens holding a residence permit or a valid visa issued by one of the member states of the European Union or one of the parties to the Schengen Agreement can apply for an electronic visa."
+        }
+      ],
+      "NI": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Visa on arrival if holding valid visa issued by United States, Canada, or Schengen Member State."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "YE": {
     "name": "Yemen",
@@ -31887,7 +34137,31 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "CR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Holders of a valid multiple-entry visa of any member state of the Schengen Area, Canada,  or the United States may enter Cost Rica without a visa for maximum stay of 30 days."
+        }
+      ],
+      "NI": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Visa on arrival if holding a valid visa of United States, Canada, and Schengen Member state"
+        }
+      ]
+    }
   },
   "AF": {
     "name": "Afghanistan",
@@ -32118,7 +34392,30 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "MD": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "Citizens holding a residence permit or a valid visa issued by one of the member states of the European Union or one of the parties to the Schengen Agreement can apply for an electronic visa."
+        }
+      ],
+      "NI": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Visa on arrival if holding valid visas of United States, Canada, and Schengen Member state"
+        }
+      ]
+    }
   },
   "SO": {
     "name": "Somalia",
@@ -32349,7 +34646,65 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "CR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Holders of a valid multiple-entry visa of any member state of the Schengen Area, Canada,  or the United States may enter Cost Rica without a visa for maximum stay of 30 days."
+        }
+      ],
+      "DO": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Holders of a valid visa or a residence permit of any member state of the Schengen Area, Canada, Cyprus, Ireland, the United Kingdom or the United States may enter the Dominican Republic without a visa."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if holding a valid visa or a residency document issued by one of the following countries: Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States, Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "NI": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Visa on arrival if holding valid visa issued by United States, Canada, or Schengen member state"
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "SD": {
     "name": "Sudan",
@@ -32601,7 +34956,65 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "CR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Holders of a valid multiple-entry visa of any member state of the Schengen Area, Canada, or the United States may enter Cost Rica without a visa for maximum stay of 30 days."
+        }
+      ],
+      "DO": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Holders of a valid visa or a residence permit of any member state of the Schengen Area, Canada, Cyprus, Ireland, the United Kingdom or the United States may enter the Dominican Republic without a visa.\ntravelers who wants to enter must submit an E-Ticket when enter/exit and present the QR code at immigration."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "NI": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Visa on arrival if holding a valid visa issued by The United States, Canada, or a Schengen Member State"
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "ev",
+          "days": 90,
+          "note": "Tourist visa on arrival and eVisa for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance.\nEligible for an e-Visa or transit visa if holding a valid residence permit of no less than 3 months in a GCC country."
+        }
+      ]
+    }
   },
   "KP": {
     "name": "North Korea",
@@ -32855,7 +35268,31 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "MD": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "Citizens holding a residence permit or a valid visa issued by one of the member states of the European Union or one of the parties to the Schengen Agreement can apply for an electronic visa."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ]
+    }
   },
   "ER": {
     "name": "Eritrea",
@@ -33061,7 +35498,20 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "CR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Holders of a valid multiple-entry visa of any member state of the Schengen Area, Canada,  or the United States may enter Cost Rica without a visa for maximum stay of 30 days."
+        }
+      ]
+    }
   },
   "AO": {
     "name": "Angola",
@@ -33317,7 +35767,21 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ]
+    }
   },
   "BJ": {
     "name": "Benin",
@@ -33571,7 +36035,32 @@
         30
       ],
       "UG"
-    ]
+    ],
+    "cond": {
+      "CR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Holders of a valid multiple-entry visa of any member state of the Schengen Area, Canada,  or the United States may enter Cost Rica without a visa for maximum stay of 30 days."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ]
+    }
   },
   "BT": {
     "name": "Bhutan",
@@ -33856,7 +36345,54 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "CR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Holders of a valid multiple-entry visa of any member state of the Schengen Area, Canada,  or the United States may enter Cost Rica without a visa for maximum stay of 30 days."
+        }
+      ],
+      "DO": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Holders of a valid visa or a residence permit of any member state of the Schengen Area, Canada, Cyprus, Ireland, the United Kingdom or the United States may enter the Dominican Republic without a visa."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "BO": {
     "name": "Bolivia",
@@ -34256,7 +36792,76 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "BA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "30 days visa-free if hold a valid multiple entry visa and permanent residence of the European Union, Schengen Area member states, and United States of America"
+        }
+      ],
+      "MD": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "90 days visa-free if hold a valid residence permit, a valid 'C'-type, or a valid 'D'-type visa issued by a Schengen member state or a European Union member state."
+        }
+      ],
+      "ME": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "30 days visa-free if hold a valid visa issued by the Schengen Area, Australia, Japan, Canada, New Zealand, Ireland, the United States the United Kingdom."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "MK": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "vf",
+          "days": 15,
+          "note": "15 days visa-free if hold a valid Type \"C\" multiple-entry visa for the Schengen Area or a temporary/permanent residence permit of an EU Member State or a country signatory of the Schengen Agreement"
+        }
+      ],
+      "RS": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "90 days within any 180-day period. Transfers allowed.\n90 days visa-free if hold a valid visa or residents of the Cyprus, Ireland, Schengen Area member states, United Kingdom or the United States"
+        }
+      ]
+    }
   },
   "BF": {
     "name": "Burkina Faso",
@@ -34706,7 +37311,21 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ]
+    }
   },
   "CV": {
     "name": "Cabo Verde",
@@ -34980,7 +37599,31 @@
         30
       ],
       "UG"
-    ]
+    ],
+    "cond": {
+      "DO": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Holders of a valid visa or a residence permit of any member state of the Schengen Area, Canada, Cyprus, Ireland, the United Kingdom or the United States may enter the Dominican Republic without a visa."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "CF": {
     "name": "Central African Republic",
@@ -35229,7 +37872,21 @@
         30
       ],
       "UG"
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ]
+    }
   },
   "TD": {
     "name": "Chad",
@@ -35492,7 +38149,31 @@
         30
       ],
       "UG"
-    ]
+    ],
+    "cond": {
+      "GE": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "eVisa available for holders of a valid Schengen visa or a valid visa from any of the OECD member countries; or a valid residence permit of a Schengen or OECD country."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ]
+    }
   },
   "CO": {
     "name": "Colombia",
@@ -35786,7 +38467,21 @@
       "GB",
       "US",
       "YE"
-    ]
+    ],
+    "cond": {
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "voa",
+          "days": 90,
+          "note": "Visa on arrival available for holders of a valid visa issued by the United States, the United Kingdom, or a Schengen Member State, for stays of up to 90 days within a 12-month period, provided the visa has been used at least once and bears an entry stamp of the issuing country."
+        }
+      ]
+    }
   },
   "KM": {
     "name": "Comoros",
@@ -36052,7 +38747,21 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ]
+    }
   },
   "CG": {
     "name": "Republic of the Congo",
@@ -36305,7 +39014,63 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "CR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Holders of a valid multiple-entry visa of any member state of the Schengen Area, Canada,  or the United States may enter Cost Rica without a visa for maximum stay of 30 days."
+        }
+      ],
+      "DO": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Holders of a valid visa or a residence permit of any member state of the Schengen Area, Canada, Cyprus, Ireland, the United Kingdom or the United States may enter the Dominican Republic without a visa."
+        }
+      ],
+      "GE": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "eVisa available for holders of a valid Schengen visa or a valid visa from any of the OECD member countries; or a valid residence permit of a Schengen or OECD country."
+        }
+      ],
+      "NI": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Visa on arrival if having valid visas issued by United States, Canada, and Schengen Member State"
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "CD": {
     "name": "Democratic Republic of the Congo",
@@ -36592,7 +39357,42 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "MD": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "Citizens holding a residence permit or a valid visa issued by one of the member states of the European Union or one of the parties to the Schengen Agreement can apply for an electronic visa."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "NI": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Visa on arrival if holding valid visas issued by United States, Canada, or Schengen Member State."
+        }
+      ]
+    }
   },
   "CU": {
     "name": "Cuba",
@@ -36923,7 +39723,21 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia , Canada , Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus , Japan, United Arab Emirates."
+        }
+      ]
+    }
   },
   "DJ": {
     "name": "Djibouti",
@@ -37204,7 +40018,43 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "DO": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Holders of a valid visa or a residence permit of any member state of the Schengen Area, Canada, Cyprus, Ireland, the United Kingdom or the United States may enter the Dominican Republic without a visa."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "DM": {
     "name": "Dominica",
@@ -37410,7 +40260,21 @@
       "TM",
       "US",
       "YE"
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ]
+    }
   },
   "DO": {
     "name": "Dominican Republic",
@@ -37764,7 +40628,30 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "MX": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "No visa required for those holding a valid visa or residence issued by the United States, Canada, Japan, Colombia, Chile, or Schengen."
+        }
+      ],
+      "PA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "No visa required for holders of a valid US, Canada, Japan or Schengen Member State visa."
+        }
+      ]
+    }
   },
   "EC": {
     "name": "Ecuador",
@@ -38196,7 +41083,20 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "RS": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "90 days within any 180-day period. Transfers allowed.\nVisa-free for a maximum stay of 90 days for valid visa holders or residents of the European Union member states and the United States."
+        }
+      ]
+    }
   },
   "SV": {
     "name": "El Salvador",
@@ -38469,7 +41369,21 @@
       "VU",
       "VE",
       "YE"
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ]
+    }
   },
   "GQ": {
     "name": "Equatorial Guinea",
@@ -38775,7 +41689,54 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "CR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Holders of a valid multiple-entry visa of any member state of the Schengen Area, Canada,  or the United States may enter Cost Rica without a visa for maximum stay of 30 days."
+        }
+      ],
+      "DO": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Holders of a valid visa or a residence permit of any member state of the Schengen Area, Canada, Cyprus, Ireland, the United Kingdom or the United States may enter the Dominican Republic without a visa."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "SZ": {
     "name": "Eswatini",
@@ -39049,7 +42010,54 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "CR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Holders of a valid multiple-entry visa of any member state of the Schengen Area, Canada,  or the United States may enter Cost Rica without a visa for maximum stay of 30 days."
+        }
+      ],
+      "DO": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Tourist card must be purchased on arrival.\nHolders of a valid visa or a residence permit of any member state of the Schengen Area, Canada, Cyprus, Ireland, the United Kingdom or the United States may enter the Dominican Republic without a visa."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "FJ": {
     "name": "Fiji",
@@ -39416,7 +42424,31 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "GA": {
     "name": "Gabon",
@@ -39719,7 +42751,31 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "GE": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "e-Visa available for holders of a valid Schengen visa or a valid visa from any of the OECD member countries; or a valid residence permit of a Schengen or OECD country."
+        }
+      ],
+      "RS": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "Holders of valid visa or residents of the Cyprus, Ireland, Schengen Area member states, United Kingdom or the United States may enter Serbia without a visa for a maximum stay of 90 days within any 180-day period"
+        }
+      ]
+    }
   },
   "GM": {
     "name": "Gambia",
@@ -40685,7 +43741,42 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "CR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Holders of a valid multiple-entry visa of any member state of the Schengen Area, Canada,  or the United States may enter Cost Rica without a visa for maximum stay of 30 days."
+        }
+      ],
+      "DO": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Holders of a valid visa or a residence permit of any member state of the Schengen Area, Canada, Cyprus, Ireland, the United Kingdom or the United States may enter the Dominican Republic without a visa."
+        }
+      ],
+      "GE": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "eVisa available for holders of a valid Schengen visa or a valid visa from any of the OECD member countries; or a valid residence permit of a Schengen or OECD country."
+        }
+      ]
+    }
   },
   "GW": {
     "name": "Guinea-Bissau",
@@ -41307,7 +44398,31 @@
         "ZW",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "HT": {
     "name": "Haiti",
@@ -41547,7 +44662,31 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "HN": {
     "name": "Honduras",
@@ -41792,7 +44931,21 @@
       "VU",
       "VE",
       "YE"
-    ]
+    ],
+    "cond": {
+      "RS": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "holders of valid visa or residents of the Cyprus, Ireland, Schengen Area member states, United Kingdom or the United States may enter Serbia without a visa for a maximum stay of 90 days within any 180-day period"
+        }
+      ]
+    }
   },
   "JM": {
     "name": "Jamaica",
@@ -42183,7 +45336,31 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "MK": [
+        {
+          "ifHolds": [
+            "US"
+          ],
+          "then": "vf",
+          "days": 15,
+          "note": "Holders of a valid Canada, UK or US visa may enter North Macedonia without a visa for up to 15 days."
+        }
+      ]
+    }
   },
   "KI": {
     "name": "Kiribati",
@@ -42422,7 +45599,31 @@
       "US",
       "UY",
       "YE"
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "KG": {
     "name": "Kyrgyzstan",
@@ -42744,7 +45945,44 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "CR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Holders of a valid multiple-entry visa of any member state of the Schengen Area, Canada,  or the United States may enter Cost Rica without a visa for maximum stay of 30 days."
+        }
+      ],
+      "DO": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Holders of a valid visa or a residence permit of any member state of the Schengen Area, Canada, Cyprus, Ireland, the United Kingdom or the United States may enter the Dominican Republic without a visa."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ]
+    }
   },
   "LS": {
     "name": "Lesotho",
@@ -43088,7 +46326,31 @@
         "TL",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "LR": {
     "name": "Liberia",
@@ -43349,7 +46611,64 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "CR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Holders of a valid multiple-entry visa of any member state of the Schengen Area, Canada,  or the United States may enter Cost Rica without a visa for maximum stay of 30 days."
+        }
+      ],
+      "DO": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Holders of a valid visa or a residence permit of any member state of the Schengen Area, Canada, Cyprus, Ireland, the United Kingdom or the United States may enter the Dominican Republic without a visa."
+        }
+      ],
+      "GE": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "eVisa available for holders of a valid Schengen visa or a valid visa from any of the OECD member countries; or a valid residence permit of a Schengen or OECD country."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "MG": {
     "name": "Madagascar",
@@ -43681,7 +47000,31 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "BZ": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "voa",
+          "days": 90,
+          "note": "Permanent residents and holders of multiple entry visa of the United States may obtain a visa on arrival for a fee of 50 USD. Passengers with a valid visa issued by a Schengen Member State are visa exempt for a maximum stay of 90 days."
+        }
+      ],
+      "RS": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "90 days within any 180-day period. Transfers allowed.\nAs of November 2014 valid visa holders and residents of the European Union and Schengen Area member states and the United States can enter Serbia without a visa for a maximum stay of 90 days within 180 days, provided the visa remains valid for the entire length of stay."
+        }
+      ]
+    }
   },
   "MW": {
     "name": "Malawi",
@@ -43983,7 +47326,54 @@
         "TG",
         7
       ]
-    ]
+    ],
+    "cond": {
+      "CR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Holders of a valid multiple-entry visa of any member state of the Schengen Area, Canada,  or the United States may enter Cost Rica without a visa for maximum stay of 30 days."
+        }
+      ],
+      "DO": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Holders of a valid visa or a residence permit of any member state of the Schengen Area, Canada, Cyprus, Ireland, the United Kingdom or the United States may enter the Dominican Republic without a visa."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "MV": {
     "name": "Maldives",
@@ -44400,7 +47790,20 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "RS": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "90 days within any 180-day period. Transfers allowed.\nVisa-free for a maximum stay of 90 days for valid visa holders or residents of the European Union member states and the United States."
+        }
+      ]
+    }
   },
   "ML": {
     "name": "Mali",
@@ -44616,7 +48019,62 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "CR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Holders of a valid multiple-entry visa of any member state of the Schengen Area, Canada,  or the United States may enter Cost Rica without a visa for maximum stay of 30 days."
+        }
+      ],
+      "DO": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Holders of a valid visa or a residence permit of any member state of the Schengen Area, Canada, Cyprus, Ireland, the United Kingdom or the United States may enter the Dominican Republic without a visa."
+        }
+      ],
+      "GE": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "eVisa available for holders of a valid Schengen visa or a valid visa from any of the OECD member countries; or a valid residence permit of a Schengen or OECD country."
+        }
+      ],
+      "NI": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Visa on arrival with valid visas by US, Canada, Schengen Member state"
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "MH": {
     "name": "Marshall Islands",
@@ -44895,7 +48353,31 @@
       "UY",
       "VE",
       "YE"
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "MR": {
     "name": "Mauritania",
@@ -45131,7 +48613,31 @@
         30
       ],
       "UG"
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "FM": {
     "name": "Micronesia",
@@ -45439,7 +48945,21 @@
       "TM",
       "UY",
       "YE"
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ]
+    }
   },
   "MN": {
     "name": "Mongolia",
@@ -45827,7 +49347,19 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "KR": [
+        {
+          "ifHolds": [
+            "NZ"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Visa free transit (up to 30 days) provided holding a valid U.S., Canada, Australia, New Zealand visa, and arriving from or departing to those countries.\nVisa-free access for 30 days to Jeju Island.\nGroup tourists from Mongolia can travel visa-free through Yangyang International Airport until May 2024.\nGroup tourists can only travel to the Gangwon-do region and the metropolitan area of South Korea, and the maximum stay is 15 days."
+        }
+      ]
+    }
   },
   "MZ": {
     "name": "Mozambique",
@@ -46147,7 +49679,21 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ]
+    }
   },
   "NR": {
     "name": "Nauru",
@@ -46487,7 +50033,31 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "NI": {
     "name": "Nicaragua",
@@ -46704,7 +50274,21 @@
       "US",
       "VU",
       "YE"
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ]
+    }
   },
   "NE": {
     "name": "Niger",
@@ -46953,7 +50537,42 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "CR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Holders of a valid multiple-entry visa of any member state of the Schengen Area , Canada,  or the United States may enter Cost Rica without a visa for maximum stay of 30 days."
+        }
+      ],
+      "DO": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Holders of a valid visa or a residence permit of any member state of the Schengen Area, Canada, Cyprus, Ireland, the United Kingdom or the United States may enter the Dominican Republic without a visa.\ntravelers who wants to enter must submit an E-Ticket when enter/exit and present the QR code at immigration."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "ev",
+          "days": 90,
+          "note": "Tourist visa on arrival and eVisa for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance.\nEligible for an e-Visa or transit visa if holding a valid residence permit of no less than 3 months in a GCC country."
+        }
+      ]
+    }
   },
   "PW": {
     "name": "Palau",
@@ -47271,7 +50890,20 @@
       "AE",
       "UY",
       "YE"
-    ]
+    ],
+    "cond": {
+      "GT": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "90 days visa-free if hold a valid visa issued by Canada, the United States or a Schengen member state."
+        }
+      ]
+    }
   },
   "PS": {
     "name": "Palestine",
@@ -47579,7 +51211,42 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "CR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Holders of a valid multiple-entry visa of any member state of the Schengen Area, Canada,  or the United States may enter Cost Rica without a visa for maximum stay of 30 days."
+        }
+      ],
+      "DO": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Holders of a valid visa or a residence permit of any member state of the Schengen Area, Canada, Cyprus, Ireland, the United Kingdom or the United States may enter the Dominican Republic without a visa.\ntravelers who wants to enter must submit an E-Ticket when enter/exit and present the QR code at immigration."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "ev",
+          "days": 90,
+          "note": "Tourist visa on arrival and eVisa for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance.\nEligible for an e-Visa or transit visa if holding a valid residence permit of no less than 3 months in a GCC country."
+        }
+      ]
+    }
   },
   "PG": {
     "name": "Papua New Guinea",
@@ -47950,7 +51617,31 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "PY": {
     "name": "Paraguay",
@@ -48230,7 +51921,21 @@
       "TM",
       "US",
       "YE"
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ]
+    }
   },
   "PE": {
     "name": "Peru",
@@ -48517,7 +52222,21 @@
       "TM",
       "US",
       "YE"
-    ]
+    ],
+    "cond": {
+      "OM": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "To obtain Visa-free or e-Visa, they are required to be either residents or have a valid entry visa for one of the following countries (the United States of America, Canada, Australia,  The United Kingdom,  Schengen Agreement countries, Japan), or to be residents of one of the countries of  The GCC countries and its profession are among the professions that benefit from the resident visa.\nPassengers must ensure they hold a pre-booked hotel booking, health insurance, and a return ticket."
+        }
+      ]
+    }
   },
   "LC": {
     "name": "Saint Lucia",
@@ -49234,7 +52953,31 @@
       "US",
       "UY",
       "YE"
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "ST": {
     "name": "São Tomé and Príncipe",
@@ -49488,7 +53231,31 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": 90,
+          "note": "Holders of a visa or residence permit from European Union, United States of America, Australia, Canada, United Kingdom, Japan, Norway, New Zealand and Switzerland valid for 90 days (or 180 days for residence permits) on application, can apply for an eVisa for 30 days. Passport must also be valid for 90 days."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "SL": {
     "name": "Sierra Leone",
@@ -49760,7 +53527,41 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "GE": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "eVisa available for holders of a valid Schengen visa or a valid visa from any of the OECD member countries; or a valid residence permit of a Schengen or OECD country."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "SB": {
     "name": "Solomon Islands",
@@ -50045,7 +53846,31 @@
       "US",
       "UY",
       "YE"
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "SS": {
     "name": "South Sudan",
@@ -50263,7 +54088,29 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "GE": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "e-Visa available for holders of a valid Schengen visa or a valid visa from any of the OECD member countries; or a valid residence permit of a Schengen or OECD country."
+        }
+      ],
+      "MD": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "Citizens holding a residence permit or a valid visa issued by one of the member states of the European Union or one of the parties to the Schengen Agreement can apply for an electronic visa."
+        }
+      ]
+    }
   },
   "SR": {
     "name": "Suriname",
@@ -50942,7 +54789,44 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "CR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Holders of a valid multiple-entry visa of any member state of the Schengen Area, Canada,  or the United States may enter Cost Rica without a visa for maximum stay of 30 days."
+        }
+      ],
+      "DO": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Holders of a valid visa or a residence permit of any member state of the Schengen Area, Canada, Cyprus, Ireland, the United Kingdom or the United States may enter the Dominican Republic without a visa."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ]
+    }
   },
   "TL": {
     "name": "Timor-Leste",
@@ -51258,7 +55142,65 @@
       "UZ",
       "VU",
       "YE"
-    ]
+    ],
+    "cond": {
+      "CR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Holders of a valid multiple-entry visa of any member state of the Schengen Area, Canada,  or the United States may enter Cost Rica without a visa for maximum stay of 30 days."
+        }
+      ],
+      "DO": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Holders of a valid visa or a residence permit of any member state of the Schengen Area, Canada, Cyprus, Ireland, the United Kingdom or the United States may enter the Dominican Republic without a visa."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "NI": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Visa on arrival if holding valid visa issued by United States, Canada, or Schengen Member State."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "TG": {
     "name": "Togo",
@@ -51491,7 +55433,21 @@
         30
       ],
       "UG"
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ]
+    }
   },
   "TO": {
     "name": "Tonga",
@@ -51782,7 +55738,31 @@
       "US",
       "UY",
       "YE"
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "* Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "TM": {
     "name": "Turkmenistan",
@@ -52066,7 +56046,45 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "DO": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Holders of a valid visa or a residence permit of any member state of the Schengen Area, Canada, Cyprus, Ireland, the United Kingdom or the United States may enter the Dominican Republic without a visa.\ntravelers who wants to enter must submit an E-Ticket when enter/exit and present the QR code at immigration."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "OM": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": 14,
+          "note": "Citizens of the Turkmenistan who hold a valid visa issued by the European Union, Australia, Canada, Japan, United Kingdom or United States may enter Oman without a visa for 14 days.\nTurkmenistan citizens, including their spouses and children of another nationality, can obtain an online eVisa,  if they hold a valid Schengen Visa, a valid visa from Australia, Canada, Japan, the United Kingdom, or the United States, or a residence permit from one of these countries."
+        }
+      ]
+    }
   },
   "TV": {
     "name": "Tuvalu",
@@ -52331,7 +56349,19 @@
       "UY",
       "UZ",
       "YE"
-    ]
+    ],
+    "cond": {
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "UZ": {
     "name": "Uzbekistan",
@@ -52613,7 +56643,32 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "BA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 30,
+          "note": "Valid multiple entry visa holders and residents of the European Union, Schengen Area member states, and United States of America can enter Bosnia and Herzegovina without a visa for a maximum stay of 30 days."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ]
+    }
   },
   "VU": {
     "name": "Vanuatu",
@@ -53024,7 +57079,31 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ],
+      "SA": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ]
+    }
   },
   "VE": {
     "name": "Venezuela",
@@ -53315,7 +57394,21 @@
       "AE",
       "GB",
       "YE"
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": 90,
+          "note": "Holders of a visa or residence permit from European Union, United States of America, Australia, Canada, United Kingdom, Japan, Norway, New Zealand and Switzerland valid for 90 days (or 180 days for residence permits) on application, can apply for an eVisa for 30 days. Passport must also be valid for 90 days."
+        }
+      ]
+    }
   },
   "ZM": {
     "name": "Zambia",
@@ -53621,7 +57714,21 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+        }
+      ]
+    }
   },
   "ZW": {
     "name": "Zimbabwe",
@@ -53907,7 +58014,31 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "EG": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": null,
+          "note": "Tourists holding valid visas from Canada, the US, the UK, or Schengen countries to apply for visa on arrival at airports in Egypt."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": 90,
+          "note": "Holders of a visa or residence permit from European Union, United States of America, Australia, Canada, United Kingdom, Japan, Norway, New Zealand and Switzerland valid for 90 days (or 180 days for residence permits) on application, can apply for an eVisa for 30 days. Passport must also be valid for 90 days."
+        }
+      ]
+    }
   },
   "BZ": {
     "name": "Belize",
@@ -54273,7 +58404,31 @@
         "TL",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "AR": [
+        {
+          "ifHolds": [
+            "US"
+          ],
+          "then": "ev",
+          "days": null,
+          "note": "Electronic Travel Authorization must be approved before travel and is valid for tourism purposes if holidng a US Visa."
+        }
+      ],
+      "MA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "ev",
+          "days": 90,
+          "note": "Holders of a visa or residence permit from European Union, United States of America, Australia, Canada, United Kingdom, Japan, Norway, New Zealand and Switzerland valid for 90 days (or 180 days for residence permits) on application, can apply for an eVisa for 30 days. Passport must also be valid for 90 days."
+        }
+      ]
+    }
   },
   "MO": {
     "name": "Macao",
@@ -54510,7 +58665,19 @@
       "US",
       "VE",
       "YE"
-    ]
+    ],
+    "cond": {
+      "HN": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "No visa required if holding valid visa of US, Canada, or Schengen member state."
+        }
+      ]
+    }
   },
   "XK": {
     "name": "Kosovo",
@@ -54907,7 +59074,42 @@
         "TV",
         30
       ]
-    ]
+    ],
+    "cond": {
+      "BZ": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "voa",
+          "days": 90,
+          "note": "Permanent residents and holders of multiple entry visa of the US or Canada may obtain a visa on arrival.\nHolders of a valid visa issued by a Schengen Member state are visa exempt for a maximum stay of 90 days."
+        }
+      ],
+      "DO": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "GB"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Visa-free if holding a valid visa issued by Bulgaria, Canada, Cyprus, Ireland, Romania, United Kingdom, United States or member states of the Schengen Area."
+        }
+      ],
+      "PA": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Visa-free if holding a valid multiple entry visa issued by Australia, Canada, Schengen, and United States."
+        }
+      ]
+    }
   },
   "XN": {
     "name": "Northern Cyprus",

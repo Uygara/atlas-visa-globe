@@ -6,4 +6,16 @@
 // policy changes. From now on this file only accumulates genuine day-over-day
 // differences detected by backend/scraper.js → computeChangelog().
 
-window.CHANGELOG = [];
+window.CHANGELOG = [
+  {
+    date: "2026-05-24",
+    title: "EE → NI: vr → vr",
+    affects: { dest: "NI", passports: ["EE"] },
+    statusFrom: "vr", statusTo: "vr",
+  },
+  {
+    date: "2026-05-24",
+    title: "HK → SB: vr → vr",
+    affects: { dest: "SB", passports: ["HK"] },
+    statusFrom: "vr", statusTo: "vr",
+  },];
