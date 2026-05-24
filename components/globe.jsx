@@ -171,28 +171,59 @@ function Globe({
         }
       });
 
-      // Country name labels — only in flat mode and only for countries whose
-      // projected width passes a threshold so the map doesn't get cluttered.
+      // Country name labels — flat AND globe modes.
+      // - Fixed font size (no jarring big/small mix).
+      // - Cull by minimum projected width so micro-states don't get labelled
+      //   (the dot markers already cover them).
+      // - Globe modes: back-hemisphere cull via great-circle distance.
+      // - Greedy collision avoidance: sort by country area, place largest
+      //   first, hide any whose approx label bbox overlaps a placed one.
       const labels = svgRef.current.querySelectorAll("text.country-label");
+      const FONT = mode === "flat" ? 11 : 10;
+      const MIN_WIDTH = mode === "flat" ? 36 : 28;
+      const placed = []; // [{ x, y, w, h }]
+      // First pass: compute candidates with their bbox area, sort biggest first.
+      const candidates = [];
       labels.forEach(l => {
-        if (mode !== "flat" || !l.__feature) {
-          l.style.display = "none";
-          return;
-        }
+        if (!l.__feature) { l.style.display = "none"; return; }
         try {
           const b = pathRef.current.bounds(l.__feature);
-          const w = b[1][0] - b[0][0];
-          if (!isFinite(w) || w < 38) { l.style.display = "none"; return; }
+          const bw = b[1][0] - b[0][0];
+          const bh = b[1][1] - b[0][1];
+          if (!isFinite(bw) || bw < MIN_WIDTH) { l.style.display = "none"; return; }
+          if (isGlobe) {
+            const f = l.__feature;
+            // Pull a representative coordinate — use d3.geoCentroid on the geo
+            // feature (lat/lon), then test great-circle distance from the
+            // visible-hemisphere centre.
+            const geoCenter = d3.geoCentroid(f);
+            if (geoCenter && d3.geoDistance(geoCenter, center) >= Math.PI / 2.2) {
+              l.style.display = "none"; return;
+            }
+          }
           const c = pathRef.current.centroid(l.__feature);
           if (!c || !isFinite(c[0])) { l.style.display = "none"; return; }
-          l.setAttribute("x", c[0]);
-          l.setAttribute("y", c[1]);
-          // Scale font size mildly with country width — caps so labels stay
-          // readable across zoom levels.
-          const fs = Math.max(9, Math.min(16, w / 6));
-          l.setAttribute("font-size", fs);
-          l.style.display = "";
+          candidates.push({ el: l, x: c[0], y: c[1], area: bw * bh, bw });
         } catch (e) { l.style.display = "none"; }
+      });
+      candidates.sort((a, b) => b.area - a.area);
+      candidates.forEach(({ el, x, y }) => {
+        const txt = el.textContent || "";
+        const w = Math.max(20, txt.length * FONT * 0.55);
+        const h = FONT * 1.1;
+        const rect = { x: x - w / 2, y: y - h / 2, w, h };
+        const collides = placed.some(p =>
+          rect.x < p.x + p.w && rect.x + rect.w > p.x &&
+          rect.y < p.y + p.h && rect.y + rect.h > p.y);
+        if (collides) {
+          el.style.display = "none";
+          return;
+        }
+        placed.push(rect);
+        el.setAttribute("x", x);
+        el.setAttribute("y", y);
+        el.setAttribute("font-size", FONT);
+        el.style.display = "";
       });
     }
   }, [mode]);
@@ -225,17 +256,23 @@ function Globe({
     return proj;
   }, [size.w, size.h, mode]);
 
-  // Apply zoom changes without recomputing projection from scratch
-  const applyZoom = useCallback((newZoom, animate = false) => {
+  // Apply zoom changes without recomputing projection from scratch.
+  // resetPan=true is opt-in (used by the explicit Reset button) so that
+  // wheel-zooming back to 1× doesn't suddenly snap the user's pan to centre.
+  const applyZoom = useCallback((newZoom, animate = false, resetPan = false) => {
     newZoom = Math.max(1, Math.min(8, newZoom));
-    // When zoom returns to 1, also reset pan offset so the map re-centers.
-    if (newZoom <= 1.001) panRef.current = [0, 0];
+    if (resetPan) {
+      panRef.current = [0, 0];
+      // Also recentre longitude for flat mode (we pan via rotation there).
+      if (mode === "flat") rotRef.current = [0, 0, 0];
+    }
     const applyScaleAndTranslate = () => {
       if (!projRef.current) return;
       projRef.current.scale(baseScaleRef.current * zoomRef.current);
       // Re-apply translation (preserves Y-pan offset for flat mode; X comes
       // from rotation, not translate, so the world wraps horizontally).
       if (mode === "flat") {
+        projRef.current.rotate(rotRef.current);
         projRef.current.translate([size.w / 2, size.h / 2 + panRef.current[1]]);
       }
       redrawPaths();
@@ -302,13 +339,39 @@ function Globe({
 
     const svg = svgRef.current;
 
-    // Wheel zoom — works in all modes
+    // Wheel zoom — flat mode zooms toward the cursor (Google-Maps style);
+    // globe modes zoom from centre because rotation-based panning makes
+    // "zoom toward cursor" feel unnatural on a sphere.
     const onWheel = (e) => {
       e.preventDefault();
       lastInteractRef.current = performance.now();
       autoRef.current = false;
       const factor = e.deltaY < 0 ? 1.12 : 1 / 1.12;
-      applyZoom(zoomRef.current * factor, false);
+      const newZoom = Math.max(1, Math.min(8, zoomRef.current * factor));
+      if (mode === "flat" && projRef.current && projRef.current.invert) {
+        const rect = svg.getBoundingClientRect();
+        const mx = e.clientX - rect.left;
+        const my = e.clientY - rect.top;
+        const worldPt = projRef.current.invert([mx, my]);
+        zoomRef.current = newZoom;
+        projRef.current.scale(baseScaleRef.current * newZoom);
+        if (worldPt && isFinite(worldPt[0])) {
+          const newPx = projRef.current(worldPt);
+          if (newPx && isFinite(newPx[0])) {
+            const dx = mx - newPx[0];
+            const dy = my - newPx[1];
+            const degPerPx = 180 / (Math.PI * projRef.current.scale());
+            rotRef.current = [rotRef.current[0] + dx * degPerPx, 0, 0];
+            panRef.current[1] += dy;
+            projRef.current.rotate(rotRef.current);
+            projRef.current.translate([size.w / 2, size.h / 2 + panRef.current[1]]);
+          }
+        }
+        setZoomDisplay(newZoom);
+        redrawPaths();
+      } else {
+        applyZoom(newZoom, false);
+      }
     };
     svg.addEventListener("wheel", onWheel, { passive: false });
 
@@ -712,7 +775,7 @@ function Globe({
           zoom={zoomDisplay}
           onZoomIn={() => applyZoom(zoomRef.current * 1.4, true)}
           onZoomOut={() => applyZoom(zoomRef.current / 1.4, true)}
-          onReset={() => applyZoom(1, true)}
+          onReset={() => applyZoom(1, true, true)}
         />
       )}
 

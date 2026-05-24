@@ -160,11 +160,12 @@
     --land-stroke: #6b7e9a;
     --graticule: rgba(60, 90, 130, 0.10);
     --na: #c8d0dc;
-    /* Sphere = visible ocean blue in light mode (the dark gradient is illegible) */
-    --sphere-1: #cfe3f5;
-    --sphere-2: #a9c8e4;
-    --sphere-3: #82a8cf;
-    --atm-mid: rgba(96, 165, 250, 0.30);
+    /* Ocean blue — softer, brighter tones so the globe reads as 'water'
+       instead of a heavy slate disc on the page. */
+    --sphere-1: #e8f3fc;
+    --sphere-2: #cfe3f5;
+    --sphere-3: #aed1ea;
+    --atm-mid: rgba(96, 165, 250, 0.22);
   }
   /* Dark theme defaults for the sphere stops, so the SVG references them
      too — keeps light/dark switching as a one-class flip. */

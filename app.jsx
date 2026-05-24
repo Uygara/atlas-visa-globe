@@ -13,19 +13,37 @@ const TWEAK_DEFAULTS = {
   "groupMode": false,
 };
 
-// Lightweight user-preference store, persisted to localStorage so theme / mode
-// choices survive page reloads. Replaces the original iframe-host based hook.
+// Lightweight user-preference store. Most settings persist to localStorage
+// (theme, compareMode, groupMode) so they survive page reloads. globeStyle is
+// the exception: persisted in sessionStorage only, so every fresh browser
+// session starts at the 3D default — the SPA's signature view — even for
+// returning visitors. They can still toggle to 2D for the duration of the
+// session via the topbar.
 function useTweaks(defaults) {
   const [values, setValues] = useState(() => {
     try {
       const stored = JSON.parse(localStorage.getItem("atlas.tweaks") || "{}");
-      return { ...defaults, ...stored };
+      const merged = { ...defaults, ...stored };
+      // Override the persisted globeStyle with whatever this session has set
+      // (or fall back to the default = "globe3d"). NEVER read globeStyle from
+      // localStorage — new sessions should always open in 3D.
+      const sessionMode = sessionStorage.getItem("atlas.globeStyle");
+      merged.globeStyle = sessionMode || defaults.globeStyle;
+      return merged;
     } catch (e) { return defaults; }
   });
   const setTweak = useCallback((key, val) => {
     setValues((prev) => {
       const next = { ...prev, [key]: val };
-      try { localStorage.setItem("atlas.tweaks", JSON.stringify(next)); } catch (e) {}
+      try {
+        if (key === "globeStyle") {
+          sessionStorage.setItem("atlas.globeStyle", val);
+        } else {
+          // Persist everything except globeStyle to localStorage.
+          const { globeStyle: _drop, ...persistable } = next;
+          localStorage.setItem("atlas.tweaks", JSON.stringify(persistable));
+        }
+      } catch (e) {}
       return next;
     });
   }, []);
