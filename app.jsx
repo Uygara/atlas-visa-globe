@@ -249,6 +249,22 @@ function App() {
     document.body.classList.add(`theme-${bg}`);
   }, [t.background]);
 
+  // Cross-tab theme sync — if a static page (or another SPA tab) toggles the
+  // theme, mirror it here without forcing a reload.
+  useEffect(() => {
+    const onStorage = (e) => {
+      if (e.key !== "atlas.tweaks" || !e.newValue) return;
+      try {
+        const tw = JSON.parse(e.newValue);
+        if (tw.background && tw.background !== t.background) {
+          setTweak("background", tw.background);
+        }
+      } catch (err) {}
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, [t.background, setTweak]);
+
   // ─── Keyboard: Esc closes detail / picker ───────────────────────────────
   useEffect(() => {
     const onKey = (e) => {

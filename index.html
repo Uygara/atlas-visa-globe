@@ -153,9 +153,11 @@
     --fg-dim: #3d4a5e;
     --fg-mute: #6b7791;
     --fg-faint: #9aa3b5;
-    /* Lighter, brighter land/sea so the globe doesn't look murky in light mode */
-    --land: #d6dee9;
-    --land-stroke: #b8c3d2;
+    /* Lighter, brighter land/sea so the globe doesn't look murky in light mode.
+       Stroke colour kept high-contrast (slate-blue) so country borders read
+       even on the pale palette — earlier --b8c3d2 was nearly invisible. */
+    --land: #dde6f1;
+    --land-stroke: #6b7e9a;
     --graticule: rgba(60, 90, 130, 0.10);
     --na: #c8d0dc;
     /* Sphere = visible ocean blue in light mode (the dark gradient is illegible) */

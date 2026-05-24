@@ -124,6 +124,22 @@ Tracked in ALERTS-SETUP.md. Status:
 | Stripe + Resend + Cloudflare KV (for Pro alerts + reminders) | Not done | ~45 min — follow ALERTS-SETUP.md. Once configured, both `dispatch-alerts` and `dispatch-reminders` start sending. |
 | Search Console | Done — sitemap submitted | Google indexes ~1 week. /citizenship-by-investment/ was added to sitemap.xml + scripts/generate-seo.js so it'll appear on the next refresh. |
 
+## New active issues (2026-05-24)
+
+1. **Passport expiry reminder email (Pro tier).** Users who entered a
+   passport on the SPA could opt in to "remind me 6/3/1 month before my
+   passport expires". Many countries require ≥6 months validity at entry,
+   so missing the window blocks travel.
+   - **Capture:** add a "Save my passport details" form somewhere (likely
+     under the picker, or in the Pro upgrade page) that takes
+     `{passportIso, expiryDate}` and POSTs to `/api/passport-expiry`.
+   - **Store:** new field on the subscriber KV record:
+     `passport: { iso2, expiry, addedAt }`.
+   - **Dispatch:** extend `backend/dispatch-reminders.js` (or new sibling)
+     to scan for `expiry - today ∈ {180, 90, 30, 7}` days and send a
+     templated email with the renewal embassy link.
+   - **Pro-gate** like the itinerary reminders.
+
 ## Open follow-ups (small, not blocking)
 
 - /itinerary/ → wire the "Email me reminders" form to POST to

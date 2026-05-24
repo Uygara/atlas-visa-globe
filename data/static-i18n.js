@@ -312,8 +312,52 @@
     document.documentElement.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
   }
 
-  // Floating lang switcher (fixed top-right). Stays out of layout.
-  function injectSwitcher(lang) {
+  // ── Theme sync ────────────────────────────────────────────────────────
+  // Mirrors the SPA's choice (stored in localStorage.atlas.tweaks under the
+  // "background" key). Static pages traditionally shipped only a dark palette;
+  // we inject a small CSS block that flips the standard set of CSS variables
+  // (--bg, --panel, --bg3, --fg, etc.) when body.theme-light is present.
+  function currentTheme() {
+    try {
+      const tw = JSON.parse(localStorage.getItem("atlas.tweaks") || "{}");
+      return tw.background === "dark" ? "dark" : "light"; // SPA default is light
+    } catch (e) { return "light"; }
+  }
+
+  function injectThemeCSS() {
+    if (document.getElementById("atlas-theme-css")) return;
+    const css = `
+      body.theme-light {
+        --bg: #f5f7fb !important;
+        --panel: #ffffff !important;
+        --bg3: #eef2f8 !important;
+        --fg: #0f1722 !important;
+        --fg-dim: #3d4a5e !important;
+        --fg-mute: #6b7791 !important;
+        --fg-faint: #9aa3b5 !important;
+        --border: rgba(30,40,60,0.10) !important;
+        --border-strong: rgba(30,40,60,0.18) !important;
+        --link: #1e60c4 !important;
+        background: radial-gradient(ellipse 80% 60% at 70% 20%, rgba(96,165,250,0.08), transparent 70%), #f5f7fb !important;
+      }
+      body.theme-light h1, body.theme-light h2, body.theme-light h3 { color: #0f1722 !important; }
+      body.theme-light table { background: #ffffff !important; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+      body.theme-light thead { background: #eef2f8 !important; }
+      body.theme-light tr:hover td { background: rgba(96,165,250,0.05) !important; }
+    `;
+    const style = document.createElement("style");
+    style.id = "atlas-theme-css";
+    style.textContent = css;
+    document.head.appendChild(style);
+  }
+
+  function applyTheme(theme) {
+    document.body.classList.remove("theme-light", "theme-dark");
+    document.body.classList.add("theme-" + theme);
+  }
+
+  // Floating lang + theme switcher (fixed top-right). Stays out of layout.
+  function injectSwitcher(lang, theme) {
     if (document.getElementById("atlas-lang-switcher")) return;
     const langs = [
       ["en", "English"], ["tr", "Türkçe"], ["es", "Español"],
@@ -323,36 +367,67 @@
     wrap.id = "atlas-lang-switcher";
     wrap.setAttribute("data-no-i18n", "");
     wrap.style.cssText =
-      "position:fixed;top:14px;right:14px;z-index:9999;" +
-      "background:rgba(15,22,38,0.92);backdrop-filter:blur(10px);" +
-      "border:1px solid rgba(148,173,220,0.22);border-radius:8px;" +
-      "padding:4px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;";
+      "position:fixed;top:14px;right:14px;z-index:9999;display:flex;gap:6px;" +
+      "background:var(--panel,#ffffff);backdrop-filter:blur(10px);" +
+      "border:1px solid var(--border-strong,rgba(30,40,60,0.18));border-radius:8px;" +
+      "padding:4px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;" +
+      "box-shadow:0 4px 12px rgba(0,0,0,0.08);";
     const sel = document.createElement("select");
     sel.style.cssText =
-      "background:transparent;color:#e7ecf5;border:none;outline:none;" +
+      "background:transparent;color:var(--fg,#0f1722);border:none;outline:none;" +
       "font-size:12px;padding:4px 6px;cursor:pointer;";
     langs.forEach(([code, label]) => {
       const o = document.createElement("option");
       o.value = code; o.textContent = label;
       if (code === lang) o.selected = true;
-      o.style.color = "#000"; // option list shows native widget colours
+      o.style.color = "#000";
       sel.appendChild(o);
     });
     sel.addEventListener("change", () => {
       const newLang = sel.value;
       try { localStorage.setItem("atlas.lang", newLang); } catch (e) {}
       applyLang(newLang);
-      // Notify the page (some pages may want to react)
       window.dispatchEvent(new CustomEvent("atlas:lang", { detail: { code: newLang } }));
     });
+
+    // Theme toggle button — flips the body class and persists in atlas.tweaks.
+    const themeBtn = document.createElement("button");
+    themeBtn.type = "button";
+    themeBtn.title = "Toggle theme";
+    themeBtn.style.cssText =
+      "background:transparent;border:none;cursor:pointer;font-size:14px;" +
+      "color:var(--fg,#0f1722);padding:4px 8px;border-radius:6px;";
+    themeBtn.textContent = theme === "light" ? "☀" : "☾";
+    themeBtn.addEventListener("click", () => {
+      const cur = document.body.classList.contains("theme-dark") ? "dark" : "light";
+      const next = cur === "light" ? "dark" : "light";
+      try {
+        const tw = JSON.parse(localStorage.getItem("atlas.tweaks") || "{}");
+        tw.background = next;
+        localStorage.setItem("atlas.tweaks", JSON.stringify(tw));
+      } catch (e) {}
+      applyTheme(next);
+      themeBtn.textContent = next === "light" ? "☀" : "☾";
+    });
+
     wrap.appendChild(sel);
+    wrap.appendChild(themeBtn);
     document.body.appendChild(wrap);
   }
 
   function init() {
     const lang = currentLang();
-    injectSwitcher(lang);
+    const theme = currentTheme();
+    injectThemeCSS();
+    applyTheme(theme);
+    injectSwitcher(lang, theme);
     applyLang(lang);
+    // Listen for cross-tab theme changes (StorageEvent fires when another tab
+    // writes to localStorage). Keeps theme synced if the SPA is open elsewhere.
+    window.addEventListener("storage", (e) => {
+      if (e.key === "atlas.tweaks") applyTheme(currentTheme());
+      if (e.key === "atlas.lang")   applyLang(currentLang());
+    });
   }
 
   if (document.readyState === "loading") {

@@ -181,13 +181,13 @@
   if (params.get("stops")) stops = params.get("stops").split(",").map(s => s.trim().toUpperCase()).filter(Boolean);
   if (params.get("d")) departure = params.get("d");
   try {
-    const saved = JSON.parse(localStorage.getItem("atlas.itinerary") || "{}");
+    const saved = JSON.parse(sessionStorage.getItem("atlas.itinerary") || "{}");
     if (!passport && saved.passport) passport = saved.passport;
     if (stops.length === 0 && Array.isArray(saved.stops)) stops = saved.stops;
     if (!departure && saved.departure) departure = saved.departure;
   } catch (e) {}
   function save() {
-    try { localStorage.setItem("atlas.itinerary", JSON.stringify({ passport, stops, departure })); } catch (e) {}
+    try { sessionStorage.setItem("atlas.itinerary", JSON.stringify({ passport, stops, departure })); } catch (e) {}
   }
 
   // ── DOM ───────────────────────────────────────────────────────────────

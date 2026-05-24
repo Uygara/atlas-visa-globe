@@ -62,6 +62,14 @@ function Globe({
     h: window.innerHeight,
   }));
   const [hover, setHover] = useState(null); // { iso2, x, y }
+  // Force a re-render whenever the SPA language changes so country labels
+  // pick up the new localized names from window.countryName().
+  const [, forceLangTick] = useState(0);
+  useEffect(() => {
+    const onLang = () => forceLangTick(x => x + 1);
+    window.addEventListener("atlas:lang", onLang);
+    return () => window.removeEventListener("atlas:lang", onLang);
+  }, []);
 
   // Mutable state that lives outside React's render loop.
   const rotRef = useRef([20, -10, 0]);     // current rotation (globe modes)
@@ -161,6 +169,30 @@ function Globe({
           g.style.visibility = "hidden";
           g.style.pointerEvents = "none";
         }
+      });
+
+      // Country name labels — only in flat mode and only for countries whose
+      // projected width passes a threshold so the map doesn't get cluttered.
+      const labels = svgRef.current.querySelectorAll("text.country-label");
+      labels.forEach(l => {
+        if (mode !== "flat" || !l.__feature) {
+          l.style.display = "none";
+          return;
+        }
+        try {
+          const b = pathRef.current.bounds(l.__feature);
+          const w = b[1][0] - b[0][0];
+          if (!isFinite(w) || w < 38) { l.style.display = "none"; return; }
+          const c = pathRef.current.centroid(l.__feature);
+          if (!c || !isFinite(c[0])) { l.style.display = "none"; return; }
+          l.setAttribute("x", c[0]);
+          l.setAttribute("y", c[1]);
+          // Scale font size mildly with country width — caps so labels stay
+          // readable across zoom levels.
+          const fs = Math.max(9, Math.min(16, w / 6));
+          l.setAttribute("font-size", fs);
+          l.style.display = "";
+        } catch (e) { l.style.display = "none"; }
       });
     }
   }, [mode]);
@@ -578,14 +610,16 @@ function Globe({
           )}
         </defs>
 
-        {/* Outer atmosphere */}
+        {/* Outer atmosphere. Radius tracks the zoom so the glow keeps wrapping
+            the visible sphere instead of getting stranded inside it. */}
         {showGlow && (
-          <circle cx={cx} cy={cy} r={r * 1.18} fill="url(#atm)" />
+          <circle cx={cx} cy={cy} r={r * 1.18 * zoomDisplay} fill="url(#atm)" />
         )}
 
-        {/* Sphere */}
+        {/* Sphere. Same deal — without scaling, zoom > 1 drew country polygons
+            outside the sphere and the body background bled through. */}
         {showGlobe && (
-          <circle cx={cx} cy={cy} r={r} fill="url(#sphere)" />
+          <circle cx={cx} cy={cy} r={r * zoomDisplay} fill="url(#sphere)" />
         )}
 
         {/* Graticule (lat/lon grid lines) */}
@@ -620,6 +654,38 @@ function Globe({
                 onMouseLeave={handleLeave}
                 onClick={() => handleClick(f)}
               />
+            );
+          })}
+        </g>
+
+        {/* Country name labels — flat-mode only. Positions + visibility are set
+            imperatively in redrawPaths to avoid React re-rendering 200 nodes
+            on every pan/zoom tick. */}
+        <g data-label-layer="1" style={{ pointerEvents: "none" }}>
+          {features.map((f, idx) => {
+            const iso2 = featureToIso2(f);
+            if (!iso2) return null;
+            return (
+              <text
+                key={"l-" + (f.id || iso2 || idx)}
+                ref={(el) => { if (el) el.__feature = f; }}
+                className="country-label"
+                textAnchor="middle"
+                dominantBaseline="central"
+                style={{
+                  fill: "var(--fg)",
+                  fontFamily: "var(--font-sans, sans-serif)",
+                  fontWeight: 500,
+                  opacity: 0.78,
+                  display: "none",
+                  paintOrder: "stroke",
+                  stroke: "var(--panel, #ffffff)",
+                  strokeWidth: 2.5,
+                  strokeLinejoin: "round",
+                }}
+              >
+                {window.countryName(iso2)}
+              </text>
             );
           })}
         </g>
