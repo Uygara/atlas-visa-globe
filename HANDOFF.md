@@ -1,391 +1,377 @@
 # Atlas / travelnow.info — Project Handoff
 
-Last updated: 2026-05-22. Live at <https://travelnow.info>. Source at
-<https://github.com/Uygara/atlas-visa-globe>. Cloudflare Pages auto-deploys
-on every push to `main` — usually ~30 seconds.
+> **Last updated:** 2026-05-25 · **Live:** <https://travelnow.info> · **Repo:** <https://github.com/Uygara/atlas-visa-globe>
+>
+> Cloudflare Pages auto-deploys every push to `main` in ~30 seconds.
+
+---
+
+## TL;DR — current state in 5 bullets
+
+1. **Faz A complete** (utility-first strategy): 9 new free utility features +
+   6 new SEO pages shipped over the last session. Site now solves real
+   visa pain points (transit visa, ETIAS, 6-month passport rule,
+   Schengen cascade, ESTA disqualifiers, conditional eVisa shortcuts,
+   Israel stamp warning, LOI requirement, TR→Schengen visa checklist).
+2. **Pro tier is on hold** — strategic pivot was *utility-first, Premium
+   second*. Faz B (Pro launch) blocked on user dashboard work
+   (Cloudflare Email Routing + Stripe + Resend setup).
+3. **Plan is to observe Faz A in the wild first** (~1-2 weeks: Search
+   Console indexing, AdSense behaviour, traffic patterns) before
+   shipping Faz B Premium features.
+4. **No outstanding bugs** the user has flagged in the most recent
+   reviews. Last cleanup pass landed in commit `4472fc2`.
+5. **Single source of truth for the long-term plan** lives at
+   `C:\Users\uygar\.claude\plans\stripe-tarafina-gecmeden-bir-scalable-willow.md`
+   (approved by user — Faz A done, Faz B queued, both phases detailed).
+
+---
 
 ## What Atlas is
 
-Single-page React app (UMD, no build step) + ~205 static SEO pages. It shows
-visa requirements for 200+ passports on an interactive D3 globe. Data is
-re-scraped daily from public visa-policy pages via a GitHub Actions cron.
+A single-page React app (UMD, no build step) + ~210 static SEO pages.
+Pick your passport → interactive D3 globe paints every country by visa
+status. Data re-scraped daily from public visa-policy pages via a
+GitHub Actions cron.
 
-Monetisation: Google AdSense (Auto Ads, pending approval as of 2026-05-22),
-affiliate links (iVisa / Airalo / etc., empty until codes arrive), and a Pro
-tier for paid email alerts ($2/mo via Stripe Checkout).
+**Monetisation today:**
+- Google AdSense (Auto Ads, pending approval as of last check).
+- Affiliate links (iVisa / Airalo / etc.) — slots configured, URLs
+  empty until user has codes.
+- Pro tier (€9.90/yr) — backend half implemented, frontend gating +
+  Stripe products not yet wired (queued as Faz B).
 
-## What you're picking up — active issues from the user (2026-05-22)
+---
 
-All five issues from the previous handoff are SHIPPED in commits `0aeccf9`,
-`5071bbf`, `6d20c58`:
+## Recent activity — what shipped this session
 
-1. ~~Mobile top-bar stability~~ — hamburger menu, no more side-scrolling.
-2. ~~Theme default~~ — switched to light (returning users keep their pref).
-3. ~~Mobile pinch-zoom~~ — `user-scalable=no` on the SPA only.
-4. ~~i18n gaps~~ — DetailCard, Hover, AlertsCTA, VisaFeeBox, Affiliate,
-   picker placeholders, group, zoom controls, legend, welcome overlay all
-   wrapped in `window.t()`. Country names localised via
-   `data/country-names.js` (TR full, ES/DE/FR/AR major). Static pages
-   share `data/static-i18n.js` — one script does DOM walking + lang
-   switcher, persists choice via `localStorage.atlas.lang`.
-5. ~~2D wrap~~ — switched flat-mode projection from `geoNaturalEarth1` to
-   `geoEquirectangular` with rotation-based horizontal pan. World cycles
-   infinitely.
+Commits in reverse chronological order (most recent first):
 
-## New active issues (2026-05-23)
+| Commit | What |
+|---|---|
+| `4472fc2` | polish: dark-theme override for light-default pages + checklist lang sync |
+| `2794ade` | polish: translate Faz A pages + reorder DetailCard widgets |
+| `a953a64` | docs: HANDOFF update — Faz A complete, pre-Faz B setup queued |
+| `125adc3` | feat(A9): Visa application checklist pilot — TR → Schengen |
+| `a49ab45` | feat(A6+A7+A8): ESTA disqualifier checker, Israel-stamp + LOI warnings |
+| `e9c8e41` | feat(A5): Visa Shortcuts directory at /visa-shortcuts/ |
+| `bd634f8` | feat(A1): Schengen cascade-rule calculator on /schengen-calculator/ |
+| `30d7a25` | feat(A3): 6-month passport validity rule — /passport-validity/ + DetailCard |
+| `2134777` | feat(A4): ETIAS countdown — /etias/ page + DetailCard heads-up |
+| `39ecefd` | feat(A2): Transit Visa Checker — /transit-visa/ tool + DetailCard heads-up |
+| `049f40b` | fix(faz0): HoverCard variant bug + DirectionToggle visibility + variants audit |
 
-1. ~~Conditional / nested visa rules~~ — shipped in commits `4aab6ff` +
-   `b1a5704`. Surface in DetailCard via `ConditionsBox`; data from
-   `data/visa-conditions.js` (hand-curated) merged with scraper output
-   on `PASSPORTS[iso2].cond` (extracted from Wikipedia Notes column by
-   `extractConditions()` in `backend/scraper.js`). Manual entries win
-   on key collision since they're verified + sourced. The scraper
-   pattern needs to be exercised on the next daily refresh — verify
-   the auto-extracted set on a known case (e.g. IN → TR) and broaden
-   the keyword list if it misses obvious matches.
+Earlier this session also fixed: 3D sphere zoom bug, light-theme
+country border contrast, country labels in 2D AND 3D modes,
+mouse-centred 2D zoom, pan-reset-on-zoom-out regression, theme
+sync across pages, itinerary sessionStorage, brand simplification
+(→ `travelnow.info`), © footer, transit visa, ETIAS countdown,
+passport validity rule, Schengen cascade, etc.
 
-2. ~~Theme fixes / brand simplification~~ — shipped in `d228435`.
-   Light-theme sphere now flips to ocean blue (CSS vars drive SVG
-   gradient stops). Topbar / panel / mobile menu sheet drop the
-   hardcoded dark backgrounds. Brand mark replaced with bare
-   `travelnow.info` text. Favicon rewritten + PNG fallback dropped.
-   Footer carries © year + 'All rights reserved'.
+---
 
-3. **Passport type variants (ordinary / service / diplomatic / special).**
-   Many countries issue multiple passport types and the visa policy for
-   each is very different. Turkey example: bordo (ordinary), hususi
-   (yeşil — civil servants), hizmet (gri — service), siyah (diplomatic).
-   Wikipedia has separate articles for each: 'Visa requirements for
-   holders of Turkish diplomatic passports' etc. Atlas currently only
-   reads the ordinary passport. Needs:
-   - **Schema:** `PASSPORTS[iso2].variants = { ordinary: {...},
-     diplomatic: {...}, service: {...} }` keyed identically to the
-     current top-level fields.
-   - **Scraper:** new `PASSPORT_TARGETS_VARIANTS` list with the
-     diplomatic/service slugs (the Wikipedia URL pattern is well-known).
-     Roughly +400 fetches at the current rate — ~8 minutes per daily
-     cron run, acceptable.
-   - **UI:** below the primary picker, when the active passport has
-     variants populated, show a small segmented control (Bordo / Yeşil /
-     Gri / Siyah for TR; Ordinary / Diplomatic / Service / Special for
-     others). Default to ordinary. Persist choice in localStorage.
-   - **i18n:** `passport_type.ordinary` / `.diplomatic` / `.service` /
-     `.special` for the segmented control labels.
-   - Affects the same recompute path as the regular picker — `tally`,
-     `resolveStatus`, `resolveGroupStatus` need to look up the variant
-     map first, then fall back to ordinary.
-
-4. **Real multi-passport (dual citizenship) experience.** Inline
-   "+ Compare with another passport" promotion shipped in `d228435`,
-   but it currently piggybacks on `compareMode` (stripe overlay). For
-   dual citizens the more useful question is "which passport should I
-   use for this destination?" — i.e. surface the BEST of the two,
-   not the diff. Possible UI:
-   - When two passports are active, DetailCard could lead with a
-     "Recommended: 🇹🇷 ordinary visa-free" pill and only secondarily
-     show the second passport's status.
-   - Group mode is a separate use case (family travel — worst-case
-     visa). Keep distinct from dual citizenship.
-
-## Older queued items — status
-
-- ~~**Conditional rules — KEYWORDS expansion**~~ shipped `9d778d1`.
-  EU/EEA, GCC, PR, ILR, green-card phrasings all match now.
-- ~~**Citizenship-by-investment comparison page**~~ shipped `ad53111`.
-  16-row table at /citizenship-by-investment/ with Caribbean + Malta
-  + TR + UAE + Vanuatu etc. Hand-curated; re-verify every ~6 months
-  as governments tweak thresholds.
-- ~~**Pro tier apply-by reminders**~~ backend half shipped `76a7896`.
-  /api/reminders POST + GET, backend/dispatch-reminders.js, daily
-  cron step. **Open:** the /itinerary/ page still lacks the "Email
-  me reminders" form that POSTs to the new endpoint — small UI
-  change for next session.
-- ~~**Static-page i18n tail strings**~~ shipped `1fcc8bd` for /about/
-  and /privacy/ paragraphs that are plain text (no inline tags).
-  **Open:** mixed-content paragraphs with embedded `<a>` / `<strong>`
-  still fall through to English on those pages and the alerts /
-  itinerary forms. Adding `data-i18n-key` attributes on those
-  elements + an HTML-key dictionary entry would close the gap.
-- ~~**Visa-fee database expansion**~~ shipped `4adff03`. CN / JP / KR
-  / BR / AE source passports each cover ~10 destinations; 50 new
-  rows total. Next: Southeast Asian sources (TH / VN / ID / PH) and
-  African sources (NG / EG / KE) once traffic justifies.
-
-## Setup items the user still needs to do (no code involved)
-
-Tracked in ALERTS-SETUP.md. Status:
-
-| Step | Status | Action |
-|---|---|---|
-| Google AdSense | Submitted 2026-05-21, in review | Wait. Code is on every page; auto ads will fill once approved. |
-| Cloudflare Email Routing | Not done | 5 min — set `hello@travelnow.info` forward to personal inbox; then we can wire it back into /about/ + /privacy/ contact lines. |
-| iVisa affiliate | Pending | Wait for code → paste into `data/affiliates.js`. |
-| Airalo affiliate | Pending | Wait for code → paste into `data/affiliates.js`. |
-| Stripe + Resend + Cloudflare KV (for Pro alerts + reminders) | Not done | ~45 min — follow ALERTS-SETUP.md. Once configured, both `dispatch-alerts` and `dispatch-reminders` start sending. |
-| Search Console | Done — sitemap submitted | Google indexes ~1 week. /citizenship-by-investment/ was added to sitemap.xml + scripts/generate-seo.js so it'll appear on the next refresh. |
-
-## Strategic pivot 2026-05-24 — Utility-first
-
-Pre-Premium, the site needs traffic + perceived utility. Plan switched
-from Pro-tier packaging to a "Faz A" of 9 free utility features that
-solve real visa pain points and pull organic search traffic. Premium
-("reklamsız + e-posta servisleri") is **Faz B**, deferred until
-Faz A is live + Cloudflare Email Routing / Stripe / Resend are set up.
-
-### Faz A — Free utility features (ALL SHIPPED)
-
-| # | Commit | Feature | What it solves |
-|---|---|---|---|
-| 0 | `049f40b` | Bug fix: HoverCard variant, variants audit, DirectionToggle visibility | Pre-Faz A clean-up |
-| A2 | `39ecefd` | **Transit Visa Checker** `/transit-visa/` | Schengen ATV, UK DATV, US C-1, TWOV — the most-missed rule |
-| A4 | `2134777` | **ETIAS Countdown** `/etias/` | 60+ visa-free nationalities affected from late 2026 |
-| A3 | `30d7a25` | **6-month Passport Validity** `/passport-validity/` | "I bought my flight, my passport expires in 4 months" trap |
-| A1 | `bd634f8` | **Schengen Cascade** (added to /schengen-calculator/) | Visa Code Article 24 — most applicants don't know |
-| A5 | `e9c8e41` | **Visa Shortcuts directory** `/visa-shortcuts/` | Standalone SEO surface for conditional eVisa rules |
-| A6+7+8 | `a49ab45` | **ESTA / Israel-stamp / LOI** | Three DetailCard widgets + `/esta-rules/` page |
-| A9 | `125adc3` | **Visa Checklist pilot (TR → Schengen)** `/visa-checklist/tr-schengen/` | Step-by-step doc list, bilingual, printable, conditional by profile |
-
-**New static pages**: `/transit-visa/`, `/etias/`, `/passport-validity/`,
-`/visa-shortcuts/`, `/esta-rules/`, `/visa-checklist/tr-schengen/`.
-**New DetailCard widgets**: TransitVisaHint, EtiasHint, ValidityHint,
-EstaHint, IsraelStampHint, LoiHint — all context-aware, hidden when
-not relevant.
-
-### Pre-Faz B — setup the user still needs to do
-
-1. **Cloudflare Email Routing** (~5 min)
-   - Dashboard → `travelnow.info` zone → Email → Email Routing → Enable
-   - Destination: personal email (verify)
-   - Custom address: `hello@travelnow.info` → forward to verified destination
-2. **Resend domain verification** — DKIM + SPF DNS records (auto-suggested
-   when you add `travelnow.info` to Resend)
-3. **Stripe products** (one-time, in dashboard):
-   - "travelnow.info Pro — Annual" €9.90 recurring
-   - "travelnow.info Pro — Monthly" €1.90 recurring
-   - (opsiyonel) Lifetime €39 one-off
-   - (opsiyonel) `FOUNDER100` coupon €4.99/yıl, max 100 redemption
-   - Webhook endpoint: `https://travelnow.info/api/webhook/stripe`
-4. **Cloudflare Pages env vars**: `STRIPE_PRO_PRICE_ANNUAL`,
-   `STRIPE_PRO_PRICE_MONTHLY`, `STRIPE_WEBHOOK_SECRET`,
-   `STRIPE_SECRET_KEY`, `RESEND_API_KEY`, `FROM_EMAIL`, `JWT_SECRET`,
-   plus the existing `CLOUDFLARE_KV_NAMESPACE_ID` / etc. for the cron
-   scripts.
-
-### Faz B — Sade Premium (next, after pre-Faz B setup)
-
-Pro paketi: **reklamsız + e-posta servisleri**. Hepsi bu.
-
-| # | Commit | Feature |
-|---|---|---|
-| B1 | (next) | Tier detection altyapısı: `/api/me`, frontend cache, `AdSlot` Pro check |
-| B2 | (next) | Reklamsız mod live (B1 ile aynı commit'te de gidebilir) |
-| B3 | (next) | Sınırsız vize değişikliği uyarısı (mevcut backend; UI promotion) |
-| B4 | (next) | Pasaport süresi reminder (`data/passport-rules.js`, `/api/passport-expiry`, `backend/dispatch-passport-expiry.js`) |
-| B5 | (next) | Apply-by reminder UI (`/itinerary/`'a form ekle; backend zaten var) |
-| B6 | (next) | Schengen kalıcı takip + alarm (`/api/schengen-trips`, dispatcher) |
-| B7 | (next) | Weekly policy digest (`dispatch-alerts.js`'e `--mode=weekly` ekle) |
-| B8 | (next) | Fiyat değişiklik uyarısı (`visa-fees-snapshot.json` daily diff) |
-| B9 | (next) | Bölgesel travel advisory feed (UK FCO scrape) |
-
-## Open follow-ups (small, not blocking)
-
-- /itinerary/ → wire the "Email me reminders" form to POST to
-  /api/reminders. UI: under the .ics download, a small "Pro:
-  email me 7/3/1 days before each apply-by" section that reads
-  email from localStorage and shows the Pro upgrade CTA if the
-  subscriber's tier is "free".
-- Static-page mixed-content paragraphs (about/privacy) — switch
-  to `data-i18n-key` attribute + DICT_HTML entry so we can
-  translate paragraphs that embed `<a>` / `<strong>`.
-- Passport type variants beyond Türkiye — scraper extension to
-  read the `Visa_requirements_for_holders_of_<adj>_diplomatic_passports`
-  Wikipedia articles and populate
-  `PASSPORTS[iso2].variants.diplomatic/.service` for the major
-  passports (CN, IN, RU, etc.) so the framework shipped in
-  `b72896a` lights up automatically.
-
-## What's done — quick map of the codebase
-
-### Top-level structure
+## Architecture — what's where
 
 ```
 /
-├─ index.html                  # SPA shell (loads /app.jsx + /components/*.jsx)
-├─ app.jsx                     # Main App + TopNav + WelcomeOverlay + SettingsButton + LangSwitcher
-├─ 404.html                    # Custom 404 with fuzzy "did you mean?" passport suggestions
-├─ ads.txt                     # Google AdSense ownership line
-├─ sitemap.xml                 # Regenerated by scripts/generate-seo.js
-├─ robots.txt                  # Cloudflare-managed
+├─ index.html                        # SPA shell, light theme default, locks pinch-zoom for the SPA only
+├─ app.jsx                           # Main App + TopNav (hamburger on mobile) + WelcomeOverlay + theme persistence
+├─ 404.html                          # Fuzzy "did you mean?" passport suggestions
+├─ ads.txt                           # AdSense ownership line
+├─ sitemap.xml                       # Regenerated by scripts/generate-seo.js (and patched manually for static pages)
+├─ robots.txt
 ├─ components/
-│  ├─ globe.jsx                # D3 globe + MicroStateMarkers + HoverCard + ZoomControls
-│  └─ panel.jsx                # Side panel: PassportPicker, GroupPicker, DirectionToggle, Tally, CountrySearch, DetailCard, AdSlot, AlertsCTA, AffiliatePartners, VisaFeeBox, Changelog, PanelFooter
+│  ├─ globe.jsx                      # D3 globe + 2D-flat with rotation pan + country labels (back-hemisphere cull + collision)
+│  └─ panel.jsx                      # Side panel: pickers, Tally, DetailCard with widget groups
 ├─ data/
-│  ├─ countries.js             # 206 countries: id (numeric), iso2, name, continent, flag, lat/lon
-│  ├─ passports.js             # AUTO-GENERATED by scraper. RAW_PASSPORTS + resolveStatus + resolveGroupStatus + tally + tallyIncoming + tallyGroup + TERRITORY_ALIAS
-│  ├─ passports-snapshot.json  # Yesterday's scrape, used for diff
-│  ├─ changelog.js             # Today's diff entries (auto-populated)
-│  ├─ digital-nomad-visas.js   # Hand-curated 38 DN visa programs
-│  ├─ visa-fees.js             # Hand-curated visa fee/timing data per (passport, dest) pair (~50 pairs so far)
-│  ├─ affiliates.js            # 5 affiliate slots, URLs empty until user has codes
-│  ├─ ads.js                   # AdSense clientId + slot IDs (clientId set, slot IDs empty)
-│  └─ i18n.js                  # T dictionary: en, tr, es, de, fr, ar. window.t(key, vars) helper.
+│  ├─ countries.js                   # 206 countries
+│  ├─ country-names.js               # window.countryName() — TR full, ES/DE/FR/AR partial
+│  ├─ passports.js                   # AUTO-GENERATED by scraper; RAW_PASSPORTS + resolveStatus + group / tally helpers
+│  ├─ passports-snapshot.json        # yesterday's scrape, used for diff
+│  ├─ passport-variants.js           # TR hususi/hizmet/diplomatik. Others EMPTY (audit done — see F0.2 in plan).
+│  ├─ visa-conditions.js             # hand-curated eVisa shortcuts (IN→TR, CN→MX, etc.); merged with scraper output
+│  ├─ visa-fees.js                   # ~60 (passport→dest) pairs with fee, processing, source
+│  ├─ visa-checklists.js             # NEW — TR→SCHENGEN pilot, bilingual, conditional items by profile
+│  ├─ transit-visa-rules.js          # NEW — Schengen ATV, UK DATV, US C-1, CA, JP/SG/CN/HK TWOV
+│  ├─ etias-rules.js                 # NEW — affected/exempt nationalities, launch date, helpers
+│  ├─ passport-validity-rules.js     # NEW — per-destination months past stay (6 / 3 / 0)
+│  ├─ esta-rules.js                  # NEW — 41 VWP countries, 9 disqualifier countries
+│  ├─ israel-stamp-rules.js          # NEW — 11 destinations with severity tiers
+│  ├─ loi-required.js                # NEW — Russia, Belarus, Turkmenistan
+│  ├─ citizenship-by-investment.js   # 16 CBI/RBI programmes
+│  ├─ digital-nomad-visas.js         # 38 DN visa programmes
+│  ├─ affiliates.js                  # 5 slots, URLs empty until referral codes arrive
+│  ├─ ads.js                         # AdSense clientId set, slot IDs empty
+│  ├─ changelog.js                   # Today's diff (auto-populated)
+│  ├─ i18n.js                        # SPA t() dictionary: en/tr/es/de/fr/ar
+│  └─ static-i18n.js                 # SHARED — text-node walker + floating ☀/☾ + lang switcher for static pages.
+│                                    #   Provides theme-light AND theme-dark CSS variable overrides.
 ├─ backend/
-│  ├─ scraper.js               # Wikipedia scraper, runs daily via GH Actions
-│  ├─ frontend-tail.js         # Appended after scraper rewrites passports.js
-│  ├─ dispatch-alerts.js       # GH Actions cron: reads KV, sends per-subscriber digest via Resend
-│  ├─ iso-map.json             # Name → ISO2 mapping for the scraper
-│  ├─ package.json             # node-fetch + cheerio
-│  └─ README.md
+│  ├─ scraper.js                     # Wikipedia scraper. NOW extracts conditional shortcuts from Notes column.
+│  ├─ frontend-tail.js               # Appended after scraper rewrites passports.js. Includes p.cond for conditions.
+│  ├─ dispatch-alerts.js             # daily cron: visa-policy change alerts to confirmed subscribers
+│  ├─ dispatch-reminders.js          # daily cron: itinerary apply-by reminders (Pro only)
+│  ├─ iso-map.json
+│  └─ package.json                   # node-fetch + cheerio
 ├─ scripts/
-│  ├─ generate-seo.js          # Emits /passport/<iso>/index.html for all 200 passports + sitemap.xml
-│  └─ make-og.py               # Generates /assets/og.png + favicon.png + favicon.svg
-├─ functions/                  # Cloudflare Pages Functions (backend for alerts)
+│  ├─ generate-seo.js                # /passport/<iso>/index.html for 200 passports + sitemap
+│  └─ make-og.py                     # /assets/og.png + favicon.png + favicon.svg
+├─ functions/                        # Cloudflare Pages Functions
 │  ├─ api/
-│  │  ├─ subscribe.js          # POST: store + send confirmation email
-│  │  ├─ confirm.js            # GET ?token=...: flip confirmedAt
-│  │  ├─ unsubscribe.js        # GET ?token=...: remove + cancel Stripe sub
-│  │  ├─ upgrade.js            # POST: start Stripe Checkout for $2/mo Pro
-│  │  ├─ portal.js             # POST: Stripe billing portal URL
-│  │  └─ webhook/stripe.js     # Stripe webhook: lifecycle events
+│  │  ├─ subscribe.js                # POST: signup + confirmation email
+│  │  ├─ confirm.js                  # GET ?token=...
+│  │  ├─ unsubscribe.js              # GET ?token=...
+│  │  ├─ upgrade.js                  # POST: Stripe Checkout
+│  │  ├─ portal.js                   # POST: Stripe billing portal URL
+│  │  ├─ reminders.js                # POST/GET: itinerary apply-by reminders (Pro gated)
+│  │  └─ webhook/stripe.js           # Stripe webhook lifecycle events
 │  └─ lib/
-│     ├─ jwt.js                # Web Crypto HMAC-SHA256 token signer
-│     ├─ store.js              # ATLAS_SUBSCRIBERS KV wrapper
-│     ├─ email.js              # Resend API wrapper
-│     ├─ stripe.js             # Stripe REST client + webhook sig verify
-│     └─ http.js               # Tiny json/error/redirect helpers
+│     ├─ jwt.js, store.js, email.js, stripe.js, http.js
 ├─ assets/
-│  ├─ og.png                   # 1200×630 social card
-│  ├─ favicon.png + .svg       # White + light-blue minimal world-map
-├─ alerts/index.html           # Subscribe to visa-change alerts
-├─ schengen-calculator/index.html  # 90/180 calculator, localStorage, .ics-capable
-├─ itinerary/index.html        # Multi-stop visa planner + departure date + .ics
-├─ digital-nomad-visa/index.html  # 38-country DN visa comparison table
+│  ├─ og.png                         # 1200×630 social card
+│  ├─ favicon.svg                    # minimal white tile + blue meridians
+├─ ── Static pages (each gets static-i18n.js + light theme by default) ──
+├─ alerts/index.html                 # Visa-change email alerts subscribe form
+├─ schengen-calculator/index.html    # 90/180 calc + Article 24 cascade hint + checklist link
+├─ itinerary/index.html              # Multi-stop visa planner; sessionStorage only
+├─ digital-nomad-visa/index.html     # 38-country DN comparison table
+├─ citizenship-by-investment/index.html  # 16 CBI/RBI programmes
+├─ transit-visa/index.html           # NEW — interactive airport transit visa checker
+├─ etias/index.html                  # NEW — countdown + per-passport checker
+├─ passport-validity/index.html      # NEW — 6-month rule per destination
+├─ visa-shortcuts/index.html         # NEW — directory render of visa-conditions.js
+├─ esta-rules/index.html             # NEW — VWP eligibility + 6-checkbox disqualifier walk
+├─ visa-checklist/tr-schengen/index.html  # NEW — bilingual checklist pilot (en/tr)
 ├─ about/index.html
 ├─ privacy/index.html
-├─ passport/index.html         # Auto-generated directory of all 200 passports
-├─ passport/<iso>/index.html   # ×200, regenerated daily
-├─ .github/workflows/daily-refresh.yml  # Cron: scrape + regen SEO + dispatch alerts
-└─ ALERTS-SETUP.md             # User-facing setup guide (Turkish) for the alerts backend
+├─ passport/index.html               # auto-generated directory
+├─ passport/<iso>/index.html         # ×200, regenerated daily
+├─ .github/workflows/daily-refresh.yml  # Cron: scrape + regen SEO + dispatch alerts + reminders
+└─ ALERTS-SETUP.md                   # Setup guide for the alerts backend (Stripe + Resend + KV)
 ```
 
 ### Key conventions
 
-- **No build step.** All scripts loaded as `<script src>` or `<script type="text/babel">`.
-  Edit `.jsx` directly, Babel transforms in-browser at runtime.
-- **i18n.** Wrap any user-visible string in `window.t("namespace.key")`. Add the
-  key in `data/i18n.js` for every language (or just `en` — others fall back).
-  React components must subscribe to `atlas:lang` events to re-render on
-  language switch — see TopNav / Panel for the pattern.
-- **Status taxonomy.** Four statuses + two specials:
-  `vf` visa-free · `ev` eVisa · `voa` visa on arrival · `vr` visa required ·
-  `self` (home country) · `na` (no data). Strictness order is `vf < ev < voa < vr`.
-- **Compare mode visualisation.** When two passports are selected and their
-  status for a country differs, the country renders with an SVG diagonal
-  stripe pattern `url(#stripe-{primary}-{compare})`. 12 patterns defined in
-  globe.jsx's `<defs>`.
-- **Group mode.** Up to 4 passports — `window.resolveGroupStatus` returns the
-  **worst** status across the group ("worst-case visa").
-- **Territory aliases.** `EH→MA`, `GL→DK`, `FK→GB`, `PR→US`, `NC/PF/TF→FR` —
-  dependent territories inherit parent visa policy. Defined in `passports.js`
-  (window.TERRITORY_ALIAS) and mirrored in `scripts/generate-seo.js`.
-- **Topology.** `world-atlas@2.0.2/countries-50m.json` (~750 KB). Loaded
-  on demand by globe.jsx. Includes Kosovo / N. Cyprus / Palestine / HK / Macao
-  as separate polygons.
-- **Cache safety.** `<meta http-equiv="Cache-Control" content="no-cache, must-revalidate">`
-  is on `index.html` so Cloudflare doesn't pin a stale HTML for hours after a deploy.
-- **PowerShell quirks.** This is a Windows machine. `git pull --rebase` then
-  `git add -A` then `git commit` then `git push origin main` is the working pattern.
-  Bash on Windows works for `grep`. Long PowerShell outputs (commit hooks) flood
-  the context — pipe through `Select-Object -Last N`.
+- **No build step.** All scripts loaded as `<script src>` or
+  `<script type="text/babel">`. Edit `.jsx` directly, Babel transforms
+  in-browser at runtime.
+- **i18n.** SPA wraps with `window.t("namespace.key")`, defined in
+  `data/i18n.js`. Static pages share `data/static-i18n.js` which
+  walks text nodes against an EN-keyed dictionary and renders a
+  floating ☀/☾ + lang switcher in the top-right corner.
+- **Theme.** SPA default = light. Persisted in
+  `localStorage.atlas.tweaks.background`. Static pages mirror via
+  `data/static-i18n.js` (cross-tab + same-tab sync via `storage`
+  event + `atlas:lang` CustomEvent).
+- **Globe mode** (3D/2D). Persisted in `sessionStorage` only — new
+  session always opens in 3D (signature view). Mode toggle in
+  session persists.
+- **Status taxonomy.** `vf · ev · voa · vr · self · na`.
+- **Compare mode visualisation.** SVG diagonal stripe fills,
+  12 patterns defined in `globe.jsx <defs>`.
+- **Group mode.** Up to 4 passports, worst-case ("strictest visa")
+  resolution.
+- **Variant mode.** TR has hususi / hizmet / diplomatik populated;
+  other countries' picker hidden because `passportVariants(iso)`
+  returns empty.
+- **Topology.** `world-atlas@2.0.2/countries-110m.json` (~120 KB).
+- **PowerShell quirks.** Windows machine. Pattern:
+  `git pull --rebase origin main && git add -A && git -c user.email=... commit && git push origin main`.
 
-### Recent (the last few sessions) — already shipped
+---
 
-- Scraper migrated from JS scaffolding to a real Wikipedia parser. ID-card
-  travel is recognised. eVisa keyword checked before "visa required" string.
-- 50m topology + Kosovo/N.Cyprus + 200 scraped passports + manual override
-  for N.Cyprus (Wikipedia table is non-standard).
-- Group / family travel mode (multi-passport intersection).
-- Reverse view (incoming — "who can visit me visa-free").
-- Schengen 90/180 calculator at /schengen-calculator/.
-- Itinerary visa planner at /itinerary/ with departure-date reminders + .ics.
-- Digital-nomad-visa explorer at /digital-nomad-visa/ — 38 programs, sortable.
-- Visa fee + processing-time database for TR/US/GB/DE/IN at common destinations.
-- Premium alerts system (frontend + Pages Functions + Stripe + Resend + cron).
-- Top nav bar replacing the corner settings button. 6-language i18n.
-- Compare-mode diagonal stripe fills.
-- Custom 404 with fuzzy "did you mean?" suggestions.
-- /about/, /privacy/, ads.txt for AdSense compliance.
+## Plan — Faz A done, Faz B queued
 
-## Setup the user still needs to do (no code involved)
+The canonical plan lives at:
+`C:\Users\uygar\.claude\plans\stripe-tarafina-gecmeden-bir-scalable-willow.md`
 
-Tracked in `ALERTS-SETUP.md`. Status at handoff:
+### Faz A — Free utility (ALL SHIPPED)
+
+Strategic pivot — pre-Premium, build traffic + perceived utility.
+Nine features, every page free, every widget context-aware.
+
+| # | Commit | Feature |
+|---|---|---|
+| 0 | `049f40b` | Bug fixes: HoverCard variant, variants audit, DirectionToggle visibility |
+| A2 | `39ecefd` | Transit Visa Checker `/transit-visa/` |
+| A4 | `2134777` | ETIAS Countdown `/etias/` |
+| A3 | `30d7a25` | 6-month Passport Validity `/passport-validity/` |
+| A1 | `bd634f8` | Schengen Cascade (added to `/schengen-calculator/`) |
+| A5 | `e9c8e41` | Visa Shortcuts directory `/visa-shortcuts/` |
+| A6+7+8 | `a49ab45` | ESTA / Israel-stamp / LOI (page + 3 DetailCard widgets) |
+| A9 | `125adc3` | Visa Checklist pilot (TR → Schengen) `/visa-checklist/tr-schengen/` |
+
+**DetailCard widget order** (top to bottom, all context-aware):
+1. Status pill
+2. `ConditionsBox` — good-news shortcut path
+3. `TripNotesGroup` — wraps the 6 warnings under "Important notes for this trip" header (when 2+ apply)
+4. `VisaFeeBox` — fee + processing time when data exists
+5. `AffiliatePartners` — sponsored
+6. `AlertsCTA` — subscribe to changes (low-priority, bottom)
+7. `AdSlot` — AdSense
+8. Compare row / group rows when modes active
+
+### Faz B — Sade Premium (NEXT, blocked on user setup)
+
+Value prop: **reklamsız + e-posta servisleri**. €9.90/yıl (annual)
++ €1.90/ay (monthly) + optional Lifetime €39 / Founders coupon.
+
+| # | Feature | Status |
+|---|---|---|
+| B1 | Tier detection altyapısı: `/api/me` endpoint, frontend cache (`localStorage.atlas.tier`), `AdSlot` Pro check, static-page reklam gate | Not started |
+| B2 | Reklamsız mod live | Bundled with B1 |
+| B3 | Sınırsız vize değişikliği uyarısı (mevcut backend; UI promotion) | Not started |
+| B4 | Pasaport süresi reminder — new `data/passport-rules.js`, `/api/passport-expiry`, `backend/dispatch-passport-expiry.js` | Not started |
+| B5 | Apply-by reminder UI on `/itinerary/` (backend `/api/reminders` already shipped) | Not started |
+| B6 | Schengen kalıcı takip + alarm — new `/api/schengen-trips`, `backend/dispatch-schengen-warnings.js` | Not started |
+| B7 | Weekly policy digest — add `--mode=weekly` to `dispatch-alerts.js` | Not started |
+| B8 | Fiyat değişiklik uyarısı — `visa-fees-snapshot.json` daily diff + dispatcher | Not started |
+| B9 | Bölgesel travel advisory feed — UK FCO scrape, region-specific | Not started |
+
+**Why not started:** waiting on user dashboard setup (next section).
+
+---
+
+## Pre-Faz B — setup the user still needs to do
+
+Before Faz B can ship, this needs to be done on external dashboards:
+
+| Step | Time | Notes |
+|---|---|---|
+| **Cloudflare Email Routing** | 5 min | Dashboard → `travelnow.info` zone → Email → Email Routing → Enable. Destination address: personal email; verify. Custom address: `hello@travelnow.info` → forward to destination. |
+| **Resend domain verification** | 10 min | Add `travelnow.info`; add the auto-suggested DKIM + SPF DNS records to Cloudflare. |
+| **Stripe products** | 15 min | Two Recurring products in the dashboard: "Pro — Annual" €9.90 and "Pro — Monthly" €1.90 (DON'T select One-off, even though that's what the dashboard defaults to). Optional: Lifetime €39 one-off + `FOUNDER100` coupon (€4.99/yr, max 100 redemptions). Webhook endpoint: `https://travelnow.info/api/webhook/stripe`, events: `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.payment_failed`. |
+| **Cloudflare Pages env vars** | 5 min | `STRIPE_PRO_PRICE_ANNUAL`, `STRIPE_PRO_PRICE_MONTHLY`, optional `STRIPE_LIFETIME_PRICE`, `STRIPE_WEBHOOK_SECRET`, `STRIPE_SECRET_KEY`, `RESEND_API_KEY`, `FROM_EMAIL` (`Atlas <alerts@travelnow.info>`), `JWT_SECRET`, plus the existing CLOUDFLARE_KV_NAMESPACE_ID etc. |
+
+Detailed step-by-step is in `ALERTS-SETUP.md`.
+
+---
+
+## What to do NEXT session (recommended)
+
+**Order of priority:**
+
+1. **Confirm Faz A live behaviour** (15 min)
+   - Incognito test of new pages: `/transit-visa/`, `/etias/`,
+     `/passport-validity/`, `/visa-shortcuts/`, `/esta-rules/`,
+     `/visa-checklist/tr-schengen/`
+   - Toggle theme (☀/☾), toggle lang (en/tr) → verify it sticks
+     across pages
+   - Pick a Pakistani passport on the SPA, click US → check that
+     `TripNotesGroup` shows the transit + ESTA + validity warnings
+     bundled cleanly
+2. **Submit new pages to Google Search Console** (5 min)
+   - Add the 6 new URLs to Search Console
+   - "Request Indexing" speeds up first crawl from ~1 week to ~24h
+3. **Wait ~1-2 weeks for traffic data** before starting Faz B
+   - AdSense should auto-approve in this window if not already
+   - Search Console will show which Faz A pages pull most queries
+   - Use that to prioritise Faz B email-content topics (e.g. if
+     ETIAS page is popular, ETIAS reminder email is high-value)
+4. **When user wants to start Faz B**, do the pre-Faz B setup
+   (see table above) first. Then ship B1+B2 (tier detection +
+   reklamsız) as the first Pro commit. Then iterate.
+
+---
+
+## Open follow-ups (small, not blocking)
+
+- **Static-page mixed-content paragraphs** — about/privacy pages
+  contain paragraphs with embedded `<a>` / `<strong>` that the
+  text-node walker splits. Adding `data-i18n-key` attribute
+  support to `data/static-i18n.js` (innerHTML replacement) would
+  let us translate those too.
+- **Passport variants for other countries** — only TR is populated.
+  Real fix is the scraper extension reading
+  `Visa_requirements_for_holders_of_<adjective>_diplomatic_passports`
+  Wikipedia articles. The framework (`data/passport-variants.js`,
+  `PassportTypeSelector`, `resolveVariantStatus`) is already in
+  place — just needs data.
+- **Visa checklist expansion** — only TR→Schengen exists as pilot.
+  Adding more pairs (IN→US, BR→JP, etc.) is just appending to
+  `data/visa-checklists.js` + adding a wrapper HTML page that
+  references the entry key.
+- **Conditional rules scraper KEYWORDS** — already broadened EU/EEA,
+  GCC, ILR, green card. After more nightly cron runs, audit
+  output for missed patterns.
+- **Visa-fee database** — currently TR/US/GB/DE/IN/CN/JP/KR/BR/AE
+  sources. Next: Southeast Asian (TH/VN/ID/PH) and African
+  (NG/EG/KE) sources once traffic justifies.
+
+## Setup items the user is still doing (no code involved)
 
 | Step | Status | Action |
 |---|---|---|
-| Google AdSense | **Submitted 2026-05-21**, in review (1-3 weeks typical) | Wait. Code is already on every page. |
-| Cloudflare Email Routing | Not done | 5 min — set `hello@travelnow.info` to forward to personal inbox |
-| iVisa affiliate | Applied, pending | Wait for code; paste into `data/affiliates.js` |
-| Airalo affiliate | Applied, pending | Wait for code; paste into `data/affiliates.js` |
-| Stripe + Resend + Cloudflare KV (for Pro alerts) | Not done | ~45 min — follow ALERTS-SETUP.md. User has Italian Revolut → Stripe works directly. |
-| Search Console submission | Done — submitted sitemap.xml | Google will index over ~1 week |
+| Google AdSense | Submitted 2026-05-21, awaiting approval | Wait. Code on every page; auto ads will fill once approved. |
+| Cloudflare Email Routing | Not done | 5 min — see "Pre-Faz B" section |
+| iVisa affiliate | Pending | Paste code into `data/affiliates.js` |
+| Airalo affiliate | Pending | Paste code into `data/affiliates.js` |
+| Stripe + Resend + Cloudflare KV | Not done | ~45 min for the full Pro stack |
+| Search Console | Submitted sitemap initially | Resubmit / Request Indexing on the 6 new Faz A pages |
 
-## Roadmap — agreed but not yet built
+---
 
-The user explicitly chose these for "later":
-
-- **Citizenship-by-investment comparison page.** Malta (€1M), Türkiye ($400K),
-  Karayipler ($100K), Portugal Golden Visa (retired), Vanuatu, Antigua. High
-  affiliate value (law firms pay $500-2000 per qualified lead). Page would
-  rank for "best second passport", "citizenship by investment 2026" etc.
-- **Visa application reminder email channel.** The .ics download works.
-  Next step: when Pro tier ships, also offer reminder emails 7/3/1 day before
-  the apply-by date. Reuse the existing dispatcher.
-- **Full static-page i18n** (alerts/schengen/itinerary/etc. landing pages
-  translated, not just the SPA UI).
-- **More cities/countries in the visa-fee database.** Currently only TR/US/
-  GB/DE/IN source passports are seeded — about 50 pairs total. Useful next:
-  CN, JP, KR, BR, AE source passports for ~10 popular destinations each.
-
-## How to pick up
-
-1. Read this file end to end.
-2. Read `app.jsx` (~800 lines, has all top-level state + TopNav + Settings + Welcome).
-3. Read `components/panel.jsx` for the side panel + DetailCard.
-4. Read `components/globe.jsx` only when changing the map itself.
-5. Read `data/i18n.js` to understand which strings are translated.
-6. Verify the live site: open <https://travelnow.info> in incognito, check the
-   nav bar, language switcher, compare mode, and group mode.
-7. Tackle issues 1-5 above in order. Each is independent.
-
-### Working pattern for changes
+## How to pick up the work
 
 ```powershell
-# Edit files
-# (no build step — Babel transforms .jsx in-browser)
-
-# Regen SEO if you touched data/ or scripts/generate-seo.js
+# Each session typically opens like this:
 cd "C:\Users\uygar\Downloads\CLAUDE TRAVEL WEBSITE"
-node scripts/generate-seo.js
+git pull --rebase origin main
 
-# Commit + push (Cloudflare auto-deploys)
+# Read this file end to end (1 min)
+# Then read app.jsx (~800 lines — has TopNav + Settings + Welcome + tweak persistence)
+# Then components/panel.jsx (DetailCard + all widgets are here)
+# Then data/i18n.js to see translation surface
+
+# Make changes...
+
+# Commit + push (Cloudflare auto-deploys in ~30 s)
 git pull --rebase origin main
 git add -A
 git -c user.email="atlas-bot@local" -c user.name="atlas-bot" commit -m "feat: ..."
 git push origin main
 ```
 
-The user wants pushes to happen automatically every time something ships.
-Tell them which commit hash landed, and that Cloudflare deploys in ~30 s.
+The user wants pushes to happen automatically every time something
+ships. Tell them which commit hash landed.
 
 ### Tone the user expects
 
-- **Turkish is the working language.** All conversation is in Turkish; code
-  comments stay English. Headings / bullets can mix.
-- **No fake / placeholder data.** Never invent visa rules, affiliate links,
-  or business numbers. If something can't be done without their account,
-  say so and stop.
-- **Trust but show your work.** Explain *why* a change works (or doesn't).
-  Concrete file/line references beat hand-waving.
-- **Don't ask for plan approval mid-task.** They've authorised feature work
-  and pushes — just ship. Surface decisions when there's a real trade-off
-  (e.g. "Stripe vs Paddle", "dark vs light default").
+- **Turkish is the working language.** All conversation in Turkish;
+  code comments stay English. Headings / bullets can mix.
+- **No fake / placeholder data.** Never invent visa rules,
+  affiliate links, or business numbers. If something can't be done
+  without their account, say so and stop.
+- **Trust but show your work.** Explain *why* a change works (or
+  doesn't). Concrete file/line references beat hand-waving.
+- **Don't ask for plan approval mid-task.** They've authorised
+  feature work and pushes — just ship. Surface decisions only
+  when there's a real trade-off (e.g. "Stripe vs Paddle",
+  "dark vs light default").
+- **Faz A is shipped; don't accidentally re-ship those features.**
+  The 9 new files (transit-visa-rules, etias-rules, passport-
+  validity-rules, esta-rules, israel-stamp-rules, loi-required,
+  visa-checklists, plus the 6 new HTML pages and 6 new DetailCard
+  widgets) all already exist.
+
+---
+
+## Roadmap — agreed but not yet built (post-Faz B)
+
+- **Passport expiry reminder (Pro tier).** Save user's passport
+  expiry to KV; cron sends T-180/90/30/7 day emails. Scheduled
+  as B4.
+- **Multi-itinerary dashboard (Pro tier).** Currently
+  sessionStorage-only itinerary; cloud save for Pro would let
+  users track multiple trips. v2.
+- **More citizenship-by-investment / nomad visa pairs.** Manual
+  curation as governments tweak.
+- **Scraper extension for passport-type variants.** Auto-populate
+  CN, IN, RU, US, GB diplomatic / service passport maps from
+  Wikipedia.
+- **API access / B2B embed widget.** If demand emerges.
+
+---
+
+**End of handoff.** Next session — read top-to-bottom, then ask
+me what to do or just ship the next item on the list.
