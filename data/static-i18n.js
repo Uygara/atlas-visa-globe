@@ -415,6 +415,11 @@
 
   function injectThemeCSS() {
     if (document.getElementById("atlas-theme-css")) return;
+    // Override the standard CSS variable set in BOTH directions so the
+    // toggle works whether a page ships dark- or light-default.
+    // Older static pages (alerts, schengen-calc, itinerary, etc.) default
+    // dark and rely on theme-light to flip; the new Faz A pages default
+    // light and need theme-dark to flip back. Both blocks shipped below.
     const css = `
       body.theme-light {
         --bg: #f5f7fb !important;
@@ -433,6 +438,25 @@
       body.theme-light table { background: #ffffff !important; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
       body.theme-light thead { background: #eef2f8 !important; }
       body.theme-light tr:hover td { background: rgba(96,165,250,0.05) !important; }
+
+      body.theme-dark {
+        --bg: #05070d !important;
+        --panel: #111827 !important;
+        --bg3: #1a2236 !important;
+        --fg: #e7ecf5 !important;
+        --fg-dim: #aab4c8 !important;
+        --fg-mute: #6b7591 !important;
+        --fg-faint: #4a5269 !important;
+        --border: rgba(148,173,220,0.15) !important;
+        --border-strong: rgba(148,173,220,0.28) !important;
+        --link: #60a5fa !important;
+        background: radial-gradient(ellipse 80% 60% at 70% 20%, rgba(40,80,150,0.18), transparent 70%), #05070d !important;
+      }
+      body.theme-dark h1, body.theme-dark h2, body.theme-dark h3 { color: #e7ecf5 !important; }
+      body.theme-dark table { background: #111827 !important; box-shadow: 0 1px 3px rgba(0,0,0,0.30) !important; }
+      body.theme-dark thead { background: #1a2236 !important; }
+      body.theme-dark tr:hover td { background: rgba(96,165,250,0.04) !important; }
+      body.theme-dark a { color: #60a5fa !important; }
     `;
     const style = document.createElement("style");
     style.id = "atlas-theme-css";
@@ -480,13 +504,16 @@
     });
 
     // Theme toggle button — flips the body class and persists in atlas.tweaks.
+    // Icon shows the OPPOSITE of the current theme so users read it as
+    // "click to switch to X" (the common convention on Twitter, GitHub, etc.).
     const themeBtn = document.createElement("button");
     themeBtn.type = "button";
     themeBtn.title = "Toggle theme";
     themeBtn.style.cssText =
       "background:transparent;border:none;cursor:pointer;font-size:14px;" +
       "color:var(--fg,#0f1722);padding:4px 8px;border-radius:6px;";
-    themeBtn.textContent = theme === "light" ? "☀" : "☾";
+    const iconForCurrent = (t) => t === "light" ? "☾" : "☀";
+    themeBtn.textContent = iconForCurrent(theme);
     themeBtn.addEventListener("click", () => {
       const cur = document.body.classList.contains("theme-dark") ? "dark" : "light";
       const next = cur === "light" ? "dark" : "light";
@@ -496,7 +523,7 @@
         localStorage.setItem("atlas.tweaks", JSON.stringify(tw));
       } catch (e) {}
       applyTheme(next);
-      themeBtn.textContent = next === "light" ? "☀" : "☾";
+      themeBtn.textContent = iconForCurrent(next);
     });
 
     wrap.appendChild(sel);

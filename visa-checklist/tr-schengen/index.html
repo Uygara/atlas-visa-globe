@@ -127,7 +127,17 @@
 <script>
 (function () {
   const data = window.VISA_CHECKLISTS["TR-SCHENGEN"];
-  let lang = "en";
+  // Sync the in-page en/tr toggle with the global atlas.lang stored by
+  // static-i18n. Only "tr" is a separately curated translation for this
+  // page — other languages fall back to en here (they get their own
+  // string-by-string translation via static-i18n's DICT).
+  function initialLang() {
+    try {
+      const stored = localStorage.getItem("atlas.lang");
+      return stored === "tr" ? "tr" : "en";
+    } catch (e) { return "en"; }
+  }
+  let lang = initialLang();
   let active = new Set(["employed"]);
   const STATE_KEY = "atlas.checklist.tr-schengen";
 
@@ -182,12 +192,33 @@
   });
 
   document.querySelectorAll(".lang-toggle button").forEach(b => {
+    // Sync initial "on" highlight with detected lang
+    b.classList.toggle("on", b.dataset.lang === lang);
     b.addEventListener("click", () => {
       document.querySelectorAll(".lang-toggle button").forEach(x => x.classList.remove("on"));
       b.classList.add("on");
       lang = b.dataset.lang;
+      try { localStorage.setItem("atlas.lang", lang); } catch (e) {}
       render();
     });
+  });
+
+  // Cross-tab + cross-script lang sync: react to atlas.lang changes
+  // from the floating switcher (data/static-i18n.js) or any other tab.
+  window.addEventListener("storage", (e) => {
+    if (e.key !== "atlas.lang") return;
+    const next = e.newValue === "tr" ? "tr" : "en";
+    if (next === lang) return;
+    lang = next;
+    document.querySelectorAll(".lang-toggle button").forEach(x => x.classList.toggle("on", x.dataset.lang === lang));
+    render();
+  });
+  window.addEventListener("atlas:lang", (e) => {
+    const next = e.detail?.code === "tr" ? "tr" : "en";
+    if (next === lang) return;
+    lang = next;
+    document.querySelectorAll(".lang-toggle button").forEach(x => x.classList.toggle("on", x.dataset.lang === lang));
+    render();
   });
 
   document.querySelectorAll(".chip").forEach(b => {
