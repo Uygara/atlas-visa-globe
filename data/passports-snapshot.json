@@ -10053,6 +10053,7 @@
         "GA",
         90
       ],
+      "GH",
       [
         "GN",
         90
@@ -10230,7 +10231,6 @@
       "CG",
       "ER",
       "GM",
-      "GH",
       "KP",
       "KW",
       "ML",
@@ -14953,10 +14953,6 @@
       ],
       "AU",
       [
-        "BS",
-        90
-      ],
-      [
         "BH",
         14
       ],
@@ -15137,7 +15133,6 @@
         "SL",
         90
       ],
-      "SG",
       [
         "SO",
         30
@@ -15223,7 +15218,6 @@
       "CN",
       "CG",
       "ER",
-      "GM",
       "JP",
       "KP",
       "KR",
@@ -15235,6 +15229,7 @@
       "NE",
       "PH",
       "LC",
+      "SG",
       "SB",
       "ZA",
       "SD",
@@ -21948,11 +21943,12 @@
       "CA": [
         {
           "ifHolds": [
-            "US"
+            "US",
+            "CA"
           ],
           "then": "vf",
           "days": 3650,
-          "note": "A Transit Without Visa (TWOV) is available if the Indonesian national holds a valid US visa, is traveling on an approved airline, and enters through an approved Canadian airport..mw-parser-output .citation{word-wrap:break-word}.mw-parser-output .citation:target{background-color:rgba(0,127,255,0.133)}^ However, nationals may not leave the airport during their stopover.\nCanada Visitor Visa issued to nationals of Indonesia is valid up to 10 years or until the passport expiry whichever shorter."
+          "note": "A Transit Without Visa (TWOV) is available if the Indonesian national holds a valid US visa, is traveling on an approved airline, and enters through an approved Canadian airport..mw-parser-output .citation{word-wrap:break-word}.mw-parser-output .citation:target{background-color:rgba(0,127,255,0.133)}^ However, nationals may not leave the airport during their stopover.\nCanada Visitor Visa issued to nationals of Indonesia is valid up to 10 years or until the passport expiry whichever shorter.\nStarting 26 May 2026, Indonesian visitors who have either held a Canadian visa in the last 10 years or who \"currently hold a valid United States non-immigrant visa\" can now apply for an eTA for up to 6 months instead of a visa when travelling to Canada by air."
         }
       ],
       "EG": [
