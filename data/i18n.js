@@ -35,6 +35,15 @@ const T = {
     "nav.about":         "About",
     "nav.settings":      "Settings",
     "nav.language":      "Language",
+    "nav.help":          "What is this?",
+    "nav.mode":          "Globe view",
+
+    "intro.title":       "Your passport, your map.",
+    "intro.body":        "Pick the passport you hold — the globe paints every country by what you'd need to enter today. Free, daily-refreshed, no signup.",
+    "intro.bullet_1":    "🌍 Visa-free, eVisa, on-arrival, or required — at a glance",
+    "intro.bullet_2":    "✈️ Transit, ETIAS, 6-month rule, Schengen 90/180 calculators",
+    "intro.bullet_3":    "🔔 Get notified when a rule changes for your passport",
+    "intro.cta":         "Let's go",
 
     "welcome.hint":      "Pick your passport to begin",
     "welcome.title_1":   "Where in the world",
@@ -215,6 +224,15 @@ const T = {
     "nav.alerts":        "Uyarılar",
     "nav.about":         "Hakkında",
     "nav.settings":      "Ayarlar",
+    "nav.help":          "Bu site ne işe yarıyor?",
+    "nav.mode":          "Küre görünümü",
+
+    "intro.title":       "Pasaportun, dünya haritan.",
+    "intro.body":        "Pasaportunu seç — küre her ülkeyi bugünkü giriş kuralına göre boyasın. Ücretsiz, günlük güncel, üyelik yok.",
+    "intro.bullet_1":    "🌍 Vizesiz, e-vize, varışta vize ya da gerekli — tek bakışta",
+    "intro.bullet_2":    "✈️ Transit, ETIAS, 6 ay kuralı, Schengen 90/180 hesaplayıcıları",
+    "intro.bullet_3":    "🔔 Pasaportunla ilgili bir kural değişince haber al",
+    "intro.cta":         "Başlayalım",
     "nav.language":      "Dil",
 
     "welcome.hint":      "Başlamak için pasaportunu seç",

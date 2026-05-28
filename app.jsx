@@ -141,6 +141,15 @@ function App() {
   const [search, setSearch] = useState("");
   const [focusedCountry, setFocusedCountry] = useState(null);
   const [showWelcome, setShowWelcome] = useState(false);
+  const [showIntro, setShowIntro] = useState(() => {
+    try { return !localStorage.getItem("atlas.welcomed"); }
+    catch (e) { return true; }
+  });
+  const dismissIntro = useCallback(() => {
+    setShowIntro(false);
+    try { localStorage.setItem("atlas.welcomed", "1"); } catch (e) {}
+  }, []);
+  const reopenIntro = useCallback(() => setShowIntro(true), []);
   const [locationStatus, setLocationStatus] = useState("idle"); // idle | detecting | detected | denied
   const [autoDetectedPassport, setAutoDetectedPassport] = useState(null);
   const [direction, setDirection] = useState("outgoing"); // outgoing | incoming
@@ -287,6 +296,7 @@ function App() {
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === "Escape") {
+        if (showIntro) dismissIntro();
         if (detailCountry) setDetailCountry(null);
         if (showWelcome) setShowWelcome(false);
       }
@@ -297,7 +307,7 @@ function App() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [detailCountry, showWelcome]);
+  }, [detailCountry, showWelcome, showIntro, dismissIntro]);
 
   // ─── Handlers ───────────────────────────────────────────────────────────
   const onCountryClick = (iso2) => {
@@ -323,7 +333,9 @@ function App() {
         setTweak={setTweak}
         globeStyle={t.globeStyle}
         onGlobeStyleChange={(v) => setTweak("globeStyle", v)}
+        onHelp={reopenIntro}
       />
+      {showIntro && <IntroHook onClose={dismissIntro} />}
       <div className="globe-stage">
         <Globe
           passport={passport}
@@ -388,7 +400,7 @@ function App() {
 // ─── Top nav bar ──────────────────────────────────────────────────────────
 // Persistent across all in-app interactions. Hosts feature shortcuts, the
 // language switcher, and the settings popover (no more hidden corner button).
-function TopNav({ tweaks, setTweak, globeStyle, onGlobeStyleChange }) {
+function TopNav({ tweaks, setTweak, globeStyle, onGlobeStyleChange, onHelp }) {
   // Re-render when language changes
   const [, force] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -416,9 +428,14 @@ function TopNav({ tweaks, setTweak, globeStyle, onGlobeStyleChange }) {
           <a href="/alerts/" onClick={closeMenu}>{window.t("nav.alerts")}</a>
         </nav>
         <div className="rhs">
-          <InlineModeToggle value={globeStyle} onChange={onGlobeStyleChange} />
-          <LangSwitcher />
-          <SettingsButton tweaks={tweaks} setTweak={setTweak} inNav />
+          <HelpButton onClick={onHelp} />
+          <SettingsButton
+            tweaks={tweaks}
+            setTweak={setTweak}
+            inNav
+            globeStyle={globeStyle}
+            onGlobeStyleChange={onGlobeStyleChange}
+          />
         </div>
       </div>
       {/* Hamburger only shown on mobile via CSS */}
@@ -483,15 +500,25 @@ function LangSwitcher() {
 }
 
 // ─── Settings popover (light/dark + compare mode toggle) ──────────────────
-function SettingsButton({ tweaks, setTweak, inNav }) {
+function SettingsButton({ tweaks, setTweak, inNav, globeStyle, onGlobeStyleChange }) {
   const [open, setOpen] = useState(false);
+  const [, force] = useState(0);
   const ref = useRef(null);
+  useEffect(() => {
+    const onLang = () => force(x => x + 1);
+    window.addEventListener("atlas:lang", onLang);
+    return () => window.removeEventListener("atlas:lang", onLang);
+  }, []);
   useEffect(() => {
     if (!open) return;
     const onClick = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
     document.addEventListener("mousedown", onClick);
     return () => document.removeEventListener("mousedown", onClick);
   }, [open]);
+  const curLang = window.ATLAS_LANG || "en";
+  const sectionLabel = (txt) => (
+    <div style={{ fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8 }}>{txt}</div>
+  );
   const popoverPos = inNav
     ? { position: "absolute", top: 40, right: 0, minWidth: 240 }
     : { position: "absolute", bottom: 44, right: 0, minWidth: 220 };
@@ -508,7 +535,36 @@ function SettingsButton({ tweaks, setTweak, inNav }) {
           padding: 12, boxShadow: "0 12px 32px rgba(0,0,0,0.4)",
           fontSize: 12, color: "var(--fg)",
         }}>
-          <div style={{ fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8 }}>{window.t("settings.theme")}</div>
+          {sectionLabel(window.t("nav.language"))}
+          <select
+            value={curLang}
+            onChange={(e) => { window.setLang(e.target.value); force(x => x + 1); }}
+            aria-label={window.t("nav.language")}
+            style={{
+              width: "100%", marginBottom: 14, padding: "6px 8px",
+              background: "var(--bg-3)", color: "var(--fg)",
+              border: "1px solid var(--panel-border)", borderRadius: 6,
+              fontFamily: "inherit", fontSize: 12,
+            }}>
+            {(window.LANGS || []).map(l => (
+              <option key={l.code} value={l.code}>{l.native}</option>
+            ))}
+          </select>
+
+          {sectionLabel(window.t("nav.mode"))}
+          <div style={{ display: "flex", gap: 6, marginBottom: 14 }}>
+            {[["globe3d", window.t("mode.3d")], ["flat", window.t("mode.2d")]].map(([v, l]) => (
+              <button key={v} onClick={() => onGlobeStyleChange(v)}
+                style={{
+                  flex: 1, padding: "6px 8px", borderRadius: 6,
+                  border: "1px solid " + (globeStyle === v ? "var(--self)" : "var(--panel-border)"),
+                  background: globeStyle === v ? "rgba(96,165,250,0.10)" : "var(--bg-3)",
+                  color: "var(--fg)", cursor: "pointer", fontFamily: "inherit", fontSize: 12,
+                }}>{l}</button>
+            ))}
+          </div>
+
+          {sectionLabel(window.t("settings.theme"))}
           <div style={{ display: "flex", gap: 6, marginBottom: 14 }}>
             {[["dark", window.t("settings.theme_dark")], ["light", window.t("settings.theme_light")]].map(([v, l]) => (
               <button key={v} onClick={() => setTweak("background", v)}
@@ -520,7 +576,7 @@ function SettingsButton({ tweaks, setTweak, inNav }) {
                 }}>{l}</button>
             ))}
           </div>
-          <div style={{ fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8 }}>{window.t("settings.modes")}</div>
+          {sectionLabel(window.t("settings.modes"))}
           <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", marginBottom: 8 }}>
             <input type="checkbox" checked={!!tweaks.compareMode}
                    onChange={(e) => setTweak("compareMode", e.target.checked)} />
@@ -609,6 +665,81 @@ function ModeToggle({ value, onChange }) {
           </button>
         );
       })}
+    </div>
+  );
+}
+
+// ─── Help (?) button — re-opens the intro hook ───────────────────────────
+function HelpButton({ onClick }) {
+  return (
+    <button
+      onClick={onClick}
+      aria-label={window.t("nav.help")}
+      title={window.t("nav.help")}
+      style={{
+        background: "var(--bg-3)", border: "1px solid var(--panel-border)",
+        color: "var(--fg-dim)", borderRadius: 7, padding: "6px 9px",
+        fontFamily: "var(--font-mono)", fontSize: 12, fontWeight: 600,
+        cursor: "pointer",
+      }}>?</button>
+  );
+}
+
+// ─── Intro hook — first-visit explainer, dismissible, re-openable via ?  ───
+function IntroHook({ onClose }) {
+  return (
+    <div
+      onClick={onClose}
+      style={{
+        position: "fixed", inset: 0, zIndex: 50,
+        background: "rgba(5, 7, 13, 0.55)",
+        backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        padding: 20,
+      }}>
+      <div
+        onClick={(e) => e.stopPropagation()}
+        role="dialog"
+        aria-labelledby="intro-title"
+        style={{
+          background: "var(--panel)", backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          border: "1px solid var(--panel-border-strong)",
+          borderRadius: 16, padding: 28, maxWidth: 460, width: "100%",
+          boxShadow: "0 24px 64px rgba(0,0,0,0.55)",
+          color: "var(--fg)",
+        }}>
+        <div style={{
+          fontSize: 11, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
+          textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 10,
+        }}>travelnow.info</div>
+        <h1 id="intro-title" style={{
+          fontSize: 26, fontWeight: 600, letterSpacing: "-0.02em",
+          margin: "0 0 10px 0", lineHeight: 1.15,
+        }}>
+          {window.t("intro.title")}
+        </h1>
+        <p style={{ fontSize: 13, color: "var(--fg-dim)", lineHeight: 1.55, margin: "0 0 16px 0" }}>
+          {window.t("intro.body")}
+        </p>
+        <ul style={{ listStyle: "none", padding: 0, margin: "0 0 20px 0", display: "flex", flexDirection: "column", gap: 8 }}>
+          {[1, 2, 3].map(i => (
+            <li key={i} style={{ fontSize: 13, color: "var(--fg)", lineHeight: 1.4 }}>
+              {window.t(`intro.bullet_${i}`)}
+            </li>
+          ))}
+        </ul>
+        <button
+          onClick={onClose}
+          autoFocus
+          style={{
+            width: "100%", background: "var(--self)", color: "#05070d",
+            border: "none", borderRadius: 8, padding: "11px 14px",
+            fontFamily: "inherit", fontSize: 14, fontWeight: 600, cursor: "pointer",
+          }}>
+          {window.t("intro.cta")}
+        </button>
+      </div>
     </div>
   );
 }
