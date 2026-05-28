@@ -201,6 +201,13 @@ const T = {
     "pulse.gains_msg":           "Gained access to {n} destination(s) in this window.",
     "pulse.losses_msg":          "Lost access to {n} destination(s).",
 
+    "watchlist.heading":         "Watchlist",
+    "watchlist.add":             "Add to watchlist",
+    "watchlist.remove":          "Remove from watchlist",
+    "watchlist.add_short":       "Watch",
+    "watchlist.added":           "Watching",
+    "watchlist.recent_alert":    "{n} watched destination(s) had a policy update in the last 2 weeks. Tap to review.",
+
     // Group
     "group.label":               "Group",
     "group.add_passport":        "+ Add passport",
@@ -424,6 +431,13 @@ const T = {
     "pulse.open":                "Bugün açık",
     "pulse.gains_msg":           "Bu süreçte {n} yeni destinasyon eklendi.",
     "pulse.losses_msg":          "{n} destinasyona erişim kapandı.",
+
+    "watchlist.heading":         "İzleme listesi",
+    "watchlist.add":             "İzleme listesine ekle",
+    "watchlist.remove":          "İzleme listesinden çıkar",
+    "watchlist.add_short":       "İzle",
+    "watchlist.added":           "İzleniyor",
+    "watchlist.recent_alert":    "Son 2 haftada {n} izlenen ülkede politika değişikliği oldu. Görmek için tıkla.",
 
     "group.label":               "Grup",
     "group.add_passport":        "+ Pasaport ekle",

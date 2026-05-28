@@ -138,6 +138,10 @@ function Panel({
         <PassportPulse passport={passport} />
       )}
 
+      {!detailCountry && (
+        <WatchlistCard onOpen={(iso2) => { setDetailCountry(iso2); }} />
+      )}
+
       {!detailCountry && passport && !groupActive && (
         <DailySuggestion passport={passport} onOpen={(iso2) => { setDetailCountry(iso2); }} />
       )}
@@ -970,14 +974,15 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
         <svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 3 L11 11 M11 3 L3 11" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
       </button>
 
-      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12, paddingRight: 28 }}>
         <span style={{ fontSize: 32, lineHeight: 1 }}>{dest.flag}</span>
-        <div>
+        <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontSize: 16, fontWeight: 600, letterSpacing: "-0.01em" }}>{window.countryName(iso2)}</div>
           <div style={{ fontSize: 11, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
             {dest.continent ? (window.t("cont." + dest.continent) !== ("cont." + dest.continent) ? window.t("cont." + dest.continent) : dest.continent) : "—"}
           </div>
         </div>
+        <WatchToggle iso2={iso2} />
       </div>
 
       {recommended && (
@@ -1726,6 +1731,158 @@ function NewsItem({ item, compact }) {
         </div>
       )}
     </Wrapper>
+  );
+}
+
+// ─── Watchlist (localStorage-backed; will sync to KV / email in Faz B) ──
+// Lets users star destinations they care about. The home panel surfaces
+// them as chips and flags any with a fresh changelog or visa-news hit.
+// Stored as `atlas.watchlist` — JSON array of ISO2 strings.
+const WATCHLIST_KEY = "atlas.watchlist";
+function readWatchlist() {
+  try {
+    const raw = localStorage.getItem(WATCHLIST_KEY);
+    const arr = raw ? JSON.parse(raw) : [];
+    return Array.isArray(arr) ? arr.filter(x => typeof x === "string") : [];
+  } catch (e) { return []; }
+}
+function writeWatchlist(list) {
+  try { localStorage.setItem(WATCHLIST_KEY, JSON.stringify(list)); } catch (e) {}
+  window.dispatchEvent(new CustomEvent("atlas:watchlist", { detail: { list } }));
+}
+function inWatchlist(iso2) { return readWatchlist().includes(iso2); }
+function toggleWatchlist(iso2) {
+  const list = readWatchlist();
+  const idx = list.indexOf(iso2);
+  if (idx >= 0) list.splice(idx, 1);
+  else list.push(iso2);
+  writeWatchlist(list);
+  return list;
+}
+function useWatchlist() {
+  const [list, setList] = useState(() => readWatchlist());
+  useEffect(() => {
+    const onChange = () => setList(readWatchlist());
+    window.addEventListener("atlas:watchlist", onChange);
+    window.addEventListener("storage", (e) => {
+      if (e.key === WATCHLIST_KEY) onChange();
+    });
+    return () => window.removeEventListener("atlas:watchlist", onChange);
+  }, []);
+  return list;
+}
+
+// Returns the set of watchlisted ISO2s that have had a CHANGELOG entry or
+// VISA_NEWS item in the last `days` days.
+function watchlistAlerts(list, days = 14) {
+  const cutoff = Date.now() - days * 86400_000;
+  const alerted = new Set();
+  if (window.CHANGELOG) {
+    for (const c of window.CHANGELOG) {
+      if (!list.includes(c.affects?.dest)) continue;
+      if (new Date(c.date + "T00:00:00").getTime() < cutoff) continue;
+      alerted.add(c.affects.dest);
+    }
+  }
+  if (window.VISA_NEWS) {
+    for (const n of window.VISA_NEWS) {
+      const dests = n.affects?.destinations || [];
+      const hit = dests.find(d => list.includes(d));
+      if (!hit) continue;
+      if (new Date(n.date + "T00:00:00").getTime() < cutoff) continue;
+      alerted.add(hit);
+    }
+  }
+  return alerted;
+}
+
+function WatchlistCard({ onOpen }) {
+  const list = useWatchlist();
+  const alerts = useMemo(() => watchlistAlerts(list, 14), [list]);
+  if (list.length === 0) return null;
+  return (
+    <div style={{ marginBottom: 16 }}>
+      <div style={{
+        display: "flex", alignItems: "center", gap: 6, marginBottom: 6,
+      }}>
+        <div style={{
+          fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
+          textTransform: "uppercase", letterSpacing: "0.10em",
+        }}>{window.t("watchlist.heading")}</div>
+        {alerts.size > 0 && (
+          <div style={{
+            width: 5, height: 5, borderRadius: "50%",
+            background: "var(--vr)", boxShadow: "0 0 6px var(--vr)",
+            animation: "pulse 2s ease-in-out infinite",
+          }} />
+        )}
+      </div>
+      {alerts.size > 0 && (
+        <div style={{
+          padding: "6px 10px", marginBottom: 6,
+          background: "rgba(248,113,113,0.08)",
+          border: "1px solid var(--panel-border)",
+          borderLeft: "3px solid var(--vr)",
+          borderRadius: 6,
+          fontSize: 11, color: "var(--fg-dim)", lineHeight: 1.4,
+        }}>
+          {window.t("watchlist.recent_alert", { n: alerts.size })}
+        </div>
+      )}
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+        {list.map(iso2 => {
+          const c = window.byIso2[iso2];
+          if (!c) return null;
+          const flagged = alerts.has(iso2);
+          return (
+            <button
+              key={iso2}
+              onClick={() => onOpen?.(iso2)}
+              style={{
+                display: "inline-flex", alignItems: "center", gap: 6,
+                padding: "6px 10px",
+                background: flagged ? "rgba(248,113,113,0.08)" : "var(--bg-2)",
+                border: "1px solid " + (flagged ? "var(--vr)" : "var(--panel-border)"),
+                borderRadius: 999,
+                fontFamily: "inherit", fontSize: 12,
+                color: "var(--fg)", cursor: "pointer",
+                transition: "all 180ms ease",
+              }}>
+              <span style={{ fontSize: 14 }}>{c.flag}</span>
+              <span>{window.countryName(iso2)}</span>
+              {flagged && <span style={{
+                fontSize: 9, fontFamily: "var(--font-mono)",
+                color: "var(--vr)", letterSpacing: "0.04em",
+              }}>•</span>}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
+// Button used inside DetailCard to toggle the current country in/out of
+// the watchlist.
+function WatchToggle({ iso2 }) {
+  const list = useWatchlist();
+  const on = list.includes(iso2);
+  return (
+    <button
+      onClick={(e) => { e.stopPropagation(); toggleWatchlist(iso2); }}
+      title={window.t(on ? "watchlist.remove" : "watchlist.add")}
+      aria-pressed={on}
+      style={{
+        display: "inline-flex", alignItems: "center", gap: 6,
+        padding: "5px 9px", borderRadius: 6,
+        background: on ? "rgba(96,165,250,0.12)" : "transparent",
+        border: "1px solid " + (on ? "var(--self)" : "var(--panel-border-strong)"),
+        color: on ? "var(--self)" : "var(--fg-mute)",
+        fontFamily: "inherit", fontSize: 11, cursor: "pointer",
+      }}>
+      <span style={{ fontSize: 13 }}>{on ? "★" : "☆"}</span>
+      <span>{window.t(on ? "watchlist.added" : "watchlist.add_short")}</span>
+    </button>
   );
 }
 
