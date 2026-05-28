@@ -134,6 +134,10 @@ function Panel({
         />
       )}
 
+      {!detailCountry && passport && (
+        <WeeklyDigest passport={passport} />
+      )}
+
       {!detailCountry && passport && !groupActive && (
         <PassportPulse passport={passport} />
       )}
@@ -1735,6 +1739,55 @@ function NewsItem({ item, compact }) {
         </div>
       )}
     </Wrapper>
+  );
+}
+
+// ─── Weekly digest ──────────────────────────────────────────────────────
+// One-line "what changed this week" banner. Counts CHANGELOG + VISA_NEWS
+// events from the last 7 days and how many of them touch the current
+// passport. Cheap to compute, gives the home panel a visible "since you
+// last visited" sense — a small but real retention signal.
+function weeklyDigest(passport) {
+  const cutoff = Date.now() - 7 * 86400_000;
+  let total = 0, mine = 0;
+  if (window.CHANGELOG) {
+    for (const c of window.CHANGELOG) {
+      if (new Date(c.date + "T00:00:00").getTime() < cutoff) continue;
+      total++;
+      if (passport && c.affects?.passports?.includes(passport)) mine++;
+    }
+  }
+  if (window.VISA_NEWS) {
+    for (const n of window.VISA_NEWS) {
+      if (new Date(n.date + "T00:00:00").getTime() < cutoff) continue;
+      total++;
+      const arr = n.affects?.passports || [];
+      if (passport && (arr.length === 0 || arr.includes(passport))) mine++;
+    }
+  }
+  return { total, mine };
+}
+
+function WeeklyDigest({ passport }) {
+  const stats = useMemo(() => weeklyDigest(passport), [passport]);
+  if (stats.total === 0) return null;
+  return (
+    <div style={{
+      display: "flex", alignItems: "center", gap: 8,
+      padding: "8px 12px", marginBottom: 14,
+      background: "var(--bg-2)",
+      border: "1px solid var(--panel-border)",
+      borderLeft: "3px solid var(--self)",
+      borderRadius: 8,
+      fontSize: 12, color: "var(--fg-dim)", lineHeight: 1.45,
+    }}>
+      <span style={{ fontSize: 14 }}>📰</span>
+      <div style={{ flex: 1 }}>
+        {passport && stats.mine > 0
+          ? window.t("digest.this_week_with_yours", { total: stats.total, mine: stats.mine })
+          : window.t("digest.this_week_total", { total: stats.total })}
+      </div>
+    </div>
   );
 }
 

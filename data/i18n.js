@@ -212,6 +212,9 @@ const T = {
     "itinerary.sub":             "Multi-stop visa planner with Schengen 90/180 awareness",
     "itinerary.continue":        "Continue planning — {n} stop(s)",
 
+    "digest.this_week_with_yours": "{total} visa policy update(s) this week — {mine} affect your passport.",
+    "digest.this_week_total":      "{total} visa policy update(s) this week worldwide.",
+
     // Group
     "group.label":               "Group",
     "group.add_passport":        "+ Add passport",
@@ -446,6 +449,9 @@ const T = {
     "itinerary.start":           "Sıradaki seyahatini planla",
     "itinerary.sub":             "Çok duraklı vize planlayıcı + Schengen 90/180 takibi",
     "itinerary.continue":        "Planı sürdür — {n} durak",
+
+    "digest.this_week_with_yours": "Bu hafta {total} vize politikası değişti — {mine} tanesi pasaportunu etkiliyor.",
+    "digest.this_week_total":      "Bu hafta dünya genelinde {total} vize politikası değişti.",
 
     "group.label":               "Grup",
     "group.add_passport":        "+ Pasaport ekle",
