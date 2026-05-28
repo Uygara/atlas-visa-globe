@@ -25,6 +25,12 @@ jobs:
         working-directory: backend
         run: node scraper.js --all
 
+      - name: Fetch news feed (Wikipedia history + UK FCO)
+        # Soft-fails: a flaky network on one source shouldn't fail the cron.
+        working-directory: backend
+        continue-on-error: true
+        run: node fetch-news.js
+
       - name: Regenerate SEO pages
         run: node scripts/generate-seo.js
         env:
@@ -60,7 +66,7 @@ jobs:
         run: |
           git config user.name "atlas-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add data/passports.js data/passports-snapshot.json data/changelog.js passport/ sitemap.xml robots.txt
+          git add data/passports.js data/passports-snapshot.json data/changelog.js data/visa-news.js passport/ sitemap.xml robots.txt
           if git diff --staged --quiet; then
             echo "No changes."
           else

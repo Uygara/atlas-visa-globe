@@ -186,6 +186,10 @@ const T = {
     "change.vf_to_voa":          "Visa on arrival now required (was visa-free)",
     "change.vf_to_vr":           "Visa now required (was visa-free)",
 
+    "news.for_passport":         "Latest for {name} passport holders",
+    "news.recent_for_dest":      "Recent news for this destination",
+    "news.no_items":             "No fresh news for your passport yet — we'll surface changes as they happen.",
+
     // Group
     "group.label":               "Group",
     "group.add_passport":        "+ Add passport",
@@ -394,6 +398,10 @@ const T = {
     "change.vf_to_ev":           "Artık e-vize gerekli (önceden vizesizdi)",
     "change.vf_to_voa":          "Artık varışta vize gerekli (önceden vizesizdi)",
     "change.vf_to_vr":           "Artık vize gerekli (önceden vizesizdi)",
+
+    "news.for_passport":         "{name} pasaportu için son haberler",
+    "news.recent_for_dest":      "Bu ülke için son haberler",
+    "news.no_items":             "Pasaportunla ilgili yeni haber yok — değişiklik olunca burada gösteririz.",
 
     "group.label":               "Grup",
     "group.add_passport":        "+ Pasaport ekle",

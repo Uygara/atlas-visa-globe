@@ -134,6 +134,8 @@ function Panel({
         />
       )}
 
+      {!detailCountry && passport && <PassportNewsFeed passport={passport} />}
+
       {!detailCountry && <Changelog />}
 
       <PanelFooter />
@@ -1046,6 +1048,8 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
         <VisaFeeBox passport={passport} destIso2={iso2} status={r.status} />
       )}
 
+      {!groupActive && <NewsBox passport={passport} destIso2={iso2} />}
+
       <AffiliatePartners status={r.status} iso2={iso2} />
 
       <AlertsCTA iso2={iso2} destName={window.countryName(iso2)} />
@@ -1644,6 +1648,139 @@ function Arrow() {
     <svg width="14" height="10" viewBox="0 0 14 10" style={{ color: "var(--fg-mute)" }}>
       <path d="M1 5 H12 M8 1 L12 5 L8 9" stroke="currentColor" strokeWidth="1.3" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
+  );
+}
+
+// ─── News filtering helpers ───────────────────────────────────────────────
+// VISA_NEWS items have affects.{passports, destinations} as ISO2 arrays.
+// Empty array means "applies to all". `matchesPassport` and `matchesDest`
+// return true if the item is relevant to the given iso2.
+function matchesPassport(item, passport) {
+  if (!passport) return false;
+  const arr = item.affects?.passports || [];
+  return arr.length === 0 || arr.includes(passport);
+}
+function matchesDest(item, dest) {
+  if (!dest) return false;
+  const arr = item.affects?.destinations || [];
+  return arr.length === 0 || arr.includes(dest);
+}
+function sortNewsDesc(a, b) {
+  return (b.date || "").localeCompare(a.date || "");
+}
+
+const SEVERITY_STYLE = {
+  positive: { border: "var(--vf)", glow: "0 0 8px rgba(74, 222, 128, 0.25)", emoji: "✓" },
+  warning:  { border: "var(--vr)", glow: "0 0 8px rgba(248, 113, 113, 0.25)", emoji: "⚠" },
+  neutral:  { border: "var(--panel-border-strong)", glow: "none", emoji: "•" },
+};
+
+function NewsItem({ item, compact }) {
+  const sev = SEVERITY_STYLE[item.severity] || SEVERITY_STYLE.neutral;
+  const date = new Date(item.date + "T00:00:00");
+  const fmt = date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  const hasLink = !!item.sourceUrl;
+  const Wrapper = hasLink ? "a" : "div";
+  const wrapperProps = hasLink
+    ? { href: item.sourceUrl, target: "_blank", rel: "noopener noreferrer" }
+    : {};
+  return (
+    <Wrapper {...wrapperProps} style={{
+      display: "block",
+      padding: compact ? "8px 10px" : "10px 12px",
+      background: "var(--bg-2)",
+      border: `1px solid var(--panel-border)`,
+      borderLeft: `3px solid ${sev.border}`,
+      boxShadow: sev.glow,
+      borderRadius: 8,
+      color: "var(--fg)",
+      textDecoration: "none",
+      transition: "all 180ms ease",
+      cursor: hasLink ? "pointer" : "default",
+    }} className="changelog-item">
+      <div style={{
+        display: "flex", alignItems: "center", gap: 6,
+        fontSize: 10, fontFamily: "var(--font-mono)",
+        color: "var(--fg-mute)", textTransform: "uppercase",
+        letterSpacing: "0.06em", marginBottom: 4,
+      }}>
+        <span style={{ color: sev.border }}>{sev.emoji}</span>
+        <span>{fmt}</span>
+        <span style={{ color: "var(--fg-faint)" }}>·</span>
+        <span>{item.source}</span>
+      </div>
+      <div style={{ fontSize: compact ? 12 : 13, fontWeight: 500, lineHeight: 1.35, marginBottom: compact ? 2 : 4 }}>
+        {item.title}
+      </div>
+      {!compact && item.summary && (
+        <div style={{ fontSize: 11, color: "var(--fg-dim)", lineHeight: 1.45 }}>
+          {item.summary}
+        </div>
+      )}
+    </Wrapper>
+  );
+}
+
+function PassportNewsFeed({ passport }) {
+  const [expanded, setExpanded] = useState(false);
+  const list = useMemo(() => {
+    if (!window.VISA_NEWS) return [];
+    return window.VISA_NEWS
+      .filter(it => matchesPassport(it, passport))
+      .sort(sortNewsDesc);
+  }, [passport]);
+  if (list.length === 0) return null;
+  const items = expanded ? list : list.slice(0, 3);
+  const passportName = window.countryName(passport);
+  return (
+    <div style={{ marginBottom: 16 }}>
+      <div style={{
+        display: "flex", alignItems: "center", gap: 6, marginBottom: 8,
+      }}>
+        <div style={{
+          fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
+          textTransform: "uppercase", letterSpacing: "0.10em",
+        }}>{window.t("news.for_passport", { name: passportName })}</div>
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+        {items.map(it => <NewsItem key={it.id} item={it} />)}
+      </div>
+      {list.length > 3 && (
+        <button
+          onClick={() => setExpanded(!expanded)}
+          style={{
+            background: "transparent", border: "none",
+            color: "var(--fg-mute)", fontFamily: "var(--font-mono)",
+            fontSize: 11, cursor: "pointer", padding: "8px 0 0 0",
+            textTransform: "uppercase", letterSpacing: "0.08em",
+          }}
+        >
+          {expanded ? window.t("changelog.show_less") : window.t("changelog.more", { n: list.length - 3 })}
+        </button>
+      )}
+    </div>
+  );
+}
+
+function NewsBox({ passport, destIso2 }) {
+  const list = useMemo(() => {
+    if (!window.VISA_NEWS) return [];
+    return window.VISA_NEWS
+      .filter(it => matchesDest(it, destIso2) && (!passport || matchesPassport(it, passport)))
+      .sort(sortNewsDesc)
+      .slice(0, 2);
+  }, [passport, destIso2]);
+  if (list.length === 0) return null;
+  return (
+    <div style={{ marginBottom: 10 }}>
+      <div style={{
+        fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
+        textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6,
+      }}>{window.t("news.recent_for_dest")}</div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+        {list.map(it => <NewsItem key={it.id} item={it} compact />)}
+      </div>
+    </div>
   );
 }
 
