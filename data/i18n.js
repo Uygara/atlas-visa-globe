@@ -192,6 +192,14 @@ const T = {
 
     "daily.heading":             "Today's pick for you",
     "daily.generic_tip":         "Visa-free for your passport — start planning a trip.",
+    "daily.window_30":           "in 30 days",
+    "daily.window_90":           "in 90 days",
+
+    "pulse.heading":             "Passport pulse",
+    "pulse.rank":                "Global rank",
+    "pulse.open":                "Open today",
+    "pulse.gains_msg":           "Gained access to {n} destination(s) in this window.",
+    "pulse.losses_msg":          "Lost access to {n} destination(s).",
 
     // Group
     "group.label":               "Group",
@@ -408,6 +416,14 @@ const T = {
 
     "daily.heading":             "Bugünün önerisi",
     "daily.generic_tip":         "Pasaportunla vizesiz — bir seyahat planlamaya başla.",
+    "daily.window_30":           "son 30 gün",
+    "daily.window_90":           "son 90 gün",
+
+    "pulse.heading":             "Pasaport hareketi",
+    "pulse.rank":                "Sıralama",
+    "pulse.open":                "Bugün açık",
+    "pulse.gains_msg":           "Bu süreçte {n} yeni destinasyon eklendi.",
+    "pulse.losses_msg":          "{n} destinasyona erişim kapandı.",
 
     "group.label":               "Grup",
     "group.add_passport":        "+ Pasaport ekle",

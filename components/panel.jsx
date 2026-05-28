@@ -135,6 +135,10 @@ function Panel({
       )}
 
       {!detailCountry && passport && !groupActive && (
+        <PassportPulse passport={passport} />
+      )}
+
+      {!detailCountry && passport && !groupActive && (
         <DailySuggestion passport={passport} onOpen={(iso2) => { setDetailCountry(iso2); }} />
       )}
 
@@ -1722,6 +1726,152 @@ function NewsItem({ item, compact }) {
         </div>
       )}
     </Wrapper>
+  );
+}
+
+// ─── Passport pulse ──────────────────────────────────────────────────────
+// Lightweight retention hook: shows how the user's passport has moved over
+// the last N days (gains vs losses), plus rank + visa-free total. Pulled
+// from window.CHANGELOG (already populated daily by the scraper) — no new
+// data plumbing needed.
+const STATUS_RANK = { vr: 0, voa: 1, ev: 2, vf: 3, self: 3, na: 0 };
+
+// Computed passport ranking — falls back to sorting all known passports by
+// their (vf + ev + voa) score so we can always show *some* rank even when
+// scraper-supplied rank fields are null. Lazily memoised in module scope.
+let _rankCache = null;
+function computedRank(passport) {
+  if (!_rankCache) {
+    if (!window.PASSPORT_LIST || !window.tally) return null;
+    const scores = window.PASSPORT_LIST.map(p => {
+      const t = window.tally(p.iso2);
+      const score = t ? (t.vf * 3 + t.ev * 2 + t.voa * 1) : 0;
+      return { iso2: p.iso2, score };
+    }).sort((a, b) => b.score - a.score);
+    _rankCache = {};
+    let lastScore = null, lastRank = 0;
+    scores.forEach((s, i) => {
+      // Tied-score passports share a rank (1, 1, 3 …).
+      const rank = s.score === lastScore ? lastRank : i + 1;
+      _rankCache[s.iso2] = rank;
+      lastScore = s.score;
+      lastRank = rank;
+    });
+  }
+  return _rankCache[passport] || null;
+}
+
+function passportPulse(passport, days = 30) {
+  if (!passport || !window.CHANGELOG) return { gains: 0, losses: 0, items: [] };
+  const cutoff = Date.now() - days * 86400_000;
+  const items = [];
+  let gains = 0, losses = 0;
+  for (const c of window.CHANGELOG) {
+    if (!c.affects?.passports?.includes(passport)) continue;
+    const t = new Date(c.date + "T00:00:00").getTime();
+    if (t < cutoff) continue;
+    const dFrom = STATUS_RANK[c.statusFrom] ?? 0;
+    const dTo = STATUS_RANK[c.statusTo] ?? 0;
+    if (dTo > dFrom) gains++;
+    else if (dTo < dFrom) losses++;
+    items.push(c);
+  }
+  return { gains, losses, items };
+}
+
+function PassportPulse({ passport }) {
+  const [days, setDays] = useState(30);
+  const pulse = useMemo(() => passportPulse(passport, days), [passport, days]);
+  const tally = useMemo(() => window.tally ? window.tally(passport) : null, [passport]);
+  const meta = passport ? window.PASSPORTS[passport] : null;
+  // Hide the card when there's literally nothing to say (no rank, no tally,
+  // no recent diffs) — keeps the panel clean for tiny passports.
+  if (!meta || !tally) return null;
+  const totalOpen = tally.vf + tally.ev + tally.voa;
+  const rank = meta.rank || computedRank(passport);
+  const hasMovement = pulse.gains + pulse.losses > 0;
+  const windowKey = days === 30 ? "daily.window_30" : "daily.window_90";
+  return (
+    <div style={{ marginBottom: 16 }}>
+      <div style={{
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        gap: 8, marginBottom: 6,
+      }}>
+        <div style={{
+          fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
+          textTransform: "uppercase", letterSpacing: "0.10em",
+        }}>{window.t("pulse.heading")}</div>
+        <div style={{ display: "inline-flex", gap: 2, padding: 2,
+          background: "var(--bg-3)", border: "1px solid var(--panel-border)",
+          borderRadius: 6 }}>
+          {[30, 90].map(d => (
+            <button key={d}
+              onClick={() => setDays(d)}
+              style={{
+                background: days === d ? "var(--self)" : "transparent",
+                color: days === d ? "#05070d" : "var(--fg-mute)",
+                border: "none", borderRadius: 4,
+                padding: "2px 7px", fontSize: 10,
+                fontFamily: "var(--font-mono)", cursor: "pointer",
+                fontWeight: days === d ? 600 : 500,
+              }}>{d}d</button>
+          ))}
+        </div>
+      </div>
+      <div style={{
+        padding: "10px 12px",
+        background: "var(--bg-2)",
+        border: "1px solid var(--panel-border)",
+        borderRadius: 10,
+        display: "grid",
+        gridTemplateColumns: "1fr 1fr 1fr",
+        gap: 8,
+      }}>
+        <div>
+          <div style={{ fontSize: 18, fontWeight: 600, fontFamily: "var(--font-mono)", color: "var(--fg)" }}>
+            {rank ? "#" + rank : "—"}
+          </div>
+          <div style={{ fontSize: 10, color: "var(--fg-mute)", marginTop: 2 }}>
+            {window.t("pulse.rank")}
+          </div>
+        </div>
+        <div>
+          <div style={{ fontSize: 18, fontWeight: 600, fontFamily: "var(--font-mono)", color: "var(--vf)" }}>
+            {totalOpen}
+          </div>
+          <div style={{ fontSize: 10, color: "var(--fg-mute)", marginTop: 2 }}>
+            {window.t("pulse.open")}
+          </div>
+        </div>
+        <div>
+          <div style={{ fontSize: 18, fontWeight: 600, fontFamily: "var(--font-mono)" }}>
+            {hasMovement ? (
+              <>
+                <span style={{ color: "var(--vf)" }}>+{pulse.gains}</span>
+                {pulse.losses > 0 && <>
+                  <span style={{ color: "var(--fg-faint)" }}> · </span>
+                  <span style={{ color: "var(--vr)" }}>−{pulse.losses}</span>
+                </>}
+              </>
+            ) : (
+              <span style={{ color: "var(--fg-faint)" }}>—</span>
+            )}
+          </div>
+          <div style={{ fontSize: 10, color: "var(--fg-mute)", marginTop: 2 }}>
+            {window.t(windowKey)}
+          </div>
+        </div>
+      </div>
+      {hasMovement && (
+        <div style={{
+          marginTop: 6, fontSize: 11, color: "var(--fg-dim)", lineHeight: 1.45,
+        }}>
+          {pulse.gains > 0 && window.t("pulse.gains_msg", { n: pulse.gains })}
+          {pulse.gains > 0 && pulse.losses > 0 && " · "}
+          {pulse.losses > 0 && window.t("pulse.losses_msg", { n: pulse.losses })}
+        </div>
+      )}
+    </div>
   );
 }
 
