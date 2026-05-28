@@ -142,6 +142,10 @@ function Panel({
         <WatchlistCard onOpen={(iso2) => { setDetailCountry(iso2); }} />
       )}
 
+      {!detailCountry && passport && (
+        <ItineraryCTA />
+      )}
+
       {!detailCountry && passport && !groupActive && (
         <DailySuggestion passport={passport} onOpen={(iso2) => { setDetailCountry(iso2); }} />
       )}
@@ -1731,6 +1735,63 @@ function NewsItem({ item, compact }) {
         </div>
       )}
     </Wrapper>
+  );
+}
+
+// ─── Itinerary CTA ───────────────────────────────────────────────────────
+// The /itinerary/ planner exists but is buried in the topnav. This card
+// on the home panel surfaces it — empty state = soft 'plan a trip' nudge,
+// active state = compact summary with a continue link so users don't lose
+// their plan between sessions visually (sessionStorage already keeps it
+// alive within one session).
+function readItinerary() {
+  try {
+    const raw = sessionStorage.getItem("atlas.itinerary");
+    return raw ? JSON.parse(raw) : null;
+  } catch (e) { return null; }
+}
+function ItineraryCTA() {
+  const [tick, setTick] = useState(0);
+  useEffect(() => {
+    // Refresh on focus — user may have edited the itinerary in another tab.
+    const onFocus = () => setTick(x => x + 1);
+    window.addEventListener("focus", onFocus);
+    return () => window.removeEventListener("focus", onFocus);
+  }, []);
+  const data = useMemo(() => readItinerary(), [tick]);
+  const stops = Array.isArray(data?.stops) ? data.stops : [];
+  const hasPlan = stops.length > 0;
+  return (
+    <a href="/itinerary/" style={{
+      display: "block",
+      padding: "10px 12px",
+      marginBottom: 16,
+      background: hasPlan
+        ? "linear-gradient(135deg, rgba(96,165,250,0.10) 0%, var(--bg-2) 100%)"
+        : "var(--bg-2)",
+      border: "1px solid " + (hasPlan ? "var(--self)" : "var(--panel-border)"),
+      borderRadius: 10,
+      textDecoration: "none",
+      color: "var(--fg)",
+      transition: "all 180ms ease",
+    }} className="picker-trigger">
+      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+        <span style={{ fontSize: 18 }}>🧭</span>
+        <div style={{ flex: 1, minWidth: 0 }}>
+          <div style={{ fontSize: 12, fontWeight: 500 }}>
+            {hasPlan
+              ? window.t("itinerary.continue", { n: stops.length })
+              : window.t("itinerary.start")}
+          </div>
+          <div style={{ fontSize: 10, color: "var(--fg-mute)", marginTop: 2 }}>
+            {hasPlan
+              ? stops.slice(0, 4).map(s => window.byIso2[s.iso2]?.flag || "").join(" ")
+              : window.t("itinerary.sub")}
+          </div>
+        </div>
+        <span style={{ color: "var(--fg-mute)" }}>→</span>
+      </div>
+    </a>
   );
 }
 

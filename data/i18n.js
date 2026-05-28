@@ -208,6 +208,10 @@ const T = {
     "watchlist.added":           "Watching",
     "watchlist.recent_alert":    "{n} watched destination(s) had a policy update in the last 2 weeks. Tap to review.",
 
+    "itinerary.start":           "Plan your next trip",
+    "itinerary.sub":             "Multi-stop visa planner with Schengen 90/180 awareness",
+    "itinerary.continue":        "Continue planning — {n} stop(s)",
+
     // Group
     "group.label":               "Group",
     "group.add_passport":        "+ Add passport",
@@ -438,6 +442,10 @@ const T = {
     "watchlist.add_short":       "İzle",
     "watchlist.added":           "İzleniyor",
     "watchlist.recent_alert":    "Son 2 haftada {n} izlenen ülkede politika değişikliği oldu. Görmek için tıkla.",
+
+    "itinerary.start":           "Sıradaki seyahatini planla",
+    "itinerary.sub":             "Çok duraklı vize planlayıcı + Schengen 90/180 takibi",
+    "itinerary.continue":        "Planı sürdür — {n} durak",
 
     "group.label":               "Grup",
     "group.add_passport":        "+ Pasaport ekle",
