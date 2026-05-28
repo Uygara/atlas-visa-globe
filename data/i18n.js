@@ -190,6 +190,9 @@ const T = {
     "news.recent_for_dest":      "Recent news for this destination",
     "news.no_items":             "No fresh news for your passport yet — we'll surface changes as they happen.",
 
+    "daily.heading":             "Today's pick for you",
+    "daily.generic_tip":         "Visa-free for your passport — start planning a trip.",
+
     // Group
     "group.label":               "Group",
     "group.add_passport":        "+ Add passport",
@@ -402,6 +405,9 @@ const T = {
     "news.for_passport":         "{name} pasaportu için son haberler",
     "news.recent_for_dest":      "Bu ülke için son haberler",
     "news.no_items":             "Pasaportunla ilgili yeni haber yok — değişiklik olunca burada gösteririz.",
+
+    "daily.heading":             "Bugünün önerisi",
+    "daily.generic_tip":         "Pasaportunla vizesiz — bir seyahat planlamaya başla.",
 
     "group.label":               "Grup",
     "group.add_passport":        "+ Pasaport ekle",

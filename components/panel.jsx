@@ -134,6 +134,10 @@ function Panel({
         />
       )}
 
+      {!detailCountry && passport && !groupActive && (
+        <DailySuggestion passport={passport} onOpen={(iso2) => { setDetailCountry(iso2); }} />
+      )}
+
       {!detailCountry && passport && <PassportNewsFeed passport={passport} />}
 
       {!detailCountry && <Changelog />}
@@ -1718,6 +1722,109 @@ function NewsItem({ item, compact }) {
         </div>
       )}
     </Wrapper>
+  );
+}
+
+// ─── Daily destination pick ──────────────────────────────────────────────
+// Surfaces one visa-free / eVisa / VoA destination per day, deterministic
+// by (passport + UTC date) so it stays stable through the day but rotates
+// for the next visit. Gives the site a reason to be opened daily — even
+// when nothing in the user's passport has changed.
+const STATUS_PRIORITY = { vf: 3, ev: 2, voa: 1 };
+
+function hashStr(s) {
+  let h = 0;
+  for (let i = 0; i < s.length; i++) {
+    h = ((h << 5) - h + s.charCodeAt(i)) | 0;
+  }
+  return Math.abs(h);
+}
+
+function pickDailyDestination(passport) {
+  if (!passport || !window.COUNTRIES) return null;
+  const opts = [];
+  for (const c of window.COUNTRIES) {
+    if (c.iso2 === passport) continue;
+    if (c.continent === "AN") continue; // skip Antarctica
+    const r = window.resolveStatus(passport, c.iso2);
+    if (STATUS_PRIORITY[r.status]) {
+      opts.push({ iso2: c.iso2, status: r.status });
+    }
+  }
+  if (opts.length === 0) return null;
+  // Prefer countries with a curated tip — they read better in the card.
+  const tipped = opts.filter(o => window.DESTINATION_TIPS && window.DESTINATION_TIPS[o.iso2]);
+  const pool = tipped.length >= 8 ? tipped : opts;
+  const today = new Date().toISOString().slice(0, 10);
+  const idx = hashStr(passport + "|" + today) % pool.length;
+  return pool[idx];
+}
+
+function DailySuggestion({ passport, onOpen }) {
+  const pick = useMemo(() => pickDailyDestination(passport), [passport]);
+  if (!pick) return null;
+  const country = window.byIso2[pick.iso2];
+  if (!country) return null;
+  const tipEntry = window.DESTINATION_TIPS && window.DESTINATION_TIPS[pick.iso2];
+  const lang = window.ATLAS_LANG || "en";
+  const tip = tipEntry ? (tipEntry[lang] || tipEntry.en) : null;
+  const statusInfo = STATUS_COLOR[pick.status];
+  return (
+    <div style={{ marginBottom: 16 }}>
+      <div style={{
+        fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
+        textTransform: "uppercase", letterSpacing: "0.10em", marginBottom: 6,
+      }}>{window.t("daily.heading")}</div>
+      <button
+        onClick={() => onOpen?.(pick.iso2)}
+        className="picker-trigger"
+        style={{
+          width: "100%", textAlign: "left", cursor: "pointer",
+          background: "linear-gradient(135deg, var(--bg-2) 0%, var(--bg-3) 100%)",
+          border: "1px solid var(--panel-border-strong)",
+          borderRadius: 10, padding: "12px 14px",
+          color: "var(--fg)", fontFamily: "inherit",
+          transition: "all 180ms ease",
+          display: "flex", flexDirection: "column", gap: 8,
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <span style={{ fontSize: 28 }}>{country.flag}</span>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontSize: 14, fontWeight: 600, lineHeight: 1.2 }}>
+              {window.countryName(pick.iso2)}
+            </div>
+            <div style={{
+              display: "inline-flex", alignItems: "center", gap: 5,
+              marginTop: 3, padding: "2px 7px", borderRadius: 999,
+              background: "rgba(96,165,250,0.10)",
+              border: "1px solid var(--panel-border)",
+              fontSize: 10, fontFamily: "var(--font-mono)",
+              color: "var(--fg-dim)",
+            }}>
+              <span style={{
+                width: 5, height: 5, borderRadius: "50%",
+                background: statusInfo?.fill, boxShadow: `0 0 5px ${statusInfo?.fill}`,
+              }} />
+              <span>{statusInfo?.label}</span>
+            </div>
+          </div>
+          <span style={{ color: "var(--fg-mute)", fontSize: 18 }}>→</span>
+        </div>
+        {tip && (
+          <div style={{
+            fontSize: 12, color: "var(--fg-dim)", lineHeight: 1.45,
+          }}>
+            {tip}
+          </div>
+        )}
+        {!tip && (
+          <div style={{ fontSize: 12, color: "var(--fg-mute)", lineHeight: 1.45 }}>
+            {window.t("daily.generic_tip")}
+          </div>
+        )}
+      </button>
+    </div>
   );
 }
 
