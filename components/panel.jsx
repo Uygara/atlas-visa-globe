@@ -1706,12 +1706,31 @@ function Changelog() {
   );
 }
 
+// Render the "X happened" line for a changelog entry — convert raw status
+// codes (vr → voa, ev → vf, …) into a plain-language sentence so non-expert
+// users can read the feed at a glance.
+function describeStatusChange(from, to) {
+  if (from === to) return window.t("change.rules_updated");
+  // Specific transitions get their own copy; otherwise we fall back to a
+  // generic "X is now required" line based on the destination status.
+  const key = `change.${from}_to_${to}`;
+  const specific = window.t(key);
+  if (specific && specific !== key) return specific;
+  // Fallback: describe the new state.
+  return window.t(`change.now_${to}`) || window.t("change.rules_updated");
+}
+
 function ChangelogItem({ entry }) {
+  const passportIso = entry.affects.passports?.[0];
+  const passport = passportIso ? window.byIso2[passportIso] : null;
   const dest = window.byIso2[entry.affects.dest];
-  const fromColor = STATUS_COLOR[entry.statusFrom]?.fill || "var(--fg-mute)";
   const toColor = STATUS_COLOR[entry.statusTo]?.fill || "var(--fg-mute)";
   const date = new Date(entry.date + "T00:00:00");
   const fmt = date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  const sentence = describeStatusChange(entry.statusFrom, entry.statusTo);
+  // Pill below the sentence makes the new status visually obvious. We drop
+  // the from→to dot+code chain (too cryptic) in favour of a single labelled
+  // pill in the destination-status colour.
   return (
     <div style={{
       padding: 10,
@@ -1721,32 +1740,38 @@ function ChangelogItem({ entry }) {
       transition: "all 180ms ease",
       cursor: "default",
     }} className="changelog-item">
-      <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 6, flexWrap: "wrap" }}>
         <span style={{ fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
           {fmt}
         </span>
+        <span style={{ color: "var(--fg-faint)" }}>·</span>
+        {passport && <>
+          <span style={{ fontSize: 14 }}>{passport.flag}</span>
+          <span style={{ fontSize: 11, color: "var(--fg-dim)" }}>{window.countryName(passportIso)}</span>
+        </>}
+        <Arrow />
         {dest && <>
-          <span style={{ color: "var(--fg-faint)", margin: "0 1px" }}>·</span>
           <span style={{ fontSize: 14 }}>{dest.flag}</span>
           <span style={{ fontSize: 11, color: "var(--fg-dim)" }}>{window.countryName(entry.affects.dest)}</span>
         </>}
       </div>
-      <div style={{ fontSize: 12, color: "var(--fg)", lineHeight: 1.4, fontWeight: 500, marginBottom: 4 }}>
-        {entry.title}
+      <div style={{ fontSize: 12, color: "var(--fg)", lineHeight: 1.4, marginBottom: 6 }}>
+        {sentence}
       </div>
-      <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-mute)" }}>
-        <span style={{
-          width: 6, height: 6, borderRadius: "50%",
-          background: fromColor,
-        }} />
-        <span>{STATUS_COLOR[entry.statusFrom]?.short || "—"}</span>
-        <Arrow />
+      <div style={{
+        display: "inline-flex", alignItems: "center", gap: 6,
+        fontSize: 10, fontFamily: "var(--font-mono)",
+        padding: "3px 8px", borderRadius: 999,
+        background: "rgba(255,255,255,0.04)",
+        border: "1px solid var(--panel-border)",
+        color: "var(--fg-dim)",
+      }}>
         <span style={{
           width: 6, height: 6, borderRadius: "50%",
           background: toColor,
           boxShadow: `0 0 6px ${toColor}`,
         }} />
-        <span>{STATUS_COLOR[entry.statusTo]?.short || "—"}</span>
+        <span>{STATUS_COLOR[entry.statusTo]?.label || STATUS_COLOR[entry.statusTo]?.short || "—"}</span>
       </div>
     </div>
   );
