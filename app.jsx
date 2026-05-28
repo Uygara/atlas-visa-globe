@@ -150,6 +150,11 @@ function App() {
     try { localStorage.setItem("atlas.welcomed", "1"); } catch (e) {}
   }, []);
   const reopenIntro = useCallback(() => setShowIntro(true), []);
+
+  // Picker mode — when the panel's passport picker is open, clicks on the
+  // map should set that passport instead of opening the country detail card.
+  // Values: null (off), "primary", "compare".
+  const [pickerMode, setPickerMode] = useState(null);
   const [locationStatus, setLocationStatus] = useState("idle"); // idle | detecting | detected | denied
   const [autoDetectedPassport, setAutoDetectedPassport] = useState(null);
   const [direction, setDirection] = useState("outgoing"); // outgoing | incoming
@@ -311,6 +316,16 @@ function App() {
 
   // ─── Handlers ───────────────────────────────────────────────────────────
   const onCountryClick = (iso2) => {
+    // Picker-from-map: if the panel's passport picker is open, route the
+    // click into the picker so the user can pick a passport by tapping its
+    // country on the globe. Falls through to detail if the country isn't a
+    // known passport-issuing entity.
+    if (pickerMode && window.PASSPORTS[iso2]) {
+      if (pickerMode === "primary") setPassport(iso2);
+      else if (pickerMode === "compare") setCompare(iso2);
+      setPickerMode(null);
+      return;
+    }
     if (!passport) {
       // First click sets passport
       if (window.PASSPORTS[iso2]) setPassport(iso2);
@@ -391,6 +406,8 @@ function App() {
         showCompare={t.compareMode}
         variant={passportVariant}
         setVariant={updatePassportVariant}
+        pickerMode={pickerMode}
+        setPickerMode={setPickerMode}
       />
 
     </div>

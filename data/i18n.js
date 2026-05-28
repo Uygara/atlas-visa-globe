@@ -165,6 +165,8 @@ const T = {
     "picker.search":             "Search…",
     "picker.no_matches_short":   "No matches.",
     "picker.pick_second":        "Pick a second passport…",
+    "picker.tap_map_hint":       "Or tap any country on the map",
+    "picker.selected":           "Selected",
 
     // Group
     "group.label":               "Group",
@@ -354,6 +356,8 @@ const T = {
     "picker.search":             "Ara…",
     "picker.no_matches_short":   "Eşleşme yok.",
     "picker.pick_second":        "İkinci bir pasaport seç…",
+    "picker.tap_map_hint":       "Veya haritada bir ülkeye dokun",
+    "picker.selected":           "Seçili",
 
     "group.label":               "Grup",
     "group.add_passport":        "+ Pasaport ekle",

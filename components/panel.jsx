@@ -11,9 +11,23 @@ function Panel({
   showCompare,
   direction, setDirection,
   variant, setVariant,
+  pickerMode, setPickerMode,
 }) {
-  const [showPicker, setShowPicker] = useState(false);
-  const [showComparePicker, setShowComparePicker] = useState(false);
+  const [showPicker, setShowPickerRaw] = useState(false);
+  const [showComparePicker, setShowComparePickerRaw] = useState(false);
+  // Wrap the open setters so we also report the open state up to App, which
+  // uses it to route map clicks into the picker (Blok 2 — pick passport by
+  // tapping a country on the globe).
+  const setShowPicker = (v) => {
+    setShowPickerRaw(v);
+    if (setPickerMode) setPickerMode(v ? "primary" : null);
+    if (v) setShowComparePickerRaw(false);
+  };
+  const setShowComparePicker = (v) => {
+    setShowComparePickerRaw(v);
+    if (setPickerMode) setPickerMode(v ? "compare" : null);
+    if (v) setShowPickerRaw(false);
+  };
   // Force re-render whenever the user switches language.
   const [, forceLangTick] = useState(0);
   useEffect(() => {
@@ -538,15 +552,24 @@ function Caret({ rotated }) {
 
 function PassportDropdown({ value, onChange, allowClear, onClear }) {
   const [q, setQ] = useState("");
+  // Pin the currently-selected passport to the top of the dropdown so that
+  // after the user taps a country on the map, opening the picker again shows
+  // their pick right at the top with a SELECTED badge. The rest of the list
+  // follows in its normal order.
   const list = useMemo(() => {
     const ql = q.toLowerCase().trim();
-    return window.PASSPORT_LIST.filter(p => {
+    const filtered = window.PASSPORT_LIST.filter(p => {
       if (!ql) return true;
       return p.name.toLowerCase().includes(ql)
           || window.countryName(p.iso2).toLowerCase().includes(ql)
           || p.iso2.toLowerCase().includes(ql);
     });
-  }, [q]);
+    if (!value) return filtered;
+    const idx = filtered.findIndex(p => p.iso2 === value);
+    if (idx <= 0) return filtered;
+    const [selected] = filtered.splice(idx, 1);
+    return [selected, ...filtered];
+  }, [q, value]);
   return (
     <div style={{
       marginTop: 6,
@@ -573,6 +596,21 @@ function PassportDropdown({ value, onChange, allowClear, onClear }) {
           outline: "none",
         }}
       />
+      <div style={{
+        padding: "8px 12px",
+        background: "rgba(96,165,250,0.06)",
+        borderBottom: "1px solid var(--panel-border)",
+        fontSize: 11,
+        color: "var(--fg-mute)",
+        fontFamily: "var(--font-mono)",
+        letterSpacing: "0.04em",
+        display: "flex",
+        alignItems: "center",
+        gap: 6,
+      }}>
+        <span style={{ color: "var(--self)" }}>🗺</span>
+        <span>{window.t("picker.tap_map_hint")}</span>
+      </div>
       <div style={{ maxHeight: 280, overflowY: "auto" }}>
         {allowClear && (
           <button
@@ -622,6 +660,21 @@ function PassportDropdown({ value, onChange, allowClear, onClear }) {
             >
               <span style={{ fontSize: 16 }}>{c?.flag}</span>
               <span style={{ flex: 1 }}>{window.countryName(p.iso2)}</span>
+              {active && (
+                <span style={{
+                  fontSize: 9,
+                  fontFamily: "var(--font-mono)",
+                  background: "var(--self)",
+                  color: "#05070d",
+                  padding: "2px 6px",
+                  borderRadius: 4,
+                  fontWeight: 600,
+                  letterSpacing: "0.06em",
+                  textTransform: "uppercase",
+                }}>
+                  {window.t("picker.selected")}
+                </span>
+              )}
               {p.rank && (
                 <span style={{ fontSize: 11, color: "var(--fg-mute)", fontFamily: "var(--font-mono)" }}>
                   #{p.rank}
