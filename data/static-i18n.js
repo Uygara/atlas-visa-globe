@@ -38,6 +38,42 @@
     "Reference date:":                     { tr:"Referans tarih:", es:"Fecha de referencia:", de:"Referenzdatum:", fr:"Date de référence :", ar:"التاريخ المرجعي:" },
     "Today":                               { tr:"Bugün", es:"Hoy", de:"Heute", fr:"Aujourd'hui", ar:"اليوم" },
 
+    "Your trips":                          { tr:"Seyahatlerin", es:"Tus viajes", de:"Deine Reisen", fr:"Tes voyages", ar:"رحلاتك" },
+    "Need a Schengen visa application checklist?": { tr:"Schengen vize başvuru kontrol listesi lazım mı?", es:"¿Necesitas una lista para la solicitud de visado Schengen?", de:"Brauchst du eine Schengen-Visumantrags-Checkliste?", fr:"Besoin d'une check-list de demande de visa Schengen ?", ar:"هل تحتاج قائمة تحقّق لطلب تأشيرة شنغن؟" },
+
+    // Schengen cascade card
+    "Schengen multi-entry visa \"cascade\" check": { tr:"Schengen çok girişli vize \"kademe\" kontrolü", es:"Comprobación de visado Schengen de entradas múltiples (\"cascada\")", de:"Schengen-Mehrfachvisum-\"Kaskaden\"-Prüfung", fr:"Vérification du visa Schengen à entrées multiples (« cascade »)", ar:"فحص \"تدرّج\" تأشيرة شنغن متعددة الدخول" },
+    "Prior visas used correctly":          { tr:"Doğru kullanılmış önceki vizeler", es:"Visados anteriores usados correctamente", de:"Frühere korrekt genutzte Visa", fr:"Visas précédents utilisés correctement", ar:"التأشيرات السابقة المستخدمة بشكل صحيح" },
+    "Most recent visa was…":               { tr:"En son vize şuydu…", es:"El visado más reciente fue…", de:"Das letzte Visum war…", fr:"Le visa le plus récent était…", ar:"كانت آخر تأشيرة…" },
+    "— None yet":                          { tr:"— Henüz yok", es:"— Ninguno aún", de:"— Noch keines", fr:"— Aucun encore", ar:"— لا يوجد بعد" },
+    "Single-entry / short MEV (under 1 year)": { tr:"Tek girişli / kısa MEV (1 yıldan az)", es:"Entrada única / MEV corto (menos de 1 año)", de:"Einfache Einreise / kurzes MEV (unter 1 Jahr)", fr:"Entrée unique / MEV court (moins d'un an)", ar:"دخول واحد / MEV قصير (أقل من سنة)" },
+    "1-year MEV":                          { tr:"1 yıllık MEV", es:"MEV de 1 año", de:"1-Jahres-MEV", fr:"MEV d'un an", ar:"MEV لمدة سنة" },
+    "2-year MEV":                          { tr:"2 yıllık MEV", es:"MEV de 2 años", de:"2-Jahres-MEV", fr:"MEV de 2 ans", ar:"MEV لمدة سنتين" },
+    "5-year MEV":                          { tr:"5 yıllık MEV", es:"MEV de 5 años", de:"5-Jahres-MEV", fr:"MEV de 5 ans", ar:"MEV لمدة 5 سنوات" },
+    "Always exited Schengen on time (no overstays)": { tr:"Schengen'den her zaman zamanında çıktım (aşım yok)", es:"Siempre salí de Schengen a tiempo (sin excesos)", de:"Schengen immer pünktlich verlassen (keine Überschreitungen)", fr:"Toujours sorti de Schengen à temps (aucun dépassement)", ar:"غادرت شنغن دائمًا في الوقت المحدد (دون تجاوز)" },
+    // Cascade verdict — badges
+    "Cascade reset":                       { tr:"Kademe sıfırlandı", es:"Cascada reiniciada", de:"Kaskade zurückgesetzt", fr:"Cascade réinitialisée", ar:"إعادة ضبط التدرّج" },
+    "Renew the 5-year MEV":                { tr:"5 yıllık MEV'i yenileyin", es:"Renueva el MEV de 5 años", de:"5-Jahres-MEV verlängern", fr:"Renouveler le MEV de 5 ans", ar:"جدّد MEV لمدة 5 سنوات" },
+    "Request a 5-year multi-entry visa":   { tr:"5 yıllık çok girişli vize talep edin", es:"Solicita un visado de entradas múltiples de 5 años", de:"Beantrage ein 5-Jahres-Mehrfachvisum", fr:"Demander un visa à entrées multiples de 5 ans", ar:"اطلب تأشيرة متعددة الدخول لمدة 5 سنوات" },
+    "Request a 2-year multi-entry visa":   { tr:"2 yıllık çok girişli vize talep edin", es:"Solicita un visado de entradas múltiples de 2 años", de:"Beantrage ein 2-Jahres-Mehrfachvisum", fr:"Demander un visa à entrées multiples de 2 ans", ar:"اطلب تأشيرة متعددة الدخول لمدة سنتين" },
+    "Request a 1-year multi-entry visa":   { tr:"1 yıllık çok girişli vize talep edin", es:"Solicita un visado de entradas múltiples de 1 año", de:"Beantrage ein 1-Jahres-Mehrfachvisum", fr:"Demander un visa à entrées multiples d'un an", ar:"اطلب تأشيرة متعددة الدخول لمدة سنة" },
+    "First-time applicant":                { tr:"İlk kez başvuran", es:"Solicitante por primera vez", de:"Erstantragsteller", fr:"Premier demandeur", ar:"متقدّم لأول مرة" },
+    // Cascade intro paragraph (innerHTML block — keeps the <strong> markup)
+    "schengen.cascade.intro": {
+      tr: "<strong>Vize Kodu Madde 24</strong> uyarınca konsolosluklar, temiz seyahat geçmişi olan başvuru sahiplerine giderek daha uzun süreli çok girişli vizeler (MEV) verir. Çoğu yolcu bu kuralın varlığını bilmez, her seferinde tek girişli başvurur ve her birine €90 öder. Son 2 yılda kaç Schengen vizesini doğru kullandığını söyle, ne talep etmen gerektiğini önerelim.",
+      es: "Según el <strong>Artículo 24 del Código de Visados</strong>, los consulados emiten visados de entradas múltiples (MEV) progresivamente más largos a solicitantes con un historial de viajes limpio. La mayoría no conoce esta regla y solicita entrada única cada vez, pagando €90. Dinos cuántos visados Schengen has usado correctamente en los últimos 2 años y te sugeriremos qué pedir.",
+      de: "Nach <strong>Artikel 24 des Visakodex</strong> stellen Konsulate Antragstellern mit sauberer Reisehistorie zunehmend längere Mehrfachvisa (MEV) aus. Die meisten kennen diese Regel nicht, beantragen jedes Mal Einzeleinreise und zahlen je €90. Sag uns, wie viele Schengen-Visa du in den letzten 2 Jahren korrekt genutzt hast, und wir schlagen vor, was du beantragen solltest.",
+      fr: "En vertu de l'<strong>article 24 du code des visas</strong>, les consulats délivrent des visas à entrées multiples (MEV) de plus en plus longs aux demandeurs ayant un historique de voyage irréprochable. La plupart l'ignorent et demandent une entrée unique à chaque fois, payant 90 € à chaque fois. Dis-nous combien de visas Schengen tu as utilisés correctement ces 2 dernières années et nous te suggérerons quoi demander.",
+      ar: "بموجب <strong>المادة 24 من قانون التأشيرات</strong>، تصدر القنصليات تأشيرات متعددة الدخول (MEV) أطول تدريجيًا لمقدّمي الطلبات ذوي سجل سفر نظيف. لا يعرف معظم المسافرين هذه القاعدة فيتقدّمون بطلب دخول واحد في كل مرة ويدفعون €90. أخبرنا بعدد تأشيرات شنغن التي استخدمتها بشكل صحيح خلال آخر سنتين وسنقترح ما يجب طلبه."
+    },
+    // Cascade verdict — notes (TR; other langs fall back to EN until translated)
+    "If any overstay, refusal, or rule breach occurred in the last 2 years, the cascade restarts. Consulates may also issue a single-entry visa as a probationary measure. Be especially clean with your next stay.": { tr:"Son 2 yılda herhangi bir vize aşımı, ret veya kural ihlali olduysa kademe sıfırlanır. Konsolosluklar deneme amaçlı tek girişli vize de verebilir. Bir sonraki kalışında özellikle kurallara uy." },
+    "You already hold the top-tier MEV. On expiry, apply again — the same 5-year MEV should be granted as long as the cascade is clean. No downgrade unless your circumstances changed.": { tr:"Zaten en üst kademe MEV'e sahipsin. Süresi dolunca tekrar başvur — kademe temiz olduğu sürece aynı 5 yıllık MEV verilmeli. Koşulların değişmedikçe düşürme olmaz." },
+    "You've successfully used a 2-year MEV. Article 24 entitles you to request a 5-year MEV on the next application. Mention 'cascade rule under VC Article 24' explicitly on the application form — consulates don't always volunteer it.": { tr:"2 yıllık bir MEV'i başarıyla kullandın. Madde 24, bir sonraki başvuruda 5 yıllık MEV talep etme hakkı verir. Başvuru formunda 'Vize Kodu Madde 24 kademe kuralı'nı açıkça belirt — konsolosluklar her zaman kendiliğinden sunmaz." },
+    "Two or more correctly-used short-stay visas in the last 2 years qualify you for a 2-year MEV. Some consulates issue 3-year; either is fine. Request explicitly — single-entry should not be your default at this point.": { tr:"Son 2 yılda doğru kullanılmış iki veya daha fazla kısa süreli vize, 2 yıllık MEV için seni uygun kılar. Bazı konsolosluklar 3 yıllık verir; ikisi de olur. Açıkça talep et — bu noktada tek girişli vize varsayılanın olmamalı." },
+    "One correctly-used short-stay visa qualifies you for a 1-year MEV under the cascade. Mention your prior visa numbers and 'cascade rule' on the application.": { tr:"Doğru kullanılmış bir kısa süreli vize, kademe kuralı kapsamında 1 yıllık MEV için seni uygun kılar. Başvuruda önceki vize numaralarını ve 'kademe kuralı'nı belirt." },
+    "Most consulates issue a single-entry or short MEV (6 months) for first-time applicants. Use it within the validity, exit on time, and you'll be in the cascade for your next application.": { tr:"Çoğu konsolosluk ilk kez başvuranlara tek girişli veya kısa MEV (6 ay) verir. Geçerlilik içinde kullan, zamanında çık; bir sonraki başvurunda kademeye girmiş olursun." },
+
     // About headings
     "How the data is built":               { tr:"Veriler nasıl oluşuyor", es:"Cómo se construyen los datos", de:"Wie die Daten entstehen", fr:"Comment les données sont construites", ar:"كيف تُبنى البيانات" },
     "What Atlas is not":                   { tr:"Atlas ne değildir", es:"Lo que Atlas no es", de:"Was Atlas nicht ist", fr:"Ce qu'Atlas n'est pas", ar:"ما ليس عليه أطلس" },
@@ -340,6 +376,9 @@
         const tag = p.tagName;
         if (tag === "SCRIPT" || tag === "STYLE" || tag === "NOSCRIPT") return NodeFilter.FILTER_REJECT;
         if (p.closest && p.closest("[data-no-i18n]")) return NodeFilter.FILTER_REJECT;
+        // data-i18n-html blocks are translated as a whole (innerHTML), so skip
+        // their individual text nodes to avoid double / partial translation.
+        if (p.closest && p.closest("[data-i18n-html]")) return NodeFilter.FILTER_REJECT;
         return NodeFilter.FILTER_ACCEPT;
       }
     });
@@ -375,6 +414,28 @@
     });
   }
 
+  // Whole-block innerHTML translation for elements tagged data-i18n-html.
+  // Lets us translate paragraphs that contain inline markup (<strong>, <a>)
+  // which the text-node walker would otherwise split and miss. The attribute
+  // value is the DICT key; the DICT value is the translated HTML.
+  function translateHtmlBlocks(root, lang) {
+    const els = root.querySelectorAll ? root.querySelectorAll("[data-i18n-html]") : [];
+    els.forEach(el => {
+      const key = el.getAttribute("data-i18n-html");
+      const tr = lookup(key, lang);
+      if (tr != null) {
+        if (el.__atlasHtmlOrig == null) el.__atlasHtmlOrig = el.innerHTML;
+        el.innerHTML = tr;
+      }
+    });
+  }
+  function restoreHtmlBlocks(root) {
+    const els = root.querySelectorAll ? root.querySelectorAll("[data-i18n-html]") : [];
+    els.forEach(el => {
+      if (el.__atlasHtmlOrig != null) { el.innerHTML = el.__atlasHtmlOrig; el.__atlasHtmlOrig = null; }
+    });
+  }
+
   function restoreOriginal(root) {
     // Restore text nodes (uses __atlasOriginal)
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
@@ -390,15 +451,55 @@
     });
   }
 
+  // Guard so the MutationObserver ignores the DOM writes WE make while
+  // translating (otherwise translateTextNodes would re-trigger itself).
+  let _applying = false;
+
   function applyLang(lang) {
+    _applying = true;
     // Always restore first so re-applies don't double-translate.
+    restoreHtmlBlocks(document.body);
     restoreOriginal(document.body);
     if (lang !== "en") {
+      translateHtmlBlocks(document.body, lang);
       translateTextNodes(document.body, lang);
       translateAttributes(document.body, lang);
     }
     document.documentElement.setAttribute("lang", lang);
     document.documentElement.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
+    _applying = false;
+  }
+
+  // Re-translate dynamically-inserted content (calculator verdicts, fetched
+  // rows, JS-rendered cards, …). The one-shot walk at init can't catch these,
+  // so we observe the body and translate freshly-added subtrees. This is what
+  // makes JS-generated strings (e.g. the Schengen cascade verdict) localise.
+  function setupObserver() {
+    if (!("MutationObserver" in window)) return;
+    const obs = new MutationObserver((mutations) => {
+      if (_applying) return;
+      const lang = currentLang();
+      if (lang === "en") return;
+      _applying = true;
+      for (const m of mutations) {
+        m.addedNodes && m.addedNodes.forEach(node => {
+          if (node.nodeType === 1) {            // element subtree
+            translateHtmlBlocks(node, lang);
+            translateTextNodes(node, lang);
+            translateAttributes(node, lang);
+          } else if (node.nodeType === 3) {     // bare text node
+            const trimmed = (node.nodeValue || "").trim();
+            const tr = lookup(trimmed, lang);
+            if (tr != null) {
+              if (!node.__atlasOriginal) node.__atlasOriginal = node.nodeValue;
+              node.nodeValue = node.nodeValue.replace(trimmed, tr);
+            }
+          }
+        });
+      }
+      _applying = false;
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
   }
 
   // ── Theme sync ────────────────────────────────────────────────────────
@@ -538,6 +639,7 @@
     applyTheme(theme);
     injectSwitcher(lang, theme);
     applyLang(lang);
+    setupObserver();
     // Listen for cross-tab theme changes (StorageEvent fires when another tab
     // writes to localStorage). Keeps theme synced if the SPA is open elsewhere.
     window.addEventListener("storage", (e) => {
