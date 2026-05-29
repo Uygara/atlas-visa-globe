@@ -66,39 +66,9 @@ function Panel({
         />
       )}
 
-      {showCompare && !groupMode && (
-        <PassportPicker
-          label={window.t("panel.compare_with")}
-          value={compare}
-          open={showComparePicker}
-          setOpen={setShowComparePicker}
-          onChange={(v) => { setCompare(v); setShowComparePicker(false); }}
-          accent="var(--compare-self)"
-          placeholder={window.t("picker.pick_second")}
-          allowClear
-        />
-      )}
-
-      {/* Mode bar — compare / group toggles surfaced right under the picker so
-          users don't have to dig through the Settings popover. Direction lives
-          just below in its own labelled card. */}
-      {passport && setCompareMode && setGroupMode && (
-        <ModeBar
-          compareMode={compareMode}
-          setCompareMode={setCompareMode}
-          groupMode={groupMode}
-          setGroupMode={setGroupMode}
-        />
-      )}
-
-      {groupMode && (
-        <GroupPicker
-          primary={passport}
-          values={groupPassports || []}
-          onChange={setGroupPassports}
-        />
-      )}
-
+      {/* ── Core: show the result (tally) + how to explore (search) FIRST, so a
+          first-time visitor gets the payoff immediately. Direction sits with
+          the tally because it changes what the count means. ── */}
       {passport && !groupMode && (
         <DirectionToggle value={direction} onChange={setDirection} />
       )}
@@ -114,6 +84,37 @@ function Panel({
         onPick={onPickFromSearch}
       />
 
+      {/* ── Advanced modes (compare / group) come after the core result. ── */}
+      {passport && setCompareMode && setGroupMode && (
+        <ModeBar
+          compareMode={compareMode}
+          setCompareMode={setCompareMode}
+          groupMode={groupMode}
+          setGroupMode={setGroupMode}
+        />
+      )}
+
+      {showCompare && !groupMode && (
+        <PassportPicker
+          label={window.t("panel.compare_with")}
+          value={compare}
+          open={showComparePicker}
+          setOpen={setShowComparePicker}
+          onChange={(v) => { setCompare(v); setShowComparePicker(false); }}
+          accent="var(--compare-self)"
+          placeholder={window.t("picker.pick_second")}
+          allowClear
+        />
+      )}
+
+      {groupMode && (
+        <GroupPicker
+          primary={passport}
+          values={groupPassports || []}
+          onChange={setGroupPassports}
+        />
+      )}
+
       {detailCountry && (passport || groupActive) && (
         <DetailCard
           passport={passport}
@@ -124,6 +125,17 @@ function Panel({
           variant={variant}
           onClose={() => setDetailCountry(null)}
         />
+      )}
+
+      {/* ── "For you" — secondary, daily-return content. Grouped under a divider
+          so first-time users read it as bonus, not core. ── */}
+      {!detailCountry && passport && (
+        <div style={{
+          marginTop: 4, marginBottom: 10, paddingTop: 12,
+          borderTop: "1px solid var(--panel-border)",
+          fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-faint)",
+          textTransform: "uppercase", letterSpacing: "0.12em",
+        }}>{window.t("panel.for_you")}</div>
       )}
 
       {!detailCountry && passport && (
