@@ -192,6 +192,19 @@ window.TRANSIT_RULES = {
   },
 };
 
+// Apply auto-scraped overrides (data/transit-visa-data.js, refreshed daily).
+// Loaded before this file when present; we merge the nationality lists over
+// the built-in defaults so the map stays current without hand-editing.
+if (window.TRANSIT_REQUIRED_OVERRIDES) {
+  const ov = window.TRANSIT_REQUIRED_OVERRIDES;
+  for (const area of Object.keys(ov)) {
+    if (area === "lastUpdated") continue;
+    if (window.TRANSIT_RULES[area] && Array.isArray(ov[area]) && ov[area].length) {
+      window.TRANSIT_RULES[area].requiredFor = ov[area];
+    }
+  }
+}
+
 // ── Lookup helper ─────────────────────────────────────────────────────
 // Given a (passportIso, transitArea, opts) returns:
 //   { needs: bool, twov: bool, exemption: object|null, label, notes, source }
@@ -266,9 +279,15 @@ window.transitStatusForGlobe = function (passport, destIso2, opts) {
   const iso = String(destIso2 || "").toUpperCase();
   if (pp && iso === pp) return { status: "self" };
   const area = window.transitAreaForDest(iso);
-  if (!area) return { status: "na" };
+  if (!area) {
+    // Whole-world coverage: the vast majority of countries permit airside
+    // (international-zone) transit without a transit visa. We mark every
+    // non-hub country "free" but flag it `generic` so the UI can note it's
+    // the general case rather than a country-specific rule we track.
+    return { status: "free", generic: true };
+  }
   const res = window.transitVisaRule(pp, area, opts);
-  if (!res) return { status: "na" };
+  if (!res) return { status: "free", generic: true };
   const base = {
     area, label: res.label, twovHours: res.twovHours,
     exemption: res.exemption, notes: res.notes, source: res.source,

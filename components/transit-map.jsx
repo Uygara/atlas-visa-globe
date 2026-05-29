@@ -272,7 +272,6 @@ function TransitLegend() {
     { c: TG_COLOR.free, k: "tmap.legend_free" },
     { c: TG_COLOR.twov, k: "tmap.legend_twov" },
     { c: TG_COLOR.vr,   k: "tmap.legend_vr" },
-    { c: "var(--land)", k: "tmap.legend_na" },
   ];
   return (
     <div style={{
@@ -362,6 +361,11 @@ function TransitDetail({ passport, iso2, onClose }) {
         </div>
       ) : (
         <div style={{ fontSize: 12, color: "var(--fg-mute)", marginBottom: 10 }}>{window.t("tmap.legend_na")}</div>
+      )}
+      {t.generic && (
+        <div style={{ fontSize: 11, color: "var(--fg-dim)", lineHeight: 1.5, marginBottom: 8 }}>
+          {window.t("tmap.generic_note")}
+        </div>
       )}
       {t.exemption && t.exemption.note && (
         <div style={{ fontSize: 11, color: "var(--vf)", lineHeight: 1.45, marginBottom: 8 }}>
