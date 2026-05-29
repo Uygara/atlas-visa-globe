@@ -3,7 +3,7 @@
 function Panel({
   passport, setPassport,
   compare, setCompare, compareMode, setCompareMode,
-  groupMode, groupPassports, setGroupPassports,
+  groupMode, setGroupMode, groupPassports, setGroupPassports,
   filter, setFilter,
   detailCountry, setDetailCountry,
   search, setSearch,
@@ -79,24 +79,16 @@ function Panel({
         />
       )}
 
-      {/* Dual-citizenship hint: discoverable shortcut to compare mode without
-          digging through the Settings popover. Only appears once a primary
-          passport is chosen and neither compare nor group mode is active. */}
-      {passport && !compareMode && !groupMode && setCompareMode && (
-        <button
-          onClick={() => setCompareMode(true)}
-          style={{
-            width: "100%", padding: "8px 10px", marginBottom: 14,
-            background: "transparent",
-            border: "1px dashed var(--panel-border-strong)",
-            borderRadius: 8, color: "var(--fg-mute)",
-            cursor: "pointer", fontFamily: "inherit", fontSize: 12,
-            textAlign: "left", display: "flex", alignItems: "center", gap: 8,
-          }}
-        >
-          <span style={{ color: "var(--compare-self)", fontSize: 14 }}>+</span>
-          {window.t("panel.dual_citizenship")}
-        </button>
+      {/* Mode bar — compare / group toggles surfaced right under the picker so
+          users don't have to dig through the Settings popover. Direction lives
+          just below in its own labelled card. */}
+      {passport && setCompareMode && setGroupMode && (
+        <ModeBar
+          compareMode={compareMode}
+          setCompareMode={setCompareMode}
+          groupMode={groupMode}
+          setGroupMode={setGroupMode}
+        />
       )}
 
       {groupMode && (
@@ -155,8 +147,6 @@ function Panel({
       )}
 
       {!detailCountry && passport && <PassportNewsFeed passport={passport} />}
-
-      {!detailCountry && <Changelog />}
 
       <PanelFooter />
     </aside>
@@ -294,6 +284,49 @@ function PassportTypeSelector({ passport, value, onChange }) {
           {window.t("panel.variant_disclaimer")}
         </div>
       )}
+    </div>
+  );
+}
+
+// Compare / group mode toggles, always visible under the passport picker.
+// Compare and group are mutually exclusive in the UI — enabling one disables
+// the other so the panel never shows two competing secondary pickers.
+function ModeBar({ compareMode, setCompareMode, groupMode, setGroupMode }) {
+  const toggleCompare = () => {
+    const next = !compareMode;
+    setCompareMode(next);
+    if (next && groupMode) setGroupMode(false);
+  };
+  const toggleGroup = () => {
+    const next = !groupMode;
+    setGroupMode(next);
+    if (next && compareMode) setCompareMode(false);
+  };
+  const chip = (on, onClick, label, accent) => (
+    <button onClick={onClick} aria-pressed={on}
+      style={{
+        flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
+        padding: "8px 10px", borderRadius: 8, cursor: "pointer",
+        fontFamily: "inherit", fontSize: 12, fontWeight: on ? 600 : 500,
+        border: "1px solid " + (on ? accent : "var(--panel-border-strong)"),
+        background: on ? "rgba(96,165,250,0.10)" : "transparent",
+        color: on ? "var(--fg)" : "var(--fg-mute)",
+        transition: "all 160ms ease",
+      }}>
+      <span style={{ color: accent, fontSize: 14, lineHeight: 1 }}>{on ? "✓" : "+"}</span>
+      <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{label}</span>
+    </button>
+  );
+  return (
+    <div style={{ marginBottom: 14 }}>
+      <div style={{
+        fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
+        textTransform: "uppercase", letterSpacing: "0.10em", marginBottom: 6,
+      }}>{window.t("settings.modes")}</div>
+      <div style={{ display: "flex", gap: 6 }}>
+        {chip(compareMode, toggleCompare, window.t("mode.compare_short"), "var(--compare-self)")}
+        {chip(groupMode, toggleGroup, window.t("mode.group_short"), "var(--self)")}
+      </div>
     </div>
   );
 }
@@ -2312,27 +2345,90 @@ function NewsBox({ passport, destIso2 }) {
   );
 }
 
-function Changelog() {
-  const [expanded, setExpanded] = useState(false);
-  const items = expanded ? window.CHANGELOG : window.CHANGELOG.slice(0, 4);
+// Floating, collapsible "Recently changed" feed. Lives over the globe (left
+// of the side panel) instead of inside it, so the right column stays short
+// no matter which passport/country is selected. Collapsed by default on
+// narrow screens.
+function ChangelogFloater() {
+  const [open, setOpen] = useState(() => {
+    try { return window.innerWidth > 900; } catch (e) { return true; }
+  });
+  const [, force] = useState(0);
+  useEffect(() => {
+    const f = () => force(x => x + 1);
+    window.addEventListener("atlas:lang", f);
+    return () => window.removeEventListener("atlas:lang", f);
+  }, []);
+  const count = (window.CHANGELOG || []).length;
+  if (count === 0) return null;
   return (
-    <div style={{ marginBottom: 16 }}>
-      <div style={{
-        display: "flex", alignItems: "center", gap: 6, marginBottom: 8,
-      }}>
-        <div style={{
-          fontSize: 10,
-          fontFamily: "var(--font-mono)",
-          color: "var(--fg-mute)",
-          textTransform: "uppercase",
-          letterSpacing: "0.10em",
-        }}>{window.t("panel.recently_changed")}</div>
-        <div style={{
-          width: 4, height: 4, borderRadius: "50%",
+    <div className="changelog-floater" style={{
+      position: "absolute", top: 16, right: 16, zIndex: 5,
+      width: 300, maxWidth: "calc(100% - 32px)",
+    }}>
+      <button
+        onClick={() => setOpen(o => !o)}
+        style={{
+          width: "100%", display: "flex", alignItems: "center", gap: 8,
+          padding: "9px 12px", cursor: "pointer", textAlign: "left",
+          background: "var(--panel)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)",
+          border: "1px solid var(--panel-border-strong)",
+          borderRadius: open ? "10px 10px 0 0" : 10,
+          color: "var(--fg)", fontFamily: "inherit",
+        }}>
+        <span style={{
+          width: 5, height: 5, borderRadius: "50%",
           background: "var(--vf)", boxShadow: "0 0 6px var(--vf)",
           animation: "pulse 2s ease-in-out infinite",
         }} />
-      </div>
+        <span style={{
+          fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-dim)",
+          textTransform: "uppercase", letterSpacing: "0.10em", flex: 1,
+        }}>{window.t("panel.recently_changed")}</span>
+        <span style={{
+          fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
+        }}>{count}</span>
+        <svg width="12" height="12" viewBox="0 0 12 12" style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 200ms ease", opacity: 0.5 }}>
+          <path d="M3 4.5 L6 7.5 L9 4.5" stroke="currentColor" strokeWidth="1.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+      {open && (
+        <div style={{
+          maxHeight: "min(55vh, 420px)", overflowY: "auto",
+          background: "var(--panel)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)",
+          border: "1px solid var(--panel-border-strong)", borderTop: "none",
+          borderRadius: "0 0 10px 10px", padding: "10px 12px",
+        }}>
+          <Changelog embedded />
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Changelog({ embedded }) {
+  const [expanded, setExpanded] = useState(false);
+  const items = expanded ? window.CHANGELOG : window.CHANGELOG.slice(0, 4);
+  return (
+    <div style={{ marginBottom: embedded ? 0 : 16 }}>
+      {!embedded && (
+        <div style={{
+          display: "flex", alignItems: "center", gap: 6, marginBottom: 8,
+        }}>
+          <div style={{
+            fontSize: 10,
+            fontFamily: "var(--font-mono)",
+            color: "var(--fg-mute)",
+            textTransform: "uppercase",
+            letterSpacing: "0.10em",
+          }}>{window.t("panel.recently_changed")}</div>
+          <div style={{
+            width: 4, height: 4, borderRadius: "50%",
+            background: "var(--vf)", boxShadow: "0 0 6px var(--vf)",
+            animation: "pulse 2s ease-in-out infinite",
+          }} />
+        </div>
+      )}
       <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
         {items.length === 0 ? (
           <div style={{

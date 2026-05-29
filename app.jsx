@@ -403,6 +403,8 @@ function App() {
           passport={passport}
           compare={compare}
         />
+
+        {!detailCountry && <ChangelogFloater />}
       </div>
 
       <Panel
@@ -413,6 +415,7 @@ function App() {
         compareMode={t.compareMode}
         setCompareMode={(v) => setTweak("compareMode", v)}
         groupMode={t.groupMode}
+        setGroupMode={(v) => setTweak("groupMode", v)}
         groupPassports={groupPassports}
         setGroupPassports={setGroupPassports}
         filter={filter}
