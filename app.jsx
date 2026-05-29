@@ -134,7 +134,14 @@ function detectPassport() {
 function App() {
   const [t, setTweak] = useTweaks(TWEAK_DEFAULTS);
 
-  const [passport, setPassport] = useState(null);
+  // Returning users keep their last-chosen passport (persisted below). Only
+  // brand-new visitors with nothing saved fall through to auto-detection.
+  const [passport, setPassport] = useState(() => {
+    try {
+      const saved = localStorage.getItem("atlas.passport");
+      return saved && window.PASSPORTS[saved] ? saved : null;
+    } catch (e) { return null; }
+  });
   const [compare, setCompare] = useState(null);
   const [filter, setFilter] = useState("all");
   const [detailCountry, setDetailCountry] = useState(null);
@@ -179,12 +186,20 @@ function App() {
 
   // ─── Default passport detection ─────────────────────────────────────────
   // Strategy:
-  //   1. Try the geolocation API with a 4 s soft timeout — most accurate.
-  //      Permission prompt is fine; user explicitly asked for this.
-  //   2. On denial / unsupported / timeout → fall back to browser time-zone.
-  //   3. If TZ is also unmapped → leave passport unset and show the welcome
-  //      overlay. NEVER auto-pick the alphabetically-first passport.
+  //   0. If a saved passport exists, we already adopted it above — skip
+  //      detection entirely so returning users keep their last choice and
+  //      coming back from a sub-page doesn't silently re-pick by location.
+  //   1. First-time visitors see the intro overlay FIRST; detection is held
+  //      until they dismiss it (gated on showIntro) so the explainer isn't
+  //      pre-empted by a geolocation prompt.
+  //   2. Then try geolocation (4 s soft timeout) → fall back to time-zone →
+  //      fall back to the welcome picker. NEVER auto-pick alphabetically.
+  const detectedRef = useRef(false);
   useEffect(() => {
+    if (detectedRef.current) return;   // run at most once
+    if (passport) return;              // saved/returning user — keep their pick
+    if (showIntro) return;             // wait until the intro is dismissed
+    detectedRef.current = true;
     // Kick off TZ resolve immediately so we have something to render against
     // even before the geolocation prompt resolves. We do NOT setPassport from
     // it yet — only stash as a candidate — so if the user denies geolocation
@@ -248,7 +263,7 @@ function App() {
     );
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [passport, showIntro]);
 
   const useLocation = () => {
     setLocationStatus("detecting");

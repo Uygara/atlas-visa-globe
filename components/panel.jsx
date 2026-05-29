@@ -2227,7 +2227,7 @@ function DailySuggestion({ passport, onOpen }) {
                 width: 5, height: 5, borderRadius: "50%",
                 background: statusInfo?.fill, boxShadow: `0 0 5px ${statusInfo?.fill}`,
               }} />
-              <span>{statusInfo?.label}</span>
+              <span>{statusLabel(pick.status)}</span>
             </div>
           </div>
           <span style={{ color: "var(--fg-mute)", fontSize: 18 }}>→</span>
@@ -2436,7 +2436,7 @@ function ChangelogItem({ entry }) {
           background: toColor,
           boxShadow: `0 0 6px ${toColor}`,
         }} />
-        <span>{STATUS_COLOR[entry.statusTo]?.label || STATUS_COLOR[entry.statusTo]?.short || "—"}</span>
+        <span>{statusLabel(entry.statusTo)}</span>
       </div>
     </div>
   );
