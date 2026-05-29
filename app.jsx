@@ -460,7 +460,6 @@ function TopNav({ tweaks, setTweak, globeStyle, onGlobeStyleChange, onHelp }) {
       <div className="topbar-sheet">
         <nav className="primary-nav">
           <a href="/transit-map/" onClick={closeMenu}>{window.t("nav.transit_map")}</a>
-          <a href="/transit-visa/" onClick={closeMenu}>{window.t("nav.transit")}</a>
           <a href="/etias/" onClick={closeMenu}>{window.t("nav.etias")}</a>
           <a href="/passport-validity/" onClick={closeMenu}>{window.t("nav.validity")}</a>
           <a href="/schengen-calculator/" onClick={closeMenu}>{window.t("nav.schengen")}</a>
@@ -977,7 +976,7 @@ function CompareFloater({ enabled, passport, compare }) {
   return (
     <div style={{
       position: "absolute",
-      top: 20,
+      top: 64,
       left: 20,
       display: "flex",
       alignItems: "stretch",

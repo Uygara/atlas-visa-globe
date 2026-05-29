@@ -1,0 +1,5 @@
+# Cloudflare Pages redirects.
+# Consolidated the two transit experiences into one: the interactive
+# Transit Map globe supersedes the old /transit-visa/ checker page.
+/transit-visa/    /transit-map/    301
+/transit-visa     /transit-map/    301

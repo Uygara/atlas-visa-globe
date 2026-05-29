@@ -1354,7 +1354,7 @@ function TransitVisaHint({ passport, destIso2 }) {
   )) return null;
   const labels = risky.map(a => rules[a].label.split(" (")[0]).join(" · ");
   return (
-    <a href="/transit-visa/" style={{
+    <a href="/transit-map/" style={{
       display: "flex", alignItems: "center", gap: 10,
       padding: "10px 12px", marginBottom: 10,
       background: "rgba(250,204,21,0.08)",
@@ -2350,9 +2350,9 @@ function NewsBox({ passport, destIso2 }) {
 // no matter which passport/country is selected. Collapsed by default on
 // narrow screens.
 function ChangelogFloater() {
-  const [open, setOpen] = useState(() => {
-    try { return window.innerWidth > 900; } catch (e) { return true; }
-  });
+  // Collapsed by default so it never covers the globe on first load — the
+  // user opens it when they want the feed. Anchored top-LEFT.
+  const [open, setOpen] = useState(false);
   const [, force] = useState(0);
   useEffect(() => {
     const f = () => force(x => x + 1);
@@ -2363,8 +2363,8 @@ function ChangelogFloater() {
   if (count === 0) return null;
   return (
     <div className="changelog-floater" style={{
-      position: "absolute", top: 16, right: 16, zIndex: 5,
-      width: 300, maxWidth: "calc(100% - 32px)",
+      position: "absolute", top: 16, left: 16, zIndex: 5,
+      width: 290, maxWidth: "calc(100% - 32px)",
     }}>
       <button
         onClick={() => setOpen(o => !o)}
@@ -2561,7 +2561,7 @@ function PanelFooter() {
         <a href="/alerts/" style={linkStyle}>{window.t("footer.alerts")}</a>
         <a href="/schengen-calculator/" style={linkStyle}>{window.t("footer.schengen")}</a>
         <a href="/itinerary/" style={linkStyle}>{window.t("footer.itinerary")}</a>
-        <a href="/transit-visa/" style={linkStyle}>{window.t("footer.transit")}</a>
+        <a href="/transit-map/" style={linkStyle}>{window.t("nav.transit_map")}</a>
         <a href="/etias/" style={linkStyle}>{window.t("footer.etias")}</a>
         <a href="/passport-validity/" style={linkStyle}>{window.t("footer.validity")}</a>
         <a href="/visa-shortcuts/" style={linkStyle}>{window.t("footer.shortcuts")}</a>

@@ -107,7 +107,6 @@ function TransitTopNav({ mode, onMode }) {
       <div className="topbar-sheet">
         <nav className="primary-nav">
           <a href="/">{window.t("tmap.back_to_visa")}</a>
-          <a href="/transit-visa/">{window.t("nav.transit")}</a>
           <a href="/etias/">{window.t("nav.etias")}</a>
           <a href="/schengen-calculator/">{window.t("nav.schengen")}</a>
         </nav>
