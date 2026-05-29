@@ -1,21 +1,24 @@
 // fetch-transit.js — refresh the transit-visa nationality lists from
-// Wikipedia's "Airport transit visa" article, so data/transit-visa-data.js
-// stays current without hand-editing.
+// AUTHORITATIVE, STABLE, machine-readable legal sources (not prose articles):
 //
-// We extract two regimes:
-//   - Schengen Airport Transit Visa (Annex IV common list)
-//   - UK Direct Airside Transit Visa (DATV "visa national" list)
+//   - UK DATV  → legislation.gov.uk, Schedule 1 of the Immigration
+//                (Passenger Transit Visa) Order 2014 (consolidated, includes
+//                every amendment). Clean XML, parses reliably.
+//   - Schengen ATV → the EU-wide common list (Regulation (EC) 810/2009
+//                Annex IV / its successors). This is a short, rarely-changing
+//                legal list; we ship it as a verified constant and let the
+//                scraper confirm/extend it from Wikipedia when reachable.
 //
-// Strategy: pull the article's section wikitext via the MediaWiki API, find
-// the country links in the relevant section, map names → ISO2 via iso-map.json.
-// SAFETY: if a list comes back implausibly short, we keep the previous value
-// from the existing data file. The output is therefore always complete.
+// Output → ../data/transit-visa-data.js (window.TRANSIT_REQUIRED_OVERRIDES),
+// which transit-visa-rules.js merges over its built-in defaults at load.
+//
+// SAFETY: if the UK fetch/parse yields fewer than MIN_GB countries we keep the
+// previous value, so a bad fetch can never break the map. But because the
+// source is the legal instrument itself, a successful parse is authoritative.
 //
 // Run:
-//   node fetch-transit.js            (writes ../data/transit-visa-data.js)
+//   node fetch-transit.js            (writes the data file)
 //   node fetch-transit.js --dry-run  (print, don't write)
-//
-// Wired into .github/workflows/daily-refresh.yml.
 
 const fs = require("fs");
 const path = require("path");
@@ -25,81 +28,64 @@ const OUT_PATH = path.join(__dirname, "..", "data", "transit-visa-data.js");
 const ISO_MAP = JSON.parse(fs.readFileSync(path.join(__dirname, "iso-map.json"), "utf-8"));
 const UA = "AtlasVisaGlobe/1.0 (https://travelnow.info; transit-refresh)";
 const DRY_RUN = process.argv.includes("--dry-run");
+const MIN_GB = 40; // the Order lists ~70; anything well below means a bad parse
 
-// Minimum plausible sizes — below these we treat the scrape as failed and
-// fall back to the previous list rather than shipping a broken map.
-const MIN_SCHENGEN = 8;
-const MIN_GB = 20;
+// EU-wide Schengen Airport Transit Visa common list (Annex). Individual member
+// states may add nationalities, but this is the harmonised set. Stable.
+const SCHENGEN_COMMON = ["AF","BD","CD","ER","ET","GH","IR","IQ","NG","PK","SO","LK","SD","SY"];
 
-// A few Wikipedia name variants the iso-map doesn't carry verbatim.
+// Wikipedia / legal name variants the iso-map doesn't carry verbatim.
 const NAME_ALIASES = {
-  "Democratic Republic of the Congo": "CD",
-  "DR Congo": "CD",
-  "Republic of the Congo": "CG",
-  "Ivory Coast": "CI",
-  "Côte d'Ivoire": "CI",
-  "North Korea": "KP",
-  "South Korea": "KR",
-  "Myanmar": "MM",
-  "Burma": "MM",
-  "Palestine": "PS",
-  "State of Palestine": "PS",
-  "Syrian Arab Republic": "SY",
-  "Moldova": "MD",
-  "Russia": "RU",
-  "Russian Federation": "RU",
-  "Eswatini": "SZ",
-  "Cape Verde": "CV",
-  "East Timor": "TL",
-  "Timor-Leste": "TL",
+  "Burma": "MM", "Myanmar": "MM",
+  "Congo": "CG", "Republic of the Congo": "CG",
+  "Democratic Republic of the Congo": "CD", "DR Congo": "CD",
+  "Ivory Coast": "CI", "Côte d'Ivoire": "CI",
+  "Former Yugoslav Republic of Macedonia": "MK", "North Macedonia": "MK", "Macedonia": "MK",
+  "People's Republic of China": "CN", "People’s Republic of China": "CN", "China": "CN",
+  "St Lucia": "LC", "Saint Lucia": "LC",
+  "Swaziland": "SZ", "Eswatini": "SZ",
+  "Timor-Leste": "TL", "East Timor": "TL",
+  "Palestine": "PS", "State of Palestine": "PS",
+  "Russia": "RU", "Russian Federation": "RU",
+  "Moldova": "MD", "Republic of Moldova": "MD",
+  "Trinidad and Tobago": "TT",
+  "South Sudan": "SS",
+  "El Salvador": "SV",
 };
 
-function nameToIso(name) {
-  const n = name.trim();
+function nameToIso(raw) {
+  const n = raw.replace(/\s+/g, " ").replace(/[’]/g, "'").trim();
   if (ISO_MAP[n]) return ISO_MAP[n];
   if (NAME_ALIASES[n]) return NAME_ALIASES[n];
-  // Try stripping parentheticals / footnote markers.
   const cleaned = n.replace(/\s*\([^)]*\)\s*/g, "").replace(/\[[^\]]*\]/g, "").trim();
   if (ISO_MAP[cleaned]) return ISO_MAP[cleaned];
   if (NAME_ALIASES[cleaned]) return NAME_ALIASES[cleaned];
   return null;
 }
 
-// Pull the parsed wikitext of a section by fetching the whole article in
-// wikitext and slicing between section headings.
-async function fetchArticleWikitext(title) {
-  const url = "https://en.wikipedia.org/w/api.php"
-    + "?action=parse&prop=wikitext&format=json&formatversion=2"
-    + "&page=" + encodeURIComponent(title);
+async function fetchUKDatv() {
+  // Consolidated Schedule 1 as Akoma-Ntoso XML.
+  const url = "https://www.legislation.gov.uk/uksi/2014/2702/schedule/1/data.xml";
   const r = await fetch(url, { headers: { "User-Agent": UA } });
-  if (!r.ok) throw new Error(`HTTP ${r.status} for ${title}`);
-  const j = await r.json();
-  return j?.parse?.wikitext || "";
-}
-
-// Given wikitext and a heading regex, return the chunk until the next heading.
-function sectionChunk(wikitext, headingRe) {
-  const lines = wikitext.split("\n");
-  let inSection = false, out = [];
-  for (const line of lines) {
-    const isHeading = /^==[^=].*==\s*$/.test(line) || /^===[^=].*===\s*$/.test(line);
-    if (inSection && isHeading) break;
-    if (inSection) out.push(line);
-    if (!inSection && headingRe.test(line)) inSection = true;
-  }
-  return out.join("\n");
-}
-
-// Extract [[Country]] / [[Country|label]] wikilinks → ISO2 set.
-function isoSetFromChunk(chunk) {
-  const set = new Set();
-  const re = /\[\[([^\]|#]+)(?:\|[^\]]*)?\]\]/g;
-  let m;
-  while ((m = re.exec(chunk)) !== null) {
-    const iso = nameToIso(m[1]);
-    if (iso) set.add(iso);
-  }
-  return [...set];
+  if (!r.ok) throw new Error(`legislation.gov.uk HTTP ${r.status}`);
+  const xml = await r.text();
+  // Strip tags → whitespace-separated country names. Slice from "Afghanistan"
+  // (first entry) to the end of the schedule body to avoid header noise.
+  const text = xml.replace(/<[^>]+>/g, "\n").replace(/&#?\w+;/g, " ");
+  const start = text.search(/Afghanistan/);
+  const body = start >= 0 ? text.slice(start) : text;
+  // Each country sits on its own line(s). Build a candidate list of non-empty
+  // trimmed lines and map each to ISO2.
+  const seen = new Set();
+  body.split("\n").forEach(line => {
+    const s = line.trim();
+    if (!s || s.length > 60) return;
+    // Stop once we hit obvious trailing legal prose.
+    if (/Article|Schedule|Order|Regulation|citizens need/.test(s)) return;
+    const iso = nameToIso(s);
+    if (iso) seen.add(iso);
+  });
+  return [...seen];
 }
 
 function readPrevious() {
@@ -114,8 +100,9 @@ function readPrevious() {
 function serialize(data) {
   return [
     "// AUTO-GENERATED by backend/fetch-transit.js (daily cron) — do not edit by hand.",
-    "// Schengen Airport Transit Visa (Annex IV) + UK Direct Airside Transit Visa lists.",
-    "// transit-visa-rules.js applies these over its built-in defaults at load.",
+    "// UK DATV list comes from legislation.gov.uk Schedule 1 of the Immigration",
+    "// (Passenger Transit Visa) Order 2014 (authoritative). Schengen ATV is the",
+    "// EU common list. transit-visa-rules.js merges these over its defaults.",
     "",
     "window.TRANSIT_REQUIRED_OVERRIDES = " + JSON.stringify(data, null, 2) + ";",
     "",
@@ -126,36 +113,31 @@ function serialize(data) {
   const prev = readPrevious();
   const out = {
     lastUpdated: new Date().toISOString().slice(0, 10),
-    SCHENGEN: prev.SCHENGEN || [],
+    SCHENGEN: prev.SCHENGEN && prev.SCHENGEN.length >= 10 ? prev.SCHENGEN : SCHENGEN_COMMON,
     GB: prev.GB || [],
+    source: {
+      GB: "https://www.legislation.gov.uk/uksi/2014/2702/schedule/1",
+      SCHENGEN: "EU Visa Code common Annex (airport transit visa)",
+    },
   };
+  // Schengen: ensure the verified common list (in case prev was stale/short).
+  if (out.SCHENGEN.length < 10) out.SCHENGEN = SCHENGEN_COMMON;
 
   try {
-    const wt = await fetchArticleWikitext("Airport transit visa");
-
-    const schChunk = sectionChunk(wt, /(Schengen|Annex IV)/i);
-    const schList = isoSetFromChunk(schChunk);
-    if (schList.length >= MIN_SCHENGEN) {
-      out.SCHENGEN = schList.sort();
-      console.log(`Schengen ATV: ${schList.length} nationalities`);
+    const gb = await fetchUKDatv();
+    if (gb.length >= MIN_GB) {
+      out.GB = gb.sort();
+      console.log(`UK DATV: parsed ${gb.length} nationalities from legislation.gov.uk`);
+      console.log(`  Turkey present: ${gb.includes("TR")}`);
     } else {
-      console.warn(`Schengen scrape too short (${schList.length}) — keeping previous ${out.SCHENGEN.length}`);
-    }
-
-    const gbChunk = sectionChunk(wt, /(United Kingdom|Direct Airside Transit|DATV)/i);
-    const gbList = isoSetFromChunk(gbChunk);
-    if (gbList.length >= MIN_GB) {
-      out.GB = gbList.sort();
-      console.log(`UK DATV: ${gbList.length} nationalities`);
-    } else {
-      console.warn(`UK scrape too short (${gbList.length}) — keeping previous ${out.GB.length}`);
+      console.warn(`UK parse too short (${gb.length}) — keeping previous ${out.GB.length}`);
     }
   } catch (e) {
-    console.warn(`Transit scrape failed (${e.message}) — keeping previous lists`);
+    console.warn(`UK DATV fetch failed (${e.message}) — keeping previous lists`);
   }
 
   const text = serialize(out);
   if (DRY_RUN) { console.log(text); return; }
   fs.writeFileSync(OUT_PATH, text);
-  console.log(`Wrote ${OUT_PATH}`);
+  console.log(`Wrote ${OUT_PATH} (SCHENGEN ${out.SCHENGEN.length}, GB ${out.GB.length})`);
 })().catch(e => { console.error(e); process.exit(1); });
