@@ -94,6 +94,10 @@ function ItineraryGlobe() {
         hoverRenderer={hoverRenderer}
         arcs={arcs}
         stopMarkers={stopMarkers}
+        onCountryClick={(iso2) => {
+          // Tell the planner to set passport (if none) or toggle this stop.
+          window.dispatchEvent(new CustomEvent("atlas:itinerary-toggle-stop", { detail: { iso2 } }));
+        }}
       />
       {/* 3D / 2D toggle */}
       <div style={{ position: "absolute", top: 12, right: 12, zIndex: 6, display: "inline-flex",

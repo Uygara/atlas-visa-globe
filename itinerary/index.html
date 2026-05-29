@@ -21,7 +21,19 @@
     --fg:#e7ecf5; --fg-dim:#aab4c8; --fg-mute:#6b7591; --fg-faint:#4a5269;
     --border:rgba(148,173,220,0.15); --border-strong:rgba(148,173,220,0.28);
     --self:#60a5fa; --vf:#22c55e; --ev:#a3e635; --voa:#facc15; --vr:#ef4444;
+    /* Globe needs these (globe.jsx references them) — without the sphere
+       gradient stops the ocean renders black. Match the home page. */
+    --panel-border:rgba(148,173,220,0.10); --panel-border-strong:rgba(148,173,220,0.18);
+    --na:#2a3245; --land:#1c2638; --land-stroke:#2a3650;
+    --graticule:rgba(120,140,180,0.07);
+    --font-mono:"Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
+    --sphere-1:#1a2540; --sphere-2:#0d1426; --sphere-3:#06091a;
+    --atm-mid:rgba(96,165,250,0.18);
   }
+  #sphere stop:nth-child(1) { stop-color: var(--sphere-1); }
+  #sphere stop:nth-child(2) { stop-color: var(--sphere-2); }
+  #sphere stop:nth-child(3) { stop-color: var(--sphere-3); }
+  #atm stop:nth-child(2) { stop-color: var(--atm-mid); }
   * { box-sizing: border-box; }
   body {
     margin:0; background:var(--bg); color:var(--fg);
@@ -136,7 +148,7 @@
 
   <!-- Route globe — passport (origin) + numbered stops + great-circle arcs.
        Driven by the planner below via the atlas:itinerary-change event. -->
-  <div id="itinerary-globe" style="height:380px; margin:0 0 18px; border:1px solid var(--border); border-radius:14px; overflow:hidden; background:rgba(10,15,28,0.35); position:relative;"></div>
+  <div id="itinerary-globe" style="height:440px; margin:0 0 18px; border:1px solid var(--border); border-radius:14px; overflow:hidden; background:rgba(10,15,28,0.35); position:relative;"></div>
   <p class="sub">Add the countries you'll visit. We compute: which visas you need, the fee for each (where known), the longest processing time, and the order you should apply.</p>
 
   <div class="card">
@@ -214,7 +226,7 @@
   let ppOpen = false, addOpen = false;
 
   function flagFor(iso) { return window.byIso2?.[iso]?.flag || ""; }
-  function nameFor(iso) { return window.byIso2?.[iso]?.name || iso; }
+  function nameFor(iso) { return (window.countryName ? window.countryName(iso) : null) || window.byIso2?.[iso]?.name || iso; }
 
   function renderPassportTrigger() {
     if (!passport) {
@@ -539,7 +551,23 @@
     departure = ""; departEl.value = ""; save(); rerender();
   });
 
+  // Click a country on the route globe → set passport (if none yet) or
+  // toggle it as a stop. components/itinerary-globe.jsx dispatches this.
+  window.addEventListener("atlas:itinerary-toggle-stop", (e) => {
+    const iso = e.detail && e.detail.iso2;
+    if (!iso) return;
+    if (!passport) { passport = iso; save(); rerender(); return; }
+    if (iso === passport) return;
+    const idx = stops.indexOf(iso);
+    if (idx >= 0) stops.splice(idx, 1);
+    else stops.push(iso);
+    save(); rerender();
+  });
+
   rerender();
+  // Push initial state to the globe (it also reads sessionStorage on mount,
+  // but this covers the URL-param restore path).
+  try { window.dispatchEvent(new CustomEvent("atlas:itinerary-change", { detail: { passport, stops: stops.slice() } })); } catch (e) {}
 })();
 </script>
 <script src="/data/static-i18n.js" defer></script>
