@@ -239,6 +239,9 @@ const T = {
     "tmap.source":               "Official source",
     "tmap.disclaimer":           "Airport transit rules change often and vary by airline. Always confirm with your carrier before booking.",
 
+    "itin.origin":               "Origin (your passport)",
+    "itin.globe_empty":          "Pick your passport and add destinations below — your route draws here on the globe.",
+
     // Group
     "group.label":               "Group",
     "group.add_passport":        "+ Add passport",
@@ -500,6 +503,9 @@ const T = {
     "tmap.back_to_visa":         "Vize haritası",
     "tmap.source":               "Resmi kaynak",
     "tmap.disclaimer":           "Havalimanı transit kuralları sık değişir ve havayoluna göre farklılık gösterir. Bilet almadan önce taşıyıcınla mutlaka doğrula.",
+
+    "itin.origin":               "Çıkış (pasaportun)",
+    "itin.globe_empty":          "Pasaportunu seç ve aşağıdan destinasyon ekle — rotan burada küre üzerinde çizilir.",
 
     "group.label":               "Grup",
     "group.add_passport":        "+ Pasaport ekle",

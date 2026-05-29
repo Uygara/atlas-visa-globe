@@ -52,6 +52,12 @@ function Globe({
   // The home page passes neither, so its behaviour is unchanged.
   fillResolver,
   hoverRenderer,
+  // ── Route overlay (used by the Itinerary globe) ──────────────────────────
+  // arcs: [{ from: iso2, to: iso2 }] — great-circle routes drawn over the map.
+  // stopMarkers: [{ iso2, label }] — numbered dots at each stop centroid.
+  // Both rotate/cull with the globe. Home page passes neither.
+  arcs,
+  stopMarkers,
 }) {
   // Group mode wins over direction when active — the question is "where can
   // this group of people go", which is inherently outgoing.
@@ -233,6 +239,36 @@ function Globe({
         el.setAttribute("y", y);
         el.setAttribute("font-size", FONT);
         el.style.display = "";
+      });
+
+      // ── Route arcs (great-circle LineStrings) ──────────────────────────
+      // d3.geoPath adaptively resamples a 2-point LineString into a geodesic
+      // arc and clips the back hemisphere for us under geoOrthographic.
+      const arcPaths = svgRef.current.querySelectorAll("path.route-arc");
+      arcPaths.forEach(p => {
+        const a = p.__arcCoords;
+        if (!a) { p.setAttribute("d", ""); return; }
+        const d = pathRef.current({ type: "LineString", coordinates: [a.from, a.to] });
+        p.setAttribute("d", d || "");
+      });
+
+      // ── Stop markers (numbered dots) ───────────────────────────────────
+      const stopG = svgRef.current.querySelectorAll("g[data-stop-iso]");
+      stopG.forEach(g => {
+        const iso = g.getAttribute("data-stop-iso");
+        const c = window.byIso2[iso];
+        if (!c) { g.style.visibility = "hidden"; return; }
+        if (isGlobe && d3.geoDistance([c.lon, c.lat], center) >= Math.PI / 2) {
+          g.style.visibility = "hidden";
+          return;
+        }
+        const proj = projRef.current([c.lon, c.lat]);
+        if (proj && isFinite(proj[0]) && isFinite(proj[1])) {
+          g.setAttribute("transform", `translate(${proj[0]},${proj[1]})`);
+          g.style.visibility = "visible";
+        } else {
+          g.style.visibility = "hidden";
+        }
       });
     }
   }, [mode]);
@@ -547,6 +583,12 @@ function Globe({
     if (topology) redrawPaths();
   }, [topology, projection, redrawPaths]);
 
+  // Repaint route overlay geometry when the itinerary changes (new path /
+  // marker elements need their d / transform set imperatively).
+  useEffect(() => {
+    if (topology) redrawPaths();
+  }, [arcs, stopMarkers, topology, redrawPaths]);
+
   // ─── Fill resolution ───────────────────────────────────────────────────────
   // resolveOne picks the right resolver for the active mode. Group mode
   // overrides direction. Self-highlight (blue) still works because the
@@ -766,6 +808,45 @@ function Globe({
             );
           })}
         </g>
+
+        {/* Route arcs (itinerary globe) — geometry set imperatively in redraw */}
+        {Array.isArray(arcs) && arcs.length > 0 && (
+          <g data-arc-layer="1" style={{ pointerEvents: "none" }}>
+            {arcs.map((a, i) => {
+              const cf = window.byIso2[a.from], ct = window.byIso2[a.to];
+              if (!cf || !ct) return null;
+              return (
+                <path
+                  key={`arc-${i}`}
+                  className="route-arc"
+                  ref={(el) => { if (el) el.__arcCoords = { from: [cf.lon, cf.lat], to: [ct.lon, ct.lat] }; }}
+                  d=""
+                  fill="none"
+                  stroke="var(--self)"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeDasharray="1 6"
+                  opacity="0.85"
+                />
+              );
+            })}
+          </g>
+        )}
+
+        {/* Stop markers (itinerary globe) — numbered dots, positioned in redraw */}
+        {Array.isArray(stopMarkers) && stopMarkers.length > 0 && (
+          <g data-stop-layer="1" style={{ pointerEvents: "none" }}>
+            {stopMarkers.map((s, i) => (
+              <g key={`stop-${s.iso2}-${i}`} data-stop-iso={s.iso2} style={{ visibility: "hidden" }}>
+                <circle r="11" fill="var(--self)" stroke="#05070d" strokeWidth="1.5" />
+                <text textAnchor="middle" dominantBaseline="central" y="0.5"
+                  style={{ fill: "#05070d", fontFamily: "var(--font-mono)", fontSize: 11, fontWeight: 700 }}>
+                  {s.label != null ? s.label : (i + 1)}
+                </text>
+              </g>
+            ))}
+          </g>
+        )}
 
         {/* Micro-state markers — countries too small to render as polygons */}
         {topology && (

@@ -117,7 +117,15 @@
   .empty { padding:20px; color:var(--fg-mute); font-size:13px; text-align:center; font-style:italic; }
   .footnote { font-size:12px; color:var(--fg-mute); margin-top:24px; line-height:1.6; }
 </style>
+<!-- Globe deps (route visualiser) -->
+<script src="https://unpkg.com/d3@7.8.5/dist/d3.min.js"></script>
+<script src="https://unpkg.com/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script src="/data/i18n.js"></script>
 <script src="/data/countries.js"></script>
+<script src="/data/country-names.js"></script>
 <script src="/data/passports.js"></script>
 <script src="/data/visa-fees.js"></script>
 </head>
@@ -125,6 +133,10 @@
 <div class="wrap">
   <a class="back" href="/">← Back to globe</a>
   <h1>Itinerary visa planner</h1>
+
+  <!-- Route globe — passport (origin) + numbered stops + great-circle arcs.
+       Driven by the planner below via the atlas:itinerary-change event. -->
+  <div id="itinerary-globe" style="height:380px; margin:0 0 18px; border:1px solid var(--border); border-radius:14px; overflow:hidden; background:rgba(10,15,28,0.35); position:relative;"></div>
   <p class="sub">Add the countries you'll visit. We compute: which visas you need, the fee for each (where known), the longest processing time, and the order you should apply.</p>
 
   <div class="card">
@@ -188,6 +200,8 @@
   } catch (e) {}
   function save() {
     try { sessionStorage.setItem("atlas.itinerary", JSON.stringify({ passport, stops, departure })); } catch (e) {}
+    // Notify the route globe (components/itinerary-globe.jsx) of the change.
+    try { window.dispatchEvent(new CustomEvent("atlas:itinerary-change", { detail: { passport, stops: stops.slice() } })); } catch (e) {}
   }
 
   // ── DOM ───────────────────────────────────────────────────────────────
@@ -529,5 +543,7 @@
 })();
 </script>
 <script src="/data/static-i18n.js" defer></script>
+<script type="text/babel" src="/components/globe.jsx?v=20260529d"></script>
+<script type="text/babel" src="/components/itinerary-globe.jsx?v=20260529d"></script>
 </body>
 </html>
