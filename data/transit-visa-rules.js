@@ -239,6 +239,55 @@ window.transitVisaRule = function (passportIso, transitArea, opts) {
   };
 };
 
+// ── Transit-map globe resolver ────────────────────────────────────────
+// Maps any destination ISO2 to a single transit status for the standalone
+// /transit-map/ globe, given the traveller's passport:
+//   "self"  — the passport's own country
+//   "vr"    — a transit visa IS required (red)
+//   "twov"  — no transit visa, but only via a time-limited Transit-Without-
+//             Visa programme (amber); twovHours carries the cap
+//   "free"  — airside transit open / no transit visa needed (green)
+//   "na"    — not a country we hold transit rules for (neutral land)
+//
+// The countries we can colour are the Schengen states (resolved via the
+// SCHENGEN rule) plus each standalone hub key in TRANSIT_RULES that is
+// itself an ISO2 (GB/US/CA/JP/SG/CN/HK/AE/QA/TR).
+
+window.transitAreaForDest = function (destIso2) {
+  const iso = String(destIso2 || "").toUpperCase();
+  if (window.TRANSIT_RULES[iso]) return iso;          // direct hub country
+  if (window.ETIAS && Array.isArray(window.ETIAS.schengenStates)
+      && window.ETIAS.schengenStates.includes(iso)) return "SCHENGEN";
+  return null;
+};
+
+window.transitStatusForGlobe = function (passport, destIso2, opts) {
+  const pp = String(passport || "").toUpperCase();
+  const iso = String(destIso2 || "").toUpperCase();
+  if (pp && iso === pp) return { status: "self" };
+  const area = window.transitAreaForDest(iso);
+  if (!area) return { status: "na" };
+  const res = window.transitVisaRule(pp, area, opts);
+  if (!res) return { status: "na" };
+  const base = {
+    area, label: res.label, twovHours: res.twovHours,
+    exemption: res.exemption, notes: res.notes, source: res.source,
+  };
+  if (res.needs) return { status: "vr", ...base };
+  if (res.twov)  return { status: "twov", ...base };
+  return { status: "free", ...base };
+};
+
+// Colours for the transit globe (hex so they resolve identically inside
+// SVG fills and in both themes). "na" falls back to neutral land.
+window.TRANSIT_GLOBE_COLOR = {
+  self: "#60a5fa",
+  free: "#22c55e",
+  twov: "#f59e0b",
+  vr:   "#ef4444",
+  na:   "var(--land)",
+};
+
 // Common transit hubs — used by the DetailCard "common transit hubs"
 // widget to show a list of likely connections instead of asking the
 // traveller to think of every possible hub. Ordered by global volume.

@@ -171,6 +171,12 @@ function App() {
   // across passports — diplomatic of TR ≠ diplomatic of US).
   useEffect(() => { updatePassportVariant("ordinary"); }, [passport, updatePassportVariant]);
 
+  // Persist the chosen passport so sibling pages (e.g. /transit-map/) can open
+  // on the same passport. Write-only — the home page still re-detects on load.
+  useEffect(() => {
+    try { if (passport) localStorage.setItem("atlas.passport", passport); } catch (e) {}
+  }, [passport]);
+
   // ─── Default passport detection ─────────────────────────────────────────
   // Strategy:
   //   1. Try the geolocation API with a 4 s soft timeout — most accurate.
@@ -435,6 +441,7 @@ function TopNav({ tweaks, setTweak, globeStyle, onGlobeStyleChange, onHelp }) {
       </a>
       <div className="topbar-sheet">
         <nav className="primary-nav">
+          <a href="/transit-map/" onClick={closeMenu}>{window.t("nav.transit_map")}</a>
           <a href="/transit-visa/" onClick={closeMenu}>{window.t("nav.transit")}</a>
           <a href="/etias/" onClick={closeMenu}>{window.t("nav.etias")}</a>
           <a href="/passport-validity/" onClick={closeMenu}>{window.t("nav.validity")}</a>

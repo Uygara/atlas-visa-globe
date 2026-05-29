@@ -43,6 +43,15 @@ function Globe({
   onCountryClick,
   onCountryHover,
   focusedCountry,  // iso2 string or null — highlights / centers
+  // ── Optional decoupling hooks (used by the standalone Transit Map page) ──
+  // When `fillResolver` is supplied, the globe ignores visa-status colouring
+  // entirely and paints each country with the colour the resolver returns:
+  //   fillResolver(iso2) => { color: <css colour>, ...extra }
+  // When `hoverRenderer` is supplied, it replaces the built-in visa HoverCard:
+  //   hoverRenderer({ iso2, x, y }) => ReactNode
+  // The home page passes neither, so its behaviour is unchanged.
+  fillResolver,
+  hoverRenderer,
 }) {
   // Group mode wins over direction when active — the question is "where can
   // this group of people go", which is inherently outgoing.
@@ -561,6 +570,10 @@ function Globe({
   }, [passport, direction, groupActive, groupPassports, variant]);
 
   const fillFor = useCallback((iso2) => {
+    if (fillResolver) {
+      const res = fillResolver(iso2);
+      return (res && res.color) || "var(--land)";
+    }
     if (!passport && !groupActive) return STATUS_COLOR.na.fill;
     const r = resolveOne(iso2);
     if (filter !== "all" && r.status !== filter && r.status !== "self") {
@@ -578,15 +591,16 @@ function Globe({
       }
     }
     return STATUS_COLOR[r.status]?.fill || STATUS_COLOR.na.fill;
-  }, [passport, filter, resolveOne, groupActive, comparePassport, direction]);
+  }, [passport, filter, resolveOne, groupActive, comparePassport, direction, fillResolver]);
 
   const opacityFor = useCallback((iso2) => {
+    if (fillResolver) return 1;
     if (!passport && !groupActive) return 1;
     if (filter === "all") return 1;
     const r = resolveOne(iso2);
     if (r.status === filter || r.status === "self") return 1;
     return 0.25;
-  }, [passport, filter, resolveOne, groupActive]);
+  }, [passport, filter, resolveOne, groupActive, fillResolver]);
 
   // Compare mode: highlight the compare passport's home country with a distinct
   // amber stroke (so it never collides with the primary passport's blue self-fill).
@@ -780,7 +794,8 @@ function Globe({
       )}
 
       {/* Hover tooltip */}
-      {hover && (passport || groupActive) && (
+      {hover && hoverRenderer && hoverRenderer(hover)}
+      {hover && !hoverRenderer && (passport || groupActive) && (
         <HoverCard
           hover={hover}
           passport={passport}
