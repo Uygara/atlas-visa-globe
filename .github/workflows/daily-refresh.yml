@@ -38,6 +38,13 @@ jobs:
         continue-on-error: true
         run: node fetch-transit.js
 
+      - name: Refresh diplomatic-passport variant maps (Wikipedia)
+        # Strict-anchored extraction; only confident parses are emitted, so a
+        # missing/changed section just skips that country (never bad data).
+        working-directory: backend
+        continue-on-error: true
+        run: node fetch-variants.js
+
       - name: Regenerate SEO pages
         run: node scripts/generate-seo.js
         env:
@@ -73,7 +80,7 @@ jobs:
         run: |
           git config user.name "atlas-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add data/passports.js data/passports-snapshot.json data/changelog.js data/visa-news.js data/transit-visa-data.js passport/ sitemap.xml robots.txt
+          git add data/passports.js data/passports-snapshot.json data/changelog.js data/visa-news.js data/transit-visa-data.js data/passport-variants-data.js passport/ sitemap.xml robots.txt
           if git diff --staged --quiet; then
             echo "No changes."
           else

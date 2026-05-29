@@ -132,6 +132,33 @@ window.PASSPORT_VARIANTS = {
   // diplomatic-passport exemptions) and a `lastReviewed` ISO date.
 };
 
+// ── Auto-scraped diplomatic variants ────────────────────────────────────────
+// backend/fetch-variants.js writes data/passport-variants-data.js with
+// confidently-parsed diplomatic visa-free lists from Wikipedia. We merge those
+// in here WITHOUT overwriting any hand-curated entry above (TR stays as-is).
+// Each scraped entry only carries { diplomatik: { vf, source } }; we attach
+// generic labels so the UI's PassportTypeSelector renders correctly.
+if (window.PASSPORT_VARIANTS_DATA) {
+  const labels = {
+    diplomatik: { label: "Diplomatik", labelEn: "Diplomatic", sub: "Diplomatik pasaport hamilleri", subEn: "Diplomatic passport holders" },
+    hizmet:     { label: "Hizmet/Servis", labelEn: "Service", sub: "Hizmet/servis pasaportu hamilleri", subEn: "Service passport holders" },
+  };
+  for (const iso of Object.keys(window.PASSPORT_VARIANTS_DATA)) {
+    if (iso === "lastUpdated") continue;
+    const scraped = window.PASSPORT_VARIANTS_DATA[iso];
+    const existing = window.PASSPORT_VARIANTS[iso] || (window.PASSPORT_VARIANTS[iso] = {});
+    for (const vk of Object.keys(scraped)) {
+      if (existing[vk]) continue; // never clobber hand-curated data
+      const e = scraped[vk];
+      existing[vk] = {
+        ...(labels[vk] || { label: vk, labelEn: vk }),
+        source: e.source || null,
+        vf: e.vf || [], ev: e.ev || [], voa: e.voa || [], vr: e.vr || [],
+      };
+    }
+  }
+}
+
 // ── Helpers ────────────────────────────────────────────────────────────────
 // Build a fast lookup for a variant entry on first access.
 function _ensureVariantMap(v) {
@@ -158,7 +185,10 @@ window.passportVariants = function (passportIso2) {
 // Returns the human label for a variant in the active language.
 window.passportVariantLabel = function (passportIso2, variantKey) {
   if (!variantKey || variantKey === "ordinary") {
-    return (window.ATLAS_LANG === "tr") ? "Bordo (Umuma Mahsus)" : "Ordinary";
+    // TR's own ordinary passport is burgundy ("Bordo"); for every other
+    // country just say "Ordinary" so the label isn't TR-specific.
+    if (window.ATLAS_LANG === "tr") return passportIso2 === "TR" ? "Bordo (Umuma Mahsus)" : "Umuma Mahsus";
+    return "Ordinary";
   }
   const entry = window.PASSPORT_VARIANTS[passportIso2]
     && window.PASSPORT_VARIANTS[passportIso2][variantKey];
