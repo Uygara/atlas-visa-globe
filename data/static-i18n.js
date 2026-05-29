@@ -94,6 +94,13 @@
     "Full list by destination": { tr:"Destinasyona göre tam liste", es:"Lista completa por destino", de:"Vollständige Liste nach Reiseziel", fr:"Liste complète par destination", ar:"القائمة الكاملة حسب الوجهة" },
     "Visa Shortcuts — easier entry with the visas you already hold": { tr:"Vize Kısayolları — elindeki vizelerle daha kolay giriş", es:"Atajos de visado — entrada más fácil con los visados que ya tienes", de:"Visa-Abkürzungen — leichtere Einreise mit vorhandenen Visa", fr:"Raccourcis de visa — entrée plus facile avec vos visas actuels", ar:"اختصارات التأشيرة — دخول أسهل بتأشيراتك الحالية" },
 
+    // ── Tool-page lead paragraphs ──
+    "Every active digital-nomad / remote-worker visa programme in 2026, with the numbers that actually matter: monthly income floor, application fee, first-grant duration, tax break, and whether you can bring family.": { tr:"2026'daki tüm aktif dijital-göçebe / uzaktan-çalışan vize programları, gerçekten önemli rakamlarla: aylık asgari gelir, başvuru ücreti, ilk verilen süre, vergi avantajı ve aile getirebilme durumu." },
+    "Every active citizenship-by-investment (CBI) and major residence-by-investment (RBI / Golden Visa) programme on a single page. Minimum investment, qualifying routes, realistic timeline, visa-free score of the resulting passport, and whether your spouse and children can be added.": { tr:"Tüm aktif yatırımla-vatandaşlık (CBI) ve başlıca yatırımla-oturum (RBI / Altın Vize) programları tek sayfada. Asgari yatırım, uygun yollar, gerçekçi süreç, elde edilen pasaportun vizesiz skoru ve eş/çocukların eklenip eklenemeyeceği." },
+    "Many countries cut the visa-application red tape if you already hold a visa or residence permit for a major economy. Holders of a valid US, UK, Ireland, Canadian or Schengen visa can often get an eVisa, visa-on-arrival, or even visa-free entry to countries that would otherwise demand a full embassy application. Browse every shortcut we've documented, by your passport.": { tr:"Birçok ülke, büyük bir ekonomiye ait vize veya oturma izniniz varsa vize başvuru bürokrasisini azaltır. Geçerli ABD, İngiltere, İrlanda, Kanada veya Schengen vizesi olanlar, normalde tam elçilik başvurusu gereken ülkelere genelde e-vize, varışta vize, hatta vizesiz girebilir. Pasaportuna göre belgelediğimiz tüm kısayollara göz at." },
+    "pv.lead": { tr:"Çoğu ülke pasaportunun planlanan kalışından <strong>6 ay sonrasına kadar</strong> geçerli olmasını ister. Schengen ülkeleri 3 ay ister. ABD ve Kanada yalnızca kalış süren boyunca geçerli pasaportları kabul eder. Uçağa alınmama riskine girme — uçmadan önce seyahatinin her ayağını kontrol et.", es:"La mayoría de los países exigen que tu pasaporte sea válido <strong>6 meses más allá de tu estancia prevista</strong>. Los Estados Schengen piden 3 meses. EE. UU. y Canadá aceptan pasaportes válidos solo durante tu estancia. No te quedes sin embarcar — revisa cada tramo antes de volar.", de:"Die meisten Länder verlangen, dass dein Pass <strong>6 Monate über deinen geplanten Aufenthalt hinaus</strong> gültig ist. Schengen-Staaten verlangen 3 Monate. USA und Kanada akzeptieren Pässe, die nur für die Dauer deines Aufenthalts gültig sind. Lass dir das Boarding nicht verweigern — prüfe jeden Abschnitt vor dem Abflug.", fr:"La plupart des pays exigent un passeport valide <strong>6 mois après la fin de ton séjour</strong>. Les États Schengen demandent 3 mois. Les États-Unis et le Canada acceptent un passeport valide seulement pour la durée du séjour. Ne te fais pas refuser l'embarquement — vérifie chaque étape avant de voler.", ar:"تشترط معظم الدول صلاحية جواز سفرك <strong>6 أشهر بعد نهاية إقامتك المخطط لها</strong>. دول شنغن تطلب 3 أشهر. تقبل الولايات المتحدة وكندا جوازات صالحة لمدة إقامتك فقط. لا تتعرّض لرفض الصعود — تحقق من كل مرحلة قبل السفر." },
+    "esta.lead": { tr:"Vize Muafiyet Programı üyeleri, kısa ABD ziyaretlerinde tam B1/B2 vizesi yerine <strong>ESTA</strong> alır. Ama yalnızca VWP uygunluğu yetmez — pasaportun listede olsa bile birkaç engel seni programdan çıkarabilir. 21 dolarlık ESTA ücretini ödeyip sınırda geri çevrilme: önce kuralları burada kontrol et.", es:"Los miembros del Programa de Exención de Visado obtienen <strong>ESTA</strong> en lugar de un visado B1/B2 completo para visitas cortas a EE. UU. Pero la elegibilidad VWP no basta — varios descalificadores te sacan del programa aunque tu pasaporte esté en la lista. No pagues los 21 $ del ESTA solo para que te rechacen: revisa las reglas aquí primero.", de:"Mitglieder des Visa-Waiver-Programms erhalten <strong>ESTA</strong> statt eines vollen B1/B2-Visums für kurze US-Besuche. Aber VWP-Berechtigung allein reicht nicht — mehrere Ausschlussgründe werfen dich raus, auch wenn dein Pass auf der Liste steht. Zahl nicht 21 $ ESTA, nur um abgewiesen zu werden: prüfe zuerst die Regeln.", fr:"Les membres du programme d'exemption de visa obtiennent l'<strong>ESTA</strong> au lieu d'un visa B1/B2 complet pour de courts séjours aux États-Unis. Mais l'éligibilité VWP ne suffit pas — plusieurs critères t'excluent même si ton passeport est sur la liste. Ne paie pas les 21 $ d'ESTA pour être refoulé : vérifie d'abord les règles.", ar:"يحصل أعضاء برنامج الإعفاء من التأشيرة على <strong>ESTA</strong> بدلاً من تأشيرة B1/B2 كاملة للزيارات القصيرة. لكن الأهلية وحدها لا تكفي — عدة موانع تُخرجك من البرنامج حتى لو كان جوازك في القائمة. لا تدفع 21 دولارًا لتُرفض على الحدود: تحقق من القواعد هنا أولاً." },
+
     // ── Table headers / shared labels (tool pages) ──
     "Country": { tr:"Ülke", es:"País", de:"Land", fr:"Pays", ar:"الدولة" },
     "Region": { tr:"Bölge", es:"Región", de:"Region", fr:"Région", ar:"المنطقة" },
@@ -425,9 +432,20 @@
     { sel: "input[type=button][value], input[type=submit][value]", attr: "value" },
   ];
 
+  // Normalised dictionary: collapse internal whitespace in keys once, so a
+  // multi-line HTML paragraph (with newlines + indentation in its text node)
+  // still matches a single-spaced dictionary key. Built lazily.
+  let _normDict = null;
+  function normDict() {
+    if (_normDict) return _normDict;
+    _normDict = {};
+    for (const k in DICT) _normDict[k.replace(/\s+/g, " ").trim()] = DICT[k];
+    return _normDict;
+  }
   function lookup(en, lang) {
     if (lang === "en") return null;
-    const entry = DICT[en];
+    let entry = DICT[en];
+    if (!entry) entry = normDict()[en.replace(/\s+/g, " ").trim()];
     if (!entry) return null;
     return entry[lang] || null;
   }
