@@ -241,6 +241,7 @@ const T = {
 
     "itin.origin":               "Origin (your passport)",
     "itin.globe_empty":          "Pick your passport, then click countries on the globe to add stops — your route draws here.",
+    "coach.tap_country":         "Tip: tap any country to see your visa details",
 
     // Group
     "group.label":               "Group",
@@ -506,6 +507,7 @@ const T = {
 
     "itin.origin":               "Çıkış (pasaportun)",
     "itin.globe_empty":          "Pasaportunu seç, sonra haritada ülkelere tıklayarak durak ekle — rotan burada çizilir.",
+    "coach.tap_country":         "İpucu: vize detayların için bir ülkeye dokun",
 
     "group.label":               "Grup",
     "group.add_passport":        "+ Pasaport ekle",

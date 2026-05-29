@@ -158,6 +158,17 @@ function App() {
   }, []);
   const reopenIntro = useCallback(() => setShowIntro(true), []);
 
+  // One-time coach hint: the map being clickable isn't obvious to first-timers.
+  // Show a dismissible nudge once a passport is set, until the first country
+  // click (or manual dismiss). Persisted so it never nags returning users.
+  const [coachDone, setCoachDone] = useState(() => {
+    try { return !!localStorage.getItem("atlas.coachClick"); } catch (e) { return true; }
+  });
+  const dismissCoach = useCallback(() => {
+    setCoachDone(true);
+    try { localStorage.setItem("atlas.coachClick", "1"); } catch (e) {}
+  }, []);
+
   // Picker mode — when the panel's passport picker is open, clicks on the
   // map should set that passport instead of opening the country detail card.
   // Values: null (off), "primary", "compare".
@@ -352,6 +363,7 @@ function App() {
       if (window.PASSPORTS[iso2]) setPassport(iso2);
       return;
     }
+    if (!coachDone) dismissCoach();
     setDetailCountry(iso2);
     setFocusedCountry(iso2);
   };
@@ -405,6 +417,10 @@ function App() {
         />
 
         {!detailCountry && <ChangelogFloater />}
+
+        {passport && !detailCountry && !showIntro && !coachDone && (
+          <CoachHint onDismiss={dismissCoach} />
+        )}
       </div>
 
       <Panel
@@ -925,6 +941,33 @@ function LocateIcon() {
 }
 
 // ─── Legend ─────────────────────────────────────────────────────────────────
+// One-time discoverability nudge — the globe is clickable but nothing says so.
+function CoachHint({ onDismiss }) {
+  useEffect(() => {
+    const t = setTimeout(onDismiss, 9000); // auto-dismiss if ignored
+    return () => clearTimeout(t);
+  }, [onDismiss]);
+  return (
+    <div
+      onClick={onDismiss}
+      style={{
+        position: "absolute", bottom: 20, left: "50%", transform: "translateX(-50%)",
+        zIndex: 6, display: "flex", alignItems: "center", gap: 8,
+        padding: "9px 14px", cursor: "pointer",
+        background: "var(--panel)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)",
+        border: "1px solid var(--self)", borderRadius: 999,
+        boxShadow: "0 8px 28px rgba(0,0,0,0.35)",
+        fontSize: 13, color: "var(--fg)", maxWidth: "calc(100% - 40px)",
+        animation: "pulse 2.4s ease-in-out infinite",
+      }}
+    >
+      <span style={{ fontSize: 15 }}>👆</span>
+      <span>{window.t("coach.tap_country")}</span>
+      <span style={{ color: "var(--fg-mute)", fontSize: 16, lineHeight: 1, marginLeft: 2 }}>×</span>
+    </div>
+  );
+}
+
 function Legend() {
   const items = [
     { k: "vf",  fill: STATUS_COLOR.vf.fill,  label: window.t("status.vf")  },
