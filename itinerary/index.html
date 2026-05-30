@@ -54,6 +54,17 @@
   #sphere stop:nth-child(2) { stop-color: var(--sphere-2); }
   #sphere stop:nth-child(3) { stop-color: var(--sphere-3); }
   #atm stop:nth-child(2) { stop-color: var(--atm-mid); }
+  /* Print / save-PDF: drop the globe + chrome, lay the plan out full-width
+     on white so it's a clean shareable sheet. */
+  @media print {
+    html, body { overflow: visible !important; height: auto !important; background: #fff !important; color: #000 !important; }
+    body::before { display: none !important; }
+    .topbar, .globe-stage, .sheet-handle, .ad-slot { display: none !important; }
+    .layout { display: block !important; height: auto !important; }
+    .panel { position: static !important; height: auto !important; max-height: none !important; width: 100% !important; box-shadow: none !important; border: none !important; background: #fff !important; overflow: visible !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+    .panel * { color: #000 !important; }
+    a { color: #000 !important; text-decoration: underline; }
+  }
 </style>
 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2617798720306957" crossorigin="anonymous"></script>
@@ -76,7 +87,7 @@
   <script src="/data/passports.js"></script>
   <script src="/data/visa-fees.js"></script>
 
-  <script type="text/babel" src="/components/globe.jsx?v=20260529g"></script>
-  <script type="text/babel" src="/components/itinerary-app.jsx?v=20260529g"></script>
+  <script type="text/babel" src="/components/globe.jsx?v=20260530a"></script>
+  <script type="text/babel" src="/components/itinerary-app.jsx?v=20260530a"></script>
 </body>
 </html>

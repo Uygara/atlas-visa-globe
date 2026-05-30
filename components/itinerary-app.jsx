@@ -390,6 +390,11 @@ function Summary({ passport, stops }) {
         {unknown > 0 && <p style={{ fontSize: 11, color: "var(--fg-mute)", marginTop: 10, marginBottom: 0 }}>{window.t("itin.missing_fee", { n: unknown })}</p>}
         {maxProc > 0 && <p style={{ fontSize: 11, color: "var(--fg-mute)", marginTop: 6, marginBottom: 0 }}>{window.t("itin.start_buffer", { n: maxProc })}</p>}
       </div>
+      <button onClick={() => window.print()} style={{
+        marginTop: 10, width: "100%", padding: "9px 12px", background: "var(--bg-3)",
+        border: "1px solid var(--panel-border-strong)", color: "var(--fg-dim)", borderRadius: 8,
+        fontSize: 13, cursor: "pointer", fontFamily: "inherit",
+      }}>{window.t("itin.print")}</button>
     </div>
   );
 }
