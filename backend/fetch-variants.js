@@ -26,7 +26,7 @@ const ISO_MAP = JSON.parse(fs.readFileSync(path.join(__dirname, "iso-map.json"),
 const UA = "AtlasVisaGlobe/1.0 (https://travelnow.info; variants-refresh)";
 const DRY_RUN = process.argv.includes("--dry-run");
 const MIN = 25;        // below this, treat as a bad/empty parse → skip
-const DELAY = 1100;    // polite pacing (Wikipedia rate-limits bursts)
+const DELAY = 1600;    // polite pacing (Wikipedia rate-limits bursts hard)
 
 // (Demonym/adjective used in the article title) → ISO2 of the passport.
 const TARGETS = [
@@ -61,7 +61,12 @@ function flagsIn(text) {
   return [...out];
 }
 
-const ANCHOR = /[Hh]olders of [^.\n]{0,80}(diplomatic|service|official)[^.\n]{0,80}passports?[^.\n]{0,80}(without a visa|visa-free|may enter|do not require)/;
+// Matches the canonical consolidated-list intro in either phrasing:
+//   "Holders of <X> diplomatic/service passports may enter … without a visa"
+//   "<X> diplomatic passport holders have visa-free access to …"
+// The ≥ MIN threshold downstream rejects accidental short matches, so a
+// broader anchor can't introduce bad data — only catch more real lists.
+const ANCHOR = /(holders of [^.\n]{0,80}(diplomatic|service|official)[^.\n]{0,90}passports?|(diplomatic|service|official)[ ,/a-z]{0,40}passport holders)[^.\n]{0,90}(without a visa|visa[- ]free|may enter|do not require|have visa)/i;
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
 
 async function fetchWikitext(adj) {
