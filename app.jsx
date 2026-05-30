@@ -475,14 +475,19 @@ function TopNav({ tweaks, setTweak, globeStyle, onGlobeStyleChange, onHelp }) {
       </a>
       <div className="topbar-sheet">
         <nav className="primary-nav">
+          {/* Primary tools stay visible; the rest fold into a Tools ▾ menu so
+              the bar isn't an 8-link wall (and doesn't overflow on laptops). */}
           <a href="/transit-map/" onClick={closeMenu}>{window.t("nav.transit_map")}</a>
-          <a href="/etias/" onClick={closeMenu}>{window.t("nav.etias")}</a>
-          <a href="/passport-validity/" onClick={closeMenu}>{window.t("nav.validity")}</a>
-          <a href="/schengen-calculator/" onClick={closeMenu}>{window.t("nav.schengen")}</a>
           <a href="/itinerary/" onClick={closeMenu}>{window.t("nav.itinerary")}</a>
-          <a href="/digital-nomad-visa/" onClick={closeMenu}>{window.t("nav.nomad")}</a>
-          <a href="/citizenship-by-investment/" onClick={closeMenu}>{window.t("nav.cbi")}</a>
-          <a href="/alerts/" onClick={closeMenu}>{window.t("nav.alerts")}</a>
+          <a href="/schengen-calculator/" onClick={closeMenu}>{window.t("nav.schengen")}</a>
+          <ToolsDropdown closeMenu={closeMenu} items={[
+            ["/etias/", window.t("nav.etias")],
+            ["/passport-validity/", window.t("nav.validity")],
+            ["/visa-shortcuts/", window.t("nav.shortcuts")],
+            ["/digital-nomad-visa/", window.t("nav.nomad")],
+            ["/citizenship-by-investment/", window.t("nav.cbi")],
+            ["/alerts/", window.t("nav.alerts")],
+          ]} />
         </nav>
         <div className="rhs">
           <HelpButton onClick={onHelp} />
@@ -511,6 +516,49 @@ function TopNav({ tweaks, setTweak, globeStyle, onGlobeStyleChange, onHelp }) {
         </svg>
       </button>
     </header>
+  );
+}
+
+// "Tools ▾" — folds the secondary tool pages into one dropdown so the top
+// bar shows a handful of primary links instead of eight. On mobile (inside
+// the slide-down sheet) it expands inline; on desktop it's a popover.
+function ToolsDropdown({ items, closeMenu }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef(null);
+  useEffect(() => {
+    if (!open) return;
+    const onClick = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, [open]);
+  return (
+    <div ref={ref} className="tools-dd" style={{ position: "relative" }}>
+      <button onClick={() => setOpen(o => !o)} aria-expanded={open} className="tools-dd-btn" style={{
+        padding: "7px 10px", fontSize: 13, color: "var(--fg-dim)",
+        background: "transparent", border: "none", borderRadius: 6, cursor: "pointer",
+        fontFamily: "inherit", display: "inline-flex", alignItems: "center", gap: 5, whiteSpace: "nowrap",
+      }}>
+        {window.t("nav.tools")}
+        <svg width="10" height="10" viewBox="0 0 12 12" style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 180ms ease", opacity: 0.6 }}>
+          <path d="M3 4.5 L6 7.5 L9 4.5" stroke="currentColor" strokeWidth="1.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+      {open && (
+        <div className="tools-dd-menu" style={{
+          position: "absolute", top: "calc(100% + 6px)", left: 0, zIndex: 20,
+          minWidth: 200, background: "var(--panel)", backdropFilter: "blur(14px)",
+          WebkitBackdropFilter: "blur(14px)", border: "1px solid var(--panel-border-strong)",
+          borderRadius: 10, padding: 6, boxShadow: "0 12px 32px rgba(0,0,0,0.35)",
+          display: "flex", flexDirection: "column", gap: 1,
+        }}>
+          {items.map(([href, label]) => (
+            <a key={href} href={href} onClick={() => { setOpen(false); closeMenu && closeMenu(); }}
+              style={{ padding: "8px 10px", fontSize: 13, color: "var(--fg-dim)", textDecoration: "none", borderRadius: 6, whiteSpace: "nowrap" }}
+              className="tools-dd-item">{label}</a>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 
@@ -744,6 +792,7 @@ function HelpButton({ onClick }) {
 
 // ─── Intro hook — first-visit explainer, dismissible, re-openable via ?  ───
 function IntroHook({ onClose }) {
+  const [, force] = useState(0);
   return (
     <div
       onClick={onClose}
@@ -766,10 +815,25 @@ function IntroHook({ onClose }) {
           boxShadow: "0 24px 64px rgba(0,0,0,0.55)",
           color: "var(--fg)",
         }}>
-        <div style={{
-          fontSize: 11, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
-          textTransform: "uppercase", letterSpacing: "0.12em", marginBottom: 10,
-        }}>travelnow.info</div>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+          <div style={{
+            flex: 1, fontSize: 11, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
+            textTransform: "uppercase", letterSpacing: "0.12em",
+          }}>travelnow.info</div>
+          {/* Language switch right on the intro, so a visitor who landed in the
+              wrong language can fix it before doing anything else. */}
+          <select
+            value={window.ATLAS_LANG || "en"}
+            onChange={(e) => { window.setLang(e.target.value); force(x => x + 1); }}
+            aria-label={window.t("nav.language")}
+            style={{
+              background: "var(--bg-3)", border: "1px solid var(--panel-border)",
+              color: "var(--fg-dim)", borderRadius: 7, padding: "5px 8px",
+              fontFamily: "inherit", fontSize: 12, cursor: "pointer",
+            }}>
+            {(window.LANGS || []).map(l => <option key={l.code} value={l.code}>{l.native}</option>)}
+          </select>
+        </div>
         <h1 id="intro-title" style={{
           fontSize: 26, fontWeight: 600, letterSpacing: "-0.02em",
           margin: "0 0 10px 0", lineHeight: 1.15,
@@ -1114,6 +1178,8 @@ layoutStyle.textContent = `
     white-space: nowrap;
   }
   .topbar .primary-nav a:hover { color: var(--fg); background: var(--bg-3); }
+  .topbar .tools-dd-btn:hover { color: var(--fg); background: var(--bg-3); }
+  .topbar .tools-dd-item:hover { color: var(--fg); background: var(--bg-3); }
   .topbar .primary-nav a.active { color: var(--fg); background: rgba(96,165,250,0.10); }
   .topbar .rhs { display: flex; align-items: center; gap: 6px; margin-left: auto; }
   .topbar .rhs button, .topbar .rhs select {
@@ -1166,10 +1232,16 @@ layoutStyle.textContent = `
   @media (max-width: 900px) {
     .layout {
       grid-template-columns: 1fr;
-      grid-template-rows: 48px 1fr auto;
+      /* Globe gets the lion's share on mobile (the map is the point); the
+         panel sits below as a scrollable sheet taking the remaining height. */
+      grid-template-rows: 48px 58vh minmax(0, 1fr);
       grid-template-areas: "topbar" "globe" "panel";
     }
-    .panel { max-height: 50vh; border-left: none; border-top: 1px solid var(--panel-border); }
+    .panel {
+      border-left: none; border-top: 1px solid var(--panel-border);
+      border-radius: 14px 14px 0 0;
+      box-shadow: 0 -8px 24px rgba(0,0,0,0.25);
+    }
 
     /* Compact mobile topbar: brand + mode toggle on the bar, everything else
        collapses into a dropdown opened by the hamburger.
@@ -1204,6 +1276,12 @@ layoutStyle.textContent = `
       flex-direction: column; align-items: stretch; gap: 2px; flex: none;
     }
     .topbar.menu-open .primary-nav a { padding: 10px 12px; font-size: 14px; border-radius: 8px; }
+    /* Tools dropdown: inline (static) inside the mobile sheet so its items
+       stack in the column instead of floating as an absolute popover. */
+    .topbar.menu-open .tools-dd { width: 100%; }
+    .topbar.menu-open .tools-dd-btn { width: 100%; padding: 10px 12px; font-size: 14px; }
+    .topbar.menu-open .tools-dd-menu { position: static !important; box-shadow: none; border: none; padding: 0 0 0 10px; min-width: 0; background: transparent; backdrop-filter: none; }
+    .topbar.menu-open .tools-dd-item { padding: 9px 12px; font-size: 14px; }
     .topbar.menu-open .rhs {
       flex-direction: column; align-items: stretch; gap: 8px;
       margin-left: 0; padding-top: 8px; border-top: 1px solid var(--panel-border);

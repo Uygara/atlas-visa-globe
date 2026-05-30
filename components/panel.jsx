@@ -127,41 +127,59 @@ function Panel({
         />
       )}
 
-      {/* ── "For you" — secondary, daily-return content. Grouped under a divider
-          so first-time users read it as bonus, not core. ── */}
+      {/* ── "For you" — secondary, daily-return content, collapsible so the
+          first screen can stay focused on the core result. ── */}
       {!detailCountry && passport && (
-        <div style={{
-          marginTop: 4, marginBottom: 10, paddingTop: 12,
-          borderTop: "1px solid var(--panel-border)",
-          fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-faint)",
-          textTransform: "uppercase", letterSpacing: "0.12em",
-        }}>{window.t("panel.for_you")}</div>
+        <ForYouSection>
+          <WeeklyDigest passport={passport} />
+          {!groupActive && <PassportPulse passport={passport} />}
+          <WatchlistCard onOpen={(iso2) => { setDetailCountry(iso2); }} />
+          <ItineraryCTA />
+          {!groupActive && <DailySuggestion passport={passport} onOpen={(iso2) => { setDetailCountry(iso2); }} />}
+          <PassportNewsFeed passport={passport} />
+        </ForYouSection>
       )}
 
-      {!detailCountry && passport && (
-        <WeeklyDigest passport={passport} />
-      )}
-
-      {!detailCountry && passport && !groupActive && (
-        <PassportPulse passport={passport} />
-      )}
-
-      {!detailCountry && (
+      {!detailCountry && !passport && (
         <WatchlistCard onOpen={(iso2) => { setDetailCountry(iso2); }} />
       )}
 
-      {!detailCountry && passport && (
-        <ItineraryCTA />
-      )}
-
-      {!detailCountry && passport && !groupActive && (
-        <DailySuggestion passport={passport} onOpen={(iso2) => { setDetailCountry(iso2); }} />
-      )}
-
-      {!detailCountry && passport && <PassportNewsFeed passport={passport} />}
-
       <PanelFooter />
     </aside>
+  );
+}
+
+// Collapsible "For you" block — keeps the daily-return widgets available
+// without dominating the first screen. Collapse state persists.
+function ForYouSection({ children }) {
+  const [open, setOpen] = useState(() => {
+    try { return localStorage.getItem("atlas.foryou.collapsed") !== "1"; }
+    catch (e) { return true; }
+  });
+  const toggle = () => {
+    setOpen(o => {
+      const next = !o;
+      try { localStorage.setItem("atlas.foryou.collapsed", next ? "0" : "1"); } catch (e) {}
+      return next;
+    });
+  };
+  return (
+    <div>
+      <button onClick={toggle} aria-expanded={open} style={{
+        width: "100%", display: "flex", alignItems: "center", gap: 8,
+        marginTop: 4, marginBottom: 10, paddingTop: 12, paddingBottom: 0,
+        background: "transparent", border: "none", borderTop: "1px solid var(--panel-border)",
+        color: "var(--fg-faint)", cursor: "pointer", textAlign: "left",
+        fontSize: 10, fontFamily: "var(--font-mono)",
+        textTransform: "uppercase", letterSpacing: "0.12em",
+      }}>
+        <span style={{ flex: 1 }}>{window.t("panel.for_you")}</span>
+        <svg width="11" height="11" viewBox="0 0 12 12" style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 200ms ease", opacity: 0.6 }}>
+          <path d="M3 4.5 L6 7.5 L9 4.5" stroke="currentColor" strokeWidth="1.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </button>
+      {open && children}
+    </div>
   );
 }
 
@@ -1572,7 +1590,19 @@ function VisaFeeBox({ passport, destIso2, status }) {
   if (!passport || !destIso2) return null;
   if (status === "vf" || status === "self") return null;
   const data = window.visaFee && window.visaFee(passport, destIso2);
-  if (!data) return null;
+  if (!data) {
+    // We require a visa here but don't have a fee figure for this pair yet.
+    // Say so explicitly so the absence doesn't read as "free".
+    return (
+      <div style={{
+        padding: "9px 11px", borderRadius: 8, marginBottom: 10,
+        background: "var(--bg-2)", border: "1px dashed var(--panel-border-strong)",
+        fontSize: 11, color: "var(--fg-mute)", lineHeight: 1.5,
+      }}>
+        {window.t("detail.no_fee_data")}
+      </div>
+    );
+  }
 
   const labelStyle = { fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.06em" };
   const valueStyle = { fontSize: 13, color: "var(--fg)", marginTop: 1 };

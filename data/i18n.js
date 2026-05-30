@@ -98,6 +98,7 @@ const T = {
     "detail.compare":         "Compare",
     "detail.per_group_member":"Per group member",
     "detail.visa_cost":       "Visa cost & timing",
+    "detail.no_fee_data":     "We don't have the fee for this route yet — check the destination's official visa site for the exact amount.",
     "detail.processing":      "Processing",
     "detail.type":            "Type",
     "detail.validity":        "Validity",
@@ -316,6 +317,8 @@ const T = {
 
     // Mobile menu
     "nav.menu":                  "Menu",
+    "nav.tools":                  "Tools",
+    "nav.shortcuts":              "Visa shortcuts",
 
     // Conditional visa rules ("Eligibility shortcuts")
     "cond.title":                "Easier path available",
@@ -400,6 +403,7 @@ const T = {
     "detail.compare":         "Karşılaştır",
     "detail.per_group_member":"Grup üyesi başına",
     "detail.visa_cost":       "Vize ücreti ve süre",
+    "detail.no_fee_data":     "Bu rota için ücret bilgimiz henüz yok — kesin tutar için hedef ülkenin resmi vize sitesini kontrol et.",
     "detail.processing":      "İşlem süresi",
     "detail.type":            "Tür",
     "detail.validity":        "Geçerlilik",
@@ -608,6 +612,8 @@ const T = {
     "welcome.or_open_panel":     "Veya {n} pasaportun tam listesi için paneli aç",
 
     "nav.menu":                  "Menü",
+    "nav.tools":                  "Araçlar",
+    "nav.shortcuts":              "Vize kestirmeleri",
 
     "cond.title":                "Daha kolay yol mevcut",
     "cond.subtitle":             "Aşağıdakilerden birine de sahipseniz statü iyileşir:",
@@ -724,6 +730,8 @@ const T = {
     "changelog.show_less": "Mostrar menos", "changelog.more": "+ {n} cambios más",
     "zoom.in": "Acercar", "zoom.out": "Alejar", "zoom.current": "Zoom actual", "zoom.reset": "Restablecer",
     "nav.menu": "Menú",
+    "nav.tools":                  "Herramientas",
+    "nav.shortcuts":              "Atajos de visa",
     "cond.title": "Vía más fácil disponible",
     "cond.subtitle": "Si también tienes uno de estos, el estado mejora:",
     "cond.becomes": "se vuelve", "cond.source": "Fuente ↗",
@@ -838,6 +846,8 @@ const T = {
     "changelog.show_less": "Weniger zeigen", "changelog.more": "+ {n} weitere Änderungen",
     "zoom.in": "Vergrößern", "zoom.out": "Verkleinern", "zoom.current": "Zoom-Stufe", "zoom.reset": "Zurücksetzen",
     "nav.menu": "Menü",
+    "nav.tools":                  "Werkzeuge",
+    "nav.shortcuts":              "Visa-Abkürzungen",
     "cond.title": "Einfacherer Weg verfügbar",
     "cond.subtitle": "Wenn du auch eines davon besitzt, verbessert sich der Status:",
     "cond.becomes": "wird zu", "cond.source": "Quelle ↗",
@@ -952,6 +962,8 @@ const T = {
     "changelog.show_less": "Voir moins", "changelog.more": "+ {n} autres changements",
     "zoom.in": "Zoom +", "zoom.out": "Zoom -", "zoom.current": "Zoom actuel", "zoom.reset": "Réinitialiser",
     "nav.menu": "Menu",
+    "nav.tools":                  "Outils",
+    "nav.shortcuts":              "Raccourcis visa",
     "cond.title": "Voie plus simple disponible",
     "cond.subtitle": "Si tu détiens aussi l'un de ces visas, le statut s'améliore :",
     "cond.becomes": "devient", "cond.source": "Source ↗",
@@ -1065,6 +1077,8 @@ const T = {
     "changelog.show_less": "عرض أقل", "changelog.more": "+ {n} تغييرات أخرى",
     "zoom.in": "تكبير", "zoom.out": "تصغير", "zoom.current": "مستوى الزوم", "zoom.reset": "إعادة",
     "nav.menu": "القائمة",
+    "nav.tools":                  "الأدوات",
+    "nav.shortcuts":              "اختصارات التأشيرة",
     "cond.title": "مسار أسهل متاح",
     "cond.subtitle": "إذا كنت تحمل أيضًا أحد ما يلي، يتحسن الوضع:",
     "cond.becomes": "يصبح", "cond.source": "المصدر ↗",
