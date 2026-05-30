@@ -8,6 +8,66 @@
 
 window.CHANGELOG = [
   {
+    date: "2026-05-30",
+    title: "DE → SY: voa → ev",
+    affects: { dest: "SY", passports: ["DE"] },
+    statusFrom: "voa", statusTo: "ev",
+  },
+  {
+    date: "2026-05-30",
+    title: "DE → GH: vr → ev",
+    affects: { dest: "GH", passports: ["DE"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-05-30",
+    title: "GB → GH: vr → ev",
+    affects: { dest: "GH", passports: ["GB"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-05-30",
+    title: "GB → LR: vr → ev",
+    affects: { dest: "LR", passports: ["GB"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-05-30",
+    title: "RO → GH: vr → ev",
+    affects: { dest: "GH", passports: ["RO"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-05-30",
+    title: "TW → GH: vr → vr",
+    affects: { dest: "GH", passports: ["TW"] },
+    statusFrom: "vr", statusTo: "vr",
+  },
+  {
+    date: "2026-05-30",
+    title: "TW → KZ: vr → vr",
+    affects: { dest: "KZ", passports: ["TW"] },
+    statusFrom: "vr", statusTo: "vr",
+  },
+  {
+    date: "2026-05-30",
+    title: "IN → SV: vf → vr",
+    affects: { dest: "SV", passports: ["IN"] },
+    statusFrom: "vf", statusTo: "vr",
+  },
+  {
+    date: "2026-05-30",
+    title: "IN → OM: vf → vr",
+    affects: { dest: "OM", passports: ["IN"] },
+    statusFrom: "vf", statusTo: "vr",
+  },
+  {
+    date: "2026-05-30",
+    title: "LB → GH: vr → ev",
+    affects: { dest: "GH", passports: ["LB"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
     date: "2026-05-29",
     title: "IR → SR: vf → vr",
     affects: { dest: "SR", passports: ["IR"] },
