@@ -480,10 +480,13 @@ function TopNav({ tweaks, setTweak, globeStyle, onGlobeStyleChange, onHelp }) {
           <a href="/transit-map/" onClick={closeMenu}>{window.t("nav.transit_map")}</a>
           <a href="/itinerary/" onClick={closeMenu}>{window.t("nav.itinerary")}</a>
           <a href="/schengen-calculator/" onClick={closeMenu}>{window.t("nav.schengen")}</a>
+          {/* visa-shortcuts + passport-validity dropped from the nav — that
+              info now surfaces contextually in the country detail panel
+              (ConditionsBox shortcuts + TripNotesGroup validity) when you tap
+              a destination, so they don't need their own tabs. Pages kept for
+              SEO / direct links. */}
           <ToolsDropdown closeMenu={closeMenu} items={[
             ["/etias/", window.t("nav.etias")],
-            ["/passport-validity/", window.t("nav.validity")],
-            ["/visa-shortcuts/", window.t("nav.shortcuts")],
             ["/digital-nomad-visa/", window.t("nav.nomad")],
             ["/citizenship-by-investment/", window.t("nav.cbi")],
             ["/alerts/", window.t("nav.alerts")],
