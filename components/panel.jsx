@@ -48,6 +48,7 @@ function Panel({
 
   return (
     <aside className="panel">
+      <MobileSheetHandle />
       <PanelHeader />
 
       <PassportPicker
@@ -179,6 +180,64 @@ function ForYouSection({ children }) {
         </svg>
       </button>
       {open && children}
+    </div>
+  );
+}
+
+// Mobile-only drag handle that turns the side panel into a draggable bottom
+// sheet (snap points: peek / half / full). Hidden on desktop via CSS. Drives
+// the panel height through the --sheet-h custom property; tap cycles snaps.
+function MobileSheetHandle() {
+  const ref = useRef(null);
+  useEffect(() => {
+    const handle = ref.current;
+    const panel = handle && handle.closest(".panel");
+    if (!panel) return;
+    const isMobile = () => window.matchMedia("(max-width: 900px)").matches;
+    const snaps = () => [96, Math.round(window.innerHeight * 0.48), Math.round(window.innerHeight * 0.88)];
+    let startY = 0, startH = 0, dragging = false, moved = false;
+    const setH = (h) => panel.style.setProperty("--sheet-h", h + "px");
+    const curH = () => panel.getBoundingClientRect().height;
+    const nearest = (h) => snaps().reduce((a, b) => Math.abs(b - h) < Math.abs(a - h) ? b : a);
+    const down = (e) => {
+      if (!isMobile()) return;
+      dragging = true; moved = false;
+      startY = e.clientY; startH = curH();
+      panel.classList.add("sheet-dragging");
+      try { handle.setPointerCapture(e.pointerId); } catch (err) {}
+    };
+    const move = (e) => {
+      if (!dragging) return;
+      const dy = startY - e.clientY;
+      if (Math.abs(dy) > 3) moved = true;
+      const h = Math.min(window.innerHeight * 0.92, Math.max(72, startH + dy));
+      setH(h);
+    };
+    const up = () => {
+      if (!dragging) return;
+      dragging = false;
+      panel.classList.remove("sheet-dragging");
+      if (!moved) {
+        // Tap → cycle to the next snap up (full → peek).
+        const order = snaps();
+        const i = order.indexOf(nearest(curH()));
+        setH(order[(i + 1) % order.length]);
+      } else {
+        setH(nearest(curH()));
+      }
+    };
+    handle.addEventListener("pointerdown", down);
+    window.addEventListener("pointermove", move);
+    window.addEventListener("pointerup", up);
+    return () => {
+      handle.removeEventListener("pointerdown", down);
+      window.removeEventListener("pointermove", move);
+      window.removeEventListener("pointerup", up);
+    };
+  }, []);
+  return (
+    <div ref={ref} className="sheet-handle" aria-hidden="true">
+      <span className="sheet-grabber" />
     </div>
   );
 }

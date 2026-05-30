@@ -1221,6 +1221,9 @@ layoutStyle.textContent = `
     z-index: 2;
   }
   .dropdown-item:hover { background: rgba(96,165,250,0.10) !important; }
+  /* Mobile bottom-sheet grabber is hidden on desktop; the mobile media query
+     below flips it on and turns .panel into a draggable sheet. */
+  .sheet-handle { display: none; }
   .filter-row:hover { background: rgba(96,165,250,0.05) !important; }
   .changelog-item:hover { border-color: var(--panel-border-strong) !important; transform: translateX(2px); }
   .welcome-flag:hover { background: var(--bg-3) !important; transform: translateY(-2px); border-color: var(--self) !important; }
@@ -1232,16 +1235,30 @@ layoutStyle.textContent = `
   @media (max-width: 900px) {
     .layout {
       grid-template-columns: 1fr;
-      /* Globe gets the lion's share on mobile (the map is the point); the
-         panel sits below as a scrollable sheet taking the remaining height. */
-      grid-template-rows: 48px 58vh minmax(0, 1fr);
+      /* Globe fills the area; the panel is a draggable bottom sheet overlay. */
+      grid-template-rows: 48px 1fr 0;
       grid-template-areas: "topbar" "globe" "panel";
     }
     .panel {
-      border-left: none; border-top: 1px solid var(--panel-border);
-      border-radius: 14px 14px 0 0;
-      box-shadow: 0 -8px 24px rgba(0,0,0,0.25);
+      position: fixed; left: 0; right: 0; bottom: 0;
+      height: var(--sheet-h, 48vh);
+      max-height: 92vh; min-height: 72px;
+      border-left: none; border-top: 1px solid var(--panel-border-strong);
+      border-radius: 16px 16px 0 0;
+      box-shadow: 0 -10px 30px rgba(0,0,0,0.30);
+      padding-top: 4px;
+      z-index: 8;
+      transition: height 260ms cubic-bezier(.22,1,.36,1);
+      overscroll-behavior: contain;
     }
+    .panel.sheet-dragging { transition: none; }
+    /* Drag grabber — only on mobile */
+    .sheet-handle {
+      display: flex; align-items: center; justify-content: center;
+      height: 22px; margin: -4px -18px 2px; cursor: grab; touch-action: none;
+    }
+    .sheet-handle:active { cursor: grabbing; }
+    .sheet-grabber { width: 40px; height: 4px; border-radius: 999px; background: var(--fg-faint); opacity: 0.6; }
 
     /* Compact mobile topbar: brand + mode toggle on the bar, everything else
        collapses into a dropdown opened by the hamburger.
