@@ -15,7 +15,10 @@ const path = require("path");
 const ROOT       = path.resolve(__dirname, "..");
 const SNAPSHOT   = JSON.parse(fs.readFileSync(path.join(ROOT, "data", "passports-snapshot.json"), "utf8"));
 const COUNTRIES  = parseCountries(fs.readFileSync(path.join(ROOT, "data", "countries.js"), "utf8"));
-const SITE_URL   = process.env.SITE_URL || ""; // e.g. "https://atlas.example.com" — leave empty for relative URLs
+// Absolute URLs everywhere (sitemap <loc>, canonicals, og:url). The sitemap
+// protocol REQUIRES absolute URLs — relative ones are ignored by Google, which
+// was hurting discovery. Defaults to the live domain; override via SITE_URL.
+const SITE_URL   = process.env.SITE_URL || "https://travelnow.info";
 
 const STATUS_INFO = {
   vf:  { label: "Visa-free",       color: "#22c55e", note: "No visa required" },
@@ -330,7 +333,7 @@ function renderSitemap(allPassports) {
     `<url><loc>${base}/alerts/</loc><lastmod>${today}</lastmod><priority>0.7</priority></url>`,
     `<url><loc>${base}/digital-nomad-visa/</loc><lastmod>${today}</lastmod><priority>0.9</priority></url>`,
     `<url><loc>${base}/citizenship-by-investment/</loc><lastmod>${today}</lastmod><priority>0.95</priority></url>`,
-    `<url><loc>${base}/transit-visa/</loc><lastmod>${today}</lastmod><priority>0.95</priority></url>`,
+    `<url><loc>${base}/transit-map/</loc><lastmod>${today}</lastmod><priority>0.95</priority></url>`,
     `<url><loc>${base}/etias/</loc><lastmod>${today}</lastmod><priority>0.95</priority></url>`,
     `<url><loc>${base}/passport-validity/</loc><lastmod>${today}</lastmod><priority>0.95</priority></url>`,
     `<url><loc>${base}/visa-shortcuts/</loc><lastmod>${today}</lastmod><priority>0.9</priority></url>`,
