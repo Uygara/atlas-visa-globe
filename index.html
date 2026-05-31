@@ -199,8 +199,49 @@
 <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
 </head>
 <body>
+  <noscript><style>#loading{display:none!important}#root{position:relative;z-index:200;}</style></noscript>
   <div class="loading-screen" id="loading"><div class="loading-pulse"></div></div>
-  <div id="root"></div>
+  <!-- Crawlable content: React replaces #root on mount, so JS visitors get the
+       interactive globe while search engines / the AdSense crawler (which may
+       not run the in-browser Babel transform) still index real text + links.
+       Same content as the app's purpose — not cloaking. -->
+  <div id="root">
+    <main style="max-width:860px;margin:0 auto;padding:40px 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;color:#e7ecf5;line-height:1.6;">
+      <h1 style="font-size:30px;font-weight:700;letter-spacing:-0.02em;margin:0 0 8px;">travelnow.info — Where can your passport take you?</h1>
+      <p style="font-size:16px;color:#aab4c8;margin:0 0 18px;">Pick your passport and an interactive globe paints every country by what you'd need to enter today: <strong>visa-free</strong>, <strong>eVisa</strong>, <strong>visa on arrival</strong>, or <strong>visa required</strong>. Free, no signup, and the visa data is refreshed every day from public sources.</p>
+      <p style="font-size:15px;color:#aab4c8;margin:0 0 22px;">We cover 200+ passports and 200+ destinations, plus free tools for airport transit visas, the Schengen 90/180-day rule, the EU's new ETIAS authorization, the 6-month passport-validity rule, and multi-stop trip planning. Every country also has its own page with a full visa-requirements breakdown.</p>
+
+      <h2 style="font-size:20px;margin:26px 0 10px;">Popular passports</h2>
+      <ul style="columns:2;gap:24px;list-style:none;padding:0;margin:0 0 22px;font-size:15px;">
+        <li><a href="/passport/tr/" style="color:#60a5fa;">Türkiye passport visa requirements</a></li>
+        <li><a href="/passport/us/" style="color:#60a5fa;">United States passport visa requirements</a></li>
+        <li><a href="/passport/gb/" style="color:#60a5fa;">United Kingdom passport visa requirements</a></li>
+        <li><a href="/passport/de/" style="color:#60a5fa;">Germany passport visa requirements</a></li>
+        <li><a href="/passport/in/" style="color:#60a5fa;">India passport visa requirements</a></li>
+        <li><a href="/passport/cn/" style="color:#60a5fa;">China passport visa requirements</a></li>
+        <li><a href="/passport/ng/" style="color:#60a5fa;">Nigeria passport visa requirements</a></li>
+        <li><a href="/passport/br/" style="color:#60a5fa;">Brazil passport visa requirements</a></li>
+        <li><a href="/passport/ph/" style="color:#60a5fa;">Philippines passport visa requirements</a></li>
+        <li><a href="/passport/pk/" style="color:#60a5fa;">Pakistan passport visa requirements</a></li>
+        <li><a href="/passport/" style="color:#60a5fa;">→ Browse all 200+ passports</a></li>
+      </ul>
+
+      <h2 style="font-size:20px;margin:26px 0 10px;">Free visa tools</h2>
+      <ul style="list-style:none;padding:0;margin:0 0 22px;font-size:15px;display:flex;flex-direction:column;gap:6px;">
+        <li><a href="/transit-map/" style="color:#60a5fa;">Transit Map</a> — which airports you can connect through without a transit visa</li>
+        <li><a href="/schengen-calculator/" style="color:#60a5fa;">Schengen 90/180 Calculator</a> — track your days in the Schengen Area</li>
+        <li><a href="/etias/" style="color:#60a5fa;">ETIAS Checker</a> — does the EU's 2026 travel authorization apply to you?</li>
+        <li><a href="/passport-validity/" style="color:#60a5fa;">Passport Validity Checker</a> — the 6-month rule, per destination</li>
+        <li><a href="/itinerary/" style="color:#60a5fa;">Travel Planner</a> — visas, costs and lead times for a multi-stop trip</li>
+        <li><a href="/visa-shortcuts/" style="color:#60a5fa;">Visa Shortcuts</a> — easier entry with visas you already hold</li>
+        <li><a href="/digital-nomad-visa/" style="color:#60a5fa;">Digital Nomad Visas</a> · <a href="/citizenship-by-investment/" style="color:#60a5fa;">Citizenship by Investment</a></li>
+      </ul>
+
+      <h2 style="font-size:20px;margin:26px 0 10px;">How the data is built</h2>
+      <p style="font-size:15px;color:#aab4c8;margin:0 0 10px;">Visa requirements are re-scraped daily from public visa-policy pages and authoritative government sources. Transit-visa lists come from the UK's Immigration (Passenger Transit Visa) Order and the EU Visa Code. Always verify with the destination's embassy before booking — see our <a href="/about/" style="color:#60a5fa;">About</a> and <a href="/privacy/" style="color:#60a5fa;">Privacy</a> pages.</p>
+      <p style="font-size:13px;color:#6b7591;margin:18px 0 0;">Loading the interactive map… if it doesn't appear, enable JavaScript.</p>
+    </main>
+  </div>
 
   <!-- Data + components -->
   <script src="data/i18n.js"></script>
