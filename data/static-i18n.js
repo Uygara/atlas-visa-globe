@@ -291,6 +291,8 @@
     "Real-time tracking from authoritative public sources, refreshed every 24 hours": { tr:"Yetkili kamu kaynaklarından gerçek zamanlı takip, her 24 saatte bir yenilenir" },
     "One-click unsubscribe link in every email": { tr:"Her e-postada tek tıkla abonelikten-çık bağlantısı" },
     "No account required — confirm with the link in your inbox": { tr:"Hesap gerekmez — gelen kutundaki bağlantıyla onayla" },
+    "Track up to 3 countries — completely free": { tr:"3 ülkeye kadar takip — tamamen ücretsiz" },
+    "Free alerts cover up to 3 countries.": { tr:"Ücretsiz uyarılar en fazla 3 ülkeyi kapsar." },
     "Pro users can manage countries + cancel from a self-serve portal": { tr:"Pro kullanıcılar ülkeleri yönetebilir + self-servis portaldan iptal edebilir" },
     "Send confirmation email": { tr:"Onay e-postası gönder" },
     // privacy
