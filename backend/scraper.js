@@ -169,9 +169,12 @@ async function scrapePassport(name, slug) {
 
   $("table.wikitable").each((i, tbl) => {
     const headers = $(tbl).find("tr").first().find("th").map((_, th) => $(th).text().trim().toLowerCase()).get();
-    if (!headers.some(h => h.includes("visa requirement"))) return;
-    const countryIdx = headers.findIndex(h => h.includes("country"));
-    const visaIdx = headers.findIndex(h => h.includes("visa requirement"));
+    // Most pages head the status column "Visa requirement", but some (e.g. Canada)
+    // use "Entry requirement". Accept either, else we silently parse 0 rows.
+    const isStatusHdr = h => h.includes("visa requirement") || h.includes("entry requirement");
+    if (!headers.some(isStatusHdr)) return;
+    const countryIdx = headers.findIndex(h => h.includes("country") || h.includes("destination"));
+    const visaIdx = headers.findIndex(isStatusHdr);
     const stayIdx = headers.findIndex(h => h.includes("allowed stay") || h.includes("max stay"));
     const notesIdx = headers.findIndex(h => h.includes("notes") || h.includes("note"));
 
@@ -213,6 +216,7 @@ function classifyVisaText(text) {
   // "Online Visa required" (Australia ETA, Canada eTA) would otherwise be miscategorised as vr.
   if (t.includes("evisa") || t.includes("e-visa") || t.includes("e visa") ||
       t.includes("electronic visa") || t.includes("electronic travel authorization") ||
+      t.includes("electronic travel authorisation") || // British spelling (e.g. Australia ETA)
       t.includes("electronic travel authority") ||
       t.includes("eta required") || t.includes("eta approved") || t.includes("e-ta") ||
       t.includes(" eta ") || /^eta$/.test(t) || t.endsWith(" eta") || t.startsWith("eta ") ||
@@ -414,6 +418,13 @@ async function main() {
     process.exit(1);
   }
 
+  // Load the previous snapshot up-front so we can carry forward good data if a
+  // scrape comes back empty (a parser/source change must never silently turn a
+  // passport into "visa-free everywhere" — that's how the Canada bug shipped).
+  const prevPath = path.join(SOURCE_DIR, "passports-snapshot.json");
+  let prev = {};
+  try { prev = JSON.parse(fs.readFileSync(prevPath, "utf8")); } catch (e) {}
+
   const collected = {};
   for (let i = 0; i < targets.length; i++) {
     const [name, slug] = targets[i];
@@ -423,6 +434,18 @@ async function main() {
       const [iso2, entry] = buildPassportEntry(scrape);
       if (!iso2) {
         console.log(`✗ no ISO2 for "${name}" (check iso-map.json)`);
+        continue;
+      }
+      // 0 rows means the table layout/headers changed — refuse the empty result
+      // and keep yesterday's data instead of writing a bogus all-visa-free entry.
+      if (scrape.rows.length === 0) {
+        if (prev[iso2]) {
+          collected[iso2] = prev[iso2];
+          console.log(`⚠ 0 rows parsed — kept previous snapshot (table layout changed?)`);
+        } else {
+          console.log(`✗ 0 rows parsed and no previous data — skipped (check page table headers)`);
+        }
+        await new Promise(r => setTimeout(r, 1200));
         continue;
       }
       collected[iso2] = entry;
@@ -446,10 +469,7 @@ async function main() {
     return;
   }
 
-  // Diff against previous snapshot for changelog
-  const prevPath = path.join(SOURCE_DIR, "passports-snapshot.json");
-  let prev = {};
-  try { prev = JSON.parse(fs.readFileSync(prevPath, "utf8")); } catch (e) {}
+  // Diff against previous snapshot for changelog (loaded up-front above)
   const changelog = computeChangelog(prev, collected);
   console.log(`\nDiff: ${changelog.length} status changes since yesterday`);
 

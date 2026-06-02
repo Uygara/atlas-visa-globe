@@ -59,6 +59,18 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Canada data bug (Reddit feedback, FIXED):** Canada showed "visa-free
+  everywhere". Root cause was a silent scraper failure: Canada's Wikipedia page
+  heads its column **"Entry requirement"** (not "Visa requirement"), so the
+  table matcher found nothing → 0 rows → `buildPassportEntry` fell to
+  `default:vf` with empty exceptions (logged as `✓ 0 rows`, no alarm), and the
+  bad result persisted in the snapshot day after day. Fixes in `scraper.js`:
+  (a) matcher accepts "entry requirement"; (b) **0-row guard** now carries
+  forward the previous snapshot instead of writing an all-visa-free entry;
+  (c) added British "Electronic Travel Authorisation" spelling. `iso-map.json`:
+  added "Australia/Denmark/France and territories" name variants (these were
+  also silently dropped → Australia wrongly vf). Canada now: 85 exceptions
+  (RU=vr, IN/AU=ev, etc.). Regenerated surgically (Canada only, date preserved).
 - **Onboarding/UX:** intro modal shows first; passport is remembered
   (localStorage `atlas.passport`) instead of always re-detecting; one-time
   "tap a country" coach hint; floating + collapsed "Recently changed" feed
