@@ -9,6 +9,7 @@ const STATUS_COLOR = {
   ev:   { fill: "var(--ev)",   label: "eVisa",            short: "eVisa" },
   voa:  { fill: "var(--voa)",  label: "Visa on arrival",  short: "VoA" },
   vr:   { fill: "var(--vr)",   label: "Visa required",    short: "Visa req." },
+  ban:  { fill: "var(--ban)",  label: "No entry allowed", short: "No entry" },
   self: { fill: "var(--self)", label: "Your passport",    short: "Home" },
   na:   { fill: "var(--na)",   label: "No data",          short: "—" },
 };
@@ -28,6 +29,7 @@ const STATUS_HEX = {
   ev: "#a3e635",
   voa: "#facc15",
   vr: "#ef4444",
+  ban: "#7f1020",
   self: "#60a5fa",
   na: "#2a3245",
 };
@@ -717,8 +719,8 @@ function Globe({
           {/* Diagonal-stripe patterns for compare mode. Twelve combinations:
               every ordered (primary, compare) pair where the two statuses
               differ. Stripe alternates between the two colours at 45°. */}
-          {["vf", "ev", "voa", "vr"].flatMap(a =>
-            ["vf", "ev", "voa", "vr"].filter(b => b !== a).map(b => (
+          {["vf", "ev", "voa", "vr", "ban"].flatMap(a =>
+            ["vf", "ev", "voa", "vr", "ban"].filter(b => b !== a).map(b => (
               <pattern key={`${a}-${b}`} id={`stripe-${a}-${b}`}
                        width="8" height="8" patternUnits="userSpaceOnUse"
                        patternTransform="rotate(45)">

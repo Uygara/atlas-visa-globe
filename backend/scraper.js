@@ -201,7 +201,7 @@ async function scrapePassport(name, slug) {
   return result;
 }
 
-// Map Wikipedia's wording to our 4-status taxonomy
+// Map Wikipedia's wording to our 5-status taxonomy (vf / ev / voa / vr / ban)
 function classifyVisaText(text) {
   // Normalize: lowercase, drop wiki footnote refs like [1], [note 2], collapse ws
   const t = text.toLowerCase()
@@ -210,16 +210,25 @@ function classifyVisaText(text) {
     .trim();
   if (!t) return null;
   // Order matters: check denials first, then specific permits, then generic "visa-free".
-  if (t.includes("admission refused") || t.includes("travel banned") ||
-      t.includes("entry banned") || t.includes("travel restricted")) return "vr";
+  // "ban" = no entry allowed at all (e.g. countries that refuse Israeli citizens,
+  // or refuse their own/other citizens entry). Kept distinct from "visa required".
+  if (t.includes("admission refused") || t.includes("admission restricted") ||
+      t.includes("travel banned") || t.includes("entry banned") ||
+      t.includes("entry refused") || t.includes("entry restricted") ||
+      t.includes("travel restricted") || t.includes("no entry") ||
+      t.includes("entry prohibited") || t.includes("not admitted")) return "ban";
   // eVisa variants — MUST be checked before "visa required" because phrases like
   // "Online Visa required" (Australia ETA, Canada eTA) would otherwise be miscategorised as vr.
+  // Also covers brand-named electronic authorisations: ESTA / Visa Waiver Program
+  // (US), eVisitor (Australia), NZeTA (New Zealand), K-ETA (South Korea).
   if (t.includes("evisa") || t.includes("e-visa") || t.includes("e visa") ||
       t.includes("electronic visa") || t.includes("electronic travel authorization") ||
       t.includes("electronic travel authorisation") || // British spelling (e.g. Australia ETA)
       t.includes("electronic travel authority") ||
       t.includes("eta required") || t.includes("eta approved") || t.includes("e-ta") ||
       t.includes(" eta ") || /^eta$/.test(t) || t.endsWith(" eta") || t.startsWith("eta ") ||
+      t.includes("nzeta") || t.includes("k-eta") || t.includes("keta") || t.includes("evisitor") ||
+      t.includes("visa waiver") ||
       t.includes("etias") || t.includes("online visa") || t.includes("electronic authorization") ||
       t.includes("e-travel") || t.includes("electronic system for travel authorization") ||
       t.includes("esta")) return "ev";
@@ -342,16 +351,20 @@ function parseDays(text) {
 // ───────────────────────────────────────────────────────────────────────────
 // Convert scraped rows into our compact passport schema (default + exceptions)
 function buildPassportEntry(scrape) {
-  const counts = { vf: 0, ev: 0, voa: 0, vr: 0 };
+  const counts = { vf: 0, ev: 0, voa: 0, vr: 0, ban: 0 };
   scrape.rows.forEach(r => counts[r.status]++);
   // Whichever status is most common becomes the "default" — list the exceptions.
-  const def = Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0];
+  // "ban" is never a sensible default (it's always a small minority), so exclude
+  // it from the default election even in the unlikely event it tops the count.
+  const def = Object.entries(counts)
+    .filter(([s]) => s !== "ban")
+    .sort((a, b) => b[1] - a[1])[0][0];
   const entry = {
     name: scrape.name,
     default: def,
     defaultDays: def === "vf" ? 90 : null,
   };
-  ["vf", "ev", "voa", "vr"].forEach(s => {
+  ["vf", "ev", "voa", "vr", "ban"].forEach(s => {
     if (s === def) return;
     entry[s] = scrape.rows
       .filter(r => r.status === s)
@@ -377,7 +390,7 @@ function computeChangelog(prevData, newData) {
     // Build flat status maps for both
     const flatten = (p) => {
       const m = {};
-      ["vf", "ev", "voa", "vr"].forEach(s => (p[s] || []).forEach(e => {
+      ["vf", "ev", "voa", "vr", "ban"].forEach(s => (p[s] || []).forEach(e => {
         const code = Array.isArray(e) ? e[0] : e;
         m[code] = s;
       }));

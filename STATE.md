@@ -12,7 +12,7 @@
 A no-build site: a client-rendered React SPA homepage (UMD React + in-browser
 Babel, no bundler) + ~200 static SEO pages. Pick your passport → an interactive
 D3 globe paints every country by visa status (visa-free / eVisa / visa-on-arrival
-/ visa required). Visa data re-scraped daily from public sources via a GitHub
+/ visa required / no-entry-allowed). Visa data re-scraped daily from public sources via a GitHub
 Actions cron. Monetisation: Google AdSense (was REJECTED "needs improvement" —
 see below) + empty affiliate slots. There is NO live payment (Premium UI was
 removed; backend code is dormant).
@@ -59,6 +59,29 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Reddit feedback round 2 (FIXED):**
+  - **New 5th status `ban` ("No entry allowed").** Countries that refuse a
+    nationality entirely (e.g. 10 countries refuse Israeli citizens; some refuse
+    Iranians) used to show as plain "Visa required". Added `ban` across the whole
+    stack: scraper classifier ("admission refused/restricted", "entry banned",
+    "no entry" → `ban`, never elected as default), `buildPassportEntry`,
+    `frontend-tail.js` (norm/tally/group), `globe.jsx` STATUS_COLOR/HEX/stripes,
+    `panel.jsx` tally row (only shown when count>0) + VisaFeeBox suppressed for
+    bans, `--ban: #7f1020` dark-crimson CSS var, i18n `status.ban` in all 6 langs.
+    Now: 28 passports carry ≥1 ban (IL=10).
+  - **ESTA & friends now eVisa, not visa-free.** The classifier missed several
+    electronic-authorisation brand names, so US ("Visa Waiver Program"),
+    Australia ("eVisitor"), New Zealand ("NZeTA") fell through to default `vf`.
+    Added visa-waiver / evisitor / nzeta / k-eta to the eVisa matcher. US/AU/NZ
+    now correctly read `ev` for VWP passports (DE/GB/JP/FR/SG…).
+  - **iPhone: dropdowns/menus now collapse on tap-outside.** Outside-close used
+    `mousedown`, which iOS Safari doesn't fire on non-button taps, so the Tools
+    dropdown and hamburger sheet couldn't be dismissed by tapping away. Switched
+    to `pointerdown` (fires for touch) and added the same tap-outside-to-close to
+    the hamburger sheet (`headerRef`).
+  - Required a full re-scrape (classifier changes only affect new data). The
+    bulk reclassification diff was kept OUT of the changelog feed (reverted
+    `changelog.js`) since these are taxonomy fixes, not real-world visa changes.
 - **Canada data bug (Reddit feedback, FIXED):** Canada showed "visa-free
   everywhere". Root cause was a silent scraper failure: Canada's Wikipedia page
   heads its column **"Entry requirement"** (not "Visa requirement"), so the

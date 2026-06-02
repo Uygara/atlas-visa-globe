@@ -123,6 +123,10 @@ const RAW_PASSPORTS = {
         "RU",
         30
       ],
+      [
+        "KN",
+        90
+      ],
       "ST",
       [
         "SA",
@@ -153,6 +157,14 @@ const RAW_PASSPORTS = {
       [
         "UA",
         30
+      ],
+      [
+        "GB",
+        180
+      ],
+      [
+        "US",
+        90
       ],
       "VE"
     ],
@@ -195,6 +207,7 @@ const RAW_PASSPORTS = {
       "TM",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "ST": [
         {
@@ -307,6 +320,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KR",
         90
       ],
@@ -388,6 +405,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KN",
+        90
+      ],
+      [
         "SA",
         90
       ],
@@ -423,6 +444,14 @@ const RAW_PASSPORTS = {
       ],
       [
         "UG",
+        90
+      ],
+      [
+        "GB",
+        180
+      ],
+      [
+        "US",
         90
       ],
       [
@@ -479,7 +508,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "KR": {
     "name": "South Korea",
@@ -659,6 +689,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KN",
+        90
+      ],
+      [
         "SA",
         90
       ],
@@ -693,6 +727,14 @@ const RAW_PASSPORTS = {
       ],
       [
         "UG",
+        90
+      ],
+      [
+        "GB",
+        180
+      ],
+      [
+        "US",
         90
       ],
       [
@@ -735,13 +777,17 @@ const RAW_PASSPORTS = {
       ]
     ],
     "vr": [
-      "AF",
       "DZ",
       "CF",
       "CG",
       "ER",
       "GM",
       "GH",
+      "NR",
+      "TM"
+    ],
+    "ban": [
+      "AF",
       [
         "HT",
         90
@@ -756,7 +802,6 @@ const RAW_PASSPORTS = {
       ],
       "LY",
       "ML",
-      "NR",
       "NE",
       [
         "SO",
@@ -764,7 +809,6 @@ const RAW_PASSPORTS = {
       ],
       "SD",
       "SY",
-      "TM",
       [
         "UA",
         90
@@ -833,6 +877,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "LA",
         30
       ],
@@ -887,6 +935,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KN",
+        90
+      ],
+      [
         "SL",
         90
       ],
@@ -911,6 +963,10 @@ const RAW_PASSPORTS = {
       [
         "TG",
         15
+      ],
+      [
+        "GB",
+        180
       ],
       "VE",
       "VN",
@@ -976,7 +1032,6 @@ const RAW_PASSPORTS = {
       ]
     ],
     "vr": [
-      "AF",
       "DZ",
       "BZ",
       "ER",
@@ -985,6 +1040,9 @@ const RAW_PASSPORTS = {
       "MM",
       "TM",
       "US"
+    ],
+    "ban": [
+      "AF"
     ],
     "cond": {
       "BZ": [
@@ -1008,6 +1066,10 @@ const RAW_PASSPORTS = {
       [
         "AF",
         30
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -1097,6 +1159,10 @@ const RAW_PASSPORTS = {
       ],
       "JO",
       [
+        "KE",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -1142,6 +1208,10 @@ const RAW_PASSPORTS = {
       ],
       [
         "NP",
+        90
+      ],
+      [
+        "NZ",
         90
       ],
       [
@@ -1206,6 +1276,14 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "GB",
+        180
+      ],
+      [
+        "US",
+        90
+      ],
+      [
         "ZW",
         30
       ]
@@ -1241,7 +1319,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "FR": {
     "name": "France",
@@ -1249,6 +1328,10 @@ const RAW_PASSPORTS = {
     "defaultDays": 90,
     "ev": [
       "AF",
+      [
+        "AU",
+        90
+      ],
       [
         "AZ",
         30
@@ -1333,6 +1416,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KR",
         90
       ],
@@ -1375,6 +1462,10 @@ const RAW_PASSPORTS = {
       ],
       [
         "NP",
+        90
+      ],
+      [
+        "NZ",
         90
       ],
       [
@@ -1428,6 +1519,10 @@ const RAW_PASSPORTS = {
         180
       ],
       [
+        "US",
+        90
+      ],
+      [
         "ZW",
         30
       ]
@@ -1464,7 +1559,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "IT": {
     "name": "Italy",
@@ -1474,6 +1570,10 @@ const RAW_PASSPORTS = {
       [
         "AF",
         30
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -1624,6 +1724,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KN",
+        180
+      ],
+      [
         "SA",
         90
       ],
@@ -1660,6 +1764,10 @@ const RAW_PASSPORTS = {
       [
         "GB",
         180
+      ],
+      [
+        "US",
+        90
       ],
       [
         "ZW",
@@ -1710,7 +1818,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "ES": {
     "name": "Spain",
@@ -1720,6 +1829,10 @@ const RAW_PASSPORTS = {
       [
         "AF",
         30
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -1802,6 +1915,10 @@ const RAW_PASSPORTS = {
       ],
       "JO",
       [
+        "KE",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -1863,6 +1980,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KN",
+        90
+      ],
+      [
         "SA",
         90
       ],
@@ -1894,6 +2015,14 @@ const RAW_PASSPORTS = {
       ],
       [
         "UG",
+        90
+      ],
+      [
+        "GB",
+        180
+      ],
+      [
+        "US",
         90
       ],
       [
@@ -1936,7 +2065,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "NL": {
     "name": "Netherlands",
@@ -2029,6 +2159,10 @@ const RAW_PASSPORTS = {
       ],
       "JO",
       [
+        "KE",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -2128,6 +2262,14 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "GB",
+        180
+      ],
+      [
+        "US",
+        90
+      ],
+      [
         "ZW",
         30
       ]
@@ -2160,7 +2302,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "BE": {
     "name": "Belgium",
@@ -2170,6 +2313,10 @@ const RAW_PASSPORTS = {
       [
         "AF",
         30
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -2256,6 +2403,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -2310,6 +2461,10 @@ const RAW_PASSPORTS = {
         16
       ],
       [
+        "KN",
+        90
+      ],
+      [
         "SA",
         90
       ],
@@ -2334,6 +2489,14 @@ const RAW_PASSPORTS = {
       ],
       [
         "UG",
+        90
+      ],
+      [
+        "GB",
+        180
+      ],
+      [
+        "US",
         90
       ],
       [
@@ -2370,7 +2533,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "DK": {
     "name": "Denmark",
@@ -2380,6 +2544,10 @@ const RAW_PASSPORTS = {
       [
         "AF",
         30
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -2465,6 +2633,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -2528,6 +2700,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KN",
+        90
+      ],
+      [
         "SA",
         90
       ],
@@ -2560,6 +2736,10 @@ const RAW_PASSPORTS = {
       [
         "GB",
         180
+      ],
+      [
+        "US",
+        90
       ],
       [
         "ZW",
@@ -2597,7 +2777,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "FI": {
     "name": "Finland",
@@ -2605,6 +2786,10 @@ const RAW_PASSPORTS = {
     "defaultDays": 90,
     "ev": [
       "AF",
+      [
+        "AU",
+        90
+      ],
       [
         "AZ",
         30
@@ -2678,6 +2863,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KR",
         90
       ],
@@ -2732,6 +2921,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KN",
+        90
+      ],
+      [
         "SA",
         90
       ],
@@ -2756,6 +2949,14 @@ const RAW_PASSPORTS = {
       ],
       [
         "UG",
+        90
+      ],
+      [
+        "GB",
+        180
+      ],
+      [
+        "US",
         90
       ]
     ],
@@ -2797,7 +2998,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "IE": {
     "name": "Ireland",
@@ -2886,6 +3088,10 @@ const RAW_PASSPORTS = {
       ],
       "JO",
       [
+        "KE",
+        90
+      ],
+      [
         "KR",
         90
       ],
@@ -2956,6 +3162,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KN",
+        90
+      ],
+      [
         "SA",
         90
       ],
@@ -2980,6 +3190,10 @@ const RAW_PASSPORTS = {
       [
         "TO",
         31
+      ],
+      [
+        "US",
+        90
       ],
       "VN",
       [
@@ -3032,7 +3246,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "LU": {
     "name": "Luxembourg",
@@ -3042,6 +3257,10 @@ const RAW_PASSPORTS = {
       [
         "AF",
         30
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -3120,6 +3339,10 @@ const RAW_PASSPORTS = {
       ],
       "JO",
       [
+        "KE",
+        90
+      ],
+      [
         "KR",
         90
       ],
@@ -3182,6 +3405,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KN",
+        90
+      ],
+      [
         "SA",
         90
       ],
@@ -3206,6 +3433,14 @@ const RAW_PASSPORTS = {
       ],
       [
         "UG",
+        90
+      ],
+      [
+        "GB",
+        180
+      ],
+      [
+        "US",
         90
       ],
       "VN",
@@ -3255,7 +3490,8 @@ const RAW_PASSPORTS = {
       ],
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "NO": {
     "name": "Norway",
@@ -3265,6 +3501,10 @@ const RAW_PASSPORTS = {
       [
         "AF",
         30
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -3350,6 +3590,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -3401,6 +3645,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KN",
+        90
+      ],
+      [
         "SA",
         90
       ],
@@ -3425,6 +3673,14 @@ const RAW_PASSPORTS = {
       ],
       [
         "UG",
+        90
+      ],
+      [
+        "GB",
+        180
+      ],
+      [
+        "US",
         90
       ],
       [
@@ -3479,7 +3735,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "CH": {
     "name": "Switzerland",
@@ -3489,6 +3746,10 @@ const RAW_PASSPORTS = {
       [
         "AF",
         30
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -3581,6 +3842,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -3653,6 +3918,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KN",
+        90
+      ],
+      [
         "SA",
         90
       ],
@@ -3685,6 +3954,14 @@ const RAW_PASSPORTS = {
       ],
       [
         "UG",
+        90
+      ],
+      [
+        "GB",
+        180
+      ],
+      [
+        "US",
         90
       ],
       [
@@ -3731,7 +4008,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "AT": {
     "name": "Austria",
@@ -3741,6 +4019,10 @@ const RAW_PASSPORTS = {
       [
         "AF",
         30
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -3907,6 +4189,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KN",
+        90
+      ],
+      [
         "SA",
         90
       ],
@@ -3941,6 +4227,14 @@ const RAW_PASSPORTS = {
       ],
       [
         "UG",
+        90
+      ],
+      [
+        "GB",
+        180
+      ],
+      [
+        "US",
         90
       ],
       [
@@ -3983,7 +4277,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "SE": {
     "name": "Sweden",
@@ -3993,6 +4288,10 @@ const RAW_PASSPORTS = {
       [
         "AF",
         30
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -4066,6 +4365,10 @@ const RAW_PASSPORTS = {
         90
       ],
       "JO",
+      [
+        "KE",
+        90
+      ],
       [
         "KW",
         90
@@ -4167,6 +4470,14 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "GB",
+        180
+      ],
+      [
+        "US",
+        90
+      ],
+      [
         "ZW",
         30
       ]
@@ -4207,7 +4518,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "PT": {
     "name": "Portugal",
@@ -4217,6 +4529,10 @@ const RAW_PASSPORTS = {
       [
         "AF",
         30
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -4299,6 +4615,10 @@ const RAW_PASSPORTS = {
       ],
       "JO",
       [
+        "KE",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -4368,6 +4688,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KN",
+        90
+      ],
+      [
         "SA",
         90
       ],
@@ -4396,6 +4720,14 @@ const RAW_PASSPORTS = {
       ],
       [
         "UG",
+        90
+      ],
+      [
+        "GB",
+        180
+      ],
+      [
+        "US",
         90
       ],
       [
@@ -4438,7 +4770,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "GR": {
     "name": "Greece",
@@ -4448,6 +4781,10 @@ const RAW_PASSPORTS = {
       [
         "AF",
         30
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -4527,6 +4864,10 @@ const RAW_PASSPORTS = {
       ],
       "JO",
       [
+        "KE",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -4565,6 +4906,10 @@ const RAW_PASSPORTS = {
       ],
       [
         "NP",
+        90
+      ],
+      [
+        "NZ",
         90
       ],
       [
@@ -4626,6 +4971,10 @@ const RAW_PASSPORTS = {
         180
       ],
       [
+        "US",
+        90
+      ],
+      [
         "VN",
         30
       ],
@@ -4673,7 +5022,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "GB": {
     "name": "United Kingdom",
@@ -4683,6 +5033,10 @@ const RAW_PASSPORTS = {
       [
         "AF",
         30
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -4763,6 +5117,10 @@ const RAW_PASSPORTS = {
       ],
       "JO",
       [
+        "KE",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -4836,6 +5194,10 @@ const RAW_PASSPORTS = {
         60
       ],
       [
+        "KN",
+        180
+      ],
+      [
         "SA",
         180
       ],
@@ -4875,6 +5237,10 @@ const RAW_PASSPORTS = {
       ],
       [
         "UG",
+        90
+      ],
+      [
+        "US",
         90
       ],
       [
@@ -4919,7 +5285,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "HU": {
     "name": "Hungary",
@@ -4929,6 +5296,10 @@ const RAW_PASSPORTS = {
       [
         "AF",
         30
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -5015,6 +5386,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -5056,6 +5431,10 @@ const RAW_PASSPORTS = {
       ],
       [
         "NP",
+        90
+      ],
+      [
+        "NZ",
         90
       ],
       [
@@ -5127,6 +5506,10 @@ const RAW_PASSPORTS = {
         180
       ],
       [
+        "US",
+        90
+      ],
+      [
         "ZW",
         30
       ]
@@ -5170,7 +5553,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "MY": {
     "name": "Malaysia",
@@ -5306,6 +5690,10 @@ const RAW_PASSPORTS = {
         "RU",
         16
       ],
+      [
+        "KN",
+        90
+      ],
       "ST",
       [
         "SA",
@@ -5343,6 +5731,10 @@ const RAW_PASSPORTS = {
       [
         "UA",
         30
+      ],
+      [
+        "GB",
+        180
       ]
     ],
     "voa": [
@@ -5391,7 +5783,8 @@ const RAW_PASSPORTS = {
       "NE",
       "TM",
       "US"
-    ]
+    ],
+    "ban": []
   },
   "PL": {
     "name": "Poland",
@@ -5401,6 +5794,10 @@ const RAW_PASSPORTS = {
       [
         "AF",
         30
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -5487,6 +5884,10 @@ const RAW_PASSPORTS = {
         60
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -5532,6 +5933,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "NZ",
+        90
+      ],
+      [
         "NG",
         90
       ],
@@ -5550,6 +5955,10 @@ const RAW_PASSPORTS = {
       [
         "RW",
         30
+      ],
+      [
+        "KN",
+        90
       ],
       [
         "SA",
@@ -5584,6 +5993,10 @@ const RAW_PASSPORTS = {
       [
         "GB",
         180
+      ],
+      [
+        "US",
+        90
       ],
       [
         "ZW",
@@ -5622,7 +6035,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "CZ": {
     "name": "Czech Republic",
@@ -5632,6 +6046,10 @@ const RAW_PASSPORTS = {
       [
         "AF",
         30
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -5709,6 +6127,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -5767,6 +6189,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KN",
+        90
+      ],
+      [
         "SA",
         90
       ],
@@ -5791,6 +6217,14 @@ const RAW_PASSPORTS = {
       ],
       [
         "UG",
+        90
+      ],
+      [
+        "GB",
+        180
+      ],
+      [
+        "US",
         90
       ],
       [
@@ -5849,7 +6283,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "SI": {
     "name": "Slovenia",
@@ -5859,6 +6294,10 @@ const RAW_PASSPORTS = {
       [
         "AF",
         30
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -5947,6 +6386,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -6004,6 +6447,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KN",
+        90
+      ],
+      [
         "SA",
         90
       ],
@@ -6027,6 +6474,14 @@ const RAW_PASSPORTS = {
         15
       ],
       "UG",
+      [
+        "GB",
+        180
+      ],
+      [
+        "US",
+        90
+      ],
       [
         "ZW",
         30
@@ -6078,7 +6533,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "SK": {
     "name": "Slovakia",
@@ -6088,6 +6544,10 @@ const RAW_PASSPORTS = {
       [
         "AF",
         30
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -6243,6 +6703,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KN",
+        90
+      ],
+      [
         "ST",
         15
       ],
@@ -6266,6 +6730,14 @@ const RAW_PASSPORTS = {
         15
       ],
       "UG",
+      [
+        "GB",
+        180
+      ],
+      [
+        "US",
+        90
+      ],
       [
         "VN",
         90
@@ -6310,7 +6782,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "LT": {
     "name": "Lithuania",
@@ -6320,6 +6793,10 @@ const RAW_PASSPORTS = {
       [
         "AF",
         30
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -6502,6 +6979,14 @@ const RAW_PASSPORTS = {
       ],
       "UG",
       [
+        "GB",
+        180
+      ],
+      [
+        "US",
+        90
+      ],
+      [
         "VN",
         90
       ],
@@ -6543,7 +7028,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "LV": {
     "name": "Latvia",
@@ -6553,6 +7039,10 @@ const RAW_PASSPORTS = {
       [
         "AF",
         30
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -6626,6 +7116,10 @@ const RAW_PASSPORTS = {
       ],
       "JO",
       [
+        "KE",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -6682,6 +7176,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KN",
+        90
+      ],
+      [
         "SA",
         90
       ],
@@ -6702,6 +7200,14 @@ const RAW_PASSPORTS = {
         15
       ],
       "UG",
+      [
+        "GB",
+        180
+      ],
+      [
+        "US",
+        90
+      ],
       "VN",
       [
         "ZW",
@@ -6746,7 +7252,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "EE": {
     "name": "Estonia",
@@ -6756,6 +7263,10 @@ const RAW_PASSPORTS = {
       [
         "AF",
         30
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -6838,6 +7349,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KR",
         90
       ],
@@ -6895,6 +7410,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KN",
+        90
+      ],
+      [
         "SA",
         90
       ],
@@ -6911,6 +7430,14 @@ const RAW_PASSPORTS = {
         90
       ],
       "UG",
+      [
+        "GB",
+        180
+      ],
+      [
+        "US",
+        90
+      ],
       [
         "VN",
         90
@@ -6965,7 +7492,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "IS": {
     "name": "Iceland",
@@ -6975,6 +7503,10 @@ const RAW_PASSPORTS = {
       [
         "AF",
         30
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -7049,6 +7581,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -7111,6 +7647,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KN",
+        90
+      ],
+      [
         "SA",
         90
       ],
@@ -7135,6 +7675,14 @@ const RAW_PASSPORTS = {
       ],
       [
         "UG",
+        90
+      ],
+      [
+        "GB",
+        180
+      ],
+      [
+        "US",
         90
       ],
       [
@@ -7199,7 +7747,8 @@ const RAW_PASSPORTS = {
       "TM",
       "VU",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "MT": {
     "name": "Malta",
@@ -7209,6 +7758,10 @@ const RAW_PASSPORTS = {
       [
         "AF",
         30
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -7305,6 +7858,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -7363,6 +7920,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KN",
+        90
+      ],
+      [
         "SA",
         90
       ],
@@ -7390,6 +7951,14 @@ const RAW_PASSPORTS = {
       [
         "TG",
         15
+      ],
+      [
+        "GB",
+        180
+      ],
+      [
+        "US",
+        90
       ],
       [
         "VN",
@@ -7435,7 +8004,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "LI": {
     "name": "Liechtenstein",
@@ -7445,6 +8015,10 @@ const RAW_PASSPORTS = {
       [
         "AF",
         30
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -7595,6 +8169,10 @@ const RAW_PASSPORTS = {
       ],
       "RW",
       [
+        "KN",
+        90
+      ],
+      [
         "SA",
         90
       ],
@@ -7611,6 +8189,14 @@ const RAW_PASSPORTS = {
         15
       ],
       "UG",
+      [
+        "GB",
+        180
+      ],
+      [
+        "US",
+        90
+      ],
       [
         "VN",
         30
@@ -7678,7 +8264,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "AU": {
     "name": "Australia",
@@ -7785,6 +8372,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -7849,6 +8440,10 @@ const RAW_PASSPORTS = {
         "PG",
         30
       ],
+      [
+        "KN",
+        90
+      ],
       "ST",
       [
         "SA",
@@ -7890,6 +8485,10 @@ const RAW_PASSPORTS = {
       ],
       [
         "UG",
+        90
+      ],
+      [
+        "US",
         90
       ],
       "VN",
@@ -7958,7 +8557,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "NZ": {
     "name": "New Zealand",
@@ -8061,6 +8661,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KR",
         90
       ],
@@ -8125,6 +8729,10 @@ const RAW_PASSPORTS = {
         "PW",
         30
       ],
+      [
+        "KN",
+        90
+      ],
       "ST",
       [
         "SA",
@@ -8166,6 +8774,10 @@ const RAW_PASSPORTS = {
       ],
       [
         "UG",
+        90
+      ],
+      [
+        "US",
         90
       ],
       "VN",
@@ -8231,7 +8843,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "CA": {
     "name": "Canada",
@@ -8327,7 +8940,8 @@ const RAW_PASSPORTS = {
       "SY",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "US": {
     "name": "United States",
@@ -8418,6 +9032,10 @@ const RAW_PASSPORTS = {
       ],
       "JO",
       [
+        "KE",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -8490,6 +9108,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KN",
+        90
+      ],
+      [
         "SA",
         90
       ],
@@ -8525,6 +9147,10 @@ const RAW_PASSPORTS = {
       [
         "UG",
         90
+      ],
+      [
+        "GB",
+        180
       ],
       "VE",
       "VN",
@@ -8569,22 +9195,24 @@ const RAW_PASSPORTS = {
     ],
     "vr": [
       "DZ",
-      "BF",
       "CF",
       "CN",
       "CG",
       "ER",
       "GH",
       "IR",
-      "KP",
       "LR",
-      "ML",
       "NR",
-      "NE",
       "RU",
       "SD",
       "TM",
       "YE"
+    ],
+    "ban": [
+      "BF",
+      "KP",
+      "ML",
+      "NE"
     ],
     "cond": {
       "RU": [
@@ -8607,6 +9235,10 @@ const RAW_PASSPORTS = {
       [
         "AF",
         30
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -8694,6 +9326,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -8759,7 +9395,15 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KN",
+        90
+      ],
+      [
         "SA",
+        90
+      ],
+      [
+        "SC",
         90
       ],
       [
@@ -8786,6 +9430,14 @@ const RAW_PASSPORTS = {
       ],
       [
         "UG",
+        90
+      ],
+      [
+        "GB",
+        180
+      ],
+      [
+        "US",
         90
       ],
       [
@@ -8832,7 +9484,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "CY": {
     "name": "Cyprus",
@@ -8842,6 +9495,10 @@ const RAW_PASSPORTS = {
       [
         "AF",
         30
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -8983,6 +9640,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KN",
+        90
+      ],
+      [
         "SA",
         90
       ],
@@ -9011,6 +9672,10 @@ const RAW_PASSPORTS = {
       [
         "TR",
         30
+      ],
+      [
+        "GB",
+        180
       ],
       [
         "VN",
@@ -9047,7 +9712,8 @@ const RAW_PASSPORTS = {
       "TM",
       "US",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "RO": {
     "name": "Romania",
@@ -9057,6 +9723,10 @@ const RAW_PASSPORTS = {
       [
         "AF",
         30
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -9147,6 +9817,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -9188,6 +9862,10 @@ const RAW_PASSPORTS = {
       ],
       [
         "NP",
+        90
+      ],
+      [
+        "NZ",
         90
       ],
       [
@@ -9295,7 +9973,8 @@ const RAW_PASSPORTS = {
       "TM",
       "US",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "BG": {
     "name": "Bulgaria",
@@ -9305,6 +9984,10 @@ const RAW_PASSPORTS = {
       [
         "AF",
         30
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -9392,6 +10075,10 @@ const RAW_PASSPORTS = {
       [
         "JO",
         30
+      ],
+      [
+        "KE",
+        90
       ],
       [
         "KW",
@@ -9502,6 +10189,10 @@ const RAW_PASSPORTS = {
         720
       ],
       [
+        "GB",
+        180
+      ],
+      [
         "ZW",
         30
       ]
@@ -9544,7 +10235,8 @@ const RAW_PASSPORTS = {
       "TM",
       "US",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "AR": {
     "name": "Argentina",
@@ -9633,6 +10325,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KR",
         90
       ],
@@ -9675,6 +10371,10 @@ const RAW_PASSPORTS = {
       ],
       [
         "NP",
+        90
+      ],
+      [
+        "NZ",
         90
       ],
       [
@@ -9815,7 +10515,8 @@ const RAW_PASSPORTS = {
       "TM",
       "US",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "CL": {
     "name": "Chile",
@@ -9911,6 +10612,10 @@ const RAW_PASSPORTS = {
         90
       ],
       "JO",
+      [
+        "KE",
+        90
+      ],
       [
         "KR",
         90
@@ -10015,6 +10720,14 @@ const RAW_PASSPORTS = {
         "UG",
         90
       ],
+      [
+        "GB",
+        180
+      ],
+      [
+        "US",
+        90
+      ],
       "VE",
       [
         "ZM",
@@ -10081,7 +10794,8 @@ const RAW_PASSPORTS = {
       "TO",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "BR": {
     "name": "Brazil",
@@ -10168,6 +10882,10 @@ const RAW_PASSPORTS = {
       ],
       "JO",
       [
+        "KE",
+        90
+      ],
+      [
         "KR",
         90
       ],
@@ -10240,6 +10958,10 @@ const RAW_PASSPORTS = {
       [
         "RW",
         30
+      ],
+      [
+        "KN",
+        90
       ],
       [
         "SL",
@@ -10337,7 +11059,8 @@ const RAW_PASSPORTS = {
       "TM",
       "US",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "UY": {
     "name": "Uruguay",
@@ -10346,6 +11069,7 @@ const RAW_PASSPORTS = {
     "ev": [
       "AF",
       "AG",
+      "AU",
       [
         "BH",
         14
@@ -10404,6 +11128,10 @@ const RAW_PASSPORTS = {
         30
       ],
       "KZ",
+      [
+        "KE",
+        90
+      ],
       [
         "KR",
         90
@@ -10497,6 +11225,10 @@ const RAW_PASSPORTS = {
       [
         "UG",
         90
+      ],
+      [
+        "GB",
+        180
       ],
       [
         "UZ",
@@ -10599,7 +11331,8 @@ const RAW_PASSPORTS = {
       "TM",
       "US",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "MX": {
     "name": "Mexico",
@@ -10614,6 +11347,7 @@ const RAW_PASSPORTS = {
         "AM",
         120
       ],
+      "AU",
       [
         "AZ",
         30
@@ -10690,6 +11424,10 @@ const RAW_PASSPORTS = {
       [
         "JO",
         30
+      ],
+      [
+        "KE",
+        90
       ],
       [
         "KR",
@@ -10877,6 +11615,7 @@ const RAW_PASSPORTS = {
       "US",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "OM": [
         {
@@ -11099,6 +11838,7 @@ const RAW_PASSPORTS = {
         180
       ]
     ],
+    "ban": [],
     "cond": {
       "SV": [
         {
@@ -11431,7 +12171,6 @@ const RAW_PASSPORTS = {
       "CF",
       "SV",
       "ER",
-      "GE",
       "GD",
       "KZ",
       "KI",
@@ -11440,7 +12179,6 @@ const RAW_PASSPORTS = {
       "LB",
       "ML",
       "MX",
-      "MD",
       "MA",
       "NI",
       "NE",
@@ -11454,6 +12192,10 @@ const RAW_PASSPORTS = {
       "TM",
       "AE",
       "UY"
+    ],
+    "ban": [
+      "GE",
+      "MD"
     ],
     "cond": {
       "CO": [
@@ -11564,6 +12306,10 @@ const RAW_PASSPORTS = {
       ],
       "JO",
       [
+        "KE",
+        90
+      ],
+      [
         "KR",
         90
       ],
@@ -11616,6 +12362,10 @@ const RAW_PASSPORTS = {
         "RW",
         30
       ],
+      [
+        "KN",
+        90
+      ],
       "ST",
       [
         "SL",
@@ -11644,6 +12394,14 @@ const RAW_PASSPORTS = {
       ],
       [
         "UG",
+        90
+      ],
+      [
+        "GB",
+        180
+      ],
+      [
+        "US",
         90
       ],
       "VE",
@@ -11684,19 +12442,12 @@ const RAW_PASSPORTS = {
       ]
     ],
     "vr": [
-      "AF",
-      "DZ",
-      "BD",
-      "BN",
       "CN",
       "EG",
       "ER",
       "GM",
       "GH",
       "ID",
-      "KW",
-      "LY",
-      "MV",
       "ML",
       "NE",
       "OM",
@@ -11704,6 +12455,18 @@ const RAW_PASSPORTS = {
       "SD",
       "TN",
       "TM"
+    ],
+    "ban": [
+      "AF",
+      "DZ",
+      "BD",
+      "BN",
+      "KW",
+      "LY",
+      "MY",
+      "MV",
+      "PK",
+      "SA"
     ]
   },
   "AD": {
@@ -11714,6 +12477,10 @@ const RAW_PASSPORTS = {
       [
         "AF",
         30
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -11784,6 +12551,10 @@ const RAW_PASSPORTS = {
         90
       ],
       "JO",
+      [
+        "KE",
+        90
+      ],
       [
         "KR",
         30
@@ -11881,6 +12652,14 @@ const RAW_PASSPORTS = {
       ],
       "UG",
       [
+        "GB",
+        180
+      ],
+      [
+        "US",
+        90
+      ],
+      [
         "VN",
         30
       ]
@@ -11947,7 +12726,8 @@ const RAW_PASSPORTS = {
       "TT",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "MC": {
     "name": "Monaco",
@@ -11961,6 +12741,10 @@ const RAW_PASSPORTS = {
       [
         "AO",
         30
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -12034,6 +12818,10 @@ const RAW_PASSPORTS = {
       ],
       "JO",
       [
+        "KE",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -12090,6 +12878,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KN",
+        90
+      ],
+      [
         "SA",
         90
       ],
@@ -12127,6 +12919,14 @@ const RAW_PASSPORTS = {
       ],
       "TT",
       "UG",
+      [
+        "GB",
+        180
+      ],
+      [
+        "US",
+        90
+      ],
       [
         "VN",
         30
@@ -12190,7 +12990,8 @@ const RAW_PASSPORTS = {
       "SD",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "SM": {
     "name": "San Marino",
@@ -12202,6 +13003,10 @@ const RAW_PASSPORTS = {
         30
       ],
       "AO",
+      [
+        "AU",
+        90
+      ],
       [
         "AZ",
         30
@@ -12326,6 +13131,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "PG",
+        60
+      ],
+      [
         "RU",
         30
       ],
@@ -12357,6 +13166,10 @@ const RAW_PASSPORTS = {
       ],
       "TT",
       "UG",
+      [
+        "GB",
+        180
+      ],
       [
         "US",
         90
@@ -12425,7 +13238,8 @@ const RAW_PASSPORTS = {
       "TO",
       "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "VA": {
     "name": "Vatican City",
@@ -12443,6 +13257,10 @@ const RAW_PASSPORTS = {
       [
         "AM",
         120
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "AZ",
@@ -12516,6 +13334,10 @@ const RAW_PASSPORTS = {
       ],
       "JO",
       [
+        "KE",
+        90
+      ],
+      [
         "KR",
         30
       ],
@@ -12581,6 +13403,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KN",
+        90
+      ],
+      [
         "SO",
         30
       ],
@@ -12601,6 +13427,10 @@ const RAW_PASSPORTS = {
       ],
       "TT",
       "UG",
+      [
+        "GB",
+        180
+      ],
       [
         "VN",
         90
@@ -12675,7 +13505,8 @@ const RAW_PASSPORTS = {
       "US",
       "VE",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "BN": {
     "name": "Brunei",
@@ -12759,6 +13590,10 @@ const RAW_PASSPORTS = {
       ],
       "KZ",
       [
+        "KE",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -12808,6 +13643,10 @@ const RAW_PASSPORTS = {
         "PG",
         60
       ],
+      [
+        "KN",
+        90
+      ],
       "ST",
       [
         "SA",
@@ -12838,6 +13677,14 @@ const RAW_PASSPORTS = {
       ],
       [
         "UG",
+        90
+      ],
+      [
+        "GB",
+        180
+      ],
+      [
+        "US",
         90
       ],
       "VE"
@@ -12918,7 +13765,8 @@ const RAW_PASSPORTS = {
         "YE",
         30
       ]
-    ]
+    ],
+    "ban": []
   },
   "TR": {
     "name": "Turkey",
@@ -12988,6 +13836,10 @@ const RAW_PASSPORTS = {
       [
         "IQ",
         30
+      ],
+      [
+        "KE",
+        90
       ],
       [
         "KR",
@@ -13065,6 +13917,10 @@ const RAW_PASSPORTS = {
       [
         "RW",
         30
+      ],
+      [
+        "KN",
+        90
       ],
       [
         "SA",
@@ -13213,6 +14069,7 @@ const RAW_PASSPORTS = {
       "VA",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "MX": [
         {
@@ -13325,6 +14182,10 @@ const RAW_PASSPORTS = {
       ],
       "JO",
       [
+        "KE",
+        90
+      ],
+      [
         "KR",
         30
       ],
@@ -13387,6 +14248,10 @@ const RAW_PASSPORTS = {
         60
       ],
       "QA",
+      [
+        "KN",
+        90
+      ],
       "ST",
       [
         "SA",
@@ -13523,7 +14388,8 @@ const RAW_PASSPORTS = {
       "US",
       "UY",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "MK": {
     "name": "North Macedonia",
@@ -13618,6 +14484,10 @@ const RAW_PASSPORTS = {
       ],
       "KZ",
       [
+        "KE",
+        90
+      ],
+      [
         "LA",
         30
       ],
@@ -13677,6 +14547,7 @@ const RAW_PASSPORTS = {
         "RU",
         30
       ],
+      "KN",
       "ST",
       [
         "SL",
@@ -13815,6 +14686,7 @@ const RAW_PASSPORTS = {
       "UY",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "BZ": [
         {
@@ -13937,6 +14809,10 @@ const RAW_PASSPORTS = {
       [
         "JO",
         30
+      ],
+      [
+        "KE",
+        90
       ],
       [
         "KR",
@@ -14145,7 +15021,8 @@ const RAW_PASSPORTS = {
       "GB",
       "US",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "ME": {
     "name": "Montenegro",
@@ -14238,6 +15115,10 @@ const RAW_PASSPORTS = {
       ],
       "KZ",
       [
+        "KE",
+        90
+      ],
+      [
         "LA",
         30
       ],
@@ -14304,6 +15185,7 @@ const RAW_PASSPORTS = {
         "RW",
         30
       ],
+      "KN",
       "ST",
       [
         "SA",
@@ -14426,6 +15308,7 @@ const RAW_PASSPORTS = {
       "US",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -14529,6 +15412,10 @@ const RAW_PASSPORTS = {
         30
       ],
       "KZ",
+      [
+        "KE",
+        90
+      ],
       [
         "LA",
         30
@@ -14724,6 +15611,7 @@ const RAW_PASSPORTS = {
       "UY",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -14838,6 +15726,10 @@ const RAW_PASSPORTS = {
       "IQ",
       "JO",
       [
+        "KE",
+        90
+      ],
+      [
         "LA",
         30
       ],
@@ -14895,6 +15787,10 @@ const RAW_PASSPORTS = {
       [
         "PG",
         60
+      ],
+      [
+        "KN",
+        90
       ],
       "ST",
       [
@@ -15029,6 +15925,7 @@ const RAW_PASSPORTS = {
       "UY",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -15344,6 +16241,12 @@ const RAW_PASSPORTS = {
       "US",
       "YE"
     ],
+    "ban": [
+      [
+        "RU",
+        90
+      ]
+    ],
     "cond": {
       "MA": [
         {
@@ -15436,6 +16339,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -15489,6 +16396,10 @@ const RAW_PASSPORTS = {
       [
         "RW",
         30
+      ],
+      [
+        "KN",
+        90
       ],
       "ST",
       [
@@ -15619,7 +16530,8 @@ const RAW_PASSPORTS = {
       "US",
       "VU",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "RU": {
     "name": "Russia",
@@ -15634,6 +16546,7 @@ const RAW_PASSPORTS = {
         "AL",
         90
       ],
+      "AU",
       [
         "BH",
         14
@@ -15703,6 +16616,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KR",
         60
       ],
@@ -15751,6 +16668,10 @@ const RAW_PASSPORTS = {
       [
         "RW",
         30
+      ],
+      [
+        "KN",
+        90
       ],
       [
         "SL",
@@ -15846,11 +16767,8 @@ const RAW_PASSPORTS = {
       "CG",
       "HR",
       "CY",
-      "CZ",
       "DK",
       "ER",
-      "EE",
-      "FI",
       "FR",
       "GM",
       "DE",
@@ -15863,10 +16781,8 @@ const RAW_PASSPORTS = {
       "JP",
       "KP",
       "KW",
-      "LV",
       "LS",
       "LI",
-      "LT",
       "LU",
       "ML",
       "MT",
@@ -15874,11 +16790,6 @@ const RAW_PASSPORTS = {
       "NL",
       "NE",
       "MK",
-      [
-        "NO",
-        90
-      ],
-      "PL",
       "PT",
       "RO",
       "SK",
@@ -15893,6 +16804,18 @@ const RAW_PASSPORTS = {
       "US",
       "VA",
       "YE"
+    ],
+    "ban": [
+      "CZ",
+      "EE",
+      "FI",
+      "LV",
+      "LT",
+      [
+        "NO",
+        90
+      ],
+      "PL"
     ],
     "cond": {
       "AL": [
@@ -16099,6 +17022,7 @@ const RAW_PASSPORTS = {
         "AO",
         30
       ],
+      "AU",
       [
         "BS",
         90
@@ -16179,6 +17103,10 @@ const RAW_PASSPORTS = {
       ],
       [
         "JO",
+        90
+      ],
+      [
+        "KE",
         90
       ],
       [
@@ -16322,6 +17250,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "JM": [
         {
@@ -16650,6 +17579,10 @@ const RAW_PASSPORTS = {
         "RW",
         30
       ],
+      [
+        "KN",
+        30
+      ],
       "ST",
       "SA",
       [
@@ -16735,6 +17668,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "BZ": [
         {
@@ -16982,6 +17916,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "LA",
         30
       ],
@@ -17131,6 +18069,9 @@ const RAW_PASSPORTS = {
         "TV",
         30
       ]
+    ],
+    "ban": [
+      "AZ"
     ]
   },
   "AZ": {
@@ -17345,6 +18286,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "LA",
         30
       ],
@@ -17490,6 +18435,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "OM": [
         {
@@ -17884,6 +18830,10 @@ const RAW_PASSPORTS = {
         "PG",
         30
       ],
+      [
+        "KN",
+        90
+      ],
       "ST",
       [
         "SA",
@@ -17964,6 +18914,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "BA": [
         {
@@ -18125,6 +19076,10 @@ const RAW_PASSPORTS = {
       ],
       "UA",
       [
+        "GB",
+        180
+      ],
+      [
         "UZ",
         30
       ],
@@ -18171,6 +19126,7 @@ const RAW_PASSPORTS = {
       "DZ",
       "AR",
       "AM",
+      "AU",
       "BD",
       "BY",
       "BR",
@@ -18209,6 +19165,7 @@ const RAW_PASSPORTS = {
       "VE",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "AR": [
         {
@@ -18255,6 +19212,10 @@ const RAW_PASSPORTS = {
       [
         "IN",
         60
+      ],
+      [
+        "KE",
+        90
       ],
       [
         "KR",
@@ -18381,6 +19342,7 @@ const RAW_PASSPORTS = {
     "vr": [
       "AR",
       "AM",
+      "AU",
       "BT",
       "BN",
       "BF",
@@ -18422,7 +19384,8 @@ const RAW_PASSPORTS = {
       "US",
       "VE",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "BW": {
     "name": "Botswana",
@@ -18640,6 +19603,14 @@ const RAW_PASSPORTS = {
         90
       ],
       "KZ",
+      [
+        "KE",
+        90
+      ],
+      [
+        "KR",
+        90
+      ],
       "KG",
       [
         "LA",
@@ -18712,6 +19683,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "AR": [
         {
@@ -19059,6 +20031,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "AR": [
         {
@@ -19170,6 +20143,14 @@ const RAW_PASSPORTS = {
       "JO",
       "KZ",
       [
+        "KE",
+        90
+      ],
+      [
+        "KR",
+        90
+      ],
+      [
         "KG",
         30
       ],
@@ -19232,6 +20213,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KN",
+        90
+      ],
+      [
         "ST",
         15
       ],
@@ -19257,6 +20242,10 @@ const RAW_PASSPORTS = {
       ],
       "UG",
       "UA",
+      [
+        "GB",
+        180
+      ],
       "VU",
       [
         "VN",
@@ -19329,6 +20318,7 @@ const RAW_PASSPORTS = {
       "US",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -19430,6 +20420,10 @@ const RAW_PASSPORTS = {
       ],
       "KZ",
       [
+        "KE",
+        90
+      ],
+      [
         "KR",
         90
       ],
@@ -19516,6 +20510,10 @@ const RAW_PASSPORTS = {
         15
       ],
       "UG",
+      [
+        "GB",
+        180
+      ],
       "VE",
       [
         "ZM",
@@ -19601,6 +20599,7 @@ const RAW_PASSPORTS = {
       "VU",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -19638,6 +20637,7 @@ const RAW_PASSPORTS = {
         "AM",
         120
       ],
+      "AU",
       [
         "AZ",
         30
@@ -19866,7 +20866,8 @@ const RAW_PASSPORTS = {
       "TM",
       "US",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "KN": {
     "name": "Saint Kitts and Nevis",
@@ -19931,6 +20932,10 @@ const RAW_PASSPORTS = {
         90
       ],
       "JO",
+      [
+        "KR",
+        90
+      ],
       "KG",
       [
         "LA",
@@ -19978,6 +20983,10 @@ const RAW_PASSPORTS = {
       ],
       "UG",
       "AE",
+      [
+        "GB",
+        180
+      ],
       [
         "VN",
         90
@@ -20029,6 +21038,7 @@ const RAW_PASSPORTS = {
     "vr": [
       "AF",
       "DZ",
+      "AU",
       "AZ",
       "BN",
       "CA",
@@ -20059,6 +21069,7 @@ const RAW_PASSPORTS = {
       "US",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -20129,6 +21140,10 @@ const RAW_PASSPORTS = {
       "IQ",
       "JO",
       "KZ",
+      [
+        "KE",
+        90
+      ],
       "KG",
       [
         "LA",
@@ -20186,6 +21201,10 @@ const RAW_PASSPORTS = {
         30
       ],
       "AE",
+      [
+        "GB",
+        180
+      ],
       [
         "VN",
         90
@@ -20261,6 +21280,7 @@ const RAW_PASSPORTS = {
       "UY",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "SA": [
         {
@@ -20284,6 +21304,7 @@ const RAW_PASSPORTS = {
         "AM",
         120
       ],
+      "AU",
       [
         "AZ",
         30
@@ -20342,6 +21363,10 @@ const RAW_PASSPORTS = {
       ],
       "IQ",
       "JO",
+      [
+        "KR",
+        90
+      ],
       "KG",
       [
         "LA",
@@ -20476,6 +21501,7 @@ const RAW_PASSPORTS = {
       "TM",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "AR": [
         {
@@ -20498,6 +21524,7 @@ const RAW_PASSPORTS = {
         "AM",
         120
       ],
+      "AU",
       [
         "AZ",
         30
@@ -20714,7 +21741,8 @@ const RAW_PASSPORTS = {
       "TM",
       "US",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "CN": {
     "name": "China",
@@ -20969,6 +21997,10 @@ const RAW_PASSPORTS = {
       ],
       "JP",
       "JO",
+      [
+        "KE",
+        90
+      ],
       "KR",
       [
         "KG",
@@ -21038,6 +22070,10 @@ const RAW_PASSPORTS = {
       [
         "RW",
         30
+      ],
+      [
+        "KN",
+        90
       ],
       [
         "ST",
@@ -21131,6 +22167,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "AR": [
         {
@@ -21289,6 +22326,7 @@ const RAW_PASSPORTS = {
         "AM",
         90
       ],
+      "AU",
       [
         "AZ",
         30
@@ -21378,6 +22416,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KG",
         60
       ],
@@ -21435,6 +22477,10 @@ const RAW_PASSPORTS = {
         "RU",
         30
       ],
+      [
+        "KN",
+        90
+      ],
       "ST",
       [
         "RS",
@@ -21447,6 +22493,10 @@ const RAW_PASSPORTS = {
       [
         "SO",
         30
+      ],
+      [
+        "ZA",
+        90
       ],
       "SS",
       [
@@ -21545,6 +22595,9 @@ const RAW_PASSPORTS = {
       "TL",
       "TV",
       "ZW"
+    ],
+    "ban": [
+      "PK"
     ],
     "cond": {
       "AR": [
@@ -21956,6 +23009,10 @@ const RAW_PASSPORTS = {
         "RU",
         30
       ],
+      [
+        "KN",
+        90
+      ],
       "ST",
       [
         "SL",
@@ -21964,6 +23021,10 @@ const RAW_PASSPORTS = {
       [
         "SO",
         30
+      ],
+      [
+        "ZA",
+        90
       ],
       "SS",
       [
@@ -22043,6 +23104,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "CA": [
         {
@@ -22305,6 +23367,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KG",
         60
       ],
@@ -22448,6 +23514,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "AL": [
         {
@@ -22812,6 +23879,10 @@ const RAW_PASSPORTS = {
         30
       ],
       "JO",
+      [
+        "KE",
+        90
+      ],
       "LY",
       [
         "MG",
@@ -22978,6 +24049,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "CO": [
         {
@@ -23239,6 +24311,10 @@ const RAW_PASSPORTS = {
         "JO",
         30
       ],
+      [
+        "KE",
+        90
+      ],
       "LY",
       [
         "MW",
@@ -23389,6 +24465,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "BZ": [
         {
@@ -23548,6 +24625,7 @@ const RAW_PASSPORTS = {
         90
       ],
       "AG",
+      "AU",
       [
         "AZ",
         30
@@ -23636,6 +24714,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KG",
         60
       ],
@@ -23693,6 +24775,10 @@ const RAW_PASSPORTS = {
         60
       ],
       "QA",
+      [
+        "KN",
+        90
+      ],
       "ST",
       [
         "RS",
@@ -23766,6 +24852,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "AL": [
         {
@@ -24007,6 +25094,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KG",
         60
       ],
@@ -24173,6 +25264,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -24340,6 +25432,10 @@ const RAW_PASSPORTS = {
       "IR",
       "KZ",
       [
+        "KE",
+        90
+      ],
+      [
         "KG",
         60
       ],
@@ -24459,6 +25555,10 @@ const RAW_PASSPORTS = {
         "TV",
         30
       ]
+    ],
+    "ban": [
+      "LY",
+      "SD"
     ],
     "cond": {
       "GE": [
@@ -24679,6 +25779,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KG",
         60
       ],
@@ -24812,6 +25916,9 @@ const RAW_PASSPORTS = {
         "TV",
         30
       ]
+    ],
+    "ban": [
+      "LY"
     ],
     "cond": {
       "BY": [
@@ -25014,6 +26121,10 @@ const RAW_PASSPORTS = {
       "JO",
       "KZ",
       [
+        "KE",
+        90
+      ],
+      [
         "KG",
         60
       ],
@@ -25151,6 +26262,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "TW": [
         {
@@ -25338,6 +26450,10 @@ const RAW_PASSPORTS = {
       ],
       "KZ",
       [
+        "KE",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -25488,6 +26604,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "AR": [
         {
@@ -25724,6 +26841,10 @@ const RAW_PASSPORTS = {
       "IQ",
       "KZ",
       [
+        "KE",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -25836,7 +26957,8 @@ const RAW_PASSPORTS = {
         "TV",
         30
       ]
-    ]
+    ],
+    "ban": []
   },
   "SA": {
     "name": "Saudi Arabia",
@@ -26096,6 +27218,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KR",
         30
       ],
@@ -26160,6 +27286,10 @@ const RAW_PASSPORTS = {
         "RW",
         30
       ],
+      [
+        "KN",
+        90
+      ],
       "ST",
       [
         "RS",
@@ -26194,6 +27324,10 @@ const RAW_PASSPORTS = {
       [
         "UG",
         90
+      ],
+      [
+        "GB",
+        180
       ],
       "VE",
       "VN",
@@ -26240,6 +27374,7 @@ const RAW_PASSPORTS = {
         90
       ]
     ],
+    "ban": [],
     "cond": {
       "CR": [
         {
@@ -26353,6 +27488,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KR",
         90
       ],
@@ -26410,6 +27549,10 @@ const RAW_PASSPORTS = {
         60
       ],
       [
+        "KN",
+        90
+      ],
+      [
         "RS",
         90
       ],
@@ -26441,6 +27584,14 @@ const RAW_PASSPORTS = {
       ],
       [
         "UG",
+        90
+      ],
+      [
+        "GB",
+        180
+      ],
+      [
+        "US",
         90
       ],
       "VN",
@@ -26555,6 +27706,7 @@ const RAW_PASSPORTS = {
       "TM",
       "VA"
     ],
+    "ban": [],
     "cond": {
       "RS": [
         {
@@ -26783,6 +27935,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KR",
         30
       ],
@@ -26829,6 +27985,10 @@ const RAW_PASSPORTS = {
         "RW",
         30
       ],
+      [
+        "KN",
+        90
+      ],
       "ST",
       "SL",
       "SO",
@@ -26853,6 +28013,10 @@ const RAW_PASSPORTS = {
       ],
       "TT",
       "UG",
+      [
+        "GB",
+        180
+      ],
       "VE",
       [
         "VN",
@@ -26907,6 +28071,7 @@ const RAW_PASSPORTS = {
         90
       ]
     ],
+    "ban": [],
     "cond": {
       "MX": [
         {
@@ -27168,6 +28333,10 @@ const RAW_PASSPORTS = {
       ],
       "IQ",
       [
+        "KE",
+        90
+      ],
+      [
         "KR",
         30
       ],
@@ -27225,12 +28394,20 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KN",
+        90
+      ],
+      [
         "RS",
         90
       ],
       "SL",
       "SO",
       "SS",
+      [
+        "LK",
+        30
+      ],
       [
         "TZ",
         90
@@ -27241,6 +28418,10 @@ const RAW_PASSPORTS = {
       ],
       "TT",
       "UG",
+      [
+        "GB",
+        180
+      ],
       "VN",
       [
         "ZW",
@@ -27278,10 +28459,6 @@ const RAW_PASSPORTS = {
         "SN",
         90
       ],
-      [
-        "LK",
-        30
-      ],
       "SY",
       [
         "TL",
@@ -27296,6 +28473,7 @@ const RAW_PASSPORTS = {
         90
       ]
     ],
+    "ban": [],
     "cond": {
       "BZ": [
         {
@@ -27570,6 +28748,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "LA",
         30
       ],
@@ -27659,6 +28841,10 @@ const RAW_PASSPORTS = {
         "UG",
         90
       ],
+      [
+        "GB",
+        180
+      ],
       "VN",
       [
         "ZW",
@@ -27707,6 +28893,7 @@ const RAW_PASSPORTS = {
         90
       ]
     ],
+    "ban": [],
     "cond": {
       "CR": [
         {
@@ -27895,6 +29082,10 @@ const RAW_PASSPORTS = {
       "IQ",
       "IL",
       [
+        "KE",
+        90
+      ],
+      [
         "KG",
         60
       ],
@@ -27953,6 +29144,10 @@ const RAW_PASSPORTS = {
         60
       ],
       "QA",
+      [
+        "KN",
+        90
+      ],
       "ST",
       [
         "SL",
@@ -28028,6 +29223,7 @@ const RAW_PASSPORTS = {
         90
       ]
     ],
+    "ban": [],
     "cond": {
       "AL": [
         {
@@ -28190,7 +29386,10 @@ const RAW_PASSPORTS = {
         "TD",
         90
       ],
-      "CO",
+      [
+        "CO",
+        90
+      ],
       [
         "CD",
         7
@@ -28233,6 +29432,10 @@ const RAW_PASSPORTS = {
       [
         "ID",
         60
+      ],
+      [
+        "KE",
+        90
       ],
       [
         "KG",
@@ -28302,7 +29505,10 @@ const RAW_PASSPORTS = {
         "KN",
         30
       ],
-      "ST",
+      [
+        "ST",
+        30
+      ],
       [
         "RS",
         90
@@ -28401,6 +29607,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "BY": [
         {
@@ -28501,6 +29708,7 @@ const RAW_PASSPORTS = {
         "AM",
         120
       ],
+      "AU",
       "BS",
       [
         "BH",
@@ -28627,6 +29835,10 @@ const RAW_PASSPORTS = {
         60
       ],
       "QA",
+      [
+        "KN",
+        90
+      ],
       "ST",
       [
         "RS",
@@ -28743,6 +29955,7 @@ const RAW_PASSPORTS = {
         90
       ]
     ],
+    "ban": [],
     "cond": {
       "MD": [
         {
@@ -29187,6 +30400,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "AL": [
         {
@@ -29753,6 +30967,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "DO": [
         {
@@ -30127,6 +31342,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "CR": [
         {
@@ -30208,6 +31424,7 @@ const RAW_PASSPORTS = {
       "AL",
       "AO",
       "AG",
+      "AU",
       "BS",
       "BH",
       "BT",
@@ -30272,6 +31489,10 @@ const RAW_PASSPORTS = {
       "IQ",
       [
         "JO",
+        90
+      ],
+      [
+        "KE",
         90
       ],
       "KG",
@@ -30370,7 +31591,8 @@ const RAW_PASSPORTS = {
         "TV",
         30
       ]
-    ]
+    ],
+    "ban": []
   },
   "NG": {
     "name": "Nigeria",
@@ -30552,6 +31774,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "GE": [
         {
@@ -30817,6 +32040,10 @@ const RAW_PASSPORTS = {
         "RU",
         16
       ],
+      [
+        "KN",
+        90
+      ],
       "ST",
       "SL",
       [
@@ -30872,6 +32099,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "CR": [
         {
@@ -31158,6 +32386,10 @@ const RAW_PASSPORTS = {
       ],
       "PG",
       "QA",
+      [
+        "KN",
+        90
+      ],
       "ST",
       [
         "SO",
@@ -31206,6 +32438,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "SA": [
         {
@@ -31277,6 +32510,7 @@ const RAW_PASSPORTS = {
       "AF",
       "AL",
       "AG",
+      "AU",
       [
         "BS",
         90
@@ -31444,6 +32678,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "CR": [
         {
@@ -31765,6 +33000,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "DO": [
         {
@@ -32015,6 +33251,10 @@ const RAW_PASSPORTS = {
         60
       ],
       "QA",
+      [
+        "KN",
+        90
+      ],
       "ST",
       "SA",
       "SL",
@@ -32072,6 +33312,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "DO": [
         {
@@ -32390,6 +33631,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "CR": [
         {
@@ -32584,6 +33826,7 @@ const RAW_PASSPORTS = {
       ],
       "IQ",
       "KZ",
+      "KE",
       "KG",
       "LY",
       [
@@ -32718,6 +33961,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "CR": [
         {
@@ -32920,6 +34164,10 @@ const RAW_PASSPORTS = {
       "ID",
       "IQ",
       "KZ",
+      [
+        "KE",
+        90
+      ],
       "KG",
       "LS",
       "LY",
@@ -33020,7 +34268,8 @@ const RAW_PASSPORTS = {
         "TV",
         30
       ]
-    ]
+    ],
+    "ban": []
   },
   "CI": {
     "name": "Côte d'Ivoire",
@@ -33145,6 +34394,10 @@ const RAW_PASSPORTS = {
       ],
       "IQ",
       "KZ",
+      [
+        "KE",
+        90
+      ],
       "KG",
       "LS",
       "LY",
@@ -33243,6 +34496,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -33392,6 +34646,10 @@ const RAW_PASSPORTS = {
       [
         "ID",
         60
+      ],
+      [
+        "KE",
+        90
       ],
       [
         "KG",
@@ -33544,6 +34802,11 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [
+      "LY",
+      "AE",
+      "US"
+    ],
     "cond": {
       "MD": [
         {
@@ -33649,6 +34912,10 @@ const RAW_PASSPORTS = {
       ],
       [
         "GN",
+        90
+      ],
+      [
+        "KE",
         90
       ],
       "KG",
@@ -33760,6 +35027,9 @@ const RAW_PASSPORTS = {
         "TV",
         30
       ]
+    ],
+    "ban": [
+      "IL"
     ],
     "cond": {
       "CU": [
@@ -33888,6 +35158,10 @@ const RAW_PASSPORTS = {
       ],
       "IQ",
       [
+        "KE",
+        90
+      ],
+      [
         "KG",
         60
       ],
@@ -34001,6 +35275,11 @@ const RAW_PASSPORTS = {
         "YE",
         90
       ]
+    ],
+    "ban": [
+      "EG",
+      "LY",
+      "ML"
     ],
     "cond": {
       "GE": [
@@ -34138,6 +35417,10 @@ const RAW_PASSPORTS = {
       ],
       "IQ",
       "JO",
+      [
+        "KE",
+        90
+      ],
       "KR",
       "KG",
       [
@@ -34186,6 +35469,10 @@ const RAW_PASSPORTS = {
       ],
       "KN",
       "ST",
+      [
+        "SC",
+        90
+      ],
       "SL",
       "SG",
       [
@@ -34263,6 +35550,9 @@ const RAW_PASSPORTS = {
         "TV",
         30
       ]
+    ],
+    "ban": [
+      "LY"
     ],
     "cond": {
       "CR": [
@@ -34385,6 +35675,10 @@ const RAW_PASSPORTS = {
       [
         "IQ",
         30
+      ],
+      [
+        "KE",
+        90
       ],
       [
         "KG",
@@ -34518,6 +35812,10 @@ const RAW_PASSPORTS = {
         "TV",
         30
       ]
+    ],
+    "ban": [
+      "NZ",
+      "US"
     ],
     "cond": {
       "MD": [
@@ -34772,6 +36070,11 @@ const RAW_PASSPORTS = {
         "TV",
         30
       ]
+    ],
+    "ban": [
+      "AU",
+      "CA",
+      "NZ"
     ],
     "cond": {
       "CR": [
@@ -35083,6 +36386,9 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [
+      "LY"
+    ],
     "cond": {
       "CR": [
         {
@@ -35264,6 +36570,10 @@ const RAW_PASSPORTS = {
       "JO",
       "KZ",
       [
+        "KE",
+        90
+      ],
+      [
         "LA",
         30
       ],
@@ -35394,6 +36704,10 @@ const RAW_PASSPORTS = {
         "TV",
         30
       ]
+    ],
+    "ban": [
+      "JP",
+      "LK"
     ],
     "cond": {
       "MD": [
@@ -35624,6 +36938,9 @@ const RAW_PASSPORTS = {
         "TV",
         30
       ]
+    ],
+    "ban": [
+      "US"
     ],
     "cond": {
       "CR": [
@@ -35894,6 +37211,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -36162,6 +37480,7 @@ const RAW_PASSPORTS = {
       ],
       "UG"
     ],
+    "ban": [],
     "cond": {
       "CR": [
         {
@@ -36268,6 +37587,7 @@ const RAW_PASSPORTS = {
         "AM",
         120
       ],
+      "AU",
       [
         "BS",
         90
@@ -36330,6 +37650,10 @@ const RAW_PASSPORTS = {
         30
       ],
       "KZ",
+      [
+        "KE",
+        90
+      ],
       [
         "KW",
         30
@@ -36472,6 +37796,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "CR": [
         {
@@ -36758,6 +38083,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KG",
         60
       ],
@@ -36826,6 +38155,10 @@ const RAW_PASSPORTS = {
       [
         "RW",
         30
+      ],
+      [
+        "KN",
+        90
       ],
       "ST",
       [
@@ -36919,6 +38252,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "BA": [
         {
@@ -37112,6 +38446,10 @@ const RAW_PASSPORTS = {
       ],
       "IQ",
       "KZ",
+      [
+        "KE",
+        90
+      ],
       "KG",
       [
         "LA",
@@ -37214,7 +38552,8 @@ const RAW_PASSPORTS = {
         "TV",
         30
       ]
-    ]
+    ],
+    "ban": []
   },
   "BI": {
     "name": "Burundi",
@@ -37438,6 +38777,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -37626,6 +38966,10 @@ const RAW_PASSPORTS = {
         "JO",
         30
       ],
+      [
+        "KE",
+        90
+      ],
       "KG",
       [
         "LA",
@@ -37726,6 +39070,7 @@ const RAW_PASSPORTS = {
       ],
       "UG"
     ],
+    "ban": [],
     "cond": {
       "DO": [
         {
@@ -37880,6 +39225,10 @@ const RAW_PASSPORTS = {
       ],
       "IQ",
       "KZ",
+      [
+        "KE",
+        90
+      ],
       "KG",
       [
         "LA",
@@ -37999,6 +39348,7 @@ const RAW_PASSPORTS = {
       ],
       "UG"
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -38276,6 +39626,9 @@ const RAW_PASSPORTS = {
       ],
       "UG"
     ],
+    "ban": [
+      "US"
+    ],
     "cond": {
       "GE": [
         {
@@ -38393,6 +39746,10 @@ const RAW_PASSPORTS = {
       ],
       "JO",
       [
+        "KE",
+        90
+      ],
+      [
         "KR",
         90
       ],
@@ -38464,6 +39821,10 @@ const RAW_PASSPORTS = {
       [
         "RW",
         30
+      ],
+      [
+        "KN",
+        90
       ],
       "ST",
       [
@@ -38594,6 +39955,7 @@ const RAW_PASSPORTS = {
       "US",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "SA": [
         {
@@ -38681,6 +40043,7 @@ const RAW_PASSPORTS = {
       "AF",
       "AL",
       "AG",
+      "AU",
       [
         "BS",
         90
@@ -38745,6 +40108,10 @@ const RAW_PASSPORTS = {
       ],
       "IQ",
       "KZ",
+      [
+        "KE",
+        90
+      ],
       "KG",
       [
         "LA",
@@ -38874,6 +40241,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -39030,6 +40398,10 @@ const RAW_PASSPORTS = {
       ],
       "IQ",
       "KZ",
+      [
+        "KE",
+        90
+      ],
       "KG",
       [
         "LS",
@@ -39140,6 +40512,9 @@ const RAW_PASSPORTS = {
         "TV",
         30
       ]
+    ],
+    "ban": [
+      "US"
     ],
     "cond": {
       "CR": [
@@ -39283,6 +40658,7 @@ const RAW_PASSPORTS = {
         90
       ],
       "AG",
+      "AU",
       [
         "BS",
         90
@@ -39484,6 +40860,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "MD": [
         {
@@ -39715,6 +41092,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "LA",
         30
       ],
@@ -39763,6 +41144,10 @@ const RAW_PASSPORTS = {
       [
         "RW",
         30
+      ],
+      [
+        "KN",
+        90
       ],
       "ST",
       [
@@ -39850,6 +41235,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -40006,6 +41392,10 @@ const RAW_PASSPORTS = {
         30
       ],
       "KZ",
+      [
+        "KE",
+        90
+      ],
       "KG",
       [
         "LA",
@@ -40145,6 +41535,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "DO": [
         {
@@ -40244,6 +41635,10 @@ const RAW_PASSPORTS = {
         30
       ],
       "KZ",
+      [
+        "KR",
+        90
+      ],
       "KG",
       [
         "LA",
@@ -40354,6 +41749,7 @@ const RAW_PASSPORTS = {
     ],
     "vr": [
       "DZ",
+      "AU",
       "AZ",
       "BN",
       "CA",
@@ -40387,6 +41783,7 @@ const RAW_PASSPORTS = {
       "US",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -40620,6 +42017,14 @@ const RAW_PASSPORTS = {
         "JO",
         30
       ],
+      [
+        "KE",
+        90
+      ],
+      [
+        "KR",
+        90
+      ],
       "KG",
       [
         "LA",
@@ -40755,6 +42160,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "MX": [
         {
@@ -41046,6 +42452,10 @@ const RAW_PASSPORTS = {
       ],
       "JO",
       [
+        "KE",
+        90
+      ],
+      [
         "KR",
         90
       ],
@@ -41210,6 +42620,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "RS": [
         {
@@ -41306,6 +42717,10 @@ const RAW_PASSPORTS = {
       ],
       "JO",
       "KZ",
+      [
+        "KE",
+        90
+      ],
       [
         "KG",
         60
@@ -41496,6 +42911,7 @@ const RAW_PASSPORTS = {
       "VE",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -41673,6 +43089,10 @@ const RAW_PASSPORTS = {
         30
       ],
       "IQ",
+      [
+        "KE",
+        90
+      ],
       "KG",
       [
         "LA",
@@ -41816,6 +43236,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "CR": [
         {
@@ -42057,6 +43478,14 @@ const RAW_PASSPORTS = {
       ],
       "JO",
       "KZ",
+      [
+        "KE",
+        90
+      ],
+      [
+        "KR",
+        30
+      ],
       "KG",
       "LR",
       "LY",
@@ -42137,6 +43566,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "CR": [
         {
@@ -42424,6 +43854,10 @@ const RAW_PASSPORTS = {
       ],
       "KZ",
       [
+        "KE",
+        90
+      ],
+      [
         "KG",
         30
       ],
@@ -42460,6 +43894,10 @@ const RAW_PASSPORTS = {
       "NG",
       "PK",
       "QA",
+      [
+        "KN",
+        90
+      ],
       "ST",
       [
         "SL",
@@ -42551,6 +43989,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -42744,6 +44183,10 @@ const RAW_PASSPORTS = {
       ],
       "KZ",
       [
+        "KE",
+        90
+      ],
+      [
         "KG",
         60
       ],
@@ -42878,6 +44321,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "GE": [
         {
@@ -43054,6 +44498,10 @@ const RAW_PASSPORTS = {
         60
       ],
       "KZ",
+      [
+        "KE",
+        90
+      ],
       "KG",
       [
         "LA",
@@ -43145,7 +44593,8 @@ const RAW_PASSPORTS = {
         "TL",
         30
       ]
-    ]
+    ],
+    "ban": []
   },
   "GD": {
     "name": "Grenada",
@@ -43198,6 +44647,14 @@ const RAW_PASSPORTS = {
         90
       ],
       "JO",
+      [
+        "KE",
+        90
+      ],
+      [
+        "KR",
+        90
+      ],
       "KG",
       [
         "LA",
@@ -43259,6 +44716,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "GB",
+        180
+      ],
+      [
         "VN",
         90
       ]
@@ -43305,6 +44766,7 @@ const RAW_PASSPORTS = {
     "vr": [
       "AL",
       "DZ",
+      "AU",
       "AZ",
       "BY",
       "BN",
@@ -43349,7 +44811,8 @@ const RAW_PASSPORTS = {
       ],
       "US",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "GT": {
     "name": "Guatemala",
@@ -43460,6 +44923,10 @@ const RAW_PASSPORTS = {
         90
       ],
       "UG",
+      [
+        "GB",
+        180
+      ],
       "VN",
       [
         "ZW",
@@ -43581,7 +45048,8 @@ const RAW_PASSPORTS = {
       "VU",
       "VE",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "GN": {
     "name": "Guinea",
@@ -43744,6 +45212,10 @@ const RAW_PASSPORTS = {
         30
       ],
       "KZ",
+      [
+        "KE",
+        90
+      ],
       "KG",
       [
         "LS",
@@ -43868,6 +45340,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "CR": [
         {
@@ -44138,7 +45611,8 @@ const RAW_PASSPORTS = {
         "TV",
         30
       ]
-    ]
+    ],
+    "ban": []
   },
   "GY": {
     "name": "Guyana",
@@ -44392,6 +45866,10 @@ const RAW_PASSPORTS = {
       ],
       "KZ",
       [
+        "KE",
+        90
+      ],
+      [
         "KG",
         60
       ],
@@ -44469,6 +45947,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "GB",
+        180
+      ],
+      [
         "UZ",
         30
       ],
@@ -44525,6 +46007,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -44673,6 +46156,14 @@ const RAW_PASSPORTS = {
         90
       ],
       "KZ",
+      [
+        "KE",
+        90
+      ],
+      [
+        "KR",
+        90
+      ],
       "KG",
       [
         "LA",
@@ -44788,6 +46279,9 @@ const RAW_PASSPORTS = {
         "TV",
         30
       ]
+    ],
+    "ban": [
+      "SR"
     ],
     "cond": {
       "MA": [
@@ -45058,6 +46552,7 @@ const RAW_PASSPORTS = {
       "VE",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "RS": [
         {
@@ -45356,6 +46851,14 @@ const RAW_PASSPORTS = {
         30
       ],
       "KZ",
+      [
+        "KE",
+        90
+      ],
+      [
+        "KR",
+        90
+      ],
       "KG",
       [
         "LA",
@@ -45463,6 +46966,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -45601,6 +47105,10 @@ const RAW_PASSPORTS = {
         60
       ],
       "QA",
+      [
+        "KN",
+        90
+      ],
       "ST",
       "SL",
       [
@@ -45684,6 +47192,7 @@ const RAW_PASSPORTS = {
     "vr": [
       "DZ",
       "AR",
+      "AU",
       "AZ",
       "BY",
       "BZ",
@@ -45726,6 +47235,7 @@ const RAW_PASSPORTS = {
       "UY",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -45924,6 +47434,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "LA",
         30
       ],
@@ -46072,6 +47586,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "CR": [
         {
@@ -46335,6 +47850,10 @@ const RAW_PASSPORTS = {
       ],
       "KZ",
       [
+        "KE",
+        90
+      ],
+      [
         "KR",
         60
       ],
@@ -46453,6 +47972,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -46628,6 +48148,10 @@ const RAW_PASSPORTS = {
         30
       ],
       "KZ",
+      [
+        "KE",
+        90
+      ],
       "KG",
       "LS",
       [
@@ -46738,6 +48262,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "CR": [
         {
@@ -47127,6 +48652,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "BZ": [
         {
@@ -47365,6 +48891,10 @@ const RAW_PASSPORTS = {
       ],
       "JO",
       "KZ",
+      [
+        "KE",
+        90
+      ],
       "KG",
       [
         "LA",
@@ -47396,6 +48926,10 @@ const RAW_PASSPORTS = {
       [
         "QA",
         30
+      ],
+      [
+        "KN",
+        90
       ],
       "ST",
       [
@@ -47453,6 +48987,7 @@ const RAW_PASSPORTS = {
         7
       ]
     ],
+    "ban": [],
     "cond": {
       "CR": [
         {
@@ -47784,6 +49319,10 @@ const RAW_PASSPORTS = {
       ],
       "JO",
       [
+        "KE",
+        90
+      ],
+      [
         "LA",
         30
       ],
@@ -47825,6 +49364,7 @@ const RAW_PASSPORTS = {
         "PG",
         60
       ],
+      "KN",
       "ST",
       [
         "SA",
@@ -47869,6 +49409,10 @@ const RAW_PASSPORTS = {
         90
       ],
       "UA",
+      [
+        "GB",
+        180
+      ],
       [
         "UZ",
         30
@@ -47917,6 +49461,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "RS": [
         {
@@ -48051,6 +49596,10 @@ const RAW_PASSPORTS = {
       ],
       "IQ",
       "KZ",
+      [
+        "KE",
+        90
+      ],
       "KG",
       [
         "LA",
@@ -48145,6 +49694,9 @@ const RAW_PASSPORTS = {
         "TV",
         30
       ]
+    ],
+    "ban": [
+      "US"
     ],
     "cond": {
       "CR": [
@@ -48345,6 +49897,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KN",
+        90
+      ],
+      [
         "ST",
         15
       ],
@@ -48438,6 +49994,7 @@ const RAW_PASSPORTS = {
     "vr": [
       "DZ",
       "AR",
+      "AU",
       "AZ",
       "BY",
       "BR",
@@ -48480,6 +50037,7 @@ const RAW_PASSPORTS = {
       "VE",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -48643,6 +50201,10 @@ const RAW_PASSPORTS = {
       ],
       "IQ",
       "KZ",
+      [
+        "KE",
+        90
+      ],
       "KG",
       [
         "LA",
@@ -48740,6 +50302,7 @@ const RAW_PASSPORTS = {
       ],
       "UG"
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -48843,6 +50406,10 @@ const RAW_PASSPORTS = {
         30
       ],
       "KZ",
+      [
+        "KE",
+        90
+      ],
       [
         "KG",
         30
@@ -49017,6 +50584,7 @@ const RAW_PASSPORTS = {
     "vr": [
       "DZ",
       "AR",
+      "AU",
       "AZ",
       "BS",
       [
@@ -49072,6 +50640,7 @@ const RAW_PASSPORTS = {
       "UY",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -49326,6 +50895,10 @@ const RAW_PASSPORTS = {
         "JP",
         90
       ],
+      [
+        "KE",
+        90
+      ],
       "LY",
       [
         "MG",
@@ -49474,6 +51047,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "KR": [
         {
@@ -49688,6 +51262,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KG",
         60
       ],
@@ -49806,6 +51384,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -50031,6 +51610,10 @@ const RAW_PASSPORTS = {
         90
       ],
       "KZ",
+      [
+        "KE",
+        90
+      ],
       "KG",
       "LR",
       "LY",
@@ -50073,6 +51656,10 @@ const RAW_PASSPORTS = {
         60
       ],
       "QA",
+      [
+        "KN",
+        90
+      ],
       "ST",
       "SL",
       [
@@ -50160,6 +51747,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -50251,6 +51839,14 @@ const RAW_PASSPORTS = {
       ],
       "IQ",
       "JO",
+      [
+        "KE",
+        90
+      ],
+      [
+        "KR",
+        90
+      ],
       "KG",
       [
         "LA",
@@ -50401,6 +51997,7 @@ const RAW_PASSPORTS = {
       "VU",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -50663,6 +52260,9 @@ const RAW_PASSPORTS = {
         "TV",
         30
       ]
+    ],
+    "ban": [
+      "US"
     ],
     "cond": {
       "CR": [
@@ -50967,6 +52567,7 @@ const RAW_PASSPORTS = {
     "vr": [
       "DZ",
       "AR",
+      "AU",
       "AZ",
       "BY",
       "BR",
@@ -51017,6 +52618,7 @@ const RAW_PASSPORTS = {
       "UY",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "GT": [
         {
@@ -51174,6 +52776,10 @@ const RAW_PASSPORTS = {
         30
       ],
       "KZ",
+      [
+        "KE",
+        90
+      ],
       "KG",
       [
         "LS",
@@ -51337,6 +52943,9 @@ const RAW_PASSPORTS = {
         "TV",
         30
       ]
+    ],
+    "ban": [
+      "MG"
     ],
     "cond": {
       "CR": [
@@ -51598,6 +53207,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KG",
         60
       ],
@@ -51652,6 +53265,10 @@ const RAW_PASSPORTS = {
       [
         "RU",
         30
+      ],
+      [
+        "KN",
+        90
       ],
       [
         "ST",
@@ -51744,6 +53361,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -51862,6 +53480,10 @@ const RAW_PASSPORTS = {
       ],
       "KZ",
       [
+        "KE",
+        90
+      ],
+      [
         "KR",
         30
       ],
@@ -51929,6 +53551,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KN",
+        90
+      ],
+      [
         "ST",
         15
       ],
@@ -51965,6 +53591,10 @@ const RAW_PASSPORTS = {
       [
         "UG",
         90
+      ],
+      [
+        "GB",
+        180
       ],
       [
         "UZ",
@@ -52048,6 +53678,7 @@ const RAW_PASSPORTS = {
       "US",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -52160,6 +53791,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "KR",
         90
       ],
@@ -52231,6 +53866,10 @@ const RAW_PASSPORTS = {
         "RW",
         30
       ],
+      [
+        "KN",
+        90
+      ],
       "ST",
       [
         "SL",
@@ -52261,6 +53900,10 @@ const RAW_PASSPORTS = {
       [
         "UG",
         90
+      ],
+      [
+        "GB",
+        180
       ],
       [
         "UZ",
@@ -52349,6 +53992,7 @@ const RAW_PASSPORTS = {
       "US",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "OM": [
         {
@@ -52429,6 +54073,10 @@ const RAW_PASSPORTS = {
         30
       ],
       "KZ",
+      [
+        "KE",
+        90
+      ],
       [
         "KR",
         90
@@ -52566,6 +54214,7 @@ const RAW_PASSPORTS = {
     "vr": [
       "AF",
       "DZ",
+      "AU",
       "AZ",
       "BY",
       "BN",
@@ -52605,7 +54254,8 @@ const RAW_PASSPORTS = {
       "US",
       "UY",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "VC": {
     "name": "Saint Vincent and the Grenadines",
@@ -52676,6 +54326,10 @@ const RAW_PASSPORTS = {
         30
       ],
       "KZ",
+      [
+        "KR",
+        90
+      ],
       [
         "KG",
         30
@@ -52790,6 +54444,7 @@ const RAW_PASSPORTS = {
     ],
     "vr": [
       "DZ",
+      "AU",
       "AZ",
       "BN",
       "CA",
@@ -52823,7 +54478,8 @@ const RAW_PASSPORTS = {
       "TM",
       "US",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "WS": {
     "name": "Samoa",
@@ -53044,6 +54700,7 @@ const RAW_PASSPORTS = {
     "vr": [
       "DZ",
       "AR",
+      "AU",
       "AZ",
       "BY",
       "BR",
@@ -53080,6 +54737,7 @@ const RAW_PASSPORTS = {
       "UY",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -53260,6 +54918,10 @@ const RAW_PASSPORTS = {
       "IQ",
       "JO",
       "KZ",
+      [
+        "KE",
+        90
+      ],
       "KG",
       "LS",
       "LR",
@@ -53358,6 +55020,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -53565,6 +55228,10 @@ const RAW_PASSPORTS = {
         30
       ],
       "KZ",
+      [
+        "KE",
+        90
+      ],
       "KG",
       "LY",
       [
@@ -53654,6 +55321,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "GE": [
         {
@@ -53783,6 +55451,14 @@ const RAW_PASSPORTS = {
         "JO",
         90
       ],
+      [
+        "KE",
+        90
+      ],
+      [
+        "KR",
+        30
+      ],
       "KG",
       [
         "LA",
@@ -53837,6 +55513,7 @@ const RAW_PASSPORTS = {
         "QA",
         30
       ],
+      "KN",
       "ST",
       [
         "SL",
@@ -53929,6 +55606,7 @@ const RAW_PASSPORTS = {
     "vr": [
       "DZ",
       "AR",
+      "AU",
       "AZ",
       "BY",
       "BR",
@@ -53973,6 +55651,7 @@ const RAW_PASSPORTS = {
       "UY",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -54073,6 +55752,7 @@ const RAW_PASSPORTS = {
       ],
       "AL",
       "AG",
+      "AU",
       "BS",
       [
         "BH",
@@ -54214,6 +55894,9 @@ const RAW_PASSPORTS = {
         "TV",
         30
       ]
+    ],
+    "ban": [
+      "US"
     ],
     "cond": {
       "GE": [
@@ -54469,6 +56152,10 @@ const RAW_PASSPORTS = {
       "IQ",
       "KZ",
       [
+        "KE",
+        90
+      ],
+      [
         "KG",
         60
       ],
@@ -54623,7 +56310,8 @@ const RAW_PASSPORTS = {
         "TV",
         30
       ]
-    ]
+    ],
+    "ban": []
   },
   "TJ": {
     "name": "Tajikistan",
@@ -54784,6 +56472,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "KE",
+        90
+      ],
+      [
         "LA",
         30
       ],
@@ -54916,6 +56608,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "CR": [
         {
@@ -55211,6 +56904,7 @@ const RAW_PASSPORTS = {
     "vr": [
       "DZ",
       "AR",
+      "AU",
       "AZ",
       "BY",
       "BZ",
@@ -55269,6 +56963,7 @@ const RAW_PASSPORTS = {
       "VU",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "CR": [
         {
@@ -55560,6 +57255,7 @@ const RAW_PASSPORTS = {
       ],
       "UG"
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -55679,6 +57375,10 @@ const RAW_PASSPORTS = {
       ],
       "KZ",
       [
+        "KE",
+        90
+      ],
+      [
         "KR",
         30
       ],
@@ -55728,6 +57428,7 @@ const RAW_PASSPORTS = {
         "RU",
         16
       ],
+      "KN",
       "ST",
       [
         "SL",
@@ -55865,6 +57566,7 @@ const RAW_PASSPORTS = {
       "UY",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -56018,6 +57720,10 @@ const RAW_PASSPORTS = {
         90
       ],
       "KZ",
+      [
+        "KE",
+        90
+      ],
       "KG",
       [
         "LA",
@@ -56173,6 +57879,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "DO": [
         {
@@ -56301,6 +58008,10 @@ const RAW_PASSPORTS = {
         90
       ],
       "KZ",
+      [
+        "KE",
+        90
+      ],
       "KG",
       [
         "LA",
@@ -56351,6 +58062,10 @@ const RAW_PASSPORTS = {
         "RW",
         30
       ],
+      [
+        "KN",
+        90
+      ],
       "ST",
       "SL",
       [
@@ -56380,6 +58095,10 @@ const RAW_PASSPORTS = {
       [
         "AE",
         30
+      ],
+      [
+        "GB",
+        180
       ],
       "VE",
       [
@@ -56476,6 +58195,7 @@ const RAW_PASSPORTS = {
       "UZ",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "SA": [
         {
@@ -56647,6 +58367,10 @@ const RAW_PASSPORTS = {
       "IN",
       "IQ",
       [
+        "KE",
+        90
+      ],
+      [
         "LB",
         30
       ],
@@ -56770,6 +58494,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "BA": [
         {
@@ -57052,6 +58777,10 @@ const RAW_PASSPORTS = {
         90
       ],
       "KZ",
+      [
+        "KE",
+        90
+      ],
       "KG",
       [
         "LA",
@@ -57105,6 +58834,10 @@ const RAW_PASSPORTS = {
       [
         "QA",
         30
+      ],
+      [
+        "KN",
+        90
       ],
       "ST",
       [
@@ -57206,6 +58939,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -57244,6 +58978,10 @@ const RAW_PASSPORTS = {
       [
         "AM",
         120
+      ],
+      [
+        "AU",
+        90
       ],
       [
         "BH",
@@ -57303,6 +59041,10 @@ const RAW_PASSPORTS = {
       "IQ",
       "JO",
       "KZ",
+      [
+        "KE",
+        90
+      ],
       [
         "KR",
         90
@@ -57371,6 +59113,10 @@ const RAW_PASSPORTS = {
       [
         "RW",
         30
+      ],
+      [
+        "KN",
+        90
       ],
       "ST",
       [
@@ -57521,6 +59267,7 @@ const RAW_PASSPORTS = {
       "GB",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -57784,6 +59531,10 @@ const RAW_PASSPORTS = {
       ],
       "QA",
       [
+        "KN",
+        90
+      ],
+      [
         "ST",
         7
       ],
@@ -57841,6 +59592,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "MA": [
         {
@@ -58080,6 +59832,10 @@ const RAW_PASSPORTS = {
         "RW",
         30
       ],
+      [
+        "KN",
+        90
+      ],
       "ST",
       "RS",
       "SL",
@@ -58141,6 +59897,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "EG": [
         {
@@ -58427,6 +60184,10 @@ const RAW_PASSPORTS = {
         90
       ],
       "KZ",
+      [
+        "KE",
+        90
+      ],
       "KG",
       [
         "LA",
@@ -58497,6 +60258,10 @@ const RAW_PASSPORTS = {
       "UA",
       "AE",
       [
+        "GB",
+        180
+      ],
+      [
         "UZ",
         30
       ],
@@ -58531,6 +60296,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [],
     "cond": {
       "AR": [
         {
@@ -58613,6 +60379,10 @@ const RAW_PASSPORTS = {
       ],
       [
         "JO",
+        90
+      ],
+      [
+        "KE",
         90
       ],
       [
@@ -58792,6 +60562,7 @@ const RAW_PASSPORTS = {
       "VE",
       "YE"
     ],
+    "ban": [],
     "cond": {
       "HN": [
         {
@@ -59085,7 +60856,15 @@ const RAW_PASSPORTS = {
         30
       ],
       "IQ",
+      [
+        "IL",
+        90
+      ],
       "JO",
+      [
+        "KE",
+        90
+      ],
       "LS",
       "LR",
       "LY",
@@ -59201,6 +60980,10 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
+    "ban": [
+      "AM",
+      "CU"
+    ],
     "cond": {
       "BZ": [
         {
@@ -59266,7 +61049,7 @@ Object.entries(RAW_PASSPORTS).forEach(([iso2, p]) => {
     map: {},
     cond: p.cond || null,   // optional: conditional shortcuts emitted by scraper
   };
-  ["vf", "ev", "voa", "vr"].forEach(status => {
+  ["vf", "ev", "voa", "vr", "ban"].forEach(status => {
     (p[status] || []).forEach(entry => {
       let code, days = null;
       if (Array.isArray(entry)) { code = entry[0]; days = entry[1]; }
@@ -59314,7 +61097,7 @@ window.resolveStatus = function(passportIso2, destIso2) {
 window.tally = function(passportIso2) {
   const p = window.PASSPORTS[passportIso2];
   if (!p) return null;
-  const counts = { vf: 0, ev: 0, voa: 0, vr: 0 };
+  const counts = { vf: 0, ev: 0, voa: 0, vr: 0, ban: 0 };
   window.COUNTRIES.forEach(c => {
     if (c.iso2 === passportIso2) return;
     if (c.continent === "AN") return;
@@ -59324,7 +61107,7 @@ window.tally = function(passportIso2) {
   return counts;
 };
 
-const _GROUP_ORDER = { self: 0, vf: 0, ev: 1, voa: 2, vr: 3, na: 0 };
+const _GROUP_ORDER = { self: 0, vf: 0, ev: 1, voa: 2, vr: 3, ban: 4, na: 0 };
 window.resolveGroupStatus = function(passports, destIso2) {
   if (!passports || passports.length === 0) return { status: "na", days: null };
   let worst = 0, days = null;
@@ -59332,15 +61115,15 @@ window.resolveGroupStatus = function(passports, destIso2) {
     const r = window.resolveStatus(p, destIso2);
     const score = _GROUP_ORDER[r.status] ?? 0;
     if (score > worst) { worst = score; days = r.days; }
-    if (worst === 3) break;
+    if (worst === 4) break;
   }
-  const status = ["vf", "ev", "voa", "vr"][worst] || "vf";
+  const status = ["vf", "ev", "voa", "vr", "ban"][worst] || "vf";
   return { status, days };
 };
 
 window.tallyGroup = function(passports) {
   if (!passports || passports.length === 0) return null;
-  const counts = { vf: 0, ev: 0, voa: 0, vr: 0 };
+  const counts = { vf: 0, ev: 0, voa: 0, vr: 0, ban: 0 };
   const own = new Set(passports);
   window.COUNTRIES.forEach(c => {
     if (own.has(c.iso2)) return;
@@ -59353,7 +61136,7 @@ window.tallyGroup = function(passports) {
 
 window.tallyIncoming = function(myIso2) {
   if (!window.PASSPORTS[myIso2]) return null;
-  const counts = { vf: 0, ev: 0, voa: 0, vr: 0 };
+  const counts = { vf: 0, ev: 0, voa: 0, vr: 0, ban: 0 };
   window.COUNTRIES.forEach(c => {
     if (c.iso2 === myIso2) return;
     if (c.continent === "AN") return;

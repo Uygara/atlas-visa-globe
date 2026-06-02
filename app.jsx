@@ -461,15 +461,26 @@ function TopNav({ tweaks, setTweak, globeStyle, onGlobeStyleChange, onHelp }) {
   // Re-render when language changes
   const [, force] = useState(0);
   const [menuOpen, setMenuOpen] = useState(false);
+  const headerRef = useRef(null);
   useEffect(() => {
     const onLang = () => force(x => x + 1);
     window.addEventListener("atlas:lang", onLang);
     return () => window.removeEventListener("atlas:lang", onLang);
   }, []);
+  // Collapse the mobile menu when tapping anywhere outside the top bar. Uses
+  // pointerdown so it fires for touch on iOS (where a tap on a plain element
+  // doesn't emit mousedown) — without this the menu can't be dismissed on iPhone
+  // except by hitting the small ✕ icon.
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onOutside = (e) => { if (headerRef.current && !headerRef.current.contains(e.target)) setMenuOpen(false); };
+    document.addEventListener("pointerdown", onOutside);
+    return () => document.removeEventListener("pointerdown", onOutside);
+  }, [menuOpen]);
   // Close mobile menu when clicking a link inside it
   const closeMenu = () => setMenuOpen(false);
   return (
-    <header className={"topbar" + (menuOpen ? " menu-open" : "")}>
+    <header ref={headerRef} className={"topbar" + (menuOpen ? " menu-open" : "")}>
       <a className="brand" href="/" aria-label="travelnow.info home">
         <span>travelnow.info</span>
       </a>
@@ -530,9 +541,11 @@ function ToolsDropdown({ items, closeMenu }) {
   const ref = useRef(null);
   useEffect(() => {
     if (!open) return;
+    // pointerdown (not mousedown) so a tap outside also closes the menu on iOS
+    // Safari, where mousedown doesn't fire reliably on non-button elements.
     const onClick = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
-    document.addEventListener("mousedown", onClick);
-    return () => document.removeEventListener("mousedown", onClick);
+    document.addEventListener("pointerdown", onClick);
+    return () => document.removeEventListener("pointerdown", onClick);
   }, [open]);
   return (
     <div ref={ref} className="tools-dd" style={{ position: "relative" }}>
@@ -619,9 +632,11 @@ function SettingsButton({ tweaks, setTweak, inNav, globeStyle, onGlobeStyleChang
   }, []);
   useEffect(() => {
     if (!open) return;
+    // pointerdown (not mousedown) so a tap outside also closes the menu on iOS
+    // Safari, where mousedown doesn't fire reliably on non-button elements.
     const onClick = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
-    document.addEventListener("mousedown", onClick);
-    return () => document.removeEventListener("mousedown", onClick);
+    document.addEventListener("pointerdown", onClick);
+    return () => document.removeEventListener("pointerdown", onClick);
   }, [open]);
   const curLang = window.ATLAS_LANG || "en";
   const sectionLabel = (txt) => (

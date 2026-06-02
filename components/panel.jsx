@@ -838,12 +838,15 @@ function PassportDropdown({ value, onChange, allowClear, onClear }) {
 }
 
 function Tally({ tally, filter, setFilter, passport, groupActive }) {
-  const total = tally.vf + tally.ev + tally.voa + tally.vr;
+  const total = tally.vf + tally.ev + tally.voa + tally.vr + (tally.ban || 0);
   const rows = [
     { k: "vf",  ...STATUS_COLOR.vf,  n: tally.vf,  label: window.t("status.vf")  },
     { k: "ev",  ...STATUS_COLOR.ev,  n: tally.ev,  label: window.t("status.ev")  },
     { k: "voa", ...STATUS_COLOR.voa, n: tally.voa, label: window.t("status.voa") },
     { k: "vr",  ...STATUS_COLOR.vr,  n: tally.vr,  label: window.t("status.vr")  },
+    // Only surface "No entry allowed" when the passport actually has some — most
+    // passports have zero, and an always-on 0 row would just add noise.
+    ...((tally.ban || 0) > 0 ? [{ k: "ban", ...STATUS_COLOR.ban, n: tally.ban, label: window.t("status.ban") }] : []),
   ];
   const accessScore = tally.vf + tally.ev + tally.voa;
   return (
@@ -1072,7 +1075,7 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
   // the one with the strictly better status for this destination and lead
   // with a recommendation pill. The compare detail row below still shows
   // both statuses so users can sanity-check the choice.
-  const ORDER = { self: 0, vf: 1, ev: 2, voa: 3, vr: 4, na: 5 };
+  const ORDER = { self: 0, vf: 1, ev: 2, voa: 3, vr: 4, ban: 5, na: 6 };
   let recommended = null;
   if (compare && rc && !groupActive && !incoming) {
     const rScore = ORDER[r.status] ?? 5;
@@ -1263,7 +1266,7 @@ function ConditionsBox({ passport, destIso2, baseStatus }) {
   const rows = window.visaCondition && window.visaCondition(passport, destIso2);
   if (!rows || rows.length === 0) return null;
   // Only show rows whose resulting status is strictly better than the base.
-  const ORDER = { vf: 0, ev: 1, voa: 2, vr: 3, na: 4 };
+  const ORDER = { vf: 0, ev: 1, voa: 2, vr: 3, ban: 4, na: 5 };
   const useful = rows.filter(r => ORDER[r.then] < ORDER[baseStatus]);
   if (useful.length === 0) return null;
 
@@ -1647,7 +1650,9 @@ function EtiasHint({ passport, destIso2 }) {
 // We never show it for vf since the data wouldn't make sense ("fee: $0").
 function VisaFeeBox({ passport, destIso2, status }) {
   if (!passport || !destIso2) return null;
-  if (status === "vf" || status === "self") return null;
+  // No fee/apply UI for visa-free, your own passport, or outright entry bans
+  // (you can't apply for a visa to a country that refuses you admission).
+  if (status === "vf" || status === "self" || status === "ban") return null;
   const data = window.visaFee && window.visaFee(passport, destIso2);
   if (!data) {
     // We require a visa here but don't have a fee figure for this pair yet.

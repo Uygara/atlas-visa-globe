@@ -13,7 +13,7 @@ Object.entries(RAW_PASSPORTS).forEach(([iso2, p]) => {
     map: {},
     cond: p.cond || null,   // optional: conditional shortcuts emitted by scraper
   };
-  ["vf", "ev", "voa", "vr"].forEach(status => {
+  ["vf", "ev", "voa", "vr", "ban"].forEach(status => {
     (p[status] || []).forEach(entry => {
       let code, days = null;
       if (Array.isArray(entry)) { code = entry[0]; days = entry[1]; }
@@ -61,7 +61,7 @@ window.resolveStatus = function(passportIso2, destIso2) {
 window.tally = function(passportIso2) {
   const p = window.PASSPORTS[passportIso2];
   if (!p) return null;
-  const counts = { vf: 0, ev: 0, voa: 0, vr: 0 };
+  const counts = { vf: 0, ev: 0, voa: 0, vr: 0, ban: 0 };
   window.COUNTRIES.forEach(c => {
     if (c.iso2 === passportIso2) return;
     if (c.continent === "AN") return;
@@ -71,7 +71,7 @@ window.tally = function(passportIso2) {
   return counts;
 };
 
-const _GROUP_ORDER = { self: 0, vf: 0, ev: 1, voa: 2, vr: 3, na: 0 };
+const _GROUP_ORDER = { self: 0, vf: 0, ev: 1, voa: 2, vr: 3, ban: 4, na: 0 };
 window.resolveGroupStatus = function(passports, destIso2) {
   if (!passports || passports.length === 0) return { status: "na", days: null };
   let worst = 0, days = null;
@@ -79,15 +79,15 @@ window.resolveGroupStatus = function(passports, destIso2) {
     const r = window.resolveStatus(p, destIso2);
     const score = _GROUP_ORDER[r.status] ?? 0;
     if (score > worst) { worst = score; days = r.days; }
-    if (worst === 3) break;
+    if (worst === 4) break;
   }
-  const status = ["vf", "ev", "voa", "vr"][worst] || "vf";
+  const status = ["vf", "ev", "voa", "vr", "ban"][worst] || "vf";
   return { status, days };
 };
 
 window.tallyGroup = function(passports) {
   if (!passports || passports.length === 0) return null;
-  const counts = { vf: 0, ev: 0, voa: 0, vr: 0 };
+  const counts = { vf: 0, ev: 0, voa: 0, vr: 0, ban: 0 };
   const own = new Set(passports);
   window.COUNTRIES.forEach(c => {
     if (own.has(c.iso2)) return;
@@ -100,7 +100,7 @@ window.tallyGroup = function(passports) {
 
 window.tallyIncoming = function(myIso2) {
   if (!window.PASSPORTS[myIso2]) return null;
-  const counts = { vf: 0, ev: 0, voa: 0, vr: 0 };
+  const counts = { vf: 0, ev: 0, voa: 0, vr: 0, ban: 0 };
   window.COUNTRIES.forEach(c => {
     if (c.iso2 === myIso2) return;
     if (c.continent === "AN") return;
