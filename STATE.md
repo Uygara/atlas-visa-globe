@@ -83,10 +83,14 @@ EN in those four (engine ready — just add dict entries).
   - **Passport combos more discoverable.** The compare/group bar was a tiny
     "MODES" label nobody found; now a titled card "Hold more than one passport?"
     with a one-line explainer and Compare / Combine buttons.
-  - **Mobile bottom-sheet could not be pulled back up.** iOS fires pointercancel
-    (not pointerup) when it reclassifies a touch as a scroll; without handling it,
-    `dragging` stayed stuck and the grabber went dead. Added a pointercancel
-    handler + made the grabber sticky and a bigger hit target.
+  - **Mobile bottom-sheet drag.** iOS fires pointercancel (not pointerup) when it
+    reclassifies a touch as a scroll; without handling it `dragging` stayed stuck.
+    Added a pointercancel handler + sticky, bigger grabber. Follow-up: the sheet
+    then couldn't be dragged *down* — the visible grabber span had the default
+    `touch-action:auto`, so iOS treated a downward press on it as a panel scroll
+    and cancelled the gesture (upward worked only because a full sheet has nothing
+    to scroll). Fixed with `pointer-events:none; touch-action:none` on the grabber
+    so the press routes to the handle (touch-action:none) and both directions drag.
 - **Reddit feedback round 2 (FIXED):**
   - **New 5th status `ban` ("No entry allowed").** Countries that refuse a
     nationality entirely (e.g. 10 countries refuse Israeli citizens; some refuse

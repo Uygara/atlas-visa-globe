@@ -1281,7 +1281,16 @@ layoutStyle.textContent = `
       background: var(--panel);
     }
     .sheet-handle:active { cursor: grabbing; }
-    .sheet-grabber { width: 44px; height: 5px; border-radius: 999px; background: var(--fg-faint); opacity: 0.7; }
+    /* The grabber is the visual target users actually press. It must not eat the
+       touch with its own (default) touch-action:auto — otherwise iOS treats a
+       downward drag on it as a scroll of the panel and cancels the gesture, so
+       the sheet could only be pulled up, never down. pointer-events:none routes
+       the press to the handle (touch-action:none), making both directions drag. */
+    .sheet-grabber {
+      width: 44px; height: 5px; border-radius: 999px;
+      background: var(--fg-faint); opacity: 0.7;
+      pointer-events: none; touch-action: none;
+    }
 
     /* Compact mobile topbar: brand + mode toggle on the bar, everything else
        collapses into a dropdown opened by the hamburger.
