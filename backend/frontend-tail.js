@@ -41,6 +41,15 @@ window.TERRITORY_ALIAS = {
 
 window.resolveStatus = function(passportIso2, destIso2) {
   if (passportIso2 === destIso2) return { status: "self", days: null };
+  // Curated corrections (data/visa-overrides.js) win over scraped data — e.g.
+  // nationalities ineligible for the Cuba e-visa that must use a consulate.
+  const ov = window.STATUS_OVERRIDES && window.STATUS_OVERRIDES[passportIso2]
+             && window.STATUS_OVERRIDES[passportIso2][destIso2];
+  if (ov) return { status: ov.status, days: ov.days != null ? ov.days : null };
+  // Freedom of movement (EEA internal + UK–Ireland Common Travel Area): unlimited
+  // stay, not a 90-day visa-free window. Surfaced as vf with no day cap + fom flag.
+  if (window.isFreedomOfMovement && window.isFreedomOfMovement(passportIso2, destIso2))
+    return { status: "vf", days: null, fom: true };
   // If the destination is a dependent territory, look up its parent's status instead.
   const aliased = window.TERRITORY_ALIAS && window.TERRITORY_ALIAS[destIso2];
   if (aliased && aliased !== passportIso2) destIso2 = aliased;

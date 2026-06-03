@@ -8488,6 +8488,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "GB",
+        180
+      ],
+      [
         "US",
         90
       ],
@@ -8777,6 +8781,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "GB",
+        180
+      ],
+      [
         "US",
         90
       ],
@@ -8851,80 +8859,275 @@ const RAW_PASSPORTS = {
     "default": "vf",
     "defaultDays": 90,
     "ev": [
-      "AF",
-      "AM",
-      "AU",
-      "AZ",
-      "BH",
-      "BY",
-      "BJ",
-      "BT",
-      "BR",
+      [
+        "AF",
+        30
+      ],
+      [
+        "AM",
+        120
+      ],
+      [
+        "AU",
+        90
+      ],
+      [
+        "AZ",
+        30
+      ],
+      [
+        "BH",
+        30
+      ],
+      [
+        "BY",
+        30
+      ],
+      [
+        "BJ",
+        30
+      ],
+      [
+        "BT",
+        90
+      ],
+      [
+        "BR",
+        90
+      ],
       "BF",
-      "BI",
-      "KH",
+      [
+        "BI",
+        30
+      ],
+      [
+        "KH",
+        30
+      ],
       "CM",
-      "TD",
+      [
+        "TD",
+        90
+      ],
       "CG",
-      "CD",
-      "CI",
-      "CU",
-      "DJ",
-      "EG",
+      [
+        "CD",
+        7
+      ],
+      [
+        "CI",
+        90
+      ],
+      [
+        "CU",
+        90
+      ],
+      [
+        "DJ",
+        90
+      ],
+      [
+        "EG",
+        30
+      ],
       "GQ",
-      "ET",
-      "GA",
+      [
+        "ET",
+        90
+      ],
+      [
+        "GA",
+        90
+      ],
       "GH",
-      "GN",
-      "IN",
-      "IQ",
-      "IL",
-      "JO",
-      "KE",
-      "KR",
-      "KW",
-      "LA",
-      "LB",
-      "LY",
-      "MG",
-      "MW",
-      "MV",
-      "MR",
-      "MZ",
-      "MM",
-      "NA",
-      "NP",
-      "NZ",
-      "NG",
-      "OM",
-      "PK",
-      "PW",
-      "PG",
-      "KN",
-      "SA",
-      "SL",
-      "SO",
+      [
+        "GN",
+        90
+      ],
+      [
+        "IN",
+        30
+      ],
+      [
+        "IQ",
+        30
+      ],
+      [
+        "IL",
+        90
+      ],
+      [
+        "JO",
+        30
+      ],
+      [
+        "KE",
+        90
+      ],
+      [
+        "KR",
+        180
+      ],
+      [
+        "KW",
+        90
+      ],
+      [
+        "LA",
+        30
+      ],
+      [
+        "LB",
+        30
+      ],
+      [
+        "LY",
+        30
+      ],
+      [
+        "MG",
+        90
+      ],
+      [
+        "MW",
+        30
+      ],
+      [
+        "MV",
+        30
+      ],
+      [
+        "MR",
+        30
+      ],
+      [
+        "MZ",
+        30
+      ],
+      [
+        "MM",
+        28
+      ],
+      [
+        "NA",
+        90
+      ],
+      [
+        "NP",
+        90
+      ],
+      [
+        "NZ",
+        90
+      ],
+      [
+        "NG",
+        30
+      ],
+      [
+        "OM",
+        14
+      ],
+      [
+        "PK",
+        90
+      ],
+      [
+        "PW",
+        30
+      ],
+      [
+        "PG",
+        60
+      ],
+      [
+        "KN",
+        180
+      ],
+      [
+        "SA",
+        90
+      ],
+      [
+        "SL",
+        90
+      ],
+      [
+        "SO",
+        30
+      ],
       "SS",
-      "LK",
-      "TJ",
-      "TZ",
-      "TG",
-      "TO",
-      "UG",
-      "GB",
+      [
+        "LK",
+        30
+      ],
+      [
+        "TJ",
+        30
+      ],
+      [
+        "TZ",
+        90
+      ],
+      [
+        "TG",
+        15
+      ],
+      [
+        "TO",
+        30
+      ],
+      [
+        "UG",
+        90
+      ],
+      [
+        "GB",
+        180
+      ],
       "VE",
-      "VN",
-      "ZW"
+      [
+        "VN",
+        90
+      ],
+      [
+        "ZW",
+        30
+      ]
     ],
     "voa": [
-      "BD",
-      "KM",
-      "GW",
-      "ID",
-      "LR",
-      "MH",
-      "TL",
-      "TV"
+      [
+        "BD",
+        30
+      ],
+      [
+        "KM",
+        45
+      ],
+      [
+        "GW",
+        90
+      ],
+      [
+        "ID",
+        30
+      ],
+      [
+        "LR",
+        90
+      ],
+      [
+        "MH",
+        90
+      ],
+      [
+        "TL",
+        30
+      ],
+      [
+        "TV",
+        30
+      ]
     ],
     "vr": [
       "DZ",
@@ -10994,6 +11197,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "GB",
+        180
+      ],
+      [
         "VN",
         90
       ],
@@ -11545,6 +11752,10 @@ const RAW_PASSPORTS = {
       [
         "UA",
         30
+      ],
+      [
+        "GB",
+        180
       ],
       "VN",
       [
@@ -13951,6 +14162,7 @@ const RAW_PASSPORTS = {
         "UG",
         90
       ],
+      "VN",
       [
         "ZW",
         30
@@ -15952,6 +16164,10 @@ const RAW_PASSPORTS = {
       ],
       "AU",
       [
+        "BS",
+        90
+      ],
+      [
         "BH",
         14
       ],
@@ -16801,6 +17017,7 @@ const RAW_PASSPORTS = {
       "CH",
       "TM",
       "UA",
+      "GB",
       "US",
       "VA",
       "YE"
@@ -17166,6 +17383,7 @@ const RAW_PASSPORTS = {
         "RW",
         30
       ],
+      "ST",
       [
         "SA",
         90
@@ -19270,6 +19488,10 @@ const RAW_PASSPORTS = {
         31
       ],
       [
+        "GB",
+        180
+      ],
+      [
         "UZ",
         30
       ],
@@ -20864,6 +21086,7 @@ const RAW_PASSPORTS = {
       "TO",
       "TN",
       "TM",
+      "GB",
       "US",
       "YE"
     ],
@@ -21426,6 +21649,10 @@ const RAW_PASSPORTS = {
         "UA",
         30
       ],
+      [
+        "GB",
+        180
+      ],
       "VE",
       [
         "VN",
@@ -21656,6 +21883,10 @@ const RAW_PASSPORTS = {
         30
       ],
       "UA",
+      [
+        "GB",
+        180
+      ],
       [
         "VN",
         90
@@ -22293,24 +22524,7 @@ const RAW_PASSPORTS = {
       [
         "VU",
         120
-      ],
-      "AO",
-      "BB",
-      "DM",
-      "FJ",
-      "GD",
-      "HT",
-      "JM",
-      "KZ",
-      "KI",
-      "MU",
-      "FM",
-      "RW",
-      "KN",
-      "VC",
-      "WS",
-      "TT",
-      "VU"
+      ]
     ],
     "ev": [
       [
@@ -22541,10 +22755,7 @@ const RAW_PASSPORTS = {
       [
         "ZW",
         30
-      ],
-      "MM",
-      "LK",
-      "TH"
+      ]
     ],
     "voa": [
       [
@@ -22575,26 +22786,7 @@ const RAW_PASSPORTS = {
       [
         "TV",
         30
-      ],
-      "BO",
-      "BI",
-      "KH",
-      "DJ",
-      "GY",
-      "JO",
-      "LA",
-      "MG",
-      "MW",
-      "MY",
-      "MN",
-      "NR",
-      "PW",
-      "LC",
-      "SC",
-      "TZ",
-      "TL",
-      "TV",
-      "ZW"
+      ]
     ],
     "ban": [
       "PK"
@@ -22696,6 +22888,17 @@ const RAW_PASSPORTS = {
           "then": "ev",
           "days": 30,
           "note": "Conditional single-entry eVisa issued for the period of 30 days to holders of a valid visa or residence permit issued by one of the Schengen member countries, US, UK, or Ireland."
+        }
+      ],
+      "GB": [
+        {
+          "ifHolds": [
+            "US",
+            "IE"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Transit visa: Required, unless holding a valid visa or permanent residence in Canada, New Zealand, Australia, EU or the USA.\nVisa not required if holding a biometric Irish visa endorsed with \"BC\" or \"BC BIVS\".\nOther exemptions apply for Visa-free Direct Airside Transit."
         }
       ]
     }
@@ -30351,6 +30554,7 @@ const RAW_PASSPORTS = {
         90
       ],
       "AE",
+      "GB",
       [
         "UZ",
         30
@@ -41780,6 +41984,7 @@ const RAW_PASSPORTS = {
       "SD",
       "TR",
       "TM",
+      "GB",
       "US",
       "YE"
     ],
@@ -47133,6 +47338,10 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "GB",
+        180
+      ],
+      [
         "UZ",
         30
       ],
@@ -49928,6 +50137,10 @@ const RAW_PASSPORTS = {
       "UA",
       "AE",
       [
+        "GB",
+        180
+      ],
+      [
         "UZ",
         30
       ],
@@ -50513,6 +50726,10 @@ const RAW_PASSPORTS = {
       [
         "AE",
         30
+      ],
+      [
+        "GB",
+        180
       ],
       [
         "UZ",
@@ -53308,6 +53525,10 @@ const RAW_PASSPORTS = {
         "UG",
         90
       ],
+      [
+        "GB",
+        180
+      ],
       "VE",
       [
         "VN",
@@ -54251,6 +54472,7 @@ const RAW_PASSPORTS = {
       "ZA",
       "SD",
       "TM",
+      "GB",
       "US",
       "UY",
       "YE"
@@ -54390,6 +54612,10 @@ const RAW_PASSPORTS = {
       [
         "TV",
         30
+      ],
+      [
+        "GB",
+        180
       ],
       [
         "VN",
@@ -54646,6 +54872,10 @@ const RAW_PASSPORTS = {
       [
         "AE",
         30
+      ],
+      [
+        "GB",
+        180
       ],
       [
         "UZ",
@@ -55538,6 +55768,10 @@ const RAW_PASSPORTS = {
       [
         "UA",
         30
+      ],
+      [
+        "GB",
+        180
       ],
       [
         "UZ",
@@ -57452,6 +57686,10 @@ const RAW_PASSPORTS = {
       [
         "AE",
         30
+      ],
+      [
+        "GB",
+        180
       ],
       [
         "UZ",
@@ -61077,6 +61315,15 @@ window.TERRITORY_ALIAS = {
 
 window.resolveStatus = function(passportIso2, destIso2) {
   if (passportIso2 === destIso2) return { status: "self", days: null };
+  // Curated corrections (data/visa-overrides.js) win over scraped data — e.g.
+  // nationalities ineligible for the Cuba e-visa that must use a consulate.
+  const ov = window.STATUS_OVERRIDES && window.STATUS_OVERRIDES[passportIso2]
+             && window.STATUS_OVERRIDES[passportIso2][destIso2];
+  if (ov) return { status: ov.status, days: ov.days != null ? ov.days : null };
+  // Freedom of movement (EEA internal + UK–Ireland Common Travel Area): unlimited
+  // stay, not a 90-day visa-free window. Surfaced as vf with no day cap + fom flag.
+  if (window.isFreedomOfMovement && window.isFreedomOfMovement(passportIso2, destIso2))
+    return { status: "vf", days: null, fom: true };
   // If the destination is a dependent territory, look up its parent's status instead.
   const aliased = window.TERRITORY_ALIAS && window.TERRITORY_ALIAS[destIso2];
   if (aliased && aliased !== passportIso2) destIso2 = aliased;

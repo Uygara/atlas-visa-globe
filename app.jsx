@@ -1270,13 +1270,18 @@ layoutStyle.textContent = `
       overscroll-behavior: contain;
     }
     .panel.sheet-dragging { transition: none; }
-    /* Drag grabber — only on mobile */
+    /* Drag grabber — only on mobile. Sticky at the top of the sheet so it never
+       scrolls out of reach, and a tall hit area so it's easy to grab and pull
+       the sheet back up. */
     .sheet-handle {
       display: flex; align-items: center; justify-content: center;
-      height: 22px; margin: -4px -18px 2px; cursor: grab; touch-action: none;
+      height: 30px; margin: -4px -18px 2px; padding: 0 18px;
+      cursor: grab; touch-action: none;
+      position: sticky; top: 0; z-index: 3;
+      background: var(--panel);
     }
     .sheet-handle:active { cursor: grabbing; }
-    .sheet-grabber { width: 40px; height: 4px; border-radius: 999px; background: var(--fg-faint); opacity: 0.6; }
+    .sheet-grabber { width: 44px; height: 5px; border-radius: 999px; background: var(--fg-faint); opacity: 0.7; }
 
     /* Compact mobile topbar: brand + mode toggle on the bar, everything else
        collapses into a dropdown opened by the hamburger.

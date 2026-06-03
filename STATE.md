@@ -59,6 +59,34 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Reddit feedback round 3 (FIXED):**
+  - **New curated override layer `data/visa-overrides.js`** — consulted by
+    `resolveStatus` BEFORE the scraped data, so corrections survive the daily
+    re-scrape (which only rewrites passports.js). Loaded in all SPA HTML pages
+    right after passports.js. Holds: (a) `STATUS_OVERRIDES[pass][dest]` and
+    (b) a freedom-of-movement rule.
+  - **Cuba e-visa ineligibility.** 22 nationalities (Philippines, Pakistan,
+    Nigeria, Iran, …) can't use the Cuba e-visa and must apply at a consulate —
+    Wikipedia lists them as "eVisa". Overridden to `vr`. Source:
+    cubavisa.uk/countries-that-need-to-apply-directly (confirmed vs evisacuba.cu).
+  - **Freedom of movement.** EEA-internal (EU + IS/LI/NO + CH) and the UK–Ireland
+    CTA are now shown as visa-free with NO day cap + an `fom` flag → the detail
+    card reads "Freedom of movement / no time limit" instead of inventing
+    "visa-free 90 days" (the Reddit UK→Ireland complaint). i18n `detail.fom*`.
+  - **Scraper root-cause fixes (re-scraped):** (1) process EXACTLY ONE table —
+    the main visa table (Country + status + allowed-stay) — because secondary
+    regional tables polluted data (India→Malaysia wrongly read "visa on arrival";
+    now correctly visa-free 30d). (2) strip footnotes from the destination name
+    before ISO lookup (Vietnam[295] was silently dropped). (3) iso-map: "United
+    Kingdom and Crown dependencies"→GB (fixes UK ETA showing as visa-free for
+    AU/NZ), + FSM / British Virgin Islands / The Bahamas.
+  - **Passport combos more discoverable.** The compare/group bar was a tiny
+    "MODES" label nobody found; now a titled card "Hold more than one passport?"
+    with a one-line explainer and Compare / Combine buttons.
+  - **Mobile bottom-sheet could not be pulled back up.** iOS fires pointercancel
+    (not pointerup) when it reclassifies a touch as a scroll; without handling it,
+    `dragging` stayed stuck and the grabber went dead. Added a pointercancel
+    handler + made the grabber sticky and a bigger hit target.
 - **Reddit feedback round 2 (FIXED):**
   - **New 5th status `ban` ("No entry allowed").** Countries that refuse a
     nationality entirely (e.g. 10 countries refuse Israeli citizens; some refuse
@@ -132,6 +160,9 @@ EN in those four (engine ready — just add dict entries).
   `hoverRenderer`, `arcs`, `stopMarkers` (used by transit-map + itinerary).
 - `components/transit-map.jsx`, `components/itinerary-app.jsx` — the two SPA pages.
 - `data/i18n.js` (SPA dict), `data/static-i18n.js` (static-page engine + dict).
+- `data/visa-overrides.js` — hand-curated corrections (Cuba e-visa ineligibility,
+  freedom-of-movement) consulted by `resolveStatus` before scraped data; survives
+  the daily re-scrape. Loaded after passports.js in every SPA page.
 - `data/*.js` — countries, passports (scraper-generated), transit-visa-rules +
   -data, passport-variants + -data, visa-news, destination-tips, etias-rules, etc.
 - `backend/` — `scraper.js` (daily visa data), `fetch-news.js`, `fetch-transit.js`,

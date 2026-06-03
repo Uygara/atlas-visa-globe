@@ -25,6 +25,7 @@ const STATUS_INFO = {
   ev:  { label: "eVisa",           color: "#a3e635", note: "Apply online before travel" },
   voa: { label: "Visa on arrival", color: "#facc15", note: "Issued at the border" },
   vr:  { label: "Visa required",   color: "#ef4444", note: "Apply at embassy or consulate" },
+  ban: { label: "No entry allowed", color: "#7f1020", note: "Entry refused to this nationality" },
 };
 
 function parseCountries(js) {

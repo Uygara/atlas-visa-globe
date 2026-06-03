@@ -167,21 +167,43 @@ async function scrapePassport(name, slug) {
   // Identified by class "wikitable" with the header text "Visa requirement".
   const result = { name, iso2: ISO_MAP[name], rows: [] };
 
+  // Most pages head the status column "Visa requirement", but some (e.g. Canada)
+  // use "Entry requirement". Accept either, else we silently parse 0 rows.
+  const isStatusHdr = h => h.includes("visa requirement") || h.includes("entry requirement");
+  const isStayHdr = h => h.includes("allowed stay") || h.includes("max stay") ||
+                         h.includes("stay duration") || h.includes("duration of stay") ||
+                         h.includes("length of stay") || h.includes("period of stay") || h === "stay";
+
+  // Process EXACTLY ONE table — the main visa table. Pages often carry secondary
+  // regional/bilateral tables that also say "visa requirement" (e.g. India's
+  // "Visa requirement for Indian nationals to visit the country") whose rows
+  // conflict with the headline status and corrupt the data (this is why
+  // India→Malaysia wrongly read "visa on arrival"). The canonical main table has
+  // Country + status + an allowed-stay column; prefer that, else fall back to the
+  // first Country + status table.
+  let chosen = null, fallback = null;
   $("table.wikitable").each((i, tbl) => {
     const headers = $(tbl).find("tr").first().find("th").map((_, th) => $(th).text().trim().toLowerCase()).get();
-    // Most pages head the status column "Visa requirement", but some (e.g. Canada)
-    // use "Entry requirement". Accept either, else we silently parse 0 rows.
-    const isStatusHdr = h => h.includes("visa requirement") || h.includes("entry requirement");
     if (!headers.some(isStatusHdr)) return;
+    if (!headers.some(h => h.includes("country") || h.includes("destination"))) return;
+    if (!fallback) fallback = { tbl, headers };
+    if (!chosen && headers.some(isStayHdr)) chosen = { tbl, headers };
+  });
+
+  const pick = chosen || fallback;
+  if (pick) {
+    const { tbl, headers } = pick;
     const countryIdx = headers.findIndex(h => h.includes("country") || h.includes("destination"));
     const visaIdx = headers.findIndex(isStatusHdr);
-    const stayIdx = headers.findIndex(h => h.includes("allowed stay") || h.includes("max stay"));
+    const stayIdx = headers.findIndex(isStayHdr);
     const notesIdx = headers.findIndex(h => h.includes("notes") || h.includes("note"));
 
     $(tbl).find("tr").slice(1).each((_, row) => {
       const cells = $(row).find("td");
       if (cells.length < 2) return;
-      const countryName = $(cells[countryIdx]).text().trim();
+      // Strip footnote refs like [12] from the country name before mapping —
+      // otherwise rows such as "Vietnam[295][296]" silently fail ISO lookup.
+      const countryName = $(cells[countryIdx]).text().trim().replace(/\[[^\]]*\]/g, "").trim();
       const visaText = $(cells[visaIdx]).text().trim();
       const stayText = stayIdx >= 0 ? $(cells[stayIdx]).text().trim() : "";
       const notesText = notesIdx >= 0 ? $(cells[notesIdx]).text().trim() : "";
@@ -196,7 +218,7 @@ async function scrapePassport(name, slug) {
         result.rows.push(r);
       }
     });
-  });
+  }
 
   return result;
 }

@@ -226,13 +226,26 @@ function MobileSheetHandle() {
         setH(nearest(curH()));
       }
     };
+    // iOS Safari fires pointercancel (not pointerup) when it decides a touch is a
+    // scroll. Without handling it, `dragging` stayed stuck true after the first
+    // drag — every later finger move resized the sheet and the grabber appeared
+    // dead, so users couldn't pull the sheet back up. Treat cancel like release,
+    // snapping to the nearest height.
+    const cancel = () => {
+      if (!dragging) return;
+      dragging = false;
+      panel.classList.remove("sheet-dragging");
+      setH(nearest(curH()));
+    };
     handle.addEventListener("pointerdown", down);
     window.addEventListener("pointermove", move);
     window.addEventListener("pointerup", up);
+    window.addEventListener("pointercancel", cancel);
     return () => {
       handle.removeEventListener("pointerdown", down);
       window.removeEventListener("pointermove", move);
       window.removeEventListener("pointerup", up);
+      window.removeEventListener("pointercancel", cancel);
     };
   }, []);
   return (
@@ -407,11 +420,18 @@ function ModeBar({ compareMode, setCompareMode, groupMode, setGroupMode }) {
     </button>
   );
   return (
-    <div style={{ marginBottom: 14 }}>
-      <div style={{
-        fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
-        textTransform: "uppercase", letterSpacing: "0.10em", marginBottom: 6,
-      }}>{window.t("settings.modes")}</div>
+    <div style={{
+      marginBottom: 14, padding: "11px 12px",
+      background: "var(--bg-2)", border: "1px solid var(--panel-border-strong)",
+      borderRadius: 10,
+    }}>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 3 }}>
+        <span style={{ fontSize: 16, lineHeight: 1 }}>🪪</span>
+        <span style={{ fontSize: 13, fontWeight: 600, color: "var(--fg)" }}>{window.t("modes.title")}</span>
+      </div>
+      <div style={{ fontSize: 11, color: "var(--fg-mute)", lineHeight: 1.4, marginBottom: 9 }}>
+        {window.t("modes.hint")}
+      </div>
       <div style={{ display: "flex", gap: 6 }}>
         {chip(compareMode, toggleCompare, window.t("mode.compare_short"), "var(--compare-self)")}
         {chip(groupMode, toggleGroup, window.t("mode.group_short"), "var(--self)")}
@@ -1166,8 +1186,10 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
           background: sc.fill, boxShadow: `0 0 10px ${sc.fill}`,
         }}/>
         <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 13, fontWeight: 500 }}>{localizedStatusLabel(r.status)}</div>
-          {r.days && <div style={{ fontSize: 11, color: "var(--fg-mute)", fontFamily: "var(--font-mono)" }}>{window.t("detail.up_to_days", { n: r.days })}</div>}
+          <div style={{ fontSize: 13, fontWeight: 500 }}>{r.fom ? window.t("detail.fom") : localizedStatusLabel(r.status)}</div>
+          {r.fom
+            ? <div style={{ fontSize: 11, color: "var(--fg-mute)", fontFamily: "var(--font-mono)" }}>{window.t("detail.fom_sub")}</div>
+            : (r.days && <div style={{ fontSize: 11, color: "var(--fg-mute)", fontFamily: "var(--font-mono)" }}>{window.t("detail.up_to_days", { n: r.days })}</div>)}
         </div>
       </div>
 
