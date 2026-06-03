@@ -1273,23 +1273,25 @@ layoutStyle.textContent = `
     /* Drag grabber — only on mobile. Sticky at the top of the sheet so it never
        scrolls out of reach, and a tall hit area so it's easy to grab and pull
        the sheet back up. */
+    /* flex:none is CRITICAL — the panel is a column flexbox and without it the
+       handle (flex-shrink:1 by default) collapsed to ~5px once the content
+       overflowed, leaving an almost untappable sliver. That, not the drag logic,
+       is why the sheet felt dead. Keep it a full-height, easy drag target. */
     .sheet-handle {
+      flex: none;
       display: flex; align-items: center; justify-content: center;
-      height: 30px; margin: -4px -18px 2px; padding: 0 18px;
+      height: 34px; margin: -4px -18px 2px; padding: 0 18px;
       cursor: grab; touch-action: none;
       position: sticky; top: 0; z-index: 3;
       background: var(--panel);
     }
     .sheet-handle:active { cursor: grabbing; }
-    /* The grabber is the visual target users actually press. It must not eat the
-       touch with its own (default) touch-action:auto — otherwise iOS treats a
-       downward drag on it as a scroll of the panel and cancels the gesture, so
-       the sheet could only be pulled up, never down. pointer-events:none routes
-       the press to the handle (touch-action:none), making both directions drag. */
+    /* touch-action:none so iOS doesn't treat a press on the bar as a panel scroll
+       (which cancelled the drag). No pointer-events:none — the press must reach a
+       real, full-height target so the drag actually starts. */
     .sheet-grabber {
       width: 44px; height: 5px; border-radius: 999px;
-      background: var(--fg-faint); opacity: 0.7;
-      pointer-events: none; touch-action: none;
+      background: var(--fg-faint); opacity: 0.7; touch-action: none;
     }
 
     /* Compact mobile topbar: brand + mode toggle on the bar, everything else

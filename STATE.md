@@ -83,14 +83,18 @@ EN in those four (engine ready — just add dict entries).
   - **Passport combos more discoverable.** The compare/group bar was a tiny
     "MODES" label nobody found; now a titled card "Hold more than one passport?"
     with a one-line explainer and Compare / Combine buttons.
-  - **Mobile bottom-sheet drag.** iOS fires pointercancel (not pointerup) when it
-    reclassifies a touch as a scroll; without handling it `dragging` stayed stuck.
-    Added a pointercancel handler + sticky, bigger grabber. Follow-up: the sheet
-    then couldn't be dragged *down* — the visible grabber span had the default
-    `touch-action:auto`, so iOS treated a downward press on it as a panel scroll
-    and cancelled the gesture (upward worked only because a full sheet has nothing
-    to scroll). Fixed with `pointer-events:none; touch-action:none` on the grabber
-    so the press routes to the handle (touch-action:none) and both directions drag.
+  - **Mobile bottom-sheet drag (took 3 passes — the real cause was layout).**
+    Symptoms reported in order: can't pull up → can't pull down → doesn't move at
+    all. Root cause: `.panel` is a column flexbox and `.sheet-handle` had the
+    default `flex-shrink:1`, so once panel content overflowed the handle collapsed
+    to ~5px — an almost untappable sliver (this, not the JS, was the whole
+    problem). A mis-step in pass 2 (`pointer-events:none` on the grabber) then
+    made even that sliver pass touches through to the content → fully dead.
+    Final fix: `flex:none` on the handle (keeps a full 34px target) + drop
+    pointer-events:none (keep touch-action:none so iOS doesn't treat the press as
+    a scroll) + snap on release using the last dragged height (`lastH`) instead of
+    re-reading getBoundingClientRect (which returns the pre-transition height and
+    snapped back). Verified both directions + tap-cycle via coordinate hit-testing.
 - **Reddit feedback round 2 (FIXED):**
   - **New 5th status `ban` ("No entry allowed").** Countries that refuse a
     nationality entirely (e.g. 10 countries refuse Israeli citizens; some refuse

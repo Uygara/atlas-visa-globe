@@ -195,14 +195,14 @@ function MobileSheetHandle() {
     if (!panel) return;
     const isMobile = () => window.matchMedia("(max-width: 900px)").matches;
     const snaps = () => [96, Math.round(window.innerHeight * 0.48), Math.round(window.innerHeight * 0.88)];
-    let startY = 0, startH = 0, dragging = false, moved = false;
-    const setH = (h) => panel.style.setProperty("--sheet-h", h + "px");
+    let startY = 0, startH = 0, dragging = false, moved = false, lastH = 0;
+    const setH = (h) => { lastH = h; panel.style.setProperty("--sheet-h", h + "px"); };
     const curH = () => panel.getBoundingClientRect().height;
     const nearest = (h) => snaps().reduce((a, b) => Math.abs(b - h) < Math.abs(a - h) ? b : a);
     const down = (e) => {
       if (!isMobile()) return;
       dragging = true; moved = false;
-      startY = e.clientY; startH = curH();
+      startY = e.clientY; startH = curH(); lastH = startH;
       panel.classList.add("sheet-dragging");
       try { handle.setPointerCapture(e.pointerId); } catch (err) {}
     };
@@ -210,33 +210,30 @@ function MobileSheetHandle() {
       if (!dragging) return;
       const dy = startY - e.clientY;
       if (Math.abs(dy) > 3) moved = true;
-      const h = Math.min(window.innerHeight * 0.92, Math.max(72, startH + dy));
-      setH(h);
+      setH(Math.min(window.innerHeight * 0.92, Math.max(72, startH + dy)));
     };
-    const up = () => {
+    // Snap based on lastH (the height we actually set during the drag), NOT a
+    // fresh getBoundingClientRect — re-reading after re-enabling the transition
+    // returns the pre-animation height and snaps to the wrong (often original)
+    // position. lastH is deterministic.
+    const settle = () => {
       if (!dragging) return;
       dragging = false;
       panel.classList.remove("sheet-dragging");
       if (!moved) {
-        // Tap → cycle to the next snap up (full → peek).
+        // Tap → cycle to the next snap (peek → half → full → peek).
         const order = snaps();
         const i = order.indexOf(nearest(curH()));
         setH(order[(i + 1) % order.length]);
       } else {
-        setH(nearest(curH()));
+        setH(nearest(lastH));
       }
     };
-    // iOS Safari fires pointercancel (not pointerup) when it decides a touch is a
-    // scroll. Without handling it, `dragging` stayed stuck true after the first
-    // drag — every later finger move resized the sheet and the grabber appeared
-    // dead, so users couldn't pull the sheet back up. Treat cancel like release,
-    // snapping to the nearest height.
-    const cancel = () => {
-      if (!dragging) return;
-      dragging = false;
-      panel.classList.remove("sheet-dragging");
-      setH(nearest(curH()));
-    };
+    const up = settle;
+    // iOS Safari fires pointercancel (not pointerup) when it reclassifies a touch
+    // as a scroll. Without handling it, `dragging` stayed stuck true and the sheet
+    // felt dead. Settle the same way so the drag always resolves.
+    const cancel = settle;
     handle.addEventListener("pointerdown", down);
     window.addEventListener("pointermove", move);
     window.addEventListener("pointerup", up);
