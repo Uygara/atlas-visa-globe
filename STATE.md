@@ -1,6 +1,6 @@
 # Atlas / travelnow.info — Session handoff (current state)
 
-> **Updated:** 2026-06-03 · **Live:** <https://travelnow.info> · **Repo:** <https://github.com/Uygara/atlas-visa-globe>
+> **Updated:** 2026-06-04 · **Live:** <https://travelnow.info> · **Repo:** <https://github.com/Uygara/atlas-visa-globe>
 > Cloudflare Pages auto-deploys every push to `main` (~30 s).
 > Working language with the owner: **Turkish.** Code comments: English.
 > Hard rule: **never invent visa data.** No fake fees/rules/numbers — if a fact
@@ -59,6 +59,33 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Reddit feedback round 4 (FIXED) — data accuracy push:**
+  - **Scraper gap-fill for territories.** Hong Kong, Macau and Taiwan live in a
+    *secondary* Wikipedia table ("Territory" / "Conditions of access" headers),
+    which the round-3 "main table only" rule skipped → they fell to each
+    passport's default for everyone. New logic: process the main table fully,
+    then add ONLY destinations it omits from later tables. Now India→Hong Kong =
+    eVisa, India→Macau = visa-free, Antigua→Taiwan = visa required. Does NOT
+    reintroduce the Malaysia bug (secondary tables can't override the main one).
+  - **Visa-free day counts.** A visa-free destination with a non-90-day stay used
+    to silently inherit 90. `buildPassportEntry` now keeps those as explicit
+    exceptions → Türkiye→South Africa and Canada→China correctly show 30 days.
+    (This is why the re-scrape diff was ~2700 entries — granularity, not real
+    changes; changelog reverted.)
+  - **"Restricted" ≠ banned.** "admission/entry/travel restricted" now maps to
+    visa-required, not `ban`. India→Pakistan is no longer "no entry allowed"
+    (pilgrimage/family visas exist). Only "refused/banned/prohibited" stays `ban`.
+  - **Override + caveat layer grew** (`data/visa-overrides.js`):
+    - Canada→South Korea → visa-free (K-ETA waived through 31 Dec 2026; was eVisa).
+    - **Entry-mode caveats** (`ENTRY_CAVEATS`, shown as a ⚠️ line in the detail
+      card via `window.entryCaveat`): India eVisa = airports/seaports only (land
+      borders need a sticker visa), Russia visa-free limited to some airports,
+      Canada eTA air-only, South Africa e-Visa airport-only, China visa-free
+      "temporary through 2026". Addresses the "land vs air entry" feedback.
+    - `resolveStatus` now passes an override `note` through to the detail card.
+  - Verified every disputed pair against Wikipedia first (Saudi→ZA/UG were already
+    correct = eVisa; India→New Zealand correctly visa-required — NZeTA is only for
+    visa-waiver nationals, India isn't one — so those two needed no change).
 - **Reddit feedback round 3 (FIXED):**
   - **New curated override layer `data/visa-overrides.js`** — consulted by
     `resolveStatus` BEFORE the scraped data, so corrections survive the daily
@@ -168,9 +195,13 @@ EN in those four (engine ready — just add dict entries).
   `hoverRenderer`, `arcs`, `stopMarkers` (used by transit-map + itinerary).
 - `components/transit-map.jsx`, `components/itinerary-app.jsx` — the two SPA pages.
 - `data/i18n.js` (SPA dict), `data/static-i18n.js` (static-page engine + dict).
-- `data/visa-overrides.js` — hand-curated corrections (Cuba e-visa ineligibility,
-  freedom-of-movement) consulted by `resolveStatus` before scraped data; survives
-  the daily re-scrape. Loaded after passports.js in every SPA page.
+- `data/visa-overrides.js` — hand-curated layer consulted by `resolveStatus`
+  before scraped data; survives the daily re-scrape; loaded after passports.js in
+  every SPA page. Holds: `STATUS_OVERRIDES[pass][dest]` (Cuba e-visa ineligibility,
+  Canada→Korea K-ETA waiver), the `isFreedomOfMovement` rule (EEA + UK–Ireland
+  CTA), and `ENTRY_CAVEATS` + `entryCaveat()` (land-vs-air / time-limited notes
+  shown as a ⚠️ line in the detail card). **This is where most future hand
+  corrections should go** — it never gets clobbered by the cron.
 - `data/*.js` — countries, passports (scraper-generated), transit-visa-rules +
   -data, passport-variants + -data, visa-news, destination-tips, etias-rules, etc.
 - `backend/` — `scraper.js` (daily visa data), `fetch-news.js`, `fetch-transit.js`,
@@ -190,6 +221,63 @@ EN in those four (engine ready — just add dict entries).
   user.name=atlas-bot commit -m "…"` then `git pull --rebase origin main && git push`.
 
 ---
+
+## Reddit feedback — status tracker (as of round 4)
+
+**DONE / shipped:**
+- "No entry allowed" status (`ban`) — Israel & co. · UK→Ireland freedom of movement
+- India→Malaysia 30-day visa-free (was VoA) · Cuba e-visa ineligible list (PH etc.)
+- ETA ≠ visa-free: US (VWP/ESTA), Australia (eVisitor), NZ (NZeTA), UK ETA, K-ETA
+- HK / Macau / Taiwan now resolve correctly (gap-fill) · visa-free day counts
+  (TR→ZA, CA→CN = 30) · India→Pakistan = visa-required not banned
+- Canada→Korea visa-free (K-ETA waiver) · Canada→China 30 days + "until 2026" note
+- Entry-mode caveats (India eVisa land border, Russia/Canada/SA/China) in detail card
+- Passport-combo bar more discoverable · mobile bottom-sheet drag (both directions)
+
+**Already correct (reporter mistaken):** Saudi→South Africa/Uganda = eVisa (not
+visa-free); India→New Zealand = visa-required (NZeTA is only for visa-waiver
+nationals). Antigua→Taiwan was wrong → now fixed (visa-required).
+
+**PENDING / roadmap (bigger features, NOT yet built):**
+1. **Multiple passport *classes / travel documents*.** Reporters want BNO / BOC /
+   BOTC (British nationality classes), plus alien passports / refugee travel
+   documents. We only have a small *diplomatic* variant layer
+   (`data/passport-variants*.js`). This needs a new data model (a passport can
+   have several "classes", each with its own visa map) + a class picker in the
+   panel. Sizeable; needs sourced per-class data.
+2. **Residence-permit holder mode.** "I hold a US green card / EU permit — where
+   does that get me?" Partly expressible via `data/visa-conditions.js`
+   (`ifHolds: ["US","SCHENGEN",…]`), which already powers the "if you also hold X
+   visa" shortcuts in the detail card. Roadmap: a dedicated "add a residence
+   permit" control that recomputes the whole map, not just per-country shortcuts.
+3. **Entry-mode modelling (beyond notes).** We added *caveat notes*; a fuller
+   model would store mode-specific statuses (air vs land/sea). Probably overkill —
+   notes likely enough.
+4. **Dual-citizenship "combo".** Compare mode already shows "which passport is
+   better per country" and Combine (group) shows best-of. If reporters still miss
+   it, the gap is naming/onboarding, not capability — consider a one-time tip.
+5. **Expand `visa-conditions.js`** (US/Schengen-visa exemptions, transit/layover
+   rules) — hand-curated, high trust value, currently only a handful of entries.
+
+## Open-sourcing the repo — decision notes (owner asked)
+- **Secrets are safe to publish:** all live secrets are GitHub Actions Secrets
+  (`${{ secrets.* }}`), `.gitignore` excludes `.env*`/`.dev.vars*`; no real keys
+  committed. The only public-by-design value is the AdSense publisher id in
+  `data/ads.js` (already visible in served HTML). Minor risk: a clone embedding
+  your pub-id for click-fraud → could get your AdSense account banned. If
+  open-sourcing, move the id to a build-time/runtime config kept out of the repo.
+- **Profit is still possible** — the moat is the domain, traffic, brand and SEO,
+  not the code (it's a scraper + static site). But a permissive licence (MIT)
+  lets anyone host a clone with their own ads. Use **AGPL-3.0** (or
+  source-available) to discourage closed commercial clones.
+- **"Will I get hacked?"** Publishing client code reveals nothing new (it's all in
+  the browser already). The real risk is **malicious PRs** from strangers — so:
+  protect `main` (require PR review, no direct pushes), never give push access,
+  review every PR line-by-line (watch for exfiltration / crypto-miners / ad
+  fraud), keep the cron's secrets in protected env only.
+- **Recommendation:** if you want the free help, either (a) keep it private and add
+  the one vetted dev as a collaborator, or (b) open-source under AGPL with branch
+  protection + careful review. Don't MIT-license it while you still hope to monetise.
 
 ## Why no traffic / AdSense rejection — diagnosis (root causes)
 1. Homepage was crawler-empty (FIXED) and sitemap/canonicals were relative
