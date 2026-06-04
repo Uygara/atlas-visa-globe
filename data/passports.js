@@ -17373,7 +17373,6 @@ const RAW_PASSPORTS = {
       "BY",
       "BR",
       "CV",
-      "CF",
       "SV",
       "ER",
       "GD",
