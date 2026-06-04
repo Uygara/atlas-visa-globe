@@ -42,6 +42,15 @@ CUBA_EVISA_INELIGIBLE.forEach((pp) => {
   (window.STATUS_OVERRIDES[pp] = window.STATUS_OVERRIDES[pp] || {})["CU"] = { status: "vr", days: null };
 });
 
+// South Korea waived its K-ETA for many nationalities (incl. Canada, the US, the
+// EU, UK, Japan, Australia, …) through 31 Dec 2026 — during the waiver they enter
+// visa-free. Wikipedia still lists Canada under "ETA", which is why CA→KR read
+// eVisa while US→KR read visa-free. Align Canada to the current reality.
+(window.STATUS_OVERRIDES["CA"] = window.STATUS_OVERRIDES["CA"] || {})["KR"] = {
+  status: "vf", days: 90,
+  note: "K-ETA requirement temporarily waived through 31 Dec 2026 — visa-free for now.",
+};
+
 // ───────────────────────────────────────────────────────────────────────────
 // 2) Freedom of movement.  Within the EEA (EU + Iceland / Liechtenstein /
 // Norway) plus Switzerland, and inside the UK–Ireland Common Travel Area,
@@ -62,4 +71,37 @@ window.isFreedomOfMovement = function (passportIso2, destIso2) {
   if (FOM_EEA.has(passportIso2) && FOM_EEA.has(destIso2)) return true;
   if (CTA.has(passportIso2) && CTA.has(destIso2)) return true;
   return false;
+};
+
+// ───────────────────────────────────────────────────────────────────────────
+// 3) Entry-mode caveats. Our status answers "do I need a visa", but for some
+// destinations the answer depends on HOW you arrive (air vs land/sea), or the
+// permission is time-limited. These are surfaced as a small caveat line in the
+// detail card. Keyed by destination ISO2; `whenStatus` limits the note to the
+// statuses it actually applies to (omit = always). Sourced, not invented.
+window.ENTRY_CAVEATS = {
+  IN: { whenStatus: ["ev"],
+        note: "Hindistan e-Vizesi yalnızca belirli hava/deniz limanlarından girişte geçerli — kara sınırlarında (ör. Attari–Wagah) etiket vize gerekir.",
+        noteEn: "India's eVisa is valid only at designated airports/seaports — land borders (e.g. Attari–Wagah) require a sticker visa." },
+  RU: { whenStatus: ["vf", "ev"],
+        note: "Bazı vizesiz / e-vize girişleri yalnızca belirli havalimanlarıyla sınırlıdır.",
+        noteEn: "Some visa-free / e-visa entries are limited to specific airports only." },
+  CA: { whenStatus: ["ev"],
+        note: "eTA yalnızca hava yoluyla girişte gerekir; ABD'den kara/deniz yoluyla girişte gerekmez.",
+        noteEn: "The eTA is needed for air arrivals only; entering by land/sea from the US doesn't require it." },
+  ZA: { whenStatus: ["ev"],
+        note: "Güney Afrika e-Vizesi yalnızca havalimanından girişte geçerlidir.",
+        noteEn: "South Africa's e-Visa is valid for entry via airports only." },
+  CN: { whenStatus: ["vf"],
+        note: "Vizesiz giriş geçici bir uygulamadır — şu an 31 Aralık 2026'ya kadar yürürlükte.",
+        noteEn: "Visa-free entry is a temporary scheme, currently in effect through 31 Dec 2026." },
+};
+
+// Return the caveat note for a (destination, status) pair, or null. Language-aware.
+window.entryCaveat = function (destIso2, status) {
+  const c = window.ENTRY_CAVEATS[destIso2];
+  if (!c) return null;
+  if (c.whenStatus && status && c.whenStatus.indexOf(status) === -1) return null;
+  const lang = window.ATLAS_LANG || "en";
+  return lang === "tr" ? (c.note || c.noteEn) : (c.noteEn || c.note);
 };

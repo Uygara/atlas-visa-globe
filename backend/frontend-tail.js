@@ -45,7 +45,7 @@ window.resolveStatus = function(passportIso2, destIso2) {
   // nationalities ineligible for the Cuba e-visa that must use a consulate.
   const ov = window.STATUS_OVERRIDES && window.STATUS_OVERRIDES[passportIso2]
              && window.STATUS_OVERRIDES[passportIso2][destIso2];
-  if (ov) return { status: ov.status, days: ov.days != null ? ov.days : null };
+  if (ov) return { status: ov.status, days: ov.days != null ? ov.days : null, note: ov.note || null };
   // Freedom of movement (EEA internal + UK–Ireland Common Travel Area): unlimited
   // stay, not a 90-day visa-free window. Surfaced as vf with no day cap + fom flag.
   if (window.isFreedomOfMovement && window.isFreedomOfMovement(passportIso2, destIso2))

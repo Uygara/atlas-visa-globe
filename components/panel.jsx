@@ -1190,6 +1190,27 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
         </div>
       </div>
 
+      {/* Entry-mode / temporary-policy caveats (land vs air, time-limited
+          waivers). Sourced from data/visa-overrides.js — shown only when they
+          actually apply to this destination + status. */}
+      {(() => {
+        const caveat = window.entryCaveat ? window.entryCaveat(iso2, r.status) : null;
+        const notes = [r.note, caveat].filter(Boolean);
+        if (!notes.length) return null;
+        return (
+          <div style={{
+            display: "flex", gap: 8, padding: "8px 10px", marginBottom: 10,
+            background: "rgba(250,204,21,0.08)", border: "1px solid rgba(250,204,21,0.25)",
+            borderRadius: 8,
+          }}>
+            <span style={{ fontSize: 13, lineHeight: 1.3 }}>⚠️</span>
+            <div style={{ fontSize: 11, lineHeight: 1.45, color: "var(--fg-dim)" }}>
+              {notes.map((n, i) => <div key={i} style={{ marginTop: i ? 4 : 0 }}>{n}</div>)}
+            </div>
+          </div>
+        );
+      })()}
+
       <p style={{ fontSize: 12, lineHeight: 1.5, color: "var(--fg-dim)", margin: "0 0 10px 0" }}>
         {NOTES[r.status]}
       </p>

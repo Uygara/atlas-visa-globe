@@ -167,33 +167,29 @@ async function scrapePassport(name, slug) {
   // Identified by class "wikitable" with the header text "Visa requirement".
   const result = { name, iso2: ISO_MAP[name], rows: [] };
 
-  // Most pages head the status column "Visa requirement", but some (e.g. Canada)
-  // use "Entry requirement". Accept either, else we silently parse 0 rows.
-  const isStatusHdr = h => h.includes("visa requirement") || h.includes("entry requirement");
+  // Most pages head the status column "Visa requirement", but some use "Entry
+  // requirement" (Canada) and the special-territory tables (Hong Kong / Macau /
+  // Taiwan) use "Conditions of access". Accept all three, else we drop rows.
+  const isStatusHdr = h => h.includes("visa requirement") || h.includes("entry requirement") ||
+                           h.includes("conditions of access");
+  // The destination column is "Country" or "Destination" on the main table and
+  // "Territory" on the SAR/territories table.
+  const isCountryHdr = h => h.includes("country") || h.includes("destination") || h.includes("territory");
   const isStayHdr = h => h.includes("allowed stay") || h.includes("max stay") ||
                          h.includes("stay duration") || h.includes("duration of stay") ||
                          h.includes("length of stay") || h.includes("period of stay") || h === "stay";
 
-  // Process EXACTLY ONE table — the main visa table. Pages often carry secondary
-  // regional/bilateral tables that also say "visa requirement" (e.g. India's
-  // "Visa requirement for Indian nationals to visit the country") whose rows
-  // conflict with the headline status and corrupt the data (this is why
-  // India→Malaysia wrongly read "visa on arrival"). The canonical main table has
-  // Country + status + an allowed-stay column; prefer that, else fall back to the
-  // first Country + status table.
-  let chosen = null, fallback = null;
-  $("table.wikitable").each((i, tbl) => {
-    const headers = $(tbl).find("tr").first().find("th").map((_, th) => $(th).text().trim().toLowerCase()).get();
-    if (!headers.some(isStatusHdr)) return;
-    if (!headers.some(h => h.includes("country") || h.includes("destination"))) return;
-    if (!fallback) fallback = { tbl, headers };
-    if (!chosen && headers.some(isStayHdr)) chosen = { tbl, headers };
-  });
-
-  const pick = chosen || fallback;
-  if (pick) {
-    const { tbl, headers } = pick;
-    const countryIdx = headers.findIndex(h => h.includes("country") || h.includes("destination"));
+  // The MAIN visa table is authoritative. Pages also carry secondary tables:
+  // some are regional/bilateral ones whose rows CONFLICT with the headline status
+  // (e.g. India's "...nationals to visit the country" listed Malaysia as visa on
+  // arrival) — those must never override the main table. Others legitimately ADD
+  // destinations the main table omits: Hong Kong, Macau and Taiwan are listed in
+  // a separate "special administrative regions / territories" table. So: process
+  // the main table fully, then let later tables only FILL GAPS (dests not already
+  // seen). That captures HK/Macau/Taiwan without reintroducing the Malaysia bug.
+  const seen = new Set();
+  const processTable = (tbl, headers, gapFillOnly) => {
+    const countryIdx = headers.findIndex(isCountryHdr);
     const visaIdx = headers.findIndex(isStatusHdr);
     const stayIdx = headers.findIndex(isStayHdr);
     const notesIdx = headers.findIndex(h => h.includes("notes") || h.includes("note"));
@@ -211,13 +207,37 @@ async function scrapePassport(name, slug) {
       const status = classifyVisaText(visaText);
       const days = parseDays(stayText);
       const destIso2 = ISO_MAP[countryName];
-      if (destIso2 && status) {
-        const r = { destIso2, status, days, raw: visaText };
-        const cond = notesText ? extractConditions(notesText, status) : [];
-        if (cond.length) r.conditions = cond;
-        result.rows.push(r);
-      }
+      if (!destIso2 || !status) return;
+      if (gapFillOnly && seen.has(destIso2)) return; // never override the main table
+      if (seen.has(destIso2)) return;
+      seen.add(destIso2);
+      const r = { destIso2, status, days, raw: visaText };
+      const cond = notesText ? extractConditions(notesText, status) : [];
+      if (cond.length) r.conditions = cond;
+      result.rows.push(r);
     });
+  };
+
+  // Collect candidate tables (Country + status header). The main table is the
+  // first one that also has an allowed-stay column; fall back to the first.
+  const candidates = [];
+  let mainTbl = null;
+  $("table.wikitable").each((i, tbl) => {
+    const headers = $(tbl).find("tr").first().find("th").map((_, th) => $(th).text().trim().toLowerCase()).get();
+    if (!headers.some(isStatusHdr)) return;
+    if (!headers.some(isCountryHdr)) return;
+    candidates.push({ tbl, headers });
+    if (!mainTbl && headers.some(isStayHdr)) mainTbl = { tbl, headers };
+  });
+  if (!mainTbl && candidates.length) mainTbl = candidates[0];
+
+  if (mainTbl) {
+    processTable(mainTbl.tbl, mainTbl.headers, false);
+    // Gap-fill from the other tables (adds HK/Macau/Taiwan/territories only).
+    for (const c of candidates) {
+      if (c.tbl === mainTbl.tbl) continue;
+      processTable(c.tbl, c.headers, true);
+    }
   }
 
   return result;
@@ -232,13 +252,16 @@ function classifyVisaText(text) {
     .trim();
   if (!t) return null;
   // Order matters: check denials first, then specific permits, then generic "visa-free".
-  // "ban" = no entry allowed at all (e.g. countries that refuse Israeli citizens,
-  // or refuse their own/other citizens entry). Kept distinct from "visa required".
-  if (t.includes("admission refused") || t.includes("admission restricted") ||
+  // "ban" = entry REFUSED outright (e.g. countries that refuse Israeli citizens).
+  if (t.includes("admission refused") || t.includes("entry refused") ||
       t.includes("travel banned") || t.includes("entry banned") ||
-      t.includes("entry refused") || t.includes("entry restricted") ||
-      t.includes("travel restricted") || t.includes("no entry") ||
-      t.includes("entry prohibited") || t.includes("not admitted")) return "ban";
+      t.includes("no entry") || t.includes("entry prohibited") ||
+      t.includes("not admitted")) return "ban";
+  // "restricted" (admission/entry/travel) is NOT an outright ban — entry is
+  // possible with special permission or a visa (e.g. India→Pakistan, where
+  // pilgrimage/family visas are issued). Treat as visa-required.
+  if (t.includes("admission restricted") || t.includes("entry restricted") ||
+      t.includes("travel restricted")) return "vr";
   // eVisa variants — MUST be checked before "visa required" because phrases like
   // "Online Visa required" (Australia ETA, Canada eTA) would otherwise be miscategorised as vr.
   // Also covers brand-named electronic authorisations: ESTA / Visa Waiver Program
@@ -387,7 +410,20 @@ function buildPassportEntry(scrape) {
     defaultDays: def === "vf" ? 90 : null,
   };
   ["vf", "ev", "voa", "vr", "ban"].forEach(s => {
-    if (s === def) return;
+    if (s === def) {
+      // The default status is implied for most destinations and not listed. BUT a
+      // visa-free destination with a NON-default stay (e.g. 30 days when the
+      // default is 90) would otherwise inherit the wrong day count — this is why
+      // Türkiye→South Africa and Canada→China showed "90 days" when both are 30.
+      // Keep those as explicit exceptions so the real stay survives.
+      if (def === "vf") {
+        const odd = scrape.rows
+          .filter(r => r.status === "vf" && r.days && r.days !== entry.defaultDays)
+          .map(r => [r.destIso2, r.days]);
+        if (odd.length) entry.vf = odd;
+      }
+      return;
+    }
     entry[s] = scrape.rows
       .filter(r => r.status === s)
       .map(r => r.days ? [r.destIso2, r.days] : r.destIso2);
