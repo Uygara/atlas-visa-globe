@@ -906,6 +906,7 @@ const RAW_PASSPORTS = {
       ]
     ],
     "ev": [
+      "AF",
       [
         "AU",
         90
@@ -995,6 +996,14 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "IR",
+        30
+      ],
+      [
+        "IQ",
+        30
+      ],
+      [
         "IL",
         90
       ],
@@ -1014,6 +1023,7 @@ const RAW_PASSPORTS = {
         "LB",
         30
       ],
+      "LY",
       [
         "MG",
         90
@@ -1090,11 +1100,16 @@ const RAW_PASSPORTS = {
         "SL",
         90
       ],
+      [
+        "SO",
+        30
+      ],
       "SS",
       [
         "LK",
         30
       ],
+      "SY",
       [
         "TJ",
         30
@@ -1173,38 +1188,14 @@ const RAW_PASSPORTS = {
       "ER",
       "GM",
       "GH",
-      "NR",
-      "TM"
-    ],
-    "ban": [
-      "AF",
-      [
-        "HT",
-        90
-      ],
-      [
-        "IR",
-        30
-      ],
-      [
-        "IQ",
-        30
-      ],
-      "LY",
       "ML",
+      "NR",
       "NE",
-      [
-        "SO",
-        30
-      ],
       "SD",
-      "SY",
-      [
-        "UA",
-        90
-      ],
+      "TM",
       "YE"
-    ]
+    ],
+    "ban": []
   },
   "AE": {
     "name": "United Arab Emirates",
@@ -42792,9 +42783,7 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
-    "ban": [
-      "IL"
-    ],
+    "ban": [],
     "cond": {
       "CU": [
         {
@@ -44224,10 +44213,6 @@ const RAW_PASSPORTS = {
         21
       ],
       [
-        "GM",
-        90
-      ],
-      [
         "GY",
         90
       ],
@@ -44274,10 +44259,6 @@ const RAW_PASSPORTS = {
         30
       ],
       "BT",
-      [
-        "BO",
-        30
-      ],
       [
         "BW",
         90
@@ -70677,18 +70658,27 @@ window.tally = function(passportIso2) {
   return counts;
 };
 
-const _GROUP_ORDER = { self: 0, vf: 0, ev: 1, voa: 2, vr: 3, ban: 4, na: 0 };
+// Combine mode models ONE traveller who holds several passports. For each
+// destination they may enter on whichever of their passports gives the best
+// access, so the combined result is the BEST (least-restrictive) status across
+// all held passports — holding more passports can only ever INCREASE access.
+// (This previously returned the WORST case, which contradicted the on-site
+// promise of "your best combined access" and confused reporters.) `via` reports
+// which passport won so the UI can show "best via 🇬🇧".
+const _ACCESS_RANK = { vf: 0, ev: 1, voa: 2, vr: 3, ban: 4 };
 window.resolveGroupStatus = function(passports, destIso2) {
   if (!passports || passports.length === 0) return { status: "na", days: null };
-  let worst = 0, days = null;
+  let best = null, bestRank = Infinity, via = null;
   for (const p of passports) {
+    // Holding the destination's own passport ⇒ citizen of it ⇒ best possible.
+    if (p === destIso2) return { status: "vf", days: null, fom: true, via: p };
     const r = window.resolveStatus(p, destIso2);
-    const score = _GROUP_ORDER[r.status] ?? 0;
-    if (score > worst) { worst = score; days = r.days; }
-    if (worst === 4) break;
+    const rank = _ACCESS_RANK[r.status];
+    if (rank == null) continue;             // ignore na / self / unknown
+    if (rank < bestRank) { bestRank = rank; best = r; via = p; }
   }
-  const status = ["vf", "ev", "voa", "vr", "ban"][worst] || "vf";
-  return { status, days };
+  if (!best) return { status: "na", days: null };
+  return { status: best.status, days: best.days, fom: best.fom || false, note: best.note || null, via };
 };
 
 window.tallyGroup = function(passports) {

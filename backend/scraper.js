@@ -143,13 +143,17 @@ const MANUAL_OVERRIDES = {
 
 // ───────────────────────────────────────────────────────────────────────────
 // Fetch + parse a single passport's Wikipedia page
-async function scrapePassport(name, slug) {
+async function scrapePassport(name, slug, titleOverride) {
   if (!slug) slug = name.replace(/\s+/g, "_").replace(/'/g, "%27");
-  // If slug already contains "_citizens" we use it as the trailing path verbatim.
-  // Otherwise we append the standard "_citizens" suffix.
-  const path = slug.includes("citizens")
-    ? `Visa_requirements_for_${slug}`
-    : `Visa_requirements_for_${slug}_citizens`;
+  // titleOverride (when given) is the full underscored Wikipedia article title —
+  // used for non-"…citizens" pages such as the British nationality-class lists
+  // ("Visa_requirements_for_British_Overseas_citizens"). Otherwise build the
+  // standard "…_citizens" path (or use the slug verbatim if it already has it).
+  const path = titleOverride
+    ? titleOverride
+    : (slug.includes("citizens")
+        ? `Visa_requirements_for_${slug}`
+        : `Visa_requirements_for_${slug}_citizens`);
   const url = `https://en.wikipedia.org/wiki/${path}`;
   const res = await fetch(url, {
     headers: {
@@ -252,9 +256,17 @@ function classifyVisaText(text) {
     .trim();
   if (!t) return null;
   // Order matters: check denials first, then specific permits, then generic "visa-free".
-  // "ban" = entry REFUSED outright (e.g. countries that refuse Israeli citizens).
+  // "ban" = the DESTINATION refuses this nationality outright (e.g. countries that
+  // refuse Israeli citizens → "Admission refused"). NOTE: we deliberately do NOT
+  // treat "Travel banned" as a ban — on Wikipedia that phrase marks an ORIGIN
+  // government prohibiting its OWN citizens from a war zone (e.g. South Korea →
+  // Syria/Yemen/Ukraine, shown as "eVisaTravel banned"). That is not a destination
+  // entry refusal, and folding it into `ban` wrongly painted South Korea — one of
+  // the strongest passports — as "no entry allowed" for 12 countries. The real
+  // destination status sits before that phrase in the same cell, so dropping the
+  // match lets it classify correctly (eVisa / visa-free / visa-required).
   if (t.includes("admission refused") || t.includes("entry refused") ||
-      t.includes("travel banned") || t.includes("entry banned") ||
+      t.includes("entry banned") ||
       t.includes("no entry") || t.includes("entry prohibited") ||
       t.includes("not admitted")) return "ban";
   // "restricted" (admission/entry/travel) is NOT an outright ban — entry is
@@ -571,4 +583,14 @@ async function main() {
   console.log(`\n✓ Wrote ${Object.keys(collected).length} passports + ${changelog.length} changelog entries.`);
 }
 
-main().catch(err => { console.error(err); process.exit(1); });
+// Only auto-run when invoked directly (node scraper.js …). When required as a
+// module (e.g. by a targeted merge-regeneration helper), export the internals
+// instead so callers can scrape a subset and merge without clobbering the rest.
+if (require.main === module) {
+  main().catch(err => { console.error(err); process.exit(1); });
+}
+
+module.exports = {
+  scrapePassport, buildPassportEntry, classifyVisaText, parseDays,
+  computeChangelog, PASSPORT_TARGETS, MANUAL_OVERRIDES, SOURCE_DIR,
+};

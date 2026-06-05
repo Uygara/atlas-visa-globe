@@ -1,6 +1,6 @@
 # Atlas / travelnow.info — Session handoff (current state)
 
-> **Updated:** 2026-06-04 · **Live:** <https://travelnow.info> · **Repo:** <https://github.com/Uygara/atlas-visa-globe>
+> **Updated:** 2026-06-05 · **Live:** <https://travelnow.info> · **Repo:** <https://github.com/Uygara/atlas-visa-globe>
 > Cloudflare Pages auto-deploys every push to `main` (~30 s).
 > Working language with the owner: **Turkish.** Code comments: English.
 > Hard rule: **never invent visa data.** No fake fees/rules/numbers — if a fact
@@ -58,6 +58,60 @@ EN in those four (engine ready — just add dict entries).
 ---
 
 ## What we did this arc, and how
+
+- **Reddit feedback round 5 (FIXED) — this session (2026-06-05):**
+  - **Combine mode was BACKWARDS (the headline bug).** A reporter noted the site
+    promises "combine several to see your best combined access" but combining
+    *reduced* access. Root cause: `resolveGroupStatus` in `backend/frontend-tail.js`
+    (and the copy appended into `data/passports.js`) returned the **worst** status
+    across the held passports (an old "group travel — where can we ALL go" model).
+    The product intent is ONE person holding several passports → they enter on
+    whichever passport is best. Rewrote it to return the **best** (least-restrictive)
+    status + a `via` field (which passport wins). `tallyGroup` now increases with
+    more passports (TR solo vf 76 → TR+DE 133). UI: the per-passport breakdown in
+    the detail card highlights the winning passport with a "best" badge
+    (`detail.best_passport`); settings + tally copy de-"strictest"-ified across all
+    6 langs (`settings.group_*`, `tally.group_label`, `tally.worst_case`).
+  - **2D/3D + dark/light were undiscoverable.** They lived only inside the gear
+    popover — and on mobile the gear itself was buried two levels deep (hamburger →
+    gear → popover). Pulled the control cluster (`.rhs`) OUT of the collapsible
+    `.topbar-sheet` so it's always on the bar, and added always-visible inline
+    `InlineModeToggle` (3D/2D) + new `InlineThemeToggle` (sun/moon, dark/light)
+    next to the gear. Mobile: cluster stays on the bar (verified 375px = no
+    overflow), the non-essential "?" help is hidden (`.help-btn-wrap`). Gear kept
+    for language + compare/combine.
+  - **British passport CLASSES shipped (BOTC + BOC).** Long-standing request
+    ("support the different classes of British passport"). Built a sourced,
+    full-map variant: `backend/fetch-british-classes.js` scrapes the dedicated
+    Wikipedia tables → `data/passport-variants-gb.js` (`window.PASSPORT_VARIANTS_GB`).
+    Extended the variant framework: a variant can now be `mode:"full"` — a COMPLETE
+    map with its OWN default, so a weaker class doesn't inherit the strong British
+    Citizen access (the old overlay-on-ordinary fallback would have). `passport-
+    variants.js` merges them under GB; the GB "ordinary" is relabelled
+    **British Citizen**, so the picker reads *British Citizen · BOTC · BOC*. Verified
+    they diverge correctly (US: ev→vr→vr; TR: vf→ev→vr; tally vf 124→102→95).
+    Wired into index.html + the daily cron. **BN(O), British subjects, British
+    protected persons: NO parseable Wikipedia table exists → deliberately omitted
+    (never invent).** Same for alien/refugee travel documents.
+  - **Bogus "no entry" bans fixed (data-integrity bug I found while auditing).**
+    The ban classifier matched `"travel banned"`, but on Wikipedia that phrase is
+    an **origin**-government prohibition (e.g. South Korea → Syria/Yemen/Ukraine,
+    cells read `"eVisaTravel banned"`), NOT a destination refusal. It painted
+    South Korea — a top-5 passport — as "no entry allowed" for **12** countries.
+    Removed `"travel banned"` from the ban branch (kept "admission/entry refused",
+    "entry banned", "no entry", "entry prohibited", "not admitted"). Targeted
+    merge-regen of the 22 ban-carrying passports (`scraper.js` now exports its
+    internals + guards `main()` behind `require.main`): KR 12→0, Iraq 1→0; every
+    genuine "Admission refused" ban (US=3, TW=2, IL=7, RU=7, …) preserved. KR→Syria
+    now correctly = eVisa, →Ukraine = visa-free, etc. Snapshot still 200 passports,
+    no empty entries. The nightly `--all` cron self-heals the rest with the same fix.
+  - **Verified the rest of the round-4/5 reports against the live source — all
+    already correct (reporters out of date or misread eVisa as visa-free):**
+    TR→South Africa = "Visa not required" 30d (SA added Türkiye; our `vf 30` is
+    right, special/green falls through to the same). ZA→Saudi = "eVisa/VoA",
+    UG→Saudi = "eVisa", RU→Saudi = "Visa not required" — i.e. only Russia is
+    visa-free, exactly as we show. India→Malaysia vf 30, →Macau vf, →Hong Kong =
+    "Electronic Travel Authorization" (ev). No changes needed; documented.
 
 - **Reddit feedback round 4 (FIXED) — data accuracy push:**
   - **Scraper gap-fill for territories.** Hong Kong, Macau and Taiwan live in a
@@ -202,10 +256,23 @@ EN in those four (engine ready — just add dict entries).
   CTA), and `ENTRY_CAVEATS` + `entryCaveat()` (land-vs-air / time-limited notes
   shown as a ⚠️ line in the detail card). **This is where most future hand
   corrections should go** — it never gets clobbered by the cron.
+- `data/passport-variants.js` — variant framework. Two variant modes now:
+  **overlay** (diplomatic/service — only ADD access, fall back to ordinary) and
+  **`mode:"full"`** (British nationality classes — a COMPLETE map with its own
+  `default`; unlisted dest uses the class default, never the strong ordinary map).
+  Merges `PASSPORT_VARIANTS_DATA` (diplomatic) + `PASSPORT_VARIANTS_GB` (BOTC/BOC).
+- `data/passport-variants-gb.js` — **AUTO-GENERATED** sourced BOTC/BOC maps
+  (`window.PASSPORT_VARIANTS_GB`). Regenerate: `node backend/fetch-british-classes.js`.
 - `data/*.js` — countries, passports (scraper-generated), transit-visa-rules +
   -data, passport-variants + -data, visa-news, destination-tips, etias-rules, etc.
-- `backend/` — `scraper.js` (daily visa data), `fetch-news.js`, `fetch-transit.js`,
-  `fetch-variants.js`, dispatch-*. Wired in `.github/workflows/daily-refresh.yml`.
+- `backend/scraper.js` — daily visa data. Now also **exported as a module**
+  (guarded `main()` behind `require.main`) + a `titleOverride` param on
+  `scrapePassport`, so helpers can reuse it. The `ban` classifier intentionally
+  does NOT match `"travel banned"` (origin advisory, not a destination refusal).
+- `backend/fetch-british-classes.js` — scrapes the BOTC/BOC Wikipedia tables →
+  `data/passport-variants-gb.js`. Refuses <50-row parses (never thin data).
+- `backend/` — `fetch-news.js`, `fetch-transit.js`, `fetch-variants.js`,
+  dispatch-*. Wired in `.github/workflows/daily-refresh.yml`.
 - `scripts/generate-seo.js` — builds `/passport/<iso>/` pages + sitemap.
 
 ## Quirks / gotchas
@@ -222,42 +289,51 @@ EN in those four (engine ready — just add dict entries).
 
 ---
 
-## Reddit feedback — status tracker (as of round 4)
+## Reddit feedback — status tracker (as of round 5)
 
 **DONE / shipped:**
+- **Combine = best access** (was worst) · **2D/3D + dark/light surfaced** inline on
+  the bar (desktop + mobile) · **British classes BOTC + BOC** (sourced full maps)
+- **Korea-style origin "Travel banned" no longer shows as "no entry"** (classifier +
+  22-passport regen) — genuine destination refusals (IL/RU/US/TW …) preserved
 - "No entry allowed" status (`ban`) — Israel & co. · UK→Ireland freedom of movement
 - India→Malaysia 30-day visa-free (was VoA) · Cuba e-visa ineligible list (PH etc.)
 - ETA ≠ visa-free: US (VWP/ESTA), Australia (eVisitor), NZ (NZeTA), UK ETA, K-ETA
-- HK / Macau / Taiwan now resolve correctly (gap-fill) · visa-free day counts
+- HK / Macau / Taiwan resolve correctly (gap-fill) · visa-free day counts
   (TR→ZA, CA→CN = 30) · India→Pakistan = visa-required not banned
 - Canada→Korea visa-free (K-ETA waiver) · Canada→China 30 days + "until 2026" note
 - Entry-mode caveats (India eVisa land border, Russia/Canada/SA/China) in detail card
 - Passport-combo bar more discoverable · mobile bottom-sheet drag (both directions)
 
-**Already correct (reporter mistaken):** Saudi→South Africa/Uganda = eVisa (not
-visa-free); India→New Zealand = visa-required (NZeTA is only for visa-waiver
-nationals). Antigua→Taiwan was wrong → now fixed (visa-required).
+**Verified already-correct vs the LIVE source (reporter out of date / misread):**
+- TR→South Africa = "Visa not required" 30d (our `vf 30` is right; SA added Türkiye)
+- Saudi: ZA→SA / UG→SA = "eVisa", RU→SA = "Visa not required" — only Russia is
+  visa-free (ex-GCC), exactly as we show; "eVisa" was being misread as "visa-free"
+- India→New Zealand = visa-required (NZeTA only for visa-waiver nationals)
+- India→Hong Kong = Electronic Travel Authorization (`ev`), →Macau = visa-free
+- Antigua→Taiwan = visa-required (fixed round 4)
 
-**PENDING / roadmap (bigger features, NOT yet built):**
-1. **Multiple passport *classes / travel documents*.** Reporters want BNO / BOC /
-   BOTC (British nationality classes), plus alien passports / refugee travel
-   documents. We only have a small *diplomatic* variant layer
-   (`data/passport-variants*.js`). This needs a new data model (a passport can
-   have several "classes", each with its own visa map) + a class picker in the
-   panel. Sizeable; needs sourced per-class data.
-2. **Residence-permit holder mode.** "I hold a US green card / EU permit — where
-   does that get me?" Partly expressible via `data/visa-conditions.js`
-   (`ifHolds: ["US","SCHENGEN",…]`), which already powers the "if you also hold X
-   visa" shortcuts in the detail card. Roadmap: a dedicated "add a residence
-   permit" control that recomputes the whole map, not just per-country shortcuts.
-3. **Entry-mode modelling (beyond notes).** We added *caveat notes*; a fuller
-   model would store mode-specific statuses (air vs land/sea). Probably overkill —
-   notes likely enough.
-4. **Dual-citizenship "combo".** Compare mode already shows "which passport is
-   better per country" and Combine (group) shows best-of. If reporters still miss
-   it, the gap is naming/onboarding, not capability — consider a one-time tip.
-5. **Expand `visa-conditions.js`** (US/Schengen-visa exemptions, transit/layover
-   rules) — hand-curated, high trust value, currently only a handful of entries.
+**PENDING / roadmap (NOT built — mostly source-limited):**
+1. **More British classes / other travel documents.** BOTC + BOC shipped. **BN(O)**
+   (the big Hong-Kong ask), British subjects, British protected persons, and
+   alien/refugee travel documents have **no parseable Wikipedia visa table**, so
+   they're omitted on purpose (the no-invent rule). If an authoritative machine-
+   readable source appears, add it to `backend/fetch-british-classes.js` and it
+   flows through the existing `mode:"full"` variant path. Other countries' service/
+   special classes would use the same path.
+2. **Residence-permit holder mode** ("I hold a US green card / EU permit — where
+   does that get me?"). Partly expressible via `data/visa-conditions.js`
+   (`ifHolds:["US","SCHENGEN",…]`, already powers the detail-card "if you also hold
+   X" shortcuts). Roadmap: a dedicated "add a residence permit" control that
+   recomputes the WHOLE map. Same shape as the variant picker — good next feature.
+3. **Distinct "travel authorization" (ETA) category.** ETAs are currently folded
+   into `ev` (so they're not shown as visa-free — the core complaint is satisfied).
+   A 6th status splitting ESTA/eTA/ETIAS/K-ETA/NZeTA from real eVisas would be more
+   precise but touches scraper + colors + legend + i18n×6 + tally. Deferred.
+4. **Entry-mode modelling (beyond notes).** Caveat notes cover air-vs-land today; a
+   full per-mode status model is probably overkill.
+5. **Expand `visa-conditions.js`** (US/Schengen-visa exemptions, transit/layover) —
+   hand-curated, high trust value, currently only a handful of entries.
 
 ## Open-sourcing the repo — decision notes (owner asked)
 - **Secrets are safe to publish:** all live secrets are GitHub Actions Secrets

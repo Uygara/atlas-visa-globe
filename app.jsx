@@ -503,16 +503,22 @@ function TopNav({ tweaks, setTweak, globeStyle, onGlobeStyleChange, onHelp }) {
             ["/alerts/", window.t("nav.alerts")],
           ]} />
         </nav>
-        <div className="rhs">
-          <HelpButton onClick={onHelp} />
-          <SettingsButton
-            tweaks={tweaks}
-            setTweak={setTweak}
-            inNav
-            globeStyle={globeStyle}
-            onGlobeStyleChange={onGlobeStyleChange}
-          />
-        </div>
+      </div>
+      {/* Right-hand controls live OUTSIDE the collapsible sheet so they stay
+          visible on mobile too (previously the gear was buried two levels deep:
+          hamburger → gear → popover). The 2D/3D and dark/light toggles are now
+          surfaced inline next to the gear — the most-used controls, one tap. */}
+      <div className="rhs">
+        <InlineModeToggle value={globeStyle} onChange={onGlobeStyleChange} />
+        <InlineThemeToggle tweaks={tweaks} setTweak={setTweak} />
+        <span className="help-btn-wrap"><HelpButton onClick={onHelp} /></span>
+        <SettingsButton
+          tweaks={tweaks}
+          setTweak={setTweak}
+          inNav
+          globeStyle={globeStyle}
+          onGlobeStyleChange={onGlobeStyleChange}
+        />
       </div>
       {/* Hamburger only shown on mobile via CSS */}
       <button
@@ -596,6 +602,50 @@ function InlineModeToggle({ value, onChange }) {
               cursor: "pointer",
             }}>
             {o.l}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+// Compact dark/light segmented toggle — sits inline in the top bar next to the
+// 2D/3D toggle so theme is a one-tap, always-visible control (no longer hidden
+// inside the gear popover). Same visual language as InlineModeToggle.
+function InlineThemeToggle({ tweaks, setTweak }) {
+  const cur = tweaks.background || "dark";
+  const moon = (
+    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <path d="M13 9.5A5.5 5.5 0 0 1 6.5 3a5.5 5.5 0 1 0 6.5 6.5z" fill="currentColor"/>
+    </svg>
+  );
+  const sun = (
+    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      <circle cx="8" cy="8" r="3.2" fill="currentColor"/>
+      <g stroke="currentColor" strokeWidth="1.3" strokeLinecap="round">
+        <path d="M8 1.5v1.6M8 12.9v1.6M1.5 8h1.6M12.9 8h1.6M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M12.6 3.4l-1.1 1.1M4.5 11.5l-1.1 1.1"/>
+      </g>
+    </svg>
+  );
+  const opts = [
+    { v: "dark",  icon: moon, label: window.t("settings.theme_dark") },
+    { v: "light", icon: sun,  label: window.t("settings.theme_light") },
+  ];
+  return (
+    <div role="group" aria-label={window.t("settings.theme")}
+      style={{ display: "inline-flex", background: "var(--bg-3)", border: "1px solid var(--panel-border)", borderRadius: 7, padding: 2, gap: 2 }}>
+      {opts.map(o => {
+        const on = cur === o.v;
+        return (
+          <button key={o.v} onClick={() => setTweak("background", o.v)}
+            aria-pressed={on} aria-label={o.label} title={o.label}
+            style={{
+              border: "none", padding: "4px 8px", borderRadius: 5,
+              background: on ? "var(--self)" : "transparent",
+              color: on ? "#05070d" : "var(--fg-dim)",
+              cursor: "pointer", display: "inline-flex", alignItems: "center",
+            }}>
+            {o.icon}
           </button>
         );
       })}
@@ -1300,7 +1350,9 @@ layoutStyle.textContent = `
        to side-scroll to reach the language picker. */
     .topbar { padding: 0 10px; gap: 6px; }
     .topbar .brand { font-size: 13px; }
-    .topbar .hamburger { display: inline-flex; margin-left: auto; }
+    /* rhs (margin-left:auto) pushes the control cluster to the right; the
+       hamburger then sits just after it, so it only needs a small gap. */
+    .topbar .hamburger { display: inline-flex; margin-left: 4px; }
 
     /* Nav + lang/settings collapse into a slide-down sheet behind the hamburger */
     .topbar-sheet { display: none; }
@@ -1333,13 +1385,12 @@ layoutStyle.textContent = `
     .topbar.menu-open .tools-dd-btn { width: 100%; padding: 10px 12px; font-size: 14px; }
     .topbar.menu-open .tools-dd-menu { position: static !important; box-shadow: none; border: none; padding: 0 0 0 10px; min-width: 0; background: transparent; backdrop-filter: none; }
     .topbar.menu-open .tools-dd-item { padding: 9px 12px; font-size: 14px; }
-    .topbar.menu-open .rhs {
-      flex-direction: column; align-items: stretch; gap: 8px;
-      margin-left: 0; padding-top: 8px; border-top: 1px solid var(--panel-border);
-    }
-    .topbar.menu-open .rhs select { padding: 10px 12px; font-size: 14px; width: 100%; }
-    .topbar.menu-open .rhs > div { width: 100%; }
-    .topbar.menu-open .rhs > div > button { flex: 1; }
+    /* The control cluster (2D/3D · theme · gear) is no longer inside the
+       collapsible sheet — it stays on the bar so those toggles are always one
+       tap away on mobile. Keep it tight and drop the non-essential "?" help
+       shortcut to save width on narrow phones. */
+    .topbar .rhs { gap: 4px; }
+    .topbar .help-btn-wrap { display: none; }
   }
 `;
 document.head.appendChild(layoutStyle);

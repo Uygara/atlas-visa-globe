@@ -1275,10 +1275,21 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
           {groupRows.map(({ p, r: rr }) => {
             const c = window.byIso2[p];
             const sc2 = STATUS_COLOR[rr.status];
+            // The combined status uses whichever passport gives the best access
+            // (r.via). Highlight that winning passport so it's obvious which one
+            // to travel on.
+            const isBest = r.via === p;
             return (
               <div key={p} style={{ display: "flex", alignItems: "center", gap: 8, padding: "5px 0", borderTop: "1px solid var(--panel-border)" }}>
                 <span style={{ fontSize: 16 }}>{c?.flag}</span>
-                <span style={{ fontSize: 12, flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{window.countryName(p)}</span>
+                <span style={{ fontSize: 12, flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontWeight: isBest ? 600 : 400 }}>{window.countryName(p)}</span>
+                {isBest && (
+                  <span style={{
+                    fontSize: 9, fontFamily: "var(--font-mono)", color: "var(--vf)",
+                    textTransform: "uppercase", letterSpacing: "0.06em",
+                    border: "1px solid rgba(34,197,94,0.40)", borderRadius: 4, padding: "1px 5px",
+                  }}>{window.t("detail.best_passport")}</span>
+                )}
                 <span style={{
                   width: 8, height: 8, borderRadius: "50%",
                   background: sc2.fill,

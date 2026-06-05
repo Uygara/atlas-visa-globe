@@ -45,6 +45,14 @@ jobs:
         continue-on-error: true
         run: node fetch-variants.js
 
+      - name: Refresh British nationality-class maps (BOTC / BOC)
+        # Full sourced visa maps for the British Overseas Territories citizen and
+        # British Overseas citizen passport classes. Soft-fails and keeps the
+        # previous file if a page returns <50 rows (refuses thin parses).
+        working-directory: backend
+        continue-on-error: true
+        run: node fetch-british-classes.js
+
       - name: Regenerate SEO pages
         run: node scripts/generate-seo.js
         env:
@@ -80,7 +88,7 @@ jobs:
         run: |
           git config user.name "atlas-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add data/passports.js data/passports-snapshot.json data/changelog.js data/visa-news.js data/transit-visa-data.js data/passport-variants-data.js passport/ sitemap.xml robots.txt
+          git add data/passports.js data/passports-snapshot.json data/changelog.js data/visa-news.js data/transit-visa-data.js data/passport-variants-data.js data/passport-variants-gb.js passport/ sitemap.xml robots.txt
           if git diff --staged --quiet; then
             echo "No changes."
           else

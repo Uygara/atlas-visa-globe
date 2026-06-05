@@ -159,6 +159,37 @@ if (window.PASSPORT_VARIANTS_DATA) {
   }
 }
 
+// ── British nationality classes (sourced full maps) ─────────────────────────
+// backend/fetch-british-classes.js writes data/passport-variants-gb.js with
+// COMPLETE visa maps (each with its OWN default) for BOTC / BOC — passports
+// markedly weaker than a full British Citizen. They merge under GB as
+// `mode:"full"` so an unlisted destination falls back to the CLASS's own default
+// (usually visa-required), never to the strong ordinary GB map. BN(O), British
+// subjects and British protected persons have no parseable Wikipedia table, so
+// they are intentionally absent — we never invent visa data.
+if (window.PASSPORT_VARIANTS_GB) {
+  const gbLabels = {
+    botc: { label: "Deniz Aşırı Toprak Vatandaşı (BOTC)", labelEn: "Overseas Territories Citizen (BOTC)",
+            sub: "British Overseas Territories Citizen pasaportu", subEn: "British Overseas Territories Citizen passport" },
+    boc:  { label: "Deniz Aşırı Vatandaş (BOC)", labelEn: "Overseas Citizen (BOC)",
+            sub: "British Overseas Citizen pasaportu", subEn: "British Overseas Citizen passport" },
+  };
+  const gb = window.PASSPORT_VARIANTS["GB"] || (window.PASSPORT_VARIANTS["GB"] = {});
+  for (const vk of Object.keys(window.PASSPORT_VARIANTS_GB)) {
+    if (vk === "lastUpdated") continue;
+    if (gb[vk]) continue; // never clobber a hand-curated entry
+    const e = window.PASSPORT_VARIANTS_GB[vk];
+    gb[vk] = {
+      ...(gbLabels[vk] || { label: vk, labelEn: vk }),
+      mode: "full",
+      default: e.default || "vr",
+      defaultDays: e.defaultDays || null,
+      source: e.source || null,
+      vf: e.vf || [], ev: e.ev || [], voa: e.voa || [], vr: e.vr || [],
+    };
+  }
+}
+
 // ── Helpers ────────────────────────────────────────────────────────────────
 // Build a fast lookup for a variant entry on first access.
 function _ensureVariantMap(v) {
@@ -185,6 +216,9 @@ window.passportVariants = function (passportIso2) {
 // Returns the human label for a variant in the active language.
 window.passportVariantLabel = function (passportIso2, variantKey) {
   if (!variantKey || variantKey === "ordinary") {
+    // The "ordinary" GB passport is the full British Citizen one — name it so the
+    // class picker reads "British Citizen · BOTC · BOC" rather than "Ordinary".
+    if (passportIso2 === "GB") return window.ATLAS_LANG === "tr" ? "İngiliz Vatandaşı" : "British Citizen";
     // TR's own ordinary passport is burgundy ("Bordo"); for every other
     // country just say "Ordinary" so the label isn't TR-specific.
     if (window.ATLAS_LANG === "tr") return passportIso2 === "TR" ? "Bordo (Umuma Mahsus)" : "Umuma Mahsus";
@@ -212,6 +246,15 @@ window.resolveVariantStatus = function (passportIso2, destIso2, variantKey) {
   const map = _ensureVariantMap(v);
   if (map[aliased]) return map[aliased];
   if (map[destIso2]) return map[destIso2];
+  // Full-map variants (British nationality classes) are COMPLETE on their own: an
+  // unlisted destination uses the variant's own default — NOT the ordinary
+  // passport, which would wildly overstate a weaker class's access.
+  if (v.mode === "full") {
+    if (v.default === "vf") return { status: "vf", days: v.defaultDays || null };
+    return { status: v.default || "vr", days: null };
+  }
+  // Overlay variants (diplomatic / service): unlisted destinations fall back to
+  // the ordinary map (these classes only ever ADD access).
   return window.resolveStatus(passportIso2, destIso2);
 };
 
