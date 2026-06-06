@@ -113,6 +113,18 @@ EN in those four (engine ready — just add dict entries).
     visa-free, exactly as we show. India→Malaysia vf 30, →Macau vf, →Hong Kong =
     "Electronic Travel Authorization" (ev). No changes needed; documented.
 
+- **Round 5 follow-ups (same session):**
+  - **Combine now supports up to 10 passports** (was 4) — `MAX` in `GroupPicker`
+    (`components/panel.jsx`). Addresses "can you combine more than 4, like up to 10?".
+  - **Top-right gear → plain language switcher.** Since 2D/3D + dark/light are now
+    always-visible inline toggles and compare/combine live in the panel, the gear
+    popover was redundant. `SettingsButton` (`app.jsx`) is now just a globe + current
+    language code that opens the language list (no more mode/theme/compare/group
+    duplication). `header.live` i18n key dropped; unused `settings.*`/`nav.mode`/
+    `nav.settings` keys are now orphaned (harmless).
+  - **Removed the pulsing "Live" badge** in the panel header — looked AI-template-y.
+    Now a quiet "Updated <date>" (`header.updated`, 6 langs; no animated dot).
+
 - **Reddit feedback round 4 (FIXED) — data accuracy push:**
   - **Scraper gap-fill for territories.** Hong Kong, Macau and Taiwan live in a
     *secondary* Wikipedia table ("Territory" / "Conditions of access" headers),
