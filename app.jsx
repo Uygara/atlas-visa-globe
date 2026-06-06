@@ -505,20 +505,13 @@ function TopNav({ tweaks, setTweak, globeStyle, onGlobeStyleChange, onHelp }) {
         </nav>
       </div>
       {/* Right-hand controls live OUTSIDE the collapsible sheet so they stay
-          visible on mobile too (previously the gear was buried two levels deep:
-          hamburger → gear → popover). The 2D/3D and dark/light toggles are now
-          surfaced inline next to the gear — the most-used controls, one tap. */}
+          visible on mobile too. 2D/3D + dark/light are always-visible inline
+          toggles; the last control is just the language switcher. */}
       <div className="rhs">
         <InlineModeToggle value={globeStyle} onChange={onGlobeStyleChange} />
         <InlineThemeToggle tweaks={tweaks} setTweak={setTweak} />
         <span className="help-btn-wrap"><HelpButton onClick={onHelp} /></span>
-        <SettingsButton
-          tweaks={tweaks}
-          setTweak={setTweak}
-          inNav
-          globeStyle={globeStyle}
-          onGlobeStyleChange={onGlobeStyleChange}
-        />
+        <SettingsButton inNav />
       </div>
       {/* Hamburger only shown on mobile via CSS */}
       <button
@@ -671,7 +664,11 @@ function LangSwitcher() {
 }
 
 // ─── Settings popover (light/dark + compare mode toggle) ──────────────────
-function SettingsButton({ tweaks, setTweak, inNav, globeStyle, onGlobeStyleChange }) {
+// Language switcher (top-right). This used to be a catch-all "settings" gear, but
+// 2D/3D + dark/light are now always-visible inline toggles and compare/combine
+// live in the side panel — so choosing the language is this control's only
+// remaining job. Shows a globe + the current language code; opens a language list.
+function SettingsButton({ inNav }) {
   const [open, setOpen] = useState(false);
   const [, force] = useState(0);
   const ref = useRef(null);
@@ -682,19 +679,17 @@ function SettingsButton({ tweaks, setTweak, inNav, globeStyle, onGlobeStyleChang
   }, []);
   useEffect(() => {
     if (!open) return;
-    // pointerdown (not mousedown) so a tap outside also closes the menu on iOS
-    // Safari, where mousedown doesn't fire reliably on non-button elements.
+    // pointerdown (not mousedown) so a tap outside also closes it on iOS Safari.
     const onClick = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
     document.addEventListener("pointerdown", onClick);
     return () => document.removeEventListener("pointerdown", onClick);
   }, [open]);
   const curLang = window.ATLAS_LANG || "en";
-  const sectionLabel = (txt) => (
-    <div style={{ fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", letterSpacing: "0.08em", textTransform: "uppercase", marginBottom: 8 }}>{txt}</div>
-  );
+  const langs = window.LANGS || [];
+  const cur = langs.find(l => l.code === curLang) || langs[0] || { code: "en", native: "EN" };
   const popoverPos = inNav
-    ? { position: "absolute", top: 40, right: 0, minWidth: 240 }
-    : { position: "absolute", bottom: 44, right: 0, minWidth: 220 };
+    ? { position: "absolute", top: 40, right: 0, minWidth: 150 }
+    : { position: "absolute", bottom: 44, right: 0, minWidth: 150 };
   const wrapperPos = inNav
     ? { position: "relative" }
     : { position: "absolute", bottom: 16, right: 16, zIndex: 5 };
@@ -704,85 +699,49 @@ function SettingsButton({ tweaks, setTweak, inNav, globeStyle, onGlobeStyleChang
         <div style={{
           ...popoverPos,
           background: "var(--panel)", backdropFilter: "blur(14px)",
+          WebkitBackdropFilter: "blur(14px)",
           border: "1px solid var(--panel-border-strong)", borderRadius: 12,
-          padding: 12, boxShadow: "0 12px 32px rgba(0,0,0,0.4)",
-          fontSize: 12, color: "var(--fg)",
+          padding: 6, boxShadow: "0 12px 32px rgba(0,0,0,0.4)",
+          display: "flex", flexDirection: "column", gap: 1,
         }}>
-          {sectionLabel(window.t("nav.language"))}
-          <select
-            value={curLang}
-            onChange={(e) => { window.setLang(e.target.value); force(x => x + 1); }}
-            aria-label={window.t("nav.language")}
-            style={{
-              width: "100%", marginBottom: 14, padding: "6px 8px",
-              background: "var(--bg-3)", color: "var(--fg)",
-              border: "1px solid var(--panel-border)", borderRadius: 6,
-              fontFamily: "inherit", fontSize: 12,
-            }}>
-            {(window.LANGS || []).map(l => (
-              <option key={l.code} value={l.code}>{l.native}</option>
-            ))}
-          </select>
-
-          {sectionLabel(window.t("nav.mode"))}
-          <div style={{ display: "flex", gap: 6, marginBottom: 14 }}>
-            {[["globe3d", window.t("mode.3d")], ["flat", window.t("mode.2d")]].map(([v, l]) => (
-              <button key={v} onClick={() => onGlobeStyleChange(v)}
+          {langs.map(l => {
+            const on = l.code === curLang;
+            return (
+              <button key={l.code}
+                onClick={() => { window.setLang(l.code); force(x => x + 1); setOpen(false); }}
                 style={{
-                  flex: 1, padding: "6px 8px", borderRadius: 6,
-                  border: "1px solid " + (globeStyle === v ? "var(--self)" : "var(--panel-border)"),
-                  background: globeStyle === v ? "rgba(96,165,250,0.10)" : "var(--bg-3)",
-                  color: "var(--fg)", cursor: "pointer", fontFamily: "inherit", fontSize: 12,
-                }}>{l}</button>
-            ))}
-          </div>
-
-          {sectionLabel(window.t("settings.theme"))}
-          <div style={{ display: "flex", gap: 6, marginBottom: 14 }}>
-            {[["dark", window.t("settings.theme_dark")], ["light", window.t("settings.theme_light")]].map(([v, l]) => (
-              <button key={v} onClick={() => setTweak("background", v)}
-                style={{
-                  flex: 1, padding: "6px 8px", borderRadius: 6,
-                  border: "1px solid " + (tweaks.background === v ? "var(--self)" : "var(--panel-border)"),
-                  background: tweaks.background === v ? "rgba(96,165,250,0.10)" : "var(--bg-3)",
-                  color: "var(--fg)", cursor: "pointer", fontFamily: "inherit", fontSize: 12,
-                }}>{l}</button>
-            ))}
-          </div>
-          {sectionLabel(window.t("settings.modes"))}
-          <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", marginBottom: 8 }}>
-            <input type="checkbox" checked={!!tweaks.compareMode}
-                   onChange={(e) => setTweak("compareMode", e.target.checked)} />
-            <span>{window.t("settings.compare_two")}</span>
-          </label>
-          <label style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
-            <input type="checkbox" checked={!!tweaks.groupMode}
-                   onChange={(e) => setTweak("groupMode", e.target.checked)} />
-            <span>{window.t("settings.group_travel")}</span>
-          </label>
-          <div style={{ fontSize: 10, color: "var(--fg-faint)", marginTop: 4 }}>
-            {window.t("settings.group_sub")}
-          </div>
+                  textAlign: "left", padding: "8px 10px", borderRadius: 6,
+                  border: "none", cursor: "pointer", fontFamily: "inherit", fontSize: 13,
+                  background: on ? "rgba(96,165,250,0.12)" : "transparent",
+                  color: on ? "var(--fg)" : "var(--fg-dim)", fontWeight: on ? 600 : 400,
+                  whiteSpace: "nowrap",
+                }}>
+                {l.native}
+              </button>
+            );
+          })}
         </div>
       )}
       <button onClick={() => setOpen(!open)}
-        aria-label={window.t("nav.settings")}
+        aria-label={window.t("nav.language")}
         style={inNav ? {
           background: "var(--bg-3)", border: "1px solid var(--panel-border)",
           color: "var(--fg-dim)", borderRadius: 7, padding: "6px 8px",
-          display: "inline-flex", alignItems: "center", cursor: "pointer",
+          display: "inline-flex", alignItems: "center", gap: 5, cursor: "pointer",
+          fontFamily: "inherit", fontSize: 12,
         } : {
-          width: 36, height: 36, borderRadius: "50%",
+          height: 36, borderRadius: 18, padding: "0 12px",
           background: "var(--panel)", backdropFilter: "blur(14px)",
           border: "1px solid var(--panel-border-strong)",
           color: "var(--fg-dim)", cursor: "pointer",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          boxShadow: "0 4px 16px rgba(0,0,0,0.30)",
+          display: "inline-flex", alignItems: "center", gap: 5,
+          boxShadow: "0 4px 16px rgba(0,0,0,0.30)", fontFamily: "inherit", fontSize: 12,
         }}>
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-          <path d="M8 5.5v5M5.5 8h5" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" transform="rotate(45 8 8)"/>
-          <circle cx="8" cy="8" r="6" stroke="currentColor" strokeWidth="1.2"/>
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <circle cx="8" cy="8" r="6.2" stroke="currentColor" strokeWidth="1.2"/>
+          <path d="M2 8h12M8 1.8c1.9 1.7 2.9 3.9 2.9 6.2S9.9 12.5 8 14.2C6.1 12.5 5.1 10.3 5.1 8S6.1 3.5 8 1.8z" stroke="currentColor" strokeWidth="1.1"/>
         </svg>
+        <span style={{ fontFamily: "var(--font-mono)", letterSpacing: "0.03em" }}>{(cur.code || "en").toUpperCase()}</span>
       </button>
     </div>
   );

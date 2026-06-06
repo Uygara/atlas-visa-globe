@@ -267,19 +267,9 @@ function PanelHeader() {
           fontSize: 10,
           fontFamily: "var(--font-mono)",
           color: "var(--fg-mute)",
-          textTransform: "uppercase",
-          letterSpacing: "0.08em",
-          display: "flex",
-          alignItems: "center",
-          gap: 5,
+          letterSpacing: "0.04em",
         }}>
-          <span style={{
-            width: 6, height: 6, borderRadius: "50%",
-            background: "var(--vf)",
-            boxShadow: "0 0 6px var(--vf)",
-            animation: "pulse 2s ease-in-out infinite",
-          }} />
-          {window.t("header.live")} · {formatted}
+          {window.t("header.updated")} {formatted}
         </div>
       </div>
       <p style={{
@@ -502,7 +492,7 @@ function DirectionToggle({ value, onChange }) {
 function GroupPicker({ primary, values, onChange }) {
   const [open, setOpen] = useState(false);
   const [pickerOpen, setPickerOpen] = useState(false);
-  const MAX = 4;
+  const MAX = 10; // one person can realistically combine several passports/residencies
 
   // Auto-seed with the primary the first time the picker mounts.
   useEffect(() => {
