@@ -1062,9 +1062,11 @@ function CoachHint({ onDismiss }) {
 function Legend() {
   const items = [
     { k: "vf",  fill: STATUS_COLOR.vf.fill,  label: window.t("status.vf")  },
+    { k: "eta", fill: STATUS_COLOR.eta.fill, label: window.t("status.eta") },
     { k: "ev",  fill: STATUS_COLOR.ev.fill,  label: window.t("status.ev")  },
     { k: "voa", fill: STATUS_COLOR.voa.fill, label: window.t("status.voa") },
     { k: "vr",  fill: STATUS_COLOR.vr.fill,  label: window.t("status.vr")  },
+    { k: "ban", fill: STATUS_COLOR.ban.fill, label: window.t("status.ban") },
   ];
   return (
     <div style={{

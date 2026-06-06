@@ -105,3 +105,21 @@ window.entryCaveat = function (destIso2, status) {
   const lang = window.ATLAS_LANG || "en";
   return lang === "tr" ? (c.note || c.noteEn) : (c.noteEn || c.note);
 };
+
+// ───────────────────────────────────────────────────────────────────────────
+// 4) Electronic Travel Authorization (ETA) display bucket. The scraper stores
+// ESTA (US), eTA (Canada), eVisitor/ETA (Australia), NZeTA (New Zealand) and the
+// UK ETA as `ev` (eVisa). But an ETA is lighter than a full eVisa — a quick
+// online pre-authorization, not a consular application — and reporters rightly
+// noted it shouldn't read as "eVisa" (let alone "visa-free"). For each of these
+// destinations the ONLY electronic option IS an ETA, so any `ev` result to them
+// is reclassified to a distinct `eta` status (own colour + label). This is a
+// pure DISPLAY relabel keyed on the destination — no re-scrape, no invented data:
+// the scraper already determined WHICH passports get the electronic option.
+window.ETA_DESTS = { US: 1, CA: 1, AU: 1, NZ: 1, GB: 1 };
+window.applyEtaDisplay = function (r, destIso2) {
+  if (!r || r.status !== "ev") return r;
+  const d = (window.TERRITORY_ALIAS && window.TERRITORY_ALIAS[destIso2]) || destIso2;
+  if (window.ETA_DESTS[d] || window.ETA_DESTS[destIso2]) return { ...r, status: "eta" };
+  return r;
+};

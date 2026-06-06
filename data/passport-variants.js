@@ -263,7 +263,7 @@ window.resolveVariantStatus = function (passportIso2, destIso2, variantKey) {
 window.tallyVariant = function (passportIso2, variantKey) {
   if (!passportIso2) return null;
   if (!variantKey || variantKey === "ordinary") return window.tally(passportIso2);
-  const counts = { vf: 0, ev: 0, voa: 0, vr: 0 };
+  const counts = { vf: 0, eta: 0, ev: 0, voa: 0, vr: 0, ban: 0 };
   window.COUNTRIES.forEach(c => {
     if (c.iso2 === passportIso2) return;
     if (c.continent === "AN") return;

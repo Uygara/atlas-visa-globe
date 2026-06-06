@@ -124,6 +124,32 @@ EN in those four (engine ready — just add dict entries).
     `nav.settings` keys are now orphaned (harmless).
   - **Removed the pulsing "Live" badge** in the panel header — looked AI-template-y.
     Now a quiet "Updated <date>" (`header.updated`, 6 langs; no animated dot).
+  - **New `eta` status — "Travel authorization".** ESTA / Canada eTA / Australia
+    ETA-eVisitor / NZeTA / UK ETA were lumped into `ev` (eVisa); reporters wanted
+    them distinct (lighter than an eVisa, definitely not visa-free). Added a 6th
+    status with its own teal colour (`--eta:#2dd4bf`) + label. Implemented as a
+    DISPLAY relabel, NOT a re-scrape: `data/visa-overrides.js` has `ETA_DESTS`
+    {US,CA,AU,NZ,GB} + `applyEtaDisplay()`, and `resolveStatus` (wrapped as
+    `_resolveStatusBase` + a thin `resolveStatus` that calls `applyEtaDisplay`)
+    relabels any `ev`→`eta` for those destinations. The scraper already knew WHICH
+    passports get the electronic option (stored `ev`), so no data is invented and
+    no re-scrape is needed — `passports.js` was rebuilt from the snapshot + the new
+    `frontend-tail.js`. Wired through: `_ACCESS_RANK` (vf<eta<ev<voa<vr<ban), tally
+    counts (`eta:0`), globe `STATUS_COLOR`/`STATUS_HEX`/compare-stripes, panel Tally
+    row (shown only when >0) + detail note, Legend, `status.eta`/`detail.note.eta`
+    in 6 langs. Verified: DE→US/CA/AU/NZ/GB = eta; IN→US stays vr (India isn't VWP).
+  - **"No entry allowed" colour darkened** from crimson `#7f1020` to near-black
+    blood-red `#3a0510` (CSS `--ban` + `STATUS_HEX.ban`) so it's unmistakably
+    distinct from the `vr` red. `ban` + `eta` both added to the on-globe Legend.
+  - **Combine cap is 10** (see above) — and Legend/tally now cover all 6 statuses.
+  - **ads.txt "not found" (AdSense) — diagnosed, NOT a code bug.** `https://travelnow.info/ads.txt`
+    serves HTTP 200 `text/plain` with the correct `google.com, pub-2617798720306957,
+    DIRECT, f08c47fec0942fa0` line. The alert is stale-crawl or Cloudflare bot
+    protection challenging Google's AdsBot. Owner actions: (1) in AdSense confirm the
+    site URL is the apex `travelnow.info` (NOT `www`, which currently 522s); (2) in
+    Cloudflare, allow verified bots / don't challenge AdsBot; (3) re-request review —
+    the status can lag days–weeks. Also note: Cloudflare serves a *managed* robots.txt
+    (AI-bot block) that overrides the repo's simple one — Google `*` is still allowed.
 
 - **Reddit feedback round 4 (FIXED) — data accuracy push:**
   - **Scraper gap-fill for territories.** Hong Kong, Macau and Taiwan live in a
