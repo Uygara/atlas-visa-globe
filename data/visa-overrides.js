@@ -51,6 +51,23 @@ CUBA_EVISA_INELIGIBLE.forEach((pp) => {
   note: "K-ETA requirement temporarily waived through 31 Dec 2026 — visa-free for now.",
 };
 
+// Israeli passport — states with no diplomatic relations with Israel that refuse
+// Israeli passport holders entry outright. Wikipedia's "Visa requirements for
+// Israeli citizens" marks these "Travel illegal under Israeli law" — origin-side
+// phrasing the scraper classifies as null (skips) — but the well-documented,
+// PRACTICAL reality is mutual: these countries do not admit an Israeli passport at
+// all, so the answer to "can I enter?" is no. Marked `ban` (no entry allowed).
+// Deliberately NOT applied to "Admission restricted" destinations (Malaysia,
+// Pakistan, Saudi Arabia): the source distinguishes them, and they permit
+// case-by-case entry with special permission, so those correctly stay `vr`.
+// (Also distinct from origin-only *temporary* travel advisories — e.g. South Korea
+// → war zones — which we leave as the destination's real visa status.)
+// Source: https://en.wikipedia.org/wiki/Visa_requirements_for_Israeli_citizens (verified 2026-06-06).
+const ISRAEL_NO_ENTRY = ["IR", "IQ", "LB", "SY", "YE"];
+ISRAEL_NO_ENTRY.forEach((dest) => {
+  (window.STATUS_OVERRIDES["IL"] = window.STATUS_OVERRIDES["IL"] || {})[dest] = { status: "ban", days: null };
+});
+
 // ───────────────────────────────────────────────────────────────────────────
 // 2) Freedom of movement.  Within the EEA (EU + Iceland / Liechtenstein /
 // Norway) plus Switzerland, and inside the UK–Ireland Common Travel Area,

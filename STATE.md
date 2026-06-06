@@ -150,6 +150,19 @@ EN in those four (engine ready — just add dict entries).
     Cloudflare, allow verified bots / don't challenge AdsBot; (3) re-request review —
     the status can lag days–weeks. Also note: Cloudflare serves a *managed* robots.txt
     (AI-bot block) that overrides the repo's simple one — Google `*` is still allowed.
+  - **"No entry" audit + a verifier agent.** Source-checked the famous refusal
+    cases against Wikipedia. Found the scraper SILENTLY DROPS rows whose cell reads
+    **"Travel illegal under Israeli law"** (classifies to null) — that hid Israel →
+    **Iran / Iraq / Lebanon / Syria / Yemen** (permanent mutual non-recognition; the
+    destinations don't admit Israeli passports). Added them as sourced `ban`
+    overrides in `data/visa-overrides.js` (`ISRAEL_NO_ENTRY`); IL now shows 12
+    no-entry vs 7. Deliberately left as `vr`: Israel→Malaysia/Pakistan/Saudi
+    ("Admission restricted" — case-by-case permission) and Azerbaijan→Armenia
+    ("Special permit required"). Kosovo→Armenia/Cuba were already `ban`. Built
+    `.claude/agents/no-entry-verifier.md` — a read-only subagent that codifies this
+    check (refused→ban, restricted→vr, origin-advisory→keep dest status; cite the
+    source cell; propose overrides for human review, never push). Spawn it to audit
+    more passports.
 
 - **Reddit feedback round 4 (FIXED) — data accuracy push:**
   - **Scraper gap-fill for territories.** Hong Kong, Macau and Taiwan live in a
