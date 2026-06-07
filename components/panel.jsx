@@ -845,8 +845,10 @@ function PassportDropdown({ value, onChange, allowClear, onClear }) {
 }
 
 function Tally({ tally, filter, setFilter, passport, groupActive }) {
-  const total = tally.vf + (tally.eta || 0) + tally.ev + tally.voa + tally.vr + (tally.ban || 0);
+  const total = (tally.idc || 0) + tally.vf + (tally.eta || 0) + tally.ev + tally.voa + tally.vr + (tally.ban || 0);
   const rows = [
+    // ID-card travel (no passport needed) — easiest tier, shown first when present.
+    ...((tally.idc || 0) > 0 ? [{ k: "idc", ...STATUS_COLOR.idc, n: tally.idc, label: window.t("status.idc") }] : []),
     { k: "vf",  ...STATUS_COLOR.vf,  n: tally.vf,  label: window.t("status.vf")  },
     // ETA (ESTA / eTA / NZeTA / UK ETA): only shown when the passport has some —
     // weaker passports get none, so an always-on 0 row would just be noise.
@@ -858,7 +860,7 @@ function Tally({ tally, filter, setFilter, passport, groupActive }) {
     // passports have zero, and an always-on 0 row would just add noise.
     ...((tally.ban || 0) > 0 ? [{ k: "ban", ...STATUS_COLOR.ban, n: tally.ban, label: window.t("status.ban") }] : []),
   ];
-  const accessScore = tally.vf + (tally.eta || 0) + tally.ev + tally.voa;
+  const accessScore = (tally.idc || 0) + tally.vf + (tally.eta || 0) + tally.ev + tally.voa;
   return (
     <div style={{ marginBottom: 16 }}>
       <div style={{
@@ -1067,6 +1069,7 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
   const myPp = window.byIso2[passport];
 
   const NOTES = {
+    idc:  window.t("detail.note.idc"),
     vf:   window.t("detail.note.vf"),
     eta:  window.t("detail.note.eta"),
     ev:   window.t("detail.note.ev"),
@@ -1086,7 +1089,7 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
   // the one with the strictly better status for this destination and lead
   // with a recommendation pill. The compare detail row below still shows
   // both statuses so users can sanity-check the choice.
-  const ORDER = { self: 0, vf: 1, eta: 2, ev: 3, voa: 4, vr: 5, ban: 6, na: 7 };
+  const ORDER = { self: 0, idc: 1, vf: 2, eta: 3, ev: 4, voa: 5, vr: 6, ban: 7, na: 8 };
   let recommended = null;
   if (compare && rc && !groupActive && !incoming) {
     const rScore = ORDER[r.status] ?? 5;
@@ -1311,7 +1314,7 @@ function ConditionsBox({ passport, destIso2, baseStatus }) {
   const rows = window.visaCondition && window.visaCondition(passport, destIso2);
   if (!rows || rows.length === 0) return null;
   // Only show rows whose resulting status is strictly better than the base.
-  const ORDER = { vf: 0, eta: 1, ev: 2, voa: 3, vr: 4, ban: 5, na: 6 };
+  const ORDER = { idc: 0, vf: 1, eta: 2, ev: 3, voa: 4, vr: 5, ban: 6, na: 7 };
   const useful = rows.filter(r => ORDER[r.then] < ORDER[baseStatus]);
   if (useful.length === 0) return null;
 

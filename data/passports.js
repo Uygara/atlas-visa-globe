@@ -70569,7 +70569,7 @@ const RAW_PASSPORTS = {
   },
   "XN": {
     "name": "Northern Cyprus",
-    "default": "vr",
+    "default": "ban",
     "defaultDays": null,
     "vf": [
       [
@@ -70657,14 +70657,18 @@ window._resolveStatusBase = function(passportIso2, destIso2) {
 // curated without touching this file. resolveGroupStatus / tally / the globe all
 // go through here, so they inherit the relabel.
 window.resolveStatus = function(passportIso2, destIso2) {
-  const r = window._resolveStatusBase(passportIso2, destIso2);
-  return window.applyEtaDisplay ? window.applyEtaDisplay(r, destIso2) : r;
+  let r = window._resolveStatusBase(passportIso2, destIso2);
+  if (window.applyEtaDisplay) r = window.applyEtaDisplay(r, destIso2);
+  // ID-card travel (EEA / GCC / Mercosur / Western Balkans / TR bilaterals) — a
+  // visa-free result becomes `idc` so "go on your ID card" gets its own colour.
+  if (window.applyIdcDisplay) r = window.applyIdcDisplay(r, passportIso2, destIso2);
+  return r;
 };
 
 window.tally = function(passportIso2) {
   const p = window.PASSPORTS[passportIso2];
   if (!p) return null;
-  const counts = { vf: 0, eta: 0, ev: 0, voa: 0, vr: 0, ban: 0 };
+  const counts = { idc: 0, vf: 0, eta: 0, ev: 0, voa: 0, vr: 0, ban: 0 };
   window.COUNTRIES.forEach(c => {
     if (c.iso2 === passportIso2) return;
     if (c.continent === "AN") return;
@@ -70681,7 +70685,7 @@ window.tally = function(passportIso2) {
 // (This previously returned the WORST case, which contradicted the on-site
 // promise of "your best combined access" and confused reporters.) `via` reports
 // which passport won so the UI can show "best via 🇬🇧".
-const _ACCESS_RANK = { vf: 0, eta: 1, ev: 2, voa: 3, vr: 4, ban: 5 };
+const _ACCESS_RANK = { idc: 0, vf: 1, eta: 2, ev: 3, voa: 4, vr: 5, ban: 6 };
 window.resolveGroupStatus = function(passports, destIso2) {
   if (!passports || passports.length === 0) return { status: "na", days: null };
   let best = null, bestRank = Infinity, via = null;
@@ -70699,7 +70703,7 @@ window.resolveGroupStatus = function(passports, destIso2) {
 
 window.tallyGroup = function(passports) {
   if (!passports || passports.length === 0) return null;
-  const counts = { vf: 0, eta: 0, ev: 0, voa: 0, vr: 0, ban: 0 };
+  const counts = { idc: 0, vf: 0, eta: 0, ev: 0, voa: 0, vr: 0, ban: 0 };
   const own = new Set(passports);
   window.COUNTRIES.forEach(c => {
     if (own.has(c.iso2)) return;
@@ -70712,7 +70716,7 @@ window.tallyGroup = function(passports) {
 
 window.tallyIncoming = function(myIso2) {
   if (!window.PASSPORTS[myIso2]) return null;
-  const counts = { vf: 0, eta: 0, ev: 0, voa: 0, vr: 0, ban: 0 };
+  const counts = { idc: 0, vf: 0, eta: 0, ev: 0, voa: 0, vr: 0, ban: 0 };
   window.COUNTRIES.forEach(c => {
     if (c.iso2 === myIso2) return;
     if (c.continent === "AN") return;

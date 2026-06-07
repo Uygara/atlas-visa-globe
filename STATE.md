@@ -163,6 +163,31 @@ EN in those four (engine ready — just add dict entries).
     check (refused→ban, restricted→vr, origin-advisory→keep dest status; cite the
     source cell; propose overrides for human review, never push). Spawn it to audit
     more passports.
+  - **New `idc` status — "ID-card travel" (7th status, sky blue `--idc:#38bdf8`).**
+    Some travellers need only a national ID card, not a passport. The scraper can't
+    source this (the status column just says "Visa not required" / "Freedom of
+    movement" — verified: DE/AR/SA/AL pages have ZERO "ID card" cells), so it's a
+    CURATED rule in `data/visa-overrides.js` (`isIdCardTravel` + `applyIdcDisplay`,
+    a vf→idc display upgrade) covering documented blocs: EEA+CH internal (reuses
+    `FOM_EEA`), GCC, Mercosur, Western Balkans, and TR↔{GE,UA,XN} bilaterals. Ranks
+    as the BEST access (idc<vf<eta<ev<voa<vr<ban). Wired through the same surface as
+    eta (rank, tally counts, globe colour/hex/stripes, panel tally row + detail note,
+    legend, 6-lang `status.idc`/`detail.note.idc`). EEA-internal keeps its `fom` flag
+    (detail still says "no time limit") but now paints idc. Verified: DE→FR/SA→AE/
+    TR→GE = idc; DE→US still eta; DE→JP still vf.
+  - **TRNC (Northern Cyprus) passport corrected.** Wikipedia: "accepted as a travel
+    document by only three countries" — table lists only Turkey. Changed the XN
+    MANUAL_OVERRIDE default `vr`→`ban` (keep Turkey, which is actually idc — "a valid
+    ID card is enough"). XN now: 1 idc (TR) + 204 ban. Other diplomatically-
+    unrecognised passports (Kosovo, Taiwan) are still widely ACCEPTED for travel, so
+    they are NOT bans — only TRNC is a genuine "passport not accepted" case here.
+  - **AdSense (browser attempt):** drove the Chrome extension; found the AdSense
+    account (pub-2617…) is NOT under `uygaratly@gmail.com` (that login gets "Access
+    denied / doesn't have access to this AdSense account"). Cloudflare IS under
+    uygaratly (saw the `atlas-visa-globe` Pages project + `travelnow.info` zone). So
+    the ads.txt fix is blocked on knowing which Google account owns AdSense; the
+    Cloudflare `www` 522 + bot fixes are doable once the dash stops timing out. The
+    extension's tab-group creation is also flaky ("No group with id").
 
 - **Reddit feedback round 4 (FIXED) — data accuracy push:**
   - **Scraper gap-fill for territories.** Hong Kong, Macau and Taiwan live in a

@@ -91,6 +91,40 @@ window.isFreedomOfMovement = function (passportIso2, destIso2) {
 };
 
 // ───────────────────────────────────────────────────────────────────────────
+// 2b) ID-card travel. Some travellers don't even need a passport — a national
+// identity card is enough. Wikipedia's status column rarely encodes this (it
+// just says "Visa not required" / "Freedom of movement"), so it's curated here
+// from the relevant agreements. We surface these as a distinct `idc` status (own
+// colour + label) because "you can go on your ID card" is materially easier than
+// ordinary visa-free. Sourced blocs:
+//   • EEA + Switzerland — EU/EEA citizens travel internally on a national ID card.
+//   • GCC (Gulf) — citizens of the six states travel between them on an ID card.
+//   • Mercosur — member/associate citizens travel internally on a national ID doc.
+//   • Western Balkans — mutual ID-card travel (bilateral agreements / Open Balkan).
+//   • Bilateral: Türkiye ↔ Georgia / Ukraine / Northern Cyprus (ID-card agreements).
+const IDC_GCC      = new Set(["BH", "KW", "OM", "QA", "SA", "AE"]);
+const IDC_MERCOSUR = new Set(["AR", "BO", "BR", "CL", "CO", "EC", "PY", "PE", "UY"]);
+const IDC_BALKANS  = new Set(["AL", "BA", "XK", "ME", "MK", "RS"]);
+const IDC_BILATERAL = new Set(["TR>GE", "GE>TR", "TR>UA", "UA>TR", "TR>XN", "XN>TR"]);
+window.isIdCardTravel = function (passportIso2, destIso2) {
+  if (!passportIso2 || passportIso2 === destIso2) return false;
+  if (FOM_EEA.has(passportIso2) && FOM_EEA.has(destIso2)) return true; // EEA + CH internal
+  if (IDC_GCC.has(passportIso2) && IDC_GCC.has(destIso2)) return true;
+  if (IDC_MERCOSUR.has(passportIso2) && IDC_MERCOSUR.has(destIso2)) return true;
+  if (IDC_BALKANS.has(passportIso2) && IDC_BALKANS.has(destIso2)) return true;
+  return IDC_BILATERAL.has(passportIso2 + ">" + destIso2);
+};
+// Upgrade a visa-free result to `idc` when ID-card travel applies. Only ever
+// upgrades `vf` (the easiest tier) — never overrides eVisa/VoA/visa-required, so
+// if a bloc member still needs a visa for a particular partner, the scraped data
+// wins. Keeps any `fom` flag so the EEA detail card can still say "no time limit".
+window.applyIdcDisplay = function (r, passportIso2, destIso2) {
+  if (!r || r.status !== "vf") return r;
+  if (window.isIdCardTravel(passportIso2, destIso2)) return { ...r, status: "idc" };
+  return r;
+};
+
+// ───────────────────────────────────────────────────────────────────────────
 // 3) Entry-mode caveats. Our status answers "do I need a visa", but for some
 // destinations the answer depends on HOW you arrive (air vs land/sea), or the
 // permission is time-limited. These are surfaced as a small caveat line in the

@@ -5,6 +5,7 @@
 const { useEffect, useRef, useState, useMemo, useCallback } = React;
 
 const STATUS_COLOR = {
+  idc:  { fill: "var(--idc)",  label: "ID card / free movement", short: "ID card" },
   vf:   { fill: "var(--vf)",   label: "Visa-free",        short: "Visa-free" },
   eta:  { fill: "var(--eta)",  label: "Travel authorization", short: "ETA" },
   ev:   { fill: "var(--ev)",   label: "eVisa",            short: "eVisa" },
@@ -26,6 +27,7 @@ function statusLabel(s) {
 
 // Hex equivalents for SVG patterns (CSS vars don't resolve inside <pattern> fills).
 const STATUS_HEX = {
+  idc: "#38bdf8",
   vf: "#22c55e",
   eta: "#2dd4bf",
   ev: "#a3e635",
@@ -721,8 +723,8 @@ function Globe({
           {/* Diagonal-stripe patterns for compare mode. Twelve combinations:
               every ordered (primary, compare) pair where the two statuses
               differ. Stripe alternates between the two colours at 45°. */}
-          {["vf", "eta", "ev", "voa", "vr", "ban"].flatMap(a =>
-            ["vf", "eta", "ev", "voa", "vr", "ban"].filter(b => b !== a).map(b => (
+          {["idc", "vf", "eta", "ev", "voa", "vr", "ban"].flatMap(a =>
+            ["idc", "vf", "eta", "ev", "voa", "vr", "ban"].filter(b => b !== a).map(b => (
               <pattern key={`${a}-${b}`} id={`stripe-${a}-${b}`}
                        width="8" height="8" patternUnits="userSpaceOnUse"
                        patternTransform="rotate(45)">

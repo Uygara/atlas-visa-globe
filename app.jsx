@@ -1061,6 +1061,7 @@ function CoachHint({ onDismiss }) {
 
 function Legend() {
   const items = [
+    { k: "idc", fill: STATUS_COLOR.idc.fill, label: window.t("status.idc") },
     { k: "vf",  fill: STATUS_COLOR.vf.fill,  label: window.t("status.vf")  },
     { k: "eta", fill: STATUS_COLOR.eta.fill, label: window.t("status.eta") },
     { k: "ev",  fill: STATUS_COLOR.ev.fill,  label: window.t("status.ev")  },
