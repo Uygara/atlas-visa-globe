@@ -174,3 +174,24 @@ window.applyEtaDisplay = function (r, destIso2) {
   if (window.ETA_DESTS[d] || window.ETA_DESTS[destIso2]) return { ...r, status: "eta" };
   return r;
 };
+
+// ───────────────────────────────────────────────────────────────────────────
+// 5) Destination "visa floor". The compact data only lists a passport's
+// EXCEPTIONS; everything else inherits that passport's default. For a strong
+// passport whose default is `vf`, a destination missing from its Wikipedia table
+// then wrongly reads visa-free. North Korea is the textbook case — its table
+// omits some nationalities, so e.g. Israel (default vf) resolved IL→North Korea
+// as "visa-free", which a reporter correctly flagged. In reality NO nationality
+// enters North Korea visa-free: every foreign visitor needs a DPRK visa arranged
+// through an approved tour. So floor it to visa-required whenever the resolved
+// status is anything easier. Source: Visa policy of North Korea (no visa-exempt
+// nationalities). Add a destination here ONLY when it's truly visa-required for all.
+window.VISA_REQUIRED_DESTS = { KP: 1 };
+const _FLOOR_EASY = { idc: 1, vf: 1, eta: 1, ev: 1, voa: 1 };
+window.applyDestFloor = function (r, destIso2) {
+  if (!r || r.status === "self") return r;
+  if (window.VISA_REQUIRED_DESTS[destIso2] && _FLOOR_EASY[r.status]) {
+    return { status: "vr", days: null };
+  }
+  return r;
+};

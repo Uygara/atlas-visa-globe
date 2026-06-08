@@ -79,6 +79,10 @@ window.resolveStatus = function(passportIso2, destIso2) {
   // ID-card travel (EEA / GCC / Mercosur / Western Balkans / TR bilaterals) — a
   // visa-free result becomes `idc` so "go on your ID card" gets its own colour.
   if (window.applyIdcDisplay) r = window.applyIdcDisplay(r, passportIso2, destIso2);
+  // Destination floor (e.g. North Korea is visa-required for everyone) — corrects
+  // strong passports that over-report visa-free for destinations missing from their
+  // table. Applied last so it floors the final status.
+  if (window.applyDestFloor) r = window.applyDestFloor(r, destIso2);
   return r;
 };
 

@@ -181,6 +181,21 @@ EN in those four (engine ready — just add dict entries).
     ID card is enough"). XN now: 1 idc (TR) + 204 ban. Other diplomatically-
     unrecognised passports (Kosovo, Taiwan) are still widely ACCEPTED for travel, so
     they are NOT bans — only TRNC is a genuine "passport not accepted" case here.
+  - **North Korea over-report fixed + a data-accuracy auditor agent.** A reporter
+    flagged Israel→North Korea reading "visa-free". Root cause: the compact data
+    only lists EXCEPTIONS, so a passport with `default:"vf"` (Israel, +2 others)
+    over-reports any restrictive destination MISSING from its table. North Korea is
+    visa-required for EVERYONE (no visa-exempt nationalities), so added a
+    `VISA_REQUIRED_DESTS` floor + `applyDestFloor()` in `data/visa-overrides.js`
+    (wired into the `resolveStatus` chain after eta/idc): any "easy" result to KP is
+    floored to `vr`. IL→KP now `vr`; 0 passports over-report KP. Built
+    `.claude/agents/visa-data-auditor.md` and ran it on the other suspicious
+    restrictive-destination fallbacks (Algeria/Sudan/Yemen/Nauru/CAR/Congo/Mali ×14
+    pairs) — it source-verified ALL as actually correct (e.g. Algeria really exempts
+    MY/SC, CAR is visa-free for IL, Mali exempts UAE/HK/Macau), preventing 14 WRONG
+    overrides. Lesson: a missing-from-map destination usually just equals the
+    passport's (correct) default — only floor destinations that exempt NOBODY.
+    Add more `VISA_REQUIRED_DESTS` only when the source confirms zero exemptions.
   - **AdSense (browser attempt):** drove the Chrome extension; found the AdSense
     account (pub-2617…) is NOT under `uygaratly@gmail.com` (that login gets "Access
     denied / doesn't have access to this AdSense account"). Cloudflare IS under
