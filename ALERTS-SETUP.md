@@ -1,4 +1,4 @@
-# Atlas Pro — Visa Alerts Kurulum Rehberi
+# travelnow.info Pro — Visa Alerts Kurulum Rehberi
 
 Tüm kod hazır ve `git push` ile canlıda. Reklamlar gibi, **sen hesapları
 açana kadar hiçbir şey gözükmez/çalışmaz** — endpoint'ler 500 dönmez,
@@ -27,7 +27,7 @@ KV = Cloudflare'in serverless key-value veritabanı. Aboneleri burada tutuyoruz.
 ## 2. Resend (transactional e-posta) — 10 dk
 
 Resend = Stripe-vari minimalist e-posta API. Ücretsiz tier: 3000 mail/ay,
-100/gün. Atlas gibi düşük hacim için bedava.
+100/gün. travelnow.info gibi düşük hacim için bedava.
 
 1. `https://resend.com/signup` → kayıt ol (Google ile giriş hızlı)
 2. Sol menüde `Domains` → `Add Domain` → `travelnow.info` yaz
@@ -48,13 +48,13 @@ Resend = Stripe-vari minimalist e-posta API. Ücretsiz tier: 3000 mail/ay,
 ## 3. Stripe (Pro üyelik ödemeleri) — 15 dk
 
 1. `https://dashboard.stripe.com/register` → kayıt ol. Türkiye Stripe'ı
-   doğrudan desteklemiyor → bunun yerine **Stripe Atlas** veya **Wise Business
+   doğrudan desteklemiyor → bunun yerine **Stripe travelnow.info** veya **Wise Business
    account** üzerinden açabilirsin. Alternatif: **Paddle** (Stripe yerine,
    benzer API ama Türkiye dahil 200 ülkeye merchant of record olarak hizmet
    eder). Bu rehber Stripe varsayıyor; Paddle istersen söyle, kodu güncellerim.
 2. Test mode'da kal başlangıçta. Sol üstte `Test mode` toggle açık olsun.
 3. `Products` → `+ Add product`:
-   - Name: `Atlas Pro — Visa Alerts`
+   - Name: `travelnow.info Pro — Visa Alerts`
    - Description: `Unlimited countries on your visa-change watch-list.`
    - Pricing model: `Recurring`
    - Price: `$2.00 USD` / monthly
@@ -97,7 +97,7 @@ Pages projenin `Settings` → `Environment variables` → `Production`:
 | `RESEND_API_KEY` | `re_...` (2. adımdan) |
 | `JWT_SECRET` | 4. adımdaki random string |
 | `SITE_URL` | `https://travelnow.info` |
-| `FROM_EMAIL` | `Atlas <alerts@travelnow.info>` |
+| `FROM_EMAIL` | `travelnow.info <alerts@travelnow.info>` |
 
 Hepsini `Encrypt` olarak işaretle.
 
@@ -125,7 +125,7 @@ Aynı sayfada `Variables` sekmesi → `New repository variable`:
 | Variable | Value |
 |---|---|
 | `SITE_URL` | `https://travelnow.info` |
-| `FROM_EMAIL` | `Atlas <alerts@travelnow.info>` |
+| `FROM_EMAIL` | `travelnow.info <alerts@travelnow.info>` |
 
 ---
 
@@ -134,7 +134,7 @@ Aynı sayfada `Variables` sekmesi → `New repository variable`:
 1. `https://travelnow.info/alerts/` aç
 2. Email'ini gir, **1 ülke** seç (free tier), `Send confirmation email`
 3. Inbox'unu kontrol et → "Confirm subscription" maili → linke tıkla → yeşil "Subscription confirmed" sayfası gelmeli
-4. Pro tier test: aynı sayfada `Atlas Pro` kartına tıkla, 2 ülke daha seç,
+4. Pro tier test: aynı sayfada `travelnow.info Pro` kartına tıkla, 2 ülke daha seç,
    submit → Stripe Checkout açılır → test kartla öde:
    - Number: `4242 4242 4242 4242`
    - Expiry: gelecekte herhangi bir tarih

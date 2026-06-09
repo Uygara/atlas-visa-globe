@@ -122,7 +122,7 @@ async function sendEmail({ env, to, subject, html }) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: env.FROM_EMAIL || "Atlas <alerts@travelnow.info>",
+      from: env.FROM_EMAIL || "travelnow.info <alerts@travelnow.info>",
       to, subject, html,
     }),
   });

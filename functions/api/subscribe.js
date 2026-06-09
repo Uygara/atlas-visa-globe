@@ -71,9 +71,9 @@ export async function onRequestPost(context) {
   try {
     await sendEmail({
       apiKey: env.RESEND_API_KEY,
-      from: env.FROM_EMAIL || "Atlas <alerts@travelnow.info>",
+      from: env.FROM_EMAIL || "travelnow.info <alerts@travelnow.info>",
       to: email,
-      subject: "Confirm your Atlas visa alerts",
+      subject: "Confirm your travelnow.info visa alerts",
       html,
     });
   } catch (e) {

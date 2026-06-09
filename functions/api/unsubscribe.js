@@ -20,7 +20,7 @@ function renderPage({ title, body, tone = "ok" }) {
   const colour = tone === "error" ? "#ef4444" : "#22c55e";
   const html = `<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${title} — Atlas</title>
+<title>${title} — travelnow.info</title>
 <style>
   body { margin:0; background:#f4f8ff; color:#1a2236; font-family:-apple-system,system-ui,sans-serif; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; line-height:1.55; }
   .card { max-width:480px; background:#fff; border:1px solid #e3eaf3; border-radius:14px; padding:28px; }
@@ -29,7 +29,7 @@ function renderPage({ title, body, tone = "ok" }) {
   p { font-size:14px; color:#3a4256; margin:0 0 12px; }
   a.btn { display:inline-block; padding:10px 18px; background:#60a5fa; color:#fff; text-decoration:none; border-radius:8px; font-weight:600; font-size:13px; }
 </style></head><body>
-<div class="card"><h1><span class="dot"></span>${title}</h1>${body}<a class="btn" href="/">Back to Atlas</a></div></body></html>`;
+<div class="card"><h1><span class="dot"></span>${title}</h1>${body}<a class="btn" href="/">Back to travelnow.info</a></div></body></html>`;
   return new Response(html, {
     status: tone === "error" ? 400 : 200,
     headers: { "Content-Type": "text/html; charset=utf-8" },
@@ -56,6 +56,6 @@ export async function onRequest(context) {
 
   return renderPage({
     title: "You're unsubscribed",
-    body: `<p>${payload.email} has been removed from the Atlas alerts list. ${sub?.tier === "pro" ? "Your Pro subscription has also been cancelled — Stripe won't charge you again." : ""}</p><p>Sorry to see you go.</p>`,
+    body: `<p>${payload.email} has been removed from the travelnow.info alerts list. ${sub?.tier === "pro" ? "Your Pro subscription has also been cancelled — Stripe won't charge you again." : ""}</p><p>Sorry to see you go.</p>`,
   });
 }

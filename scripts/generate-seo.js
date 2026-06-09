@@ -162,6 +162,7 @@ ${SITE_URL ? `<meta property="og:url" content="${canonical}">` : ""}
 <meta name="twitter:title" content="${escapeHtml(titleText)}">
 <meta name="twitter:description" content="${escapeHtml(description)}">
 ${adsenseLoader}
+<script src="/assets/analytics.js"></script>
 <script type="application/ld+json">${JSON.stringify({
   "@context": "https://schema.org",
   "@type": "Article",
@@ -173,7 +174,7 @@ ${adsenseLoader}
   "breadcrumb": {
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "Atlas", "item": SITE_URL || "/" },
+      { "@type": "ListItem", "position": 1, "name": "travelnow.info", "item": SITE_URL || "/" },
       { "@type": "ListItem", "position": 2, "name": "Passports", "item": (SITE_URL || "") + "/passport/" },
       { "@type": "ListItem", "position": 3, "name": name + " passport" },
     ],
@@ -299,7 +300,7 @@ function renderIndex(allPassports, snapshot) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Passport visa requirements directory · Atlas</title>
+<title>Passport visa requirements directory · travelnow.info</title>
 <meta name="description" content="Browse visa requirements for ${allPassports.length} passports worldwide. Updated daily from Wikipedia.">
 <link rel="canonical" href="${SITE_URL ? SITE_URL + "/passport/" : "/passport/"}">
 <style>
@@ -314,6 +315,7 @@ function renderIndex(allPassports, snapshot) {
   .back { display:inline-block; padding:10px 16px; background:#111827; border:1px solid rgba(148,173,220,0.15); border-radius:8px; color:#e7ecf5; text-decoration:none; font-size:13px; margin-bottom:20px; }
   @media (max-width:600px) { ul { columns:1; } }
 </style>
+<script src="/assets/analytics.js"></script>
 </head>
 <body>
 <div class="wrap">

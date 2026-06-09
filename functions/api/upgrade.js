@@ -1,6 +1,6 @@
 // POST /api/upgrade
 // Body: { email: string }
-// Looks the subscriber up and starts a Stripe Checkout session for Atlas Pro.
+// Looks the subscriber up and starts a Stripe Checkout session for travelnow.info Pro.
 // Response: { url } — caller redirects.
 
 import { json, error } from "../lib/http.js";

@@ -430,7 +430,7 @@ function Reminders({ passport, stops, departure }) {
   const earliestDays = Math.ceil((earliest - today) / 86400000);
 
   const downloadICS = () => {
-    const lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Atlas//Visa Reminder//EN", "CALSCALE:GREGORIAN"];
+    const lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//travelnow.info//Visa Reminder//EN", "CALSCALE:GREGORIAN"];
     const stamp = new Date().toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";
     for (const it of items) {
       const ymd = it.applyBy.toISOString().slice(0, 10).replace(/-/g, "");

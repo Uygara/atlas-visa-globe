@@ -9,7 +9,7 @@ function renderPage({ title, body, tone = "ok" }) {
   const colour = tone === "error" ? "#ef4444" : "#22c55e";
   const html = `<!DOCTYPE html><html lang="en"><head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${title} — Atlas</title>
+<title>${title} — travelnow.info</title>
 <style>
   body { margin:0; background:#f4f8ff; color:#1a2236; font-family:-apple-system,system-ui,sans-serif; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:24px; line-height:1.55; }
   .card { max-width:480px; background:#fff; border:1px solid #e3eaf3; border-radius:14px; padding:28px 28px 24px; box-shadow:0 12px 32px rgba(36,60,100,0.06); }
@@ -21,7 +21,7 @@ function renderPage({ title, body, tone = "ok" }) {
 <div class="card">
   <h1><span class="dot"></span>${title}</h1>
   ${body}
-  <a class="btn" href="/">Back to Atlas</a>
+  <a class="btn" href="/">Back to travelnow.info</a>
 </div></body></html>`;
   return new Response(html, {
     status: tone === "error" ? 400 : 200,

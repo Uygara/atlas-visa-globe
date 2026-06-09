@@ -1,4 +1,4 @@
-# Atlas — Yayina Alma Rehberi (Adim Adim)
+# travelnow.info — Yayina Alma Rehberi (Adim Adim)
 
 Hicbir kod yazmana gerek yok. Asagidaki adimlari sirayla uygula, ~15 dakikada
 siten internette canli olur. Adres: `https://<senin-projen>.pages.dev`
@@ -35,7 +35,7 @@ sirayla yapistir:
 cd "C:\Users\uygar\Downloads\CLAUDE TRAVEL WEBSITE"
 git init
 git add .
-git commit -m "Initial commit: Atlas visa globe"
+git commit -m "Initial commit: travelnow.info visa globe"
 git branch -M main
 git remote add origin https://github.com/KULLANICI-ADIN/atlas-visa-globe.git
 git push -u origin main

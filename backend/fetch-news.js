@@ -262,13 +262,35 @@ function readExisting() {
   }
 }
 
+// Guard against unsourced "manual:" entries — the failure mode that produced
+// the wrong "China extends 30-day visa-free transit to Türkiye + 8 others"
+// item, whose sourceUrl was just `https://www.fmprc.gov.cn/eng/` (the ministry
+// HOMEPAGE, no specific announcement). Reject manuals whose source URL has no
+// real path: a citation must point to a SPECIFIC release/page that we can verify.
+function isVerifiableManual(it) {
+  if (!it.sourceUrl) return false;
+  try {
+    const u = new URL(it.sourceUrl);
+    const p = u.pathname.replace(/\/+$/, "");
+    if (!p) return false;
+    const segs = p.split("/").filter(Boolean);
+    if (segs.length === 0) return false;
+    // Single-segment "eng" / "en" / "tr" etc. is still a language homepage.
+    if (segs.length === 1 && /^[a-z]{2,3}$/i.test(segs[0])) return false;
+    return true;
+  } catch (_) { return false; }
+}
+
 function mergeAndPrune(existing, fresh) {
   const byId = new Map();
-  // Existing items first — but only keep manual:* through dedup (auto items
-  // get superseded by fresh batch).
+  let dropped = 0;
+  // Existing items first — manuals must clear the verifiable-source bar.
   for (const it of existing) {
-    if (it.id?.startsWith("manual:")) byId.set(it.id, it);
+    if (!it.id?.startsWith("manual:")) continue;
+    if (!isVerifiableManual(it)) { dropped++; continue; }
+    byId.set(it.id, it);
   }
+  if (dropped) console.log(`  dropped ${dropped} manual entries without a specific source URL`);
   for (const it of fresh) {
     if (!byId.has(it.id)) byId.set(it.id, it);
   }
@@ -280,8 +302,11 @@ function mergeAndPrune(existing, fresh) {
 function serialize(items) {
   const header = [
     "// Visa news feed — auto-merged by backend/fetch-news.js.",
-    "// Manual:* entries are preserved; wiki:* and fco:* are refreshed daily.",
-    "// See data/visa-news.js header in the repo for schema docs.",
+    "// Only entries with VERIFIABLE specific sources survive:",
+    "//   • wiki:*  — scraped Wikipedia 'Visa policy of <country>' edit summaries",
+    "//   • fco:*   — UK Foreign Travel Advice Atom feed (gov.uk official)",
+    "//   • manual:* — hand-curated; the merge step rejects any manual whose",
+    "//                sourceUrl is just a domain homepage (no specific path).",
     "",
     "window.VISA_NEWS = [",
   ].join("\n");

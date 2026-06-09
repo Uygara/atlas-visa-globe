@@ -38,7 +38,7 @@ export function emailLayout({ title, body, footer }) {
     <tr><td align="center">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:540px;background:#ffffff;border-radius:12px;border:1px solid #e3eaf3;overflow:hidden;">
         <tr><td style="padding:24px 28px 0;">
-          <div style="font-size:18px;font-weight:700;letter-spacing:-0.01em;color:#1a2236;">Atlas</div>
+          <div style="font-size:18px;font-weight:700;letter-spacing:-0.01em;color:#1a2236;">travelnow.info</div>
           <div style="font-size:11px;color:#6b7591;letter-spacing:0.08em;text-transform:uppercase;margin-top:2px;">travelnow.info</div>
         </td></tr>
         <tr><td style="padding:18px 28px 4px;font-size:20px;font-weight:600;color:#1a2236;">${title}</td></tr>

@@ -21,9 +21,9 @@
   // language for a string → fallback to the original English text.
   // KEEP KEYS as the exact verbatim English from the source HTML (trimmed).
   const DICT = {
-    "← Atlas":                            { tr:"← Atlas", es:"← Atlas", de:"← Atlas", fr:"← Atlas", ar:"← أطلس" },
-    "← Atlas globe":                      { tr:"← Atlas küresi", es:"← Globo Atlas", de:"← Atlas-Globus", fr:"← Globe Atlas", ar:"← كرة أطلس" },
-    "← Back to Atlas":                    { tr:"← Atlas'a dön", es:"← Volver a Atlas", de:"← Zurück zu Atlas", fr:"← Retour à Atlas", ar:"← العودة إلى أطلس" },
+    "← travelnow.info":                            { tr:"← travelnow.info", es:"← travelnow.info", de:"← travelnow.info", fr:"← travelnow.info", ar:"← أطلس" },
+    "← travelnow.info globe":                      { tr:"← travelnow.info küresi", es:"← Globo travelnow.info", de:"← travelnow.info-Globus", fr:"← Globe travelnow.info", ar:"← كرة أطلس" },
+    "← Back to travelnow.info":                    { tr:"← travelnow.info'a dön", es:"← Volver a travelnow.info", de:"← Zurück zu travelnow.info", fr:"← Retour à travelnow.info", ar:"← العودة إلى أطلس" },
     "← Back to globe":                    { tr:"← Küreye dön", es:"← Volver al globo", de:"← Zurück zum Globus", fr:"← Retour au globe", ar:"← العودة إلى الكرة" },
 
     // Schengen calculator
@@ -154,8 +154,8 @@
     "hosts and delivers the site. Cloudflare logs basic request data (IP, user-agent, referrer) for ~24 hours for security and performance.": { tr:"siteyi barındırır ve sunar. Cloudflare, güvenlik ve performans için temel istek verilerini (IP, tarayıcı, yönlendiren) ~24 saat loglar." },
     "handles Pro-tier billing. We never see card data. Stripe sets its own cookies on the Checkout and customer portal pages.": { tr:"Pro abonelik faturalandırmasını yürütür. Kart verilerini asla görmeyiz. Stripe, Ödeme ve müşteri portalı sayfalarında kendi çerezlerini ayarlar." },
     "delivers all transactional emails (confirmation, digests, unsubscribe receipts). They receive your address and the rendered message body.": { tr:"tüm işlemsel e-postaları (onay, özet, abonelikten-çık makbuzları) gönderir. Adresini ve oluşturulan mesaj gövdesini alırlar." },
-    "is only contacted when you explicitly grant the geolocation prompt. Your coordinates are sent there once, never stored on Atlas's side.": { tr:"yalnızca konum iznini açıkça verdiğinde iletişime geçilir. Koordinatların oraya bir kez gönderilir, Atlas tarafında asla saklanmaz." },
-    "Atlas is not directed at children under 13. We do not knowingly collect data from anyone under 13.": { tr:"Atlas 13 yaş altı çocuklara yönelik değildir. 13 yaş altından bilerek veri toplamayız." },
+    "is only contacted when you explicitly grant the geolocation prompt. Your coordinates are sent there once, never stored on travelnow.info's side.": { tr:"yalnızca konum iznini açıkça verdiğinde iletişime geçilir. Koordinatların oraya bir kez gönderilir, travelnow.info tarafında asla saklanmaz." },
+    "travelnow.info is not directed at children under 13. We do not knowingly collect data from anyone under 13.": { tr:"travelnow.info 13 yaş altı çocuklara yönelik değildir. 13 yaş altından bilerek veri toplamayız." },
     "Questions about this policy: please open an issue at": { tr:"Bu politikayla ilgili sorular: lütfen şuradan bir konu aç:" },
     "(a dedicated email address is being set up).": { tr:"(özel bir e-posta adresi oluşturuluyor)." },
     "If we change anything material we'll update the \"Last updated\" date at the top. Substantial changes will be flagged on the site for at least 14 days before taking effect.": { tr:"Önemli bir değişiklik yaparsak üstteki \"Son güncelleme\" tarihini güncelleriz. Esaslı değişiklikler, yürürlüğe girmeden en az 14 gün önce sitede belirtilir." },
@@ -172,7 +172,7 @@
     "Status": { tr:"Durum", es:"Estado", de:"Status", fr:"Statut", ar:"الحالة" },
     "Visa-free": { tr:"Vizesiz", es:"Sin visado", de:"Visumfrei", fr:"Sans visa", ar:"بدون تأشيرة" },
     "Official source ↗": { tr:"Resmi kaynak ↗", es:"Fuente oficial ↗", de:"Offizielle Quelle ↗", fr:"Source officielle ↗", ar:"المصدر الرسمي ↗" },
-    "Atlas link": { tr:"Atlas bağlantısı", es:"Enlace Atlas", de:"Atlas-Link", fr:"Lien Atlas", ar:"رابط أطلس" },
+    "travelnow.info link": { tr:"travelnow.info bağlantısı", es:"Enlace travelnow.info", de:"travelnow.info-Link", fr:"Lien travelnow.info", ar:"رابط أطلس" },
     "Your passport": { tr:"Pasaportun", es:"Tu pasaporte", de:"Dein Pass", fr:"Ton passeport", ar:"جواز سفرك" },
     "Destination": { tr:"Destinasyon", es:"Destino", de:"Reiseziel", fr:"Destination", ar:"الوجهة" },
     "Validity": { tr:"Geçerlilik", es:"Validez", de:"Gültigkeit", fr:"Validité", ar:"الصلاحية" },
@@ -287,7 +287,7 @@
     "What about UK, Ireland, EU residency cards?": { tr:"İngiltere, İrlanda, AB oturma kartları ne olacak?" },
     // alerts
     "When a country in your watchlist changes its visa policy, you get one short email — usually within 24 hours of the announcement. No spam, one-click unsubscribe.": { tr:"İzleme listendeki bir ülke vize politikasını değiştirdiğinde kısa bir e-posta alırsın — genelde duyurudan sonraki 24 saat içinde. Spam yok, tek tıkla abonelikten çık." },
-    "By subscribing you agree to receive transactional emails about visa policy changes from Atlas. We never share your address.": { tr:"Abone olarak, Atlas'tan vize politikası değişiklikleri hakkında işlemsel e-postalar almayı kabul edersin. Adresini asla paylaşmayız." },
+    "By subscribing you agree to receive transactional emails about visa policy changes from travelnow.info. We never share your address.": { tr:"Abone olarak, travelnow.info'tan vize politikası değişiklikleri hakkında işlemsel e-postalar almayı kabul edersin. Adresini asla paylaşmayız." },
     "Real-time tracking from authoritative public sources, refreshed every 24 hours": { tr:"Yetkili kamu kaynaklarından gerçek zamanlı takip, her 24 saatte bir yenilenir" },
     "One-click unsubscribe link in every email": { tr:"Her e-postada tek tıkla abonelikten-çık bağlantısı" },
     "No account required — confirm with the link in your inbox": { tr:"Hesap gerekmez — gelen kutundaki bağlantıyla onayla" },
@@ -306,7 +306,7 @@
 
     // About headings
     "How the data is built":               { tr:"Veriler nasıl oluşuyor", es:"Cómo se construyen los datos", de:"Wie die Daten entstehen", fr:"Comment les données sont construites", ar:"كيف تُبنى البيانات" },
-    "What Atlas is not":                   { tr:"Atlas ne değildir", es:"Lo que Atlas no es", de:"Was Atlas nicht ist", fr:"Ce qu'Atlas n'est pas", ar:"ما ليس عليه أطلس" },
+    "What travelnow.info is not":                   { tr:"travelnow.info ne değildir", es:"Lo que travelnow.info no es", de:"Was travelnow.info nicht ist", fr:"Ce qu'travelnow.info n'est pas", ar:"ما ليس عليه أطلس" },
     "Why it's free":                       { tr:"Neden ücretsiz", es:"Por qué es gratis", de:"Warum es kostenlos ist", fr:"Pourquoi c'est gratuit", ar:"لماذا هو مجاني" },
     "Legal":                               { tr:"Yasal", es:"Legal", de:"Rechtliches", fr:"Mentions légales", ar:"قانوني" },
     "Privacy Policy":                      { tr:"Gizlilik Politikası", es:"Política de privacidad", de:"Datenschutzerklärung", fr:"Politique de confidentialité", ar:"سياسة الخصوصية" },
@@ -345,7 +345,7 @@
     "Digital Nomad Visas — 38 countries compared":
       { tr:"Dijital Göçebe Vizeleri — 38 ülke karşılaştırması", es:"Visas para nómadas digitales — 38 países comparados", de:"Digital-Nomad-Visa — 38 Länder im Vergleich", fr:"Visas nomades numériques — 38 pays comparés", ar:"تأشيرات الرحّالة الرقميين — مقارنة 38 دولة" },
     "Region":                              { tr:"Bölge", es:"Región", de:"Region", fr:"Région", ar:"المنطقة" },
-    "Atlas link":                          { tr:"Atlas bağlantısı", es:"Enlace Atlas", de:"Atlas-Link", fr:"Lien Atlas", ar:"رابط أطلس" },
+    "travelnow.info link":                          { tr:"travelnow.info bağlantısı", es:"Enlace travelnow.info", de:"travelnow.info-Link", fr:"Lien travelnow.info", ar:"رابط أطلس" },
     "Track how many of your 90 short-stay days you've used in the last 180. Add past trips below, plan a future one to see if it fits.":
       { tr:"Son 180 gün içinde 90 kısa süreli kalış gününüzün ne kadarını kullandığınızı takip edin. Geçmiş seyahatlerinizi ekleyin, gelecekteki bir planı sığıp sığmadığını görmek için ekleyin." },
     "Your trips":                          { tr:"Seyahatlerin", es:"Tus viajes", de:"Deine Reisen", fr:"Tes voyages", ar:"رحلاتك" },
@@ -367,8 +367,8 @@
 
     // Itinerary
     "Multi-stop visa planner":             { tr:"Çok duraklı vize planlayıcı", es:"Planificador de visados multi-destino", de:"Multi-Stopp-Visumplaner", fr:"Planificateur de visa multi-étapes", ar:"مخطط تأشيرات متعدد المحطات" },
-    "Plan a trip with multiple destinations. Atlas checks each leg against your passport, surfaces which ones need a visa, and exports apply-by reminders to your calendar.":
-      { tr:"Birden fazla destinasyonlu bir seyahat planla. Atlas her bacağı pasaportunuza göre kontrol eder, hangilerinin vize gerektirdiğini gösterir ve başvuru hatırlatmalarını takviminize aktarır." },
+    "Plan a trip with multiple destinations. travelnow.info checks each leg against your passport, surfaces which ones need a visa, and exports apply-by reminders to your calendar.":
+      { tr:"Birden fazla destinasyonlu bir seyahat planla. travelnow.info her bacağı pasaportunuza göre kontrol eder, hangilerinin vize gerektirdiğini gösterir ve başvuru hatırlatmalarını takviminize aktarır." },
     "Your itinerary":                      { tr:"Rotanız", es:"Tu itinerario", de:"Deine Route", fr:"Ton itinéraire", ar:"خط رحلتك" },
     "Departure":                           { tr:"Kalkış", es:"Salida", de:"Abreise", fr:"Départ", ar:"المغادرة" },
     "Add destination":                     { tr:"Destinasyon ekle", es:"Añadir destino", de:"Ziel hinzufügen", fr:"Ajouter une destination", ar:"إضافة وجهة" },
@@ -406,7 +406,7 @@
     "Apply":                               { tr:"Başvur", es:"Solicitar", de:"Antrag", fr:"Postuler", ar:"قدّم" },
 
     // About
-    "About Atlas":                         { tr:"Atlas hakkında", es:"Acerca de Atlas", de:"Über Atlas", fr:"À propos d'Atlas", ar:"حول أطلس" },
+    "About travelnow.info":                         { tr:"travelnow.info hakkında", es:"Acerca de travelnow.info", de:"Über travelnow.info", fr:"À propos d'travelnow.info", ar:"حول أطلس" },
     "Contact":                             { tr:"İletişim", es:"Contacto", de:"Kontakt", fr:"Contact", ar:"التواصل" },
 
     // Privacy
@@ -420,13 +420,13 @@
     // ─── About page paragraphs ────────────────────────────────────────────
     "Free · Open data · Daily refresh":
       { tr:"Ücretsiz · Açık veri · Günlük güncelleme", es:"Gratis · Datos abiertos · Actualización diaria", de:"Kostenlos · Offene Daten · Tägliche Aktualisierung", fr:"Gratuit · Données ouvertes · Mise à jour quotidienne", ar:"مجاني · بيانات مفتوحة · تحديث يومي" },
-    "Atlas is an interactive visa-requirements explorer. Pick your passport\n  and see at a glance which of the world's 200+ countries you can enter\n  visa-free, which need an eVisa, which issue a visa on arrival, and which\n  require a full embassy application. We do this for every passport — not\n  just the major ones.":
+    "travelnow.info is an interactive visa-requirements explorer. Pick your passport\n  and see at a glance which of the world's 200+ countries you can enter\n  visa-free, which need an eVisa, which issue a visa on arrival, and which\n  require a full embassy application. We do this for every passport — not\n  just the major ones.":
       { tr:"travelnow.info etkileşimli bir vize-gereklilikleri gezginidir. Pasaportunuzu seçin ve dünyanın 200+ ülkesinden hangilerine vizesiz, hangilerine e-vize, hangilerine varışta vize ile girebileceğinizi ve hangilerinin tam konsolosluk başvurusu gerektirdiğini bir bakışta görün. Bunu sadece büyük pasaportlar için değil, her pasaport için yapıyoruz.",
         es:"travelnow.info es un explorador interactivo de requisitos de visa. Elige tu pasaporte y descubre de un vistazo a cuáles de los más de 200 países del mundo puedes entrar sin visa, cuáles requieren eVisa, cuáles emiten visa al llegar y cuáles exigen una solicitud completa en la embajada.",
         de:"travelnow.info ist ein interaktiver Visa-Anforderungs-Explorer. Wähle deinen Pass und sieh auf einen Blick, in welche der 200+ Länder der Welt du visumfrei einreisen kannst, welche ein eVisa erfordern, welche ein Visum bei Ankunft ausstellen und welche einen vollständigen Botschaftsantrag verlangen.",
         fr:"travelnow.info est un explorateur interactif des exigences de visa. Choisis ton passeport et découvre d'un coup d'œil dans quels pays (parmi 200+) tu peux entrer sans visa, lesquels nécessitent un eVisa, lesquels délivrent un visa à l'arrivée et lesquels exigent une demande consulaire complète.",
         ar:"travelnow.info مستكشف تفاعلي لمتطلبات التأشيرة. اختر جواز سفرك واعرف بنظرة واحدة إلى أي من دول العالم الـ 200+ يمكنك الدخول بدون تأشيرة، وأيها يتطلب تأشيرة إلكترونية، وأيها يصدر تأشيرة عند الوصول، وأيها يحتاج طلبًا كاملاً من السفارة." },
-    "Atlas aggregates visa-policy information from authoritative,\n  regularly-updated public sources covering every recognised passport. The\n  full dataset is rebuilt every 24 hours so the map you see is never more\n  than a day behind the latest announcements. The \"Recently changed\" feed\n  in the side panel surfaces the previous day's diff.":
+    "travelnow.info aggregates visa-policy information from authoritative,\n  regularly-updated public sources covering every recognised passport. The\n  full dataset is rebuilt every 24 hours so the map you see is never more\n  than a day behind the latest announcements. The \"Recently changed\" feed\n  in the side panel surfaces the previous day's diff.":
       { tr:"travelnow.info, her tanınmış pasaportu kapsayan, otoriter ve düzenli olarak güncellenen kamu kaynaklarından vize politikası bilgilerini bir araya getirir. Tüm veri seti her 24 saatte yeniden oluşturulur, böylece gördüğünüz harita en son duyurulardan bir günden fazla geride değildir. Yan paneldeki \"Son değişiklikler\" akışı önceki günün değişikliklerini gösterir.",
         es:"travelnow.info agrega información sobre políticas de visa de fuentes públicas autorizadas y actualizadas regularmente que cubren todos los pasaportes reconocidos. El conjunto de datos completo se reconstruye cada 24 horas, por lo que el mapa que ves nunca está a más de un día de retraso respecto a los últimos anuncios.",
         de:"travelnow.info bündelt Informationen zur Visumpolitik aus autoritativen, regelmäßig aktualisierten öffentlichen Quellen, die jeden anerkannten Pass abdecken. Der gesamte Datensatz wird alle 24 Stunden neu erstellt, sodass die angezeigte Karte nie mehr als einen Tag hinter den neuesten Ankündigungen zurückbleibt.",
@@ -458,13 +458,13 @@
         de:"Zuletzt aktualisiert: 2026-05-21 · Betreiber: travelnow.info",
         fr:"Dernière mise à jour : 2026-05-21 · Exploitant : travelnow.info",
         ar:"آخر تحديث: 2026-05-21 · المشغّل: travelnow.info" },
-    "Atlas (travelnow.info) is a free reference tool that shows visa\n  requirements for travelers worldwide. The dataset is rebuilt every 24\n  hours from authoritative public sources. We do not require an account,\n  and we do not ask for personal information.":
+    "travelnow.info (travelnow.info) is a free reference tool that shows visa\n  requirements for travelers worldwide. The dataset is rebuilt every 24\n  hours from authoritative public sources. We do not require an account,\n  and we do not ask for personal information.":
       { tr:"travelnow.info, dünyadaki seyahatçilere vize gerekliliklerini gösteren ücretsiz bir referans aracıdır. Veri seti otoriter kamu kaynaklarından her 24 saatte yeniden oluşturulur. Hesap gerektirmiyoruz ve kişisel bilgi istemiyoruz.",
         es:"travelnow.info es una herramienta de referencia gratuita que muestra los requisitos de visa para viajeros de todo el mundo. El conjunto de datos se reconstruye cada 24 horas a partir de fuentes públicas autorizadas. No requerimos cuenta ni pedimos información personal.",
         de:"travelnow.info ist ein kostenloses Referenzwerkzeug, das Visumsanforderungen für Reisende weltweit zeigt. Der Datensatz wird alle 24 Stunden aus autoritativen öffentlichen Quellen neu erstellt. Wir verlangen kein Konto und keine persönlichen Daten.",
         fr:"travelnow.info est un outil de référence gratuit qui affiche les exigences de visa pour les voyageurs du monde entier. Le jeu de données est reconstruit toutes les 24 heures à partir de sources publiques officielles. Aucun compte ni information personnelle requis.",
         ar:"travelnow.info أداة مرجعية مجانية تعرض متطلبات التأشيرة للمسافرين حول العالم. يتم إعادة بناء البيانات كل 24 ساعة من مصادر عامة موثوقة. لا نطلب حسابًا ولا معلومات شخصية." },
-    "Atlas is not directed at children under 13. We do not knowingly collect\n  data from anyone under 13.":
+    "travelnow.info is not directed at children under 13. We do not knowingly collect\n  data from anyone under 13.":
       { tr:"travelnow.info 13 yaş altı çocuklara yönelik değildir. 13 yaş altı kimseden bilerek veri toplamayız.",
         es:"travelnow.info no está dirigido a menores de 13 años. No recopilamos a sabiendas datos de menores de 13.",
         de:"travelnow.info richtet sich nicht an Kinder unter 13 Jahren. Wir erheben wissentlich keine Daten von Personen unter 13 Jahren.",

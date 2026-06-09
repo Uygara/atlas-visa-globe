@@ -1,4 +1,4 @@
-# Atlas Visa Data — Daily Refresh Backend
+# travelnow.info Visa Data — Daily Refresh Backend
 
 This folder contains the scaffolding for keeping the visa policy data fresh
 **every day, automatically**, by scraping Wikipedia's "Visa requirements for X

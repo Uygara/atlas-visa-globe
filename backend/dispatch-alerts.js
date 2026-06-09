@@ -1,7 +1,7 @@
 // dispatch-alerts.js
 // Runs after the daily scrape inside GitHub Actions. Reads:
 //   - the changelog the scraper just regenerated  (../data/changelog.js)
-//   - the Atlas subscribers KV namespace          (via the Cloudflare REST API)
+//   - the travelnow.info subscribers KV namespace          (via the Cloudflare REST API)
 // For every confirmed subscriber it builds a per-recipient digest of the
 // changes that affect their watch-list and sends one email via Resend.
 //
@@ -12,7 +12,7 @@
 //   RESEND_API_KEY
 //   JWT_SECRET                  — same value as the Pages Function env var
 //   SITE_URL                    — e.g. https://travelnow.info
-//   FROM_EMAIL                  — e.g. "Atlas <alerts@travelnow.info>"
+//   FROM_EMAIL                  — e.g. "travelnow.info <alerts@travelnow.info>"
 
 const fs   = require("fs");
 const path = require("path");
@@ -124,14 +124,14 @@ function renderDigestEmail({ subscriber, changes, unsubscribeUrl, siteUrl }) {
     <tr><td align="center">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:540px;background:#fff;border-radius:12px;border:1px solid #e3eaf3;overflow:hidden;">
         <tr><td style="padding:24px 28px 4px;">
-          <div style="font-size:18px;font-weight:700;color:#1a2236;">Atlas alerts</div>
+          <div style="font-size:18px;font-weight:700;color:#1a2236;">travelnow.info alerts</div>
           <div style="font-size:11px;color:#6b7591;letter-spacing:0.08em;text-transform:uppercase;margin-top:2px;">${changes.length} change${changes.length === 1 ? "" : "s"} in your watch-list</div>
         </td></tr>
         <tr><td>
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0">${rows}</table>
         </td></tr>
         <tr><td style="padding:18px 28px;border-top:1px solid #eef2f8;font-size:12px;color:#6b7591;">
-          <a href="${siteUrl}/" style="color:#60a5fa;text-decoration:none;">View on Atlas →</a><br>
+          <a href="${siteUrl}/" style="color:#60a5fa;text-decoration:none;">View on travelnow.info →</a><br>
           <a href="${unsubscribeUrl}" style="color:#6b7591;">Unsubscribe</a> · subscriber: ${subscriber.email}
         </td></tr>
       </table>
@@ -149,7 +149,7 @@ async function sendEmail({ env, to, subject, html }) {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: env.FROM_EMAIL || "Atlas <alerts@travelnow.info>",
+      from: env.FROM_EMAIL || "travelnow.info <alerts@travelnow.info>",
       to, subject, html,
     }),
   });
