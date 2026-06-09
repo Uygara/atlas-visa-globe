@@ -59,6 +59,33 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 6 follow-ups (this session, 2026-06-09):**
+  - **Branding de-AI'd.** Old `<title>` "Atlas — Where can your passport take
+    you?" looked AI-template-y and "Atlas" wasn't a real brand. Bulk
+    word-boundary `sed` replaced `Atlas` → `travelnow.info` across all HTML/JS/
+    JSX/MD (zero non-brand uses survived). Homepage title is now
+    **"travelnow.info — Visa requirements for every passport"**; OG/Twitter/
+    canonical/breadcrumb + per-page SEO titles regenerated for all 200 passport
+    pages. About → "About travelnow.info"; Privacy → "Privacy Policy ·
+    travelnow.info" (cleaned the leftover " / TravelNow" doubling).
+  - **Analytics installed.** `assets/analytics.js` (one shared loader) defines
+    `dataLayer`/`gtag` then injects GA4 (G-YVQRDY5YXH, IP anonymised) + Matomo
+    Tag Manager (cloud container `L8Pi0F9e`) — both only on the production
+    hostname; never fires on localhost/preview. Loader added to every static
+    `<head>` (16 pages) and to `scripts/generate-seo.js` so the 200
+    auto-generated passport pages get it too. Privacy page updated to disclose
+    `_ga*` / `_pk_*` cookies. Owner action remaining for Matomo: console steps
+    1-14 (configure the History Change trigger for SPA tracking — out-of-code
+    work in the Matomo dashboard).
+  - **Fake-news guard.** Reporter flagged "China extends 30-day visa-free
+    transit to Türkiye + 8 others" — verified against Wikipedia, TR is NOT on
+    China's visa-free list. Root cause: 8 hand-curated `manual:*` items in
+    `data/visa-news.js` had source URLs that were just domain homepages
+    (e.g. `fmprc.gov.cn/eng/`) — unverifiable. Dropped all 8; kept the
+    auto-scraped `wiki:*`/`fco:*` entries. `backend/fetch-news.js` now has
+    `isVerifiableManual()` — refuses any manual entry whose sourceUrl is a
+    domain root or language homepage (`/`, `/en/`, `/eng/`, …).
+
 - **Reddit feedback round 5 (FIXED) — this session (2026-06-05):**
   - **Combine mode was BACKWARDS (the headline bug).** A reporter noted the site
     promises "combine several to see your best combined access" but combining
