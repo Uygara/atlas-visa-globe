@@ -60,6 +60,39 @@ EN in those four (engine ready — just add dict entries).
 ## What we did this arc, and how
 
 - **Round 6 follow-ups (this session, 2026-06-09):**
+  - **Residence-permit picker (the headline feature).** A reporter living in
+    Italy on a Türk passport asked: "if I add my Italian residence permit, how
+    does the map change?" Built a global 6-bloc picker — **Schengen / US / UK
+    / Canada / Australia-NZ / GCC** — in the side panel (collapsed by default,
+    one-click chips). Activating any bloc:
+    - Sets `window.ATLAS_RESIDENCE_PERMITS` (and persists to localStorage
+      `atlas.permits`); the resolveStatus chain now calls
+      `applyResidenceUpgrade()` between `applyIdcDisplay` and `applyDestFloor`.
+    - Schengen permit ⇒ visa-free 90d to any Schengen Area dest (precisely the
+      29-state Area, NOT EEA — `_SCHENGEN_AREA` excludes Ireland and Cyprus
+      because they're EU-but-not-Schengen and a permit doesn't actually open
+      entry there).
+    - Other permits ⇒ swap to whatever upgrade the per-destination
+      `visa-conditions.js` rule promises (already authored against the
+      destination's "Visa policy of <country>" page, so no new sourcing). GCC
+      expands to its 6 members so `ifHolds:["AE"]`-style rules also match.
+    - Tags `r.upgradedBy = "<bloc>"` so the detail card shows a sky-blue
+      banner explaining WHY the country lit up (e.g. "Unlocked by your
+      Schengen permit"). New i18n: `permits.*` + `detail.via_permit_*` × 6
+      languages. Globe `useMemo` deps now include `residencePermits` so the
+      whole map repaints when chips toggle.
+    - Same-tick correctness: `setResidencePermits` writes the global
+      SYNCHRONOUSLY *before* the React state update so the immediate re-render
+      sees the new value (a useEffect mirror would lag by one render and the
+      first paint would be stale).
+    - Verified end-to-end: TR baseline 73 visa-free → +Schengen permit 102
+      visa-free (+29 countries unlocked), 66 visa-required → 37. TR→DE/IT/FR/
+      GR/PT correctly flip to vf-via-Schengen; TR→IE/CY correctly stay
+      visa-required (Schengen ≠ EEA). IN→TR vr→ev, IN→MX vr→vf (both
+      Schengen-permit upgrades sourced in visa-conditions.js). North Korea
+      floor still wins (no permit can override "visa-required for all").
+  - **Buy Me a Coffee link** added to /about under "Why it's free" →
+    `https://buymeacoffee.com/uygaratalay`. Doesn't conflict with AdSense.
   - **Branding de-AI'd.** Old `<title>` "Atlas — Where can your passport take
     you?" looked AI-template-y and "Atlas" wasn't a real brand. Bulk
     word-boundary `sed` replaced `Atlas` → `travelnow.info` across all HTML/JS/

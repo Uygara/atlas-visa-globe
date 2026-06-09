@@ -189,6 +189,27 @@ function App() {
   // across passports — diplomatic of TR ≠ diplomatic of US).
   useEffect(() => { updatePassportVariant("ordinary"); }, [passport, updatePassportVariant]);
 
+  // Residence-permit picker — array of bloc codes (SCHENGEN/US/GB/CA/AU/GCC).
+  // Persisted to localStorage; mirrored to window.ATLAS_RESIDENCE_PERMITS so
+  // the resolveStatus chain in frontend-tail.js can read it from any caller
+  // (globe paint, tally, detail card) without prop drilling everywhere.
+  const [residencePermits, setResidencePermitsState] = useState(() => {
+    try { return JSON.parse(localStorage.getItem("atlas.permits") || "[]"); }
+    catch (e) { return []; }
+  });
+  const setResidencePermits = useCallback((next) => {
+    const arr = Array.isArray(next) ? next : [];
+    // Write the global SYNCHRONOUSLY before setState so the same-tick re-render
+    // (which calls resolveStatus → applyResidenceUpgrade → reads the global)
+    // sees the new value. A useEffect mirror would lag by one render.
+    window.ATLAS_RESIDENCE_PERMITS = arr;
+    setResidencePermitsState(arr);
+    try { localStorage.setItem("atlas.permits", JSON.stringify(arr)); } catch (e) {}
+  }, []);
+  // Hydrate the global from initial state on first mount (in case localStorage
+  // had permits set from a previous session).
+  useEffect(() => { window.ATLAS_RESIDENCE_PERMITS = residencePermits; }, []); // eslint-disable-line
+
   // Persist the chosen passport so sibling pages (e.g. /transit-map/) can open
   // on the same passport. Write-only — the home page still re-detects on load.
   useEffect(() => {
@@ -393,6 +414,7 @@ function App() {
           mode={t.globeStyle}
           direction={direction}
           variant={passportVariant}
+          residencePermits={residencePermits}
           onCountryClick={onCountryClick}
           focusedCountry={focusedCountry}
         />
@@ -446,6 +468,8 @@ function App() {
         showCompare={t.compareMode}
         variant={passportVariant}
         setVariant={updatePassportVariant}
+        residencePermits={residencePermits}
+        setResidencePermits={setResidencePermits}
         pickerMode={pickerMode}
         setPickerMode={setPickerMode}
       />

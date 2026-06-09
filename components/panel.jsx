@@ -1,5 +1,16 @@
 // Side panel — passport picker, tally, search, country detail, recently-changed feed.
 
+// Pretty label for a residence-permit bloc code (used in the detail-card
+// "unlocked by your permit" banner). Falls back to the raw code for unknowns
+// (e.g. when applyResidenceUpgrade tags a specific GCC member like "AE").
+function _permitLabel(code) {
+  const map = {
+    SCHENGEN: "Schengen", US: "US", GB: "UK", CA: "Canada", AU: "Australia/NZ", GCC: "GCC",
+    AE: "UAE", SA: "Saudi", KW: "Kuwait", QA: "Qatar", BH: "Bahrain", OM: "Oman",
+  };
+  return map[code] || code;
+}
+
 function Panel({
   passport, setPassport,
   compare, setCompare, compareMode, setCompareMode,
@@ -11,6 +22,7 @@ function Panel({
   showCompare,
   direction, setDirection,
   variant, setVariant,
+  residencePermits, setResidencePermits,
   pickerMode, setPickerMode,
 }) {
   const [showPicker, setShowPickerRaw] = useState(false);
@@ -64,6 +76,13 @@ function Panel({
           passport={passport}
           value={variant || "ordinary"}
           onChange={setVariant}
+        />
+      )}
+
+      {passport && setResidencePermits && (
+        <ResidencePermitPicker
+          value={residencePermits || []}
+          onChange={setResidencePermits}
         />
       )}
 
@@ -371,6 +390,88 @@ function PassportTypeSelector({ passport, value, onChange }) {
           fontFamily: "var(--font-mono)",
         }}>
           {window.t("panel.variant_disclaimer")}
+        </div>
+      )}
+    </div>
+  );
+}
+
+// Residence-permit picker — a row of 6 chips (Schengen / US / UK / Canada /
+// Australia / GCC). When the user selects one or more, the resolver applies
+// the matching upgrades and the whole map repaints. Only the 6 well-documented
+// blocs are surfaced; per-country permits are too varied and too thin in the
+// source data to expose without diluting the list.
+function ResidencePermitPicker({ value, onChange }) {
+  const [open, setOpen] = useState(false);
+  // Localised label + emoji for each bloc. Falls back to a generic English
+  // label when i18n hasn't been wired (so it never reads as a missing key).
+  const T = (k, fallback) => { const v = window.t ? window.t(k) : k; return v === k ? fallback : v; };
+  const blocs = [
+    { key: "SCHENGEN", flag: "🇪🇺", label: T("permits.schengen", "Schengen residence") },
+    { key: "US",       flag: "🇺🇸", label: T("permits.us",       "US Green Card / visa") },
+    { key: "GB",       flag: "🇬🇧", label: T("permits.gb",       "UK ILR / visa") },
+    { key: "CA",       flag: "🇨🇦", label: T("permits.ca",       "Canada PR / visa") },
+    { key: "AU",       flag: "🇦🇺", label: T("permits.au",       "Australia / NZ PR") },
+    { key: "GCC",      flag: "🇸🇦", label: T("permits.gcc",      "GCC residence") },
+  ];
+  const set = new Set(value);
+  const toggle = (k) => {
+    const next = new Set(set);
+    if (next.has(k)) next.delete(k); else next.add(k);
+    onChange([...next]);
+  };
+  const active = value.length > 0;
+  return (
+    <div style={{ marginBottom: 14 }}>
+      <button
+        onClick={() => setOpen(o => !o)}
+        aria-expanded={open}
+        style={{
+          width: "100%",
+          display: "flex", alignItems: "center", gap: 8, padding: "8px 10px",
+          background: active ? "rgba(96,165,250,0.10)" : "transparent",
+          border: "1px " + (active ? "solid var(--self)" : "dashed var(--panel-border-strong)"),
+          borderRadius: 8, color: "var(--fg)",
+          fontFamily: "inherit", fontSize: 12, cursor: "pointer",
+        }}>
+        <span style={{ fontSize: 14 }}>🪪</span>
+        <span style={{ flex: 1, textAlign: "left" }}>
+          {active
+            ? T("permits.active", "Holding") + " " + value.map(v => {
+                const b = blocs.find(x => x.key === v); return b ? b.flag : v;
+              }).join(" ")
+            : T("permits.add", "Also have a residence permit? Add it →")}
+        </span>
+        <span style={{ fontSize: 10, color: "var(--fg-mute)" }}>{open ? "▴" : "▾"}</span>
+      </button>
+      {open && (
+        <div style={{
+          marginTop: 6, padding: "8px 6px",
+          background: "var(--bg-2)",
+          border: "1px solid var(--panel-border)",
+          borderRadius: 8,
+        }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 4 }}>
+            {blocs.map(b => {
+              const on = set.has(b.key);
+              return (
+                <label key={b.key} style={{
+                  display: "flex", alignItems: "center", gap: 7, cursor: "pointer",
+                  padding: "6px 8px", borderRadius: 6, fontSize: 12,
+                  background: on ? "rgba(96,165,250,0.08)" : "transparent",
+                  border: "1px solid " + (on ? "var(--self)" : "transparent"),
+                }}>
+                  <input type="checkbox" checked={on} onChange={() => toggle(b.key)}
+                         style={{ accentColor: "var(--self)" }} />
+                  <span style={{ fontSize: 13 }}>{b.flag}</span>
+                  <span style={{ flex: 1, color: on ? "var(--fg)" : "var(--fg-dim)" }}>{b.label}</span>
+                </label>
+              );
+            })}
+          </div>
+          <div style={{ fontSize: 10, color: "var(--fg-faint)", marginTop: 6, lineHeight: 1.4, padding: "0 4px" }}>
+            {T("permits.hint", "Holding any of these unlocks easier entry to certain destinations — the map and the tally update automatically.")}
+          </div>
         </div>
       )}
     </div>
@@ -1186,6 +1287,28 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
             : (r.days && <div style={{ fontSize: 11, color: "var(--fg-mute)", fontFamily: "var(--font-mono)" }}>{window.t("detail.up_to_days", { n: r.days })}</div>)}
         </div>
       </div>
+
+      {/* Residence-permit upgrade banner — shown when applyResidenceUpgrade
+          flipped the status because the user activated a held permit. Helps
+          the user understand WHY this country lit up green/lime. */}
+      {r.upgradedBy && (
+        <div style={{
+          display: "flex", gap: 8, padding: "8px 10px", marginBottom: 10,
+          background: "rgba(56,189,248,0.10)", border: "1px solid rgba(56,189,248,0.35)",
+          borderRadius: 8,
+        }}>
+          <span style={{ fontSize: 13, lineHeight: 1.3 }}>🪪</span>
+          <div style={{ fontSize: 11, lineHeight: 1.45, color: "var(--fg-dim)" }}>
+            <strong style={{ color: "var(--fg)" }}>
+              {window.t("detail.via_permit_title") !== "detail.via_permit_title"
+                ? window.t("detail.via_permit_title") : "Unlocked by your permit"}
+            </strong>{" "}
+            {(window.t("detail.via_permit_sub", { which: _permitLabel(r.upgradedBy) }) !== "detail.via_permit_sub")
+              ? window.t("detail.via_permit_sub", { which: _permitLabel(r.upgradedBy) })
+              : "Easier entry thanks to your " + _permitLabel(r.upgradedBy) + " residence/visa. Without it, this country would normally be visa-required."}
+          </div>
+        </div>
+      )}
 
       {/* Entry-mode / temporary-policy caveats (land vs air, time-limited
           waivers). Sourced from data/visa-overrides.js — shown only when they

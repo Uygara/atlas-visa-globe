@@ -79,9 +79,14 @@ window.resolveStatus = function(passportIso2, destIso2) {
   // ID-card travel (EEA / GCC / Mercosur / Western Balkans / TR bilaterals) — a
   // visa-free result becomes `idc` so "go on your ID card" gets its own colour.
   if (window.applyIdcDisplay) r = window.applyIdcDisplay(r, passportIso2, destIso2);
+  // Residence-permit upgrades (Schengen / US / UK / CA / AU / GCC) — if the user
+  // has activated permits via the panel picker, swap to the easier status those
+  // permits unlock. Reads window.ATLAS_RESIDENCE_PERMITS. Tags r.upgradedBy so
+  // the detail card can explain WHY a country flipped colour.
+  if (window.applyResidenceUpgrade) r = window.applyResidenceUpgrade(r, passportIso2, destIso2);
   // Destination floor (e.g. North Korea is visa-required for everyone) — corrects
   // strong passports that over-report visa-free for destinations missing from their
-  // table. Applied last so it floors the final status.
+  // table. Applied last so even permit upgrades can't override a true floor.
   if (window.applyDestFloor) r = window.applyDestFloor(r, destIso2);
   return r;
 };

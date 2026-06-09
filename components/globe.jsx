@@ -46,6 +46,7 @@ function Globe({
   mode,            // "globe3d" | "globe2d" | "flat"
   direction,       // "outgoing" (default) | "incoming"
   variant,         // "ordinary" | "diplomatik" | "hususi" | "hizmet" | ...
+  residencePermits,// string[] — held permit blocs (consumed via window global by resolveStatus; kept as a prop so this component re-renders when they change)
   onCountryClick,
   onCountryHover,
   focusedCountry,  // iso2 string or null — highlights / centers
@@ -615,7 +616,7 @@ function Globe({
       return window.resolveVariantStatus(passport, iso2, variant);
     }
     return window.resolveStatus(passport, iso2);
-  }, [passport, direction, groupActive, groupPassports, variant]);
+  }, [passport, direction, groupActive, groupPassports, variant, residencePermits]);
 
   const fillFor = useCallback((iso2) => {
     if (fillResolver) {

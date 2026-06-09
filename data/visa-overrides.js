@@ -195,3 +195,88 @@ window.applyDestFloor = function (r, destIso2) {
   }
   return r;
 };
+
+// ───────────────────────────────────────────────────────────────────────────
+// 6) Residence-permit / second-document upgrades. A traveller who *also* holds
+// a Schengen residence permit / US Green Card / UK ILR / Canadian or
+// Australian PR / GCC residence often qualifies for an easier status to many
+// destinations (e.g. an Indian passport holder with a Schengen residence gets
+// visa-free or eVisa to many places). The per-destination upgrade paths are
+// already encoded in `data/visa-conditions.js` (used by the detail card). This
+// layer applies the SAME rules across the whole map when the user activates
+// permits via the panel picker — repainting the globe instead of only showing
+// callouts inside one country's detail card.
+//
+// Source of truth: visa-conditions.js (hand-curated against the destination's
+// official "Visa policy of <country>" page). The 6 blocs we expose are the
+// ones that appear in real-world bilateral rules; per-country permits are too
+// rare and too varied to surface as separate UI options without diluting the
+// list.
+//
+// Activation: `window.ATLAS_RESIDENCE_PERMITS = ["SCHENGEN", "US", ...]` (Set
+// or Array). The picker in panel.jsx writes this; resolveStatus consults it.
+window.RESIDENCE_PERMIT_BLOCS = ["SCHENGEN", "US", "GB", "CA", "AU", "GCC"];
+// GCC expands to its six member states for `ifHolds` matching (visa-conditions
+// stores GCC rules per-member).
+const _GCC_MEMBERS = ["AE", "SA", "KW", "QA", "BH", "OM"];
+// Schengen Area as of 2025: 29 states. NOT the same as EEA (no IE, no CY).
+const _SCHENGEN_AREA = new Set([
+  "AT","BE","BG","HR","CZ","DK","EE","FI","FR","DE","GR","HU","IT","LV","LT",
+  "LU","MT","NL","PL","PT","RO","SK","SI","ES","SE", // EU members in Schengen
+  "IS","LI","NO","CH",                                // EFTA Schengen members
+]);
+
+const _ACCESS_BETTER = { idc: 0, vf: 1, eta: 2, ev: 3, voa: 4, vr: 5, ban: 6 };
+window.applyResidenceUpgrade = function (r, passportIso2, destIso2) {
+  if (!r) return r;
+  const permits = window.ATLAS_RESIDENCE_PERMITS;
+  if (!permits || (Array.isArray(permits) ? permits.length === 0 : permits.size === 0)) return r;
+  // Already at the easiest tier — nothing to upgrade.
+  if (r.status === "idc" || r.status === "self") return r;
+  // Expand the held-permits set: GCC → each member; SCHENGEN stays virtual
+  // (matches the ifHolds: ["SCHENGEN"] convention).
+  const held = new Set();
+  const add = (k) => {
+    if (k === "GCC") _GCC_MEMBERS.forEach(m => held.add(m));
+    else held.add(k);
+  };
+  (Array.isArray(permits) ? permits : Array.from(permits)).forEach(add);
+
+  let best = r, bestRank = _ACCESS_BETTER[r.status] ?? 99, via = null;
+
+  // Schengen permit → Schengen-internal visa-free travel (90/180), regardless
+  // of the per-passport visa rule. Mirrors the well-known "Schengen residence
+  // permit can substitute for a short-stay visa" rule. NOTE: Schengen Area is
+  // narrower than EEA — Ireland and Cyprus are EU but NOT in Schengen, so a
+  // Schengen permit does NOT grant visa-free entry there. Bulgaria and Romania
+  // joined Schengen in March 2024 (air/sea) and full land in 2025.
+  if (held.has("SCHENGEN") && _SCHENGEN_AREA.has(destIso2)) {
+    if (_ACCESS_BETTER.vf < bestRank) {
+      best = { status: "vf", days: 90 };
+      bestRank = _ACCESS_BETTER.vf;
+      via = "SCHENGEN";
+    }
+  }
+
+  // visa-conditions rules: per-destination "if you hold X" upgrades.
+  if (window.VISA_CONDITIONS) {
+    const rules = window.VISA_CONDITIONS[passportIso2] && window.VISA_CONDITIONS[passportIso2][destIso2];
+    if (rules) {
+      for (const rule of rules) {
+        // Does any held permit satisfy this rule?
+        const codes = rule.ifHolds || [];
+        const hit = codes.find(c => held.has(c));
+        if (!hit) continue;
+        const rank = _ACCESS_BETTER[rule.then] ?? 99;
+        if (rank < bestRank) {
+          best = { status: rule.then, days: rule.days || null };
+          bestRank = rank;
+          via = hit; // remember which permit triggered it
+        }
+      }
+    }
+  }
+
+  if (via) best = { ...best, upgradedBy: via };
+  return best;
+};
