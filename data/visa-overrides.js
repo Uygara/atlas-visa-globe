@@ -234,6 +234,35 @@ const _SCHENGEN_AREA = new Set([
   "LU","MT","NL","PL","PT","RO","SK","SI","ES","SE", // EU members in Schengen
   "IS","LI","NO","CH",                                // EFTA Schengen members
 ]);
+// European microstates de-facto inside the Schengen travel zone: not formal
+// members, but they have no border controls of their own — Andorra is only
+// reachable through France/Spain (and re-entering Schengen needs the very
+// permit the user holds), Monaco follows French visa rules, San Marino and
+// the Vatican have open borders with Italy. A Schengen residence permit
+// therefore makes all four reachable. Sources: Visa policy of Andorra /
+// Monaco / San Marino / Vatican City (Wikipedia).
+const _SCHENGEN_ADJACENT = new Set(["AD", "MC", "SM", "VA"]);
+// Each bloc's own home territory: holding the bloc's residence permit by
+// definition lets you enter that territory (a US Green Card holder enters the
+// US; UK ILR enters the UK; …). The third-country tables below deliberately
+// never list these, so without this map the bloc's own country stayed
+// painted "visa required" — the owner's "TR + Green Card but USA stays red"
+// report. AU includes NZ: Australian permanent residents receive a New
+// Zealand residence-class visa on arrival (NZ Immigration Act / Trans-Tasman
+// arrangements). Caveat documented here: the reverse is NOT true (NZ PR does
+// not grant Australian entry), but the picker models one combined "Australia
+// / NZ PR" bloc, so an NZ-PR-only holder will see AU slightly over-promised.
+// GCC: the picker expands "GCC" to all six member codes, so each member's
+// self-entry triggers — a resident of one GCC state sees all six unlocked,
+// which matches the common GCC-resident visa facilitation schemes (eVisa /
+// VoA for residents of fellow GCC states).
+const _PERMIT_HOME_TERRITORY = {
+  US: ["US"],
+  GB: ["GB"],
+  CA: ["CA"],
+  AU: ["AU", "NZ"],
+  AE: ["AE"], SA: ["SA"], KW: ["KW"], QA: ["QA"], BH: ["BH"], OM: ["OM"],
+};
 
 const _ACCESS_BETTER = { idc: 0, vf: 1, eta: 2, ev: 3, voa: 4, vr: 5, ban: 6 };
 
@@ -393,11 +422,24 @@ window.applyResidenceUpgrade = function (r, passportIso2, destIso2) {
   // narrower than EEA — Ireland and Cyprus are EU but NOT in Schengen, so a
   // Schengen permit does NOT grant visa-free entry there. Bulgaria and Romania
   // joined Schengen in March 2024 (air/sea) and full land in 2025.
-  if (held.has("SCHENGEN") && _SCHENGEN_AREA.has(destIso2)) {
+  if (held.has("SCHENGEN") &&
+      (_SCHENGEN_AREA.has(destIso2) || _SCHENGEN_ADJACENT.has(destIso2))) {
     if (_ACCESS_BETTER.vf < bestRank) {
       best = { status: "vf", days: 90 };
       bestRank = _ACCESS_BETTER.vf;
       via = "SCHENGEN";
+    }
+  }
+
+  // Home territory: the bloc's own country is always enterable on its own
+  // residence permit (Green Card → US, ILR → GB, PR → CA, AU/NZ PR → AU+NZ,
+  // GCC residence → member states). No days cap — re-entry as a resident.
+  for (const code of held) {
+    const homes = _PERMIT_HOME_TERRITORY[code];
+    if (homes && homes.includes(destIso2) && _ACCESS_BETTER.vf < bestRank) {
+      best = { status: "vf", days: null };
+      bestRank = _ACCESS_BETTER.vf;
+      via = code;
     }
   }
 

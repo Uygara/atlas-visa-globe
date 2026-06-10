@@ -59,6 +59,32 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 7c (same day — site-bug-finder agent run + fixes):**
+  - Owner reported TR+GreenCard→US stays red and Schengen→Andorra stays red,
+    and asked for a distinct colour for permit-unlocked countries. **Ran the
+    `site-bug-finder` agent** — it confirmed all three and proposed the fixes
+    which were then applied:
+  - **`_PERMIT_HOME_TERRITORY`** (visa-overrides.js): each bloc's own
+    territory unlocks on its own permit — US GC→US, ILR→GB, PR→CA, AU/NZ
+    PR→AU+NZ (AU PR gets NZ residence-class visa on arrival; the reverse
+    NZ-PR→AU does NOT hold, caveat in comment), GCC→its 6 members (picker
+    can't know which member, accepted over-paint documented in comment).
+    Status `vf`, days null (resident re-entry), tagged `upgradedBy`.
+  - **`_SCHENGEN_ADJACENT`** = AD/MC/SM/VA added to the Schengen-permit
+    branch (de-facto inside the Schengen travel zone: AD only reachable via
+    FR/ES, MC follows French rules, SM/VA open borders with IT). vf 90.
+    IE verified still `vr` (genuinely not Schengen).
+  - **Permit-hatch globe visual:** any `r.upgradedBy` destination now paints
+    `url(#permit-<status>)` — status colour with thin brand-blue diagonal
+    hatching (4 new SVG patterns next to the compare-stripe defs in
+    globe.jsx) — so "mine by passport" vs "mine via permit" reads at a
+    glance. Legend gains an "Unlocked by your permit" row (CSS
+    repeating-linear-gradient swatch), shown only while permits are active.
+    `status.permit` i18n ×6. Cache-bust bumped to 20260610d.
+  - Verified end-to-end in the real UI: TR + US-permit checkbox → US and MX
+    paint `url(#permit-vf)`, DE correctly stays `vr`, legend row appears,
+    console clean.
+
 - **Round 7b (same day, follow-up fixes):**
   - **"Permit toggle doesn't repaint" — root cause was CACHE, not React.**
     Verified live in the real UI (IN + US-permit checkbox flips Mexico vr→vf

@@ -1055,6 +1055,19 @@ function Legend() {
     { k: "vr",  fill: STATUS_COLOR.vr.fill,  label: window.t("status.vr")  },
     { k: "ban", fill: STATUS_COLOR.ban.fill, label: window.t("status.ban") },
   ];
+  // When residence permits are active, hatched fills appear on the globe —
+  // explain them. App re-renders on permit changes, so reading the global
+  // here is safe (it's written synchronously before the state update).
+  const permitsActive = Array.isArray(window.ATLAS_RESIDENCE_PERMITS) &&
+    window.ATLAS_RESIDENCE_PERMITS.length > 0;
+  if (permitsActive) {
+    items.push({
+      k: "permit",
+      // CSS approximation of the SVG hatch: status-green base + blue stripes.
+      fill: "repeating-linear-gradient(45deg, var(--vf) 0 4px, var(--self) 4px 6px)",
+      label: window.t("status.permit"),
+    });
+  }
   return (
     <div style={{
       position: "absolute",
@@ -1073,15 +1086,20 @@ function Legend() {
       color: "var(--fg-dim)",
       zIndex: 5,
     }}>
-      {items.map(i => (
-        <div key={i.k} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-          <span style={{
-            width: 8, height: 8, borderRadius: "50%",
-            background: i.fill, boxShadow: `0 0 8px ${i.fill}`,
-          }}/>
-          <span>{i.label}</span>
-        </div>
-      ))}
+      {items.map(i => {
+        // Gradient swatches (the permit hatch) can't be used in box-shadow.
+        const isGradient = i.fill.includes("gradient");
+        return (
+          <div key={i.k} style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <span style={{
+              width: 8, height: 8, borderRadius: "50%",
+              background: i.fill,
+              boxShadow: isGradient ? "0 0 8px var(--self)" : `0 0 8px ${i.fill}`,
+            }}/>
+            <span>{i.label}</span>
+          </div>
+        );
+      })}
     </div>
   );
 }

@@ -639,6 +639,11 @@ function Globe({
         return `url(#stripe-${r.status}-${rc.status})`;
       }
     }
+    // Permit-unlocked destination → hatched fill (status colour + blue
+    // hatching) so it reads differently from natural passport access.
+    if (r.upgradedBy && STATUS_HEX[r.status]) {
+      return `url(#permit-${r.status})`;
+    }
     return STATUS_COLOR[r.status]?.fill || STATUS_COLOR.na.fill;
   }, [passport, filter, resolveOne, groupActive, comparePassport, direction, fillResolver]);
 
@@ -734,6 +739,20 @@ function Globe({
               </pattern>
             ))
           )}
+
+          {/* Permit-hatch patterns: a destination unlocked by a residence
+              permit (r.upgradedBy set) paints in its status colour with thin
+              brand-blue diagonal hatching — so the user can tell "mine by
+              passport" from "mine via my permit" at a glance. One pattern per
+              status an upgrade can produce. */}
+          {["vf", "eta", "ev", "voa"].map(s => (
+            <pattern key={`permit-${s}`} id={`permit-${s}`}
+                     width="7" height="7" patternUnits="userSpaceOnUse"
+                     patternTransform="rotate(45)">
+              <rect width="7" height="7" fill={STATUS_HEX[s]} />
+              <rect x="5" width="2" height="7" fill={STATUS_HEX.self} />
+            </pattern>
+          ))}
         </defs>
 
         {/* Outer atmosphere. Radius tracks the zoom so the glow keeps wrapping
