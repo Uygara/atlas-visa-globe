@@ -1,6 +1,6 @@
 # Atlas / travelnow.info — Session handoff (current state)
 
-> **Updated:** 2026-06-05 · **Live:** <https://travelnow.info> · **Repo:** <https://github.com/Uygara/atlas-visa-globe>
+> **Updated:** 2026-06-10 · **Live:** <https://travelnow.info> · **Repo:** <https://github.com/Uygara/atlas-visa-globe>
 > Cloudflare Pages auto-deploys every push to `main` (~30 s).
 > Working language with the owner: **Turkish.** Code comments: English.
 > Hard rule: **never invent visa data.** No fake fees/rules/numbers — if a fact
@@ -58,6 +58,64 @@ EN in those four (engine ready — just add dict entries).
 ---
 
 ## What we did this arc, and how
+
+- **Round 7 (this session, 2026-06-10):**
+  - **Flat top nav + About + ☕ Support on every page.** About + Buy Me a
+    Coffee were buried in the panel footer (only visible after scrolling the
+    side panel) — most homepage visitors never saw them. Removed the
+    `Tools ▾` dropdown; its 4 items (ETIAS, Nomad, Second passport, Alerts)
+    now live inline in the bar, and `About` + a `☕ Support` chip live next to
+    them. The Support chip uses an amber accent (`#f59e0b` ring) so it
+    actually gets seen without shouting. Desktop: 9 inline links; horizontal
+    scroll on narrow laptops (no scrollbar). Mobile: hamburger sheet auto-
+    stacks them all via existing `.menu-open` rules. `nav.support` i18n in
+    en / tr / es / de / fr / ar.
+  - **Residence-permit map now repaints for US / UK / CA / AU / GCC.** Root
+    cause: `data/visa-conditions.js` had 25 SCHENGEN rules but only 8 CA, 6
+    AU, 0 GCC rules — so toggling those blocs visibly did nothing for most
+    users. Added global `_PERMIT_GLOBAL_UPGRADES` in `data/visa-overrides.js`:
+    ~20-25 destinations per bloc whose published visa policy admits "holders
+    of a valid X visa or residence" regardless of nationality (Western
+    Balkans, Caucasus, Caribbean, Central America, TR-ev, Oman, Qatar-ev, …).
+    Wired into `applyResidenceUpgrade` between the Schengen-Area block and
+    per-passport visa-conditions. Verified end-to-end: IN+US→Bahamas vf,
+    IN+US→Colombia vf, IN+US→Oman vf, IN+AU→Georgia vf, PH+GCC→Albania vf.
+  - **Dual-citizenship hint banner.** New `data/dual-citizenship.js` with 4
+    sourced entries (XN→CY *strong*, XK→RS *common*, PS→JO *common*, IL→DE
+    Art 116 *narrow*). `DualCitizenshipHint` in `panel.jsx` renders a quiet
+    1-line banner under the passport picker when the user's primary is in
+    the map; the CTA flips to Combine mode and preloads `[primary,
+    secondary]` so the globe repaints with their BEST access. Solves the
+    long-standing TRNC problem (TRNC passport recognised by only ~3 states →
+    map painted almost entirely `ban`, but most TRNC residents *also* hold a
+    Republic of Cyprus passport). Anti-cases (TW→CN no usable PRC option,
+    HK→BN(O) already a passport variant, IE↔GB CTA already handled by FOM)
+    documented in-file so they don't get re-added by mistake. `dual.*` i18n
+    in all 6 langs.
+  - **Antarctica visa-free over-report fixed.** Strong default-vf passports
+    (DE/JP/US/...) were painting AQ as visa-free because Wikipedia tables
+    omit it. Added `AQ` to `VISA_REQUIRED_DESTS` — every visitor needs a
+    permit from an Antarctic Treaty party (Article VII). `tally` still
+    excludes AQ (`continent === "AN"`) so tallies don't change; this is
+    purely a globe-paint correctness fix. Verified: DE→AQ now `vr`.
+  - **`site-bug-finder` subagent** (`.claude/agents/site-bug-finder.md`).
+    Read-only sibling to `visa-data-auditor` and `no-entry-verifier`: drives
+    the local preview, exercises core flows (passport pick → globe paint,
+    permit toggles, Compare / Combine, mobile bottom-sheet drag, tap-outside
+    dismissal, i18n key fallbacks), reports a P0/P1/P2 punch list. Never
+    edits or pushes — reporter not fixer.
+  - **Google Ads creatives.** `scripts/generate-ads.py` (Pillow) produces 4
+    PNGs at the dialog's spec sizes (1.91:1 landscape 1200×628, 1:1 square
+    1200×1200, 4:5 portrait 960×1200, 9:16 tall 1080×1920). Each is a
+    dark-navy gradient + starfield + wireframe globe with status-coloured
+    dots (vf/eta/ev/voa/vr); the wordmark + tagline are typographic-led, no
+    crude continent outline. All under 250 KB. Replaces the rejected
+    "Atlas + bad world map" creative; ready to upload from the repo root.
+  - **Language detection — clarified, no code change.** Owner asked. Order
+    is `localStorage > navigator.language[:2] > "en"` (`data/i18n.js:1193`).
+    Geolocation is **not** used for language (only for passport detection).
+    `navigator.language` doesn't require user permission so the "what if
+    they deny location?" case is a non-issue — fallback already English.
 
 - **Round 6 follow-ups (this session, 2026-06-09):**
   - **Residence-permit picker (the headline feature).** A reporter living in
