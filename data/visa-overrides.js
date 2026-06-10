@@ -186,7 +186,16 @@ window.applyEtaDisplay = function (r, destIso2) {
 // through an approved tour. So floor it to visa-required whenever the resolved
 // status is anything easier. Source: Visa policy of North Korea (no visa-exempt
 // nationalities). Add a destination here ONLY when it's truly visa-required for all.
-window.VISA_REQUIRED_DESTS = { KP: 1 };
+//
+// AQ (Antarctica): no nationality enters visa-free. Visitors from Antarctic
+// Treaty parties need a permit from their own government (US: NSF, UK: FCDO,
+// AU: AAD, etc.); visitors from non-parties need authorisation from a Treaty
+// state. Strong passports (default `vf`) were wrongly reading "visa-free" for
+// AQ because the Wikipedia tables don't list it. Floor it to `vr`. tally* still
+// excludes AQ (continent === "AN") so it doesn't pad anyone's score; this is
+// purely a globe-paint correctness fix. Source: Visa policy of Antarctica
+// (Wikipedia) — Antarctic Treaty Article VII, every visit needs prior permit.
+window.VISA_REQUIRED_DESTS = { KP: 1, AQ: 1 };
 const _FLOOR_EASY = { idc: 1, vf: 1, eta: 1, ev: 1, voa: 1 };
 window.applyDestFloor = function (r, destIso2) {
   if (!r || r.status === "self") return r;
@@ -227,6 +236,140 @@ const _SCHENGEN_AREA = new Set([
 ]);
 
 const _ACCESS_BETTER = { idc: 0, vf: 1, eta: 2, ev: 3, voa: 4, vr: 5, ban: 6 };
+
+// Global "any-passport" permit upgrades. visa-conditions.js encodes per-passport
+// shortcuts (IN→TR ev if you hold US/GB/SCHENGEN, etc.) but those entries are
+// thin for some blocs — only 8 CA, 6 AU, 0 GCC rules exist. So toggling a CA or
+// AU permit visibly does nothing for most users. This table fixes that by
+// listing destinations whose published visa policy says "holders of a valid
+// {US/GB/CA/AU/SCHENGEN/GCC} visa or residence enter visa-free (or eVisa) —
+// regardless of nationality." Every entry is sourced against the destination's
+// "Visa policy of X" Wikipedia article. We deliberately keep this conservative;
+// the per-passport rules in visa-conditions.js still override when present.
+//
+// Shape: bloc → destIso2 → { status, days }
+// Schengen is omitted here because the dedicated 29-state Schengen-Area
+// block above already handles internal Schengen-permit travel.
+window._PERMIT_GLOBAL_UPGRADES = {
+  // US visa or Green Card. Sources: Wikipedia "Visa policy of <country>".
+  US: {
+    MX: { status: "vf", days: 180 },   // Mexico — any valid US visa.
+    BS: { status: "vf", days: 90 },    // Bahamas.
+    BZ: { status: "vf", days: 30 },    // Belize.
+    CR: { status: "vf", days: 30 },    // Costa Rica (with valid US/CA/SCHENGEN/UK visa).
+    PA: { status: "vf", days: 180 },   // Panama.
+    DO: { status: "vf", days: 30 },    // Dominican Republic.
+    SV: { status: "vf", days: 90 },    // El Salvador (CA-4).
+    HN: { status: "vf", days: 90 },    // Honduras.
+    NI: { status: "vf", days: 90 },    // Nicaragua.
+    CO: { status: "vf", days: 90 },    // Colombia.
+    PE: { status: "vf", days: 180 },   // Peru.
+    GT: { status: "vf", days: 90 },    // Guatemala.
+    GE: { status: "vf", days: 90 },    // Georgia — any valid Schengen/US/UK/etc.
+    BA: { status: "vf", days: 30 },    // Bosnia & Herzegovina.
+    AL: { status: "vf", days: 90 },    // Albania.
+    ME: { status: "vf", days: 30 },    // Montenegro.
+    MK: { status: "vf", days: 15 },    // North Macedonia.
+    RS: { status: "vf", days: 90 },    // Serbia.
+    XK: { status: "vf", days: 15 },    // Kosovo.
+    MD: { status: "vf", days: 90 },    // Moldova.
+    PH: { status: "vf", days: 14 },    // Philippines (US visa exempts visa).
+    TW: { status: "vf", days: 30 },    // Taiwan (valid US/UK/CA/EU/JP visa).
+    OM: { status: "vf", days: 14 },    // Oman.
+    QA: { status: "ev", days: 30 },    // Qatar — eVisa-on-arrival with US visa.
+    TR: { status: "ev", days: 30 },    // Türkiye — Stamp/eVisa available with US visa.
+  },
+  // UK visa or ILR — substantially overlaps with the US set in the Western
+  // Balkans / Caucasus / Caribbean.
+  GB: {
+    GE: { status: "vf", days: 90 },
+    BA: { status: "vf", days: 30 },
+    AL: { status: "vf", days: 90 },
+    ME: { status: "vf", days: 30 },
+    MK: { status: "vf", days: 15 },
+    RS: { status: "vf", days: 90 },
+    XK: { status: "vf", days: 15 },
+    MD: { status: "vf", days: 90 },
+    TR: { status: "ev", days: 30 },
+    QA: { status: "ev", days: 30 },
+    OM: { status: "vf", days: 14 },
+    PA: { status: "vf", days: 180 },
+    CR: { status: "vf", days: 30 },
+    TW: { status: "vf", days: 30 },
+    PH: { status: "vf", days: 14 },
+  },
+  // Canadian PR or valid visa. Narrower than the US/UK lists.
+  CA: {
+    MX: { status: "vf", days: 180 },
+    PA: { status: "vf", days: 180 },
+    CR: { status: "vf", days: 30 },
+    BA: { status: "vf", days: 30 },
+    AL: { status: "vf", days: 90 },
+    ME: { status: "vf", days: 30 },
+    MK: { status: "vf", days: 15 },
+    GE: { status: "vf", days: 90 },
+    PH: { status: "vf", days: 14 },
+    TW: { status: "vf", days: 30 },
+    TR: { status: "ev", days: 30 },
+  },
+  // Australian / NZ PR or visa.
+  AU: {
+    PA: { status: "vf", days: 180 },
+    CR: { status: "vf", days: 30 },
+    GE: { status: "vf", days: 90 },
+    BA: { status: "vf", days: 30 },
+    AL: { status: "vf", days: 90 },
+    ME: { status: "vf", days: 30 },
+    MK: { status: "vf", days: 15 },
+    TW: { status: "vf", days: 30 },
+    PH: { status: "vf", days: 14 },
+    TR: { status: "ev", days: 30 },
+  },
+  // GCC residence (UAE/SA/Kuwait/Qatar/Bahrain/Oman). The applyResidenceUpgrade
+  // permit expansion turns "GCC" into the 6 individual member codes; this
+  // global table is keyed on each member so each member's permit triggers
+  // the same upgrades.
+  AE: {
+    GE: { status: "vf", days: 90 },    // Georgia — any GCC residence.
+    AL: { status: "vf", days: 90 },
+    ME: { status: "vf", days: 30 },
+    MA: { status: "vf", days: 90 },    // Morocco (GCC residents).
+    TN: { status: "vf", days: 90 },    // Tunisia.
+    JO: { status: "voa", days: 60 },   // Jordan — VoA waived for GCC.
+    EG: { status: "voa", days: 30 },   // Egypt VoA confirmed for GCC.
+    TR: { status: "ev", days: 30 },
+  },
+  SA: {
+    GE: { status: "vf", days: 90 }, AL: { status: "vf", days: 90 },
+    ME: { status: "vf", days: 30 }, MA: { status: "vf", days: 90 },
+    TN: { status: "vf", days: 90 }, JO: { status: "voa", days: 60 },
+    EG: { status: "voa", days: 30 }, TR: { status: "ev", days: 30 },
+  },
+  KW: {
+    GE: { status: "vf", days: 90 }, AL: { status: "vf", days: 90 },
+    ME: { status: "vf", days: 30 }, MA: { status: "vf", days: 90 },
+    TN: { status: "vf", days: 90 }, JO: { status: "voa", days: 60 },
+    EG: { status: "voa", days: 30 }, TR: { status: "ev", days: 30 },
+  },
+  QA: {
+    GE: { status: "vf", days: 90 }, AL: { status: "vf", days: 90 },
+    ME: { status: "vf", days: 30 }, MA: { status: "vf", days: 90 },
+    TN: { status: "vf", days: 90 }, JO: { status: "voa", days: 60 },
+    EG: { status: "voa", days: 30 }, TR: { status: "ev", days: 30 },
+  },
+  BH: {
+    GE: { status: "vf", days: 90 }, AL: { status: "vf", days: 90 },
+    ME: { status: "vf", days: 30 }, MA: { status: "vf", days: 90 },
+    TN: { status: "vf", days: 90 }, JO: { status: "voa", days: 60 },
+    EG: { status: "voa", days: 30 }, TR: { status: "ev", days: 30 },
+  },
+  OM: {
+    GE: { status: "vf", days: 90 }, AL: { status: "vf", days: 90 },
+    ME: { status: "vf", days: 30 }, MA: { status: "vf", days: 90 },
+    TN: { status: "vf", days: 90 }, JO: { status: "voa", days: 60 },
+    EG: { status: "voa", days: 30 }, TR: { status: "ev", days: 30 },
+  },
+};
 window.applyResidenceUpgrade = function (r, passportIso2, destIso2) {
   if (!r) return r;
   const permits = window.ATLAS_RESIDENCE_PERMITS;
@@ -255,6 +398,25 @@ window.applyResidenceUpgrade = function (r, passportIso2, destIso2) {
       best = { status: "vf", days: 90 };
       bestRank = _ACCESS_BETTER.vf;
       via = "SCHENGEN";
+    }
+  }
+
+  // Global per-bloc upgrades — applies to ANY nationality whose passport
+  // doesn't already have a better status. Held bloc codes (US/GB/CA/AU + the
+  // 6 GCC members after expansion) each carry a small destination map; pick
+  // the best upgrade across them.
+  if (window._PERMIT_GLOBAL_UPGRADES) {
+    for (const code of held) {
+      const m = window._PERMIT_GLOBAL_UPGRADES[code];
+      if (!m) continue;
+      const up = m[destIso2];
+      if (!up) continue;
+      const rank = _ACCESS_BETTER[up.status] ?? 99;
+      if (rank < bestRank) {
+        best = { status: up.status, days: up.days || null };
+        bestRank = rank;
+        via = code;
+      }
     }
   }
 

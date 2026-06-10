@@ -86,6 +86,21 @@ function Panel({
         />
       )}
 
+      {passport && setGroupMode && setGroupPassports && !groupMode && (
+        <DualCitizenshipHint
+          primary={passport}
+          onAccept={(secondary) => {
+            // Switch to Combine mode (which models ONE traveller holding two
+            // passports → best status per destination) and pre-populate the
+            // group with [primary, suggested-secondary]. The user can still
+            // remove the secondary inside the GroupPicker that appears below.
+            setGroupPassports([passport, secondary]);
+            setGroupMode(true);
+            if (setCompareMode) setCompareMode(false);
+          }}
+        />
+      )}
+
       {/* ── Core: show the result (tally) + how to explore (search) FIRST, so a
           first-time visitor gets the payoff immediately. Direction sits with
           the tally because it changes what the count means. ── */}
@@ -474,6 +489,65 @@ function ResidencePermitPicker({ value, onChange }) {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+// Dual-citizenship hint — shown under the passport picker for primary passports
+// whose holders very often (or commonly) hold a second, stronger passport.
+// Tapping the "Add" CTA pre-populates Combine mode with both passports so the
+// map repaints with the user's BEST access. Source data + strength tiers live
+// in data/dual-citizenship.js. Quiet (1 line + 1 CTA) so it never feels like
+// an ad; only renders if a hint exists for the active passport.
+function DualCitizenshipHint({ primary, onAccept }) {
+  const hints = window.DUAL_CITIZENSHIP_HINTS;
+  if (!hints || !hints[primary]) return null;
+  const hint = hints[primary];
+  // Look up the suggested-passport's display name + flag from PASSPORT_LIST
+  // (loaded by frontend-tail.js) so we render the same human label as the
+  // picker. Bail silently if the secondary isn't a known passport.
+  const list = window.PASSPORT_LIST || [];
+  const sec = list.find(p => p.iso2 === hint.suggest);
+  if (!sec) return null;
+  // Try a localised verb based on strength; fall back to the EN reason in the
+  // dict so we never render a missing key.
+  const T = (k, fallback) => {
+    const v = window.t ? window.t(k) : k;
+    return v === k ? fallback : v;
+  };
+  const verbKey = hint.strength === "strong"
+    ? T("dual.likely", "You probably also hold")
+    : hint.strength === "common"
+      ? T("dual.may_hold", "Many also hold")
+      : T("dual.may_qualify", "You may also qualify for");
+  const ctaLabel = T("dual.add_passport", "Add it →");
+  // Country flag via the countries list (it carries the flag emoji).
+  const cflag = (window.COUNTRIES || []).find(c => c.iso2 === hint.suggest);
+  const flagStr = (cflag && cflag.flag) || "🪪";
+  return (
+    <div style={{
+      marginBottom: 14, padding: "10px 12px",
+      background: "rgba(96,165,250,0.08)",
+      border: "1px solid rgba(96,165,250,0.32)",
+      borderRadius: 10, display: "flex", alignItems: "center", gap: 10,
+    }}>
+      <span style={{ fontSize: 18, lineHeight: 1 }}>{flagStr}</span>
+      <div style={{ flex: 1, fontSize: 12, color: "var(--fg)", lineHeight: 1.4 }}>
+        <strong style={{ color: "var(--self)" }}>{verbKey}</strong>{" "}
+        {T("dual.a_passport", "a")} {sec.name} {T("dual.passport_word", "passport")}.
+        <div style={{ fontSize: 10.5, color: "var(--fg-mute)", marginTop: 2 }}>
+          {hint.reason}
+        </div>
+      </div>
+      <button onClick={() => onAccept(hint.suggest)}
+        style={{
+          background: "var(--self)", color: "#05070d",
+          border: "none", borderRadius: 7,
+          padding: "7px 11px", fontSize: 12, fontWeight: 600,
+          cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap",
+        }}>
+        {ctaLabel}
+      </button>
     </div>
   );
 }
