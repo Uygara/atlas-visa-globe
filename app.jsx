@@ -526,7 +526,7 @@ function TopNav({ tweaks, setTweak, globeStyle, onGlobeStyleChange, onHelp }) {
           <a href="/about/" onClick={closeMenu}>{window.t("nav.about") || "About"}</a>
           {/* Buy Me a Coffee — visually distinct accent chip so it actually gets
               seen on the homepage (was previously buried in the panel footer). */}
-          <a href="https://buymeacoffee.com/uygaratalay"
+          <a href="https://buymeacoffee.com/travelnowinfo"
              target="_blank" rel="noopener"
              onClick={closeMenu}
              className="nav-coffee"

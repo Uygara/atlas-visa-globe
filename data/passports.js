@@ -70573,7 +70573,7 @@ const RAW_PASSPORTS = {
   },
   "XN": {
     "name": "Northern Cyprus",
-    "default": "ban",
+    "default": "vr",
     "defaultDays": null,
     "vf": [
       [

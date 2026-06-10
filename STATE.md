@@ -59,6 +59,34 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 7b (same day, follow-up fixes):**
+  - **"Permit toggle doesn't repaint" — root cause was CACHE, not React.**
+    Verified live in the real UI (IN + US-permit checkbox flips Mexico vr→vf
+    instantly). Production failure: `data/*.js` script tags had NO cache-bust
+    query, so returning visitors ran new app code against a stale cached
+    `visa-overrides.js` (missing `_PERMIT_GLOBAL_UPGRADES`) and the toggles
+    silently no-op'd. Fix: `?v=` stamps on i18n / passports / visa-overrides /
+    visa-conditions / dual-citizenship script tags — **bump them together with
+    the JSX stamp whenever those files change.**
+  - **XN (TRNC) default `ban` → `vr`** in `data/passports.js` + scraper
+    MANUAL_OVERRIDES. Wikipedia lists only TR for entry, but "rest of world =
+    entry refused" was wrong framing: most states have no visa regime for the
+    document (PK/AZ host TRNC representative offices and reportedly accept
+    visa applications), so `vr` ("needs a visa, often unobtainable") is
+    accurate. XN now: 1 idc (TR) + 204 vr + 0 ban.
+  - **Limited-recognition audit — no other TRNC-like cases.** XK (53 vf),
+    TW (73 vf), PS, SO all have real scraped maps; Abkhazia / S. Ossetia /
+    Transnistria / Somaliland have no ISO codes → out of scope; EH is
+    destination-only (aliased to MA). Documented, nothing to change.
+  - **BMC link updated** to `buymeacoffee.com/travelnowinfo` (app.jsx nav chip
+    + /about). Old `uygaratalay` handle is dead — grep shows zero leftovers.
+  - **US-traveler quick picks.** `PopularDestinations` in panel.jsx: when the
+    US passport is active (outgoing, non-group), 8 one-tap chips — Mexico,
+    Canada, UK, France, Italy, Dominican Rep., Japan, Spain (top US outbound
+    markets per NTTO stats; stable, no scraping) — each with a live status
+    dot; tap opens that country's detail card. Extensible per-passport via
+    `_POPULAR_DESTS`. `popular.title` i18n ×6.
+
 - **Round 7 (this session, 2026-06-10):**
   - **Flat top nav + About + ☕ Support on every page.** About + Buy Me a
     Coffee were buried in the panel footer (only visible after scrolling the

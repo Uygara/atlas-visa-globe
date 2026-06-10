@@ -119,6 +119,10 @@ function Panel({
         onPick={onPickFromSearch}
       />
 
+      {passport === "US" && !groupActive && direction !== "incoming" && (
+        <PopularDestinations passport={passport} onPick={onPickFromSearch} />
+      )}
+
       {/* ── Advanced modes (compare / group) come after the core result. ── */}
       {passport && setCompareMode && setGroupMode && (
         <ModeBar
@@ -489,6 +493,60 @@ function ResidencePermitPicker({ value, onChange }) {
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+// Most-visited destinations for the active passport — currently curated only
+// for US (the site's largest audience). Eight chips, one tap → that country's
+// detail card, with a live status dot so the answer ("do I need anything?") is
+// visible before tapping. Destination list = top US outbound markets per the
+// U.S. Commerce Dept / NTTO outbound statistics (Mexico, Canada, UK, France,
+// Italy, Dominican Republic, Japan, Spain) — stable year over year, no
+// scraping needed. Extend _POPULAR_DESTS with another passport's list if
+// another audience grows.
+const _POPULAR_DESTS = {
+  US: ["MX", "CA", "GB", "FR", "IT", "DO", "JP", "ES"],
+};
+function PopularDestinations({ passport, onPick }) {
+  const dests = _POPULAR_DESTS[passport];
+  if (!dests) return null;
+  const T = (k, fallback) => { const v = window.t ? window.t(k) : k; return v === k ? fallback : v; };
+  const statusColor = (s) =>
+    ({ idc: "var(--idc)", vf: "var(--vf)", eta: "var(--eta)", ev: "var(--ev)",
+       voa: "var(--voa)", vr: "var(--vr)", ban: "var(--ban)" }[s] || "var(--na)");
+  return (
+    <div style={{ marginBottom: 14 }}>
+      <div style={{
+        fontSize: 10, fontWeight: 600, letterSpacing: "0.08em",
+        color: "var(--fg-mute)", textTransform: "uppercase", marginBottom: 6,
+      }}>
+        {T("popular.title", "Popular with US travelers")}
+      </div>
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
+        {dests.map(iso2 => {
+          const c = (window.COUNTRIES || []).find(x => x.iso2 === iso2);
+          if (!c) return null;
+          const r = window.resolveStatus(passport, iso2);
+          return (
+            <button key={iso2} onClick={() => onPick(iso2)}
+              title={c.name}
+              style={{
+                display: "inline-flex", alignItems: "center", gap: 5,
+                padding: "5px 9px", borderRadius: 999, cursor: "pointer",
+                background: "var(--bg-2)", border: "1px solid var(--panel-border)",
+                color: "var(--fg-dim)", fontFamily: "inherit", fontSize: 11.5,
+              }}>
+              <span style={{ fontSize: 13 }}>{c.flag}</span>
+              <span>{c.name}</span>
+              <span style={{
+                width: 7, height: 7, borderRadius: "50%",
+                background: statusColor(r.status), flex: "none",
+              }} />
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }

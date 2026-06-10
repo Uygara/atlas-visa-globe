@@ -133,13 +133,19 @@ const MANUAL_OVERRIDES = {
   // The Wikipedia table is non-standard (single destination), so the scraper output
   // would otherwise be empty.
   XN: {
-    // The TRNC passport is "accepted as a travel document by only three countries"
-    // (limited international recognition) — Wikipedia's table lists only Turkey for
-    // entry. So on a TRNC passport you simply cannot enter elsewhere: default `ban`
-    // (no entry / passport not accepted), with Turkey visa-free.
-    // Source: https://en.wikipedia.org/wiki/Visa_requirements_for_Northern_Cypriot_citizens
+    // The TRNC passport has limited international recognition. Wikipedia's
+    // visa-requirements table lists only Turkey (visa-free; ID card enough).
+    // Everywhere else is modelled as `vr`, NOT `ban`: most states simply have
+    // no visa regime for the document (some — e.g. Pakistan and Azerbaijan,
+    // where TRNC keeps representative offices per the Foreign-relations
+    // article — are reported to accept visa applications on it), so "needs a
+    // visa, often unobtainable" is more accurate than "entry refused". The UI
+    // pairs this with the dual-citizenship hint (XN→CY) since most TRNC
+    // residents can hold a Republic of Cyprus (EU) passport.
+    // Sources: https://en.wikipedia.org/wiki/Visa_requirements_for_Northern_Cypriot_citizens
+    //          https://en.wikipedia.org/wiki/Foreign_relations_of_Northern_Cyprus
     name: "Northern Cyprus",
-    default: "ban",
+    default: "vr",
     defaultDays: null,
     vf: [["TR", 90]],
     ev: [], voa: [],
