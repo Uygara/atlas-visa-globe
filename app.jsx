@@ -510,22 +510,29 @@ function TopNav({ tweaks, setTweak, globeStyle, onGlobeStyleChange, onHelp }) {
       </a>
       <div className="topbar-sheet">
         <nav className="primary-nav">
-          {/* Primary tools stay visible; the rest fold into a Tools ▾ menu so
-              the bar isn't an 8-link wall (and doesn't overflow on laptops). */}
+          {/* Flat nav (no Tools ▾ grouping). Items are equally important and the
+              ones that were buried inside Tools (ETIAS, Nomad, Second passport,
+              Alerts) get measurably more clicks once promoted. Overflow on
+              narrow laptops is handled with horizontal scroll on .topbar; mobile
+              gets vertical stacking via the .menu-open rules. About + Support
+              live in the bar too so they're always one tap away. */}
           <a href="/transit-map/" onClick={closeMenu}>{window.t("nav.transit_map")}</a>
           <a href="/itinerary/" onClick={closeMenu}>{window.t("nav.itinerary")}</a>
           <a href="/schengen-calculator/" onClick={closeMenu}>{window.t("nav.schengen")}</a>
-          {/* visa-shortcuts + passport-validity dropped from the nav — that
-              info now surfaces contextually in the country detail panel
-              (ConditionsBox shortcuts + TripNotesGroup validity) when you tap
-              a destination, so they don't need their own tabs. Pages kept for
-              SEO / direct links. */}
-          <ToolsDropdown closeMenu={closeMenu} items={[
-            ["/etias/", window.t("nav.etias")],
-            ["/digital-nomad-visa/", window.t("nav.nomad")],
-            ["/citizenship-by-investment/", window.t("nav.cbi")],
-            ["/alerts/", window.t("nav.alerts")],
-          ]} />
+          <a href="/etias/" onClick={closeMenu}>{window.t("nav.etias")}</a>
+          <a href="/digital-nomad-visa/" onClick={closeMenu}>{window.t("nav.nomad")}</a>
+          <a href="/citizenship-by-investment/" onClick={closeMenu}>{window.t("nav.cbi")}</a>
+          <a href="/alerts/" onClick={closeMenu}>{window.t("nav.alerts")}</a>
+          <a href="/about/" onClick={closeMenu}>{window.t("nav.about") || "About"}</a>
+          {/* Buy Me a Coffee — visually distinct accent chip so it actually gets
+              seen on the homepage (was previously buried in the panel footer). */}
+          <a href="https://buymeacoffee.com/uygaratalay"
+             target="_blank" rel="noopener"
+             onClick={closeMenu}
+             className="nav-coffee"
+             aria-label="Buy me a coffee">
+            <span aria-hidden="true">☕</span> {window.t("nav.support") || "Support"}
+          </a>
         </nav>
       </div>
       {/* Right-hand controls live OUTSIDE the collapsible sheet so they stay
@@ -553,51 +560,6 @@ function TopNav({ tweaks, setTweak, globeStyle, onGlobeStyleChange, onHelp }) {
         </svg>
       </button>
     </header>
-  );
-}
-
-// "Tools ▾" — folds the secondary tool pages into one dropdown so the top
-// bar shows a handful of primary links instead of eight. On mobile (inside
-// the slide-down sheet) it expands inline; on desktop it's a popover.
-function ToolsDropdown({ items, closeMenu }) {
-  const [open, setOpen] = useState(false);
-  const ref = useRef(null);
-  useEffect(() => {
-    if (!open) return;
-    // pointerdown (not mousedown) so a tap outside also closes the menu on iOS
-    // Safari, where mousedown doesn't fire reliably on non-button elements.
-    const onClick = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
-    document.addEventListener("pointerdown", onClick);
-    return () => document.removeEventListener("pointerdown", onClick);
-  }, [open]);
-  return (
-    <div ref={ref} className="tools-dd" style={{ position: "relative" }}>
-      <button onClick={() => setOpen(o => !o)} aria-expanded={open} className="tools-dd-btn" style={{
-        padding: "7px 10px", fontSize: 13, color: "var(--fg-dim)",
-        background: "transparent", border: "none", borderRadius: 6, cursor: "pointer",
-        fontFamily: "inherit", display: "inline-flex", alignItems: "center", gap: 5, whiteSpace: "nowrap",
-      }}>
-        {window.t("nav.tools")}
-        <svg width="10" height="10" viewBox="0 0 12 12" style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 180ms ease", opacity: 0.6 }}>
-          <path d="M3 4.5 L6 7.5 L9 4.5" stroke="currentColor" strokeWidth="1.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </button>
-      {open && (
-        <div className="tools-dd-menu" style={{
-          position: "absolute", top: "calc(100% + 6px)", left: 0, zIndex: 20,
-          minWidth: 200, background: "var(--panel)", backdropFilter: "blur(14px)",
-          WebkitBackdropFilter: "blur(14px)", border: "1px solid var(--panel-border-strong)",
-          borderRadius: 10, padding: 6, boxShadow: "0 12px 32px rgba(0,0,0,0.35)",
-          display: "flex", flexDirection: "column", gap: 1,
-        }}>
-          {items.map(([href, label]) => (
-            <a key={href} href={href} onClick={() => { setOpen(false); closeMenu && closeMenu(); }}
-              style={{ padding: "8px 10px", fontSize: 13, color: "var(--fg-dim)", textDecoration: "none", borderRadius: 6, whiteSpace: "nowrap" }}
-              className="tools-dd-item">{label}</a>
-          ))}
-        </div>
-      )}
-    </div>
   );
 }
 
@@ -1232,9 +1194,26 @@ layoutStyle.textContent = `
     white-space: nowrap;
   }
   .topbar .primary-nav a:hover { color: var(--fg); background: var(--bg-3); }
-  .topbar .tools-dd-btn:hover { color: var(--fg); background: var(--bg-3); }
-  .topbar .tools-dd-item:hover { color: var(--fg); background: var(--bg-3); }
   .topbar .primary-nav a.active { color: var(--fg); background: rgba(96,165,250,0.10); }
+  /* "Buy me a coffee" accent — amber chip so it stands out from the regular
+     dim nav links. Honest-looking (not screaming) and instantly clickable. */
+  .topbar .primary-nav a.nav-coffee {
+    color: #f59e0b; background: rgba(245, 158, 11, 0.10);
+    border: 1px solid rgba(245, 158, 11, 0.30);
+    font-weight: 500;
+  }
+  .topbar .primary-nav a.nav-coffee:hover {
+    color: #fbbf24; background: rgba(245, 158, 11, 0.18);
+    border-color: rgba(245, 158, 11, 0.50);
+  }
+  /* The flat nav can be >7 items; on narrow laptops let it scroll horizontally
+     instead of wrapping (the bar is one line). Hide the scrollbar — it stays
+     a smooth swipe. */
+  .topbar .primary-nav {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .topbar .primary-nav::-webkit-scrollbar { display: none; }
   .topbar .rhs { display: flex; align-items: center; gap: 6px; margin-left: auto; }
   .topbar .rhs button, .topbar .rhs select {
     background: var(--bg-3); border: 1px solid var(--panel-border);
@@ -1365,12 +1344,8 @@ layoutStyle.textContent = `
       flex-direction: column; align-items: stretch; gap: 2px; flex: none;
     }
     .topbar.menu-open .primary-nav a { padding: 10px 12px; font-size: 14px; border-radius: 8px; }
-    /* Tools dropdown: inline (static) inside the mobile sheet so its items
-       stack in the column instead of floating as an absolute popover. */
-    .topbar.menu-open .tools-dd { width: 100%; }
-    .topbar.menu-open .tools-dd-btn { width: 100%; padding: 10px 12px; font-size: 14px; }
-    .topbar.menu-open .tools-dd-menu { position: static !important; box-shadow: none; border: none; padding: 0 0 0 10px; min-width: 0; background: transparent; backdrop-filter: none; }
-    .topbar.menu-open .tools-dd-item { padding: 9px 12px; font-size: 14px; }
+    /* Mobile sheet: flat list; the BMC coffee chip keeps its accent style. */
+    .topbar.menu-open .primary-nav { overflow: visible; }
     /* The control cluster (2D/3D · theme · gear) is no longer inside the
        collapsible sheet — it stays on the bar so those toggles are always one
        tap away on mobile. Keep it tight and drop the non-essential "?" help
