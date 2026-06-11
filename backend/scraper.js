@@ -288,12 +288,31 @@ function classifyVisaText(text) {
   // for strong default-vf passports that painted it visa-free, the exact
   // opposite of reality.
   if (t.includes("issuance suspended") || t.includes("visa suspended") ||
-      t.includes("suspended until further notice")) return "ban";
+      t.includes("suspended until further notice") ||
+      // Ukraine stopped issuing visas to some nationalities (Mali): no visa
+      // can be obtained → entry impossible.
+      t.includes("visa issuance ban")) return "ban";
+  // Mutual non-recognition cells on the Israeli page ("Travel illegal under
+  // Israeli law" for IR/IQ/LB/SY/YE): the destination also refuses Israeli
+  // passports, so the practical status is ban. Previously dropped (the
+  // overrides in data/visa-overrides.js patched the gap; this makes the
+  // classification permanent at the source).
+  if (t.includes("illegal under israeli law")) return "ban";
+  // EXACT-match origin-side prohibitions ("Travel banned" / "Travel
+  // prohibited" as the WHOLE cell — Malaysia→Israel/North Korea,
+  // Iraq→Israel). When the phrase is a SUFFIX after a real status (South
+  // Korea's "eVisaTravel banned" advisory cells) the prefix must win, which
+  // is why these are equality checks, not includes() — see the KR incident
+  // note above.
+  if (t === "travel banned" || t === "travel prohibited") return "ban";
   // "Right of abode": stronger than visa-free — the holder may live and work
   // indefinitely (e.g. US citizens in the COFA states: Marshall Islands,
   // Micronesia, Palau; or persons with right of abode in the UK). Maps to
   // vf (no day cap comes through because the stay column is empty).
   if (t.includes("right of abode")) return "vf";
+  // Palau→US reads just "Indefinite" (COFA free association — unlimited stay).
+  // Exact match so a stay-duration phrase elsewhere can't hijack a status cell.
+  if (t === "indefinite") return "vf";
   // Free entry permits stamped on arrival (Samoa "Entry permit on arrival",
   // Solomon Islands "Visitor's permit on arrival"): an arrival document is
   // issued at the border with no pre-travel application — closest bucket is
@@ -306,7 +325,22 @@ function classifyVisaText(text) {
   // possible with special permission or a visa (e.g. India→Pakistan, where
   // pilgrimage/family visas are issued). Treat as visa-required.
   if (t.includes("admission restricted") || t.includes("entry restricted") ||
-      t.includes("travel restricted")) return "vr";
+      t.includes("travel restricted") ||
+      // Entry possible only with case-by-case government permission
+      // (Kazakhstan border zones, Taiwan travel certificates, invitation
+      // regimes, the inter-Korean "particular visit regime"): a visa-required
+      // class of friction, NOT an outright ban.
+      t.includes("special permission required") ||
+      t.includes("special authorization required") ||
+      t.includes("special authorisation required") ||
+      t.includes("special permit") || t.includes("permission required") ||
+      t.includes("visa restricted") || t.includes("partial visa restriction") ||
+      t.includes("admission restriction") ||
+      t.includes("particular visit regime") ||
+      t.includes("travel certificate required") ||
+      t.includes("invitation required") ||
+      t.includes("visa de facto required") ||
+      t.includes("affidavit of identity required")) return "vr";
   // eVisa variants — MUST be checked before "visa required" because phrases like
   // "Online Visa required" (Australia ETA, Canada eTA) would otherwise be miscategorised as vr.
   // Also covers brand-named electronic authorisations: ESTA / Visa Waiver Program
@@ -331,8 +365,21 @@ function classifyVisaText(text) {
       // "disease"/"release", so only accept the standalone token.
       /^ease\b/.test(t) ||
       // Papua New Guinea's online "Easy Visitor Permit".
-      t.includes("easy visitor permit")) return "ev";
+      t.includes("easy visitor permit") ||
+      // South Korea's K-ETA spelled out (and misspelled) on many pages:
+      // "Electronical travel authorization".
+      t.includes("electronical travel") ||
+      // Cuba's tourist card (tarjeta del turista) and Suriname's e-tourist
+      // card: paid pre-travel documents obtained online / via the airline —
+      // closest bucket is the electronic-authorisation tier.
+      t.includes("tourist card") ||
+      // Australia's online visitor visa subclass 600.
+      t.includes("e600 visa") || t.includes("visitor e600") ||
+      t.includes("electronic entry visa") ||
+      // Côte d'Ivoire's airport "pre-enrolment" requirement.
+      t.includes("pre-enrolment") || t.includes("pre-enrollment")) return "ev";
   if (t.includes("visa on arrival") || t.includes("voa") ||
+      t.includes("visa on arrvival") || // [sic] — typo lives on the Eritrea page
       t.includes("visa issued on arrival") || t.includes("visa granted on arrival")) return "voa";
   if (t.includes("visa required") || t.includes("visa needed")) return "vr";
   if (t.includes("visa not required") || t.includes("freedom of movement") ||

@@ -1224,6 +1224,7 @@ const RAW_PASSPORTS = {
       "ER",
       "GM",
       "GH",
+      "KP",
       "ML",
       "NR",
       "NE",
@@ -1589,7 +1590,8 @@ const RAW_PASSPORTS = {
       "TM",
       "US",
       "VG",
-      "PR"
+      "PR",
+      "AQ"
     ],
     "ban": [],
     "cond": {
@@ -3635,6 +3637,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "KR",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -3975,6 +3981,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "KR",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -4265,6 +4275,10 @@ const RAW_PASSPORTS = {
         7
       ],
       "CI",
+      [
+        "CU",
+        90
+      ],
       [
         "DJ",
         90
@@ -5384,6 +5398,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "KR",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -6424,6 +6442,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "CU",
+        90
+      ],
+      [
         "DJ",
         90
       ],
@@ -6463,6 +6485,10 @@ const RAW_PASSPORTS = {
       "JO",
       [
         "KE",
+        90
+      ],
+      [
+        "KR",
         90
       ],
       [
@@ -8522,7 +8548,10 @@ const RAW_PASSPORTS = {
       "TM",
       "US"
     ],
-    "ban": []
+    "ban": [
+      "IL",
+      "KP"
+    ]
   },
   "PL": {
     "name": "Poland",
@@ -8733,6 +8762,10 @@ const RAW_PASSPORTS = {
       ],
       [
         "KE",
+        90
+      ],
+      [
+        "KR",
         90
       ],
       [
@@ -9028,6 +9061,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "CU",
+        90
+      ],
+      [
         "DJ",
         90
       ],
@@ -9070,6 +9107,10 @@ const RAW_PASSPORTS = {
       ],
       [
         "KE",
+        90
+      ],
+      [
+        "KR",
         90
       ],
       [
@@ -10212,6 +10253,10 @@ const RAW_PASSPORTS = {
         "LK",
         30
       ],
+      [
+        "SR",
+        90
+      ],
       "SY",
       [
         "TZ",
@@ -10511,6 +10556,10 @@ const RAW_PASSPORTS = {
       [
         "LK",
         30
+      ],
+      [
+        "SR",
+        90
       ],
       "SY",
       [
@@ -10828,6 +10877,10 @@ const RAW_PASSPORTS = {
         "LK",
         30
       ],
+      [
+        "SR",
+        90
+      ],
       "SY",
       [
         "TZ",
@@ -11030,6 +11083,10 @@ const RAW_PASSPORTS = {
       ],
       [
         "CI",
+        90
+      ],
+      [
+        "CU",
         90
       ],
       [
@@ -11885,6 +11942,10 @@ const RAW_PASSPORTS = {
       "SL",
       "SO",
       "SS",
+      [
+        "SR",
+        90
+      ],
       "SY",
       [
         "TZ",
@@ -12181,6 +12242,10 @@ const RAW_PASSPORTS = {
       ],
       [
         "KE",
+        90
+      ],
+      [
+        "KR",
         90
       ],
       [
@@ -13849,6 +13914,10 @@ const RAW_PASSPORTS = {
       ],
       [
         "KE",
+        90
+      ],
+      [
+        "KR",
         90
       ],
       [
@@ -17700,6 +17769,7 @@ const RAW_PASSPORTS = {
     ],
     "vr": [
       "DZ",
+      "AR",
       "AZ",
       "BB",
       "BY",
@@ -17708,6 +17778,7 @@ const RAW_PASSPORTS = {
       "SV",
       "ER",
       "GD",
+      "JM",
       "KZ",
       "KI",
       "KP",
@@ -17720,6 +17791,7 @@ const RAW_PASSPORTS = {
       "NE",
       "PK",
       "SN",
+      "RS",
       [
         "SB",
         90
@@ -17738,6 +17810,16 @@ const RAW_PASSPORTS = {
       "MD"
     ],
     "cond": {
+      "AR": [
+        {
+          "ifHolds": [
+            "US"
+          ],
+          "then": "ev",
+          "days": 90,
+          "note": "An Autorización de Viaje Electrónica (AVE) is available for Taiwanese passport with a valid entry authorization for the United States of America for a fee of US$200. The maximum duration is 3 months and is for tourism purposes only. Applying for one requires holding a regular passport with a validity period of at least 6 months, a record of at least 1 entry into the United States in the past 2 years, or holding a valid entry permit issued by the United States (ESTA or B2/J/B1/O/P<P1-P2-P3>/E/H-1B visa), and must hold a printed electronic travel authorization approval certificate; Additionally, passport holders can apply for a Travel Certificate issued by Argentina."
+        }
+      ],
       "CO": [
         {
           "ifHolds": [
@@ -18078,6 +18160,7 @@ const RAW_PASSPORTS = {
       "GM",
       "GH",
       "ID",
+      "KP",
       "MY",
       "ML",
       "NE",
@@ -18094,9 +18177,14 @@ const RAW_PASSPORTS = {
       "DZ",
       "BD",
       "BN",
+      "IR",
+      "IQ",
       "KW",
+      "LB",
       "LY",
-      "MV"
+      "MV",
+      "SY",
+      "YE"
     ]
   },
   "AD": {
@@ -19826,6 +19914,10 @@ const RAW_PASSPORTS = {
       [
         "KE",
         90
+      ],
+      [
+        "KR",
+        30
       ],
       [
         "KW",
@@ -21724,6 +21816,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "KR",
+        30
+      ],
+      [
         "LA",
         30
       ],
@@ -22078,6 +22174,10 @@ const RAW_PASSPORTS = {
       [
         "KE",
         90
+      ],
+      [
+        "KR",
+        30
       ],
       [
         "LA",
@@ -24158,6 +24258,10 @@ const RAW_PASSPORTS = {
       [
         "KE",
         90
+      ],
+      [
+        "KR",
+        30
       ],
       [
         "LA",
@@ -26498,6 +26602,7 @@ const RAW_PASSPORTS = {
         "BH",
         14
       ],
+      "CU",
       [
         "DJ",
         31
@@ -27648,6 +27753,10 @@ const RAW_PASSPORTS = {
       [
         "LK",
         30
+      ],
+      [
+        "SR",
+        90
       ],
       "SY",
       "TZ",
@@ -32035,6 +32144,10 @@ const RAW_PASSPORTS = {
         "KE",
         90
       ],
+      [
+        "KR",
+        90
+      ],
       "LY",
       [
         "MG",
@@ -34123,6 +34236,16 @@ const RAW_PASSPORTS = {
     ],
     "ban": [],
     "cond": {
+      "AM": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "vf",
+          "days": 180,
+          "note": "Visas are granted by invitation only by the authorities, foreign diplomatic representations, international organizations, or their representatives accredited in the Republic of Armenia.\nNationals of Pakistan who hold a valid residence permit issued by the US, EU state, Schengen Area States, any of the six GCC countries, and whose residence permit is valid for at least six months from the date of entry into the Republic of Armenia, are exempt from the visa requirement starting from January 1 to July 1, 2026. They can stay in the territory of the Republic of Armenia without a visa for up to 180 days within a one-year period (they must carry the physical card having key information in Latin script)."
+        }
+      ],
       "BY": [
         {
           "ifHolds": [
@@ -37125,6 +37248,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "KR",
+        30
+      ],
+      [
         "LA",
         30
       ],
@@ -39278,6 +39405,10 @@ const RAW_PASSPORTS = {
       "GY",
       [
         "IQ",
+        30
+      ],
+      [
+        "KR",
         30
       ],
       [
@@ -42329,6 +42460,7 @@ const RAW_PASSPORTS = {
       "AF",
       "AL",
       "AG",
+      "AU",
       "BS",
       [
         "BH",
@@ -42684,6 +42816,8 @@ const RAW_PASSPORTS = {
         30
       ],
       "AL",
+      "AG",
+      "AU",
       [
         "BS",
         30
@@ -42920,6 +43054,7 @@ const RAW_PASSPORTS = {
       ],
       "AL",
       "AG",
+      "AU",
       "BS",
       [
         "BH",
@@ -43625,7 +43760,9 @@ const RAW_PASSPORTS = {
         30
       ]
     ],
-    "ban": [],
+    "ban": [
+      "IL"
+    ],
     "cond": {
       "CU": [
         {
@@ -44810,6 +44947,7 @@ const RAW_PASSPORTS = {
       "AL",
       "AO",
       "AG",
+      "AU",
       [
         "BS",
         90
@@ -45427,6 +45565,7 @@ const RAW_PASSPORTS = {
       "CO",
       "CD",
       "CI",
+      "CU",
       [
         "DJ",
         31
@@ -45523,6 +45662,10 @@ const RAW_PASSPORTS = {
       [
         "BO",
         90
+      ],
+      [
+        "BI",
+        30
       ],
       "CV",
       [
@@ -45703,6 +45846,10 @@ const RAW_PASSPORTS = {
       "TD",
       "CO",
       "CD",
+      [
+        "CI",
+        90
+      ],
       [
         "CU",
         90
@@ -45967,6 +46114,7 @@ const RAW_PASSPORTS = {
       "AF",
       "AL",
       "AG",
+      "AU",
       [
         "BH",
         14
@@ -47296,6 +47444,7 @@ const RAW_PASSPORTS = {
     "ev": [
       "AL",
       "AG",
+      "AU",
       "BS",
       "BH",
       "BT",
@@ -47869,6 +48018,7 @@ const RAW_PASSPORTS = {
       "AF",
       "AL",
       "AG",
+      "AU",
       "BS",
       "BH",
       "BT",
@@ -48166,6 +48316,7 @@ const RAW_PASSPORTS = {
       "AL",
       "AO",
       "AG",
+      "AU",
       "BS",
       "BH",
       "BT",
@@ -51016,6 +51167,10 @@ const RAW_PASSPORTS = {
         "LK",
         30
       ],
+      [
+        "SR",
+        90
+      ],
       "SY",
       [
         "TZ",
@@ -51704,6 +51859,10 @@ const RAW_PASSPORTS = {
       "KZ",
       [
         "KE",
+        90
+      ],
+      [
+        "KR",
         90
       ],
       [
@@ -53225,6 +53384,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "CU",
+        90
+      ],
+      [
         "DJ",
         90
       ],
@@ -53549,10 +53712,15 @@ const RAW_PASSPORTS = {
     "ev": [
       "AF",
       "AL",
+      "AG",
       "BH",
       [
         "KH",
         30
+      ],
+      [
+        "CU",
+        90
       ],
       [
         "DJ",
@@ -54079,6 +54247,7 @@ const RAW_PASSPORTS = {
         30
       ],
       "CI",
+      "CU",
       [
         "DJ",
         31
@@ -55129,6 +55298,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "KR",
+        30
+      ],
+      [
         "KG",
         60
       ],
@@ -55749,6 +55922,10 @@ const RAW_PASSPORTS = {
       [
         "LK",
         30
+      ],
+      [
+        "SR",
+        90
       ],
       "TJ",
       [
@@ -57936,6 +58113,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "CU",
+        90
+      ],
+      [
         "DJ",
         90
       ],
@@ -59203,6 +59384,7 @@ const RAW_PASSPORTS = {
       ]
     ],
     "ban": [
+      "UA",
       "US"
     ],
     "cond": {
@@ -59991,6 +60173,7 @@ const RAW_PASSPORTS = {
         30
       ],
       "AL",
+      "AG",
       [
         "AM",
         120
@@ -60901,6 +61084,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "CU",
+        90
+      ],
+      [
         "DJ",
         90
       ],
@@ -61239,6 +61426,7 @@ const RAW_PASSPORTS = {
         "AM",
         120
       ],
+      "AU",
       "BH",
       [
         "BJ",
@@ -61626,6 +61814,10 @@ const RAW_PASSPORTS = {
         "LK",
         30
       ],
+      [
+        "SR",
+        90
+      ],
       "SY",
       "TJ",
       "TZ",
@@ -61851,6 +62043,7 @@ const RAW_PASSPORTS = {
       "AL",
       "AO",
       "AG",
+      "AU",
       "BS",
       "BH",
       [
@@ -62207,6 +62400,10 @@ const RAW_PASSPORTS = {
       [
         "KE",
         90
+      ],
+      [
+        "KR",
+        30
       ],
       [
         "KG",
@@ -65181,6 +65378,7 @@ const RAW_PASSPORTS = {
         "AO",
         30
       ],
+      "AG",
       "BH",
       [
         "BT",
@@ -66222,6 +66420,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "CU",
+        90
+      ],
+      [
         "DJ",
         90
       ],
@@ -66607,6 +66809,10 @@ const RAW_PASSPORTS = {
       "KZ",
       [
         "KE",
+        90
+      ],
+      [
+        "KR",
         90
       ],
       [
@@ -68580,6 +68786,7 @@ const RAW_PASSPORTS = {
         "AM",
         120
       ],
+      "AU",
       [
         "BH",
         14
@@ -70011,6 +70218,7 @@ const RAW_PASSPORTS = {
       "UA",
       "AE",
       "GB",
+      "US",
       "YE",
       "FK",
       "PS",
@@ -70511,6 +70719,7 @@ const RAW_PASSPORTS = {
       ],
       "AL",
       "AG",
+      "AU",
       "BH",
       "BT",
       [
@@ -71286,6 +71495,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "CU",
+        90
+      ],
+      [
         "DJ",
         90
       ],
@@ -71308,6 +71521,10 @@ const RAW_PASSPORTS = {
       ],
       [
         "KE",
+        90
+      ],
+      [
+        "KR",
         90
       ],
       [

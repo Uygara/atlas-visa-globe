@@ -59,6 +59,38 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 7e (2026-06-11 — FULL 200-passport audit + complete re-scrape):**
+  - Owner: "çok fazla yanlış var, kalıcı çözüm istiyorum." Built
+    `backend/audit-dropped.js` (one-shot, read-only): fetches ALL 202 target
+    pages, lists every ISO-mapped cell `classifyVisaText` nulls (= silently
+    dropped → wrong default paint), plus a global phrase histogram.
+  - **First pass found ~140 dropped cells across ~25 phrases.** Added
+    classifier rules (each verified against its actual passport→dest pairs):
+    ban ← "visa issuance ban" (ML→UA), "illegal under israeli law"
+    (IL→IR/IQ/LB/SY/YE), exact-cell "travel banned" / "travel prohibited"
+    (IQ→IL, MY→IL/KP — EQUALITY check so KR's "eVisaTravel banned" advisory
+    suffix cells stay unaffected); vr ← special permission/authorization/
+    permit, visa restricted, partial visa restrictions, particular visit
+    regime (KR↔KP), travel certificate (TW), invitation required,
+    visa de facto required, affidavit of identity; ev ← "electronical travel
+    authorization" (K-ETA wording, 20 pages), "tourist card" (Cuba, 13),
+    "e600 visa" (AU), "e-tourist card" (SR), electronic entry visa,
+    pre-enrolment (CI); voa ← "visa on arrvival" [sic]; vf ← exact
+    "indefinite" (PW→US COFA).
+  - **Full re-scrape `node scraper.js --all`:** 202/202 OK (XN kept manual
+    override), 423 status changes vs snapshot — taxonomy noise, so
+    changelog.js reverted (established pattern). passports.js +
+    passports-snapshot.json regenerated wholesale.
+  - **Re-audit after fix: 0 dropped cells in all 200 pages** (two 1-off
+    leftovers — ER→BI typo cell, PW→US "Indefinite" — fixed + targeted
+    regen of ER/PW). 35-pair spot-check suite: all pass (the 5 apparent
+    fails were wrong expectations: AU dest relabels ev→eta by design,
+    AU/NZ→KZ main-table vf beats the border-zone secondary table, TR→DE is
+    genuinely vr). 200 passports, 0 thin maps. Cache-bust → 20260611b.
+  - Note for future sessions: re-run `audit-dropped.js`-style sweeps after
+    any classifier change; Wikipedia invents new cell wordings regularly
+    and a null classification is ALWAYS a silent data bug.
+
 - **Round 7d (2026-06-11 — silently-dropped-rows audit, classifier fixes):**
   - Owner flagged US→Gabon (Wikipedia: "Visa Issuance Suspended", we showed
     something else). Root cause class: `classifyVisaText` returned **null**

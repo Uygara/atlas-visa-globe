@@ -1222,6 +1222,7 @@
       "ER",
       "GM",
       "GH",
+      "KP",
       "ML",
       "NR",
       "NE",
@@ -1587,7 +1588,8 @@
       "TM",
       "US",
       "VG",
-      "PR"
+      "PR",
+      "AQ"
     ],
     "ban": [],
     "cond": {
@@ -3633,6 +3635,10 @@
         90
       ],
       [
+        "KR",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -3973,6 +3979,10 @@
         90
       ],
       [
+        "KR",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -4263,6 +4273,10 @@
         7
       ],
       "CI",
+      [
+        "CU",
+        90
+      ],
       [
         "DJ",
         90
@@ -5382,6 +5396,10 @@
         90
       ],
       [
+        "KR",
+        90
+      ],
+      [
         "KW",
         90
       ],
@@ -6422,6 +6440,10 @@
         90
       ],
       [
+        "CU",
+        90
+      ],
+      [
         "DJ",
         90
       ],
@@ -6461,6 +6483,10 @@
       "JO",
       [
         "KE",
+        90
+      ],
+      [
+        "KR",
         90
       ],
       [
@@ -8520,7 +8546,10 @@
       "TM",
       "US"
     ],
-    "ban": []
+    "ban": [
+      "IL",
+      "KP"
+    ]
   },
   "PL": {
     "name": "Poland",
@@ -8731,6 +8760,10 @@
       ],
       [
         "KE",
+        90
+      ],
+      [
+        "KR",
         90
       ],
       [
@@ -9026,6 +9059,10 @@
         90
       ],
       [
+        "CU",
+        90
+      ],
+      [
         "DJ",
         90
       ],
@@ -9068,6 +9105,10 @@
       ],
       [
         "KE",
+        90
+      ],
+      [
+        "KR",
         90
       ],
       [
@@ -10210,6 +10251,10 @@
         "LK",
         30
       ],
+      [
+        "SR",
+        90
+      ],
       "SY",
       [
         "TZ",
@@ -10509,6 +10554,10 @@
       [
         "LK",
         30
+      ],
+      [
+        "SR",
+        90
       ],
       "SY",
       [
@@ -10826,6 +10875,10 @@
         "LK",
         30
       ],
+      [
+        "SR",
+        90
+      ],
       "SY",
       [
         "TZ",
@@ -11028,6 +11081,10 @@
       ],
       [
         "CI",
+        90
+      ],
+      [
+        "CU",
         90
       ],
       [
@@ -11883,6 +11940,10 @@
       "SL",
       "SO",
       "SS",
+      [
+        "SR",
+        90
+      ],
       "SY",
       [
         "TZ",
@@ -12179,6 +12240,10 @@
       ],
       [
         "KE",
+        90
+      ],
+      [
+        "KR",
         90
       ],
       [
@@ -13847,6 +13912,10 @@
       ],
       [
         "KE",
+        90
+      ],
+      [
+        "KR",
         90
       ],
       [
@@ -17698,6 +17767,7 @@
     ],
     "vr": [
       "DZ",
+      "AR",
       "AZ",
       "BB",
       "BY",
@@ -17706,6 +17776,7 @@
       "SV",
       "ER",
       "GD",
+      "JM",
       "KZ",
       "KI",
       "KP",
@@ -17718,6 +17789,7 @@
       "NE",
       "PK",
       "SN",
+      "RS",
       [
         "SB",
         90
@@ -17736,6 +17808,16 @@
       "MD"
     ],
     "cond": {
+      "AR": [
+        {
+          "ifHolds": [
+            "US"
+          ],
+          "then": "ev",
+          "days": 90,
+          "note": "An Autorización de Viaje Electrónica (AVE) is available for Taiwanese passport with a valid entry authorization for the United States of America for a fee of US$200. The maximum duration is 3 months and is for tourism purposes only. Applying for one requires holding a regular passport with a validity period of at least 6 months, a record of at least 1 entry into the United States in the past 2 years, or holding a valid entry permit issued by the United States (ESTA or B2/J/B1/O/P<P1-P2-P3>/E/H-1B visa), and must hold a printed electronic travel authorization approval certificate; Additionally, passport holders can apply for a Travel Certificate issued by Argentina."
+        }
+      ],
       "CO": [
         {
           "ifHolds": [
@@ -18076,6 +18158,7 @@
       "GM",
       "GH",
       "ID",
+      "KP",
       "MY",
       "ML",
       "NE",
@@ -18092,9 +18175,14 @@
       "DZ",
       "BD",
       "BN",
+      "IR",
+      "IQ",
       "KW",
+      "LB",
       "LY",
-      "MV"
+      "MV",
+      "SY",
+      "YE"
     ]
   },
   "AD": {
@@ -19824,6 +19912,10 @@
       [
         "KE",
         90
+      ],
+      [
+        "KR",
+        30
       ],
       [
         "KW",
@@ -21722,6 +21814,10 @@
         90
       ],
       [
+        "KR",
+        30
+      ],
+      [
         "LA",
         30
       ],
@@ -22076,6 +22172,10 @@
       [
         "KE",
         90
+      ],
+      [
+        "KR",
+        30
       ],
       [
         "LA",
@@ -24156,6 +24256,10 @@
       [
         "KE",
         90
+      ],
+      [
+        "KR",
+        30
       ],
       [
         "LA",
@@ -26496,6 +26600,7 @@
         "BH",
         14
       ],
+      "CU",
       [
         "DJ",
         31
@@ -27646,6 +27751,10 @@
       [
         "LK",
         30
+      ],
+      [
+        "SR",
+        90
       ],
       "SY",
       "TZ",
@@ -32033,6 +32142,10 @@
         "KE",
         90
       ],
+      [
+        "KR",
+        90
+      ],
       "LY",
       [
         "MG",
@@ -34121,6 +34234,16 @@
     ],
     "ban": [],
     "cond": {
+      "AM": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "vf",
+          "days": 180,
+          "note": "Visas are granted by invitation only by the authorities, foreign diplomatic representations, international organizations, or their representatives accredited in the Republic of Armenia.\nNationals of Pakistan who hold a valid residence permit issued by the US, EU state, Schengen Area States, any of the six GCC countries, and whose residence permit is valid for at least six months from the date of entry into the Republic of Armenia, are exempt from the visa requirement starting from January 1 to July 1, 2026. They can stay in the territory of the Republic of Armenia without a visa for up to 180 days within a one-year period (they must carry the physical card having key information in Latin script)."
+        }
+      ],
       "BY": [
         {
           "ifHolds": [
@@ -37123,6 +37246,10 @@
         90
       ],
       [
+        "KR",
+        30
+      ],
+      [
         "LA",
         30
       ],
@@ -39276,6 +39403,10 @@
       "GY",
       [
         "IQ",
+        30
+      ],
+      [
+        "KR",
         30
       ],
       [
@@ -42327,6 +42458,7 @@
       "AF",
       "AL",
       "AG",
+      "AU",
       "BS",
       [
         "BH",
@@ -42682,6 +42814,8 @@
         30
       ],
       "AL",
+      "AG",
+      "AU",
       [
         "BS",
         30
@@ -42918,6 +43052,7 @@
       ],
       "AL",
       "AG",
+      "AU",
       "BS",
       [
         "BH",
@@ -43623,7 +43758,9 @@
         30
       ]
     ],
-    "ban": [],
+    "ban": [
+      "IL"
+    ],
     "cond": {
       "CU": [
         {
@@ -44808,6 +44945,7 @@
       "AL",
       "AO",
       "AG",
+      "AU",
       [
         "BS",
         90
@@ -45425,6 +45563,7 @@
       "CO",
       "CD",
       "CI",
+      "CU",
       [
         "DJ",
         31
@@ -45702,6 +45841,10 @@
       "CO",
       "CD",
       [
+        "CI",
+        90
+      ],
+      [
         "CU",
         90
       ],
@@ -45965,6 +46108,7 @@
       "AF",
       "AL",
       "AG",
+      "AU",
       [
         "BH",
         14
@@ -47294,6 +47438,7 @@
     "ev": [
       "AL",
       "AG",
+      "AU",
       "BS",
       "BH",
       "BT",
@@ -47867,6 +48012,7 @@
       "AF",
       "AL",
       "AG",
+      "AU",
       "BS",
       "BH",
       "BT",
@@ -48164,6 +48310,7 @@
       "AL",
       "AO",
       "AG",
+      "AU",
       "BS",
       "BH",
       "BT",
@@ -51014,6 +51161,10 @@
         "LK",
         30
       ],
+      [
+        "SR",
+        90
+      ],
       "SY",
       [
         "TZ",
@@ -51702,6 +51853,10 @@
       "KZ",
       [
         "KE",
+        90
+      ],
+      [
+        "KR",
         90
       ],
       [
@@ -53223,6 +53378,10 @@
         90
       ],
       [
+        "CU",
+        90
+      ],
+      [
         "DJ",
         90
       ],
@@ -53547,10 +53706,15 @@
     "ev": [
       "AF",
       "AL",
+      "AG",
       "BH",
       [
         "KH",
         30
+      ],
+      [
+        "CU",
+        90
       ],
       [
         "DJ",
@@ -54077,6 +54241,7 @@
         30
       ],
       "CI",
+      "CU",
       [
         "DJ",
         31
@@ -55127,6 +55292,10 @@
         90
       ],
       [
+        "KR",
+        30
+      ],
+      [
         "KG",
         60
       ],
@@ -55747,6 +55916,10 @@
       [
         "LK",
         30
+      ],
+      [
+        "SR",
+        90
       ],
       "TJ",
       [
@@ -57934,6 +58107,10 @@
         90
       ],
       [
+        "CU",
+        90
+      ],
+      [
         "DJ",
         90
       ],
@@ -59201,6 +59378,7 @@
       ]
     ],
     "ban": [
+      "UA",
       "US"
     ],
     "cond": {
@@ -59989,6 +60167,7 @@
         30
       ],
       "AL",
+      "AG",
       [
         "AM",
         120
@@ -60899,6 +61078,10 @@
         90
       ],
       [
+        "CU",
+        90
+      ],
+      [
         "DJ",
         90
       ],
@@ -61237,6 +61420,7 @@
         "AM",
         120
       ],
+      "AU",
       "BH",
       [
         "BJ",
@@ -61624,6 +61808,10 @@
         "LK",
         30
       ],
+      [
+        "SR",
+        90
+      ],
       "SY",
       "TJ",
       "TZ",
@@ -61849,6 +62037,7 @@
       "AL",
       "AO",
       "AG",
+      "AU",
       "BS",
       "BH",
       [
@@ -62205,6 +62394,10 @@
       [
         "KE",
         90
+      ],
+      [
+        "KR",
+        30
       ],
       [
         "KG",
@@ -65179,6 +65372,7 @@
         "AO",
         30
       ],
+      "AG",
       "BH",
       [
         "BT",
@@ -66220,6 +66414,10 @@
         90
       ],
       [
+        "CU",
+        90
+      ],
+      [
         "DJ",
         90
       ],
@@ -66605,6 +66803,10 @@
       "KZ",
       [
         "KE",
+        90
+      ],
+      [
+        "KR",
         90
       ],
       [
@@ -68578,6 +68780,7 @@
         "AM",
         120
       ],
+      "AU",
       [
         "BH",
         14
@@ -70009,6 +70212,7 @@
       "UA",
       "AE",
       "GB",
+      "US",
       "YE",
       "FK",
       "PS",
@@ -70509,6 +70713,7 @@
       ],
       "AL",
       "AG",
+      "AU",
       "BH",
       "BT",
       [
@@ -71284,6 +71489,10 @@
         90
       ],
       [
+        "CU",
+        90
+      ],
+      [
         "DJ",
         90
       ],
@@ -71306,6 +71515,10 @@
       ],
       [
         "KE",
+        90
+      ],
+      [
+        "KR",
         90
       ],
       [
