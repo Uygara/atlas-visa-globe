@@ -59,6 +59,27 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 7f (2026-06-12 — US→North Korea, visa-data-auditor agent run):**
+  - Owner flagged US→KP showing `vr` while Wikipedia reads "Travel
+    restricted". Ran the **visa-data-auditor agent** in detail. Verdict:
+    the cell is "Travel restricted by U.S. government" — an ORIGIN-side
+    legal prohibition (Geographic Travel Restriction, 22 CFR 51.63, since
+    Sept 2017: US passports are INVALID for DPRK travel without a special
+    State Dept validation granted only for national-security reasons). For
+    a US tourist the truthful answer is "you cannot go" = **ban**, not
+    "get a visa" = vr.
+  - Fix per agent recommendation: **single targeted override**
+    `STATUS_OVERRIDES["US"]["KP"] = ban` in data/visa-overrides.js (with
+    source). NO classifier change — the generic "restricted"→vr rule is
+    correct for the destination-side cases the agent re-verified: IN→PK
+    "Admission restricted" (pilgrim visas exist), KR→KP "Particular visit
+    regime", IL→MY/PK/SA. Agent also verified `applyDestFloor` passes
+    `ban` through (the KP floor's _FLOOR_EASY map has no ban key), and
+    that in a 15-passport sample ONLY the US has the
+    "restricted by [origin] government" phrasing.
+  - Verified on globe: US→KP paints ban; US tally vr 12 / ban 6; IN→PK,
+    KR→KP, GB→KP, IL→KP all unchanged. Cache-bust → 20260612a.
+
 - **Round 7e (2026-06-11 — FULL 200-passport audit + complete re-scrape):**
   - Owner: "çok fazla yanlış var, kalıcı çözüm istiyorum." Built
     `backend/audit-dropped.js` (one-shot, read-only): fetches ALL 202 target

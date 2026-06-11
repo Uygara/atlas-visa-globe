@@ -68,6 +68,21 @@ ISRAEL_NO_ENTRY.forEach((dest) => {
   (window.STATUS_OVERRIDES["IL"] = window.STATUS_OVERRIDES["IL"] || {})[dest] = { status: "ban", days: null };
 });
 
+// US passports are legally INVALID for travel to/in/through North Korea without
+// a special State Department passport validation (Geographic Travel Restriction,
+// 22 CFR 51.63, in force since Sept 2017 after the Otto Warmbier case; renewed
+// annually). Validations are granted only when travel serves US national-security
+// interests — not a normal visa path. Wikipedia's cell reads "Travel restricted
+// by U.S. government": an ORIGIN-side prohibition, but the classifier's generic
+// "restricted" rule (designed for destination-side cases like India→Pakistan
+// "Admission restricted", where visas ARE issued case-by-case) maps it to vr.
+// For a US tourist the practical answer is "you cannot go" = ban. The KP floor
+// in applyDestFloor only upgrades-to-vr the EASY statuses (_FLOOR_EASY has no
+// "ban" key), so this ban passes through untouched.
+// Source: https://en.wikipedia.org/wiki/Visa_requirements_for_United_States_citizens
+// (North Korea row, audited 2026-06-12 by the visa-data-auditor agent).
+(window.STATUS_OVERRIDES["US"] = window.STATUS_OVERRIDES["US"] || {})["KP"] = { status: "ban", days: null };
+
 // ───────────────────────────────────────────────────────────────────────────
 // 2) Freedom of movement.  Within the EEA (EU + Iceland / Liechtenstein /
 // Norway) plus Switzerland, and inside the UK–Ireland Common Travel Area,
