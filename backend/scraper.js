@@ -280,6 +280,28 @@ function classifyVisaText(text) {
       t.includes("entry banned") ||
       t.includes("no entry") || t.includes("entry prohibited") ||
       t.includes("not admitted")) return "ban";
+  // "Visa issuance suspended": the destination requires a visa but is not
+  // currently issuing any (e.g. Chad and Gabon for US citizens after the
+  // 2025 reciprocity disputes). No visa can be obtained → entry is not
+  // possible → ban, not vr. Previously this returned null and the row was
+  // SILENTLY DROPPED, so the destination fell to the passport's default —
+  // for strong default-vf passports that painted it visa-free, the exact
+  // opposite of reality.
+  if (t.includes("issuance suspended") || t.includes("visa suspended") ||
+      t.includes("suspended until further notice")) return "ban";
+  // "Right of abode": stronger than visa-free — the holder may live and work
+  // indefinitely (e.g. US citizens in the COFA states: Marshall Islands,
+  // Micronesia, Palau; or persons with right of abode in the UK). Maps to
+  // vf (no day cap comes through because the stay column is empty).
+  if (t.includes("right of abode")) return "vf";
+  // Free entry permits stamped on arrival (Samoa "Entry permit on arrival",
+  // Solomon Islands "Visitor's permit on arrival"): an arrival document is
+  // issued at the border with no pre-travel application — closest bucket is
+  // visa-on-arrival.
+  if (t.includes("permit on arrival")) return "voa";
+  // Seychelles' "Electronic Border System": a mandatory online travel
+  // authorisation before arrival → electronic-authorisation bucket.
+  if (t.includes("electronic border system")) return "ev";
   // "restricted" (admission/entry/travel) is NOT an outright ban — entry is
   // possible with special permission or a visa (e.g. India→Pakistan, where
   // pilgrimage/family visas are issued). Treat as visa-required.
@@ -299,7 +321,17 @@ function classifyVisaText(text) {
       t.includes("visa waiver") ||
       t.includes("etias") || t.includes("online visa") || t.includes("electronic authorization") ||
       t.includes("e-travel") || t.includes("electronic system for travel authorization") ||
-      t.includes("esta")) return "ev";
+      t.includes("esta") ||
+      // Israel's electronic travel authorisation brand (rolled out 2024-25):
+      // cells read just "ETA-IL". Previously dropped → fell to default vf
+      // for DE/FR/etc, hiding a real pre-travel requirement.
+      t.includes("eta-il") ||
+      // Cape Verde's mandatory online pre-arrival registration ("EASE").
+      // Exact-match guard: "ease" as a substring would false-positive on
+      // "disease"/"release", so only accept the standalone token.
+      /^ease\b/.test(t) ||
+      // Papua New Guinea's online "Easy Visitor Permit".
+      t.includes("easy visitor permit")) return "ev";
   if (t.includes("visa on arrival") || t.includes("voa") ||
       t.includes("visa issued on arrival") || t.includes("visa granted on arrival")) return "voa";
   if (t.includes("visa required") || t.includes("visa needed")) return "vr";

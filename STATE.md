@@ -59,6 +59,35 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 7d (2026-06-11 — silently-dropped-rows audit, classifier fixes):**
+  - Owner flagged US→Gabon (Wikipedia: "Visa Issuance Suspended", we showed
+    something else). Root cause class: `classifyVisaText` returned **null**
+    for unrecognised cell wording and the row was SILENTLY DROPPED → the
+    destination fell to the passport's default (vf 90 for the US) — the
+    exact "default-fallback over-report" failure mode again, but at the
+    classifier level rather than a missing table.
+  - **US page had 8 dropped rows**, all wrongly painting vf/90:
+    Chad + Gabon "Visa Issuance Suspended" (now → **ban**: no visas being
+    issued = entry impossible), Marshall Is. / Micronesia / Palau "Right of
+    abode" (COFA; now → **vf**), Samoa "Entry permit on arrival" + Solomon
+    Is. "Free Visitor's permit on arrival" (now → **voa**), Seychelles
+    "Electronic Border System" (now → **ev**).
+  - Scanned 8 more major passports for dropped rows: GB/TR/JP = 0 clean;
+    **DE→Israel + FR→Israel "ETA-IL"** were dropped (wrongly vf; now → ev),
+    **FR→Cape Verde "EASE"** and **FR→PNG "Easy Visitor Permit"** → ev.
+    The IN/CN/BR drops are all non-ISO micro-territories (Tokelau, Jan
+    Mayen, BIOT, Tristan da Cunha, SGSSI, American Samoa, SADR, Clipperton)
+    that aren't in countries.js — harmless, never painted.
+  - Classifier additions in `backend/scraper.js`: "issuance suspended" /
+    "visa suspended" → ban · "right of abode" → vf · "permit on arrival" →
+    voa · "electronic border system" / "eta-il" / "^ease\\b" (word-boundary
+    guarded — substring would hit "disease") / "easy visitor permit" → ev.
+  - **Targeted merge-regen of US + DE + FR** into data/passports.js (brace-
+    counting splice; 200 passports intact). The nightly cron self-heals the
+    remaining ~190 passports with the new classifier. Cache-bust → 20260611a.
+  - Verified on the globe: US→Gabon/Chad paint ban dark-red; US tally now
+    vf 117 / ban 5; DE→IL = ev. Console clean.
+
 - **Round 7c (same day — site-bug-finder agent run + fixes):**
   - Owner reported TR+GreenCard→US stays red and Schengen→Andorra stays red,
     and asked for a distinct colour for permit-unlocked countries. **Ran the

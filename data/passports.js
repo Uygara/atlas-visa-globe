@@ -1767,6 +1767,10 @@ const RAW_PASSPORTS = {
         "IQ",
         30
       ],
+      [
+        "IL",
+        90
+      ],
       "JO",
       [
         "KE",
@@ -1854,6 +1858,10 @@ const RAW_PASSPORTS = {
       ],
       [
         "SA",
+        90
+      ],
+      [
+        "SC",
         90
       ],
       [
@@ -2091,6 +2099,10 @@ const RAW_PASSPORTS = {
         180
       ],
       [
+        "CV",
+        30
+      ],
+      [
         "TD",
         90
       ],
@@ -2138,6 +2150,10 @@ const RAW_PASSPORTS = {
       [
         "IQ",
         60
+      ],
+      [
+        "IL",
+        90
       ],
       [
         "JO",
@@ -2209,6 +2225,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "PG",
+        60
+      ],
+      [
         "RU",
         30
       ],
@@ -2218,6 +2238,10 @@ const RAW_PASSPORTS = {
       ],
       [
         "SA",
+        90
+      ],
+      [
+        "SC",
         90
       ],
       [
@@ -13284,6 +13308,10 @@ const RAW_PASSPORTS = {
         90
       ],
       [
+        "SC",
+        90
+      ],
+      [
         "SL",
         90
       ],
@@ -13353,6 +13381,14 @@ const RAW_PASSPORTS = {
         30
       ],
       [
+        "WS",
+        90
+      ],
+      [
+        "SB",
+        90
+      ],
+      [
         "TL",
         30
       ],
@@ -13378,6 +13414,11 @@ const RAW_PASSPORTS = {
     ],
     "ban": [
       "BF",
+      "TD",
+      [
+        "GA",
+        90
+      ],
       "ML",
       "NE"
     ],
