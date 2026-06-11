@@ -59,6 +59,23 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 7g (2026-06-12 — incoming-mode territory fix + KP→US verified):**
+  - **KP→US incoming = vr is CORRECT** — owner questioned it; Wikipedia's
+    "Visa requirements for North Korean citizens" US row reads plain
+    "Visa required" (the 2017 US entry ban on DPRK nationals was revoked
+    in 2021; the June 2025 suspension list doesn't include KP). De facto
+    approvals ≈ zero, but the source says vr → we show vr (no-invent).
+  - **Greenland "no data" in incoming mode FIXED.** `TERRITORY_ALIAS`
+    only aliased the DESTINATION side; with a territory as ORIGIN
+    (incoming mode) there's no PASSPORTS entry → painted `na`. Added a
+    passport-side alias at the TOP of `_resolveStatusBase` (before the
+    self check) in backend/frontend-tail.js + the served copy in
+    data/passports.js: Greenlanders are Danish citizens, Puerto Ricans
+    are US citizens, etc. Verified incoming-with-US: GL paints eta
+    (DK→US ESTA), PR paints self, NC/FK eta, EH vr (MA); GL→DK = self,
+    GL→DE = fom. Cache-bust → 20260612b. NOTE: frontend-tail.js is the
+    source — the daily cron re-appends it, so the fix survives re-scrapes.
+
 - **Round 7f (2026-06-12 — US→North Korea, visa-data-auditor agent run):**
   - Owner flagged US→KP showing `vr` while Wikipedia reads "Travel
     restricted". Ran the **visa-data-auditor agent** in detail. Verdict:

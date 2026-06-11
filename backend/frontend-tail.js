@@ -40,6 +40,16 @@ window.TERRITORY_ALIAS = {
 };
 
 window._resolveStatusBase = function(passportIso2, destIso2) {
+  // Territory as ORIGIN (incoming mode): residents of dependent territories
+  // travel on the parent state's passport — Greenlanders are Danish citizens,
+  // Puerto Ricans are US citizens, New Caledonians are French, etc. Without
+  // this alias the incoming map painted these territories "no data" (they
+  // have no PASSPORTS entry of their own). Aliased BEFORE the self check so
+  // e.g. Puerto Rico paints as "self" when the US passport is active.
+  if (!window.PASSPORTS[passportIso2] && window.TERRITORY_ALIAS &&
+      window.TERRITORY_ALIAS[passportIso2]) {
+    passportIso2 = window.TERRITORY_ALIAS[passportIso2];
+  }
   if (passportIso2 === destIso2) return { status: "self", days: null };
   // Curated corrections (data/visa-overrides.js) win over scraped data — e.g.
   // nationalities ineligible for the Cuba e-visa that must use a consulate.
