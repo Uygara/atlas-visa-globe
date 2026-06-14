@@ -8,6 +8,60 @@
 
 window.CHANGELOG = [
   {
+    date: "2026-06-14",
+    title: "SG → GA: vf → ev",
+    affects: { dest: "GA", passports: ["SG"] },
+    statusFrom: "vf", statusTo: "ev",
+  },
+  {
+    date: "2026-06-14",
+    title: "SG → TD: vr → ev",
+    affects: { dest: "TD", passports: ["SG"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-06-14",
+    title: "MY → GH: vr → ev",
+    affects: { dest: "GH", passports: ["MY"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-06-14",
+    title: "MY → TD: vr → ev",
+    affects: { dest: "TD", passports: ["MY"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-06-14",
+    title: "MY → GA: vr → ev",
+    affects: { dest: "GA", passports: ["MY"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-06-14",
+    title: "KN → IE: vr → vr",
+    affects: { dest: "IE", passports: ["KN"] },
+    statusFrom: "vr", statusTo: "vr",
+  },
+  {
+    date: "2026-06-14",
+    title: "KW → IE: vr → ev",
+    affects: { dest: "IE", passports: ["KW"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-06-14",
+    title: "NI → IE: vr → vr",
+    affects: { dest: "IE", passports: ["NI"] },
+    statusFrom: "vr", statusTo: "vr",
+  },
+  {
+    date: "2026-06-14",
+    title: "LC → IE: vr → vr",
+    affects: { dest: "IE", passports: ["LC"] },
+    statusFrom: "vr", statusTo: "vr",
+  },
+  {
     date: "2026-06-13",
     title: "TR → AF: ev → vr",
     affects: { dest: "AF", passports: ["TR"] },
