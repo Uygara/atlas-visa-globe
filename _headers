@@ -1,0 +1,12 @@
+# Cloudflare Pages security headers — applied to every response.
+# Deliberately NOT a strict Content-Security-Policy: the site loads React, D3,
+# Babel and AdSense from CDNs and uses inline <script type="text/babel">, so a
+# locked-down CSP would break it. These headers harden the common, low-risk
+# vectors without touching how the page loads.
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(self), camera=(), microphone=(), payment=(), usb=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-XSS-Protection: 0

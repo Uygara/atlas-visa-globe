@@ -19,6 +19,11 @@
   ul { padding-left:18px; }
   .meta { font-size:12px; color:var(--fg-mute); margin-bottom:24px; }
   .back { display:inline-block; padding:10px 16px; background:var(--panel); border:1px solid var(--border); border-radius:8px; color:var(--fg); text-decoration:none; font-size:13px; margin-bottom:28px; }
+  .site-footer { margin-top:44px; padding-top:22px; border-top:1px solid var(--border); }
+  .footer-nav { display:flex; flex-wrap:wrap; gap:14px; font-size:13px; margin-bottom:12px; }
+  .footer-nav a { color:var(--fg-dim); text-decoration:none; }
+  .footer-nav a:hover { color:var(--fg); }
+  .footer-note { font-size:12px; color:var(--fg-mute); line-height:1.6; }
 </style>
   <script src="/assets/analytics.js"></script>
 </head>
@@ -26,7 +31,7 @@
 <div class="wrap">
   <a class="back" href="/">← Back to travelnow.info</a>
   <h1>Privacy Policy</h1>
-  <p class="meta">Last updated: 2026-05-21 · Operator: travelnow.info</p>
+  <p class="meta">Last updated: 17 June 2026 · Operator: travelnow.info (Uygar Atalay)</p>
 
   <h2>What this site is</h2>
   <p>travelnow.info (travelnow.info) is a free reference tool that shows visa
@@ -111,14 +116,28 @@
   provider, please contact them directly using the policy links above.</p>
 
   <h2>Contact</h2>
-  <p>Questions about this policy: please open an issue at
-  <a href="https://github.com/Uygara/atlas-visa-globe/issues" rel="noopener">github.com/Uygara/atlas-visa-globe</a>
-  (a dedicated email address is being set up).</p>
+  <p>Questions about this policy: email
+  <a href="mailto:hello@travelnow.info">hello@travelnow.info</a> or open an issue on
+  <a href="https://github.com/Uygara/atlas-visa-globe/issues" rel="noopener">GitHub</a>.
+  See also our <a href="/terms/">Terms of Use</a>.</p>
 
   <h2>Changes to this policy</h2>
   <p>If we change anything material we'll update the "Last updated" date at
   the top. Substantial changes will be flagged on the site for at least 14
   days before taking effect.</p>
+
+  <footer class="site-footer">
+    <nav class="footer-nav">
+      <a href="/">Home</a>
+      <a href="/passport/">All passports</a>
+      <a href="/guides/">Guides</a>
+      <a href="/about/">About</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="/terms/">Terms</a>
+      <a href="/contact/">Contact</a>
+    </nav>
+    <p class="footer-note">© travelnow.info · maintained by Uygar Atalay.</p>
+  </footer>
 </div>
 <script src="/data/static-i18n.js" defer></script>
 </body>

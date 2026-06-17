@@ -59,6 +59,47 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 8 (2026-06-17 — AdSense "Low value content" rejection → real-publisher overhaul):**
+  AdSense rejected the site for "Low value content / thin content". Root cause
+  per Google's own policy text: the ~200 `/passport/<iso>/` pages reproduced
+  third-party (Wikipedia) data as a bare table "without additional commentary,
+  curation, or otherwise adding value". Fixes shipped:
+  - **`scripts/generate-seo.js` rewritten to add unique, data-driven prose** to
+    every passport page: a global **mobility ranking** (computed across all
+    passports from the snapshot — vf+voa = "destinations reachable without a
+    prior visa"), a lead paragraph stating the rank, a **per-continent regional
+    breakdown** (strongest/weakest region), **curated notable destinations**
+    (named MAJOR_DESTS resolved to their real status — "you can go to Japan,
+    Thailand…" / "plan ahead for the US, UK, Germany…"), a "how to travel more
+    easily" para, and a **4-question FAQ emitted as FAQPage JSON-LD**. All from
+    real data — no invented facts. Article schema now carries author (Uygar
+    Atalay) + publisher. Re-ran → 200 pages regenerated. The daily cron runs this
+    generator, so the enrichment self-heals each night.
+  - **5 hand-written evergreen guides** under `/guides/` (the high-value original
+    content Google actually wants): visa-types-explained, schengen-90-180-rule,
+    etias-2026-explained, transit-visa-guide, passport-validity-six-month-rule.
+    Each ~700-1200 words, author byline, Article+FAQ schema, internal links to
+    tools + passport pages. `/guides/` index added.
+  - **Legitimacy / de-AI pages:** new `/contact/` (real address **hello@travelnow.info**)
+    and `/terms/` (Terms of Use + accuracy disclaimer + liability). About rewritten
+    with a real **"Who's behind this" founder byline (Uygar Atalay)** + methodology
+    ("we never invent data") + real email; Privacy got the real email + Terms link
+    + refreshed date. Removed all "a dedicated email is being set up" placeholders.
+  - **Consistent site footer** (Home · All passports · Guides · About · Privacy ·
+    Terms · Contact + "maintained by Uygar Atalay") added to every static + generated
+    page; homepage crawlable `#root` got the guides list + footer nav + founder line.
+  - **Security:** new `_headers` (Cloudflare) — X-Content-Type-Options, X-Frame-Options
+    SAMEORIGIN, Referrer-Policy, Permissions-Policy (geolocation=self only), HSTS.
+    Deliberately no strict CSP (would break inline Babel + CDN React/D3/AdSense).
+  - **sitemap.xml** now includes /guides/ (+5 articles), /contact/, /terms/.
+  - **Owner decisions this round:** contact = hello@travelnow.info (owner must flip
+    on Cloudflare Email Routing for travelnow.info → personal inbox); identity =
+    real name "Uygar Atalay" (inferred from the buymeacoffee.com/uygaratalay handle —
+    correct if wrong). **Owner still to do:** (1) enable Email Routing so hello@ works;
+    (2) after deploy, in Search Console resubmit sitemap + Request Indexing on /,
+    /guides/* and a few passport pages; (3) wait ~1-2 wks for re-crawl, then
+    **request AdSense review** from the dashboard.
+
 - **Round 7g (2026-06-12 — incoming-mode territory fix + KP→US verified):**
   - **KP→US incoming = vr is CORRECT** — owner questioned it; Wikipedia's
     "Visa requirements for North Korean citizens" US row reads plain

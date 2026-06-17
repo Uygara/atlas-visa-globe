@@ -22,6 +22,11 @@
   .legend { display:flex; gap:14px; flex-wrap:wrap; margin:14px 0; font-size:13px; }
   .legend span { display:inline-flex; align-items:center; gap:6px; }
   .dot { width:10px; height:10px; border-radius:50%; display:inline-block; }
+  .site-footer { margin-top:44px; padding-top:22px; border-top:1px solid var(--border); }
+  .footer-nav { display:flex; flex-wrap:wrap; gap:14px; font-size:13px; margin-bottom:12px; }
+  .footer-nav a { color:var(--fg-dim); text-decoration:none; }
+  .footer-nav a:hover { color:var(--fg); }
+  .footer-note { font-size:12px; color:var(--fg-mute); line-height:1.6; }
 </style>
   <script src="/assets/analytics.js"></script>
 </head>
@@ -44,14 +49,30 @@
     <span><span class="dot" style="background:var(--vr)"></span> Visa required</span>
   </div>
 
+  <h2>Who's behind this</h2>
+  <p>travelnow.info is an independent project built and maintained by
+  <strong>Uygar Atalay</strong>. It started from a simple frustration: every
+  time I planned a trip, working out who needs a visa for where meant digging
+  through scattered government pages and out-of-date forum posts. I wanted one
+  honest map that just answers the question — so I built it, and I keep it
+  running. It's a one-person project, not a company, and I read every message
+  that comes in.</p>
+
   <h2>How the data is built</h2>
   <p>travelnow.info aggregates visa-policy information from authoritative,
-  regularly-updated public sources covering every recognised passport. The
-  full dataset is rebuilt every 24 hours so the map you see is never more
-  than a day behind the latest announcements. The "Recently changed" feed
-  in the side panel surfaces the previous day's diff.</p>
-  <p>If something on a country page looks off, get in touch — we'd like to
-  hear about it and fix it quickly.</p>
+  regularly-updated public sources covering every recognised passport. A
+  scheduled job rebuilds the full dataset every 24 hours, so the map you see is
+  never more than a day behind the latest changes we have recorded. On top of
+  the automated data we maintain a hand-curated correction layer for the cases
+  machines get wrong — territories, freedom-of-movement zones, residence-permit
+  upgrades, and entry bans — each one checked against an official source before
+  it ships. The "Recently changed" feed in the side panel surfaces the previous
+  day's differences.</p>
+  <p>We have one hard rule: <strong>we never invent visa data.</strong> If a fact
+  can't be sourced, we leave it out rather than guess. If something on a country
+  page looks wrong, <a href="mailto:hello@travelnow.info">email me</a> with the
+  passport, the destination and ideally a source link — corrections get priority
+  and usually ship the same week.</p>
 
   <h2>What travelnow.info is not</h2>
   <ul>
@@ -74,16 +95,29 @@
   completely optional and the site stays free either way.</p>
 
   <h2>Contact</h2>
-  <p>A dedicated contact address is being set up.
-  Until then, please open an issue at
-  <a href="https://github.com/Uygara/atlas-visa-globe/issues" rel="noopener">github.com/Uygara/atlas-visa-globe</a>
-  for feedback, data corrections, or partnership inquiries.</p>
+  <p>Email <a href="mailto:hello@travelnow.info">hello@travelnow.info</a> for
+  feedback, data corrections, or partnership inquiries — see the
+  <a href="/contact/">contact page</a> for more. You can also open an issue on
+  <a href="https://github.com/Uygara/atlas-visa-globe/issues" rel="noopener">GitHub</a>.</p>
 
   <h2>Legal</h2>
   <p>Country flags are Unicode emoji. All other content on this site is
   provided as-is for reference; verify any visa requirement with the
-  destination embassy before booking.</p>
-  <p><a href="/privacy/">Privacy Policy</a></p>
+  destination embassy before booking. See our <a href="/terms/">Terms of Use</a>
+  and <a href="/privacy/">Privacy Policy</a>.</p>
+
+  <footer class="site-footer">
+    <nav class="footer-nav">
+      <a href="/">Home</a>
+      <a href="/passport/">All passports</a>
+      <a href="/guides/">Guides</a>
+      <a href="/about/">About</a>
+      <a href="/privacy/">Privacy</a>
+      <a href="/terms/">Terms</a>
+      <a href="/contact/">Contact</a>
+    </nav>
+    <p class="footer-note">© travelnow.info · maintained by Uygar Atalay.</p>
+  </footer>
 </div>
 <script src="/data/static-i18n.js" defer></script>
 </body>
