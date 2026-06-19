@@ -13698,7 +13698,6 @@
       "CG",
       "ER",
       "IR",
-      "KP",
       "LR",
       "NR",
       "RU",
@@ -13713,6 +13712,7 @@
         "GA",
         90
       ],
+      "KP",
       "ML",
       "NE"
     ],
@@ -39720,10 +39720,6 @@
         "TN",
         90
       ],
-      [
-        "TR",
-        90
-      ],
       "PS",
       "HK"
     ],
@@ -39984,6 +39980,18 @@
           "then": "voa",
           "days": null,
           "note": "Tourist visa on arrival for holders of a valid multiple entry visa from US, UK or Schengen area, under the condition that the multiple entry visa has been used at least once, proving that by showing the entry and exit stamps of the country of issuance."
+        }
+      ],
+      "TR": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US",
+            "IE"
+          ],
+          "then": "ev",
+          "days": 90,
+          "note": "Official passport holders are exempted from visa for their travels up to 90 days. Ordinary passport holder Algerian citizens, under the age of 15 and above the age of 65 are exempted from visa up to 90 days within any 180 day period for their touristic visits. Ordinary passport holders between the age of 15 and 65 are required to have visa. Ordinary passport holder Algerian citiziens between the ages of 15-18 and 35-65 with a valid Schengen members or USA, UK, Ireland visa or residence permit may get their one month period single entry e-Visas via the website www.evisa.gov.tr.."
         }
       ]
     }
@@ -40819,6 +40827,7 @@
         "BJ",
         90
       ],
+      "BW",
       "BF",
       [
         "CV",
@@ -40958,7 +40967,6 @@
         "BO",
         90
       ],
-      "BW",
       [
         "KH",
         30
