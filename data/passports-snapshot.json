@@ -17504,7 +17504,7 @@
       ],
       [
         "BZ",
-        90
+        30
       ],
       [
         "BA",
@@ -31913,6 +31913,17 @@
           "days": 30,
           "note": "e-Visa for a maximum stay of 30 days available for valid visa or valid residence permit holders from one of the Schengen Countries, USA, UK or Ireland."
         }
+      ],
+      "AE": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "voa",
+          "days": 14,
+          "note": "May apply using 'Smart service'.\nVisa on arrival for those possessing a valid visa, residence permit, or Green Card issued by any of the following countries: United States of America, European Union member states, Australia, Japan, Singapore, Republic of Korea, Canada, and New Zealand. 14 days option (100 AED) with optional 14 days extension (250 AED), or 60 days non-extendable option (250 AED) are available for eligible travelers."
+        }
       ]
     }
   },
@@ -33775,6 +33786,7 @@
         30
       ],
       "MR",
+      "MD",
       [
         "MZ",
         30
@@ -33897,16 +33909,6 @@
           "then": "ev",
           "days": 15,
           "note": "e-Visa available for holders of a valid Schengen visa or a valid visa from any of the OECD member countries or a valid residence permit of a Schengen Area|Schengen or OECD country or a valid residence permit of UAE.\nVisa on arrival for up to 15 days for valid residence permit holders of any country in the GCC (Bahrain, Kuwait, Oman, Qatar, Saudi Arabia and the UAE)."
-        }
-      ],
-      "MD": [
-        {
-          "ifHolds": [
-            "SCHENGEN"
-          ],
-          "then": "ev",
-          "days": null,
-          "note": "Citizens holding a residence permit or a valid visa issued by one of the member states of the European Union or one of the parties to the Schengen Agreement can apply for an electronic visa."
         }
       ],
       "ME": [
@@ -64480,10 +64482,6 @@
     ],
     "voa": [
       [
-        "BD",
-        30
-      ],
-      [
         "BO",
         90
       ],
@@ -64550,6 +64548,10 @@
       "DZ",
       "AU",
       "AZ",
+      [
+        "BD",
+        30
+      ],
       "BY",
       "BN",
       "CA",
