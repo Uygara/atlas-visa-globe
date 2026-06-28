@@ -30891,16 +30891,6 @@
           "note": "National visa may be substituted with a valid ('C' or 'D') visa or a valid residence permit issued by the United Kingdom, Schengen Area or European Union member state for visits up to 90 days.\nExempt for Indians holding a valid residence permit or valid visas (excluding transit visas) of US, Canada.\nIndian citizens can apply for a visa online without needing an invitation letter.\ne-Visa is issued for a maximum of 90 days in the previous 180-day period plus forthcoming 90-day period (effectively, maximum 90 days in any 270-day period)."
         }
       ],
-      "NI": [
-        {
-          "ifHolds": [
-            "SCHENGEN"
-          ],
-          "then": "voa",
-          "days": 30,
-          "note": "Nationals of India with a normal passport and a valid visa issued by Canada, the US, or a Schengen Member State can obtain a visa on arrival for a maximum stay of 30 days. (fee: USD 10)"
-        }
-      ],
       "OM": [
         {
           "ifHolds": [
@@ -46354,10 +46344,6 @@
         90
       ],
       [
-        "DM",
-        21
-      ],
-      [
         "EC",
         90
       ],
@@ -46434,7 +46420,10 @@
         "BW",
         90
       ],
-      "BF",
+      [
+        "BF",
+        30
+      ],
       [
         "KH",
         30
@@ -46452,16 +46441,12 @@
         "CI",
         90
       ],
-      [
-        "CU",
-        90
-      ],
+      "CU",
       [
         "DJ",
-        31
+        21
       ],
       "SV",
-      "GQ",
       [
         "ET",
         90
@@ -46589,10 +46574,6 @@
       ]
     ],
     "voa": [
-      [
-        "BI",
-        30
-      ],
       [
         "CV",
         30
