@@ -847,6 +847,10 @@
         180
       ],
       [
+        "AZ",
+        30
+      ],
+      [
         "BN",
         30
       ],
@@ -938,10 +942,6 @@
         90
       ],
       [
-        "AZ",
-        30
-      ],
-      [
         "BH",
         14
       ],
@@ -1011,6 +1011,10 @@
       ],
       [
         "GA",
+        90
+      ],
+      [
+        "GH",
         90
       ],
       [
@@ -1225,7 +1229,6 @@
       "CG",
       "ER",
       "GM",
-      "GH",
       "KP",
       "ML",
       "NR",
@@ -50993,6 +50996,10 @@
         90
       ],
       [
+        "PA",
+        90
+      ],
+      [
         "PY",
         60
       ],
@@ -51292,16 +51299,6 @@
           "then": "vf",
           "days": null,
           "note": "No visa required for those holding a valid visa or residence issued by the United States, Canada, Japan, Colombia, Chile, or Schengen."
-        }
-      ],
-      "PA": [
-        {
-          "ifHolds": [
-            "SCHENGEN"
-          ],
-          "then": "vf",
-          "days": null,
-          "note": "No visa required for holders of a valid US, Canada, Japan or Schengen Member State visa."
         }
       ]
     }
@@ -68734,7 +68731,7 @@
           ],
           "then": "ev",
           "days": 14,
-          "note": "Citizens of the Turkmenistan who hold a valid visa issued by the European Union, Australia, Canada, Japan, United Kingdom or United States may enter Oman without a visa for 14 days.\nTurkmenistan citizens, including their spouses and children of another nationality, can obtain an online eVisa,  if they hold a valid Schengen Visa, a valid visa from Australia, Canada, Japan, the United Kingdom, or the United States, or a residence permit from one of these countries."
+          "note": "Citizens of the Turkmenistan who hold a valid visa issued by the European Union, Australia, Canada, Japan, United Kingdom or United States may enter Oman without a visa for 14 days.\n\nTurkmenistan citizens, including their spouses and children of another nationality, can obtain an online eVisa,  if they hold a valid Schengen Visa, a valid visa from Australia, Canada, Japan, the United Kingdom, or the United States, or a residence permit from one of these countries."
         }
       ]
     }
