@@ -6,6 +6,7 @@
 //                sourceUrl is just a domain homepage (no specific path).
 
 window.VISA_NEWS = [
+  {"id":"fco:5d777db6c9", "date":"2026-07-08", "source":"fco", "sourceUrl":"https://www.gov.uk/foreign-travel-advice/south-africa", "title":"South Africa", "summary":"New information about submitting an online traveller declaration before travelling and information about taking money into South Africa ('Entry requirements' page).", "affects":{"passports":[], "destinations":["ZA"]}, "severity":"neutral"},
   {"id":"fco:e37b07e9db", "date":"2026-07-06", "source":"fco", "sourceUrl":"https://www.gov.uk/foreign-travel-advice/saudi-arabia", "title":"Saudi Arabia", "summary":"Updated information about visa requirements, including new information about applying for an electronic travel authorisation ('Entry requirements' page).", "affects":{"passports":[], "destinations":["SA"]}, "severity":"neutral"},
   {"id":"wiki:f1950b8f66", "date":"2026-06-30", "source":"wiki", "sourceUrl":"https://en.wikipedia.org/wiki/Visa_policy_of_Turkey", "title":"Turkey: Turkey expands visa-free travel for Algerians over 50", "summary":"", "affects":{"passports":[], "destinations":["TR"]}, "severity":"positive"},
   {"id":"wiki:a9823766e9", "date":"2026-05-20", "source":"wiki", "sourceUrl":"https://en.wikipedia.org/wiki/Visa_policy_of_Thailand", "title":"Thailand: All are under ASEAN and bilateral (It is a reciprocal visa free treatment, not unilateral)", "summary":"", "affects":{"passports":[], "destinations":["TH"]}, "severity":"positive"},
