@@ -7683,7 +7683,10 @@
         "LK",
         30
       ],
-      "SY",
+      [
+        "SY",
+        30
+      ],
       [
         "TJ",
         60
@@ -33710,6 +33713,7 @@
         "WS",
         60
       ],
+      "SA",
       "TT",
       [
         "VU",
@@ -33954,23 +33958,6 @@
           "then": "voa",
           "days": null,
           "note": "Visa on arrival if holding a valid visa issued by United States, Canada, or Schengen Member State."
-        }
-      ],
-      "SA": [
-        {
-          "ifHolds": [
-            "SCHENGEN",
-            "US",
-            "AE",
-            "SA",
-            "KW",
-            "QA",
-            "BH",
-            "OM"
-          ],
-          "then": "ev",
-          "days": null,
-          "note": "Visa on Arrival or eVisa for the Permanent Resident Card holders of the Schengen countries or USA, UK and any Schengen countries valid used tourist visa and the GCC residence visa holders."
         }
       ],
       "TR": [
