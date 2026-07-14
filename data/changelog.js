@@ -8,6 +8,36 @@
 
 window.CHANGELOG = [
   {
+    date: "2026-07-14",
+    title: "RU → GH: vr → ev",
+    affects: { dest: "GH", passports: ["RU"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-07-14",
+    title: "RU → TW: vr → ev",
+    affects: { dest: "TW", passports: ["RU"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-07-14",
+    title: "BY → ID: voa → vf",
+    affects: { dest: "ID", passports: ["BY"] },
+    statusFrom: "voa", statusTo: "vf",
+  },
+  {
+    date: "2026-07-14",
+    title: "MO → ID: vr → vf",
+    affects: { dest: "ID", passports: ["MO"] },
+    statusFrom: "vr", statusTo: "vf",
+  },
+  {
+    date: "2026-07-14",
+    title: "XK → AM: ban → vr",
+    affects: { dest: "AM", passports: ["XK"] },
+    statusFrom: "ban", statusTo: "vr",
+  },
+  {
     date: "2026-07-13",
     title: "NZ → NI: vr → ev",
     affects: { dest: "NI", passports: ["NZ"] },
