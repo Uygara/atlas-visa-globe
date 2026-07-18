@@ -24550,7 +24550,6 @@
         "NI",
         90
       ],
-      "MK",
       [
         "OM",
         14
@@ -24620,7 +24619,6 @@
         "AO",
         30
       ],
-      "AU",
       [
         "BS",
         90
@@ -33684,7 +33682,6 @@
         "HT",
         90
       ],
-      "IN",
       [
         "JM",
         180
@@ -39647,7 +39644,7 @@
           ],
           "then": "ev",
           "days": null,
-          "note": "Citizens holding a residence permit or a valid visa issued by one of the member states of the European Union or one of the parties to the Schengen Agreement can apply for an e-Visa."
+          "note": "Visitors holding a residence permit or a valid visa issued by one of the member states of the European Union or one of the parties to the Schengen Agreement can apply for an e-Visa."
         }
       ]
     }
