@@ -40127,6 +40127,8 @@
         "GW",
         90
       ],
+      "GY",
+      "ID",
       [
         "IR",
         30
@@ -40159,6 +40161,10 @@
         30
       ],
       [
+        "NA",
+        90
+      ],
+      [
         "NP",
         90
       ],
@@ -40177,6 +40183,10 @@
       "QA",
       "KN",
       "ST",
+      [
+        "RS",
+        90
+      ],
       [
         "SL",
         90
@@ -40241,7 +40251,20 @@
       ],
       "MO"
     ],
-    "ban": []
+    "ban": [],
+    "cond": {
+      "RS": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 90,
+          "note": "90 days within any 180-day period. Transfers allowed.\nVisa-free for a maximum stay of 90 days for valid visa holders or residents of the European Union member states and the United States."
+        }
+      ]
+    }
   },
   "NG": {
     "name": "Nigeria",
