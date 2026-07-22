@@ -4,7 +4,7 @@
 // passport-variants.js merges these on top of its hand-curated entries.
 
 window.PASSPORT_VARIANTS_DATA = {
- "lastUpdated": "2026-07-21",
+ "lastUpdated": "2026-07-22",
  "CN": {
   "diplomatik": {
    "vf": [
