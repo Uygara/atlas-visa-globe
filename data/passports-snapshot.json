@@ -18190,7 +18190,6 @@
       "MY",
       "ML",
       "NE",
-      "OM",
       "PK",
       "QA",
       "SA",
@@ -18209,6 +18208,7 @@
       "LB",
       "LY",
       "MV",
+      "OM",
       "SY",
       "YE"
     ]
@@ -23157,7 +23157,6 @@
       "KP",
       "KR",
       "LS",
-      "ML",
       "MN",
       "MA",
       "NR",
@@ -23180,7 +23179,9 @@
       "VG",
       "PR"
     ],
-    "ban": [],
+    "ban": [
+      "ML"
+    ],
     "cond": {
       "MA": [
         {
@@ -38737,7 +38738,7 @@
       ],
       [
         "TG",
-        30
+        90
       ],
       [
         "TN",
@@ -39187,6 +39188,17 @@
           "then": "vf",
           "days": 30,
           "note": "Visa-free for a maximum stay of 30 days for valid visa holders or residents of Australia, the United Kingdom, the United States and Canada."
+        }
+      ],
+      "PE": [
+        {
+          "ifHolds": [
+            "SCHENGEN",
+            "US"
+          ],
+          "then": "vf",
+          "days": 183,
+          "note": "Visa-free for a maximum stay of 183 days within a one-year period for valid visa holders of the Schengen Area member states and the United States."
         }
       ],
       "SA": [
@@ -59289,6 +59301,7 @@
       ],
       "AL",
       "AG",
+      "AU",
       "BH",
       "BT",
       [
@@ -59437,10 +59450,7 @@
         30
       ]
     ],
-    "ban": [
-      "UA",
-      "US"
-    ],
+    "ban": [],
     "cond": {
       "CR": [
         {
@@ -59473,16 +59483,6 @@
           "then": "ev",
           "days": null,
           "note": "eVisa available for holders of a valid Schengen visa or a valid visa from any of the OECD member countries; or a valid residence permit of a Schengen or OECD country."
-        }
-      ],
-      "NI": [
-        {
-          "ifHolds": [
-            "SCHENGEN"
-          ],
-          "then": "voa",
-          "days": null,
-          "note": "Visa on arrival with valid visas by US, Canada, Schengen Member state"
         }
       ],
       "SA": [
