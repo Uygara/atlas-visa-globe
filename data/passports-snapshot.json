@@ -33942,7 +33942,7 @@
           ],
           "then": "ev",
           "days": null,
-          "note": "e-Visa availability for the Schengen, USA, UK valid visa or Permanent Resident Card holders."
+          "note": "e-Visa availability for the Schengen, USA, Canada, UK valid visa or Permanent Resident Card holders. (T-chy)"
         }
       ],
       "NI": [
@@ -33964,7 +33964,7 @@
           ],
           "then": "ev",
           "days": null,
-          "note": "No visa required for Diplomatic and Official passport holders\ne-Visa available for holders of a valid Schengen visa; a valid visa from any OECD member country (USA, Canada, etc.); or a valid residence permit of a Schengen Area|Schengen or OECD country.\nSingle entry."
+          "note": "No visa required for Diplomatic and Official passport holders\ne-Visa available for holders of a valid Schengen visa; a valid visa from any USA, UK; or a valid residence permit of a Schengen Area|Schengen. (T-chy)\nSingle entry."
         }
       ]
     }
