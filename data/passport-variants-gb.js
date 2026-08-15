@@ -2,7 +2,7 @@
 // Sourced visa maps for British nationality classes (BOTC / BOC). Merged into
 // PASSPORT_VARIANTS.GB as full-map variants by data/passport-variants.js.
 window.PASSPORT_VARIANTS_GB = {
- "lastUpdated": "2026-08-14",
+ "lastUpdated": "2026-08-15",
  "botc": {
   "default": "vf",
   "defaultDays": 90,
