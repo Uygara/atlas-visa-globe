@@ -38938,6 +38938,10 @@
       ],
       "SG",
       [
+        "SB",
+        30
+      ],
+      [
         "SO",
         30
       ],
@@ -39091,17 +39095,11 @@
           "ifHolds": [
             "SCHENGEN",
             "US",
-            "GB",
-            "AE",
-            "SA",
-            "KW",
-            "QA",
-            "BH",
-            "OM"
+            "GB"
           ],
           "then": "voa",
           "days": 30,
-          "note": "Holders of valid residency permits in the Schengen Area member states, Australia, Canada, Japan, New Zealand, the United Kingdom or the United States can enter Egypt without a visa in advance.\nVisa on arrival for a maximum stay of 30 days for valid visa holders or residents of the Schengen Area member states, Australia, Canada, Japan, New Zealand, the United Kingdom or the United States.\nAlso, Moroccan citizens holding valid residency permits from Gulf Cooperation Council (GCC) countries can obtain a visa upon arrival in Egypt."
+          "note": "Visa on arrival for a maximum stay of 30 days for valid visa holders or residents of the Schengen Area member states, Australia, Canada, Japan, New Zealand, the United Kingdom or the United States."
         }
       ],
       "SV": [
@@ -62945,6 +62943,7 @@
         "SG",
         30
       ],
+      "SB",
       [
         "SO",
         30
