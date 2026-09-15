@@ -19,53 +19,11 @@
 <meta name="twitter:card" content="summary_large_image" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" />
-<style>
-  :root {
-    --bg-0: #05070d; --bg-1: #0a0f1c; --bg-2: #111827; --bg-3: #1a2236;
-    --panel: rgba(15, 22, 38, 0.72);
-    --panel-border: rgba(148, 173, 220, 0.10); --panel-border-strong: rgba(148, 173, 220, 0.18);
-    --fg: #e7ecf5; --fg-dim: #aab4c8; --fg-mute: #6b7591; --fg-faint: #4a5269;
-    --vf: #4ade80; --vf-glow: #22c55e; --ev: #a3e635; --voa: #facc15; --vr: #ef4444; --vr-glow: #b91c1c;
-    --na: #2a3245; --self: #60a5fa; --compare-self: #f59e0b;
-    --land: #1c2638; --land-stroke: #2a3650; --ocean: transparent; --graticule: rgba(120, 140, 180, 0.07);
-    --font-sans: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-    --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
-    --sphere-1: #1a2540; --sphere-2: #0d1426; --sphere-3: #06091a; --atm-mid: rgba(96, 165, 250, 0.18);
-  }
-  * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; height: 100%; background: var(--bg-0); color: var(--fg); font-family: var(--font-sans); font-feature-settings: "ss01", "cv11"; -webkit-font-smoothing: antialiased; overflow: hidden; }
-  body { background: radial-gradient(ellipse 80% 60% at 70% 40%, rgba(40, 80, 150, 0.18), transparent 70%), radial-gradient(ellipse 60% 80% at 20% 90%, rgba(80, 30, 130, 0.10), transparent 70%), var(--bg-0); }
-  body::before { content: ""; position: fixed; inset: 0; background-image: radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.5), transparent), radial-gradient(1px 1px at 80% 70%, rgba(255,255,255,0.4), transparent), radial-gradient(1px 1px at 50% 50%, rgba(255,255,255,0.3), transparent), radial-gradient(1px 1px at 10% 80%, rgba(255,255,255,0.35), transparent), radial-gradient(1px 1px at 90% 20%, rgba(255,255,255,0.4), transparent); background-size: 250px 250px, 300px 300px, 200px 200px, 350px 350px, 280px 280px; pointer-events: none; opacity: 0.5; z-index: 0; }
-  #root { position: relative; height: 100vh; width: 100vw; z-index: 1; }
-  ::-webkit-scrollbar { width: 8px; height: 8px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: rgba(148, 173, 220, 0.12); border-radius: 4px; }
-  .country { transition: fill 220ms ease, opacity 220ms ease; cursor: pointer; }
-  .country:hover { filter: brightness(1.25); }
-  .loading-screen { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; background: var(--bg-0); z-index: 100; transition: opacity 400ms ease; }
-  .loading-screen.hidden { opacity: 0; pointer-events: none; visibility: hidden; }
-  .loading-pulse { width: 80px; height: 80px; border-radius: 50%; background: radial-gradient(circle, rgba(96, 165, 250, 0.6), transparent 70%); animation: pulse 1.6s ease-in-out infinite; }
-  @keyframes pulse { 0%, 100% { transform: scale(0.8); opacity: 0.4; } 50% { transform: scale(1.1); opacity: 1; } }
-  body.theme-light { background: radial-gradient(ellipse 80% 60% at 70% 40%, rgba(96, 165, 250, 0.10), transparent 70%), #f5f7fb; }
-  body.theme-light::before { opacity: 0; }
-  body.theme-light { --bg-0: #f5f7fb; --bg-1: #eef2f8; --bg-2: #e6ecf4; --bg-3: #dde4ee; --panel: rgba(255, 255, 255, 0.92); --panel-border: rgba(30, 40, 60, 0.10); --panel-border-strong: rgba(30, 40, 60, 0.18); --fg: #0f1722; --fg-dim: #3d4a5e; --fg-mute: #6b7791; --fg-faint: #9aa3b5; --land: #dde6f1; --land-stroke: #6b7e9a; --graticule: rgba(60, 90, 130, 0.10); --na: #c8d0dc; --sphere-1: #e8f3fc; --sphere-2: #cfe3f5; --sphere-3: #aed1ea; --atm-mid: rgba(96, 165, 250, 0.22); }
-  #sphere stop:nth-child(1) { stop-color: var(--sphere-1); }
-  #sphere stop:nth-child(2) { stop-color: var(--sphere-2); }
-  #sphere stop:nth-child(3) { stop-color: var(--sphere-3); }
-  #atm stop:nth-child(2) { stop-color: var(--atm-mid); }
-  /* Print / save-PDF: drop the globe + chrome, lay the plan out full-width
-     on white so it's a clean shareable sheet. */
-  @media print {
-    html, body { overflow: visible !important; height: auto !important; background: #fff !important; color: #000 !important; }
-    body::before { display: none !important; }
-    .topbar, .globe-stage, .sheet-handle, .ad-slot { display: none !important; }
-    .layout { display: block !important; height: auto !important; }
-    .panel { position: static !important; height: auto !important; max-height: none !important; width: 100% !important; box-shadow: none !important; border: none !important; background: #fff !important; overflow: visible !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
-    .panel * { color: #000 !important; }
-    a { color: #000 !important; text-decoration: underline; }
-  }
-</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sofia+Sans:ital,wght@0,400..700;1,400..600&family=Sofia+Sans+Extra+Condensed:wght@600..850&family=DM+Mono:wght@400;500&display=swap" />
+<link rel="stylesheet" href="/assets/tokens.css?v=20260915a" />
+<link rel="stylesheet" href="/assets/chrome.css?v=20260915a" />
+<link rel="stylesheet" href="/assets/app-shell.css?v=20260915a" />
+<script>try{if((JSON.parse(localStorage.getItem("atlas.tweaks")||"{}")).background==="dark")document.documentElement.classList.add("theme-dark")}catch(e){}</script>
 
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2617798720306957" crossorigin="anonymous"></script>
 <!-- D3 + TopoJSON -->
@@ -78,18 +36,25 @@
   <script src="/assets/analytics.js"></script>
 </head>
 <body>
-  <div class="loading-screen" id="loading"><div class="loading-pulse"></div></div>
+  <div class="loading-screen" id="loading" aria-hidden="true">
+    <div class="loading-mark">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="2.75" y="1.75" width="18.5" height="20.5" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="11" r="5.25" stroke="currentColor" stroke-width="1.3"/><ellipse cx="12" cy="11" rx="2.2" ry="5.25" stroke="currentColor" stroke-width="1.1"/><path d="M6.9 11h10.2" stroke="currentColor" stroke-width="1.1"/><path d="M8 19h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      <div class="loading-line"></div>
+    </div>
+  </div>
   <div id="root"></div>
 
   <!-- Data subset needed for the planner -->
-  <script src="/data/i18n.js"></script>
+  <script src="/data/i18n.js?v=20260915a"></script>
+  <script src="/assets/site-nav.js?v=20260915a"></script>
   <script src="/data/countries.js"></script>
   <script src="/data/country-names.js"></script>
   <script src="/data/passports.js"></script>
   <script src="/data/visa-overrides.js"></script>
   <script src="/data/visa-fees.js"></script>
 
-  <script type="text/babel" src="/components/globe.jsx?v=20260530a"></script>
-  <script type="text/babel" src="/components/itinerary-app.jsx?v=20260530a"></script>
+  <script type="text/babel" src="/components/chrome.jsx?v=20260915a"></script>
+  <script type="text/babel" src="/components/globe.jsx?v=20260915a"></script>
+  <script type="text/babel" src="/components/itinerary-app.jsx?v=20260915a"></script>
 </body>
 </html>

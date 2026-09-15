@@ -329,9 +329,7 @@ function App() {
 
   // ─── Background theme ───────────────────────────────────────────────────
   useEffect(() => {
-    document.body.classList.remove("theme-dark", "theme-light");
-    const bg = t.background === "light" ? "light" : "dark";
-    document.body.classList.add(`theme-${bg}`);
+    applyThemeClass(t.background === "dark" ? "dark" : "light");
   }, [t.background]);
 
   // Cross-tab theme sync — if a static page (or another SPA tab) toggles the
@@ -350,7 +348,7 @@ function App() {
     return () => window.removeEventListener("storage", onStorage);
   }, [t.background, setTweak]);
 
-  // ─── Keyboard: Esc closes detail / picker ───────────────────────────────
+  // ─── Keyboard: Esc closes detail / picker, "/" jumps to search ──────────
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === "Escape") {
@@ -358,9 +356,9 @@ function App() {
         if (detailCountry) setDetailCountry(null);
         if (showWelcome) setShowWelcome(false);
       }
-      if (e.key === "/") {
+      if (e.key === "/" && !/^(INPUT|TEXTAREA|SELECT)$/.test((e.target && e.target.tagName) || "")) {
         e.preventDefault();
-        document.querySelector('input[placeholder*="any country"]')?.focus();
+        document.getElementById("country-search")?.focus();
       }
     };
     window.addEventListener("keydown", onKey);
@@ -397,14 +395,14 @@ function App() {
   // ─── Render ─────────────────────────────────────────────────────────────
   return (
     <div className="layout">
-      <TopNav
-        tweaks={t}
-        setTweak={setTweak}
-        globeStyle={t.globeStyle}
-        onGlobeStyleChange={(v) => setTweak("globeStyle", v)}
+      <Masthead
+        view={t.globeStyle}
+        onView={(v) => setTweak("globeStyle", v)}
+        theme={t.background === "dark" ? "dark" : "light"}
+        onTheme={(v) => setTweak("background", v)}
         onHelp={reopenIntro}
       />
-      {showIntro && <IntroHook onClose={dismissIntro} />}
+      {showIntro && <IntroDialog onClose={dismissIntro} />}
       <div className="globe-stage">
         <Globe
           passport={passport}
@@ -419,7 +417,6 @@ function App() {
           focusedCountry={focusedCountry}
         />
 
-
         {!passport && (
           <WelcomeOverlay
             onPick={(iso2) => { setPassport(iso2); setShowWelcome(false); }}
@@ -428,15 +425,9 @@ function App() {
           />
         )}
 
-        {passport && !detailCountry && (
-          <Legend />
-        )}
+        {passport && !detailCountry && <MapKey />}
 
-        <CompareFloater
-          enabled={t.compareMode}
-          passport={passport}
-          compare={compare}
-        />
+        <CompareStrip enabled={t.compareMode} passport={passport} compare={compare} />
 
         {!detailCountry && <ChangelogFloater />}
 
@@ -473,533 +464,88 @@ function App() {
         pickerMode={pickerMode}
         setPickerMode={setPickerMode}
       />
-
     </div>
   );
 }
 
-// ─── Top nav bar ──────────────────────────────────────────────────────────
-// Persistent across all in-app interactions. Hosts feature shortcuts, the
-// language switcher, and the settings popover (no more hidden corner button).
-function TopNav({ tweaks, setTweak, globeStyle, onGlobeStyleChange, onHelp }) {
-  // Re-render when language changes
-  const [, force] = useState(0);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const headerRef = useRef(null);
-  useEffect(() => {
-    const onLang = () => force(x => x + 1);
-    window.addEventListener("atlas:lang", onLang);
-    return () => window.removeEventListener("atlas:lang", onLang);
-  }, []);
-  // Collapse the mobile menu when tapping anywhere outside the top bar. Uses
-  // pointerdown so it fires for touch on iOS (where a tap on a plain element
-  // doesn't emit mousedown) — without this the menu can't be dismissed on iPhone
-  // except by hitting the small ✕ icon.
-  useEffect(() => {
-    if (!menuOpen) return;
-    const onOutside = (e) => { if (headerRef.current && !headerRef.current.contains(e.target)) setMenuOpen(false); };
-    document.addEventListener("pointerdown", onOutside);
-    return () => document.removeEventListener("pointerdown", onOutside);
-  }, [menuOpen]);
-  // Close mobile menu when clicking a link inside it
-  const closeMenu = () => setMenuOpen(false);
+// Replace {tokens} in a translated string with React nodes (links, bold).
+function interpolateNodes(str, nodes) {
+  const parts = String(str).split(/(\{\w+\})/g);
+  return parts.map((p, i) => {
+    const m = p.match(/^\{(\w+)\}$/);
+    return m && nodes[m[1]] != null ? <React.Fragment key={i}>{nodes[m[1]]}</React.Fragment> : p;
+  });
+}
+
+// ─── Intro — first-visit explainer, re-openable from the "?" button ──────
+function IntroDialog({ onClose }) {
+  useLangTick();
+  const n = (window.PASSPORT_LIST || []).length || 199;
+  // Raw template (no vars) so the name / email can be real nodes.
+  const sign = window.t ? window.t("intro.sign") : "";
   return (
-    <header ref={headerRef} className={"topbar" + (menuOpen ? " menu-open" : "")}>
-      <a className="brand" href="/" aria-label="travelnow.info home">
-        <span>travelnow.info</span>
-      </a>
-      <div className="topbar-sheet">
-        <nav className="primary-nav">
-          {/* Flat nav (no Tools ▾ grouping). Items are equally important and the
-              ones that were buried inside Tools (ETIAS, Nomad, Second passport,
-              Alerts) get measurably more clicks once promoted. Overflow on
-              narrow laptops is handled with horizontal scroll on .topbar; mobile
-              gets vertical stacking via the .menu-open rules. About + Support
-              live in the bar too so they're always one tap away. */}
-          <a href="/transit-map/" onClick={closeMenu}>{window.t("nav.transit_map")}</a>
-          <a href="/itinerary/" onClick={closeMenu}>{window.t("nav.itinerary")}</a>
-          <a href="/schengen-calculator/" onClick={closeMenu}>{window.t("nav.schengen")}</a>
-          <a href="/etias/" onClick={closeMenu}>{window.t("nav.etias")}</a>
-          <a href="/digital-nomad-visa/" onClick={closeMenu}>{window.t("nav.nomad")}</a>
-          <a href="/citizenship-by-investment/" onClick={closeMenu}>{window.t("nav.cbi")}</a>
-          <a href="/alerts/" onClick={closeMenu}>{window.t("nav.alerts")}</a>
-          <a href="/about/" onClick={closeMenu}>{window.t("nav.about") || "About"}</a>
-          {/* Buy Me a Coffee — visually distinct accent chip so it actually gets
-              seen on the homepage (was previously buried in the panel footer). */}
-          <a href="https://buymeacoffee.com/travelnowinfo"
-             target="_blank" rel="noopener"
-             onClick={closeMenu}
-             className="nav-coffee"
-             aria-label="Buy me a coffee">
-            <span aria-hidden="true">☕</span> {window.t("nav.support") || "Support"}
-          </a>
-        </nav>
-      </div>
-      {/* Right-hand controls live OUTSIDE the collapsible sheet so they stay
-          visible on mobile too. 2D/3D + dark/light are always-visible inline
-          toggles; the last control is just the language switcher. */}
-      <div className="rhs">
-        <InlineModeToggle value={globeStyle} onChange={onGlobeStyleChange} />
-        <InlineThemeToggle tweaks={tweaks} setTweak={setTweak} />
-        <span className="help-btn-wrap"><HelpButton onClick={onHelp} /></span>
-        <SettingsButton inNav />
-      </div>
-      {/* Hamburger only shown on mobile via CSS */}
-      <button
-        className="hamburger"
-        aria-label={window.t("nav.menu")}
-        aria-expanded={menuOpen}
-        onClick={() => setMenuOpen(v => !v)}
-      >
-        <svg width="18" height="18" viewBox="0 0 18 18">
-          {menuOpen ? (
-            <path d="M4 4 L14 14 M14 4 L4 14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
-          ) : (
-            <path d="M3 5 H15 M3 9 H15 M3 13 H15" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+    <div className="dialog-scrim" onClick={onClose}>
+      <div className="dialog" role="dialog" aria-modal="true" aria-labelledby="intro-title" onClick={(e) => e.stopPropagation()}>
+        <div className="dialog-band" aria-hidden="true" />
+        <div className="dialog-body">
+          <div className="dialog-top">
+            <BrandMark className="brand-mark" />
+            <span className="brand-word">travelnow<span className="brand-tld">.info</span></span>
+            <LangSelect />
+          </div>
+          <div className="welcome-kicker">{tr("intro.kicker", "An independent visa atlas")}</div>
+          <h1 id="intro-title">{tr("intro.headline", "Visa rules for {n} passports, on one map.", { n })}</h1>
+          <p>{tr("intro.lede", "")}</p>
+          <ol>
+            {[1, 2, 3].map(i => <li key={i}><span>{tr(`intro.step_${i}`, "")}</span></li>)}
+          </ol>
+          {sign && sign !== "intro.sign" && (
+            <p className="dialog-sign">
+              {interpolateNodes(sign, {
+                name: <strong>Uygar Atalay</strong>,
+                email: <a href="mailto:hello@travelnow.info">hello@travelnow.info</a>,
+              })}
+            </p>
           )}
-        </svg>
-      </button>
-    </header>
-  );
-}
-
-// Same idea as ModeToggle but slimmer and styled to live inside the nav bar.
-function InlineModeToggle({ value, onChange }) {
-  const opts = [{ v: "globe3d", l: window.t("mode.3d") }, { v: "flat", l: window.t("mode.2d") }];
-  return (
-    <div style={{ display: "inline-flex", background: "var(--bg-3)", border: "1px solid var(--panel-border)", borderRadius: 7, padding: 2, gap: 2 }}>
-      {opts.map(o => {
-        const on = value === o.v;
-        return (
-          <button key={o.v}
-            onClick={() => onChange(o.v)}
-            style={{
-              border: "none", padding: "4px 10px", borderRadius: 5,
-              background: on ? "var(--self)" : "transparent",
-              color: on ? "#05070d" : "var(--fg-dim)",
-              fontFamily: "inherit", fontSize: 11, fontWeight: on ? 600 : 500,
-              cursor: "pointer",
-            }}>
-            {o.l}
+          <button className="btn btn-primary btn-block" onClick={onClose} autoFocus>
+            {tr("intro.open", "Open the map")}
           </button>
-        );
-      })}
-    </div>
-  );
-}
-
-// Compact dark/light segmented toggle — sits inline in the top bar next to the
-// 2D/3D toggle so theme is a one-tap, always-visible control (no longer hidden
-// inside the gear popover). Same visual language as InlineModeToggle.
-function InlineThemeToggle({ tweaks, setTweak }) {
-  const cur = tweaks.background || "dark";
-  const moon = (
-    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-      <path d="M13 9.5A5.5 5.5 0 0 1 6.5 3a5.5 5.5 0 1 0 6.5 6.5z" fill="currentColor"/>
-    </svg>
-  );
-  const sun = (
-    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-      <circle cx="8" cy="8" r="3.2" fill="currentColor"/>
-      <g stroke="currentColor" strokeWidth="1.3" strokeLinecap="round">
-        <path d="M8 1.5v1.6M8 12.9v1.6M1.5 8h1.6M12.9 8h1.6M3.4 3.4l1.1 1.1M11.5 11.5l1.1 1.1M12.6 3.4l-1.1 1.1M4.5 11.5l-1.1 1.1"/>
-      </g>
-    </svg>
-  );
-  const opts = [
-    { v: "dark",  icon: moon, label: window.t("settings.theme_dark") },
-    { v: "light", icon: sun,  label: window.t("settings.theme_light") },
-  ];
-  return (
-    <div role="group" aria-label={window.t("settings.theme")}
-      style={{ display: "inline-flex", background: "var(--bg-3)", border: "1px solid var(--panel-border)", borderRadius: 7, padding: 2, gap: 2 }}>
-      {opts.map(o => {
-        const on = cur === o.v;
-        return (
-          <button key={o.v} onClick={() => setTweak("background", o.v)}
-            aria-pressed={on} aria-label={o.label} title={o.label}
-            style={{
-              border: "none", padding: "4px 8px", borderRadius: 5,
-              background: on ? "var(--self)" : "transparent",
-              color: on ? "#05070d" : "var(--fg-dim)",
-              cursor: "pointer", display: "inline-flex", alignItems: "center",
-            }}>
-            {o.icon}
-          </button>
-        );
-      })}
-    </div>
-  );
-}
-
-// ─── Language switcher ────────────────────────────────────────────────────
-function LangSwitcher() {
-  const [cur, setCur] = useState(window.ATLAS_LANG || "en");
-  return (
-    <select
-      value={cur}
-      onChange={(e) => { window.setLang(e.target.value); setCur(e.target.value); }}
-      aria-label={window.t("nav.language")}
-      style={{ paddingRight: 26 }}
-    >
-      {(window.LANGS || []).map(l => (
-        <option key={l.code} value={l.code}>{l.native}</option>
-      ))}
-    </select>
-  );
-}
-
-// ─── Settings popover (light/dark + compare mode toggle) ──────────────────
-// Language switcher (top-right). This used to be a catch-all "settings" gear, but
-// 2D/3D + dark/light are now always-visible inline toggles and compare/combine
-// live in the side panel — so choosing the language is this control's only
-// remaining job. Shows a globe + the current language code; opens a language list.
-function SettingsButton({ inNav }) {
-  const [open, setOpen] = useState(false);
-  const [, force] = useState(0);
-  const ref = useRef(null);
-  useEffect(() => {
-    const onLang = () => force(x => x + 1);
-    window.addEventListener("atlas:lang", onLang);
-    return () => window.removeEventListener("atlas:lang", onLang);
-  }, []);
-  useEffect(() => {
-    if (!open) return;
-    // pointerdown (not mousedown) so a tap outside also closes it on iOS Safari.
-    const onClick = (e) => { if (ref.current && !ref.current.contains(e.target)) setOpen(false); };
-    document.addEventListener("pointerdown", onClick);
-    return () => document.removeEventListener("pointerdown", onClick);
-  }, [open]);
-  const curLang = window.ATLAS_LANG || "en";
-  const langs = window.LANGS || [];
-  const cur = langs.find(l => l.code === curLang) || langs[0] || { code: "en", native: "EN" };
-  const popoverPos = inNav
-    ? { position: "absolute", top: 40, right: 0, minWidth: 150 }
-    : { position: "absolute", bottom: 44, right: 0, minWidth: 150 };
-  const wrapperPos = inNav
-    ? { position: "relative" }
-    : { position: "absolute", bottom: 16, right: 16, zIndex: 5 };
-  return (
-    <div ref={ref} style={{ ...wrapperPos, zIndex: 10 }}>
-      {open && (
-        <div style={{
-          ...popoverPos,
-          background: "var(--panel)", backdropFilter: "blur(14px)",
-          WebkitBackdropFilter: "blur(14px)",
-          border: "1px solid var(--panel-border-strong)", borderRadius: 12,
-          padding: 6, boxShadow: "0 12px 32px rgba(0,0,0,0.4)",
-          display: "flex", flexDirection: "column", gap: 1,
-        }}>
-          {langs.map(l => {
-            const on = l.code === curLang;
-            return (
-              <button key={l.code}
-                onClick={() => { window.setLang(l.code); force(x => x + 1); setOpen(false); }}
-                style={{
-                  textAlign: "left", padding: "8px 10px", borderRadius: 6,
-                  border: "none", cursor: "pointer", fontFamily: "inherit", fontSize: 13,
-                  background: on ? "rgba(96,165,250,0.12)" : "transparent",
-                  color: on ? "var(--fg)" : "var(--fg-dim)", fontWeight: on ? 600 : 400,
-                  whiteSpace: "nowrap",
-                }}>
-                {l.native}
-              </button>
-            );
-          })}
         </div>
-      )}
-      <button onClick={() => setOpen(!open)}
-        aria-label={window.t("nav.language")}
-        style={inNav ? {
-          background: "var(--bg-3)", border: "1px solid var(--panel-border)",
-          color: "var(--fg-dim)", borderRadius: 7, padding: "6px 8px",
-          display: "inline-flex", alignItems: "center", gap: 5, cursor: "pointer",
-          fontFamily: "inherit", fontSize: 12,
-        } : {
-          height: 36, borderRadius: 18, padding: "0 12px",
-          background: "var(--panel)", backdropFilter: "blur(14px)",
-          border: "1px solid var(--panel-border-strong)",
-          color: "var(--fg-dim)", cursor: "pointer",
-          display: "inline-flex", alignItems: "center", gap: 5,
-          boxShadow: "0 4px 16px rgba(0,0,0,0.30)", fontFamily: "inherit", fontSize: 12,
-        }}>
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-          <circle cx="8" cy="8" r="6.2" stroke="currentColor" strokeWidth="1.2"/>
-          <path d="M2 8h12M8 1.8c1.9 1.7 2.9 3.9 2.9 6.2S9.9 12.5 8 14.2C6.1 12.5 5.1 10.3 5.1 8S6.1 3.5 8 1.8z" stroke="currentColor" strokeWidth="1.1"/>
-        </svg>
-        <span style={{ fontFamily: "var(--font-mono)", letterSpacing: "0.03em" }}>{(cur.code || "en").toUpperCase()}</span>
-      </button>
-    </div>
-  );
-}
-
-// ─── Globe view-mode toggle (top-right floating control) ───────────────────
-function ModeToggle({ value, onChange }) {
-  const opts = [
-    { v: "globe3d", l: "3D" },
-    { v: "flat",    l: "2D" },
-  ];
-  return (
-    <div style={{
-      position: "absolute",
-      top: 16,
-      right: 16,
-      zIndex: 5,
-      display: "flex",
-      background: "var(--panel)",
-      backdropFilter: "blur(14px)",
-      border: "1px solid var(--panel-border-strong)",
-      borderRadius: 999,
-      padding: 3,
-      gap: 2,
-      fontFamily: "var(--font-mono)",
-      fontSize: 11,
-      letterSpacing: "0.04em",
-      boxShadow: "0 4px 16px rgba(0,0,0,0.30)",
-    }}>
-      {opts.map(o => {
-        const active = value === o.v;
-        return (
-          <button
-            key={o.v}
-            onClick={() => onChange(o.v)}
-            style={{
-              border: "none",
-              padding: "6px 12px",
-              borderRadius: 999,
-              cursor: "pointer",
-              background: active ? "var(--self)" : "transparent",
-              color: active ? "#05070d" : "var(--fg-dim)",
-              fontWeight: active ? 600 : 500,
-              fontFamily: "inherit",
-              fontSize: "inherit",
-              letterSpacing: "inherit",
-              transition: "background 180ms ease, color 180ms ease",
-            }}
-            aria-pressed={active}
-            title={`Switch to ${o.l} view`}
-          >
-            {o.l}
-          </button>
-        );
-      })}
-    </div>
-  );
-}
-
-// ─── Help (?) button — re-opens the intro hook ───────────────────────────
-function HelpButton({ onClick }) {
-  return (
-    <button
-      onClick={onClick}
-      aria-label={window.t("nav.help")}
-      title={window.t("nav.help")}
-      style={{
-        background: "var(--bg-3)", border: "1px solid var(--panel-border)",
-        color: "var(--fg-dim)", borderRadius: 7, padding: "6px 9px",
-        fontFamily: "var(--font-mono)", fontSize: 12, fontWeight: 600,
-        cursor: "pointer",
-      }}>?</button>
-  );
-}
-
-// ─── Intro hook — first-visit explainer, dismissible, re-openable via ?  ───
-function IntroHook({ onClose }) {
-  const [, force] = useState(0);
-  return (
-    <div
-      onClick={onClose}
-      style={{
-        position: "fixed", inset: 0, zIndex: 50,
-        background: "rgba(5, 7, 13, 0.55)",
-        backdropFilter: "blur(6px)", WebkitBackdropFilter: "blur(6px)",
-        display: "flex", alignItems: "center", justifyContent: "center",
-        padding: 20,
-      }}>
-      <div
-        onClick={(e) => e.stopPropagation()}
-        role="dialog"
-        aria-labelledby="intro-title"
-        style={{
-          background: "var(--panel)", backdropFilter: "blur(20px)",
-          WebkitBackdropFilter: "blur(20px)",
-          border: "1px solid var(--panel-border-strong)",
-          borderRadius: 16, padding: 28, maxWidth: 460, width: "100%",
-          boxShadow: "0 24px 64px rgba(0,0,0,0.55)",
-          color: "var(--fg)",
-        }}>
-        <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
-          <div style={{
-            flex: 1, fontSize: 11, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
-            textTransform: "uppercase", letterSpacing: "0.12em",
-          }}>travelnow.info</div>
-          {/* Language switch right on the intro, so a visitor who landed in the
-              wrong language can fix it before doing anything else. */}
-          <select
-            value={window.ATLAS_LANG || "en"}
-            onChange={(e) => { window.setLang(e.target.value); force(x => x + 1); }}
-            aria-label={window.t("nav.language")}
-            style={{
-              background: "var(--bg-3)", border: "1px solid var(--panel-border)",
-              color: "var(--fg-dim)", borderRadius: 7, padding: "5px 8px",
-              fontFamily: "inherit", fontSize: 12, cursor: "pointer",
-            }}>
-            {(window.LANGS || []).map(l => <option key={l.code} value={l.code}>{l.native}</option>)}
-          </select>
-        </div>
-        <h1 id="intro-title" style={{
-          fontSize: 26, fontWeight: 600, letterSpacing: "-0.02em",
-          margin: "0 0 10px 0", lineHeight: 1.15,
-        }}>
-          {window.t("intro.title")}
-        </h1>
-        <p style={{ fontSize: 13, color: "var(--fg-dim)", lineHeight: 1.55, margin: "0 0 16px 0" }}>
-          {window.t("intro.body")}
-        </p>
-        <ul style={{ listStyle: "none", padding: 0, margin: "0 0 20px 0", display: "flex", flexDirection: "column", gap: 8 }}>
-          {[1, 2, 3].map(i => (
-            <li key={i} style={{ fontSize: 13, color: "var(--fg)", lineHeight: 1.4 }}>
-              {window.t(`intro.bullet_${i}`)}
-            </li>
-          ))}
-        </ul>
-        <button
-          onClick={onClose}
-          autoFocus
-          style={{
-            width: "100%", background: "var(--self)", color: "#05070d",
-            border: "none", borderRadius: 8, padding: "11px 14px",
-            fontFamily: "inherit", fontSize: 14, fontWeight: 600, cursor: "pointer",
-          }}>
-          {window.t("intro.cta")}
-        </button>
       </div>
     </div>
   );
 }
 
-// ─── Welcome overlay ─────────────────────────────────────────────────────────
+// ─── Welcome overlay (no passport chosen yet) ───────────────────────────
 function WelcomeOverlay({ onPick, onUseLocation, locationStatus }) {
+  useLangTick();
   const featured = ["US", "GB", "DE", "JP", "CA", "AU", "IN", "BR", "AE", "SG"];
   return (
-    <div style={{
-      position: "absolute",
-      inset: 0,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      pointerEvents: "none",
-      zIndex: 10,
-    }}>
-      <div style={{
-        background: "var(--panel)",
-        backdropFilter: "blur(20px)",
-        WebkitBackdropFilter: "blur(20px)",
-        border: "1px solid var(--panel-border-strong)",
-        borderRadius: 16,
-        padding: 28,
-        maxWidth: 460,
-        pointerEvents: "auto",
-        boxShadow: "0 24px 64px rgba(0,0,0,0.5)",
-      }}>
-        <div style={{
-          fontSize: 11,
-          fontFamily: "var(--font-mono)",
-          color: "var(--fg-mute)",
-          textTransform: "uppercase",
-          letterSpacing: "0.12em",
-          marginBottom: 8,
-        }}>{window.t("welcome.hint")}</div>
-        <h1 style={{
-          fontSize: 28,
-          fontWeight: 600,
-          letterSpacing: "-0.02em",
-          margin: "0 0 8px 0",
-          lineHeight: 1.1,
-        }}>
-          {window.t("welcome.title_1")}<br/>
-          <span style={{ color: "var(--fg-mute)" }}>{window.t("welcome.title_2")}</span>
+    <div className="welcome">
+      <div className="welcome-card overlay-card">
+        <div className="welcome-kicker">{window.t("welcome.hint")}</div>
+        <h1 className="welcome-title">
+          {window.t("welcome.title_1")} <span>{window.t("welcome.title_2")}</span>
         </h1>
-        <p style={{
-          fontSize: 13,
-          color: "var(--fg-dim)",
-          lineHeight: 1.5,
-          margin: "0 0 20px 0",
-        }}>
-          {window.t("welcome.body")}
-        </p>
-
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(5, 1fr)",
-          gap: 6,
-          marginBottom: 16,
-        }}>
+        <p className="welcome-body">{window.t("welcome.body")}</p>
+        <div className="welcome-grid">
           {featured.map(iso2 => {
             const c = window.byIso2[iso2];
             return (
-              <button
-                key={iso2}
-                onClick={() => onPick(iso2)}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  gap: 4,
-                  padding: "10px 4px",
-                  background: "var(--bg-2)",
-                  border: "1px solid var(--panel-border)",
-                  borderRadius: 8,
-                  cursor: "pointer",
-                  color: "var(--fg)",
-                  fontFamily: "inherit",
-                  transition: "all 160ms ease",
-                }}
-                className="welcome-flag"
-              >
-                <span style={{ fontSize: 22 }}>{c?.flag}</span>
-                <span style={{ fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)" }}>{iso2}</span>
+              <button key={iso2} type="button" onClick={() => onPick(iso2)} title={window.countryName(iso2)}>
+                <span className="flag">{c?.flag}</span>
+                <span className="code">{iso2}</span>
               </button>
             );
           })}
         </div>
-
-        <button
-          onClick={onUseLocation}
-          disabled={locationStatus === "detecting"}
-          style={{
-            width: "100%",
-            background: "transparent",
-            border: "1px solid var(--panel-border-strong)",
-            borderRadius: 8,
-            padding: "10px 12px",
-            color: "var(--fg-dim)",
-            cursor: locationStatus === "detecting" ? "wait" : "pointer",
-            fontFamily: "inherit",
-            fontSize: 12,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 8,
-            transition: "all 160ms ease",
-          }}
-          className="welcome-loc"
-        >
+        <button type="button" className="btn btn-block" onClick={onUseLocation} disabled={locationStatus === "detecting"}>
           <LocateIcon />
           {locationStatus === "detecting" ? window.t("welcome.detecting") :
            locationStatus === "denied" ? window.t("welcome.couldnt_detect") :
            window.t("welcome.use_location")}
         </button>
-
-        <div style={{
-          marginTop: 10,
-          fontSize: 10,
-          color: "var(--fg-faint)",
-          fontFamily: "var(--font-mono)",
-          textAlign: "center",
-          textTransform: "uppercase",
-          letterSpacing: "0.08em",
-        }}>
+        <div className="welcome-foot">
           {window.t("welcome.or_open_panel", { n: window.PASSPORT_LIST.length })}
         </div>
       </div>
@@ -1009,369 +555,81 @@ function WelcomeOverlay({ onPick, onUseLocation, locationStatus }) {
 
 function LocateIcon() {
   return (
-    <svg width="14" height="14" viewBox="0 0 16 16">
-      <circle cx="8" cy="8" r="3" stroke="currentColor" strokeWidth="1.3" fill="none" />
+    <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
+      <circle cx="8" cy="8" r="3" stroke="currentColor" strokeWidth="1.4" fill="none" />
       <circle cx="8" cy="8" r="1" fill="currentColor" />
-      <path d="M8 1 V3 M8 13 V15 M1 8 H3 M13 8 H15" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+      <path d="M8 1 V3 M8 13 V15 M1 8 H3 M13 8 H15" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
     </svg>
   );
 }
 
-// ─── Legend ─────────────────────────────────────────────────────────────────
-// One-time discoverability nudge — the globe is clickable but nothing says so.
+// One-time nudge: the globe is clickable but nothing says so.
 function CoachHint({ onDismiss }) {
   useEffect(() => {
-    const t = setTimeout(onDismiss, 9000); // auto-dismiss if ignored
-    return () => clearTimeout(t);
+    const timer = setTimeout(onDismiss, 9000); // auto-dismiss if ignored
+    return () => clearTimeout(timer);
   }, [onDismiss]);
   return (
-    <div
-      onClick={onDismiss}
-      style={{
-        position: "absolute", bottom: 20, left: "50%", transform: "translateX(-50%)",
-        zIndex: 6, display: "flex", alignItems: "center", gap: 8,
-        padding: "9px 14px", cursor: "pointer",
-        background: "var(--panel)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)",
-        border: "1px solid var(--self)", borderRadius: 999,
-        boxShadow: "0 8px 28px rgba(0,0,0,0.35)",
-        fontSize: 13, color: "var(--fg)", maxWidth: "calc(100% - 40px)",
-        animation: "pulse 2.4s ease-in-out infinite",
-      }}
-    >
-      <span style={{ fontSize: 15 }}>👆</span>
-      <span>{window.t("coach.tap_country")}</span>
-      <span style={{ color: "var(--fg-mute)", fontSize: 16, lineHeight: 1, marginLeft: 2 }}>×</span>
+    <div className="coach overlay-card" onClick={onDismiss} role="status">
+      <span>{window.t("coach.tap_country").replace(/^[^:：]{1,12}[:：]\s*/, "")}</span>
+      <button type="button" className="icon-btn" aria-label={window.t("detail.close")}><IconClose /></button>
     </div>
   );
 }
 
-function Legend() {
-  const items = [
-    { k: "idc", fill: STATUS_COLOR.idc.fill, label: window.t("status.idc") },
-    { k: "vf",  fill: STATUS_COLOR.vf.fill,  label: window.t("status.vf")  },
-    { k: "eta", fill: STATUS_COLOR.eta.fill, label: window.t("status.eta") },
-    { k: "ev",  fill: STATUS_COLOR.ev.fill,  label: window.t("status.ev")  },
-    { k: "voa", fill: STATUS_COLOR.voa.fill, label: window.t("status.voa") },
-    { k: "vr",  fill: STATUS_COLOR.vr.fill,  label: window.t("status.vr")  },
-    { k: "ban", fill: STATUS_COLOR.ban.fill, label: window.t("status.ban") },
-  ];
+// ─── Map key ────────────────────────────────────────────────────────────
+function MapKey() {
+  const keys = ["idc", "vf", "eta", "ev", "voa", "vr", "ban"];
   // When residence permits are active, hatched fills appear on the globe —
   // explain them. App re-renders on permit changes, so reading the global
   // here is safe (it's written synchronously before the state update).
   const permitsActive = Array.isArray(window.ATLAS_RESIDENCE_PERMITS) &&
     window.ATLAS_RESIDENCE_PERMITS.length > 0;
-  if (permitsActive) {
-    items.push({
-      k: "permit",
-      // CSS approximation of the SVG hatch: status-green base + blue stripes.
-      fill: "repeating-linear-gradient(45deg, var(--vf) 0 4px, var(--self) 4px 6px)",
-      label: window.t("status.permit"),
-    });
-  }
   return (
-    <div style={{
-      position: "absolute",
-      left: 20,
-      bottom: 20,
-      display: "flex",
-      flexDirection: "column",
-      gap: 6,
-      background: "var(--panel)",
-      backdropFilter: "blur(14px)",
-      WebkitBackdropFilter: "blur(14px)",
-      border: "1px solid var(--panel-border)",
-      borderRadius: 10,
-      padding: "10px 12px",
-      fontSize: 11,
-      color: "var(--fg-dim)",
-      zIndex: 5,
-    }}>
-      {items.map(i => {
-        // Gradient swatches (the permit hatch) can't be used in box-shadow.
-        const isGradient = i.fill.includes("gradient");
-        return (
-          <div key={i.k} style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <span style={{
-              width: 8, height: 8, borderRadius: "50%",
-              background: i.fill,
-              boxShadow: isGradient ? "0 0 8px var(--self)" : `0 0 8px ${i.fill}`,
-            }}/>
-            <span>{i.label}</span>
-          </div>
-        );
-      })}
+    <div className="map-key overlay-card">
+      <div className="map-key-title">{tr("map.key", "Key")}</div>
+      <ul>
+        {keys.map(k => (
+          <li key={k}><Swatch s={k} /><span>{statusLabel(k)}</span></li>
+        ))}
+        {permitsActive && (
+          <li><span className="sw sw-permit" aria-hidden="true" /><span>{window.t("status.permit")}</span></li>
+        )}
+      </ul>
     </div>
   );
 }
 
-// ─── Compare floater ────────────────────────────────────────────────────────
-function CompareFloater({ enabled, passport, compare }) {
+// ─── Compare strip ──────────────────────────────────────────────────────
+function CompareStrip({ enabled, passport, compare }) {
   if (!enabled || !compare || !passport) return null;
   const a = window.byIso2[passport];
   const b = window.byIso2[compare];
   const ta = window.tally(passport);
   const tb = window.tally(compare);
   if (!a || !b || !ta || !tb) return null;
-  const sa = ta.vf + ta.ev + ta.voa;
-  const sb = tb.vf + tb.ev + tb.voa;
+  const open = (x) => (x.idc || 0) + x.vf + (x.eta || 0) + x.ev + x.voa;
+  const sa = open(ta), sb = open(tb);
+  const d = sa - sb;
   return (
-    <div style={{
-      position: "absolute",
-      top: 64,
-      left: 20,
-      display: "flex",
-      alignItems: "stretch",
-      gap: 0,
-      background: "var(--panel)",
-      backdropFilter: "blur(14px)",
-      WebkitBackdropFilter: "blur(14px)",
-      border: "1px solid var(--panel-border)",
-      borderRadius: 10,
-      overflow: "hidden",
-      zIndex: 5,
-      fontSize: 12,
-    }}>
-      <div style={{ padding: "10px 14px", display: "flex", alignItems: "center", gap: 8, borderLeft: "3px solid var(--self)" }}>
-        <span style={{ fontSize: 18 }}>{a.flag}</span>
-        <div>
-          <div style={{ fontWeight: 500, color: "var(--fg)" }}>{window.countryName(passport)}</div>
-          <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--vf)" }}>{sa} {window.t("compare.open")}</div>
-        </div>
+    <div className="compare-strip overlay-card">
+      <div style={{ boxShadow: "inset 3px 0 0 var(--self)" }}>
+        <span className="flag">{a.flag}</span>
+        <span>{window.countryName(passport)}</span>
+        <span className="n">{sa}</span>
       </div>
-      <div style={{ width: 1, background: "var(--panel-border-strong)" }} />
-      <div style={{ padding: "10px 14px", display: "flex", alignItems: "center", gap: 8, borderLeft: "3px solid var(--compare-self)" }}>
-        <span style={{ fontSize: 18 }}>{b.flag}</span>
-        <div>
-          <div style={{ fontWeight: 500, color: "var(--fg)" }}>{window.countryName(compare)}</div>
-          <div style={{ fontFamily: "var(--font-mono)", fontSize: 11, color: "var(--vf)" }}>{sb} {window.t("compare.open")}</div>
-        </div>
+      <div style={{ boxShadow: "inset 3px 0 0 var(--compare-self)" }}>
+        <span className="flag">{b.flag}</span>
+        <span>{window.countryName(compare)}</span>
+        <span className="n">{sb}</span>
       </div>
-      <div style={{
-        padding: "10px 14px",
-        display: "flex",
-        alignItems: "center",
-        gap: 6,
-        background: "rgba(96,165,250,0.08)",
-        borderLeft: "1px solid var(--panel-border-strong)",
-      }}>
-        <span style={{ fontFamily: "var(--font-mono)", fontSize: 10, color: "var(--fg-mute)", textTransform: "uppercase", letterSpacing: "0.06em" }}>Δ</span>
-        <span style={{
-          fontFamily: "var(--font-mono)",
-          fontWeight: 600,
-          color: sa - sb > 0 ? "var(--vf)" : sa - sb < 0 ? "var(--vr)" : "var(--fg-mute)",
-        }}>
-          {sa - sb > 0 ? "+" : ""}{sa - sb}
+      <div>
+        <span className="n" style={{ color: d > 0 ? "var(--vf)" : d < 0 ? "var(--vr)" : "var(--ink-3)", fontWeight: 600 }}>
+          {d > 0 ? "+" : ""}{d}
         </span>
       </div>
     </div>
   );
 }
-
-// ─── Inline layout styles ───────────────────────────────────────────────────
-const layoutStyle = document.createElement("style");
-layoutStyle.textContent = `
-  .layout {
-    position: relative;
-    height: 100vh;
-    width: 100vw;
-    display: grid;
-    grid-template-columns: 1fr 340px;
-    grid-template-rows: 48px 1fr;
-    grid-template-areas:
-      "topbar topbar"
-      "globe  panel";
-  }
-  .topbar {
-    grid-area: topbar;
-    position: relative;
-    display: flex; align-items: center; gap: 4px;
-    padding: 0 14px;
-    border-bottom: 1px solid var(--panel-border);
-    background: var(--panel);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
-    z-index: 6;
-    scrollbar-width: none;
-  }
-  .topbar::-webkit-scrollbar { display: none; }
-  .topbar .brand {
-    display: flex; align-items: center; gap: 6px;
-    padding: 0 12px 0 0;
-    font-weight: 600; font-size: 15px; letter-spacing: -0.01em;
-    color: var(--fg); text-decoration: none;
-    white-space: nowrap;
-    font-family: var(--font-mono);
-  }
-  .topbar .brand span { color: var(--fg); }
-  .topbar-sheet { display: flex; align-items: center; gap: 4px; flex: 1; }
-  .topbar .primary-nav { display: flex; gap: 2px; flex: 1; }
-  .topbar .primary-nav a {
-    padding: 7px 10px; font-size: 13px;
-    color: var(--fg-dim); text-decoration: none;
-    border-radius: 6px;
-    white-space: nowrap;
-  }
-  .topbar .primary-nav a:hover { color: var(--fg); background: var(--bg-3); }
-  .topbar .primary-nav a.active { color: var(--fg); background: rgba(96,165,250,0.10); }
-  /* "Buy me a coffee" accent — amber chip so it stands out from the regular
-     dim nav links. Honest-looking (not screaming) and instantly clickable. */
-  .topbar .primary-nav a.nav-coffee {
-    color: #f59e0b; background: rgba(245, 158, 11, 0.10);
-    border: 1px solid rgba(245, 158, 11, 0.30);
-    font-weight: 500;
-  }
-  .topbar .primary-nav a.nav-coffee:hover {
-    color: #fbbf24; background: rgba(245, 158, 11, 0.18);
-    border-color: rgba(245, 158, 11, 0.50);
-  }
-  /* The flat nav can be >7 items; on narrow laptops let it scroll horizontally
-     instead of wrapping (the bar is one line). Hide the scrollbar — it stays
-     a smooth swipe. */
-  .topbar .primary-nav {
-    overflow-x: auto;
-    scrollbar-width: none;
-  }
-  .topbar .primary-nav::-webkit-scrollbar { display: none; }
-  .topbar .rhs { display: flex; align-items: center; gap: 6px; margin-left: auto; }
-  .topbar .rhs button, .topbar .rhs select {
-    background: var(--bg-3); border: 1px solid var(--panel-border);
-    color: var(--fg-dim); border-radius: 7px; padding: 6px 10px;
-    font-family: inherit; font-size: 12px; cursor: pointer;
-  }
-  .topbar .rhs select { background-color: var(--bg-3); }
-  .topbar .rhs button:hover { color: var(--fg); border-color: var(--border-strong); }
-  /* (light/dark sheets pick up --panel automatically) */
-
-  /* Hamburger lives in the DOM but is invisible by default — only mobile gets it */
-  .topbar .hamburger {
-    display: none;
-    background: var(--bg-3);
-    border: 1px solid var(--panel-border);
-    color: var(--fg-dim);
-    border-radius: 7px;
-    padding: 6px 8px;
-    cursor: pointer;
-    align-items: center; justify-content: center;
-  }
-  .globe-stage {
-    grid-area: globe;
-    position: relative;
-    overflow: hidden;
-  }
-  .panel {
-    grid-area: panel;
-    position: relative;
-    padding: 22px 18px 18px 18px;
-    background: var(--panel);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-left: 1px solid var(--panel-border);
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    z-index: 2;
-  }
-  .dropdown-item:hover { background: rgba(96,165,250,0.10) !important; }
-  /* Mobile bottom-sheet grabber is hidden on desktop; the mobile media query
-     below flips it on and turns .panel into a draggable sheet. */
-  .sheet-handle { display: none; }
-  .filter-row:hover { background: rgba(96,165,250,0.05) !important; }
-  .changelog-item:hover { border-color: var(--panel-border-strong) !important; transform: translateX(2px); }
-  .welcome-flag:hover { background: var(--bg-3) !important; transform: translateY(-2px); border-color: var(--self) !important; }
-  .welcome-loc:hover:not(:disabled) { background: var(--bg-2) !important; color: var(--fg) !important; }
-  .picker-trigger:hover { border-color: var(--self) !important; }
-  .zoom-btn:hover:not(:disabled) { background: var(--bg-3) !important; color: var(--self) !important; }
-  .zoom-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-
-  @media (max-width: 900px) {
-    .layout {
-      grid-template-columns: 1fr;
-      /* Globe fills the area; the panel is a draggable bottom sheet overlay. */
-      grid-template-rows: 48px 1fr 0;
-      grid-template-areas: "topbar" "globe" "panel";
-    }
-    .panel {
-      position: fixed; left: 0; right: 0; bottom: 0;
-      height: var(--sheet-h, 48vh);
-      max-height: 92vh; min-height: 72px;
-      border-left: none; border-top: 1px solid var(--panel-border-strong);
-      border-radius: 16px 16px 0 0;
-      box-shadow: 0 -10px 30px rgba(0,0,0,0.30);
-      padding-top: 4px;
-      z-index: 8;
-      transition: height 260ms cubic-bezier(.22,1,.36,1);
-      overscroll-behavior: contain;
-    }
-    .panel.sheet-dragging { transition: none; }
-    /* Drag grabber — only on mobile. Sticky at the top of the sheet so it never
-       scrolls out of reach, and a tall hit area so it's easy to grab and pull
-       the sheet back up. */
-    /* flex:none is CRITICAL — the panel is a column flexbox and without it the
-       handle (flex-shrink:1 by default) collapsed to ~5px once the content
-       overflowed, leaving an almost untappable sliver. That, not the drag logic,
-       is why the sheet felt dead. Keep it a full-height, easy drag target. */
-    .sheet-handle {
-      flex: none;
-      display: flex; align-items: center; justify-content: center;
-      height: 34px; margin: -4px -18px 2px; padding: 0 18px;
-      cursor: grab; touch-action: none;
-      position: sticky; top: 0; z-index: 3;
-      background: var(--panel);
-    }
-    .sheet-handle:active { cursor: grabbing; }
-    /* touch-action:none so iOS doesn't treat a press on the bar as a panel scroll
-       (which cancelled the drag). No pointer-events:none — the press must reach a
-       real, full-height target so the drag actually starts. */
-    .sheet-grabber {
-      width: 44px; height: 5px; border-radius: 999px;
-      background: var(--fg-faint); opacity: 0.7; touch-action: none;
-    }
-
-    /* Compact mobile topbar: brand + mode toggle on the bar, everything else
-       collapses into a dropdown opened by the hamburger.
-       Nav + lang + settings live in a slide-down sheet so users no longer have
-       to side-scroll to reach the language picker. */
-    .topbar { padding: 0 10px; gap: 6px; }
-    .topbar .brand { font-size: 13px; }
-    /* rhs (margin-left:auto) pushes the control cluster to the right; the
-       hamburger then sits just after it, so it only needs a small gap. */
-    .topbar .hamburger { display: inline-flex; margin-left: 4px; }
-
-    /* Nav + lang/settings collapse into a slide-down sheet behind the hamburger */
-    .topbar-sheet { display: none; }
-    .topbar.menu-open .topbar-sheet {
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      gap: 8px;
-      position: absolute;
-      top: 48px;
-      right: 0;
-      width: min(280px, 92vw);
-      background: var(--panel);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid var(--panel-border-strong);
-      border-top: none;
-      border-radius: 0 0 12px 12px;
-      padding: 10px;
-      box-shadow: 0 12px 32px rgba(0,0,0,0.20);
-      z-index: 7;
-    }
-    .topbar.menu-open .primary-nav {
-      flex-direction: column; align-items: stretch; gap: 2px; flex: none;
-    }
-    .topbar.menu-open .primary-nav a { padding: 10px 12px; font-size: 14px; border-radius: 8px; }
-    /* Mobile sheet: flat list; the BMC coffee chip keeps its accent style. */
-    .topbar.menu-open .primary-nav { overflow: visible; }
-    /* The control cluster (2D/3D · theme · gear) is no longer inside the
-       collapsible sheet — it stays on the bar so those toggles are always one
-       tap away on mobile. Keep it tight and drop the non-essential "?" help
-       shortcut to save width on narrow phones. */
-    .topbar .rhs { gap: 4px; }
-    .topbar .help-btn-wrap { display: none; }
-  }
-`;
-document.head.appendChild(layoutStyle);
 
 ReactDOM.createRoot(document.getElementById("root")).render(<App />);

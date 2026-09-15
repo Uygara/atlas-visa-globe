@@ -11,10 +11,11 @@
 //   • A full table of every destination + the resolved visa status
 //   • Internal links to related passport pages + guides + tools (SEO + retention)
 //   • OG / Twitter cards / canonical / JSON-LD Article + FAQPage + Breadcrumbs
-//   • A consistent site footer (About / Guides / Privacy / Terms / Contact)
+//   • The shared masthead + footer + design-system CSS from scripts/partials.js
 
 const fs = require("fs");
 const path = require("path");
+const { headAssets, masthead, footer } = require("./partials");
 
 const ROOT       = path.resolve(__dirname, "..");
 const SNAPSHOT   = JSON.parse(fs.readFileSync(path.join(ROOT, "data", "passports-snapshot.json"), "utf8"));
@@ -24,12 +25,13 @@ const COUNTRIES  = parseCountries(fs.readFileSync(path.join(ROOT, "data", "count
 // was hurting discovery. Defaults to the live domain; override via SITE_URL.
 const SITE_URL   = process.env.SITE_URL || "https://travelnow.info";
 
+// Colours come from the design tokens (assets/tokens.css: --vf, --ev, …).
 const STATUS_INFO = {
-  vf:  { label: "Visa-free",        color: "#22c55e", note: "No visa required" },
-  ev:  { label: "eVisa",            color: "#a3e635", note: "Apply online before travel" },
-  voa: { label: "Visa on arrival",  color: "#facc15", note: "Issued at the border" },
-  vr:  { label: "Visa required",    color: "#ef4444", note: "Apply at embassy or consulate" },
-  ban: { label: "No entry allowed", color: "#7f1020", note: "Entry refused to this nationality" },
+  vf:  { label: "Visa-free",        note: "No visa required" },
+  ev:  { label: "eVisa",            note: "Apply online before travel" },
+  voa: { label: "Visa on arrival",  note: "Issued at the border" },
+  vr:  { label: "Visa required",    note: "Apply at embassy or consulate" },
+  ban: { label: "No entry allowed", note: "Entry refused to this nationality" },
 };
 
 // Human continent names for the regional-breakdown prose.
@@ -255,27 +257,6 @@ function renderProse(passport, name, rows, counts, ranks, snapshot) {
   return { proseHtml: html, faqHtml, faqSchema, mobility: visaFreeTotal, rank };
 }
 
-// Shared footer used across generated pages — gives every page real navigation,
-// an author/maintainer line, and links to the legitimacy pages. This is part of
-// looking like a maintained publisher rather than an auto-generated table dump.
-function siteFooter() {
-  return `
-  <footer class="site-footer">
-    <nav class="footer-nav">
-      <a href="/">Home</a>
-      <a href="/passport/">All passports</a>
-      <a href="/guides/">Guides</a>
-      <a href="/about/">About</a>
-      <a href="/privacy/">Privacy</a>
-      <a href="/terms/">Terms</a>
-      <a href="/contact/">Contact</a>
-    </nav>
-    <p class="footer-note">travelnow.info is an independent travel-information project maintained by Uygar Atalay.
-    Visa rules change frequently — always confirm with the destination's official embassy or consulate before you book.
-    Data is refreshed every 24 hours from public visa-policy sources.</p>
-  </footer>`;
-}
-
 function renderPage(passport, allPassports, snapshot, ranks) {
   const pp = snapshot[passport];
   const country = COUNTRIES.find(c => c.iso2 === passport);
@@ -325,7 +306,7 @@ function renderPage(passport, allPassports, snapshot, ranks) {
     const c = COUNTRIES.find(x => x.iso2 === iso);
     const n = snapshot[iso] && snapshot[iso].name || (c && c.name);
     if (!c || !n) return "";
-    return `<li><a href="../${iso.toLowerCase()}/">${c.flag} ${escapeHtml(n)}</a></li>`;
+    return `<li><a href="../${iso.toLowerCase()}/"><span class="flag">${c.flag}</span> ${escapeHtml(n)}</a></li>`;
   }).join("");
 
   const rowsHtml = rows.map(r => {
@@ -336,7 +317,7 @@ function renderPage(passport, allPassports, snapshot, ranks) {
       <tr class="row-${r.status}">
         <td class="flag">${r.flag}</td>
         <td class="name">${escapeHtml(r.name)}</td>
-        <td class="status"><span class="dot" style="background:${info.color}"></span>${info.label} ${days}</td>
+        <td class="status"><span class="sw${r.status === "ban" ? " sw-ban" : ""}" style="--sw:var(--${r.status})" aria-hidden="true"></span>${info.label} ${days}</td>
       </tr>`;
   }).join("");
 
@@ -384,78 +365,15 @@ ${adsenseLoader}
   },
 })}</script>
 <script type="application/ld+json">${JSON.stringify(faqSchema)}</script>
-<style>
-  :root {
-    --bg: #05070d; --panel: #111827; --fg: #e7ecf5; --fg-dim: #aab4c8; --fg-mute: #6b7591;
-    --border: rgba(148,173,220,0.15); --link:#60a5fa;
-    --vf: #22c55e; --ev: #a3e635; --voa: #facc15; --vr: #ef4444;
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0; padding: 0;
-    background: var(--bg); color: var(--fg);
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-    line-height: 1.6;
-  }
-  .wrap { max-width: 820px; margin: 0 auto; padding: 28px 20px; }
-  .crumbs { font-size:12px; color:var(--fg-mute); margin-bottom:18px; }
-  .crumbs a { color:var(--fg-mute); }
-  header { display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
-  .hero-flag { font-size: 48px; line-height: 1; }
-  h1 { margin: 0; font-size: 25px; font-weight: 600; letter-spacing: -0.01em; }
-  .subtitle { margin: 4px 0 0 0; font-size: 13px; color: var(--fg-mute); }
-  .stats {
-    display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;
-    background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
-    padding: 14px; margin: 16px 0 26px 0;
-  }
-  .stat { text-align: center; }
-  .stat .n { font-size: 28px; font-weight: 600; }
-  .stat .l { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--fg-mute); margin-top: 2px; }
-  .stat.vf .n { color: var(--vf); } .stat.ev .n { color: var(--ev); }
-  .stat.voa .n { color: var(--voa); } .stat.vr .n { color: var(--vr); }
-  .analysis p, .faq p { font-size: 15px; color: var(--fg-dim); margin: 0 0 14px; }
-  .analysis .lead { font-size: 16px; color: var(--fg); }
-  .analysis a, .faq a { color: var(--link); }
-  h2 { font-size: 19px; margin: 34px 0 12px; }
-  .faq .qa { margin-bottom: 16px; }
-  .faq h3 { font-size: 15px; margin: 0 0 4px; color: #fff; font-weight: 600; }
-  table { width: 100%; border-collapse: collapse; }
-  th, td { padding: 8px 10px; text-align: left; border-bottom: 1px solid var(--border); font-size: 13px; }
-  th { font-size: 11px; color: var(--fg-mute); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500; }
-  td.flag { width: 32px; font-size: 18px; }
-  td.status { color: var(--fg-dim); }
-  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
-  .days { color: var(--fg-mute); font-size: 11px; margin-left: 6px; }
-  .back { display: inline-block; padding: 10px 16px; background: var(--panel); border: 1px solid var(--border); border-radius: 8px; color: var(--fg); text-decoration: none; font-size: 13px; }
-  .back:hover { border-color: var(--fg-dim); }
-  .ad-slot { margin: 22px 0; min-height: 1px; }
-  .other-passports { margin-top: 30px; }
-  .other-passports h2 { font-size: 14px; color: var(--fg-mute); text-transform: uppercase; letter-spacing: 0.08em; font-weight: 500; }
-  .other-passports ul { list-style: none; padding: 0; columns: 3; column-gap: 20px; font-size: 13px; }
-  .other-passports li { margin-bottom: 4px; break-inside: avoid; }
-  .other-passports a { color: var(--fg-dim); text-decoration: none; }
-  .other-passports a:hover { color: var(--fg); }
-  .related-guides { background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin:26px 0; }
-  .related-guides h2 { margin:0 0 8px; font-size:14px; }
-  .related-guides ul { margin:0; padding-left:18px; font-size:14px; }
-  .related-guides a { color:var(--link); }
-  .site-footer { margin-top: 44px; padding-top: 22px; border-top: 1px solid var(--border); }
-  .footer-nav { display:flex; flex-wrap:wrap; gap:14px; font-size:13px; margin-bottom:12px; }
-  .footer-nav a { color: var(--fg-dim); text-decoration:none; }
-  .footer-nav a:hover { color: var(--fg); }
-  .footer-note { font-size:12px; color: var(--fg-mute); line-height:1.6; }
-  @media (max-width: 600px) {
-    .stats { grid-template-columns: repeat(2, 1fr); }
-    .other-passports ul { columns: 2; }
-  }
-</style>
+${headAssets()}
+<style>.wrap{max-width:820px}</style>
 </head>
 <body>
+${masthead({ path: "/passport/" + slug + "/", i18n: false })}
 <div class="wrap">
   <p class="crumbs"><a href="/">travelnow.info</a> › <a href="/passport/">Passports</a> › ${escapeHtml(name)}</p>
-  <header>
-    <span class="hero-flag" aria-hidden="true">${flag}</span>
+  <header class="pp-hero">
+    <span class="hero-flag flag" aria-hidden="true">${flag}</span>
     <div>
       <h1>${escapeHtml(name)} passport visa requirements</h1>
       <p class="subtitle">${rows.length} destinations${rankInfo ? ` · Global mobility rank #${rankInfo.rank}` : ""} · Updated ${today}</p>
@@ -467,11 +385,12 @@ ${adsenseLoader}
     <div class="stat ev"><div class="n">${counts.ev}</div><div class="l">eVisa</div></div>
     <div class="stat voa"><div class="n">${counts.voa}</div><div class="l">On arrival</div></div>
     <div class="stat vr"><div class="n">${counts.vr}</div><div class="l">Visa required</div></div>
+    ${counts.ban ? `<div class="stat ban"><div class="n">${counts.ban}</div><div class="l">No entry</div></div>` : ""}
   </section>
 
   ${proseHtml}
 
-  <p><a class="back" href="../../">🌍 See it on the interactive globe</a></p>
+  <p class="cta-row"><a class="primary" href="/">See every country on the interactive map →</a></p>
 
   ${adInsTop}
 
@@ -496,15 +415,14 @@ ${adsenseLoader}
   <div class="other-passports">
     <h2>Compare related passports</h2>
     <ul>${otherPassports}</ul>
-    <p style="font-size:12px;color:var(--fg-mute);margin-top:14px;">
-      Or <a href="/passport/" style="color:var(--fg-dim);">browse all ${allPassports.length} passports</a>.
+    <p class="fine" style="margin-top:14px;">
+      Or <a href="/passport/">browse all ${allPassports.length} passports</a>.
     </p>
   </div>
 
   ${adInsBottom}
-
-  ${siteFooter()}
 </div>
+${footer()}
 </body>
 </html>`;
 }
@@ -520,7 +438,7 @@ function renderIndex(allPassports, snapshot, ranks) {
     const n = snapshot[iso] && snapshot[iso].name || (c && c.name);
     if (!c || !n) return "";
     const ri = ranks.get(iso);
-    return `<li><a href="${iso.toLowerCase()}/">${c.flag} <strong>${escapeHtml(n)}</strong></a> <span class="vf-count">${ri ? ri.mobility : "?"} visa-free/VoA · #${ri ? ri.rank : "?"}</span></li>`;
+    return `<li><a href="${iso.toLowerCase()}/"><span class="flag">${c.flag}</span> <strong>${escapeHtml(n)}</strong></a> <span class="vf-count">${ri ? ri.mobility : "?"} visa-free/VoA · #${ri ? ri.rank : "?"}</span></li>`;
   }).join("");
 
   return `<!DOCTYPE html>
@@ -532,30 +450,13 @@ function renderIndex(allPassports, snapshot, ranks) {
 <meta name="description" content="Browse visa requirements and the global mobility ranking for ${allPassports.length} passports. Updated daily from public visa-policy sources.">
 <link rel="canonical" href="${SITE_URL ? SITE_URL + "/passport/" : "/passport/"}">
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
-<style>
-  :root { --link:#60a5fa; --fg-dim:#aab4c8; --fg-mute:#6b7591; --border:rgba(148,173,220,0.15); }
-  body { margin:0; background:#05070d; color:#e7ecf5; font-family:-apple-system,system-ui,sans-serif; line-height:1.6; }
-  .wrap { max-width:880px; margin:0 auto; padding:32px 20px; }
-  h1 { font-size:25px; font-weight:600; }
-  .intro { font-size:15px; color:var(--fg-dim); max-width:640px; }
-  .intro a { color:var(--link); }
-  ul.dir { list-style:none; padding:0; columns:2; column-gap:24px; font-size:14px; margin-top:22px; }
-  ul.dir li { margin-bottom:8px; break-inside:avoid; }
-  ul.dir a { color:#e7ecf5; text-decoration:none; }
-  ul.dir a:hover { text-decoration:underline; }
-  .vf-count { font-size:11px; color:var(--fg-mute); margin-left:6px; }
-  .back { display:inline-block; padding:10px 16px; background:#111827; border:1px solid var(--border); border-radius:8px; color:#e7ecf5; text-decoration:none; font-size:13px; margin-bottom:20px; }
-  .site-footer { margin-top:44px; padding-top:22px; border-top:1px solid var(--border); }
-  .footer-nav { display:flex; flex-wrap:wrap; gap:14px; font-size:13px; margin-bottom:12px; }
-  .footer-nav a { color:var(--fg-dim); text-decoration:none; }
-  .footer-note { font-size:12px; color:var(--fg-mute); }
-  @media (max-width:600px) { ul.dir { columns:1; } }
-</style>
+${headAssets()}
+<style>.wrap{max-width:880px}</style>
 <script src="/assets/analytics.js"></script>
 </head>
 <body>
+${masthead({ path: "/passport/", i18n: false })}
 <div class="wrap">
-  <a class="back" href="../">← Back to the globe</a>
   <h1>Passport visa-requirement directory</h1>
   <p class="intro">Every passport we track, ranked by <strong>global mobility</strong> — the number of destinations you
   can enter without arranging a visa in advance (visa-free plus visa on arrival). Open any passport for a full country
@@ -563,8 +464,8 @@ function renderIndex(allPassports, snapshot, ranks) {
   <a href="/guides/visa-types-explained/">guide to visa types</a>.</p>
   <p style="font-size:13px;color:var(--fg-mute);">${allPassports.length} passports · Data refreshed ${new Date().toISOString().slice(0,10)}</p>
   <ul class="dir">${items}</ul>
-  ${siteFooter()}
 </div>
+${footer()}
 </body>
 </html>`;
 }

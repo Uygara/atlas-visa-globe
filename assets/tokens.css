@@ -1,0 +1,180 @@
+/* ─────────────────────────────────────────────────────────────────────────
+   travelnow.info — design tokens (single source of truth)
+
+   Visual language: the travel document itself.
+     • Light  = a visa page: pale security paper, blue-black ink, hairline rules.
+     • Dark   = the passport cover: deep navy board with gold-foil accents.
+     • Status colours are printed inks, not neon — they read on the paper
+       and on the globe without glow effects.
+   Loaded by every page (SPA shells + static pages). Component CSS lives in
+   app-shell.css (globe apps) and site.css (static pages).
+
+   Theme switch: `theme-dark` on <html> or <body>. Light is the default.
+   ───────────────────────────────────────────────────────────────────────── */
+
+/* Windows ships no flag emoji (it shows the two regional-indicator letters).
+   This subset font only covers the flag code points, so it never touches
+   normal text — it just makes 🇹🇷 look like a flag everywhere. */
+@font-face {
+  font-family: "Twemoji Country Flags";
+  unicode-range: U+1F1E6-1F1FF, U+1F3F4, U+E0062-E0063, U+E0065, U+E0067, U+E006C, U+E006E, U+E0073-E0074, U+E0077, U+E007F;
+  src: url("https://cdn.jsdelivr.net/npm/country-flag-emoji-polyfill@0.1.8/dist/TwemojiCountryFlags.woff2") format("woff2");
+  font-display: swap;
+}
+
+:root {
+  /* ── Paper & ink ─────────────────────────────────────────────────────── */
+  --paper:        #EFF0E8;
+  --paper-raised: #F8F8F3;
+  --paper-sunk:   #E4E6DC;
+  --paper-deep:   #D8DBCF;
+  --ink:          #16202A;
+  --ink-2:        #3B4650;
+  --ink-3:        #5C6770;
+  --ink-4:        #8A928D;
+  --rule:         #D2D6CA;
+  --rule-strong:  #AEB5A8;
+
+  /* UI accent: passport navy on paper; flips to gold foil on the cover. */
+  --accent:       #1E3A5F;
+  --on-accent:    #F4F2E8;
+  --foil:         #9A7732;
+  --link:         #1D4C85;
+  --shadow:       0 1px 0 rgba(22, 32, 42, 0.04), 0 8px 24px -12px rgba(22, 32, 42, 0.28);
+  --shadow-lift:  0 18px 48px -18px rgba(22, 32, 42, 0.45);
+
+  /* ── Status inks ─────────────────────────────────────────────────────── */
+  --idc:  #3F79A8;   /* ID card / freedom of movement */
+  --vf:   #2E8555;   /* visa-free */
+  --eta:  #5FA88C;   /* travel authorization (ESTA, eTA, UK ETA…) */
+  --ev:   #A5B545;   /* eVisa */
+  --voa:  #DFA132;   /* visa on arrival */
+  --vr:   #C74A34;   /* visa required */
+  --ban:  #3A1D28;   /* no entry allowed */
+  --na:   #D0D3C8;   /* no data */
+  --self: #1E3A5F;   /* the passport's own country */
+  --compare-self: #8A4FA3;
+
+  /* ── Globe ───────────────────────────────────────────────────────────── */
+  --ocean:       #CFDCDD;
+  --land:        #E7E7DC;
+  --land-stroke: #F8F8F3;
+  --graticule:   rgba(22, 32, 42, 0.07);
+  --globe-edge:  #9EACAD;
+
+  /* ── Type ────────────────────────────────────────────────────────────── */
+  --font-sans:    "Twemoji Country Flags", "Sofia Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Twemoji Country Flags", "Sofia Sans Extra Condensed", "Sofia Sans Condensed", "Arial Narrow", sans-serif;
+  --font-mono:    "DM Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --radius:    4px;   /* documents have tight corners */
+  --radius-lg: 6px;
+
+  /* Guilloche braid — the fine interlaced line pattern printed on passports. */
+  --guilloche: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='28' viewBox='0 0 120 28'%3E%3Cg fill='none' stroke='%231E3A5F' stroke-width='.55' opacity='.22'%3E%3Cpath d='M0 14C20 2 40 2 60 14S100 26 120 14'/%3E%3Cpath d='M0 14C20 26 40 26 60 14S100 2 120 14'/%3E%3Cpath d='M0 14C20 7 40 7 60 14S100 21 120 14'/%3E%3Cpath d='M0 14C20 21 40 21 60 14S100 7 120 14'/%3E%3Cpath d='M-30 14C-10 2 10 2 30 14S70 26 90 14S130 2 150 14'/%3E%3Cpath d='M-30 14C-10 26 10 26 30 14S70 2 90 14S130 26 150 14'/%3E%3C/g%3E%3C/svg%3E");
+
+  /* ── Legacy aliases (older inline styles + static pages still read these) */
+  --bg:   var(--paper);
+  --bg-0: var(--paper);
+  --bg-1: var(--paper);
+  --bg-2: var(--paper);
+  --bg-3: var(--paper-sunk);
+  --bg3:  var(--paper-sunk);
+  --panel: var(--paper-raised);
+  --panel-border: var(--rule);
+  --panel-border-strong: var(--rule-strong);
+  --border: var(--rule);
+  --border-strong: var(--rule-strong);
+  --fg: var(--ink);
+  --fg-dim: var(--ink-2);
+  --fg-mute: var(--ink-3);
+  --fg-faint: var(--ink-4);
+  --on-self: var(--on-accent);
+
+  color-scheme: light;
+}
+
+html.theme-dark,
+body.theme-dark {
+  --paper:        #0E1928;
+  --paper-raised: #132033;
+  --paper-sunk:   #0A1320;
+  --paper-deep:   #1B2B41;
+  --ink:          #ECE8DB;
+  --ink-2:        #C4C1B5;
+  --ink-3:        #9A9D9A;
+  --ink-4:        #627080;
+  --rule:         #213149;
+  --rule-strong:  #34475F;
+
+  --accent:       #D3B36C;
+  --on-accent:    #0E1928;
+  --foil:         #D3B36C;
+  --link:         #DDC084;
+  --shadow:       0 1px 0 rgba(0, 0, 0, 0.2), 0 10px 28px -14px rgba(0, 0, 0, 0.7);
+  --shadow-lift:  0 22px 56px -20px rgba(0, 0, 0, 0.85);
+
+  --idc:  #6D9FCB;
+  --vf:   #4EA573;
+  --eta:  #7EBFA4;
+  --ev:   #BAC961;
+  --voa:  #E5B04A;
+  --vr:   #DA684E;
+  --ban:  #6E3042;
+  --na:   #2A3A51;
+  --self: #D3B36C;
+  --compare-self: #B78BCF;
+
+  --ocean:       #15263D;
+  --land:        #2E405A;
+  --land-stroke: #0E1928;
+  --graticule:   rgba(236, 232, 219, 0.06);
+  --globe-edge:  #34475F;
+
+  --guilloche: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='28' viewBox='0 0 120 28'%3E%3Cg fill='none' stroke='%23D3B36C' stroke-width='.55' opacity='.2'%3E%3Cpath d='M0 14C20 2 40 2 60 14S100 26 120 14'/%3E%3Cpath d='M0 14C20 26 40 26 60 14S100 2 120 14'/%3E%3Cpath d='M0 14C20 7 40 7 60 14S100 21 120 14'/%3E%3Cpath d='M0 14C20 21 40 21 60 14S100 7 120 14'/%3E%3Cpath d='M-30 14C-10 2 10 2 30 14S70 26 90 14S130 2 150 14'/%3E%3Cpath d='M-30 14C-10 26 10 26 30 14S70 2 90 14S130 26 150 14'/%3E%3C/g%3E%3C/svg%3E");
+
+  color-scheme: dark;
+}
+
+/* ── Base ──────────────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection { background: var(--accent); color: var(--on-accent); }
+
+a { color: var(--link); text-decoration-thickness: 1px; text-underline-offset: 0.18em; }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+button, input, select, textarea { font: inherit; color: inherit; }
+
+/* Tabular figures wherever numbers are compared. */
+.num, table, .ledger, .mono { font-variant-numeric: tabular-nums; }
+
+.flag {
+  font-family: "Twemoji Country Flags", "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
+  font-style: normal;
+  line-height: 1;
+}
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--rule-strong); border-radius: 10px; border: 3px solid transparent; background-clip: padding-box; }
+::-webkit-scrollbar-thumb:hover { background: var(--ink-4); background-clip: padding-box; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.001ms !important; transition-duration: 0.001ms !important; }
+}

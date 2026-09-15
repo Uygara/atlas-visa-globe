@@ -1,6 +1,6 @@
 # Atlas / travelnow.info — Session handoff (current state)
 
-> **Updated:** 2026-06-10 · **Live:** <https://travelnow.info> · **Repo:** <https://github.com/Uygara/atlas-visa-globe>
+> **Updated:** 2026-09-15 · **Live:** <https://travelnow.info> · **Repo:** <https://github.com/Uygara/atlas-visa-globe>
 > Cloudflare Pages auto-deploys every push to `main` (~30 s).
 > Working language with the owner: **Turkish.** Code comments: English.
 > Hard rule: **never invent visa data.** No fake fees/rules/numbers — if a fact
@@ -42,9 +42,11 @@ about, privacy. visa-shortcuts + passport-validity + esta-rules pages still
 exist (SEO) but are **de-tabbed** — their info now surfaces in the home detail
 card. `/transit-visa/` 301-redirects to `/transit-map/` (via `_redirects`).
 
-**Top nav:** Transit map · Travel planner · Schengen + **Tools ▾** (ETIAS,
-Nomad visas, Second passport, Alerts). Settings ⚙ holds lang / theme / 3D-2D /
-compare / group. A `?` button reopens the intro.
+**Top nav (every page, one list):** Visa map · Transit map · Travel planner ·
+Schengen calc · ETIAS 2026 · Passports · Guides · Nomad visas · Second passport ·
+Alerts · About — defined once in `assets/site-nav.js`. Links that don't fit fold
+into **More ▾** from the end (priority+). Always-visible controls: 3D/2D (globe
+apps), light/dark, language, Support. `?` reopens the intro (home, desktop).
 
 **i18n:** 6 languages (en/tr/es/de/fr/ar). SPA uses `window.t()` (`data/i18n.js`).
 Static pages use `data/static-i18n.js` — a DOM text-node walker keyed on the
@@ -58,6 +60,45 @@ EN in those four (engine ready — just add dict entries).
 ---
 
 ## What we did this arc, and how
+
+- **Round 9 (2026-09-15 — "looks like every other AI site" → own visual identity + front-end architecture):**
+  Owner: the UI read as generic AI output. Diagnosis: Geist + mono uppercase
+  micro-labels, Tailwind's default palette as status colours (green-400,
+  lime-400, yellow-400…), glassmorphism + starfield + radial glow, emoji as
+  icons, slogan copy ("Your passport, your map."), and ~20 pages each with a
+  private copy-pasted palette + 3 different top navs.
+  - **Visual language = the travel document.** Light theme = visa page (pale
+    security paper, blue-black ink, hairline rules); dark = passport cover (navy
+    board, gold-foil accent). Status colours are printed inks, no glow. Type:
+    Sofia Sans (UI/body) + Sofia Sans Extra Condensed (display) + DM Mono (data).
+    Signature elements: passport picker as a **bio data page with a generated
+    MRZ** (issuing state + real status counts + snapshot date), tally as a
+    **ledger** with dotted leaders, a country's verdict as a tilted **entry
+    stamp**, **guilloche** strip/band, hatched "no entry" fill (map + key), a
+    "404 · entry not recorded" stamp, § section numbers on guides. Flag emoji
+    render on Windows via the Twemoji country-flag subset font.
+  - **Architecture:** `assets/tokens.css` (all colours/type for both themes;
+    legacy `--bg/--fg/--panel…` names aliased) → `assets/chrome.css`
+    (masthead, segmented controls, buttons, fields) → `assets/app-shell.css`
+    (globe apps) or `assets/site.css` (documents). `components/chrome.jsx` is the
+    shared React masthead/theme/lang/sheet for all three globe apps (replaced 3
+    TopNavs + 3 injected <style> blocks). Static pages get real-HTML masthead +
+    footer stamped from `scripts/partials.js` by `node scripts/apply-chrome.js`
+    (between `<!-- chrome:* -->` markers); `assets/site-chrome.js` adds the
+    More menu, mobile sheet, theme + language. `data/static-i18n.js` no longer
+    injects its own palette/floating switcher on stamped pages.
+  - **Generator:** `scripts/generate-seo.js` now uses the same partials + site.css.
+    Passport pages were NOT regenerated locally (local main was 95 data commits
+    behind origin) — the daily cron re-renders all 200 with the new template on
+    its next run after push.
+  - Copy: new intro (all 6 languages) — factual headline, 3 numbered steps,
+    signed by the maintainer. New nav/footer strings added to both dictionaries.
+  - Small fixes on the way: unfilled AdSense units no longer leave a 280px hole;
+    detail card scrolls into view when a country is picked; globe no longer
+    logs negative SVG sizes on a narrow first paint; watchlist storage listener
+    leak; itinerary CTA flags (stops are ISO strings).
+  - **To change the nav/footer:** edit `assets/site-nav.js` / `scripts/partials.js`,
+    run `node scripts/apply-chrome.js`, bump `ASSET_VERSION` + the `?v=` stamps.
 
 - **Round 8 (2026-06-17 — AdSense "Low value content" rejection → real-publisher overhaul):**
   AdSense rejected the site for "Low value content / thin content". Root cause
@@ -645,9 +686,15 @@ EN in those four (engine ready — just add dict entries).
 - `index.html` — SPA shell + crawlable static content + script loads (cache-bust
   `?v=YYYYMMDDx` on the 3 JSX tags; **bump it when you change app.jsx / panel.jsx /
   globe.jsx**).
-- `app.jsx` — App root, TopNav, IntroHook, CoachHint, Settings, detection.
-- `components/panel.jsx` — side panel + DetailCard + all widgets + ForYouSection
-  + MobileSheetHandle + Changelog/News/Watchlist/Pulse/Digest/DailySuggestion.
+- `assets/tokens.css` / `chrome.css` / `app-shell.css` / `site.css` — the design
+  system (see Round 9). `assets/site-nav.js` — the one nav list (browser + Node).
+- `components/chrome.jsx` — shared masthead, ViewToggle/ThemeToggle/LangSelect,
+  theme store, MobileSheetHandle, Caption/Swatch/Dot. Load BEFORE globe.jsx.
+- `scripts/partials.js` + `scripts/apply-chrome.js` — static-page head/masthead/footer.
+- `app.jsx` — App root, IntroDialog, WelcomeOverlay, CoachHint, MapKey, detection.
+- `components/panel.jsx` — side panel (passport data page + MRZ, ledger,
+  DetailCard entry stamp) + all widgets + ForYouSection +
+  Changelog/News/Watchlist/Pulse/Digest/DailySuggestion.
 - `components/globe.jsx` — D3 globe; optional decoupling props `fillResolver`,
   `hoverRenderer`, `arcs`, `stopMarkers` (used by transit-map + itinerary).
 - `components/transit-map.jsx`, `components/itinerary-app.jsx` — the two SPA pages.

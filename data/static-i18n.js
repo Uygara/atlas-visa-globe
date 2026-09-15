@@ -21,6 +21,29 @@
   // language for a string → fallback to the original English text.
   // KEEP KEYS as the exact verbatim English from the source HTML (trimmed).
   const DICT = {
+    // ── Site masthead + footer (scripts/partials.js) ──
+    "Visa map": { tr:"Vize haritası", es:"Mapa de visados", de:"Visakarte", fr:"Carte des visas", ar:"خريطة التأشيرات" },
+    "Transit map": { tr:"Transit haritası", es:"Mapa de tránsito", de:"Transitkarte", fr:"Carte du transit", ar:"خريطة العبور" },
+    "Travel planner": { tr:"Seyahat planlayıcı", es:"Planificador de viaje", de:"Reiseplaner", fr:"Planificateur de voyage", ar:"مخطّط الرحلة" },
+    "Schengen calc": { tr:"Schengen hesaplayıcı", es:"Calc. Schengen", de:"Schengen-Rechner", fr:"Calcul Schengen", ar:"حاسبة شنغن" },
+    "Passports": { tr:"Pasaportlar", es:"Pasaportes", de:"Pässe", fr:"Passeports", ar:"جوازات السفر" },
+    "Guides": { tr:"Rehberler", es:"Guías", de:"Ratgeber", fr:"Guides", ar:"الأدلة" },
+    "Nomad visas": { tr:"Dijital göçebe vizeleri", es:"Visas nómada", de:"Nomadenvisa", fr:"Visas nomades", ar:"تأشيرات الرحالة" },
+    "Second passport": { tr:"İkinci pasaport", es:"Segundo pasaporte", de:"Zweitpass", fr:"Second passeport", ar:"جواز سفر ثانٍ" },
+    "Alerts": { tr:"Uyarılar", es:"Alertas", de:"Benachrichtigungen", fr:"Alertes", ar:"التنبيهات" },
+    "About": { tr:"Hakkında", es:"Acerca de", de:"Über uns", fr:"À propos", ar:"حول" },
+    "More": { tr:"Daha fazla", es:"Más", de:"Mehr", fr:"Plus", ar:"المزيد" },
+    "Support": { tr:"Destek ol", es:"Apoyar", de:"Unterstützen", fr:"Soutenir", ar:"ادعمنا" },
+    "Tools": { tr:"Araçlar", es:"Herramientas", de:"Werkzeuge", fr:"Outils", ar:"الأدوات" },
+    "Read": { tr:"Okuma", es:"Lecturas", de:"Lesen", fr:"Lire", ar:"اقرأ" },
+    "The project": { tr:"Proje", es:"El proyecto", de:"Das Projekt", fr:"Le projet", ar:"المشروع" },
+    "Passport validity": { tr:"Pasaport geçerliliği", es:"Validez del pasaporte", de:"Passgültigkeit", fr:"Validité du passeport", ar:"صلاحية جواز السفر" },
+    "Visa shortcuts": { tr:"Vize kısayolları", es:"Atajos de visado", de:"Visa-Abkürzungen", fr:"Raccourcis visa", ar:"اختصارات التأشيرة" },
+    "Terms": { tr:"Kullanım koşulları", es:"Términos", de:"Nutzungsbedingungen", fr:"Conditions", ar:"الشروط" },
+    "Source on GitHub": { tr:"GitHub'daki kaynak kod", es:"Código en GitHub", de:"Quellcode auf GitHub", fr:"Code source sur GitHub", ar:"الشيفرة على GitHub" },
+    "An independent visa atlas, built and maintained by Uygar Atalay. Corrections and questions:": { tr:"Uygar Atalay tarafından geliştirilen ve bakımı yapılan bağımsız bir vize atlası. Düzeltme ve sorular için:", es:"Un atlas de visados independiente, creado y mantenido por Uygar Atalay. Correcciones y preguntas:", de:"Ein unabhängiger Visa-Atlas, entwickelt und gepflegt von Uygar Atalay. Korrekturen und Fragen:", fr:"Un atlas des visas indépendant, conçu et maintenu par Uygar Atalay. Corrections et questions :", ar:"أطلس تأشيرات مستقل، من تطوير وصيانة أوغار أتالاي. للتصحيحات والأسئلة:" },
+    "Visa rules change often — always confirm with the destination's embassy or consulate before you book. Data is rebuilt every 24 hours from public visa-policy sources.": { tr:"Vize kuralları sık değişir — rezervasyon yapmadan önce mutlaka gideceğin ülkenin büyükelçiliği veya konsolosluğuyla teyit et. Veriler her 24 saatte bir açık vize politikası kaynaklarından yeniden oluşturulur.", es:"Las normas de visado cambian a menudo: confirma siempre con la embajada o el consulado del destino antes de reservar. Los datos se reconstruyen cada 24 horas a partir de fuentes públicas.", de:"Visaregeln ändern sich häufig – bestätige sie vor der Buchung immer bei der Botschaft oder dem Konsulat des Ziellandes. Die Daten werden alle 24 Stunden aus öffentlichen Quellen neu aufgebaut.", fr:"Les règles de visa changent souvent : vérifiez toujours auprès de l'ambassade ou du consulat de la destination avant de réserver. Les données sont reconstruites toutes les 24 heures à partir de sources publiques.", ar:"تتغير قواعد التأشيرات كثيرًا — تأكد دائمًا من سفارة بلد الوجهة أو قنصليتها قبل الحجز. يُعاد بناء البيانات كل 24 ساعة من مصادر عامة." },
+
     "← travelnow.info":                            { tr:"← travelnow.info", es:"← travelnow.info", de:"← travelnow.info", fr:"← travelnow.info", ar:"← أطلس" },
     "← travelnow.info globe":                      { tr:"← travelnow.info küresi", es:"← Globo travelnow.info", de:"← travelnow.info-Globus", fr:"← Globe travelnow.info", ar:"← كرة أطلس" },
     "← Back to travelnow.info":                    { tr:"← travelnow.info'a dön", es:"← Volver a travelnow.info", de:"← Zurück zu travelnow.info", fr:"← Retour à travelnow.info", ar:"← العودة إلى أطلس" },
@@ -560,7 +583,7 @@
     "Student": { tr:"Öğrenci", es:"Estudiante", de:"Student", fr:"Étudiant", ar:"طالب" },
     "Retired": { tr:"Emekli", es:"Jubilado", de:"Rentner", fr:"Retraité", ar:"متقاعد" },
     "With minor child": { tr:"Reşit olmayan çocukla", es:"Con menor a cargo", de:"Mit minderjährigem Kind", fr:"Avec enfant mineur", ar:"مع طفل قاصر" },
-    "🖨 Print / save PDF": { tr:"🖨 Yazdır / PDF kaydet", es:"🖨 Imprimir / guardar PDF", de:"🖨 Drucken / als PDF speichern", fr:"🖨 Imprimer / PDF", ar:"🖨 طباعة / حفظ PDF" },
+    "Print / save PDF": { tr:"Yazdır / PDF kaydet", es:"Imprimir / guardar PDF", de:"Drucken / als PDF speichern", fr:"Imprimer / PDF", ar:"طباعة / حفظ PDF" },
     "↺ Reset ticks": { tr:"↺ İşaretleri temizle", es:"↺ Restablecer marcas", de:"↺ Häkchen zurücksetzen", fr:"↺ Réinitialiser cases", ar:"↺ إعادة العلامات" },
     "Sources": { tr:"Kaynaklar", es:"Fuentes", de:"Quellen", fr:"Sources", ar:"المصادر" },
 
@@ -873,18 +896,26 @@
     document.body.appendChild(wrap);
   }
 
+  // Public hook for the masthead language select (assets/site-chrome.js).
+  window.ATLAS_STATIC_I18N = { apply: (code) => applyLang(code) };
+
   function init() {
     const lang = currentLang();
-    const theme = currentTheme();
-    injectThemeCSS();
-    applyTheme(theme);
-    injectSwitcher(lang, theme);
+    // Pages stamped with the shared masthead get theme + language controls
+    // from assets/site-chrome.js and their colours from tokens.css. Only an
+    // un-stamped legacy page still needs the injected palette + switcher.
+    if (!document.querySelector("[data-lang-select]")) {
+      const theme = currentTheme();
+      injectThemeCSS();
+      applyTheme(theme);
+      injectSwitcher(lang, theme);
+    }
     applyLang(lang);
     setupObserver();
     // Listen for cross-tab theme changes (StorageEvent fires when another tab
     // writes to localStorage). Keeps theme synced if the SPA is open elsewhere.
     window.addEventListener("storage", (e) => {
-      if (e.key === "atlas.tweaks") applyTheme(currentTheme());
+      if (e.key === "atlas.tweaks" && !document.querySelector("[data-lang-select]")) applyTheme(currentTheme());
       if (e.key === "atlas.lang")   applyLang(currentLang());
     });
   }

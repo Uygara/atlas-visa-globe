@@ -300,10 +300,10 @@ window.transitStatusForGlobe = function (passport, destIso2, opts) {
 // Colours for the transit globe (hex so they resolve identically inside
 // SVG fills and in both themes). "na" falls back to neutral land.
 window.TRANSIT_GLOBE_COLOR = {
-  self: "#60a5fa",
-  free: "#22c55e",
-  twov: "#f59e0b",
-  vr:   "#ef4444",
+  self: "var(--self)",
+  free: "var(--vf)",
+  twov: "var(--voa)",
+  vr:   "var(--vr)",
   na:   "var(--land)",
 };
 

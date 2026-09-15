@@ -27,163 +27,14 @@
 <meta name="twitter:image" content="https://travelnow.info/assets/og.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" />
-<style>
-  :root {
-    /* Backgrounds */
-    --bg-0: #05070d;
-    --bg-1: #0a0f1c;
-    --bg-2: #111827;
-    --bg-3: #1a2236;
-    --panel: rgba(15, 22, 38, 0.72);
-    --panel-border: rgba(148, 173, 220, 0.10);
-    --panel-border-strong: rgba(148, 173, 220, 0.18);
-
-    /* Type */
-    --fg: #e7ecf5;
-    --fg-dim: #aab4c8;
-    --fg-mute: #6b7591;
-    --fg-faint: #4a5269;
-
-    /* Status palette — traffic light, calibrated for dark */
-    --idc: #38bdf8;       /* ID-card / freedom-of-movement travel (no passport), sky blue */
-    --vf: #4ade80;        /* visa-free, vivid green */
-    --vf-glow: #22c55e;
-    --eta: #2dd4bf;       /* travel authorization (ESTA/eTA/NZeTA/UK ETA), teal */
-    --ev: #a3e635;        /* eVisa, lime */
-    --voa: #facc15;       /* visa on arrival, amber */
-    --vr: #ef4444;        /* visa required, red */
-    --vr-glow: #b91c1c;
-    --ban: #3a0510;       /* no entry allowed — near-black blood red, clearly distinct from vr */
-    --na: #2a3245;        /* no data */
-    --self: #60a5fa;      /* the passport country itself */
-    --compare-self: #f59e0b;  /* the compare passport's home country */
-
-    /* Globe land neutral */
-    --land: #1c2638;
-    --land-stroke: #2a3650;
-    --ocean: transparent;
-    --graticule: rgba(120, 140, 180, 0.07);
-
-    --font-sans: "Geist", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-    --font-mono: "Geist Mono", ui-monospace, "SF Mono", Menlo, monospace;
-  }
-
-  * { box-sizing: border-box; }
-  html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    background: var(--bg-0);
-    color: var(--fg);
-    font-family: var(--font-sans);
-    font-feature-settings: "ss01", "cv11";
-    -webkit-font-smoothing: antialiased;
-    overflow: hidden;
-  }
-
-  body {
-    background:
-      radial-gradient(ellipse 80% 60% at 70% 40%, rgba(40, 80, 150, 0.18), transparent 70%),
-      radial-gradient(ellipse 60% 80% at 20% 90%, rgba(80, 30, 130, 0.10), transparent 70%),
-      var(--bg-0);
-  }
-
-  /* Subtle starfield */
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background-image:
-      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.5), transparent),
-      radial-gradient(1px 1px at 80% 70%, rgba(255,255,255,0.4), transparent),
-      radial-gradient(1px 1px at 50% 50%, rgba(255,255,255,0.3), transparent),
-      radial-gradient(1px 1px at 10% 80%, rgba(255,255,255,0.35), transparent),
-      radial-gradient(1px 1px at 90% 20%, rgba(255,255,255,0.4), transparent),
-      radial-gradient(1px 1px at 35% 65%, rgba(255,255,255,0.25), transparent),
-      radial-gradient(1px 1px at 65% 35%, rgba(255,255,255,0.3), transparent);
-    background-size: 250px 250px, 300px 300px, 200px 200px, 350px 350px, 280px 280px, 220px 220px, 320px 320px;
-    pointer-events: none;
-    opacity: 0.5;
-    z-index: 0;
-  }
-
-  #root { position: relative; height: 100vh; width: 100vw; z-index: 1; }
-
-  /* Scrollbar (subtle) */
-  ::-webkit-scrollbar { width: 8px; height: 8px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: rgba(148, 173, 220, 0.12); border-radius: 4px; }
-  ::-webkit-scrollbar-thumb:hover { background: rgba(148, 173, 220, 0.22); }
-
-  /* Globe-specific */
-  .country { transition: fill 220ms ease, opacity 220ms ease; cursor: pointer; }
-  .country:hover { filter: brightness(1.25); }
-  .country.dim { opacity: 0.18; }
-
-  /* Loading */
-  .loading-screen {
-    position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
-    background: var(--bg-0); z-index: 100; transition: opacity 400ms ease;
-  }
-  .loading-screen.hidden { opacity: 0; pointer-events: none; visibility: hidden; }
-  .loading-pulse {
-    width: 80px; height: 80px; border-radius: 50%;
-    background: radial-gradient(circle, rgba(96, 165, 250, 0.6), transparent 70%);
-    animation: pulse 1.6s ease-in-out infinite;
-  }
-  @keyframes pulse {
-    0%, 100% { transform: scale(0.8); opacity: 0.4; }
-    50% { transform: scale(1.1); opacity: 1; }
-  }
-
-  /* Light theme override — cleaner, less yellow than the old paper tone */
-  body.theme-light {
-    background:
-      radial-gradient(ellipse 80% 60% at 70% 40%, rgba(96, 165, 250, 0.10), transparent 70%),
-      #f5f7fb;
-  }
-  body.theme-light::before { opacity: 0; }
-  body.theme-light {
-    --bg-0: #f5f7fb;
-    --bg-1: #eef2f8;
-    --bg-2: #e6ecf4;
-    --bg-3: #dde4ee;
-    --panel: rgba(255, 255, 255, 0.92);
-    --panel-border: rgba(30, 40, 60, 0.10);
-    --panel-border-strong: rgba(30, 40, 60, 0.18);
-    --fg: #0f1722;
-    --fg-dim: #3d4a5e;
-    --fg-mute: #6b7791;
-    --fg-faint: #9aa3b5;
-    /* Lighter, brighter land/sea so the globe doesn't look murky in light mode.
-       Stroke colour kept high-contrast (slate-blue) so country borders read
-       even on the pale palette — earlier --b8c3d2 was nearly invisible. */
-    --land: #dde6f1;
-    --land-stroke: #6b7e9a;
-    --graticule: rgba(60, 90, 130, 0.10);
-    --na: #c8d0dc;
-    /* Ocean blue — softer, brighter tones so the globe reads as 'water'
-       instead of a heavy slate disc on the page. */
-    --sphere-1: #e8f3fc;
-    --sphere-2: #cfe3f5;
-    --sphere-3: #aed1ea;
-    --atm-mid: rgba(96, 165, 250, 0.22);
-  }
-  /* Dark theme defaults for the sphere stops, so the SVG references them
-     too — keeps light/dark switching as a one-class flip. */
-  :root {
-    --sphere-1: #1a2540;
-    --sphere-2: #0d1426;
-    --sphere-3: #06091a;
-    --atm-mid: rgba(96, 165, 250, 0.18);
-  }
-  /* CSS-driven gradient stop colors so the SVG sphere flips with the theme */
-  #sphere stop:nth-child(1) { stop-color: var(--sphere-1); }
-  #sphere stop:nth-child(2) { stop-color: var(--sphere-2); }
-  #sphere stop:nth-child(3) { stop-color: var(--sphere-3); }
-  #atm stop:nth-child(2) { stop-color: var(--atm-mid); }
-</style>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sofia+Sans:ital,wght@0,400..700;1,400..600&family=Sofia+Sans+Extra+Condensed:wght@600..850&family=DM+Mono:wght@400;500&display=swap" />
+<!-- Design system: tokens (colour, type, both themes) + the shared globe-app
+     shell. Same two files power /transit-map/ and /itinerary/. -->
+<link rel="stylesheet" href="/assets/tokens.css?v=20260915a" />
+<link rel="stylesheet" href="/assets/chrome.css?v=20260915a" />
+<link rel="stylesheet" href="/assets/app-shell.css?v=20260915a" />
+<!-- Theme before first paint, so dark-mode visitors never see a light flash. -->
+<script>try{if((JSON.parse(localStorage.getItem("atlas.tweaks")||"{}")).background==="dark")document.documentElement.classList.add("theme-dark")}catch(e){}</script>
 
 <!-- Google AdSense (verification + runtime loader). Must be static <script> in
      <head> so AdSense's HTML-only verification crawler can find it. If you ever
@@ -203,65 +54,70 @@
   <script src="/assets/analytics.js"></script>
 </head>
 <body>
-  <noscript><style>#loading{display:none!important}#root{position:relative;z-index:200;}</style></noscript>
-  <div class="loading-screen" id="loading"><div class="loading-pulse"></div></div>
+  <noscript><style>#loading{display:none!important}html,body{overflow:auto!important;height:auto!important}#root{height:auto!important}</style></noscript>
+  <div class="loading-screen" id="loading" aria-hidden="true">
+    <div class="loading-mark">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="2.75" y="1.75" width="18.5" height="20.5" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="11" r="5.25" stroke="currentColor" stroke-width="1.3"/><ellipse cx="12" cy="11" rx="2.2" ry="5.25" stroke="currentColor" stroke-width="1.1"/><path d="M6.9 11h10.2" stroke="currentColor" stroke-width="1.1"/><path d="M8 19h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      <div class="loading-line"></div>
+    </div>
+  </div>
   <!-- Crawlable content: React replaces #root on mount, so JS visitors get the
        interactive globe while search engines / the AdSense crawler (which may
        not run the in-browser Babel transform) still index real text + links.
        Same content as the app's purpose — not cloaking. -->
   <div id="root">
-    <main style="max-width:860px;margin:0 auto;padding:40px 20px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;color:#e7ecf5;line-height:1.6;">
-      <h1 style="font-size:30px;font-weight:700;letter-spacing:-0.02em;margin:0 0 8px;">travelnow.info — Visa requirements for every passport</h1>
-      <p style="font-size:16px;color:#aab4c8;margin:0 0 18px;">Pick your passport and an interactive globe paints every country by what you'd need to enter today: <strong>visa-free</strong>, <strong>eVisa</strong>, <strong>visa on arrival</strong>, or <strong>visa required</strong>. Free, no signup, and the visa data is refreshed every day from public sources.</p>
-      <p style="font-size:15px;color:#aab4c8;margin:0 0 22px;">We cover 200+ passports and 200+ destinations, plus free tools for airport transit visas, the Schengen 90/180-day rule, the EU's new ETIAS authorization, the 6-month passport-validity rule, and multi-stop trip planning. Every country also has its own page with a full visa-requirements breakdown.</p>
+    <main class="seo-fallback">
+      <h1>travelnow.info — Visa requirements for every passport</h1>
+      <p>Pick your passport and an interactive globe paints every country by what you'd need to enter today: <strong>visa-free</strong>, <strong>eVisa</strong>, <strong>visa on arrival</strong>, or <strong>visa required</strong>. Free, no signup, and the visa data is refreshed every day from public sources.</p>
+      <p>We cover 200+ passports and 200+ destinations, plus free tools for airport transit visas, the Schengen 90/180-day rule, the EU's new ETIAS authorization, the 6-month passport-validity rule, and multi-stop trip planning. Every country also has its own page with a full visa-requirements breakdown.</p>
 
-      <h2 style="font-size:20px;margin:26px 0 10px;">Popular passports</h2>
-      <ul style="columns:2;gap:24px;list-style:none;padding:0;margin:0 0 22px;font-size:15px;">
-        <li><a href="/passport/tr/" style="color:#60a5fa;">Türkiye passport visa requirements</a></li>
-        <li><a href="/passport/us/" style="color:#60a5fa;">United States passport visa requirements</a></li>
-        <li><a href="/passport/gb/" style="color:#60a5fa;">United Kingdom passport visa requirements</a></li>
-        <li><a href="/passport/de/" style="color:#60a5fa;">Germany passport visa requirements</a></li>
-        <li><a href="/passport/in/" style="color:#60a5fa;">India passport visa requirements</a></li>
-        <li><a href="/passport/cn/" style="color:#60a5fa;">China passport visa requirements</a></li>
-        <li><a href="/passport/ng/" style="color:#60a5fa;">Nigeria passport visa requirements</a></li>
-        <li><a href="/passport/br/" style="color:#60a5fa;">Brazil passport visa requirements</a></li>
-        <li><a href="/passport/ph/" style="color:#60a5fa;">Philippines passport visa requirements</a></li>
-        <li><a href="/passport/pk/" style="color:#60a5fa;">Pakistan passport visa requirements</a></li>
-        <li><a href="/passport/" style="color:#60a5fa;">→ Browse all 200+ passports</a></li>
+      <h2>Popular passports</h2>
+      <ul>
+        <li><a href="/passport/tr/">Türkiye passport visa requirements</a></li>
+        <li><a href="/passport/us/">United States passport visa requirements</a></li>
+        <li><a href="/passport/gb/">United Kingdom passport visa requirements</a></li>
+        <li><a href="/passport/de/">Germany passport visa requirements</a></li>
+        <li><a href="/passport/in/">India passport visa requirements</a></li>
+        <li><a href="/passport/cn/">China passport visa requirements</a></li>
+        <li><a href="/passport/ng/">Nigeria passport visa requirements</a></li>
+        <li><a href="/passport/br/">Brazil passport visa requirements</a></li>
+        <li><a href="/passport/ph/">Philippines passport visa requirements</a></li>
+        <li><a href="/passport/pk/">Pakistan passport visa requirements</a></li>
+        <li><a href="/passport/">→ Browse all 200+ passports</a></li>
       </ul>
 
-      <h2 style="font-size:20px;margin:26px 0 10px;">Free visa tools</h2>
-      <ul style="list-style:none;padding:0;margin:0 0 22px;font-size:15px;display:flex;flex-direction:column;gap:6px;">
-        <li><a href="/transit-map/" style="color:#60a5fa;">Transit Map</a> — which airports you can connect through without a transit visa</li>
-        <li><a href="/schengen-calculator/" style="color:#60a5fa;">Schengen 90/180 Calculator</a> — track your days in the Schengen Area</li>
-        <li><a href="/etias/" style="color:#60a5fa;">ETIAS Checker</a> — does the EU's 2026 travel authorization apply to you?</li>
-        <li><a href="/passport-validity/" style="color:#60a5fa;">Passport Validity Checker</a> — the 6-month rule, per destination</li>
-        <li><a href="/itinerary/" style="color:#60a5fa;">Travel Planner</a> — visas, costs and lead times for a multi-stop trip</li>
-        <li><a href="/visa-shortcuts/" style="color:#60a5fa;">Visa Shortcuts</a> — easier entry with visas you already hold</li>
-        <li><a href="/digital-nomad-visa/" style="color:#60a5fa;">Digital Nomad Visas</a> · <a href="/citizenship-by-investment/" style="color:#60a5fa;">Citizenship by Investment</a></li>
+      <h2>Free visa tools</h2>
+      <ul>
+        <li><a href="/transit-map/">Transit Map</a> — which airports you can connect through without a transit visa</li>
+        <li><a href="/schengen-calculator/">Schengen 90/180 Calculator</a> — track your days in the Schengen Area</li>
+        <li><a href="/etias/">ETIAS Checker</a> — does the EU's 2026 travel authorization apply to you?</li>
+        <li><a href="/passport-validity/">Passport Validity Checker</a> — the 6-month rule, per destination</li>
+        <li><a href="/itinerary/">Travel Planner</a> — visas, costs and lead times for a multi-stop trip</li>
+        <li><a href="/visa-shortcuts/">Visa Shortcuts</a> — easier entry with visas you already hold</li>
+        <li><a href="/digital-nomad-visa/">Digital Nomad Visas</a> · <a href="/citizenship-by-investment/">Citizenship by Investment</a></li>
       </ul>
 
-      <h2 style="font-size:20px;margin:26px 0 10px;">Travel guides</h2>
-      <ul style="list-style:none;padding:0;margin:0 0 22px;font-size:15px;display:flex;flex-direction:column;gap:6px;">
-        <li><a href="/guides/visa-types-explained/" style="color:#60a5fa;">Visa-free, eVisa, visa on arrival — what's the difference?</a></li>
-        <li><a href="/guides/schengen-90-180-rule/" style="color:#60a5fa;">How the Schengen 90/180-day rule really works</a></li>
-        <li><a href="/guides/etias-2026-explained/" style="color:#60a5fa;">ETIAS in 2026: who needs it and how it differs from a visa</a></li>
-        <li><a href="/guides/transit-visa-guide/" style="color:#60a5fa;">Transit visas: when changing planes needs paperwork</a></li>
-        <li><a href="/guides/passport-validity-six-month-rule/" style="color:#60a5fa;">The six-month passport-validity rule</a> · <a href="/guides/" style="color:#60a5fa;">all guides →</a></li>
+      <h2>Travel guides</h2>
+      <ul>
+        <li><a href="/guides/visa-types-explained/">Visa-free, eVisa, visa on arrival — what's the difference?</a></li>
+        <li><a href="/guides/schengen-90-180-rule/">How the Schengen 90/180-day rule really works</a></li>
+        <li><a href="/guides/etias-2026-explained/">ETIAS in 2026: who needs it and how it differs from a visa</a></li>
+        <li><a href="/guides/transit-visa-guide/">Transit visas: when changing planes needs paperwork</a></li>
+        <li><a href="/guides/passport-validity-six-month-rule/">The six-month passport-validity rule</a> · <a href="/guides/">all guides →</a></li>
       </ul>
 
-      <h2 style="font-size:20px;margin:26px 0 10px;">How the data is built</h2>
-      <p style="font-size:15px;color:#aab4c8;margin:0 0 10px;">Visa requirements are re-scraped daily from public visa-policy pages and authoritative government sources, on top of a hand-curated correction layer that is checked against official sources. Transit-visa lists come from the UK's Immigration (Passenger Transit Visa) Order and the EU Visa Code. We never invent data: if a fact can't be sourced, we leave it out. Always verify with the destination's embassy before booking — see our <a href="/about/" style="color:#60a5fa;">About</a>, <a href="/terms/" style="color:#60a5fa;">Terms</a> and <a href="/privacy/" style="color:#60a5fa;">Privacy</a> pages.</p>
-      <p style="font-size:14px;color:#aab4c8;margin:0 0 4px;">travelnow.info is an independent project built and maintained by Uygar Atalay. Questions or a data correction? Email <a href="mailto:hello@travelnow.info" style="color:#60a5fa;">hello@travelnow.info</a>.</p>
-      <p style="font-size:13px;color:#6b7591;margin:18px 0 0;">Loading the interactive map… if it doesn't appear, enable JavaScript.</p>
+      <h2>How the data is built</h2>
+      <p>Visa requirements are re-scraped daily from public visa-policy pages and authoritative government sources, on top of a hand-curated correction layer that is checked against official sources. Transit-visa lists come from the UK's Immigration (Passenger Transit Visa) Order and the EU Visa Code. We never invent data: if a fact can't be sourced, we leave it out. Always verify with the destination's embassy before booking — see our <a href="/about/">About</a>, <a href="/terms/">Terms</a> and <a href="/privacy/">Privacy</a> pages.</p>
+      <p>travelnow.info is an independent project built and maintained by Uygar Atalay. Questions or a data correction? Email <a href="mailto:hello@travelnow.info">hello@travelnow.info</a>.</p>
+      <p>Loading the interactive map… if it doesn't appear, enable JavaScript.</p>
 
-      <nav style="margin-top:30px;padding-top:18px;border-top:1px solid rgba(148,173,220,0.15);display:flex;flex-wrap:wrap;gap:14px;font-size:13px;">
-        <a href="/passport/" style="color:#aab4c8;">All passports</a>
-        <a href="/guides/" style="color:#aab4c8;">Guides</a>
-        <a href="/about/" style="color:#aab4c8;">About</a>
-        <a href="/privacy/" style="color:#aab4c8;">Privacy</a>
-        <a href="/terms/" style="color:#aab4c8;">Terms</a>
-        <a href="/contact/" style="color:#aab4c8;">Contact</a>
+      <nav>
+        <a href="/passport/">All passports</a>
+        <a href="/guides/">Guides</a>
+        <a href="/about/">About</a>
+        <a href="/privacy/">Privacy</a>
+        <a href="/terms/">Terms</a>
+        <a href="/contact/">Contact</a>
       </nav>
     </main>
   </div>
@@ -273,7 +129,8 @@
        query, a returning visitor runs NEW app code against STALE data and
        features like the residence-permit upgrades silently no-op. Bump
        together with the JSX ?v= stamp at the bottom of this file. -->
-  <script src="data/i18n.js?v=20260612b"></script>
+  <script src="data/i18n.js?v=20260915a"></script>
+  <script src="/assets/site-nav.js?v=20260915a"></script>
   <script src="data/countries.js"></script>
   <script src="data/country-names.js"></script>
   <script src="data/passports.js?v=20260612b"></script>
@@ -309,8 +166,9 @@
       }
     })();
   </script>
-  <script type="text/babel" src="components/globe.jsx?v=20260612b"></script>
-  <script type="text/babel" src="components/panel.jsx?v=20260612b"></script>
-  <script type="text/babel" src="app.jsx?v=20260612b"></script>
+  <script type="text/babel" src="components/chrome.jsx?v=20260915a"></script>
+  <script type="text/babel" src="components/globe.jsx?v=20260915a"></script>
+  <script type="text/babel" src="components/panel.jsx?v=20260915a"></script>
+  <script type="text/babel" src="app.jsx?v=20260915a"></script>
 </body>
 </html>

@@ -1,4 +1,8 @@
-// Side panel — passport picker, tally, search, country detail, recently-changed feed.
+// Side panel — passport picker, tally, search, country detail, "for you" feed.
+// Visual language (see assets/app-shell.css): the passport picker is a data
+// page with a machine-readable zone, the tally is a ledger with dotted leaders,
+// and a country's verdict is an entry stamp. Shared primitives (Caption,
+// Swatch, Dot, icons, MobileSheetHandle) come from components/chrome.jsx.
 
 // Pretty label for a residence-permit bloc code (used in the detail-card
 // "unlocked by your permit" banner). Falls back to the raw code for unknowns
@@ -9,6 +13,30 @@ function _permitLabel(code) {
     AE: "UAE", SA: "Saudi", KW: "Kuwait", QA: "Qatar", BH: "Bahrain", OM: "Oman",
   };
   return map[code] || code;
+}
+
+// ICAO issuing-state codes for the decorative machine-readable zone on the
+// passport card. (Germany is "D" in real MRZs.) Unknown → ISO2 + filler.
+const _ISO3 = Object.fromEntries(("AF:AFG,AL:ALB,DZ:DZA,AD:AND,AO:AGO,AG:ATG,AR:ARG,AM:ARM,AU:AUS,AT:AUT,AZ:AZE,BS:BHS,BH:BHR,BD:BGD,BB:BRB,BY:BLR,BE:BEL,BZ:BLZ,BJ:BEN,BT:BTN,BO:BOL,BA:BIH,BW:BWA,BR:BRA,BN:BRN,BG:BGR,BF:BFA,BI:BDI,CV:CPV,KH:KHM,CM:CMR,CA:CAN,CF:CAF,TD:TCD,CL:CHL,CN:CHN,CO:COL,KM:COM,CG:COG,CD:COD,CR:CRI,CI:CIV,HR:HRV,CU:CUB,CY:CYP,CZ:CZE,DK:DNK,DJ:DJI,DM:DMA,DO:DOM,EC:ECU,EG:EGY,SV:SLV,GQ:GNQ,ER:ERI,EE:EST,SZ:SWZ,ET:ETH,FJ:FJI,FI:FIN,FR:FRA,GA:GAB,GM:GMB,GE:GEO,DE:D<<,GH:GHA,GR:GRC,GD:GRD,GT:GTM,GN:GIN,GW:GNB,GY:GUY,HT:HTI,HN:HND,HU:HUN,IS:ISL,IN:IND,ID:IDN,IR:IRN,IQ:IRQ,IE:IRL,IL:ISR,IT:ITA,JM:JAM,JP:JPN,JO:JOR,KZ:KAZ,KE:KEN,KI:KIR,KP:PRK,KR:KOR,KW:KWT,KG:KGZ,LA:LAO,LV:LVA,LB:LBN,LS:LSO,LR:LBR,LY:LBY,LI:LIE,LT:LTU,LU:LUX,MG:MDG,MW:MWI,MY:MYS,MV:MDV,ML:MLI,MT:MLT,MH:MHL,MR:MRT,MU:MUS,MX:MEX,FM:FSM,MD:MDA,MC:MCO,MN:MNG,ME:MNE,MA:MAR,MZ:MOZ,MM:MMR,NA:NAM,NR:NRU,NP:NPL,NL:NLD,NZ:NZL,NI:NIC,NE:NER,NG:NGA,MK:MKD,NO:NOR,OM:OMN,PK:PAK,PW:PLW,PS:PSE,PA:PAN,PG:PNG,PY:PRY,PE:PER,PH:PHL,PL:POL,PT:PRT,QA:QAT,RO:ROU,RU:RUS,RW:RWA,KN:KNA,LC:LCA,VC:VCT,WS:WSM,SM:SMR,ST:STP,SA:SAU,SN:SEN,RS:SRB,XK:RKS,SC:SYC,SL:SLE,SG:SGP,SK:SVK,SI:SVN,SB:SLB,SO:SOM,ZA:ZAF,SS:SSD,ES:ESP,LK:LKA,SD:SDN,SR:SUR,SE:SWE,CH:CHE,SY:SYR,TW:TWN,TJ:TJK,TZ:TZA,TH:THA,TL:TLS,TG:TGO,TO:TON,TT:TTO,TN:TUN,TR:TUR,TM:TKM,TV:TUV,UG:UGA,UA:UKR,AE:ARE,GB:GBR,US:USA,UY:URY,UZ:UZB,VU:VUT,VA:VAT,VE:VEN,VN:VNM,YE:YEM,ZM:ZMB,ZW:ZWE,HK:HKG,MO:MAC")
+  .split(",").map(p => p.split(":")));
+
+// Two 44-character MRZ lines built from real data: issuing state + English
+// country name, then the passport's status counts and the snapshot date.
+function mrzLines(iso2) {
+  const c = window.byIso2[iso2];
+  const name = ((c && c.name) || iso2)
+    .normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/ı/g, "i")
+    .toUpperCase().replace(/[^A-Z]+/g, "<");
+  const code = _ISO3[iso2] || (iso2 + "<");
+  const l1 = ("P<" + code + name + "<<").padEnd(44, "<").slice(0, 44);
+  const t = window.tally ? window.tally(iso2) : null;
+  const pad = (n) => String(n || 0).padStart(3, "0");
+  const body = t
+    ? ["IDC" + pad(t.idc), "VF" + pad(t.vf), "ETA" + pad(t.eta), "EV" + pad(t.ev), "VOA" + pad(t.voa), "VR" + pad(t.vr)].join("<")
+    : "";
+  const date = String(window.SNAPSHOT_DATE || "").replace(/-/g, "").slice(2, 8);
+  const l2 = (body + "<<").padEnd(38, "<").slice(0, 38) + date.padStart(6, "<");
+  return [l1, l2];
 }
 
 function Panel({
@@ -28,8 +56,8 @@ function Panel({
   const [showPicker, setShowPickerRaw] = useState(false);
   const [showComparePicker, setShowComparePickerRaw] = useState(false);
   // Wrap the open setters so we also report the open state up to App, which
-  // uses it to route map clicks into the picker (Blok 2 — pick passport by
-  // tapping a country on the globe).
+  // uses it to route map clicks into the picker (pick a passport by tapping
+  // its country on the globe).
   const setShowPicker = (v) => {
     setShowPickerRaw(v);
     if (setPickerMode) setPickerMode(v ? "primary" : null);
@@ -41,12 +69,7 @@ function Panel({
     if (v) setShowPickerRaw(false);
   };
   // Force re-render whenever the user switches language.
-  const [, forceLangTick] = useState(0);
-  useEffect(() => {
-    const onLang = () => forceLangTick(x => x + 1);
-    window.addEventListener("atlas:lang", onLang);
-    return () => window.removeEventListener("atlas:lang", onLang);
-  }, []);
+  useLangTick();
   const groupActive = groupMode && groupPassports && groupPassports.length > 0;
   const tallyData = groupActive
     ? window.tallyGroup(groupPassports)
@@ -63,96 +86,67 @@ function Panel({
       <MobileSheetHandle />
       <PanelHeader />
 
-      <PassportPicker
-        label={window.t("panel.your_passport")}
-        value={passport}
-        open={showPicker}
-        setOpen={setShowPicker}
-        onChange={(v) => { setPassport(v); setShowPicker(false); }}
-      />
-
-      {passport && setVariant && window.passportVariants && window.passportVariants(passport).length > 0 && (
-        <PassportTypeSelector
-          passport={passport}
-          value={variant || "ordinary"}
-          onChange={setVariant}
-        />
-      )}
-
-      {passport && setResidencePermits && (
-        <ResidencePermitPicker
-          value={residencePermits || []}
-          onChange={setResidencePermits}
-        />
-      )}
-
-      {passport && setGroupMode && setGroupPassports && !groupMode && (
-        <DualCitizenshipHint
-          primary={passport}
-          onAccept={(secondary) => {
-            // Switch to Combine mode (which models ONE traveller holding two
-            // passports → best status per destination) and pre-populate the
-            // group with [primary, suggested-secondary]. The user can still
-            // remove the secondary inside the GroupPicker that appears below.
-            setGroupPassports([passport, secondary]);
-            setGroupMode(true);
-            if (setCompareMode) setCompareMode(false);
-          }}
-        />
-      )}
-
-      {/* ── Core: show the result (tally) + how to explore (search) FIRST, so a
-          first-time visitor gets the payoff immediately. Direction sits with
-          the tally because it changes what the count means. ── */}
-      {passport && !groupMode && (
-        <DirectionToggle value={direction} onChange={setDirection} />
-      )}
-
-      {tallyData && (
-        <Tally tally={tallyData} filter={filter} setFilter={setFilter} passport={passport} groupActive={groupActive} />
-      )}
-
-      <CountrySearch
-        passport={passport}
-        search={search}
-        setSearch={setSearch}
-        onPick={onPickFromSearch}
-      />
-
-      {passport === "US" && !groupActive && direction !== "incoming" && (
-        <PopularDestinations passport={passport} onPick={onPickFromSearch} />
-      )}
-
-      {/* ── Advanced modes (compare / group) come after the core result. ── */}
-      {passport && setCompareMode && setGroupMode && (
-        <ModeBar
-          compareMode={compareMode}
-          setCompareMode={setCompareMode}
-          groupMode={groupMode}
-          setGroupMode={setGroupMode}
-        />
-      )}
-
-      {showCompare && !groupMode && (
+      <section className="p-sec">
+        <Caption n={1}>{window.t("panel.your_passport")}</Caption>
         <PassportPicker
-          label={window.t("panel.compare_with")}
-          value={compare}
-          open={showComparePicker}
-          setOpen={setShowComparePicker}
-          onChange={(v) => { setCompare(v); setShowComparePicker(false); }}
-          accent="var(--compare-self)"
-          placeholder={window.t("picker.pick_second")}
-          allowClear
+          value={passport}
+          open={showPicker}
+          setOpen={setShowPicker}
+          onChange={(v) => { setPassport(v); setShowPicker(false); }}
         />
+
+        {passport && setVariant && window.passportVariants && window.passportVariants(passport).length > 0 && (
+          <PassportTypeSelector
+            passport={passport}
+            value={variant || "ordinary"}
+            onChange={setVariant}
+          />
+        )}
+
+        {passport && setResidencePermits && (
+          <ResidencePermitPicker
+            value={residencePermits || []}
+            onChange={setResidencePermits}
+          />
+        )}
+
+        {passport && setGroupMode && setGroupPassports && !groupMode && (
+          <DualCitizenshipHint
+            primary={passport}
+            onAccept={(secondary) => {
+              // Switch to Combine mode (which models ONE traveller holding two
+              // passports → best status per destination) and pre-populate the
+              // group with [primary, suggested-secondary].
+              setGroupPassports([passport, secondary]);
+              setGroupMode(true);
+              if (setCompareMode) setCompareMode(false);
+            }}
+          />
+        )}
+      </section>
+
+      {/* Core payoff first: direction + ledger, then search. */}
+      {tallyData && (
+        <section className="p-sec">
+          <Caption n={2}>{groupActive ? window.t("tally.group_label") : window.t("panel.direction")}</Caption>
+          {passport && !groupMode && (
+            <DirectionToggle value={direction} onChange={setDirection} passport={passport} />
+          )}
+          <Tally tally={tallyData} filter={filter} setFilter={setFilter} groupActive={groupActive} />
+        </section>
       )}
 
-      {groupMode && (
-        <GroupPicker
-          primary={passport}
-          values={groupPassports || []}
-          onChange={setGroupPassports}
+      <section className="p-sec">
+        <CountrySearch
+          passport={passport}
+          search={search}
+          setSearch={setSearch}
+          onPick={onPickFromSearch}
         />
-      )}
+        {passport === "US" && !groupActive && direction !== "incoming" && (
+          <PopularDestinations passport={passport} onPick={onPickFromSearch} />
+        )}
+      </section>
 
       {detailCountry && (passport || groupActive) && (
         <DetailCard
@@ -166,8 +160,40 @@ function Panel({
         />
       )}
 
-      {/* ── "For you" — secondary, daily-return content, collapsible so the
-          first screen can stay focused on the core result. ── */}
+      {/* Advanced modes (compare / combine) after the core result. */}
+      {passport && setCompareMode && setGroupMode && (
+        <section className="p-sec">
+          <Caption n={3}>{window.t("modes.title")}</Caption>
+          <ModeBar
+            compareMode={compareMode}
+            setCompareMode={setCompareMode}
+            groupMode={groupMode}
+            setGroupMode={setGroupMode}
+          />
+          {showCompare && !groupMode && (
+            <div style={{ marginTop: 10 }}>
+              <PassportPicker
+                value={compare}
+                open={showComparePicker}
+                setOpen={setShowComparePicker}
+                onChange={(v) => { setCompare(v); setShowComparePicker(false); }}
+                isCompare
+                placeholder={window.t("picker.pick_second")}
+                allowClear
+              />
+            </div>
+          )}
+          {groupMode && (
+            <GroupPicker
+              primary={passport}
+              values={groupPassports || []}
+              onChange={setGroupPassports}
+            />
+          )}
+        </section>
+      )}
+
+      {/* "For you" — secondary, daily-return content, collapsible. */}
       {!detailCountry && passport && (
         <ForYouSection>
           <WeeklyDigest passport={passport} />
@@ -188,8 +214,7 @@ function Panel({
   );
 }
 
-// Collapsible "For you" block — keeps the daily-return widgets available
-// without dominating the first screen. Collapse state persists.
+// Collapsible "For you" block. Collapse state persists.
 function ForYouSection({ children }) {
   const [open, setOpen] = useState(() => {
     try { return localStorage.getItem("atlas.foryou.collapsed") !== "1"; }
@@ -204,149 +229,41 @@ function ForYouSection({ children }) {
   };
   return (
     <div>
-      <button onClick={toggle} aria-expanded={open} style={{
-        width: "100%", display: "flex", alignItems: "center", gap: 8,
-        marginTop: 4, marginBottom: 10, paddingTop: 12, paddingBottom: 0,
-        background: "transparent", border: "none", borderTop: "1px solid var(--panel-border)",
-        color: "var(--fg-faint)", cursor: "pointer", textAlign: "left",
-        fontSize: 10, fontFamily: "var(--font-mono)",
-        textTransform: "uppercase", letterSpacing: "0.12em",
-      }}>
-        <span style={{ flex: 1 }}>{window.t("panel.for_you")}</span>
-        <svg width="11" height="11" viewBox="0 0 12 12" style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 200ms ease", opacity: 0.6 }}>
-          <path d="M3 4.5 L6 7.5 L9 4.5" stroke="currentColor" strokeWidth="1.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
+      <button type="button" className="collapse-btn" onClick={toggle} aria-expanded={open}>
+        <Caption n={4}>{window.t("panel.for_you")}</Caption>
+        <IconCaret />
       </button>
       {open && children}
     </div>
   );
 }
 
-// Mobile-only drag handle that turns the side panel into a draggable bottom
-// sheet (snap points: peek / half / full). Hidden on desktop via CSS. Drives
-// the panel height through the --sheet-h custom property; tap cycles snaps.
-function MobileSheetHandle() {
-  const ref = useRef(null);
-  useEffect(() => {
-    const handle = ref.current;
-    const panel = handle && handle.closest(".panel");
-    if (!panel) return;
-    const isMobile = () => window.matchMedia("(max-width: 900px)").matches;
-    const snaps = () => [96, Math.round(window.innerHeight * 0.48), Math.round(window.innerHeight * 0.88)];
-    let startY = 0, startH = 0, dragging = false, moved = false, lastH = 0;
-    const setH = (h) => { lastH = h; panel.style.setProperty("--sheet-h", h + "px"); };
-    const curH = () => panel.getBoundingClientRect().height;
-    const nearest = (h) => snaps().reduce((a, b) => Math.abs(b - h) < Math.abs(a - h) ? b : a);
-    const down = (e) => {
-      if (!isMobile()) return;
-      dragging = true; moved = false;
-      startY = e.clientY; startH = curH(); lastH = startH;
-      panel.classList.add("sheet-dragging");
-      try { handle.setPointerCapture(e.pointerId); } catch (err) {}
-    };
-    const move = (e) => {
-      if (!dragging) return;
-      const dy = startY - e.clientY;
-      if (Math.abs(dy) > 3) moved = true;
-      setH(Math.min(window.innerHeight * 0.92, Math.max(72, startH + dy)));
-    };
-    // Snap based on lastH (the height we actually set during the drag), NOT a
-    // fresh getBoundingClientRect — re-reading after re-enabling the transition
-    // returns the pre-animation height and snaps to the wrong (often original)
-    // position. lastH is deterministic.
-    const settle = () => {
-      if (!dragging) return;
-      dragging = false;
-      panel.classList.remove("sheet-dragging");
-      if (!moved) {
-        // Tap → cycle to the next snap (peek → half → full → peek).
-        const order = snaps();
-        const i = order.indexOf(nearest(curH()));
-        setH(order[(i + 1) % order.length]);
-      } else {
-        setH(nearest(lastH));
-      }
-    };
-    const up = settle;
-    // iOS Safari fires pointercancel (not pointerup) when it reclassifies a touch
-    // as a scroll. Without handling it, `dragging` stayed stuck true and the sheet
-    // felt dead. Settle the same way so the drag always resolves.
-    const cancel = settle;
-    handle.addEventListener("pointerdown", down);
-    window.addEventListener("pointermove", move);
-    window.addEventListener("pointerup", up);
-    window.addEventListener("pointercancel", cancel);
-    return () => {
-      handle.removeEventListener("pointerdown", down);
-      window.removeEventListener("pointermove", move);
-      window.removeEventListener("pointerup", up);
-      window.removeEventListener("pointercancel", cancel);
-    };
-  }, []);
-  return (
-    <div ref={ref} className="sheet-handle" aria-hidden="true">
-      <span className="sheet-grabber" />
-    </div>
-  );
-}
-
 function PanelHeader() {
   const date = new Date(window.SNAPSHOT_DATE + "T00:00:00");
-  const formatted = date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  const formatted = isNaN(date) ? "" : date.toLocaleDateString(window.ATLAS_LANG || "en", { day: "numeric", month: "short", year: "numeric" });
   return (
-    <header style={{ marginBottom: 18 }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        <a href="/" style={{
-          fontSize: 15, fontWeight: 600, letterSpacing: "-0.01em",
-          fontFamily: "var(--font-mono)", color: "var(--fg)", textDecoration: "none",
-        }}>travelnow.info</a>
-        <div style={{
-          marginLeft: "auto",
-          fontSize: 10,
-          fontFamily: "var(--font-mono)",
-          color: "var(--fg-mute)",
-          letterSpacing: "0.04em",
-        }}>
-          {window.t("header.updated")} {formatted}
-        </div>
+    <header className="p-head">
+      <div style={{ flex: 1, minWidth: 0 }}>
+        <div className="p-head-title">{window.t("header.tagline")}</div>
       </div>
-      <p style={{
-        margin: "6px 0 0 0",
-        fontSize: 12,
-        color: "var(--fg-mute)",
-        lineHeight: 1.45,
-      }}>
-        {window.t("header.tagline")}
-      </p>
+      {formatted && (
+        <time className="p-head-date" dateTime={window.SNAPSHOT_DATE} title={window.t("footer.refresh")}>
+          {window.t("header.updated")} {formatted}
+        </time>
+      )}
     </header>
   );
 }
 
-function Logomark() {
-  return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-      <circle cx="12" cy="12" r="10" stroke="var(--self)" strokeWidth="1.4" />
-      <ellipse cx="12" cy="12" rx="4" ry="10" stroke="var(--self)" strokeWidth="1.4" />
-      <path d="M2 12 H22" stroke="var(--self)" strokeWidth="1.4" />
-      <circle cx="12" cy="12" r="2" fill="var(--vf)" />
-    </svg>
-  );
-}
-
 // Segmented control under the passport picker for passports that have
-// type variants (TR has hususi / hizmet / diplomatik on top of bordo;
-// other countries will appear here as the scraper populates them).
-// Ordinary is always first and is the implicit default.
+// type variants (TR has hususi / hizmet / diplomatik on top of bordo; GB has
+// its nationality classes). Ordinary is always first and the default.
 function PassportTypeSelector({ passport, value, onChange }) {
   const variants = window.passportVariants(passport);
   if (!variants.length) return null;
   const lang = window.ATLAS_LANG || "en";
   const opts = [
-    { key: "ordinary",
-      label: window.passportVariantLabel(passport, "ordinary"),
-      sub: null,
-      source: null,
-    },
+    { key: "ordinary", label: window.passportVariantLabel(passport, "ordinary"), sub: null, source: null },
     ...variants.map(k => {
       const e = window.PASSPORT_VARIANTS[passport][k];
       return {
@@ -359,71 +276,32 @@ function PassportTypeSelector({ passport, value, onChange }) {
   ];
   const active = opts.find(o => o.key === value) || opts[0];
   return (
-    <div style={{ marginBottom: 14 }}>
-      <div style={{
-        fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
-        textTransform: "uppercase", letterSpacing: "0.10em", marginBottom: 6,
-      }}>{window.t("panel.passport_type")}</div>
-      <div style={{
-        display: "flex", flexWrap: "wrap", gap: 4, padding: 3,
-        background: "var(--bg-2)", borderRadius: 10,
-        border: "1px solid var(--panel-border)",
-      }}>
-        {opts.map(o => {
-          const on = o.key === value;
-          return (
-            <button key={o.key} onClick={() => onChange(o.key)}
-              style={{
-                flex: "1 1 0", minWidth: 0, padding: "7px 6px", borderRadius: 7,
-                border: "none",
-                background: on ? "var(--self)" : "transparent",
-                color: on ? "#05070d" : "var(--fg-dim)",
-                fontFamily: "inherit", fontSize: 11,
-                fontWeight: on ? 600 : 500, cursor: "pointer",
-                whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis",
-              }}
-              title={o.label}>
-              {o.label}
-            </button>
-          );
-        })}
+    <div style={{ marginTop: 12 }}>
+      <div className="p-hint" style={{ margin: "0 0 5px", fontWeight: 600, color: "var(--ink-2)" }}>{window.t("panel.passport_type")}</div>
+      <div className="seg seg-wide" role="group" aria-label={window.t("panel.passport_type")}>
+        {opts.map(o => (
+          <button key={o.key} type="button" aria-pressed={o.key === value} onClick={() => onChange(o.key)} title={o.label}>
+            {o.label}
+          </button>
+        ))}
       </div>
       {(active.sub || active.source) && (
-        <div style={{
-          marginTop: 6, fontSize: 11, color: "var(--fg-mute)",
-          lineHeight: 1.5,
-        }}>
+        <p className="p-hint">
           {active.sub}
           {active.source && (
-            <> · <a href={active.source} target="_blank" rel="noopener nofollow"
-                    style={{ color: "var(--fg-mute)", textDecoration: "none",
-                             borderBottom: "1px dotted var(--fg-faint)" }}>
-              {window.t("cond.source")}
-            </a></>
+            <> · <a className="link-quiet" href={active.source} target="_blank" rel="noopener nofollow">{window.t("cond.source")}</a></>
           )}
-        </div>
+        </p>
       )}
-      {value !== "ordinary" && (
-        <div style={{
-          marginTop: 6, fontSize: 10, color: "var(--fg-faint)",
-          fontFamily: "var(--font-mono)",
-        }}>
-          {window.t("panel.variant_disclaimer")}
-        </div>
-      )}
+      {value !== "ordinary" && <p className="p-fine" style={{ marginTop: 4 }}>{window.t("panel.variant_disclaimer")}</p>}
     </div>
   );
 }
 
-// Residence-permit picker — a row of 6 chips (Schengen / US / UK / Canada /
-// Australia / GCC). When the user selects one or more, the resolver applies
-// the matching upgrades and the whole map repaints. Only the 6 well-documented
-// blocs are surfaced; per-country permits are too varied and too thin in the
-// source data to expose without diluting the list.
+// Residence-permit picker — six well-documented blocs. Selecting any of them
+// applies the matching upgrades and the whole map repaints.
 function ResidencePermitPicker({ value, onChange }) {
   const [open, setOpen] = useState(false);
-  // Localised label + emoji for each bloc. Falls back to a generic English
-  // label when i18n hasn't been wired (so it never reads as a missing key).
   const T = (k, fallback) => { const v = window.t ? window.t(k) : k; return v === k ? fallback : v; };
   const blocs = [
     { key: "SCHENGEN", flag: "🇪🇺", label: T("permits.schengen", "Schengen residence") },
@@ -441,70 +319,39 @@ function ResidencePermitPicker({ value, onChange }) {
   };
   const active = value.length > 0;
   return (
-    <div style={{ marginBottom: 14 }}>
-      <button
-        onClick={() => setOpen(o => !o)}
-        aria-expanded={open}
-        style={{
-          width: "100%",
-          display: "flex", alignItems: "center", gap: 8, padding: "8px 10px",
-          background: active ? "rgba(96,165,250,0.10)" : "transparent",
-          border: "1px " + (active ? "solid var(--self)" : "dashed var(--panel-border-strong)"),
-          borderRadius: 8, color: "var(--fg)",
-          fontFamily: "inherit", fontSize: 12, cursor: "pointer",
-        }}>
-        <span style={{ fontSize: 14 }}>🪪</span>
-        <span style={{ flex: 1, textAlign: "left" }}>
+    <div style={{ marginTop: 10 }}>
+      <button type="button" className={"row-btn" + (active ? " is-on" : "")} onClick={() => setOpen(o => !o)} aria-expanded={open}>
+        <span className="row-btn-label">
           {active
-            ? T("permits.active", "Holding") + " " + value.map(v => {
-                const b = blocs.find(x => x.key === v); return b ? b.flag : v;
-              }).join(" ")
-            : T("permits.add", "Also have a residence permit? Add it →")}
+            ? <>{T("permits.active", "Holding")} <span className="flag">{value.map(v => { const b = blocs.find(x => x.key === v); return b ? b.flag : v; }).join(" ")}</span></>
+            : T("permits.add", "Also have a residence permit? Add it →").replace(/\s*→\s*$/, "")}
         </span>
-        <span style={{ fontSize: 10, color: "var(--fg-mute)" }}>{open ? "▴" : "▾"}</span>
+        <IconCaret className={open ? "is-flipped" : ""} />
       </button>
       {open && (
-        <div style={{
-          marginTop: 6, padding: "8px 6px",
-          background: "var(--bg-2)",
-          border: "1px solid var(--panel-border)",
-          borderRadius: 8,
-        }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 4 }}>
-            {blocs.map(b => {
-              const on = set.has(b.key);
-              return (
-                <label key={b.key} style={{
-                  display: "flex", alignItems: "center", gap: 7, cursor: "pointer",
-                  padding: "6px 8px", borderRadius: 6, fontSize: 12,
-                  background: on ? "rgba(96,165,250,0.08)" : "transparent",
-                  border: "1px solid " + (on ? "var(--self)" : "transparent"),
-                }}>
-                  <input type="checkbox" checked={on} onChange={() => toggle(b.key)}
-                         style={{ accentColor: "var(--self)" }} />
-                  <span style={{ fontSize: 13 }}>{b.flag}</span>
-                  <span style={{ flex: 1, color: on ? "var(--fg)" : "var(--fg-dim)" }}>{b.label}</span>
-                </label>
-              );
-            })}
+        <div className="box" style={{ marginTop: 6, marginBottom: 0 }}>
+          <div className="check-grid">
+            {blocs.map(b => (
+              <label key={b.key} className={"check" + (set.has(b.key) ? " is-on" : "")}>
+                <input type="checkbox" checked={set.has(b.key)} onChange={() => toggle(b.key)} />
+                <span className="flag">{b.flag}</span>
+                <span>{b.label}</span>
+              </label>
+            ))}
           </div>
-          <div style={{ fontSize: 10, color: "var(--fg-faint)", marginTop: 6, lineHeight: 1.4, padding: "0 4px" }}>
+          <p className="p-fine" style={{ margin: "8px 0 0" }}>
             {T("permits.hint", "Holding any of these unlocks easier entry to certain destinations — the map and the tally update automatically.")}
-          </div>
+          </p>
         </div>
       )}
     </div>
   );
 }
 
-// Most-visited destinations for the active passport — currently curated only
-// for US (the site's largest audience). Eight chips, one tap → that country's
-// detail card, with a live status dot so the answer ("do I need anything?") is
-// visible before tapping. Destination list = top US outbound markets per the
-// U.S. Commerce Dept / NTTO outbound statistics (Mexico, Canada, UK, France,
-// Italy, Dominican Republic, Japan, Spain) — stable year over year, no
-// scraping needed. Extend _POPULAR_DESTS with another passport's list if
-// another audience grows.
+// Most-visited destinations for the active passport — curated only for US
+// (the site's largest audience). Destination list = top US outbound markets
+// per U.S. Commerce Dept / NTTO outbound statistics. Extend _POPULAR_DESTS
+// with another passport's list if another audience grows.
 const _POPULAR_DESTS = {
   US: ["MX", "CA", "GB", "FR", "IT", "DO", "JP", "ES"],
 };
@@ -512,37 +359,19 @@ function PopularDestinations({ passport, onPick }) {
   const dests = _POPULAR_DESTS[passport];
   if (!dests) return null;
   const T = (k, fallback) => { const v = window.t ? window.t(k) : k; return v === k ? fallback : v; };
-  const statusColor = (s) =>
-    ({ idc: "var(--idc)", vf: "var(--vf)", eta: "var(--eta)", ev: "var(--ev)",
-       voa: "var(--voa)", vr: "var(--vr)", ban: "var(--ban)" }[s] || "var(--na)");
   return (
-    <div style={{ marginBottom: 14 }}>
-      <div style={{
-        fontSize: 10, fontWeight: 600, letterSpacing: "0.08em",
-        color: "var(--fg-mute)", textTransform: "uppercase", marginBottom: 6,
-      }}>
-        {T("popular.title", "Popular with US travelers")}
-      </div>
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
+    <div style={{ marginTop: 12 }}>
+      <div className="p-hint" style={{ margin: "0 0 6px", fontWeight: 600, color: "var(--ink-2)" }}>{T("popular.title", "Popular with US travelers")}</div>
+      <div className="chips">
         {dests.map(iso2 => {
           const c = (window.COUNTRIES || []).find(x => x.iso2 === iso2);
           if (!c) return null;
           const r = window.resolveStatus(passport, iso2);
           return (
-            <button key={iso2} onClick={() => onPick(iso2)}
-              title={c.name}
-              style={{
-                display: "inline-flex", alignItems: "center", gap: 5,
-                padding: "5px 9px", borderRadius: 999, cursor: "pointer",
-                background: "var(--bg-2)", border: "1px solid var(--panel-border)",
-                color: "var(--fg-dim)", fontFamily: "inherit", fontSize: 11.5,
-              }}>
-              <span style={{ fontSize: 13 }}>{c.flag}</span>
-              <span>{c.name}</span>
-              <span style={{
-                width: 7, height: 7, borderRadius: "50%",
-                background: statusColor(r.status), flex: "none",
-              }} />
+            <button key={iso2} type="button" className="chip" onClick={() => onPick(iso2)} title={statusLabel(r.status)}>
+              <span className="flag">{c.flag}</span>
+              <span>{window.countryName(iso2)}</span>
+              <Dot s={r.status} />
             </button>
           );
         })}
@@ -551,68 +380,38 @@ function PopularDestinations({ passport, onPick }) {
   );
 }
 
-// Dual-citizenship hint — shown under the passport picker for primary passports
-// whose holders very often (or commonly) hold a second, stronger passport.
-// Tapping the "Add" CTA pre-populates Combine mode with both passports so the
-// map repaints with the user's BEST access. Source data + strength tiers live
-// in data/dual-citizenship.js. Quiet (1 line + 1 CTA) so it never feels like
-// an ad; only renders if a hint exists for the active passport.
+// Dual-citizenship hint — for passports whose holders very often hold a
+// second, stronger passport. "Add" pre-populates Combine mode with both.
+// Data + strength tiers live in data/dual-citizenship.js.
 function DualCitizenshipHint({ primary, onAccept }) {
   const hints = window.DUAL_CITIZENSHIP_HINTS;
   if (!hints || !hints[primary]) return null;
   const hint = hints[primary];
-  // Look up the suggested-passport's display name + flag from PASSPORT_LIST
-  // (loaded by frontend-tail.js) so we render the same human label as the
-  // picker. Bail silently if the secondary isn't a known passport.
   const list = window.PASSPORT_LIST || [];
   const sec = list.find(p => p.iso2 === hint.suggest);
   if (!sec) return null;
-  // Try a localised verb based on strength; fall back to the EN reason in the
-  // dict so we never render a missing key.
-  const T = (k, fallback) => {
-    const v = window.t ? window.t(k) : k;
-    return v === k ? fallback : v;
-  };
+  const T = (k, fallback) => { const v = window.t ? window.t(k) : k; return v === k ? fallback : v; };
   const verbKey = hint.strength === "strong"
     ? T("dual.likely", "You probably also hold")
     : hint.strength === "common"
       ? T("dual.may_hold", "Many also hold")
       : T("dual.may_qualify", "You may also qualify for");
-  const ctaLabel = T("dual.add_passport", "Add it →");
-  // Country flag via the countries list (it carries the flag emoji).
   const cflag = (window.COUNTRIES || []).find(c => c.iso2 === hint.suggest);
-  const flagStr = (cflag && cflag.flag) || "🪪";
   return (
-    <div style={{
-      marginBottom: 14, padding: "10px 12px",
-      background: "rgba(96,165,250,0.08)",
-      border: "1px solid rgba(96,165,250,0.32)",
-      borderRadius: 10, display: "flex", alignItems: "center", gap: 10,
-    }}>
-      <span style={{ fontSize: 18, lineHeight: 1 }}>{flagStr}</span>
-      <div style={{ flex: 1, fontSize: 12, color: "var(--fg)", lineHeight: 1.4 }}>
-        <strong style={{ color: "var(--self)" }}>{verbKey}</strong>{" "}
-        {T("dual.a_passport", "a")} {sec.name} {T("dual.passport_word", "passport")}.
-        <div style={{ fontSize: 10.5, color: "var(--fg-mute)", marginTop: 2 }}>
-          {hint.reason}
-        </div>
-      </div>
-      <button onClick={() => onAccept(hint.suggest)}
-        style={{
-          background: "var(--self)", color: "#05070d",
-          border: "none", borderRadius: 7,
-          padding: "7px 11px", fontSize: 12, fontWeight: 600,
-          cursor: "pointer", fontFamily: "inherit", whiteSpace: "nowrap",
-        }}>
-        {ctaLabel}
+    <div className="note note-accent" style={{ marginTop: 10, marginBottom: 0 }}>
+      <span className="note-k">
+        {cflag && <span className="flag" style={{ marginRight: 6 }}>{cflag.flag}</span>}
+        {verbKey} {T("dual.a_passport", "a")} {sec.name} {T("dual.passport_word", "passport")}.
+      </span>
+      <button type="button" className="btn btn-primary" style={{ gridRow: "1 / span 2", gridColumn: 2, padding: "5px 10px", fontSize: 12.5 }} onClick={() => onAccept(hint.suggest)}>
+        {T("dual.add_passport", "Add it →").replace(/\s*→\s*$/, "")}
       </button>
+      <span className="note-s">{hint.reason}</span>
     </div>
   );
 }
 
-// Compare / group mode toggles, always visible under the passport picker.
-// Compare and group are mutually exclusive in the UI — enabling one disables
-// the other so the panel never shows two competing secondary pickers.
+// Compare / combine toggles. Mutually exclusive: enabling one disables the other.
 function ModeBar({ compareMode, setCompareMode, groupMode, setGroupMode }) {
   const toggleCompare = () => {
     const next = !compareMode;
@@ -624,110 +423,52 @@ function ModeBar({ compareMode, setCompareMode, groupMode, setGroupMode }) {
     setGroupMode(next);
     if (next && compareMode) setCompareMode(false);
   };
-  const chip = (on, onClick, label, accent) => (
-    <button onClick={onClick} aria-pressed={on}
-      style={{
-        flex: 1, display: "flex", alignItems: "center", justifyContent: "center", gap: 6,
-        padding: "8px 10px", borderRadius: 8, cursor: "pointer",
-        fontFamily: "inherit", fontSize: 12, fontWeight: on ? 600 : 500,
-        border: "1px solid " + (on ? accent : "var(--panel-border-strong)"),
-        background: on ? "rgba(96,165,250,0.10)" : "transparent",
-        color: on ? "var(--fg)" : "var(--fg-mute)",
-        transition: "all 160ms ease",
-      }}>
-      <span style={{ color: accent, fontSize: 14, lineHeight: 1 }}>{on ? "✓" : "+"}</span>
-      <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{label}</span>
-    </button>
-  );
   return (
-    <div style={{
-      marginBottom: 14, padding: "11px 12px",
-      background: "var(--bg-2)", border: "1px solid var(--panel-border-strong)",
-      borderRadius: 10,
-    }}>
-      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 3 }}>
-        <span style={{ fontSize: 16, lineHeight: 1 }}>🪪</span>
-        <span style={{ fontSize: 13, fontWeight: 600, color: "var(--fg)" }}>{window.t("modes.title")}</span>
-      </div>
-      <div style={{ fontSize: 11, color: "var(--fg-mute)", lineHeight: 1.4, marginBottom: 9 }}>
-        {window.t("modes.hint")}
-      </div>
-      <div style={{ display: "flex", gap: 6 }}>
-        {chip(compareMode, toggleCompare, window.t("mode.compare_short"), "var(--compare-self)")}
-        {chip(groupMode, toggleGroup, window.t("mode.group_short"), "var(--self)")}
+    <div>
+      <p className="p-hint" style={{ margin: "0 0 8px" }}>{window.t("modes.hint")}</p>
+      <div className="mode-pair">
+        <button type="button" className="btn" aria-pressed={compareMode} onClick={toggleCompare}>
+          <span className="mode-mark" style={{ "--m": "var(--compare-self)" }} aria-hidden="true">{compareMode ? "✓" : "+"}</span>
+          {window.t("mode.compare_short")}
+        </button>
+        <button type="button" className="btn" aria-pressed={groupMode} onClick={toggleGroup}>
+          <span className="mode-mark" style={{ "--m": "var(--self)" }} aria-hidden="true">{groupMode ? "✓" : "+"}</span>
+          {window.t("mode.group_short")}
+        </button>
       </div>
     </div>
   );
 }
 
-function DirectionToggle({ value, onChange }) {
+function DirectionToggle({ value, onChange, passport }) {
   // "outgoing" — colour each country by what *I* need to enter it.
   // "incoming" — colour each country by what *its citizens* need to visit me.
-  // The toggle used to be a quiet little segmented control buried in the
-  // panel; users couldn't find it. Now it's a labelled card with an icon
-  // on each side so the meaning of each direction is unambiguous.
+  const cur = value || "outgoing";
   const opts = [
-    { v: "outgoing", l: window.t("panel.outgoing"),  hint: window.t("panel.outgoing_hint"),  emoji: "✈️" },
-    { v: "incoming", l: window.t("panel.incoming"),  hint: window.t("panel.incoming_hint"),  emoji: "🛬" },
+    { v: "outgoing", l: window.t("panel.outgoing"), hint: window.t("panel.outgoing_hint"), a: passport + " →" },
+    { v: "incoming", l: window.t("panel.incoming"), hint: window.t("panel.incoming_hint"), a: "→ " + passport },
   ];
-  const active = opts.find(o => o.v === (value || "outgoing"));
+  const active = opts.find(o => o.v === cur);
   return (
     <div style={{ marginBottom: 14 }}>
-      <div style={{
-        fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
-        textTransform: "uppercase", letterSpacing: "0.10em", marginBottom: 6,
-        display: "flex", alignItems: "center", gap: 6,
-      }}>
-        <span style={{
-          width: 8, height: 8, borderRadius: 2,
-          background: "var(--self)", boxShadow: "0 0 6px var(--self)",
-        }} />
-        {window.t("panel.direction")}
+      <div className="tabs" role="tablist" aria-label={window.t("panel.direction")}>
+        {opts.map(o => (
+          <button key={o.v} type="button" role="tab" aria-selected={o.v === cur} onClick={() => onChange(o.v)} title={o.hint}>
+            <span className="arrow">{o.a}</span>{o.l}
+          </button>
+        ))}
       </div>
-      <div style={{
-        display: "flex", gap: 4, padding: 4,
-        background: "var(--bg-2)", borderRadius: 10,
-        border: "1px solid var(--panel-border-strong)",
-      }}>
-        {opts.map(o => {
-          const on = o.v === (value || "outgoing");
-          return (
-            <button key={o.v} onClick={() => onChange(o.v)}
-              title={o.hint}
-              style={{
-                flex: 1, padding: "9px 8px", borderRadius: 7,
-                border: "none",
-                background: on ? "var(--self)" : "transparent",
-                color: on ? "#05070d" : "var(--fg-dim)",
-                fontFamily: "inherit", fontSize: 12,
-                fontWeight: on ? 600 : 500,
-                cursor: "pointer",
-                transition: "background 160ms ease, color 160ms ease",
-                display: "flex", flexDirection: "column",
-                alignItems: "center", gap: 2,
-                lineHeight: 1.2,
-              }}>
-              <span style={{ fontSize: 14 }}>{o.emoji}</span>
-              <span>{o.l}</span>
-            </button>
-          );
-        })}
-      </div>
-      <div style={{ fontSize: 11, color: "var(--fg-mute)", marginTop: 6, lineHeight: 1.5 }}>
-        {active?.hint}
-      </div>
+      <p className="p-hint">{active?.hint}</p>
     </div>
   );
 }
 
-// Group mode picker: up to 4 passports. The primary passport (top picker) is
-// auto-included if the user hasn't deselected it.
+// Combine: up to MAX passports held by ONE traveller. The primary passport is
+// auto-included the first time the picker mounts.
 function GroupPicker({ primary, values, onChange }) {
-  const [open, setOpen] = useState(false);
   const [pickerOpen, setPickerOpen] = useState(false);
-  const MAX = 10; // one person can realistically combine several passports/residencies
+  const MAX = 10;
 
-  // Auto-seed with the primary the first time the picker mounts.
   useEffect(() => {
     if (primary && values.length === 0) onChange([primary]);
   }, [primary]); // eslint-disable-line
@@ -740,71 +481,37 @@ function GroupPicker({ primary, values, onChange }) {
   };
 
   return (
-    <div style={{ marginBottom: 14 }}>
-      <div style={{
-        fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
-        textTransform: "uppercase", letterSpacing: "0.10em", marginBottom: 6,
-        display: "flex", alignItems: "center", gap: 6,
-      }}>
-        <span style={{ width: 8, height: 8, borderRadius: 2, background: "var(--vf)", boxShadow: "0 0 6px var(--vf)" }} />
-        {window.t("group.label")} ({values.length}/{MAX})
+    <div style={{ marginTop: 12 }}>
+      <div className="p-hint" style={{ margin: "0 0 6px", fontWeight: 600, color: "var(--ink-2)" }}>
+        {window.t("group.label")} <span className="mono" style={{ fontWeight: 400, color: "var(--ink-3)" }}>{values.length}/{MAX}</span>
       </div>
-
-      <div style={{
-        background: "var(--bg-2)",
-        border: "1px solid var(--panel-border-strong)",
-        borderRadius: 10,
-        padding: 10,
-      }}>
-        <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: values.length ? 8 : 0 }}>
-          {values.map(iso => {
-            const c = window.byIso2[iso];
-            if (!c) return null;
-            return (
-              <div key={iso} style={{
-                display: "inline-flex", alignItems: "center", gap: 6,
-                background: "var(--bg-3)", border: "1px solid var(--panel-border)",
-                borderRadius: 999, padding: "5px 10px", fontSize: 12,
-              }}>
-                <span style={{ fontSize: 14 }}>{c.flag}</span>
-                <span>{window.countryName(iso)}</span>
-                <button
-                  onClick={() => remove(iso)}
-                  aria-label={window.t("group.remove", { name: window.countryName(iso) })}
-                  style={{ background: "transparent", border: "none", color: "var(--fg-mute)", cursor: "pointer", fontSize: 14, padding: 0, lineHeight: 1 }}>
-                  ×
-                </button>
-              </div>
-            );
-          })}
-        </div>
-        {values.length < MAX && (
-          <button
-            onClick={() => setPickerOpen(!pickerOpen)}
-            style={{
-              width: "100%", padding: "8px 10px",
-              background: "transparent",
-              border: "1px dashed var(--panel-border-strong)",
-              borderRadius: 8, color: "var(--fg-dim)",
-              cursor: "pointer", fontFamily: "inherit", fontSize: 12,
-            }}>
-            {window.t("group.add_passport")}
-          </button>
-        )}
+      <div className="chips" style={{ marginBottom: values.length ? 8 : 0 }}>
+        {values.map(iso => {
+          const c = window.byIso2[iso];
+          if (!c) return null;
+          return (
+            <span key={iso} className="chip" style={{ cursor: "default" }}>
+              <span className="flag">{c.flag}</span>
+              <span>{window.countryName(iso)}</span>
+              <button type="button" className="chip-x" onClick={() => remove(iso)}
+                aria-label={window.t("group.remove", { name: window.countryName(iso) })}>×</button>
+            </span>
+          );
+        })}
       </div>
-
+      {values.length < MAX && (
+        <button type="button" className="btn btn-block box-dashed" style={{ borderStyle: "dashed" }} onClick={() => setPickerOpen(!pickerOpen)} aria-expanded={pickerOpen}>
+          {window.t("group.add_passport")}
+        </button>
+      )}
       {pickerOpen && (
-        <GroupAddDropdown
-          existing={values}
-          onPick={add}
-          onClose={() => setPickerOpen(false)}
-        />
+        <GroupAddDropdown existing={values} onPick={add} onClose={() => setPickerOpen(false)} />
       )}
     </div>
   );
 }
 
-function GroupAddDropdown({ existing, onPick, onClose }) {
+function GroupAddDropdown({ existing, onPick }) {
   const [q, setQ] = useState("");
   const filtered = window.PASSPORT_LIST
     .filter(p => !existing.includes(p.iso2))
@@ -817,102 +524,56 @@ function GroupAddDropdown({ existing, onPick, onClose }) {
     })
     .slice(0, 50);
   return (
-    <div style={{
-      marginTop: 6, background: "var(--bg-2)",
-      border: "1px solid var(--panel-border-strong)", borderRadius: 10,
-      overflow: "hidden",
-    }}>
-      <input autoFocus type="text" placeholder={window.t("picker.search")} value={q} onChange={(e) => setQ(e.target.value)}
-        style={{
-          width: "100%", padding: "9px 12px", background: "transparent",
-          border: "none", borderBottom: "1px solid var(--panel-border)",
-          color: "var(--fg)", fontSize: 13, outline: "none",
-        }} />
-      <div style={{ maxHeight: 200, overflow: "auto" }}>
+    <div className="dd">
+      <input autoFocus type="text" className="field dd-search" placeholder={window.t("picker.search")} value={q} onChange={(e) => setQ(e.target.value)} />
+      <div className="dd-list" style={{ maxHeight: 220 }}>
         {filtered.map(p => {
           const c = window.byIso2[p.iso2];
           return (
-            <button key={p.iso2} onClick={() => onPick(p.iso2)}
-              style={{
-                width: "100%", textAlign: "left", display: "flex", alignItems: "center", gap: 10,
-                padding: "7px 12px", background: "transparent", border: "none",
-                color: "var(--fg)", cursor: "pointer", fontSize: 13, fontFamily: "inherit",
-                borderBottom: "1px solid rgba(148,173,220,0.05)",
-              }}>
-              <span style={{ fontSize: 16 }}>{c?.flag}</span>
-              <span>{window.countryName(p.iso2)}</span>
-              <span style={{ marginLeft: "auto", color: "var(--fg-mute)", fontFamily: "var(--font-mono)", fontSize: 11 }}>{p.iso2}</span>
+            <button key={p.iso2} type="button" className="dd-item" onClick={() => onPick(p.iso2)}>
+              <span className="flag">{c?.flag}</span>
+              <span className="dd-grow">{window.countryName(p.iso2)}</span>
+              <span className="dd-code">{p.iso2}</span>
             </button>
           );
         })}
-        {filtered.length === 0 && (
-          <div style={{ padding: 14, color: "var(--fg-mute)", fontSize: 12 }}>{window.t("picker.no_matches_short")}</div>
-        )}
+        {filtered.length === 0 && <div className="dd-empty">{window.t("picker.no_matches_short")}</div>}
       </div>
     </div>
   );
 }
 
-function PassportPicker({ label, value, open, setOpen, onChange, accent, placeholder, allowClear }) {
+// The passport "data page". Shows the chosen passport like the bio page of a
+// real one — including a machine-readable zone generated from its data.
+function PassportPicker({ value, open, setOpen, onChange, isCompare, placeholder, allowClear }) {
   const current = value ? window.PASSPORTS[value] : null;
   const country = value ? window.byIso2[value] : null;
-  const accentColor = accent || "var(--self)";
+  const mrz = value ? mrzLines(value) : null;
   return (
-    <div style={{ marginBottom: 14 }}>
-      <div style={{
-        fontSize: 10,
-        fontFamily: "var(--font-mono)",
-        color: "var(--fg-mute)",
-        textTransform: "uppercase",
-        letterSpacing: "0.10em",
-        marginBottom: 6,
-        display: "flex",
-        alignItems: "center",
-        gap: 6,
-      }}>
-        <span style={{
-          width: 8, height: 8, borderRadius: 2,
-          background: accentColor, boxShadow: `0 0 6px ${accentColor}`,
-        }} />
-        {label}
-      </div>
-      <button
-        onClick={() => setOpen(!open)}
-        className="picker-trigger"
-        style={{
-          width: "100%",
-          background: open ? "var(--bg-3)" : "var(--bg-2)",
-          border: `1px solid ${open ? accentColor : "var(--panel-border-strong)"}`,
-          borderRadius: 10,
-          padding: "10px 12px",
-          color: "var(--fg)",
-          textAlign: "left",
-          cursor: "pointer",
-          display: "flex",
-          alignItems: "center",
-          gap: 10,
-          fontFamily: "inherit",
-          fontSize: 14,
-          transition: "all 180ms ease",
-        }}
-      >
+    <div>
+      <button type="button" className={"pp-card" + (isCompare ? " is-compare" : "")} onClick={() => setOpen(!open)} aria-expanded={open}
+        aria-label={(isCompare ? window.t("panel.compare_with") : window.t("panel.your_passport")) + (country ? ": " + window.countryName(value) : "")}>
+        <span className="pp-doc" aria-hidden="true">
+          {isCompare ? window.t("panel.compare_with") : "Passport · Pasaport · Passeport"}
+          <IconCaret />
+        </span>
         {country ? (
-          <>
-            <span style={{ fontSize: 20 }}>{country.flag}</span>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontWeight: 500, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                {window.countryName(value)}
-              </div>
-              <div style={{ fontSize: 11, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", display: "flex", alignItems: "center", gap: 6 }}>
-                {current?.rank && <span>Rank #{current.rank}</span>}
-                <span>· {value}</span>
-              </div>
-            </div>
-          </>
+          <span className="pp-main">
+            <span className="flag pp-flag" aria-hidden="true">{country.flag}</span>
+            <span style={{ minWidth: 0, flex: 1 }}>
+              <span className="pp-name" style={{ display: "block" }}>{window.countryName(value)}</span>
+              <span className="pp-meta" style={{ display: "block" }}>
+                {value}
+                {(current?.rank || computedRank(value)) && <> · {window.t("pulse.rank")} #{current?.rank || computedRank(value)}</>}
+              </span>
+            </span>
+          </span>
         ) : (
-          <span style={{ color: "var(--fg-mute)" }}>{placeholder || window.t("picker.select_passport")}</span>
+          <span className="pp-empty" style={{ display: "block" }}>{placeholder || window.t("picker.select_passport")}</span>
         )}
-        <Caret rotated={open} />
+        {mrz && (
+          <span className="mrz" aria-hidden="true"><span>{mrz[0]}</span><span>{mrz[1]}</span></span>
+        )}
       </button>
       {open && (
         <PassportDropdown
@@ -926,20 +587,9 @@ function PassportPicker({ label, value, open, setOpen, onChange, accent, placeho
   );
 }
 
-function Caret({ rotated }) {
-  return (
-    <svg width="12" height="12" viewBox="0 0 12 12" style={{ transform: rotated ? "rotate(180deg)" : "none", transition: "transform 200ms ease", flexShrink: 0, opacity: 0.5 }}>
-      <path d="M3 4.5 L6 7.5 L9 4.5" stroke="currentColor" strokeWidth="1.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
 function PassportDropdown({ value, onChange, allowClear, onClear }) {
   const [q, setQ] = useState("");
-  // Pin the currently-selected passport to the top of the dropdown so that
-  // after the user taps a country on the map, opening the picker again shows
-  // their pick right at the top with a SELECTED badge. The rest of the list
-  // follows in its normal order.
+  // Pin the currently-selected passport to the top of the list.
   const list = useMemo(() => {
     const ql = q.toLowerCase().trim();
     const filtered = window.PASSPORT_LIST.filter(p => {
@@ -955,67 +605,12 @@ function PassportDropdown({ value, onChange, allowClear, onClear }) {
     return [selected, ...filtered];
   }, [q, value]);
   return (
-    <div style={{
-      marginTop: 6,
-      background: "var(--bg-2)",
-      border: "1px solid var(--panel-border-strong)",
-      borderRadius: 10,
-      overflow: "hidden",
-      boxShadow: "0 12px 32px rgba(0,0,0,0.5)",
-    }}>
-      <input
-        autoFocus
-        placeholder={window.t("picker.search_passports")}
-        value={q}
-        onChange={(e) => setQ(e.target.value)}
-        style={{
-          width: "100%",
-          background: "transparent",
-          border: "none",
-          borderBottom: "1px solid var(--panel-border)",
-          padding: "10px 12px",
-          color: "var(--fg)",
-          fontFamily: "inherit",
-          fontSize: 13,
-          outline: "none",
-        }}
-      />
-      <div style={{
-        padding: "8px 12px",
-        background: "rgba(96,165,250,0.06)",
-        borderBottom: "1px solid var(--panel-border)",
-        fontSize: 11,
-        color: "var(--fg-mute)",
-        fontFamily: "var(--font-mono)",
-        letterSpacing: "0.04em",
-        display: "flex",
-        alignItems: "center",
-        gap: 6,
-      }}>
-        <span style={{ color: "var(--self)" }}>🗺</span>
-        <span>{window.t("picker.tap_map_hint")}</span>
-      </div>
-      <div style={{ maxHeight: 280, overflowY: "auto" }}>
+    <div className="dd">
+      <input autoFocus className="field dd-search" placeholder={window.t("picker.search_passports")} value={q} onChange={(e) => setQ(e.target.value)} />
+      <div className="dd-tip">{window.t("picker.tap_map_hint")}</div>
+      <div className="dd-list" role="listbox">
         {allowClear && (
-          <button
-            onClick={onClear}
-            className="dropdown-item"
-            style={{
-              width: "100%",
-              background: "transparent",
-              border: "none",
-              padding: "9px 12px",
-              color: "var(--fg-mute)",
-              textAlign: "left",
-              cursor: "pointer",
-              fontFamily: "inherit",
-              fontSize: 13,
-              display: "flex",
-              alignItems: "center",
-              gap: 8,
-              fontStyle: "italic",
-            }}
-          >
+          <button type="button" className="dd-item" onClick={onClear} style={{ color: "var(--ink-3)", fontStyle: "italic" }}>
             {window.t("picker.clear")}
           </button>
         )}
@@ -1023,167 +618,74 @@ function PassportDropdown({ value, onChange, allowClear, onClear }) {
           const c = window.byIso2[p.iso2];
           const active = p.iso2 === value;
           return (
-            <button
-              key={p.iso2}
-              onClick={() => onChange(p.iso2)}
-              className="dropdown-item"
-              style={{
-                width: "100%",
-                background: active ? "rgba(96,165,250,0.10)" : "transparent",
-                border: "none",
-                padding: "9px 12px",
-                color: active ? "var(--self)" : "var(--fg)",
-                textAlign: "left",
-                cursor: "pointer",
-                fontFamily: "inherit",
-                fontSize: 13,
-                display: "flex",
-                alignItems: "center",
-                gap: 10,
-              }}
-            >
-              <span style={{ fontSize: 16 }}>{c?.flag}</span>
-              <span style={{ flex: 1 }}>{window.countryName(p.iso2)}</span>
-              {active && (
-                <span style={{
-                  fontSize: 9,
-                  fontFamily: "var(--font-mono)",
-                  background: "var(--self)",
-                  color: "#05070d",
-                  padding: "2px 6px",
-                  borderRadius: 4,
-                  fontWeight: 600,
-                  letterSpacing: "0.06em",
-                  textTransform: "uppercase",
-                }}>
-                  {window.t("picker.selected")}
-                </span>
-              )}
-              {p.rank && (
-                <span style={{ fontSize: 11, color: "var(--fg-mute)", fontFamily: "var(--font-mono)" }}>
-                  #{p.rank}
-                </span>
-              )}
+            <button key={p.iso2} type="button" role="option" aria-selected={active} className="dd-item" onClick={() => onChange(p.iso2)}>
+              <span className="flag">{c?.flag}</span>
+              <span className="dd-grow">{window.countryName(p.iso2)}</span>
+              {active && <span className="dd-tag">{window.t("picker.selected")}</span>}
+              {p.rank && <span className="dd-code">#{p.rank}</span>}
             </button>
           );
         })}
-        {list.length === 0 && (
-          <div style={{ padding: 16, color: "var(--fg-mute)", fontSize: 13, textAlign: "center" }}>
-            {window.t("picker.no_matches")}
-          </div>
-        )}
+        {list.length === 0 && <div className="dd-empty">{window.t("picker.no_matches")}</div>}
       </div>
     </div>
   );
 }
 
-function Tally({ tally, filter, setFilter, passport, groupActive }) {
+// The ledger: one big number, a proportional bar, and filter rows with dotted
+// leaders — printed-index style.
+function Tally({ tally, filter, setFilter, groupActive }) {
   const total = (tally.idc || 0) + tally.vf + (tally.eta || 0) + tally.ev + tally.voa + tally.vr + (tally.ban || 0);
   const rows = [
-    // ID-card travel (no passport needed) — easiest tier, shown first when present.
-    ...((tally.idc || 0) > 0 ? [{ k: "idc", ...STATUS_COLOR.idc, n: tally.idc, label: window.t("status.idc") }] : []),
-    { k: "vf",  ...STATUS_COLOR.vf,  n: tally.vf,  label: window.t("status.vf")  },
-    // ETA (ESTA / eTA / NZeTA / UK ETA): only shown when the passport has some —
-    // weaker passports get none, so an always-on 0 row would just be noise.
-    ...((tally.eta || 0) > 0 ? [{ k: "eta", ...STATUS_COLOR.eta, n: tally.eta, label: window.t("status.eta") }] : []),
-    { k: "ev",  ...STATUS_COLOR.ev,  n: tally.ev,  label: window.t("status.ev")  },
-    { k: "voa", ...STATUS_COLOR.voa, n: tally.voa, label: window.t("status.voa") },
-    { k: "vr",  ...STATUS_COLOR.vr,  n: tally.vr,  label: window.t("status.vr")  },
-    // Only surface "No entry allowed" when the passport actually has some — most
-    // passports have zero, and an always-on 0 row would just add noise.
-    ...((tally.ban || 0) > 0 ? [{ k: "ban", ...STATUS_COLOR.ban, n: tally.ban, label: window.t("status.ban") }] : []),
+    // ID-card travel only when present; ETA only when present; ban only when present.
+    ...((tally.idc || 0) > 0 ? [{ k: "idc", n: tally.idc }] : []),
+    { k: "vf", n: tally.vf },
+    ...((tally.eta || 0) > 0 ? [{ k: "eta", n: tally.eta }] : []),
+    { k: "ev", n: tally.ev },
+    { k: "voa", n: tally.voa },
+    { k: "vr", n: tally.vr },
+    ...((tally.ban || 0) > 0 ? [{ k: "ban", n: tally.ban }] : []),
   ];
   const accessScore = (tally.idc || 0) + tally.vf + (tally.eta || 0) + tally.ev + tally.voa;
   return (
-    <div style={{ marginBottom: 16 }}>
-      <div style={{
-        display: "flex",
-        alignItems: "baseline",
-        gap: 8,
-        marginBottom: 10,
-      }}>
-        <div style={{
-          fontSize: 32,
-          fontWeight: 600,
-          letterSpacing: "-0.02em",
-          lineHeight: 1,
-          fontFamily: "var(--font-sans)",
-        }}>
-          {accessScore}
-        </div>
-        <div style={{ fontSize: 11, color: "var(--fg-mute)", letterSpacing: "0.04em" }}>
-          {groupActive ? window.t("tally.group_label") : window.t("tally.accessible")}<br/>
-          <span style={{ fontFamily: "var(--font-mono)", color: "var(--fg-faint)" }}>
-            {window.t("tally.of")} {total}
-            {groupActive && " · " + window.t("tally.worst_case")}
-          </span>
-        </div>
+    <div>
+      <div className="score">
+        <span className="score-n">{accessScore}</span>
+        <span className="score-l">
+          {groupActive ? window.t("tally.group_label") : window.t("tally.accessible")}<br />
+          <span className="mono">{window.t("tally.of")} {total}{groupActive && " · " + window.t("tally.worst_case")}</span>
+        </span>
       </div>
 
-      {/* Stacked bar */}
-      <div style={{
-        display: "flex",
-        height: 6,
-        borderRadius: 3,
-        overflow: "hidden",
-        marginBottom: 12,
-        background: "var(--bg-3)",
-      }}>
+      <div className="bar" aria-hidden="true">
         {rows.map(r => r.n > 0 && (
-          <div key={r.k} style={{
-            width: `${(r.n / total) * 100}%`,
-            background: r.fill,
-            boxShadow: `0 0 8px ${r.fill}`,
-          }} />
+          <span key={r.k} className={r.k === "ban" ? "sw-ban" : ""}
+            style={{ flex: `${r.n} 0 0`, background: r.k === "ban" ? undefined : `var(--${r.k})` }} />
         ))}
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 1 }}>
-        <button
-          onClick={() => setFilter("all")}
-          className={"filter-row" + (filter === "all" ? " active" : "")}
-          style={filterRowStyle(filter === "all")}
-        >
-          <span style={{ width: 8, height: 8, borderRadius: 2, background: "var(--fg-mute)" }} />
-          <span style={{ flex: 1, textAlign: "left" }}>{window.t("tally.filter_all")}</span>
-          <span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--fg-mute)" }}>{total}</span>
-        </button>
-        {rows.map(r => (
-          <button
-            key={r.k}
-            onClick={() => setFilter(filter === r.k ? "all" : r.k)}
-            className={"filter-row" + (filter === r.k ? " active" : "")}
-            style={filterRowStyle(filter === r.k)}
-          >
-            <span style={{
-              width: 8, height: 8, borderRadius: 2,
-              background: r.fill,
-              boxShadow: `0 0 8px ${r.fill}`,
-            }} />
-            <span style={{ flex: 1, textAlign: "left" }}>{r.label}</span>
-            <span style={{ fontFamily: "var(--font-mono)", fontSize: 12, color: "var(--fg-mute)" }}>{r.n}</span>
+      <ul className="ledger">
+        <li>
+          <button type="button" className="lg-row" aria-pressed={filter === "all"} onClick={() => setFilter("all")}>
+            <span className="sw sw-all" aria-hidden="true" />
+            <span className="lg-label">{window.t("tally.filter_all")}</span>
+            <span className="lg-dots" />
+            <span className="lg-n">{total}</span>
           </button>
+        </li>
+        {rows.map(r => (
+          <li key={r.k}>
+            <button type="button" className="lg-row" aria-pressed={filter === r.k} onClick={() => setFilter(filter === r.k ? "all" : r.k)}>
+              <Swatch s={r.k} />
+              <span className="lg-label">{statusLabel(r.k)}</span>
+              <span className="lg-dots" />
+              <span className="lg-n">{r.n}</span>
+            </button>
+          </li>
         ))}
-      </div>
+      </ul>
     </div>
   );
-}
-
-function filterRowStyle(active) {
-  return {
-    display: "flex",
-    alignItems: "center",
-    gap: 10,
-    padding: "8px 10px",
-    background: active ? "rgba(96,165,250,0.08)" : "transparent",
-    border: `1px solid ${active ? "rgba(96,165,250,0.25)" : "transparent"}`,
-    borderRadius: 6,
-    color: "var(--fg-dim)",
-    fontSize: 13,
-    cursor: "pointer",
-    transition: "all 140ms ease",
-    fontFamily: "inherit",
-  };
 }
 
 function CountrySearch({ passport, search, setSearch, onPick }) {
@@ -1198,64 +700,29 @@ function CountrySearch({ passport, search, setSearch, onPick }) {
   }, [search]);
 
   return (
-    <div style={{ marginBottom: 16 }}>
-      <div style={{ position: "relative" }}>
-        <SearchIcon />
+    <div>
+      <div className="search">
+        <IconSearch />
         <input
+          id="country-search"
+          className="field"
+          type="search"
           placeholder={window.t("panel.search_placeholder")}
+          aria-label={window.t("panel.search_placeholder")}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          style={{
-            width: "100%",
-            background: "var(--bg-2)",
-            border: "1px solid var(--panel-border-strong)",
-            borderRadius: 8,
-            padding: "9px 12px 9px 32px",
-            color: "var(--fg)",
-            fontFamily: "inherit",
-            fontSize: 13,
-            outline: "none",
-          }}
         />
       </div>
       {results.length > 0 && (
-        <div style={{
-          marginTop: 4,
-          background: "var(--bg-2)",
-          border: "1px solid var(--panel-border-strong)",
-          borderRadius: 8,
-          overflow: "hidden",
-        }}>
+        <div className="dd">
           {results.map(c => {
             const r = passport ? window.resolveStatus(passport, c.iso2) : { status: "na" };
-            const sc = STATUS_COLOR[r.status];
             return (
-              <button
-                key={c.iso2}
-                onClick={() => { onPick(c.iso2); setSearch(""); }}
-                style={{
-                  width: "100%",
-                  background: "transparent",
-                  border: "none",
-                  padding: "8px 12px",
-                  color: "var(--fg)",
-                  textAlign: "left",
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 10,
-                  fontFamily: "inherit",
-                  fontSize: 13,
-                }}
-                className="dropdown-item"
-              >
-                <span style={{ fontSize: 16 }}>{c.flag}</span>
-                <span style={{ flex: 1 }}>{window.countryName(c.iso2)}</span>
-                <span style={{
-                  width: 6, height: 6, borderRadius: "50%",
-                  background: sc.fill,
-                  boxShadow: `0 0 6px ${sc.fill}`,
-                }} />
+              <button key={c.iso2} type="button" className="dd-item" onClick={() => { onPick(c.iso2); setSearch(""); }}>
+                <span className="flag">{c.flag}</span>
+                <span className="dd-grow">{window.countryName(c.iso2)}</span>
+                <span className="dd-code">{statusLabel(r.status)}</span>
+                <Dot s={r.status} />
               </button>
             );
           })}
@@ -1265,25 +732,26 @@ function CountrySearch({ passport, search, setSearch, onPick }) {
   );
 }
 
-function SearchIcon() {
-  return (
-    <svg
-      width="14" height="14" viewBox="0 0 16 16"
-      style={{ position: "absolute", left: 11, top: "50%", transform: "translateY(-50%)", color: "var(--fg-mute)", pointerEvents: "none" }}
-    >
-      <circle cx="7" cy="7" r="5" stroke="currentColor" strokeWidth="1.4" fill="none" />
-      <path d="M11 11 L14 14" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-    </svg>
-  );
+// Status → stamp colour variable. "self" / "na" get neutral ink.
+function stampVar(s) {
+  return ["idc", "vf", "eta", "ev", "voa", "vr", "ban"].includes(s) ? `var(--${s})` : "var(--ink-3)";
 }
 
 function DetailCard({ passport, compare, iso2, onClose, direction, groupPassports, variant }) {
+  const ref = useRef(null);
+  // Bring the record into view when a new country is picked — it can sit
+  // below the fold of the panel.
+  useEffect(() => {
+    if (ref.current && ref.current.scrollIntoView) {
+      ref.current.scrollIntoView({ block: "nearest", behavior: "smooth" });
+    }
+  }, [iso2]);
+
   const dest = window.byIso2[iso2];
   if (!dest) return null;
   const groupActive = Array.isArray(groupPassports) && groupPassports.length > 0;
   const incoming = direction === "incoming" && !groupActive;
-  // Variant only applies to outgoing single-passport mode; group + incoming
-  // fall back to the ordinary lookup so the math composes cleanly.
+  // Variant only applies to outgoing single-passport mode.
   const variantActive = !!variant && variant !== "ordinary" && !groupActive && !incoming;
   const r = groupActive
     ? window.resolveGroupStatus(groupPassports, iso2)
@@ -1298,7 +766,6 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
   const groupRows = groupActive
     ? groupPassports.map(p => ({ p, r: window.resolveStatus(p, iso2) }))
     : null;
-  const sc = STATUS_COLOR[r.status];
   const myPp = window.byIso2[passport];
 
   const NOTES = {
@@ -1311,17 +778,9 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
     self: window.t("detail.note.self"),
     na:   window.t("detail.note.na"),
   };
-  const localizedStatusLabel = (s) => {
-    const k = "status." + s;
-    const tr = window.t(k);
-    return tr === k ? (STATUS_COLOR[s]?.label || s) : tr;
-  };
 
-  // ── Dual-citizenship "recommended passport" ────────────────────────────
-  // When two passports are active (compare mode, outgoing, no group), pick
-  // the one with the strictly better status for this destination and lead
-  // with a recommendation pill. The compare detail row below still shows
-  // both statuses so users can sanity-check the choice.
+  // Dual-citizenship "recommended passport": with two passports active
+  // (compare, outgoing), lead with whichever gets the strictly better status.
   const ORDER = { self: 0, idc: 1, vf: 2, eta: 3, ev: 4, voa: 5, vr: 6, ban: 7, na: 8 };
   let recommended = null;
   if (compare && rc && !groupActive && !incoming) {
@@ -1329,328 +788,162 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
     const cScore = ORDER[rc.status] ?? 5;
     if (rScore !== cScore) {
       recommended = rScore < cScore
-        ? { passport, r, label: window.countryName(passport), flag: myPp?.flag }
-        : { passport: compare, r: rc, label: window.countryName(compare), flag: window.byIso2[compare]?.flag };
+        ? { r, label: window.countryName(passport), flag: myPp?.flag }
+        : { r: rc, label: window.countryName(compare), flag: window.byIso2[compare]?.flag };
     }
   }
+  const continent = dest.continent
+    ? (window.t("cont." + dest.continent) !== ("cont." + dest.continent) ? window.t("cont." + dest.continent) : dest.continent)
+    : "—";
+  const caveat = window.entryCaveat ? window.entryCaveat(iso2, r.status) : null;
+  const cautions = [r.note, caveat].filter(Boolean);
+  const from = incoming ? dest.flag : (groupActive ? "" : myPp?.flag);
+  const to = incoming ? myPp?.flag : dest.flag;
+
   return (
-    <div style={{
-      background: "var(--bg-2)",
-      border: "1px solid var(--panel-border-strong)",
-      borderRadius: 12,
-      padding: 14,
-      marginBottom: 16,
-      position: "relative",
-    }}>
-      <button
-        onClick={onClose}
-        aria-label={window.t("detail.close")}
-        style={{
-          position: "absolute", top: 10, right: 10,
-          background: "transparent", border: "none", color: "var(--fg-mute)",
-          cursor: "pointer", padding: 2, lineHeight: 0,
-        }}
-      >
-        <svg width="14" height="14" viewBox="0 0 14 14"><path d="M3 3 L11 11 M11 3 L3 11" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
-      </button>
-
-      <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12, paddingRight: 28 }}>
-        <span style={{ fontSize: 32, lineHeight: 1 }}>{dest.flag}</span>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 16, fontWeight: 600, letterSpacing: "-0.01em" }}>{window.countryName(iso2)}</div>
-          <div style={{ fontSize: 11, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
-            {dest.continent ? (window.t("cont." + dest.continent) !== ("cont." + dest.continent) ? window.t("cont." + dest.continent) : dest.continent) : "—"}
-          </div>
+    <article ref={ref} className="entry" aria-label={window.countryName(iso2)}>
+      <div className="entry-top">
+        <span className="flag entry-flag" aria-hidden="true">{dest.flag}</span>
+        <div style={{ minWidth: 0 }}>
+          <div className="entry-name">{window.countryName(iso2)}</div>
+          <div className="entry-sub">{continent}</div>
         </div>
-        <WatchToggle iso2={iso2} />
+        <div className="entry-actions">
+          <WatchToggle iso2={iso2} />
+          <button type="button" className="icon-btn" onClick={onClose} aria-label={window.t("detail.close")}><IconClose /></button>
+        </div>
       </div>
 
-      {recommended && (
-        <div style={{
-          display: "flex", alignItems: "center", gap: 8,
-          padding: "8px 10px",
-          background: "rgba(34,197,94,0.10)",
-          border: "1px solid rgba(34,197,94,0.40)",
-          borderRadius: 8,
-          marginBottom: 10,
-          fontSize: 12,
-        }}>
-          <span style={{
-            fontSize: 9, fontFamily: "var(--font-mono)", color: "var(--vf)",
-            textTransform: "uppercase", letterSpacing: "0.10em",
-            background: "rgba(34,197,94,0.18)", padding: "2px 6px",
-            borderRadius: 4,
-          }}>
-            {window.t("detail.recommended")}
-          </span>
-          <span style={{ fontSize: 16 }}>{recommended.flag}</span>
-          <span style={{ color: "var(--fg)", fontWeight: 500, flex: 1, minWidth: 0,
-                         overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-            {recommended.label}
-          </span>
-          <span style={{
-            width: 8, height: 8, borderRadius: "50%",
-            background: STATUS_COLOR[recommended.r.status]?.fill,
-            boxShadow: `0 0 6px ${STATUS_COLOR[recommended.r.status]?.fill}`,
-          }} />
-          <span style={{ color: "var(--fg)", fontWeight: 500 }}>
-            {localizedStatusLabel(recommended.r.status)}
-          </span>
-        </div>
-      )}
-
-      <div style={{
-        display: "flex", alignItems: "center", gap: 10,
-        padding: "10px 12px",
-        background: "var(--bg-3)",
-        borderRadius: 8,
-        marginBottom: 10,
-      }}>
-        <span style={{ fontSize: 18 }}>{myPp?.flag}</span>
-        <Arrow />
-        <span style={{
-          width: 10, height: 10, borderRadius: "50%",
-          background: sc.fill, boxShadow: `0 0 10px ${sc.fill}`,
-        }}/>
-        <div style={{ flex: 1 }}>
-          <div style={{ fontSize: 13, fontWeight: 500 }}>{r.fom ? window.t("detail.fom") : localizedStatusLabel(r.status)}</div>
+      <div className="entry-verdict">
+        <div className="stamp" style={{ "--st": stampVar(r.status) }}>
+          <span className="stamp-k">{r.fom ? window.t("detail.fom") : statusLabel(r.status)}</span>
           {r.fom
-            ? <div style={{ fontSize: 11, color: "var(--fg-mute)", fontFamily: "var(--font-mono)" }}>{window.t("detail.fom_sub")}</div>
-            : (r.days && <div style={{ fontSize: 11, color: "var(--fg-mute)", fontFamily: "var(--font-mono)" }}>{window.t("detail.up_to_days", { n: r.days })}</div>)}
+            ? <span className="stamp-s">{window.t("detail.fom_sub")}</span>
+            : (r.days ? <span className="stamp-s">{window.t("detail.up_to_days", { n: r.days })}</span> : null)}
         </div>
+        {(from || to) && (
+          <span className="route" aria-hidden="true">
+            {from && <span className="flag">{from}</span>}
+            <span>→</span>
+            {to && <span className="flag">{to}</span>}
+          </span>
+        )}
       </div>
 
-      {/* Residence-permit upgrade banner — shown when applyResidenceUpgrade
-          flipped the status because the user activated a held permit. Helps
-          the user understand WHY this country lit up green/lime. */}
       {r.upgradedBy && (
-        <div style={{
-          display: "flex", gap: 8, padding: "8px 10px", marginBottom: 10,
-          background: "rgba(56,189,248,0.10)", border: "1px solid rgba(56,189,248,0.35)",
-          borderRadius: 8,
-        }}>
-          <span style={{ fontSize: 13, lineHeight: 1.3 }}>🪪</span>
-          <div style={{ fontSize: 11, lineHeight: 1.45, color: "var(--fg-dim)" }}>
-            <strong style={{ color: "var(--fg)" }}>
-              {window.t("detail.via_permit_title") !== "detail.via_permit_title"
-                ? window.t("detail.via_permit_title") : "Unlocked by your permit"}
-            </strong>{" "}
-            {(window.t("detail.via_permit_sub", { which: _permitLabel(r.upgradedBy) }) !== "detail.via_permit_sub")
-              ? window.t("detail.via_permit_sub", { which: _permitLabel(r.upgradedBy) })
-              : "Easier entry thanks to your " + _permitLabel(r.upgradedBy) + " residence/visa. Without it, this country would normally be visa-required."}
-          </div>
+        <div className="note note-info">
+          <span className="note-k">{tr("detail.via_permit_title", "Unlocked by your permit")}</span>
+          <span className="note-s">
+            {tr("detail.via_permit_sub",
+              "Easier entry thanks to your " + _permitLabel(r.upgradedBy) + " residence/visa. Without it, this country would normally be visa-required.",
+              { which: _permitLabel(r.upgradedBy) })}
+          </span>
         </div>
       )}
 
       {/* Entry-mode / temporary-policy caveats (land vs air, time-limited
-          waivers). Sourced from data/visa-overrides.js — shown only when they
-          actually apply to this destination + status. */}
-      {(() => {
-        const caveat = window.entryCaveat ? window.entryCaveat(iso2, r.status) : null;
-        const notes = [r.note, caveat].filter(Boolean);
-        if (!notes.length) return null;
-        return (
-          <div style={{
-            display: "flex", gap: 8, padding: "8px 10px", marginBottom: 10,
-            background: "rgba(250,204,21,0.08)", border: "1px solid rgba(250,204,21,0.25)",
-            borderRadius: 8,
-          }}>
-            <span style={{ fontSize: 13, lineHeight: 1.3 }}>⚠️</span>
-            <div style={{ fontSize: 11, lineHeight: 1.45, color: "var(--fg-dim)" }}>
-              {notes.map((n, i) => <div key={i} style={{ marginTop: i ? 4 : 0 }}>{n}</div>)}
-            </div>
-          </div>
-        );
-      })()}
-
-      <p style={{ fontSize: 12, lineHeight: 1.5, color: "var(--fg-dim)", margin: "0 0 10px 0" }}>
-        {NOTES[r.status]}
-      </p>
-
-      {/* Order: good-news first, then trip warnings (grouped), then
-          practical info, then sponsored slots, then secondary CTA at
-          the bottom. Keeps the most actionable items above the fold. */}
-
-      {!groupActive && (
-        <ConditionsBox passport={passport} destIso2={iso2} baseStatus={r.status} />
+          waivers), sourced from data/visa-overrides.js. */}
+      {cautions.length > 0 && (
+        <div className="note note-warn">
+          {cautions.map((n, i) => <span key={i} className={i === 0 ? "note-k" : "note-s"} style={i === 0 ? { fontWeight: 500 } : null}>{n}</span>)}
+        </div>
       )}
 
-      {!groupActive && (
-        <TripNotesGroup
-          passport={passport}
-          destIso2={iso2}
-        />
-      )}
+      <p className="entry-note">{NOTES[r.status]}</p>
 
-      {!groupActive && (
-        <VisaFeeBox passport={passport} destIso2={iso2} status={r.status} />
-      )}
-
+      {/* Order: good news, then trip warnings (grouped), then practical info,
+          then sponsored slots, then the secondary CTA. */}
+      {!groupActive && <ConditionsBox passport={passport} destIso2={iso2} baseStatus={r.status} />}
+      {!groupActive && <TripNotesGroup passport={passport} destIso2={iso2} />}
+      {!groupActive && <VisaFeeBox passport={passport} destIso2={iso2} status={r.status} />}
       {!groupActive && <NewsBox passport={passport} destIso2={iso2} />}
 
       <AffiliatePartners status={r.status} iso2={iso2} />
-
       <AlertsCTA iso2={iso2} destName={window.countryName(iso2)} />
-
       <AdSlot slotKey="sidebar" />
 
       {rc && compare && (
-        <div style={{
-          padding: 10,
-          borderRadius: 8,
-          border: "1px dashed var(--panel-border-strong)",
-          background: "rgba(96,165,250,0.05)",
-        }}>
-          <div style={{ fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6 }}>{window.t("detail.compare")}</div>
+        <div className="box box-dashed" style={{ marginBottom: 0 }}>
+          <div className="p-hint" style={{ margin: "0 0 6px", fontWeight: 600, color: "var(--ink-2)" }}>{window.t("detail.compare")}</div>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <span style={{ fontSize: 18 }}>{window.byIso2[compare]?.flag}</span>
-            <Arrow />
-            <span style={{
-              width: 10, height: 10, borderRadius: "50%",
-              background: STATUS_COLOR[rc.status].fill, boxShadow: `0 0 10px ${STATUS_COLOR[rc.status].fill}`,
-            }}/>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 13, fontWeight: 500 }}>{localizedStatusLabel(rc.status)}</div>
-              {rc.days && <div style={{ fontSize: 11, color: "var(--fg-mute)", fontFamily: "var(--font-mono)" }}>{window.t("detail.up_to_days", { n: rc.days })}</div>}
-            </div>
+            <span className="flag" style={{ fontSize: 18 }}>{window.byIso2[compare]?.flag}</span>
+            <span className="stamp is-small" style={{ "--st": stampVar(rc.status) }}><span className="stamp-k">{statusLabel(rc.status)}</span></span>
+            {rc.days && <span className="mono" style={{ marginLeft: "auto", fontSize: 12, color: "var(--ink-3)" }}>{window.t("detail.up_to_days", { n: rc.days })}</span>}
           </div>
+          {recommended && (
+            <div className="entry-recommend">
+              <span className="tag">{window.t("detail.recommended")}</span>
+              <span className="flag">{recommended.flag}</span>
+              <span style={{ flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontWeight: 600 }}>{recommended.label}</span>
+              <Dot s={recommended.r.status} />
+              <span>{statusLabel(recommended.r.status)}</span>
+            </div>
+          )}
         </div>
       )}
 
       {groupRows && (
-        <div style={{
-          padding: 10, borderRadius: 8,
-          border: "1px dashed var(--panel-border-strong)",
-          background: "rgba(96,165,250,0.05)",
-        }}>
-          <div style={{ fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 8 }}>{window.t("detail.per_group_member")}</div>
+        <div className="members">
+          <div className="p-hint" style={{ margin: "8px 0 2px", fontWeight: 600, color: "var(--ink-2)" }}>{window.t("detail.per_group_member")}</div>
           {groupRows.map(({ p, r: rr }) => {
             const c = window.byIso2[p];
-            const sc2 = STATUS_COLOR[rr.status];
-            // The combined status uses whichever passport gives the best access
-            // (r.via). Highlight that winning passport so it's obvious which one
-            // to travel on.
+            // The combined status uses whichever passport gives the best access (r.via).
             const isBest = r.via === p;
             return (
-              <div key={p} style={{ display: "flex", alignItems: "center", gap: 8, padding: "5px 0", borderTop: "1px solid var(--panel-border)" }}>
-                <span style={{ fontSize: 16 }}>{c?.flag}</span>
-                <span style={{ fontSize: 12, flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontWeight: isBest ? 600 : 400 }}>{window.countryName(p)}</span>
-                {isBest && (
-                  <span style={{
-                    fontSize: 9, fontFamily: "var(--font-mono)", color: "var(--vf)",
-                    textTransform: "uppercase", letterSpacing: "0.06em",
-                    border: "1px solid rgba(34,197,94,0.40)", borderRadius: 4, padding: "1px 5px",
-                  }}>{window.t("detail.best_passport")}</span>
-                )}
-                <span style={{
-                  width: 8, height: 8, borderRadius: "50%",
-                  background: sc2.fill,
-                }} />
-                <span style={{ fontSize: 11, color: "var(--fg-dim)", minWidth: 80, textAlign: "right" }}>{localizedStatusLabel(rr.status)}</span>
-                {rr.days && <span style={{ fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)" }}>{rr.days}d</span>}
+              <div key={p} className={"member" + (isBest ? " is-best" : "")}>
+                <span className="flag">{c?.flag}</span>
+                <span className="member-name">{window.countryName(p)}</span>
+                {isBest && <span className="best-tag">{window.t("detail.best_passport")}</span>}
+                <Dot s={rr.status} />
+                <span style={{ color: "var(--ink-2)" }}>{statusLabel(rr.status)}</span>
+                {rr.days && <span className="mono" style={{ fontSize: 11, color: "var(--ink-3)" }}>{rr.days}d</span>}
               </div>
             );
           })}
         </div>
       )}
-    </div>
+    </article>
   );
 }
 
-// Conditional-visa box: surfaces Wikipedia's "if you also hold X" footnotes
-// (e.g. "Indian citizens normally need a visa for Türkiye, but holders of a
-// valid US / UK / Ireland / Schengen visa can obtain an eVisa"). Reads from
-// data/visa-conditions.js. Only shown when an actual upgrade path exists for
-// the resolved status — i.e. when the base status is something other than vf
-// or self and the conditional `then` is strictly better.
+// Conditional-visa box: Wikipedia's "if you also hold X" footnotes (e.g.
+// Indian citizens with a valid US/UK/Schengen visa can get a Türkiye eVisa).
+// Only rows whose resulting status is strictly better than the base.
 function ConditionsBox({ passport, destIso2, baseStatus }) {
   if (!passport || !destIso2) return null;
   if (baseStatus === "self" || baseStatus === "vf") return null;
   const rows = window.visaCondition && window.visaCondition(passport, destIso2);
   if (!rows || rows.length === 0) return null;
-  // Only show rows whose resulting status is strictly better than the base.
   const ORDER = { idc: 0, vf: 1, eta: 2, ev: 3, voa: 4, vr: 5, ban: 6, na: 7 };
   const useful = rows.filter(r => ORDER[r.then] < ORDER[baseStatus]);
   if (useful.length === 0) return null;
 
   const lang = window.ATLAS_LANG || "en";
   return (
-    <div style={{
-      padding: 12,
-      borderRadius: 8,
-      background: "rgba(34,197,94,0.06)",
-      border: "1px solid rgba(34,197,94,0.30)",
-      marginBottom: 10,
-    }}>
-      <div style={{
-        fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
-        textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6,
-        display: "flex", alignItems: "center", gap: 6,
-      }}>
-        <span style={{
-          width: 8, height: 8, borderRadius: "50%",
-          background: "var(--vf)", boxShadow: "0 0 6px var(--vf)",
-        }} />
-        {window.t("cond.title")}
-      </div>
-      <div style={{ fontSize: 12, color: "var(--fg-dim)", marginBottom: 8 }}>
-        {window.t("cond.subtitle")}
-      </div>
+    <div className="note note-ok" style={{ display: "block" }}>
+      <div className="note-k">{window.t("cond.title")}</div>
+      <div className="note-s" style={{ marginBottom: 6 }}>{window.t("cond.subtitle")}</div>
       {useful.map((row, i) => {
         const labels = (window.conditionHoldsLabels && window.conditionHoldsLabels(row.ifHolds)) || row.ifHolds;
-        const thenColor = STATUS_COLOR[row.then]?.fill || "var(--vf)";
-        const thenLabel = (() => {
-          const k = "status." + row.then;
-          const tr = window.t(k);
-          return tr === k ? (STATUS_COLOR[row.then]?.label || row.then) : tr;
-        })();
         const note = lang === "en" ? (row.noteEn || row.note) : (row.note || row.noteEn);
         return (
-          <div key={i} style={{
-            marginTop: i === 0 ? 0 : 8,
-            paddingTop: i === 0 ? 0 : 8,
-            borderTop: i === 0 ? "none" : "1px solid rgba(34,197,94,0.18)",
-          }}>
-            {/* Chip row of required visas */}
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 4, marginBottom: 6 }}>
+          <div key={i} style={{ paddingTop: i ? 8 : 2, marginTop: i ? 8 : 0, borderTop: i ? "1px solid var(--rule)" : "none" }}>
+            <div className="chips" style={{ marginBottom: 6 }}>
               {labels.map((l, j) => (
-                <span key={j} style={{
-                  fontSize: 11, padding: "3px 8px",
-                  background: "var(--bg-3)", border: "1px solid var(--panel-border)",
-                  borderRadius: 999, color: "var(--fg)",
-                  fontFamily: "var(--font-mono)",
-                }}>
-                  {row.ifHolds[j] === "SCHENGEN" ? "🇪🇺 " : ""}{l}
+                <span key={j} className="chip" style={{ cursor: "default", fontSize: 12 }}>
+                  {row.ifHolds[j] === "SCHENGEN" && <span className="flag">🇪🇺</span>}{l}
                 </span>
               ))}
             </div>
-            {/* Resulting status */}
-            <div style={{
-              display: "flex", alignItems: "center", gap: 8,
-              fontSize: 12,
-            }}>
-              <span style={{ color: "var(--fg-mute)" }}>→ {window.t("cond.becomes")}</span>
-              <span style={{
-                width: 8, height: 8, borderRadius: "50%",
-                background: thenColor, boxShadow: `0 0 6px ${thenColor}`,
-              }} />
-              <span style={{ color: "var(--fg)", fontWeight: 500 }}>{thenLabel}</span>
-              {row.days && (
-                <span style={{ marginLeft: "auto", color: "var(--fg-mute)", fontFamily: "var(--font-mono)", fontSize: 11 }}>
-                  {window.t("detail.up_to_days", { n: row.days })}
-                </span>
-              )}
+            <div style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13 }}>
+              <span style={{ color: "var(--ink-3)" }}>→ {window.t("cond.becomes")}</span>
+              <Dot s={row.then} />
+              <strong style={{ fontWeight: 650 }}>{statusLabel(row.then)}</strong>
+              {row.days && <span className="mono" style={{ marginLeft: "auto", color: "var(--ink-3)", fontSize: 11.5 }}>{window.t("detail.up_to_days", { n: row.days })}</span>}
             </div>
-            {note && (
-              <div style={{ fontSize: 11, color: "var(--fg-dim)", marginTop: 6, lineHeight: 1.5 }}>
-                {note}
-              </div>
-            )}
+            {note && <div className="note-s" style={{ marginTop: 5 }}>{note}</div>}
             {row.source && (
-              <a href={row.source} target="_blank" rel="noopener nofollow"
-                 style={{ fontSize: 11, color: "var(--fg-mute)", textDecoration: "none",
-                          borderBottom: "1px dotted var(--fg-faint)", display: "inline-block",
-                          marginTop: 6 }}>
+              <a className="link-quiet" href={row.source} target="_blank" rel="noopener nofollow" style={{ display: "inline-block", marginTop: 5 }}>
                 {window.t("cond.source")}
               </a>
             )}
@@ -1661,17 +954,12 @@ function ConditionsBox({ passport, destIso2, baseStatus }) {
   );
 }
 
-// TripNotesGroup — bundles the per-trip rule reminders (transit visa,
-// ETIAS, passport-validity rule, ESTA, Israel stamp, LOI) so they're
-// visually grouped instead of stacked as 6 standalone dashed boxes.
-// Pre-checks each widget's "would-render" condition so the section
-// header doesn't appear with no widgets under it.
+// TripNotesGroup — bundles the per-trip rule reminders (transit visa, ETIAS,
+// passport-validity rule, ESTA, Israel stamp, LOI). Pre-checks each widget's
+// "would-render" condition so the heading never appears with nothing under it.
 function TripNotesGroup({ passport, destIso2 }) {
   if (!passport || !destIso2) return null;
 
-  // Replicate each widget's render guard so we know whether to draw
-  // the section header at all. Yes, this is duplicated logic; the
-  // alternative (post-render counting from React) is more fragile.
   const transitWouldRender = (function () {
     const rules = window.TRANSIT_RULES || {};
     const HUBS = ["SCHENGEN", "GB", "US", "CA"];
@@ -1682,7 +970,6 @@ function TripNotesGroup({ passport, destIso2 }) {
       return Array.isArray(r.requiredFor) && r.requiredFor.includes(passport);
     });
     if (risky.length === 0) return false;
-    // Skip when the only risky hub is the destination itself.
     if (risky.length === 1 && (
       risky[0] === destIso2 ||
       (risky[0] === "SCHENGEN" && window.byIso2[destIso2]?.continent === "EU")
@@ -1701,19 +988,9 @@ function TripNotesGroup({ passport, destIso2 }) {
   if (total === 0) return null;
 
   return (
-    <div>
+    <div style={{ margin: "4px 0 2px" }}>
       {total >= 2 && (
-        <div style={{
-          fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
-          textTransform: "uppercase", letterSpacing: "0.10em", marginBottom: 6,
-          display: "flex", alignItems: "center", gap: 6,
-        }}>
-          <span style={{
-            width: 8, height: 8, borderRadius: 2,
-            background: "var(--voa)", boxShadow: "0 0 6px var(--voa)",
-          }} />
-          {window.t("detail.trip_notes")}
-        </div>
+        <div className="p-hint" style={{ margin: "0 0 6px", fontWeight: 600, color: "var(--ink-2)" }}>{window.t("detail.trip_notes")}</div>
       )}
       {transitWouldRender  && <TransitVisaHint passport={passport} destIso2={destIso2} />}
       {estaWouldRender     && <EstaHint passport={passport} />}
@@ -1725,15 +1002,11 @@ function TripNotesGroup({ passport, destIso2 }) {
   );
 }
 
-// Transit-visa heads-up: if the user's passport is on the Schengen ATV or
-// UK DATV list (or if their route includes US/Canada — which always need a
-// transit clearance), surface a small banner pointing to /transit-visa/.
-// The full check requires the route; here we just flag the risk so people
-// don't get blindsided at the gate.
+// Transit-visa heads-up: the passport is on the Schengen ATV / UK DATV list,
+// or the route may touch US/Canada (always a transit clearance).
 function TransitVisaHint({ passport, destIso2 }) {
   if (!passport) return null;
   const rules = window.TRANSIT_RULES || {};
-  // Major hub areas a traveller is most likely to connect through.
   const HUBS = ["SCHENGEN", "GB", "US", "CA"];
   const risky = HUBS.filter(area => {
     const r = rules[area];
@@ -1742,139 +1015,65 @@ function TransitVisaHint({ passport, destIso2 }) {
     return Array.isArray(r.requiredFor) && r.requiredFor.includes(passport);
   });
   if (risky.length === 0) return null;
-  // Don't flag if the destination IS the hub (trivial case).
   if (destIso2 && risky.length === 1 && (
     risky[0] === destIso2 ||
     (risky[0] === "SCHENGEN" && window.byIso2[destIso2]?.continent === "EU")
   )) return null;
   const labels = risky.map(a => rules[a].label.split(" (")[0]).join(" · ");
   return (
-    <a href="/transit-map/" style={{
-      display: "flex", alignItems: "center", gap: 10,
-      padding: "10px 12px", marginBottom: 10,
-      background: "rgba(250,204,21,0.08)",
-      border: "1px dashed rgba(250,204,21,0.50)",
-      borderRadius: 8, textDecoration: "none", color: "var(--fg)",
-    }}>
-      <span style={{ fontSize: 18 }}>✈️</span>
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: 12, fontWeight: 500 }}>
-          {window.t("detail.transit_heads_up")}
-        </div>
-        <div style={{ fontSize: 11, color: "var(--fg-mute)", marginTop: 2 }}>
-          {window.t("detail.transit_heads_up_sub", { hubs: labels })}
-        </div>
-      </div>
-      <span style={{ fontSize: 14, color: "var(--fg-mute)" }}>→</span>
+    <a className="note note-warn" href="/transit-map/">
+      <span className="note-k">{window.t("detail.transit_heads_up")}</span>
+      <span className="note-s">{window.t("detail.transit_heads_up_sub", { hubs: labels })}</span>
+      <span className="note-go" aria-hidden="true">→</span>
     </a>
   );
 }
 
-// ESTA hint: shown only when destination = US. Tells VWP-eligible
-// passport holders they CAN use ESTA, and warns non-VWP holders they
-// need a full B1/B2 visa. Links to /esta-rules/ for the disqualifier
-// checklist (post-2011 travel to Iran/Iraq/etc, dual citizenship,
-// arrests, etc.).
+// ESTA hint (destination = US): VWP passports can use ESTA; others need B1/B2.
 function EstaHint({ passport }) {
   if (!passport || !window.estaEligible) return null;
   const eligible = window.estaEligible(passport);
-  const tone = eligible ? "rgba(34,197,94,0.40)" : "rgba(96,165,250,0.40)";
-  const bg   = eligible ? "rgba(34,197,94,0.06)" : "rgba(96,165,250,0.08)";
   return (
-    <a href="/esta-rules/" style={{
-      display: "flex", alignItems: "center", gap: 10,
-      padding: "10px 12px", marginBottom: 10,
-      background: bg, border: `1px dashed ${tone}`,
-      borderRadius: 8, textDecoration: "none", color: "var(--fg)",
-    }}>
-      <span style={{ fontSize: 18 }}>🇺🇸</span>
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: 12, fontWeight: 500 }}>
-          {window.t(eligible ? "detail.esta_eligible" : "detail.esta_not_vwp")}
-        </div>
-        <div style={{ fontSize: 11, color: "var(--fg-mute)", marginTop: 2 }}>
-          {window.t(eligible ? "detail.esta_check_disq" : "detail.esta_visa_path")}
-        </div>
-      </div>
-      <span style={{ fontSize: 14, color: "var(--fg-mute)" }}>→</span>
+    <a className={"note " + (eligible ? "note-ok" : "note-info")} href="/esta-rules/">
+      <span className="note-k">{window.t(eligible ? "detail.esta_eligible" : "detail.esta_not_vwp")}</span>
+      <span className="note-s">{window.t(eligible ? "detail.esta_check_disq" : "detail.esta_visa_path")}</span>
+      <span className="note-go" aria-hidden="true">→</span>
     </a>
   );
 }
 
-// Israel-stamp warning: when destination has a known historical refusal
-// pattern (Iran, Lebanon, Syria, Libya, Yemen — strict; Saudi/UAE/Bahrain
-// — normalized; Algeria/Iraq/Pakistan/Kuwait — relaxed). Tone scales
-// with the severity. Doesn't ask whether the user actually has an
-// Israeli stamp — surfacing the rule is the value.
+// Israel-stamp warning — tone scales with the destination's refusal pattern.
 function IsraelStampHint({ destIso2 }) {
   if (!destIso2 || !window.israelStampWarning) return null;
   const r = window.israelStampWarning(destIso2);
   if (!r) return null;
-  const tone = r.level === "strict" ? "rgba(239,68,68,0.40)"
-             : r.level === "relaxed" ? "rgba(250,204,21,0.40)"
-             : "rgba(96,165,250,0.30)";
-  const bg   = r.level === "strict" ? "rgba(239,68,68,0.07)"
-             : r.level === "relaxed" ? "rgba(250,204,21,0.08)"
-             : "rgba(96,165,250,0.05)";
+  const tone = r.level === "strict" ? "note-risk" : r.level === "relaxed" ? "note-warn" : "note-info";
   const label = r.level === "strict"     ? window.t("detail.israel_strict")
               : r.level === "relaxed"    ? window.t("detail.israel_relaxed")
               : window.t("detail.israel_normalized");
   return (
-    <div style={{
-      display: "flex", alignItems: "flex-start", gap: 10,
-      padding: "10px 12px", marginBottom: 10,
-      background: bg, border: `1px dashed ${tone}`,
-      borderRadius: 8, color: "var(--fg)",
-    }}>
-      <span style={{ fontSize: 18 }}>🇮🇱</span>
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: 12, fontWeight: 500 }}>{label}</div>
-        <div style={{ fontSize: 11, color: "var(--fg-mute)", marginTop: 2, lineHeight: 1.5 }}>
-          {r.note}
-        </div>
-      </div>
+    <div className={"note " + tone}>
+      <span className="note-k">{label}</span>
+      <span className="note-s">{r.note}</span>
     </div>
   );
 }
 
-// Letter of Invitation requirement: surfaces destinations that demand
-// a formal sponsor letter (Russia, Belarus, Turkmenistan). Includes a
-// typical cost range so users know what third-party service to budget
-// for.
+// Letter of Invitation requirement (Russia, Belarus, Turkmenistan…).
 function LoiHint({ destIso2 }) {
   if (!destIso2 || !window.loiRule) return null;
   const r = window.loiRule(destIso2);
   if (!r) return null;
   return (
-    <div style={{
-      display: "flex", alignItems: "flex-start", gap: 10,
-      padding: "10px 12px", marginBottom: 10,
-      background: "rgba(250,204,21,0.08)",
-      border: "1px dashed rgba(250,204,21,0.40)",
-      borderRadius: 8, color: "var(--fg)",
-    }}>
-      <span style={{ fontSize: 18 }}>📨</span>
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: 12, fontWeight: 500 }}>
-          {window.t("detail.loi_required")}
-        </div>
-        <div style={{ fontSize: 11, color: "var(--fg-mute)", marginTop: 2, lineHeight: 1.5 }}>
-          {r.note}
-        </div>
-        {r.typicalCost && (
-          <div style={{ fontSize: 10, color: "var(--fg-faint)", fontFamily: "var(--font-mono)", marginTop: 4 }}>
-            {window.t("detail.loi_cost", { cost: r.typicalCost })}
-          </div>
-        )}
-      </div>
+    <div className="note note-warn">
+      <span className="note-k">{window.t("detail.loi_required")}</span>
+      <span className="note-s">{r.note}</span>
+      {r.typicalCost && <span className="note-fine">{window.t("detail.loi_cost", { cost: r.typicalCost })}</span>}
     </div>
   );
 }
 
-// Passport validity hint: surfaces the destination's "must be valid for N
-// months past your stay" rule. Generic note — we don't ask for the user's
-// expiry here (that's the dedicated /passport-validity/ tool). Showing the
-// rule alone already prevents a lot of bad bookings.
+// Passport validity rule for the destination ("valid N months past your stay").
 function ValidityHint({ destIso2 }) {
   if (!destIso2 || !window.passportValidityCheck) return null;
   const res = window.passportValidityCheck(destIso2, {});
@@ -1884,170 +1083,78 @@ function ValidityHint({ destIso2 }) {
               : res.rule === 0 ? "validity.rule0"
               : null;
   if (!sevKey) return null;
-  const tone = res.rule >= 6 ? "rgba(239,68,68,0.40)"
-             : res.rule >= 3 ? "rgba(250,204,21,0.40)"
-             : "rgba(34,197,94,0.40)";
-  const bg   = res.rule >= 6 ? "rgba(239,68,68,0.06)"
-             : res.rule >= 3 ? "rgba(250,204,21,0.08)"
-             : "rgba(34,197,94,0.06)";
+  const tone = res.rule >= 6 ? "note-risk" : res.rule >= 3 ? "note-warn" : "note-ok";
   return (
-    <a href="/passport-validity/" style={{
-      display: "flex", alignItems: "center", gap: 10,
-      padding: "10px 12px", marginBottom: 10,
-      background: bg,
-      border: `1px dashed ${tone}`,
-      borderRadius: 8, textDecoration: "none", color: "var(--fg)",
-    }}>
-      <span style={{ fontSize: 18 }}>📘</span>
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: 12, fontWeight: 500 }}>
-          {window.t(sevKey)}
-        </div>
-        <div style={{ fontSize: 11, color: "var(--fg-mute)", marginTop: 2 }}>
-          {window.t("validity.check_cta")}
-        </div>
-      </div>
-      <span style={{ fontSize: 14, color: "var(--fg-mute)" }}>→</span>
+    <a className={"note " + tone} href="/passport-validity/">
+      <span className="note-k">{window.t(sevKey)}</span>
+      <span className="note-s">{window.t("validity.check_cta")}</span>
+      <span className="note-go" aria-hidden="true">→</span>
     </a>
   );
 }
 
-// ETIAS heads-up: when the user's passport is on the ETIAS-required list AND
-// the selected destination is a Schengen state, surface the launch countdown
-// + cost so they're not caught off guard. Only renders when actionable.
+// ETIAS heads-up: passport on the ETIAS list AND destination in Schengen.
 function EtiasHint({ passport, destIso2 }) {
   if (!passport || !destIso2 || !window.etiasStatus) return null;
   const res = window.etiasStatus(passport, destIso2);
   if (!res || res.kind !== "required") return null;
   const days = window.etiasDaysUntilLaunch ? window.etiasDaysUntilLaunch() : null;
   return (
-    <a href="/etias/" style={{
-      display: "flex", alignItems: "center", gap: 10,
-      padding: "10px 12px", marginBottom: 10,
-      background: "rgba(96,165,250,0.08)",
-      border: "1px dashed rgba(96,165,250,0.50)",
-      borderRadius: 8, textDecoration: "none", color: "var(--fg)",
-    }}>
-      <span style={{ fontSize: 18 }}>🇪🇺</span>
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: 12, fontWeight: 500 }}>
-          {days != null && days > 0
-            ? window.t("detail.etias_pre", { days })
-            : window.t("detail.etias_live")}
-        </div>
-        <div style={{ fontSize: 11, color: "var(--fg-mute)", marginTop: 2 }}>
-          {window.t("detail.etias_sub")}
-        </div>
-      </div>
-      <span style={{ fontSize: 14, color: "var(--fg-mute)" }}>→</span>
+    <a className="note note-info" href="/etias/">
+      <span className="note-k">{days != null && days > 0 ? window.t("detail.etias_pre", { days }) : window.t("detail.etias_live")}</span>
+      <span className="note-s">{window.t("detail.etias_sub")}</span>
+      <span className="note-go" aria-hidden="true">→</span>
     </a>
   );
 }
 
-// Renders an AdSense ad unit if (and only if) both the publisher client ID and
-// the slot's numeric ID are configured in data/ads.js. Otherwise renders nothing.
-// On mount it pushes a request to AdSense's queue, exactly as Google docs prescribe.
-// Visa fee + processing-time card. Renders only when (a) data/visa-fees.js
-// has an entry for the (passport, destination) pair AND (b) the resolved
-// status is something the user actually needs to apply for — i.e. ev / voa / vr.
-// We never show it for vf since the data wouldn't make sense ("fee: $0").
+// Visa fee + processing-time card. Only when data/visa-fees.js has the pair
+// AND the status is something you apply for (ev / voa / vr / eta).
 function VisaFeeBox({ passport, destIso2, status }) {
   if (!passport || !destIso2) return null;
-  // No fee/apply UI for visa-free, your own passport, or outright entry bans
-  // (you can't apply for a visa to a country that refuses you admission).
+  // No fee UI for visa-free, your own passport, or entry bans.
   if (status === "vf" || status === "self" || status === "ban") return null;
   const data = window.visaFee && window.visaFee(passport, destIso2);
   if (!data) {
-    // We require a visa here but don't have a fee figure for this pair yet.
-    // Say so explicitly so the absence doesn't read as "free".
-    return (
-      <div style={{
-        padding: "9px 11px", borderRadius: 8, marginBottom: 10,
-        background: "var(--bg-2)", border: "1px dashed var(--panel-border-strong)",
-        fontSize: 11, color: "var(--fg-mute)", lineHeight: 1.5,
-      }}>
-        {window.t("detail.no_fee_data")}
-      </div>
-    );
+    // A visa is needed but we have no sourced fee — say so, so the absence
+    // doesn't read as "free".
+    return <div className="box box-dashed p-fine" style={{ fontSize: 12.5, color: "var(--ink-3)" }}>{window.t("detail.no_fee_data")}</div>;
   }
-
-  const labelStyle = { fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.06em" };
-  const valueStyle = { fontSize: 13, color: "var(--fg)", marginTop: 1 };
-  const row = (label, value) => value ? (
-    <div style={{ paddingTop: 6 }}>
-      <div style={labelStyle}>{label}</div>
-      <div style={valueStyle}>{value}</div>
-    </div>
-  ) : null;
-
   return (
-    <div style={{
-      padding: 12,
-      borderRadius: 8,
-      background: "var(--bg-2)",
-      border: "1px solid var(--panel-border)",
-      marginBottom: 10,
-    }}>
-      <div style={{ fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4 }}>
-        {window.t("detail.visa_cost")}
-      </div>
-      <div style={{ fontSize: 18, fontWeight: 600, color: "var(--fg)", marginBottom: 2 }}>
-        {data.fee}
-      </div>
-      {data.processingDays && (
-        <div style={{ fontSize: 11, color: "var(--fg-dim)" }}>
-          {window.t("detail.processing")}: {data.processingDays}
-        </div>
-      )}
-      <div style={{ borderTop: "1px solid var(--panel-border)", marginTop: 8 }}>
-        {row(window.t("detail.type"),             data.type)}
-        {row(window.t("detail.validity"),         data.validity)}
-        {row(window.t("detail.duration_of_stay"), data.durationOfStay)}
-      </div>
-      {data.notes && (
-        <div style={{ fontSize: 11, color: "var(--fg-dim)", marginTop: 8, padding: "6px 8px", background: "rgba(250,204,21,0.05)", borderLeft: "2px solid var(--voa)", borderRadius: 2 }}>
-          {data.notes}
-        </div>
-      )}
+    <div className="box">
+      <div className="p-hint" style={{ margin: "0 0 4px", fontWeight: 600, color: "var(--ink-2)" }}>{window.t("detail.visa_cost")}</div>
+      <div className="fee">{data.fee}</div>
+      {data.processingDays && <div className="p-hint" style={{ marginTop: 4 }}>{window.t("detail.processing")}: {data.processingDays}</div>}
+      <dl className="kv">
+        {data.type && <><dt>{window.t("detail.type")}</dt><dd>{data.type}</dd></>}
+        {data.validity && <><dt>{window.t("detail.validity")}</dt><dd>{data.validity}</dd></>}
+        {data.durationOfStay && <><dt>{window.t("detail.duration_of_stay")}</dt><dd>{data.durationOfStay}</dd></>}
+      </dl>
+      {data.notes && <div className="note note-warn" style={{ margin: "10px 0 0", fontSize: 12.5 }}><span className="note-s" style={{ margin: 0, color: "var(--ink-2)" }}>{data.notes}</span></div>}
       {data.source && (
-        <div style={{ marginTop: 8 }}>
-          <a href={data.source} target="_blank" rel="noopener nofollow"
-             style={{ fontSize: 11, color: "var(--fg-mute)", textDecoration: "none", borderBottom: "1px dotted var(--fg-faint)" }}>
-            {window.t("detail.official_source")}
-          </a>
-        </div>
+        <a className="link-quiet" href={data.source} target="_blank" rel="noopener nofollow" style={{ display: "inline-block", marginTop: 8 }}>
+          {window.t("detail.official_source")}
+        </a>
       )}
-      <div style={{ fontSize: 9, color: "var(--fg-faint)", marginTop: 6, fontFamily: "var(--font-mono)" }}>
-        {window.t("detail.reviewed", { date: data.lastReviewed })}
-      </div>
+      <div className="p-fine mono" style={{ marginTop: 4, fontSize: 10.5 }}>{window.t("detail.reviewed", { date: data.lastReviewed })}</div>
     </div>
   );
 }
 
 function AlertsCTA({ iso2, destName }) {
-  // Small affordance that nudges power users to the /alerts page with the
-  // current destination pre-selected (via hash). Hidden when ads.js detects
-  // we're inside an embed scenario (no window.AFFILIATES).
+  // Nudges power users to /alerts with the current destination pre-selected.
   const href = `/alerts/?country=${encodeURIComponent(iso2)}`;
   return (
-    <a href={href} style={{
-      display: "flex", alignItems: "center", gap: 10,
-      padding: "10px 12px", marginBottom: 10,
-      background: "var(--bg-3)", border: "1px dashed var(--panel-border-strong)",
-      borderRadius: 8, textDecoration: "none", color: "var(--fg)",
-    }}>
-      <span style={{ fontSize: 18 }}>🔔</span>
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ fontSize: 12, fontWeight: 500 }}>{window.t("detail.get_alerts_for", { name: destName })}</div>
-        <div style={{ fontSize: 11, color: "var(--fg-mute)", marginTop: 2 }}>
-          {window.t("detail.get_alerts_sub")}
-        </div>
-      </div>
-      <span style={{ fontSize: 14, color: "var(--fg-mute)" }}>→</span>
+    <a className="note note-accent" href={href}>
+      <span className="note-k">{window.t("detail.get_alerts_for", { name: destName })}</span>
+      <span className="note-s">{window.t("detail.get_alerts_sub")}</span>
+      <span className="note-go" aria-hidden="true">→</span>
     </a>
   );
 }
 
+// Renders an AdSense unit only when both the publisher client ID and the
+// slot's numeric ID are configured in data/ads.js.
 function AdSlot({ slotKey }) {
   const ref = React.useRef(null);
   const pushed = React.useRef(false);
@@ -2059,11 +1166,11 @@ function AdSlot({ slotKey }) {
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
       pushed.current = true;
-    } catch (e) { /* swallow — adsbygoogle.js may not be loaded yet */ }
+    } catch (e) { /* adsbygoogle.js may not be loaded yet */ }
   }, [clientId, slot]);
   if (!clientId || !slot) return null;
   return (
-    <div style={{ margin: "10px 0", textAlign: "center" }}>
+    <div className="ad-slot">
       <ins ref={ref}
            className="adsbygoogle"
            style={{ display: "block", minHeight: 100 }}
@@ -2071,7 +1178,7 @@ function AdSlot({ slotKey }) {
            data-ad-slot={slot}
            data-ad-format="auto"
            data-full-width-responsive="true" />
-      <div style={{ fontSize: 9, color: "var(--fg-faint)", marginTop: 2, fontFamily: "var(--font-mono)" }}>Ad</div>
+      <div className="ad-label">Ad</div>
     </div>
   );
 }
@@ -2081,43 +1188,23 @@ function AffiliatePartners({ status, iso2 }) {
   if (partners.length === 0) return null;
   return (
     <div style={{ marginBottom: 10 }}>
-      <div style={{
-        fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
-        textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6,
-      }}>{window.t("detail.plan_your_trip")}</div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+      <div className="p-hint" style={{ margin: "0 0 6px", fontWeight: 600, color: "var(--ink-2)" }}>{window.t("detail.plan_your_trip")}</div>
+      <div className="feed">
         {partners.map(p => (
-          <a key={p.id} href={p.href} target="_blank" rel="sponsored noopener noreferrer"
-             style={{
-               display: "block", padding: "8px 10px",
-               background: "var(--bg-3)", borderRadius: 8,
-               textDecoration: "none", color: "var(--fg)",
-               border: "1px solid var(--panel-border)",
-             }}>
-            <div style={{ fontSize: 12, fontWeight: 500 }}>{p.label}</div>
-            <div style={{ fontSize: 11, color: "var(--fg-mute)", marginTop: 2 }}>{p.blurb}</div>
+          <a key={p.id} className="feed-item" href={p.href} target="_blank" rel="sponsored noopener noreferrer">
+            <div className="feed-title">{p.label}</div>
+            <div className="feed-sum">{p.blurb}</div>
           </a>
         ))}
       </div>
-      <div style={{ fontSize: 9, color: "var(--fg-faint)", marginTop: 4, fontFamily: "var(--font-mono)" }}>
-        {window.t("detail.sponsored")}
-      </div>
+      <div className="ad-label" style={{ marginTop: 4 }}>{window.t("detail.sponsored")}</div>
     </div>
-  );
-}
-
-function Arrow() {
-  return (
-    <svg width="14" height="10" viewBox="0 0 14 10" style={{ color: "var(--fg-mute)" }}>
-      <path d="M1 5 H12 M8 1 L12 5 L8 9" stroke="currentColor" strokeWidth="1.3" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
-    </svg>
   );
 }
 
 // ─── News filtering helpers ───────────────────────────────────────────────
 // VISA_NEWS items have affects.{passports, destinations} as ISO2 arrays.
-// Empty array means "applies to all". `matchesPassport` and `matchesDest`
-// return true if the item is relevant to the given iso2.
+// Empty array means "applies to all".
 function matchesPassport(item, passport) {
   if (!passport) return false;
   const arr = item.affects?.passports || [];
@@ -2132,63 +1219,39 @@ function sortNewsDesc(a, b) {
   return (b.date || "").localeCompare(a.date || "");
 }
 
-const SEVERITY_STYLE = {
-  positive: { border: "var(--vf)", glow: "0 0 8px rgba(74, 222, 128, 0.25)", emoji: "✓" },
-  warning:  { border: "var(--vr)", glow: "0 0 8px rgba(248, 113, 113, 0.25)", emoji: "⚠" },
-  neutral:  { border: "var(--panel-border-strong)", glow: "none", emoji: "•" },
+const SEVERITY_TONE = {
+  positive: "var(--vf)",
+  warning:  "var(--vr)",
+  neutral:  "var(--rule-strong)",
 };
 
+function fmtDay(iso, withYear) {
+  const d = new Date(iso + "T00:00:00");
+  if (isNaN(d)) return iso || "";
+  return d.toLocaleDateString(window.ATLAS_LANG || "en", withYear ? { day: "numeric", month: "short", year: "numeric" } : { day: "numeric", month: "short" });
+}
+
 function NewsItem({ item, compact }) {
-  const sev = SEVERITY_STYLE[item.severity] || SEVERITY_STYLE.neutral;
-  const date = new Date(item.date + "T00:00:00");
-  const fmt = date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+  const tone = SEVERITY_TONE[item.severity] || SEVERITY_TONE.neutral;
   const hasLink = !!item.sourceUrl;
   const Wrapper = hasLink ? "a" : "div";
-  const wrapperProps = hasLink
-    ? { href: item.sourceUrl, target: "_blank", rel: "noopener noreferrer" }
-    : {};
+  const wrapperProps = hasLink ? { href: item.sourceUrl, target: "_blank", rel: "noopener noreferrer" } : {};
   return (
-    <Wrapper {...wrapperProps} style={{
-      display: "block",
-      padding: compact ? "8px 10px" : "10px 12px",
-      background: "var(--bg-2)",
-      border: `1px solid var(--panel-border)`,
-      borderLeft: `3px solid ${sev.border}`,
-      boxShadow: sev.glow,
-      borderRadius: 8,
-      color: "var(--fg)",
-      textDecoration: "none",
-      transition: "all 180ms ease",
-      cursor: hasLink ? "pointer" : "default",
-    }} className="changelog-item">
-      <div style={{
-        display: "flex", alignItems: "center", gap: 6,
-        fontSize: 10, fontFamily: "var(--font-mono)",
-        color: "var(--fg-mute)", textTransform: "uppercase",
-        letterSpacing: "0.06em", marginBottom: 4,
-      }}>
-        <span style={{ color: sev.border }}>{sev.emoji}</span>
-        <span>{fmt}</span>
-        <span style={{ color: "var(--fg-faint)" }}>·</span>
+    <Wrapper {...wrapperProps} className="feed-item" style={{ "--tone": tone }}>
+      <div className="feed-meta">
+        <time dateTime={item.date}>{fmtDay(item.date, true)}</time>
+        <span>·</span>
         <span>{item.source}</span>
       </div>
-      <div style={{ fontSize: compact ? 12 : 13, fontWeight: 500, lineHeight: 1.35, marginBottom: compact ? 2 : 4 }}>
-        {item.title}
-      </div>
-      {!compact && item.summary && (
-        <div style={{ fontSize: 11, color: "var(--fg-dim)", lineHeight: 1.45 }}>
-          {item.summary}
-        </div>
-      )}
+      <div className="feed-title">{item.title}</div>
+      {!compact && item.summary && <div className="feed-sum">{item.summary}</div>}
     </Wrapper>
   );
 }
 
 // ─── Weekly digest ──────────────────────────────────────────────────────
-// One-line "what changed this week" banner. Counts CHANGELOG + VISA_NEWS
-// events from the last 7 days and how many of them touch the current
-// passport. Cheap to compute, gives the home panel a visible "since you
-// last visited" sense — a small but real retention signal.
+// Counts CHANGELOG + VISA_NEWS events from the last 7 days and how many of
+// them touch the current passport.
 function weeklyDigest(passport) {
   const cutoff = Date.now() - 7 * 86400_000;
   let total = 0, mine = 0;
@@ -2214,31 +1277,18 @@ function WeeklyDigest({ passport }) {
   const stats = useMemo(() => weeklyDigest(passport), [passport]);
   if (stats.total === 0) return null;
   return (
-    <div style={{
-      display: "flex", alignItems: "center", gap: 8,
-      padding: "8px 12px", marginBottom: 14,
-      background: "var(--bg-2)",
-      border: "1px solid var(--panel-border)",
-      borderLeft: "3px solid var(--self)",
-      borderRadius: 8,
-      fontSize: 12, color: "var(--fg-dim)", lineHeight: 1.45,
-    }}>
-      <span style={{ fontSize: 14 }}>📰</span>
-      <div style={{ flex: 1 }}>
+    <div className="note note-accent" style={{ marginBottom: 14 }}>
+      <span className="note-k" style={{ fontWeight: 500 }}>
         {passport && stats.mine > 0
           ? window.t("digest.this_week_with_yours", { total: stats.total, mine: stats.mine })
           : window.t("digest.this_week_total", { total: stats.total })}
-      </div>
+      </span>
     </div>
   );
 }
 
 // ─── Itinerary CTA ───────────────────────────────────────────────────────
-// The /itinerary/ planner exists but is buried in the topnav. This card
-// on the home panel surfaces it — empty state = soft 'plan a trip' nudge,
-// active state = compact summary with a continue link so users don't lose
-// their plan between sessions visually (sessionStorage already keeps it
-// alive within one session).
+// Empty state = soft "plan a trip" nudge; active state = summary + continue.
 function readItinerary() {
   try {
     const raw = sessionStorage.getItem("atlas.itinerary");
@@ -2248,7 +1298,7 @@ function readItinerary() {
 function ItineraryCTA() {
   const [tick, setTick] = useState(0);
   useEffect(() => {
-    // Refresh on focus — user may have edited the itinerary in another tab.
+    // Refresh on focus — the itinerary may have changed in another tab.
     const onFocus = () => setTick(x => x + 1);
     window.addEventListener("focus", onFocus);
     return () => window.removeEventListener("focus", onFocus);
@@ -2257,43 +1307,21 @@ function ItineraryCTA() {
   const stops = Array.isArray(data?.stops) ? data.stops : [];
   const hasPlan = stops.length > 0;
   return (
-    <a href="/itinerary/" style={{
-      display: "block",
-      padding: "10px 12px",
-      marginBottom: 16,
-      background: hasPlan
-        ? "linear-gradient(135deg, rgba(96,165,250,0.10) 0%, var(--bg-2) 100%)"
-        : "var(--bg-2)",
-      border: "1px solid " + (hasPlan ? "var(--self)" : "var(--panel-border)"),
-      borderRadius: 10,
-      textDecoration: "none",
-      color: "var(--fg)",
-      transition: "all 180ms ease",
-    }} className="picker-trigger">
-      <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-        <span style={{ fontSize: 18 }}>🧭</span>
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ fontSize: 12, fontWeight: 500 }}>
-            {hasPlan
-              ? window.t("itinerary.continue", { n: stops.length })
-              : window.t("itinerary.start")}
-          </div>
-          <div style={{ fontSize: 10, color: "var(--fg-mute)", marginTop: 2 }}>
-            {hasPlan
-              ? stops.slice(0, 4).map(s => window.byIso2[s.iso2]?.flag || "").join(" ")
-              : window.t("itinerary.sub")}
-          </div>
-        </div>
-        <span style={{ color: "var(--fg-mute)" }}>→</span>
-      </div>
+    <a className="note note-accent" href="/itinerary/" style={{ marginBottom: 16 }}>
+      <span className="note-k">{hasPlan ? window.t("itinerary.continue", { n: stops.length }) : window.t("itinerary.start")}</span>
+      <span className="note-s">
+        {hasPlan
+          ? <span className="flag">{stops.slice(0, 6).map(s => window.byIso2[s.iso2 || s]?.flag || "").join(" ")}</span>
+          : window.t("itinerary.sub")}
+      </span>
+      <span className="note-go" aria-hidden="true">→</span>
     </a>
   );
 }
 
-// ─── Watchlist (localStorage-backed; will sync to KV / email in Faz B) ──
-// Lets users star destinations they care about. The home panel surfaces
-// them as chips and flags any with a fresh changelog or visa-news hit.
-// Stored as `atlas.watchlist` — JSON array of ISO2 strings.
+// ─── Watchlist (localStorage-backed) ─────────────────────────────────────
+// Users star destinations; the panel lists them and flags any with a fresh
+// changelog or visa-news hit. Stored as `atlas.watchlist` (ISO2 array).
 const WATCHLIST_KEY = "atlas.watchlist";
 function readWatchlist() {
   try {
@@ -2319,17 +1347,18 @@ function useWatchlist() {
   const [list, setList] = useState(() => readWatchlist());
   useEffect(() => {
     const onChange = () => setList(readWatchlist());
+    const onStorage = (e) => { if (e.key === WATCHLIST_KEY) onChange(); };
     window.addEventListener("atlas:watchlist", onChange);
-    window.addEventListener("storage", (e) => {
-      if (e.key === WATCHLIST_KEY) onChange();
-    });
-    return () => window.removeEventListener("atlas:watchlist", onChange);
+    window.addEventListener("storage", onStorage);
+    return () => {
+      window.removeEventListener("atlas:watchlist", onChange);
+      window.removeEventListener("storage", onStorage);
+    };
   }, []);
   return list;
 }
 
-// Returns the set of watchlisted ISO2s that have had a CHANGELOG entry or
-// VISA_NEWS item in the last `days` days.
+// Watchlisted ISO2s with a CHANGELOG entry or VISA_NEWS item in the last N days.
 function watchlistAlerts(list, days = 14) {
   const cutoff = Date.now() - days * 86400_000;
   const alerted = new Set();
@@ -2358,58 +1387,25 @@ function WatchlistCard({ onOpen }) {
   if (list.length === 0) return null;
   return (
     <div style={{ marginBottom: 16 }}>
-      <div style={{
-        display: "flex", alignItems: "center", gap: 6, marginBottom: 6,
-      }}>
-        <div style={{
-          fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
-          textTransform: "uppercase", letterSpacing: "0.10em",
-        }}>{window.t("watchlist.heading")}</div>
-        {alerts.size > 0 && (
-          <div style={{
-            width: 5, height: 5, borderRadius: "50%",
-            background: "var(--vr)", boxShadow: "0 0 6px var(--vr)",
-            animation: "pulse 2s ease-in-out infinite",
-          }} />
-        )}
+      <div className="p-hint" style={{ margin: "0 0 6px", fontWeight: 600, color: "var(--ink-2)", display: "flex", alignItems: "center", gap: 6 }}>
+        {window.t("watchlist.heading")}
+        {alerts.size > 0 && <span className="dot" style={{ "--sw": "var(--vr)" }} aria-hidden="true" />}
       </div>
       {alerts.size > 0 && (
-        <div style={{
-          padding: "6px 10px", marginBottom: 6,
-          background: "rgba(248,113,113,0.08)",
-          border: "1px solid var(--panel-border)",
-          borderLeft: "3px solid var(--vr)",
-          borderRadius: 6,
-          fontSize: 11, color: "var(--fg-dim)", lineHeight: 1.4,
-        }}>
-          {window.t("watchlist.recent_alert", { n: alerts.size })}
+        <div className="note note-risk" style={{ marginBottom: 6 }}>
+          <span className="note-k" style={{ fontWeight: 500, fontSize: 12.5 }}>{window.t("watchlist.recent_alert", { n: alerts.size })}</span>
         </div>
       )}
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+      <div className="chips">
         {list.map(iso2 => {
           const c = window.byIso2[iso2];
           if (!c) return null;
           const flagged = alerts.has(iso2);
           return (
-            <button
-              key={iso2}
-              onClick={() => onOpen?.(iso2)}
-              style={{
-                display: "inline-flex", alignItems: "center", gap: 6,
-                padding: "6px 10px",
-                background: flagged ? "rgba(248,113,113,0.08)" : "var(--bg-2)",
-                border: "1px solid " + (flagged ? "var(--vr)" : "var(--panel-border)"),
-                borderRadius: 999,
-                fontFamily: "inherit", fontSize: 12,
-                color: "var(--fg)", cursor: "pointer",
-                transition: "all 180ms ease",
-              }}>
-              <span style={{ fontSize: 14 }}>{c.flag}</span>
+            <button key={iso2} type="button" className={"chip" + (flagged ? " is-alert" : "")} onClick={() => onOpen?.(iso2)}>
+              <span className="flag">{c.flag}</span>
               <span>{window.countryName(iso2)}</span>
-              {flagged && <span style={{
-                fontSize: 9, fontFamily: "var(--font-mono)",
-                color: "var(--vr)", letterSpacing: "0.04em",
-              }}>•</span>}
+              {flagged && <span className="dot" style={{ "--sw": "var(--vr)" }} aria-hidden="true" />}
             </button>
           );
         })}
@@ -2418,40 +1414,30 @@ function WatchlistCard({ onOpen }) {
   );
 }
 
-// Button used inside DetailCard to toggle the current country in/out of
-// the watchlist.
+// Toggles the current country in/out of the watchlist (inside DetailCard).
 function WatchToggle({ iso2 }) {
   const list = useWatchlist();
   const on = list.includes(iso2);
   return (
     <button
+      type="button"
+      className="watch-btn"
       onClick={(e) => { e.stopPropagation(); toggleWatchlist(iso2); }}
       title={window.t(on ? "watchlist.remove" : "watchlist.add")}
-      aria-pressed={on}
-      style={{
-        display: "inline-flex", alignItems: "center", gap: 6,
-        padding: "5px 9px", borderRadius: 6,
-        background: on ? "rgba(96,165,250,0.12)" : "transparent",
-        border: "1px solid " + (on ? "var(--self)" : "var(--panel-border-strong)"),
-        color: on ? "var(--self)" : "var(--fg-mute)",
-        fontFamily: "inherit", fontSize: 11, cursor: "pointer",
-      }}>
-      <span style={{ fontSize: 13 }}>{on ? "★" : "☆"}</span>
+      aria-pressed={on}>
+      <span aria-hidden="true">{on ? "★" : "☆"}</span>
       <span>{window.t(on ? "watchlist.added" : "watchlist.add_short")}</span>
     </button>
   );
 }
 
 // ─── Passport pulse ──────────────────────────────────────────────────────
-// Lightweight retention hook: shows how the user's passport has moved over
-// the last N days (gains vs losses), plus rank + visa-free total. Pulled
-// from window.CHANGELOG (already populated daily by the scraper) — no new
-// data plumbing needed.
+// How the passport moved over the last N days (gains vs losses) plus rank
+// and open total, from window.CHANGELOG.
 const STATUS_RANK = { vr: 0, voa: 1, ev: 2, vf: 3, self: 3, na: 0 };
 
-// Computed passport ranking — falls back to sorting all known passports by
-// their (vf + ev + voa) score so we can always show *some* rank even when
-// scraper-supplied rank fields are null. Lazily memoised in module scope.
+// Computed ranking — sorts all passports by (vf*3 + ev*2 + voa) so we can
+// always show a rank even when scraper-supplied rank fields are null.
 let _rankCache = null;
 function computedRank(passport) {
   if (!_rankCache) {
@@ -2497,8 +1483,6 @@ function PassportPulse({ passport }) {
   const pulse = useMemo(() => passportPulse(passport, days), [passport, days]);
   const tally = useMemo(() => window.tally ? window.tally(passport) : null, [passport]);
   const meta = passport ? window.PASSPORTS[passport] : null;
-  // Hide the card when there's literally nothing to say (no rank, no tally,
-  // no recent diffs) — keeps the panel clean for tiny passports.
   if (!meta || !tally) return null;
   const totalOpen = tally.vf + tally.ev + tally.voa;
   const rank = meta.rank || computedRank(passport);
@@ -2506,93 +1490,49 @@ function PassportPulse({ passport }) {
   const windowKey = days === 30 ? "daily.window_30" : "daily.window_90";
   return (
     <div style={{ marginBottom: 16 }}>
-      <div style={{
-        display: "flex", alignItems: "center", justifyContent: "space-between",
-        gap: 8, marginBottom: 6,
-      }}>
-        <div style={{
-          fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
-          textTransform: "uppercase", letterSpacing: "0.10em",
-        }}>{window.t("pulse.heading")}</div>
-        <div style={{ display: "inline-flex", gap: 2, padding: 2,
-          background: "var(--bg-3)", border: "1px solid var(--panel-border)",
-          borderRadius: 6 }}>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, marginBottom: 6 }}>
+        <div className="p-hint" style={{ margin: 0, fontWeight: 600, color: "var(--ink-2)" }}>{window.t("pulse.heading")}</div>
+        <div className="seg" role="group">
           {[30, 90].map(d => (
-            <button key={d}
-              onClick={() => setDays(d)}
-              style={{
-                background: days === d ? "var(--self)" : "transparent",
-                color: days === d ? "#05070d" : "var(--fg-mute)",
-                border: "none", borderRadius: 4,
-                padding: "2px 7px", fontSize: 10,
-                fontFamily: "var(--font-mono)", cursor: "pointer",
-                fontWeight: days === d ? 600 : 500,
-              }}>{d}d</button>
+            <button key={d} type="button" aria-pressed={days === d} onClick={() => setDays(d)} style={{ fontSize: 11.5, padding: "1px 7px" }}>{d}d</button>
           ))}
         </div>
       </div>
-      <div style={{
-        padding: "10px 12px",
-        background: "var(--bg-2)",
-        border: "1px solid var(--panel-border)",
-        borderRadius: 10,
-        display: "grid",
-        gridTemplateColumns: "1fr 1fr 1fr",
-        gap: 8,
-      }}>
+      <div className="stats3">
         <div>
-          <div style={{ fontSize: 18, fontWeight: 600, fontFamily: "var(--font-mono)", color: "var(--fg)" }}>
-            {rank ? "#" + rank : "—"}
-          </div>
-          <div style={{ fontSize: 10, color: "var(--fg-mute)", marginTop: 2 }}>
-            {window.t("pulse.rank")}
-          </div>
+          <div className="n">{rank ? "#" + rank : "—"}</div>
+          <div className="l">{window.t("pulse.rank")}</div>
         </div>
         <div>
-          <div style={{ fontSize: 18, fontWeight: 600, fontFamily: "var(--font-mono)", color: "var(--vf)" }}>
-            {totalOpen}
-          </div>
-          <div style={{ fontSize: 10, color: "var(--fg-mute)", marginTop: 2 }}>
-            {window.t("pulse.open")}
-          </div>
+          <div className="n" style={{ color: "var(--vf)" }}>{totalOpen}</div>
+          <div className="l">{window.t("pulse.open")}</div>
         </div>
         <div>
-          <div style={{ fontSize: 18, fontWeight: 600, fontFamily: "var(--font-mono)" }}>
+          <div className="n">
             {hasMovement ? (
               <>
                 <span style={{ color: "var(--vf)" }}>+{pulse.gains}</span>
-                {pulse.losses > 0 && <>
-                  <span style={{ color: "var(--fg-faint)" }}> · </span>
-                  <span style={{ color: "var(--vr)" }}>−{pulse.losses}</span>
-                </>}
+                {pulse.losses > 0 && <span style={{ color: "var(--vr)" }}> −{pulse.losses}</span>}
               </>
-            ) : (
-              <span style={{ color: "var(--fg-faint)" }}>—</span>
-            )}
+            ) : <span style={{ color: "var(--ink-4)" }}>—</span>}
           </div>
-          <div style={{ fontSize: 10, color: "var(--fg-mute)", marginTop: 2 }}>
-            {window.t(windowKey)}
-          </div>
+          <div className="l">{window.t(windowKey)}</div>
         </div>
       </div>
       {hasMovement && (
-        <div style={{
-          marginTop: 6, fontSize: 11, color: "var(--fg-dim)", lineHeight: 1.45,
-        }}>
+        <p className="p-hint">
           {pulse.gains > 0 && window.t("pulse.gains_msg", { n: pulse.gains })}
           {pulse.gains > 0 && pulse.losses > 0 && " · "}
           {pulse.losses > 0 && window.t("pulse.losses_msg", { n: pulse.losses })}
-        </div>
+        </p>
       )}
     </div>
   );
 }
 
 // ─── Daily destination pick ──────────────────────────────────────────────
-// Surfaces one visa-free / eVisa / VoA destination per day, deterministic
-// by (passport + UTC date) so it stays stable through the day but rotates
-// for the next visit. Gives the site a reason to be opened daily — even
-// when nothing in the user's passport has changed.
+// One visa-free / eVisa / VoA destination per day, deterministic by
+// (passport + UTC date), so it's stable through the day and rotates tomorrow.
 const STATUS_PRIORITY = { vf: 3, ev: 2, voa: 1 };
 
 function hashStr(s) {
@@ -2631,61 +1571,19 @@ function DailySuggestion({ passport, onOpen }) {
   const tipEntry = window.DESTINATION_TIPS && window.DESTINATION_TIPS[pick.iso2];
   const lang = window.ATLAS_LANG || "en";
   const tip = tipEntry ? (tipEntry[lang] || tipEntry.en) : null;
-  const statusInfo = STATUS_COLOR[pick.status];
   return (
     <div style={{ marginBottom: 16 }}>
-      <div style={{
-        fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
-        textTransform: "uppercase", letterSpacing: "0.10em", marginBottom: 6,
-      }}>{window.t("daily.heading")}</div>
-      <button
-        onClick={() => onOpen?.(pick.iso2)}
-        className="picker-trigger"
-        style={{
-          width: "100%", textAlign: "left", cursor: "pointer",
-          background: "linear-gradient(135deg, var(--bg-2) 0%, var(--bg-3) 100%)",
-          border: "1px solid var(--panel-border-strong)",
-          borderRadius: 10, padding: "12px 14px",
-          color: "var(--fg)", fontFamily: "inherit",
-          transition: "all 180ms ease",
-          display: "flex", flexDirection: "column", gap: 8,
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-          <span style={{ fontSize: 28 }}>{country.flag}</span>
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ fontSize: 14, fontWeight: 600, lineHeight: 1.2 }}>
-              {window.countryName(pick.iso2)}
-            </div>
-            <div style={{
-              display: "inline-flex", alignItems: "center", gap: 5,
-              marginTop: 3, padding: "2px 7px", borderRadius: 999,
-              background: "rgba(96,165,250,0.10)",
-              border: "1px solid var(--panel-border)",
-              fontSize: 10, fontFamily: "var(--font-mono)",
-              color: "var(--fg-dim)",
-            }}>
-              <span style={{
-                width: 5, height: 5, borderRadius: "50%",
-                background: statusInfo?.fill, boxShadow: `0 0 5px ${statusInfo?.fill}`,
-              }} />
-              <span>{statusLabel(pick.status)}</span>
-            </div>
-          </div>
-          <span style={{ color: "var(--fg-mute)", fontSize: 18 }}>→</span>
-        </div>
-        {tip && (
-          <div style={{
-            fontSize: 12, color: "var(--fg-dim)", lineHeight: 1.45,
-          }}>
-            {tip}
-          </div>
-        )}
-        {!tip && (
-          <div style={{ fontSize: 12, color: "var(--fg-mute)", lineHeight: 1.45 }}>
-            {window.t("daily.generic_tip")}
-          </div>
-        )}
+      <div className="p-hint" style={{ margin: "0 0 6px", fontWeight: 600, color: "var(--ink-2)" }}>{window.t("daily.heading")}</div>
+      <button type="button" className="daily" onClick={() => onOpen?.(pick.iso2)}>
+        <span className="daily-top">
+          <span className="flag" style={{ fontSize: 28 }}>{country.flag}</span>
+          <span style={{ flex: 1, minWidth: 0 }}>
+            <span className="daily-name">{window.countryName(pick.iso2)}</span>
+            <span className="daily-status"><Dot s={pick.status} /> {statusLabel(pick.status)}</span>
+          </span>
+          <span className="mono" aria-hidden="true" style={{ color: "var(--ink-3)" }}>→</span>
+        </span>
+        <span className="daily-tip">{tip || window.t("daily.generic_tip")}</span>
       </button>
     </div>
   );
@@ -2701,30 +1599,14 @@ function PassportNewsFeed({ passport }) {
   }, [passport]);
   if (list.length === 0) return null;
   const items = expanded ? list : list.slice(0, 3);
-  const passportName = window.countryName(passport);
   return (
     <div style={{ marginBottom: 16 }}>
-      <div style={{
-        display: "flex", alignItems: "center", gap: 6, marginBottom: 8,
-      }}>
-        <div style={{
-          fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
-          textTransform: "uppercase", letterSpacing: "0.10em",
-        }}>{window.t("news.for_passport", { name: passportName })}</div>
-      </div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+      <div className="p-hint" style={{ margin: "0 0 6px", fontWeight: 600, color: "var(--ink-2)" }}>{window.t("news.for_passport", { name: window.countryName(passport) })}</div>
+      <div className="feed">
         {items.map(it => <NewsItem key={it.id} item={it} />)}
       </div>
       {list.length > 3 && (
-        <button
-          onClick={() => setExpanded(!expanded)}
-          style={{
-            background: "transparent", border: "none",
-            color: "var(--fg-mute)", fontFamily: "var(--font-mono)",
-            fontSize: 11, cursor: "pointer", padding: "8px 0 0 0",
-            textTransform: "uppercase", letterSpacing: "0.08em",
-          }}
-        >
+        <button type="button" className="more-btn" onClick={() => setExpanded(!expanded)}>
           {expanded ? window.t("changelog.show_less") : window.t("changelog.more", { n: list.length - 3 })}
         </button>
       )}
@@ -2743,71 +1625,31 @@ function NewsBox({ passport, destIso2 }) {
   if (list.length === 0) return null;
   return (
     <div style={{ marginBottom: 10 }}>
-      <div style={{
-        fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
-        textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 6,
-      }}>{window.t("news.recent_for_dest")}</div>
-      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+      <div className="p-hint" style={{ margin: "0 0 6px", fontWeight: 600, color: "var(--ink-2)" }}>{window.t("news.recent_for_dest")}</div>
+      <div className="feed">
         {list.map(it => <NewsItem key={it.id} item={it} compact />)}
       </div>
     </div>
   );
 }
 
-// Floating, collapsible "Recently changed" feed. Lives over the globe (left
-// of the side panel) instead of inside it, so the right column stays short
-// no matter which passport/country is selected. Collapsed by default on
-// narrow screens.
+// Floating, collapsible "Recently changed" feed over the globe (top-left), so
+// the panel stays short. Collapsed by default so it never covers the globe.
 function ChangelogFloater() {
-  // Collapsed by default so it never covers the globe on first load — the
-  // user opens it when they want the feed. Anchored top-LEFT.
   const [open, setOpen] = useState(false);
-  const [, force] = useState(0);
-  useEffect(() => {
-    const f = () => force(x => x + 1);
-    window.addEventListener("atlas:lang", f);
-    return () => window.removeEventListener("atlas:lang", f);
-  }, []);
+  useLangTick();
   const count = (window.CHANGELOG || []).length;
   if (count === 0) return null;
   return (
-    <div className="changelog-floater" style={{
-      position: "absolute", top: 16, left: 16, zIndex: 5,
-      width: 290, maxWidth: "calc(100% - 32px)",
-    }}>
-      <button
-        onClick={() => setOpen(o => !o)}
-        style={{
-          width: "100%", display: "flex", alignItems: "center", gap: 8,
-          padding: "9px 12px", cursor: "pointer", textAlign: "left",
-          background: "var(--panel)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)",
-          border: "1px solid var(--panel-border-strong)",
-          borderRadius: open ? "10px 10px 0 0" : 10,
-          color: "var(--fg)", fontFamily: "inherit",
-        }}>
-        <span style={{
-          width: 5, height: 5, borderRadius: "50%",
-          background: "var(--vf)", boxShadow: "0 0 6px var(--vf)",
-          animation: "pulse 2s ease-in-out infinite",
-        }} />
-        <span style={{
-          fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-dim)",
-          textTransform: "uppercase", letterSpacing: "0.10em", flex: 1,
-        }}>{window.t("panel.recently_changed")}</span>
-        <span style={{
-          fontSize: 10, fontFamily: "var(--font-mono)", color: "var(--fg-mute)",
-        }}>{count}</span>
-        <svg width="12" height="12" viewBox="0 0 12 12" style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 200ms ease", opacity: 0.5 }}>
-          <path d="M3 4.5 L6 7.5 L9 4.5" stroke="currentColor" strokeWidth="1.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
+    <div className="floater">
+      <button type="button" className="floater-btn overlay-card" onClick={() => setOpen(o => !o)} aria-expanded={open}>
+        <span className="live-dot" aria-hidden="true" />
+        <span>{window.t("panel.recently_changed")}</span>
+        <span className="count">{count}</span>
+        <IconCaret />
       </button>
       {open && (
-        <div style={{
-          maxHeight: "min(55vh, 420px)", overflowY: "auto",
-          background: "var(--panel)", backdropFilter: "blur(14px)", WebkitBackdropFilter: "blur(14px)",
-          border: "1px solid var(--panel-border-strong)", borderTop: "none",
-          borderRadius: "0 0 10px 10px", padding: "10px 12px",
-        }}>
+        <div className="floater-body overlay-card">
           <Changelog embedded />
         </div>
       )}
@@ -2820,55 +1662,19 @@ function Changelog({ embedded }) {
   const items = expanded ? window.CHANGELOG : window.CHANGELOG.slice(0, 4);
   return (
     <div style={{ marginBottom: embedded ? 0 : 16 }}>
-      {!embedded && (
-        <div style={{
-          display: "flex", alignItems: "center", gap: 6, marginBottom: 8,
-        }}>
-          <div style={{
-            fontSize: 10,
-            fontFamily: "var(--font-mono)",
-            color: "var(--fg-mute)",
-            textTransform: "uppercase",
-            letterSpacing: "0.10em",
-          }}>{window.t("panel.recently_changed")}</div>
-          <div style={{
-            width: 4, height: 4, borderRadius: "50%",
-            background: "var(--vf)", boxShadow: "0 0 6px var(--vf)",
-            animation: "pulse 2s ease-in-out infinite",
-          }} />
-        </div>
-      )}
-      <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+      {!embedded && <Caption>{window.t("panel.recently_changed")}</Caption>}
+      <div className="feed">
         {items.length === 0 ? (
-          <div style={{
-            padding: 12,
-            background: "var(--bg-2)",
-            border: "1px dashed var(--panel-border)",
-            borderRadius: 8,
-            fontSize: 11,
-            color: "var(--fg-mute)",
-            lineHeight: 1.5,
-          }}>
-            {window.t("panel.no_changes")}
-            <br />
-            <span style={{ color: "var(--fg-faint)" }}>
-              {window.t("panel.no_changes_sub")}
-            </span>
+          <div className="box box-dashed p-hint" style={{ margin: 0 }}>
+            {window.t("panel.no_changes")}<br />
+            <span className="p-fine">{window.t("panel.no_changes_sub")}</span>
           </div>
         ) : (
           items.map((c, i) => <ChangelogItem key={i} entry={c} />)
         )}
       </div>
       {window.CHANGELOG.length > 4 && (
-        <button
-          onClick={() => setExpanded(!expanded)}
-          style={{
-            background: "transparent", border: "none",
-            color: "var(--fg-mute)", fontFamily: "var(--font-mono)",
-            fontSize: 11, cursor: "pointer", padding: "8px 0 0 0",
-            textTransform: "uppercase", letterSpacing: "0.08em",
-          }}
-        >
+        <button type="button" className="more-btn" onClick={() => setExpanded(!expanded)}>
           {expanded ? window.t("changelog.show_less") : window.t("changelog.more", { n: window.CHANGELOG.length - 4 })}
         </button>
       )}
@@ -2876,17 +1682,13 @@ function Changelog({ embedded }) {
   );
 }
 
-// Render the "X happened" line for a changelog entry — convert raw status
-// codes (vr → voa, ev → vf, …) into a plain-language sentence so non-expert
-// users can read the feed at a glance.
+// "X happened" sentence for a changelog entry — raw status codes become
+// plain language so non-experts can read the feed.
 function describeStatusChange(from, to) {
   if (from === to) return window.t("change.rules_updated");
-  // Specific transitions get their own copy; otherwise we fall back to a
-  // generic "X is now required" line based on the destination status.
   const key = `change.${from}_to_${to}`;
   const specific = window.t(key);
   if (specific && specific !== key) return specific;
-  // Fallback: describe the new state.
   return window.t(`change.now_${to}`) || window.t("change.rules_updated");
 }
 
@@ -2894,96 +1696,44 @@ function ChangelogItem({ entry }) {
   const passportIso = entry.affects.passports?.[0];
   const passport = passportIso ? window.byIso2[passportIso] : null;
   const dest = window.byIso2[entry.affects.dest];
-  const toColor = STATUS_COLOR[entry.statusTo]?.fill || "var(--fg-mute)";
-  const date = new Date(entry.date + "T00:00:00");
-  const fmt = date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-  const sentence = describeStatusChange(entry.statusFrom, entry.statusTo);
-  // Pill below the sentence makes the new status visually obvious. We drop
-  // the from→to dot+code chain (too cryptic) in favour of a single labelled
-  // pill in the destination-status colour.
   return (
-    <div style={{
-      padding: 10,
-      background: "var(--bg-2)",
-      border: "1px solid var(--panel-border)",
-      borderRadius: 8,
-      transition: "all 180ms ease",
-      cursor: "default",
-    }} className="changelog-item">
-      <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 6, flexWrap: "wrap" }}>
-        <span style={{ fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.06em" }}>
-          {fmt}
-        </span>
-        <span style={{ color: "var(--fg-faint)" }}>·</span>
-        {passport && <>
-          <span style={{ fontSize: 14 }}>{passport.flag}</span>
-          <span style={{ fontSize: 11, color: "var(--fg-dim)" }}>{window.countryName(passportIso)}</span>
-        </>}
-        <Arrow />
-        {dest && <>
-          <span style={{ fontSize: 14 }}>{dest.flag}</span>
-          <span style={{ fontSize: 11, color: "var(--fg-dim)" }}>{window.countryName(entry.affects.dest)}</span>
-        </>}
+    <div className="feed-item" style={{ "--tone": `var(--${entry.statusTo}, var(--rule-strong))` }}>
+      <div className="feed-meta">
+        <time dateTime={entry.date}>{fmtDay(entry.date)}</time>
+        <span>·</span>
+        {passport && <><span className="flag">{passport.flag}</span><span>{window.countryName(passportIso)}</span></>}
+        <span>→</span>
+        {dest && <><span className="flag">{dest.flag}</span><span>{window.countryName(entry.affects.dest)}</span></>}
       </div>
-      <div style={{ fontSize: 12, color: "var(--fg)", lineHeight: 1.4, marginBottom: 6 }}>
-        {sentence}
-      </div>
-      <div style={{
-        display: "inline-flex", alignItems: "center", gap: 6,
-        fontSize: 10, fontFamily: "var(--font-mono)",
-        padding: "3px 8px", borderRadius: 999,
-        background: "rgba(255,255,255,0.04)",
-        border: "1px solid var(--panel-border)",
-        color: "var(--fg-dim)",
-      }}>
-        <span style={{
-          width: 6, height: 6, borderRadius: "50%",
-          background: toColor,
-          boxShadow: `0 0 6px ${toColor}`,
-        }} />
-        <span>{statusLabel(entry.statusTo)}</span>
+      <div className="feed-title" style={{ fontWeight: 500 }}>{describeStatusChange(entry.statusFrom, entry.statusTo)}</div>
+      <div style={{ marginTop: 6 }}>
+        <span className="stamp is-small" style={{ "--st": stampVar(entry.statusTo) }}><span className="stamp-k">{statusLabel(entry.statusTo)}</span></span>
       </div>
     </div>
   );
 }
 
 function PanelFooter() {
-  const linkStyle = {
-    color: "var(--fg-mute)",
-    textDecoration: "none",
-    borderBottom: "1px dotted var(--fg-faint)",
-  };
   return (
-    <footer style={{
-      marginTop: "auto",
-      paddingTop: 12,
-      borderTop: "1px solid var(--panel-border)",
-      fontSize: 10,
-      color: "var(--fg-faint)",
-      fontFamily: "var(--font-mono)",
-      lineHeight: 1.6,
-    }}>
-      <div style={{ marginBottom: 6 }}>
-        {window.t("footer.refresh")}
-      </div>
-      <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-        <a href="/alerts/" style={linkStyle}>{window.t("footer.alerts")}</a>
-        <a href="/schengen-calculator/" style={linkStyle}>{window.t("footer.schengen")}</a>
-        <a href="/itinerary/" style={linkStyle}>{window.t("footer.itinerary")}</a>
-        <a href="/transit-map/" style={linkStyle}>{window.t("nav.transit_map")}</a>
-        <a href="/etias/" style={linkStyle}>{window.t("footer.etias")}</a>
-        <a href="/passport-validity/" style={linkStyle}>{window.t("footer.validity")}</a>
-        <a href="/visa-shortcuts/" style={linkStyle}>{window.t("footer.shortcuts")}</a>
-        <a href="/digital-nomad-visa/" style={linkStyle}>{window.t("footer.nomad")}</a>
-        <a href="/citizenship-by-investment/" style={linkStyle}>{window.t("footer.cbi")}</a>
-        <a href="/about/" style={linkStyle}>{window.t("footer.about")}</a>
-        <a href="/privacy/" style={linkStyle}>{window.t("footer.privacy")}</a>
-        <a href="/passport/" style={linkStyle}>{window.t("footer.all_passports")}</a>
-        <a href="https://github.com/Uygara/atlas-visa-globe" target="_blank" rel="noopener" style={linkStyle}>{window.t("footer.source")}</a>
-      </div>
-      <div style={{ marginTop: 8, color: "var(--fg-faint)" }}>
-        © {new Date().getFullYear()} travelnow.info · {window.t("footer.rights")}
-      </div>
+    <footer className="panel-foot">
+      <div>{window.t("footer.refresh")}</div>
+      <nav aria-label="Footer">
+        <a href="/alerts/">{window.t("footer.alerts")}</a>
+        <a href="/schengen-calculator/">{window.t("footer.schengen")}</a>
+        <a href="/itinerary/">{window.t("footer.itinerary")}</a>
+        <a href="/transit-map/">{window.t("nav.transit_map")}</a>
+        <a href="/etias/">{window.t("footer.etias")}</a>
+        <a href="/passport-validity/">{window.t("footer.validity")}</a>
+        <a href="/visa-shortcuts/">{window.t("footer.shortcuts")}</a>
+        <a href="/digital-nomad-visa/">{window.t("footer.nomad")}</a>
+        <a href="/citizenship-by-investment/">{window.t("footer.cbi")}</a>
+        <a href="/guides/">{tr("nav.guides", "Guides")}</a>
+        <a href="/about/">{window.t("footer.about")}</a>
+        <a href="/privacy/">{window.t("footer.privacy")}</a>
+        <a href="/passport/">{window.t("footer.all_passports")}</a>
+        <a href="https://github.com/Uygara/atlas-visa-globe" target="_blank" rel="noopener">{window.t("footer.source")}</a>
+      </nav>
+      <div className="byline">© {new Date().getFullYear()} travelnow.info · Uygar Atalay</div>
     </footer>
   );
 }

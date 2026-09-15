@@ -25,17 +25,19 @@ function statusLabel(s) {
   return STATUS_COLOR[s]?.label || s;
 }
 
-// Hex equivalents for SVG patterns (CSS vars don't resolve inside <pattern> fills).
+// Pattern / resolver colours. These used to be hard-coded hex because pattern
+// tiles were painted through attributes; they're set through `style` now, so
+// the design tokens (and therefore light/dark) apply inside patterns too.
 const STATUS_HEX = {
-  idc: "#38bdf8",
-  vf: "#22c55e",
-  eta: "#2dd4bf",
-  ev: "#a3e635",
-  voa: "#facc15",
-  vr: "#ef4444",
-  ban: "#3a0510",
-  self: "#60a5fa",
-  na: "#2a3245",
+  idc: "var(--idc)",
+  vf: "var(--vf)",
+  eta: "var(--eta)",
+  ev: "var(--ev)",
+  voa: "var(--voa)",
+  vr: "var(--vr)",
+  ban: "var(--ban)",
+  self: "var(--self)",
+  na: "var(--na)",
 };
 
 function Globe({
@@ -80,7 +82,7 @@ function Globe({
   const wrapRef = useRef(null);
   const [topology, setTopology] = useState(null);
   const [size, setSize] = useState(() => ({
-    w: window.innerWidth - 340,
+    w: Math.max(1, window.innerWidth - 360),
     h: window.innerHeight,
   }));
   const [hover, setHover] = useState(null); // { iso2, x, y }
@@ -644,6 +646,7 @@ function Globe({
     if (r.upgradedBy && STATUS_HEX[r.status]) {
       return `url(#permit-${r.status})`;
     }
+    if (r.status === "ban") return "url(#hatch-ban)";
     return STATUS_COLOR[r.status]?.fill || STATUS_COLOR.na.fill;
   }, [passport, filter, resolveOne, groupActive, comparePassport, direction, fillResolver]);
 
@@ -705,26 +708,17 @@ function Globe({
         onMouseMove={handleMove}
       >
         <defs>
-          {/* Outer glow ring. Colors come from CSS (--atm-mid) so the ring
-              tones down in light mode. */}
-          <radialGradient id="atm" cx="50%" cy="50%" r="50%">
-            <stop offset="80%"  stopColor="rgba(96,165,250,0)" />
-            <stop offset="92%" />
-            <stop offset="100%" stopColor="rgba(96,165,250,0)" />
+          {/* Limb shading: a faint darkening toward the edge of the sphere so
+              the 3D globe reads as round without any glow or gradient ocean. */}
+          <radialGradient id="limb" cx="50%" cy="50%" r="50%">
+            <stop offset="62%" style={{ stopColor: "var(--ink)", stopOpacity: 0 }} />
+            <stop offset="100%" style={{ stopColor: "var(--ink)", stopOpacity: 0.16 }} />
           </radialGradient>
-          {/* Ocean / sphere. Stop colors are CSS-driven (--sphere-1/2/3) so the
-              sphere flips light/dark with the theme — see index.html. */}
-          <radialGradient id="sphere" cx="35%" cy="35%" r="75%">
-            <stop offset="0%"  />
-            <stop offset="60%" />
-            <stop offset="100%" />
-          </radialGradient>
-          <filter id="countryGlow" x="-50%" y="-50%" width="200%" height="200%">
-            <feGaussianBlur stdDeviation="1.4" />
-          </filter>
-          <filter id="globeGlow" x="-20%" y="-20%" width="140%" height="140%">
-            <feGaussianBlur stdDeviation="8" />
-          </filter>
+          {/* "No entry allowed": hatched like a restricted zone on a chart. */}
+          <pattern id="hatch-ban" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <rect width="6" height="6" style={{ fill: "var(--ban)" }} />
+            <rect width="1.4" height="6" style={{ fill: "var(--paper-raised)", fillOpacity: 0.38 }} />
+          </pattern>
 
           {/* Diagonal-stripe patterns for compare mode. Twelve combinations:
               every ordered (primary, compare) pair where the two statuses
@@ -734,8 +728,8 @@ function Globe({
               <pattern key={`${a}-${b}`} id={`stripe-${a}-${b}`}
                        width="8" height="8" patternUnits="userSpaceOnUse"
                        patternTransform="rotate(45)">
-                <rect width="8" height="8" fill={STATUS_HEX[a]} />
-                <rect x="4" width="4" height="8" fill={STATUS_HEX[b]} />
+                <rect width="8" height="8" style={{ fill: STATUS_HEX[a] }} />
+                <rect x="4" width="4" height="8" style={{ fill: STATUS_HEX[b] }} />
               </pattern>
             ))
           )}
@@ -749,22 +743,16 @@ function Globe({
             <pattern key={`permit-${s}`} id={`permit-${s}`}
                      width="7" height="7" patternUnits="userSpaceOnUse"
                      patternTransform="rotate(45)">
-              <rect width="7" height="7" fill={STATUS_HEX[s]} />
-              <rect x="5" width="2" height="7" fill={STATUS_HEX.self} />
+              <rect width="7" height="7" style={{ fill: STATUS_HEX[s] }} />
+              <rect x="5" width="2" height="7" style={{ fill: STATUS_HEX.self }} />
             </pattern>
           ))}
         </defs>
 
-        {/* Outer atmosphere. Radius tracks the zoom so the glow keeps wrapping
-            the visible sphere instead of getting stranded inside it. */}
-        {showGlow && (
-          <circle cx={cx} cy={cy} r={r * 1.18 * zoomDisplay} fill="url(#atm)" />
-        )}
-
-        {/* Sphere. Same deal — without scaling, zoom > 1 drew country polygons
-            outside the sphere and the body background bled through. */}
+        {/* Sphere (ocean). Radius tracks the zoom — without scaling, zoom > 1
+            drew country polygons outside the sphere. */}
         {showGlobe && (
-          <circle cx={cx} cy={cy} r={r * zoomDisplay} fill="url(#sphere)" />
+          <circle cx={cx} cy={cy} r={r * zoomDisplay} style={{ fill: "var(--ocean)" }} />
         )}
 
         {/* Graticule (lat/lon grid lines) */}
@@ -793,8 +781,8 @@ function Globe({
                 d=""
                 fill={fill}
                 opacity={op}
-                stroke={isHover ? "#fff" : strokeFor(iso2)}
-                strokeWidth={isHover ? 1.2 : (isCompareSelf ? 2.4 : (comparePassport ? 1.4 : 0.5))}
+                stroke={isHover ? "var(--ink)" : strokeFor(iso2)}
+                strokeWidth={isHover ? 1.2 : (isCompareSelf ? 2.4 : (comparePassport ? 1.4 : 0.6))}
                 onMouseEnter={(e) => handleEnter(e, f)}
                 onMouseLeave={handleLeave}
                 onClick={() => handleClick(f)}
@@ -803,7 +791,15 @@ function Globe({
           })}
         </g>
 
-        {/* Country name labels — flat-mode only. Positions + visibility are set
+        {/* Limb shading + sphere outline, above the countries, below labels. */}
+        {showGlobe && (
+          <g style={{ pointerEvents: "none" }}>
+            {showGlow && <circle cx={cx} cy={cy} r={r * zoomDisplay} fill="url(#limb)" />}
+            <circle cx={cx} cy={cy} r={r * zoomDisplay} fill="none" style={{ stroke: "var(--globe-edge)" }} strokeWidth="1" />
+          </g>
+        )}
+
+        {/* Country name labels — Positions + visibility are set
             imperatively in redrawPaths to avoid React re-rendering 200 nodes
             on every pan/zoom tick. */}
         <g data-label-layer="1" style={{ pointerEvents: "none" }}>
@@ -818,14 +814,16 @@ function Globe({
                 textAnchor="middle"
                 dominantBaseline="central"
                 style={{
-                  fill: "var(--fg)",
+                  fill: "var(--ink)",
                   fontFamily: "var(--font-sans, sans-serif)",
-                  fontWeight: 500,
-                  opacity: 0.78,
+                  fontWeight: 600,
+                  letterSpacing: "0.01em",
+                  opacity: 0.82,
                   display: "none",
                   paintOrder: "stroke",
-                  stroke: "var(--panel, #ffffff)",
-                  strokeWidth: 2.5,
+                  stroke: "var(--paper-raised)",
+                  strokeOpacity: 0.85,
+                  strokeWidth: 2.6,
                   strokeLinejoin: "round",
                 }}
               >
@@ -848,11 +846,11 @@ function Globe({
                   ref={(el) => { if (el) el.__arcCoords = { from: [cf.lon, cf.lat], to: [ct.lon, ct.lat] }; }}
                   d=""
                   fill="none"
-                  stroke="var(--self)"
+                  stroke="var(--accent)"
                   strokeWidth="2"
                   strokeLinecap="round"
                   strokeDasharray="1 6"
-                  opacity="0.85"
+                  opacity="0.9"
                 />
               );
             })}
@@ -864,9 +862,9 @@ function Globe({
           <g data-stop-layer="1" style={{ pointerEvents: "none" }}>
             {stopMarkers.map((s, i) => (
               <g key={`stop-${s.iso2}-${i}`} data-stop-iso={s.iso2} style={{ visibility: "hidden" }}>
-                <circle r="11" fill="var(--self)" stroke="#05070d" strokeWidth="1.5" />
+                <circle r="11" style={{ fill: "var(--accent)", stroke: "var(--paper-raised)" }} strokeWidth="2" />
                 <text textAnchor="middle" dominantBaseline="central" y="0.5"
-                  style={{ fill: "#05070d", fontFamily: "var(--font-mono)", fontSize: 11, fontWeight: 700 }}>
+                  style={{ fill: "var(--on-accent)", fontFamily: "var(--font-mono)", fontSize: 11, fontWeight: 500 }}>
                   {s.label != null ? s.label : (i + 1)}
                 </text>
               </g>
@@ -973,76 +971,37 @@ function HoverCard({ hover, passport, compare, direction, variant, groupPassport
         ? window.resolveStatus(hover.iso2, compare)
         : window.resolveStatus(compare, hover.iso2))
     : null;
-  const sc = STATUS_COLOR[r.status];
   const ofs = 18;
   return (
-    <div
-      style={{
-        position: "absolute",
-        left: hover.x + ofs,
-        top: hover.y + ofs,
-        transform: "translate(0, 0)",
-        pointerEvents: "none",
-        background: "var(--panel)",
-        backdropFilter: "blur(12px)",
-        WebkitBackdropFilter: "blur(12px)",
-        border: "1px solid var(--panel-border-strong)",
-        borderRadius: 10,
-        padding: "10px 12px",
-        minWidth: 200,
-        zIndex: 50,
-        boxShadow: "0 12px 32px rgba(0,0,0,0.4)",
-        fontSize: 13,
-        color: "var(--fg)",
-      }}
-    >
-      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
-        <span style={{ fontSize: 18 }}>{dest.flag}</span>
-        <strong style={{ fontSize: 14, fontWeight: 600 }}>{window.countryName(hover.iso2)}</strong>
+    <div className="hovercard overlay-card" style={{ left: hover.x + ofs, top: hover.y + ofs }}>
+      <div className="hovercard-title">
+        <span className="flag">{dest.flag}</span>
+        <span>{window.countryName(hover.iso2)}</span>
       </div>
-      <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 2 }}>
-        <span style={{
-          width: 8, height: 8, borderRadius: "50%", display: "inline-block",
-          background: sc.fill, boxShadow: `0 0 8px ${sc.fill}`,
-        }} />
-        <span style={{ color: "var(--fg-dim)" }}>{statusLabel(r.status)}</span>
-        {r.days && (
-          <span style={{ marginLeft: "auto", color: "var(--fg-mute)", fontFamily: "var(--font-mono)" }}>
-            {window.t("detail.up_to_days", { n: r.days })}
-          </span>
-        )}
+      <div className="hovercard-row">
+        {r.status === "ban" ? <Swatch s="ban" /> : <Dot s={r.status} />}
+        <span>{statusLabel(r.status)}</span>
+        {r.days && <span className="aside">{window.t("detail.up_to_days", { n: r.days })}</span>}
       </div>
       {rc && (
-        <div style={{
-          display: "flex", alignItems: "center", gap: 6, marginTop: 6,
-          paddingTop: 6, borderTop: "1px solid var(--panel-border)",
-        }}>
-          <span style={{ fontSize: 11, color: "var(--fg-mute)", marginRight: 4 }}>{window.t("detail.vs")} {window.byIso2[compare]?.flag}</span>
-          <span style={{
-            width: 8, height: 8, borderRadius: "50%", display: "inline-block",
-            background: STATUS_COLOR[rc.status].fill, boxShadow: `0 0 8px ${STATUS_COLOR[rc.status].fill}`,
-          }} />
-          <span style={{ color: "var(--fg-dim)" }}>{statusLabel(rc.status)}</span>
-          {rc.days && <span style={{ marginLeft: "auto", color: "var(--fg-mute)", fontFamily: "var(--font-mono)" }}>{rc.days}d</span>}
+        <div className="hovercard-row hovercard-sep">
+          <span className="hovercard-cap">{window.t("detail.vs")} <span className="flag">{window.byIso2[compare]?.flag}</span></span>
+          <Dot s={rc.status} />
+          <span>{statusLabel(rc.status)}</span>
+          {rc.days && <span className="aside">{rc.days}d</span>}
         </div>
       )}
       {groupBreakdown && (
-        <div style={{ marginTop: 6, paddingTop: 6, borderTop: "1px solid var(--panel-border)" }}>
-          <div style={{ fontSize: 10, color: "var(--fg-mute)", fontFamily: "var(--font-mono)", textTransform: "uppercase", letterSpacing: "0.08em", marginBottom: 4 }}>
-            {window.t("detail.per_member")}
-          </div>
+        <div className="hovercard-sep">
+          <div className="hovercard-cap">{window.t("detail.per_member")}</div>
           {groupBreakdown.map(({ passport: p, r: rr }) => {
             const c = window.byIso2[p];
-            const sc2 = STATUS_COLOR[rr.status];
             return (
-              <div key={p} style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 2, fontSize: 12 }}>
-                <span style={{ fontSize: 13 }}>{c?.flag || ""}</span>
-                <span style={{
-                  width: 7, height: 7, borderRadius: "50%", display: "inline-block",
-                  background: sc2.fill,
-                }} />
-                <span style={{ color: "var(--fg-dim)" }}>{statusLabel(rr.status)}</span>
-                {rr.days && <span style={{ marginLeft: "auto", color: "var(--fg-mute)", fontFamily: "var(--font-mono)", fontSize: 11 }}>{rr.days}d</span>}
+              <div key={p} className="hovercard-row" style={{ marginTop: 3, fontSize: 12.5 }}>
+                <span className="flag">{c?.flag || ""}</span>
+                <Dot s={rr.status} />
+                <span>{statusLabel(rr.status)}</span>
+                {rr.days && <span className="aside">{rr.days}d</span>}
               </div>
             );
           })}
@@ -1117,7 +1076,7 @@ function MicroStateMarkers({
         const isPrimary = iso2 === passport;
         const isCompare = iso2 === comparePassport;
         const showRing = isPrimary || isCompare || isHover;
-        const ringColor = isPrimary ? "var(--self)" : isCompare ? "var(--compare-self)" : "rgba(255,255,255,0.7)";
+        const ringColor = isPrimary ? "var(--self)" : isCompare ? "var(--compare-self)" : "var(--ink)";
         return (
           <g
             key={`marker-${iso2}`}
@@ -1127,14 +1086,13 @@ function MicroStateMarkers({
             onMouseLeave={onLeave}
             onClick={() => onClick({ id: c.id, __micro: true })}
           >
-            <circle r={r + 2.5} fill="rgba(0,0,0,0.55)" opacity={op} />
+            <circle r={r + 1.8} style={{ fill: "var(--paper-raised)" }} opacity={op} />
             <circle
               r={r}
               fill={fill}
               opacity={op}
-              stroke={ringColor}
+              stroke={showRing ? ringColor : "var(--rule-strong)"}
               strokeWidth={showRing ? 2 : 0.8}
-              style={{ filter: showRing ? `drop-shadow(0 0 6px ${ringColor})` : "none" }}
             />
           </g>
         );
@@ -1144,77 +1102,19 @@ function MicroStateMarkers({
 }
 
 function ZoomControls({ zoom, onZoomIn, onZoomOut, onReset }) {
-  const btnStyle = {
-    width: 32, height: 32,
-    background: "var(--panel)",
-    backdropFilter: "blur(14px)",
-    WebkitBackdropFilter: "blur(14px)",
-    border: "1px solid var(--panel-border-strong)",
-    color: "var(--fg)",
-    cursor: "pointer",
-    display: "flex", alignItems: "center", justifyContent: "center",
-    fontFamily: "inherit",
-    transition: "all 140ms ease",
-  };
   return (
-    <div style={{
-      position: "absolute",
-      right: 20,
-      bottom: 20,
-      display: "flex",
-      flexDirection: "column",
-      gap: 1,
-      borderRadius: 8,
-      overflow: "hidden",
-      boxShadow: "0 8px 24px rgba(0,0,0,0.3)",
-      zIndex: 5,
-    }} className="zoom-controls">
-      <button
-        onClick={onZoomIn}
-        title={window.t("zoom.in")}
-        style={{ ...btnStyle, borderRadius: "8px 8px 0 0", borderBottom: "none" }}
-        className="zoom-btn"
-      >
-        <svg width="14" height="14" viewBox="0 0 14 14">
-          <path d="M7 2 V12 M2 7 H12" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-        </svg>
+    <div className="zoom overlay-card">
+      <button type="button" onClick={onZoomIn} title={window.t("zoom.in")} aria-label={window.t("zoom.in")}>
+        <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M7 2 V12 M2 7 H12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
       </button>
-      <button
-        onClick={onZoomOut}
-        title={window.t("zoom.out")}
-        style={{ ...btnStyle, borderRadius: 0, borderTop: "none", borderBottom: "none" }}
-        className="zoom-btn"
-      >
-        <svg width="14" height="14" viewBox="0 0 14 14">
-          <path d="M2 7 H12" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-        </svg>
+      <button type="button" onClick={onZoomOut} title={window.t("zoom.out")} aria-label={window.t("zoom.out")}>
+        <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7 H12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
       </button>
-      <div
-        title={window.t("zoom.current")}
-        style={{
-          ...btnStyle,
-          borderRadius: 0,
-          borderTop: "none",
-          borderBottom: "none",
-          fontSize: 10,
-          fontFamily: "var(--font-mono)",
-          color: "var(--fg-mute)",
-          cursor: "default",
-          fontWeight: 500,
-        }}
-      >
-        {zoom.toFixed(1)}×
-      </div>
-      <button
-        onClick={onReset}
-        title={window.t("zoom.reset")}
-        style={{ ...btnStyle, borderRadius: "0 0 8px 8px", borderTop: "none" }}
-        className="zoom-btn"
-        disabled={zoom === 1}
-      >
-        <svg width="13" height="13" viewBox="0 0 14 14">
-          <path d="M3 7 a4 4 0 1 0 1.2 -2.8" stroke="currentColor" strokeWidth="1.4" fill="none" strokeLinecap="round" />
-          <path d="M3 2 V5 H6" stroke="currentColor" strokeWidth="1.4" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+      <output title={window.t("zoom.current")}>{zoom.toFixed(1)}×</output>
+      <button type="button" onClick={onReset} title={window.t("zoom.reset")} aria-label={window.t("zoom.reset")} disabled={zoom === 1}>
+        <svg viewBox="0 0 14 14" aria-hidden="true">
+          <path d="M3 7 a4 4 0 1 0 1.2 -2.8" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+          <path d="M3 2 V5 H6" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </button>
     </div>
