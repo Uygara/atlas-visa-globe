@@ -1,0 +1,14 @@
+{
+  "name": "travelnow-build",
+  "private": true,
+  "description": "Precompiles the site's JSX (app.jsx, components/*.jsx) into build/*.js so browsers no longer download Babel.",
+  "scripts": {
+    "build": "node build.js"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.29.7",
+    "@babel/plugin-transform-strict-mode": "^7.29.7",
+    "@babel/preset-env": "^7.29.7",
+    "@babel/preset-react": "^7.29.7"
+  }
+}

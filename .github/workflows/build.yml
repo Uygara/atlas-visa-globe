@@ -1,0 +1,47 @@
+name: Build JSX
+
+# Compiles app.jsx + components/*.jsx into build/*.js (tools/build.js) and
+# commits the result, so a push that edits JSX without rebuilding still ends up
+# serving fresh code a minute later.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "app.jsx"
+      - "components/**"
+      - "tools/**"
+  workflow_dispatch: {}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install build deps
+        working-directory: tools
+        run: npm ci
+
+      - name: Compile JSX
+        working-directory: tools
+        run: node build.js
+
+      - name: Commit compiled output if it changed
+        run: |
+          git config user.name "atlas-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add build/ index.html transit-map/index.html itinerary/index.html safety-map/index.html
+          if git diff --staged --quiet; then
+            echo "Build output already up to date."
+          else
+            git commit -m "chore(build): compile JSX"
+            git pull --rebase origin main
+            git push
+          fi
