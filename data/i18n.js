@@ -55,6 +55,7 @@ const T = {
     "nav.help":          "What is this?",
     "nav.mode":          "Globe view",
     "nav.transit_map":   "Transit map",
+    "nav.safety_map":    "Safety map",
 
 
     "welcome.hint":      "Pick your passport to begin",
@@ -280,7 +281,7 @@ const T = {
 
     "safety.title":              "Travel Safety Map",
     "safety.subtitle":           "Official government travel advisories — war, crime, terrorism, unrest — on one map.",
-    "safety.draft":              "Draft",
+    "safety.draft":              "Beta",
     "safety.legend":             "Advisory level",
     "safety.l1":                 "Normal precautions",
     "safety.l2":                 "Increased caution",
@@ -430,6 +431,7 @@ const T = {
     "nav.help":          "Bu site ne işe yarıyor?",
     "nav.mode":          "Küre görünümü",
     "nav.transit_map":   "Transit haritası",
+    "nav.safety_map":    "Güvenlik haritası",
 
     "nav.language":      "Dil",
 
@@ -655,7 +657,7 @@ const T = {
 
     "safety.title":              "Seyahat Güvenliği Haritası",
     "safety.subtitle":           "Resmî hükümet seyahat uyarıları — savaş, suç, terör, huzursuzluk — tek haritada.",
-    "safety.draft":              "Taslak",
+    "safety.draft":              "Beta",
     "safety.legend":             "Uyarı seviyesi",
     "safety.l1":                 "Olağan önlemler",
     "safety.l2":                 "Dikkatli ol",

@@ -1,6 +1,6 @@
 // fetch-advisories.js — government travel-safety advisories → data/travel-advisories.js
 //
-// DRAFT for the /safety-map/ page. Two official, machine-readable sources:
+// Data for the /safety-map/ page. Two official, machine-readable sources:
 //
 //   1. U.S. Department of State travel advisories (public domain)
 //      https://cadataapi.state.gov/api/TravelAdvisories

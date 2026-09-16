@@ -24,6 +24,7 @@
     // ── Site masthead + footer (scripts/partials.js) ──
     "Visa map": { tr:"Vize haritası", es:"Mapa de visados", de:"Visakarte", fr:"Carte des visas", ar:"خريطة التأشيرات" },
     "Transit map": { tr:"Transit haritası", es:"Mapa de tránsito", de:"Transitkarte", fr:"Carte du transit", ar:"خريطة العبور" },
+    "Safety map": { tr:"Güvenlik haritası", es:"Mapa de seguridad", de:"Sicherheitskarte", fr:"Carte de sécurité", ar:"خريطة السلامة" },
     "Travel planner": { tr:"Seyahat planlayıcı", es:"Planificador de viaje", de:"Reiseplaner", fr:"Planificateur de voyage", ar:"مخطّط الرحلة" },
     "Schengen calc": { tr:"Schengen hesaplayıcı", es:"Calc. Schengen", de:"Schengen-Rechner", fr:"Calcul Schengen", ar:"حاسبة شنغن" },
     "Passports": { tr:"Pasaportlar", es:"Pasaportes", de:"Pässe", fr:"Passeports", ar:"جوازات السفر" },

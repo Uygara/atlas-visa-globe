@@ -485,6 +485,7 @@ function renderSitemap(allPassports) {
     `<url><loc>${base}/digital-nomad-visa/</loc><lastmod>${today}</lastmod><priority>0.9</priority></url>`,
     `<url><loc>${base}/citizenship-by-investment/</loc><lastmod>${today}</lastmod><priority>0.9</priority></url>`,
     `<url><loc>${base}/transit-map/</loc><lastmod>${today}</lastmod><priority>0.95</priority></url>`,
+    `<url><loc>${base}/safety-map/</loc><lastmod>${today}</lastmod><priority>0.9</priority></url>`,
     `<url><loc>${base}/etias/</loc><lastmod>${today}</lastmod><priority>0.95</priority></url>`,
     `<url><loc>${base}/passport-validity/</loc><lastmod>${today}</lastmod><priority>0.95</priority></url>`,
     `<url><loc>${base}/visa-shortcuts/</loc><lastmod>${today}</lastmod><priority>0.9</priority></url>`,

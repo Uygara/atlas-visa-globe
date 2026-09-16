@@ -1,4 +1,4 @@
-// Travel Safety Map (DRAFT) — a standalone globe page, sibling to the visa and
+// Travel Safety Map (beta) — a standalone globe page, sibling to the visa and
 // transit maps. Paints every country by its government travel-advisory level
 // (data/travel-advisories.js, built by backend/fetch-advisories.js from the U.S.
 // State Department and Government of Canada feeds): 1 normal precautions →
@@ -81,7 +81,7 @@ function SafetyMapApp() {
           <div className="p-head-title">
             {tr("safety.title", "Travel Safety Map")}{" "}
             <span className="stamp is-small" style={{ "--st": "var(--foil)", verticalAlign: "middle", marginLeft: 6 }}>
-              <span className="stamp-k" style={{ fontSize: 12 }}>{tr("safety.draft", "Draft")}</span>
+              <span className="stamp-k" style={{ fontSize: 12 }}>{tr("safety.draft", "Beta")}</span>
             </span>
           </div>
           <p className="p-head-sub">{tr("safety.subtitle", "Official government travel advisories on one map.")}</p>

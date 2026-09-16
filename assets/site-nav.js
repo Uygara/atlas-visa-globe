@@ -9,6 +9,7 @@
   var NAV = [
     { href: "/",                          key: "nav.visa_map",    en: "Visa map" },
     { href: "/transit-map/",              key: "nav.transit_map", en: "Transit map" },
+    { href: "/safety-map/",               key: "nav.safety_map",  en: "Safety map" },
     { href: "/itinerary/",                key: "nav.itinerary",   en: "Travel planner" },
     { href: "/schengen-calculator/",      key: "nav.schengen",    en: "Schengen calc" },
     { href: "/etias/",                    key: "nav.etias",       en: "ETIAS 2026" },
