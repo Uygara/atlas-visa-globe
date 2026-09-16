@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<title>Travel Safety Map — government travel advisories on one globe · travelnow.info</title>
+<meta name="description" content="Draft: every country coloured by official U.S. and Canadian government travel advisories — normal precautions to do not travel — with the named risks (crime, terrorism, armed conflict, unrest) and links to the full advisories." />
+<meta name="robots" content="noindex" />
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+<link rel="apple-touch-icon" href="/assets/favicon.svg" />
+<meta property="og:title" content="Travel Safety Map — travelnow.info" />
+<meta property="og:description" content="Official government travel advisories for every country, on one interactive globe." />
+<meta property="og:image" content="https://travelnow.info/assets/og.png" />
+<meta property="og:url" content="https://travelnow.info/safety-map/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="travelnow.info" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sofia+Sans:ital,wght@0,400..700;1,400..600&family=Sofia+Sans+Extra+Condensed:wght@600..850&family=DM+Mono:wght@400;500&display=swap" />
+<link rel="stylesheet" href="/assets/tokens.css?v=20260916a" />
+<link rel="stylesheet" href="/assets/chrome.css?v=20260916a" />
+<link rel="stylesheet" href="/assets/app-shell.css?v=20260916a" />
+<script>try{if((JSON.parse(localStorage.getItem("atlas.tweaks")||"{}")).background==="dark")document.documentElement.classList.add("theme-dark")}catch(e){}</script>
+
+<!-- D3 + TopoJSON for the globe -->
+<script src="https://unpkg.com/d3@7.8.5/dist/d3.min.js"></script>
+<script src="https://unpkg.com/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+
+<!-- React + Babel -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+  <script src="/assets/analytics.js"></script>
+</head>
+<body>
+  <div class="loading-screen" id="loading" aria-hidden="true">
+    <div class="loading-mark">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="2.75" y="1.75" width="18.5" height="20.5" rx="2" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="11" r="5.25" stroke="currentColor" stroke-width="1.3"/><ellipse cx="12" cy="11" rx="2.2" ry="5.25" stroke="currentColor" stroke-width="1.1"/><path d="M6.9 11h10.2" stroke="currentColor" stroke-width="1.1"/><path d="M8 19h8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>
+      <div class="loading-line"></div>
+    </div>
+  </div>
+  <div id="root"></div>
+
+  <!-- Data (subset needed for the safety globe) -->
+  <script src="/data/i18n.js?v=20260916a"></script>
+  <script src="/assets/site-nav.js?v=20260916a"></script>
+  <script src="/data/countries.js"></script>
+  <script src="/data/country-names.js"></script>
+  <script src="/data/travel-advisories.js"></script>
+
+  <script type="text/babel" src="/components/chrome.jsx?v=20260916a"></script>
+  <script type="text/babel" src="/components/globe.jsx?v=20260916a"></script>
+  <script type="text/babel" src="/components/safety-map.jsx?v=20260916a"></script>
+</body>
+</html>
