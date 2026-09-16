@@ -8,6 +8,12 @@
 
 window.CHANGELOG = [
   {
+    date: "2026-09-16",
+    title: "MA → TH: vf → ev",
+    affects: { dest: "TH", passports: ["MA"] },
+    statusFrom: "vf", statusTo: "ev",
+  },
+  {
     date: "2026-09-14",
     title: "UA → ZA: ev → vr",
     affects: { dest: "ZA", passports: ["UA"] },
