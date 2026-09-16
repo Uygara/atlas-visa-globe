@@ -33,6 +33,8 @@ function readView() {
 }
 
 // ─── Fee / processing helpers (ported from the old planner) ────────────────
+// Free-text fee fields, translated via data/visa-fees-i18n.js.
+const itinFeeLabel = (s) => (window.translateFeeText ? window.translateFeeText(s) : s);
 function procDays(p, iso) {
   const fee = window.visaFee && window.visaFee(p, iso);
   if (!fee || !fee.processingDays) return 0;
@@ -254,8 +256,10 @@ function StopsList({ passport, stops, onRemove }) {
       {stops.map((iso, idx) => {
         const r = window.resolveStatus(passport, iso);
         const fee = window.visaFee && window.visaFee(passport, iso);
-        const feeText = (fee && fee.fee) ? fee.fee : (r.status === "vf" ? window.t("itin.fee_free") : (r.status === "self" ? "—" : window.t("itin.fee_missing")));
-        const proc = (fee && fee.processingDays) ? fee.processingDays : ((r.status === "vf" || r.status === "self") ? window.t("itin.no_app_needed") : "");
+        // Visa-free and ID-card travel need no application, so no fee to look up.
+        const noApp = r.status === "vf" || r.status === "idc";
+        const feeText = (fee && fee.fee) ? itinFeeLabel(fee.fee) : (noApp ? window.t("itin.fee_free") : (r.status === "self" ? "—" : window.t("itin.fee_missing")));
+        const proc = (fee && fee.processingDays) ? itinFeeLabel(fee.processingDays) : ((noApp || r.status === "self") ? window.t("itin.no_app_needed") : "");
         return (
           <li key={iso} className="stop" style={{ "--tone": `var(--${r.status}, var(--rule-strong))` }}>
             <span className="stop-n">{idx + 1}</span>
@@ -323,7 +327,7 @@ function Summary({ passport, stops }) {
             return (
               <li key={s.iso}>
                 <strong><span className="flag">{window.byIso2[s.iso]?.flag}</span> {window.countryName(s.iso)}</strong>
-                <span> · {statusLabel(s.status)}{fee && fee.processingDays ? " · " + fee.processingDays : ""}</span>
+                <span> · {statusLabel(s.status)}{fee && fee.processingDays ? " · " + itinFeeLabel(fee.processingDays) : ""}</span>
               </li>
             );
           })}

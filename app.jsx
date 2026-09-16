@@ -1,4 +1,4 @@
-// Main app — composes Globe + Panel, owns shared state, geolocation,
+// Main app — composes Globe + Panel, owns shared state, passport guess,
 // keyboard shortcuts, Tweaks integration.
 
 const { useState, useEffect, useRef, useMemo, useCallback } = React;
@@ -147,33 +147,18 @@ function App() {
   const [detailCountry, setDetailCountry] = useState(null);
   const [search, setSearch] = useState("");
   const [focusedCountry, setFocusedCountry] = useState(null);
-  const [showWelcome, setShowWelcome] = useState(false);
-  const [showIntro, setShowIntro] = useState(() => {
-    try { return !localStorage.getItem("atlas.welcomed"); }
-    catch (e) { return true; }
-  });
-  const dismissIntro = useCallback(() => {
-    setShowIntro(false);
-    try { localStorage.setItem("atlas.welcomed", "1"); } catch (e) {}
-  }, []);
+  // The site opens straight onto the map: no dialog, overlay or permission
+  // prompt on arrival. The explainer is only shown from the "?" button.
+  const [showIntro, setShowIntro] = useState(false);
+  const dismissIntro = useCallback(() => setShowIntro(false), []);
   const reopenIntro = useCallback(() => setShowIntro(true), []);
-
-  // One-time coach hint: the map being clickable isn't obvious to first-timers.
-  // Show a dismissible nudge once a passport is set, until the first country
-  // click (or manual dismiss). Persisted so it never nags returning users.
-  const [coachDone, setCoachDone] = useState(() => {
-    try { return !!localStorage.getItem("atlas.coachClick"); } catch (e) { return true; }
-  });
-  const dismissCoach = useCallback(() => {
-    setCoachDone(true);
-    try { localStorage.setItem("atlas.coachClick", "1"); } catch (e) {}
-  }, []);
 
   // Picker mode — when the panel's passport picker is open, clicks on the
   // map should set that passport instead of opening the country detail card.
   // Values: null (off), "primary", "compare".
   const [pickerMode, setPickerMode] = useState(null);
-  const [locationStatus, setLocationStatus] = useState("idle"); // idle | detecting | detected | denied
+  // Set when the passport was guessed from the time zone rather than chosen, so
+  // the panel can say so (inline, not in a popup) until the visitor picks one.
   const [autoDetectedPassport, setAutoDetectedPassport] = useState(null);
   const [direction, setDirection] = useState("outgoing"); // outgoing | incoming
   const [groupPassports, setGroupPassports] = useState([]); // array of iso2 — group mode active iff non-empty
@@ -216,116 +201,24 @@ function App() {
     try { if (passport) localStorage.setItem("atlas.passport", passport); } catch (e) {}
   }, [passport]);
 
-  // ─── Default passport detection ─────────────────────────────────────────
-  // Strategy:
-  //   0. If a saved passport exists, we already adopted it above — skip
-  //      detection entirely so returning users keep their last choice and
-  //      coming back from a sub-page doesn't silently re-pick by location.
-  //   1. First-time visitors see the intro overlay FIRST; detection is held
-  //      until they dismiss it (gated on showIntro) so the explainer isn't
-  //      pre-empted by a geolocation prompt.
-  //   2. Then try geolocation (4 s soft timeout) → fall back to time-zone →
-  //      fall back to the welcome picker. NEVER auto-pick alphabetically.
-  const detectedRef = useRef(false);
+  // ─── Default passport for first-time visitors ──────────────────────────
+  // Returning visitors keep their saved passport. New visitors get a guess from
+  // the browser's time zone (no geolocation prompt, nothing sent anywhere); the
+  // panel marks it as a guess. If the time zone gives nothing, the map simply
+  // opens without a passport and the panel's picker asks for one.
   useEffect(() => {
-    if (detectedRef.current) return;   // run at most once
-    if (passport) return;              // saved/returning user — keep their pick
-    if (showIntro) return;             // wait until the intro is dismissed
-    detectedRef.current = true;
-    // Kick off TZ resolve immediately so we have something to render against
-    // even before the geolocation prompt resolves. We do NOT setPassport from
-    // it yet — only stash as a candidate — so if the user denies geolocation
-    // we adopt it; if they accept, the precise answer wins.
-    const tzCandidate = detectPassport();
-
-    let resolved = false;
-    const adoptTZ = () => {
-      if (resolved) return;
-      resolved = true;
-      if (tzCandidate) {
-        setPassport(tzCandidate);
-        setAutoDetectedPassport(tzCandidate);
-        setLocationStatus("detected");
-        setShowWelcome(false);
-      } else {
-        setShowWelcome(true);
-        setLocationStatus("denied");
-      }
-    };
-
-    if (!navigator.geolocation) {
-      adoptTZ();
-      return;
+    if (passport) return;
+    const guess = detectPassport();
+    if (guess) {
+      setPassport(guess);
+      setAutoDetectedPassport(guess);
     }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-    setLocationStatus("detecting");
-    const timer = setTimeout(adoptTZ, 4000);
-
-    navigator.geolocation.getCurrentPosition(
-      async (pos) => {
-        if (resolved) return;
-        try {
-          const r = await fetch(
-            "https://nominatim.openstreetmap.org/reverse" +
-            "?lat=" + pos.coords.latitude +
-            "&lon=" + pos.coords.longitude +
-            "&format=json&zoom=3",
-            { headers: { "Accept-Language": "en" } }
-          );
-          const data = await r.json();
-          const cc = data?.address?.country_code?.toUpperCase();
-          if (cc && window.PASSPORTS[cc]) {
-            resolved = true;
-            clearTimeout(timer);
-            setPassport(cc);
-            setAutoDetectedPassport(cc);
-            setLocationStatus("detected");
-            setShowWelcome(false);
-            return;
-          }
-        } catch (e) { /* network blocked → TZ */ }
-        clearTimeout(timer);
-        adoptTZ();
-      },
-      () => {
-        clearTimeout(timer);
-        adoptTZ();
-      },
-      { timeout: 4000, maximumAge: 600000 }
-    );
-
-    return () => clearTimeout(timer);
-  }, [passport, showIntro]);
-
-  const useLocation = () => {
-    setLocationStatus("detecting");
-    if (!navigator.geolocation) {
-      setLocationStatus("denied");
-      return;
-    }
-    navigator.geolocation.getCurrentPosition(
-      async (pos) => {
-        // Try a free reverse geocode. If the service is blocked, fall back to TZ.
-        try {
-          const r = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${pos.coords.latitude}&lon=${pos.coords.longitude}&format=json&zoom=3`);
-          const data = await r.json();
-          const cc = data?.address?.country_code?.toUpperCase();
-          if (cc && window.PASSPORTS[cc]) {
-            setPassport(cc);
-            setLocationStatus("detected");
-            setShowWelcome(false);
-            return;
-          }
-        } catch (e) {}
-        // Fallback
-        const fromTZ = detectPassport();
-        if (fromTZ) { setPassport(fromTZ); setLocationStatus("detected"); setShowWelcome(false); }
-        else setLocationStatus("denied");
-      },
-      () => setLocationStatus("denied"),
-      { timeout: 6000 }
-    );
-  };
+  const choosePassport = useCallback((iso2) => {
+    setAutoDetectedPassport(null);
+    setPassport(iso2);
+  }, []);
 
   // ─── Background theme ───────────────────────────────────────────────────
   useEffect(() => {
@@ -354,7 +247,6 @@ function App() {
       if (e.key === "Escape") {
         if (showIntro) dismissIntro();
         if (detailCountry) setDetailCountry(null);
-        if (showWelcome) setShowWelcome(false);
       }
       if (e.key === "/" && !/^(INPUT|TEXTAREA|SELECT)$/.test((e.target && e.target.tagName) || "")) {
         e.preventDefault();
@@ -363,7 +255,7 @@ function App() {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [detailCountry, showWelcome, showIntro, dismissIntro]);
+  }, [detailCountry, showIntro, dismissIntro]);
 
   // ─── Handlers ───────────────────────────────────────────────────────────
   const onCountryClick = (iso2) => {
@@ -372,17 +264,16 @@ function App() {
     // country on the globe. Falls through to detail if the country isn't a
     // known passport-issuing entity.
     if (pickerMode && window.PASSPORTS[iso2]) {
-      if (pickerMode === "primary") setPassport(iso2);
+      if (pickerMode === "primary") choosePassport(iso2);
       else if (pickerMode === "compare") setCompare(iso2);
       setPickerMode(null);
       return;
     }
     if (!passport) {
       // First click sets passport
-      if (window.PASSPORTS[iso2]) setPassport(iso2);
+      if (window.PASSPORTS[iso2]) choosePassport(iso2);
       return;
     }
-    if (!coachDone) dismissCoach();
     setDetailCountry(iso2);
     setFocusedCountry(iso2);
   };
@@ -417,28 +308,18 @@ function App() {
           focusedCountry={focusedCountry}
         />
 
-        {!passport && (
-          <WelcomeOverlay
-            onPick={(iso2) => { setPassport(iso2); setShowWelcome(false); }}
-            onUseLocation={useLocation}
-            locationStatus={locationStatus}
-          />
-        )}
-
         {passport && !detailCountry && <MapKey />}
 
         <CompareStrip enabled={t.compareMode} passport={passport} compare={compare} />
 
         {!detailCountry && <ChangelogFloater />}
 
-        {passport && !detailCountry && !showIntro && !coachDone && (
-          <CoachHint onDismiss={dismissCoach} />
-        )}
       </div>
 
       <Panel
         passport={passport}
-        setPassport={setPassport}
+        setPassport={choosePassport}
+        autoDetected={!!passport && passport === autoDetectedPassport}
         compare={compare}
         setCompare={setCompare}
         compareMode={t.compareMode}
@@ -512,67 +393,6 @@ function IntroDialog({ onClose }) {
           </button>
         </div>
       </div>
-    </div>
-  );
-}
-
-// ─── Welcome overlay (no passport chosen yet) ───────────────────────────
-function WelcomeOverlay({ onPick, onUseLocation, locationStatus }) {
-  useLangTick();
-  const featured = ["US", "GB", "DE", "JP", "CA", "AU", "IN", "BR", "AE", "SG"];
-  return (
-    <div className="welcome">
-      <div className="welcome-card overlay-card">
-        <div className="welcome-kicker">{window.t("welcome.hint")}</div>
-        <h1 className="welcome-title">
-          {window.t("welcome.title_1")} <span>{window.t("welcome.title_2")}</span>
-        </h1>
-        <p className="welcome-body">{window.t("welcome.body")}</p>
-        <div className="welcome-grid">
-          {featured.map(iso2 => {
-            const c = window.byIso2[iso2];
-            return (
-              <button key={iso2} type="button" onClick={() => onPick(iso2)} title={window.countryName(iso2)}>
-                <span className="flag">{c?.flag}</span>
-                <span className="code">{iso2}</span>
-              </button>
-            );
-          })}
-        </div>
-        <button type="button" className="btn btn-block" onClick={onUseLocation} disabled={locationStatus === "detecting"}>
-          <LocateIcon />
-          {locationStatus === "detecting" ? window.t("welcome.detecting") :
-           locationStatus === "denied" ? window.t("welcome.couldnt_detect") :
-           window.t("welcome.use_location")}
-        </button>
-        <div className="welcome-foot">
-          {window.t("welcome.or_open_panel", { n: window.PASSPORT_LIST.length })}
-        </div>
-      </div>
-    </div>
-  );
-}
-
-function LocateIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 16 16" aria-hidden="true">
-      <circle cx="8" cy="8" r="3" stroke="currentColor" strokeWidth="1.4" fill="none" />
-      <circle cx="8" cy="8" r="1" fill="currentColor" />
-      <path d="M8 1 V3 M8 13 V15 M1 8 H3 M13 8 H15" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-// One-time nudge: the globe is clickable but nothing says so.
-function CoachHint({ onDismiss }) {
-  useEffect(() => {
-    const timer = setTimeout(onDismiss, 9000); // auto-dismiss if ignored
-    return () => clearTimeout(timer);
-  }, [onDismiss]);
-  return (
-    <div className="coach overlay-card" onClick={onDismiss} role="status">
-      <span>{window.t("coach.tap_country").replace(/^[^:：]{1,12}[:：]\s*/, "")}</span>
-      <button type="button" className="icon-btn" aria-label={window.t("detail.close")}><IconClose /></button>
     </div>
   );
 }

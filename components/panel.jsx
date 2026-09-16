@@ -40,7 +40,7 @@ function mrzLines(iso2) {
 }
 
 function Panel({
-  passport, setPassport,
+  passport, setPassport, autoDetected,
   compare, setCompare, compareMode, setCompareMode,
   groupMode, setGroupMode, groupPassports, setGroupPassports,
   filter, setFilter,
@@ -94,6 +94,11 @@ function Panel({
           setOpen={setShowPicker}
           onChange={(v) => { setPassport(v); setShowPicker(false); }}
         />
+        {autoDetected && !showPicker && (
+          <button type="button" className="link-quiet guess-note" onClick={() => setShowPicker(true)}>
+            {tr("picker.guessed", "Guessed from your time zone — not your passport? Change it")}
+          </button>
+        )}
 
         {passport && setVariant && window.passportVariants && window.passportVariants(passport).length > 0 && (
           <PassportTypeSelector
@@ -133,6 +138,16 @@ function Panel({
             <DirectionToggle value={direction} onChange={setDirection} passport={passport} />
           )}
           <Tally tally={tallyData} filter={filter} setFilter={setFilter} groupActive={groupActive} />
+          {filter !== "all" && (
+            <FilterList
+              filter={filter}
+              passport={passport}
+              direction={direction}
+              variant={variant}
+              groupPassports={groupActive ? groupPassports : null}
+              onOpen={onPickFromSearch}
+            />
+          )}
         </section>
       )}
 
@@ -563,7 +578,7 @@ function PassportPicker({ value, open, setOpen, onChange, isCompare, placeholder
               <span className="pp-name" style={{ display: "block" }}>{window.countryName(value)}</span>
               <span className="pp-meta" style={{ display: "block" }}>
                 {value}
-                {(current?.rank || computedRank(value)) && <> · {window.t("pulse.rank")} #{current?.rank || computedRank(value)}</>}
+                {window.passportRank(value) && <> · {window.t("pulse.rank")} #{window.passportRank(value).rank}</>}
               </span>
             </span>
           </span>
@@ -621,7 +636,7 @@ function PassportDropdown({ value, onChange, allowClear, onClear }) {
               <span className="flag">{c?.flag}</span>
               <span className="dd-grow">{window.countryName(p.iso2)}</span>
               {active && <span className="dd-tag">{window.t("picker.selected")}</span>}
-              {p.rank && <span className="dd-code">#{p.rank}</span>}
+              {window.passportRank(p.iso2) && <span className="dd-code">#{window.passportRank(p.iso2).rank}</span>}
             </button>
           );
         })}
@@ -683,6 +698,51 @@ function Tally({ tally, filter, setFilter, groupActive }) {
           </li>
         ))}
       </ul>
+    </div>
+  );
+}
+
+// The countries behind a ledger row, so "Visa-free 71" is a list you can read
+// and tap, not only a recoloured globe. Resolves each country the same way the
+// globe and the detail card do (direction, passport type, combined passports).
+const FILTER_LIST_PREVIEW = 12;
+function FilterList({ filter, passport, direction, variant, groupPassports, onOpen }) {
+  const [showAll, setShowAll] = useState(false);
+  useEffect(() => { setShowAll(false); }, [filter, passport, direction]);
+  useLangTick();
+  const rows = useMemo(() => {
+    const group = Array.isArray(groupPassports) && groupPassports.length > 0;
+    const incoming = direction === "incoming" && !group;
+    const variantActive = !!variant && variant !== "ordinary" && !group && !incoming;
+    const resolve = (iso2) => group
+      ? window.resolveGroupStatus(groupPassports, iso2)
+      : incoming
+        ? window.resolveStatus(iso2, passport)
+        : variantActive
+          ? window.resolveVariantStatus(passport, iso2, variant)
+          : window.resolveStatus(passport, iso2);
+    return window.COUNTRIES
+      .filter(c => c.continent !== "AN" && (group ? !groupPassports.includes(c.iso2) : c.iso2 !== passport))
+      .map(c => ({ iso2: c.iso2, flag: c.flag, r: resolve(c.iso2) }))
+      .filter(x => x.r.status === filter)
+      .sort((a, b) => window.countryName(a.iso2).localeCompare(window.countryName(b.iso2), window.ATLAS_LANG || "en"));
+  }, [filter, passport, direction, variant, groupPassports, window.ATLAS_LANG]);
+  if (rows.length === 0) return null;
+  const shown = showAll ? rows : rows.slice(0, FILTER_LIST_PREVIEW);
+  return (
+    <div className="clist">
+      {shown.map(x => (
+        <button key={x.iso2} type="button" className="dd-item" onClick={() => onOpen(x.iso2)}>
+          <span className="flag">{x.flag}</span>
+          <span className="dd-grow">{window.countryName(x.iso2)}</span>
+          {x.r.days ? <span className="dd-code">{window.t("detail.up_to_days", { n: x.r.days })}</span> : null}
+        </button>
+      ))}
+      {rows.length > FILTER_LIST_PREVIEW && (
+        <button type="button" className="more-btn" onClick={() => setShowAll(v => !v)}>
+          {showAll ? window.t("changelog.show_less") : tr("tally.show_all", "Show all {n}", { n: rows.length })}
+        </button>
+      )}
     </div>
   );
 }
@@ -959,30 +1019,16 @@ function ConditionsBox({ passport, destIso2, baseStatus }) {
 function TripNotesGroup({ passport, destIso2 }) {
   if (!passport || !destIso2) return null;
 
-  const transitWouldRender = (function () {
-    const rules = window.TRANSIT_RULES || {};
-    const HUBS = ["SCHENGEN", "GB", "US", "CA"];
-    const risky = HUBS.filter(area => {
-      const r = rules[area];
-      if (!r) return false;
-      if (r.requiredFor === "*") return true;
-      return Array.isArray(r.requiredFor) && r.requiredFor.includes(passport);
-    });
-    if (risky.length === 0) return false;
-    if (risky.length === 1 && (
-      risky[0] === destIso2 ||
-      (risky[0] === "SCHENGEN" && window.byIso2[destIso2]?.continent === "EU")
-    )) return false;
-    return true;
-  })();
+  const transitWouldRender = !!transitNoteFor(passport, destIso2);
   const estaWouldRender     = destIso2 === "US" && !!window.estaEligible;
   const etiasWouldRender    = !!(window.etiasStatus && window.etiasStatus(passport, destIso2)?.kind === "required");
   const validityWouldRender = !!(window.PASSPORT_VALIDITY && window.PASSPORT_VALIDITY[destIso2] != null);
   const israelWouldRender   = !!(window.israelStampWarning && window.israelStampWarning(destIso2));
   const loiWouldRender      = !!(window.loiRule && window.loiRule(destIso2));
+  const schengenWouldRender = !!schengenHelpFor(passport, destIso2);
 
   const total = [transitWouldRender, estaWouldRender, etiasWouldRender,
-                 validityWouldRender, israelWouldRender, loiWouldRender]
+                 validityWouldRender, israelWouldRender, loiWouldRender, schengenWouldRender]
     .filter(Boolean).length;
   if (total === 0) return null;
 
@@ -991,6 +1037,7 @@ function TripNotesGroup({ passport, destIso2 }) {
       {total >= 2 && (
         <div className="p-hint" style={{ margin: "0 0 6px", fontWeight: 600, color: "var(--ink-2)" }}>{window.t("detail.trip_notes")}</div>
       )}
+      {schengenWouldRender && <SchengenHelp passport={passport} destIso2={destIso2} />}
       {transitWouldRender  && <TransitVisaHint passport={passport} destIso2={destIso2} />}
       {estaWouldRender     && <EstaHint passport={passport} />}
       {etiasWouldRender    && <EtiasHint passport={passport} destIso2={destIso2} />}
@@ -1001,30 +1048,58 @@ function TripNotesGroup({ passport, destIso2 }) {
   );
 }
 
-// Transit-visa heads-up: the passport is on the Schengen ATV / UK DATV list,
-// or the route may touch US/Canada (always a transit clearance).
+// Transit note about THIS destination only: if you merely connect through it,
+// do you still need a transit visa (UK DATV, Schengen ATV, US C-1 …), or is
+// there visa-free transit? Skipped when you can enter the country anyway —
+// the old version listed every risky hub on every card ("UK · US · Canada"
+// on a Germany card), which had nothing to do with the trip being viewed.
+const EASY_ENTRY = new Set(["self", "idc", "vf", "eta"]);
+function transitNoteFor(passport, destIso2) {
+  if (!passport || !destIso2 || !window.transitStatusForGlobe) return null;
+  const entry = window.resolveStatus(passport, destIso2);
+  if (EASY_ENTRY.has(entry.status)) return null;
+  const t = window.transitStatusForGlobe(passport, destIso2);
+  if (t.status === "vr") return { tone: "note-warn", key: "detail.transit_dest_vr" };
+  if (t.status === "twov" && t.twovHours) return { tone: "note-ok", key: "detail.transit_dest_twov", hours: t.twovHours };
+  return null;
+}
+
 function TransitVisaHint({ passport, destIso2 }) {
-  if (!passport) return null;
-  const rules = window.TRANSIT_RULES || {};
-  const HUBS = ["SCHENGEN", "GB", "US", "CA"];
-  const risky = HUBS.filter(area => {
-    const r = rules[area];
-    if (!r) return false;
-    if (r.requiredFor === "*") return true;
-    return Array.isArray(r.requiredFor) && r.requiredFor.includes(passport);
-  });
-  if (risky.length === 0) return null;
-  if (destIso2 && risky.length === 1 && (
-    risky[0] === destIso2 ||
-    (risky[0] === "SCHENGEN" && window.byIso2[destIso2]?.continent === "EU")
-  )) return null;
-  const labels = risky.map(a => rules[a].label.split(" (")[0]).join(" · ");
+  const note = transitNoteFor(passport, destIso2);
+  if (!note) return null;
+  const vars = { country: window.countryName(destIso2), n: note.hours };
   return (
-    <a className="note note-warn" href="/transit-map/">
-      <span className="note-k">{window.t("detail.transit_heads_up")}</span>
-      <span className="note-s">{window.t("detail.transit_heads_up_sub", { hubs: labels })}</span>
+    <a className={"note " + note.tone} href="/transit-map/">
+      <span className="note-k">{tr(note.key, "", vars)}</span>
+      <span className="note-s">{tr("detail.transit_dest_sub", "Airport transit rules — see the transit map.")}</span>
       <span className="note-go" aria-hidden="true">→</span>
     </a>
+  );
+}
+
+// Schengen destinations: the 90/180-day calculator for everyone who is counted
+// against it, plus the document checklist where we have one for the passport.
+const SCHENGEN_CHECKLISTS = { TR: "/visa-checklist/tr-schengen/" };
+function schengenHelpFor(passport, destIso2) {
+  if (!passport || !destIso2 || !window.ETIAS) return null;
+  if (!window.ETIAS.schengenStates.includes(destIso2)) return null;
+  const r = window.resolveStatus(passport, destIso2);
+  if (r.status === "self" || r.status === "idc" || r.fom) return null; // free movement: no 90/180 limit
+  const checklist = r.status === "vr" ? SCHENGEN_CHECKLISTS[passport] : null;
+  return { checklist };
+}
+
+function SchengenHelp({ passport, destIso2 }) {
+  const help = schengenHelpFor(passport, destIso2);
+  if (!help) return null;
+  return (
+    <div className="note note-info">
+      <span className="note-k">{tr("detail.schengen_title", "Schengen area: 90 days in any 180")}</span>
+      <span className="note-s">
+        <a href="/schengen-calculator/">{tr("detail.schengen_calc", "Count your days")}</a>
+        {help.checklist && <> · <a href={help.checklist}>{tr("detail.schengen_checklist", "Visa document checklist")}</a></>}
+      </span>
+    </div>
   );
 }
 
@@ -1107,6 +1182,9 @@ function EtiasHint({ passport, destIso2 }) {
   );
 }
 
+// Free-text fee fields translated via data/visa-fees-i18n.js (English fallback).
+const feeLabel = (s) => (window.translateFeeText ? window.translateFeeText(s) : s);
+
 // Visa fee + processing-time card. Only when data/visa-fees.js has the pair
 // AND the status is something you apply for (ev / voa / vr / eta).
 function VisaFeeBox({ passport, destIso2, status }) {
@@ -1122,14 +1200,14 @@ function VisaFeeBox({ passport, destIso2, status }) {
   return (
     <div className="box">
       <div className="p-hint" style={{ margin: "0 0 4px", fontWeight: 600, color: "var(--ink-2)" }}>{window.t("detail.visa_cost")}</div>
-      <div className="fee">{data.fee}</div>
-      {data.processingDays && <div className="p-hint" style={{ marginTop: 4 }}>{window.t("detail.processing")}: {data.processingDays}</div>}
+      <div className="fee">{feeLabel(data.fee)}</div>
+      {data.processingDays && <div className="p-hint" style={{ marginTop: 4 }}>{window.t("detail.processing")}: {feeLabel(data.processingDays)}</div>}
       <dl className="kv">
-        {data.type && <><dt>{window.t("detail.type")}</dt><dd>{data.type}</dd></>}
-        {data.validity && <><dt>{window.t("detail.validity")}</dt><dd>{data.validity}</dd></>}
-        {data.durationOfStay && <><dt>{window.t("detail.duration_of_stay")}</dt><dd>{data.durationOfStay}</dd></>}
+        {data.type && <><dt>{window.t("detail.type")}</dt><dd>{feeLabel(data.type)}</dd></>}
+        {data.validity && <><dt>{window.t("detail.validity")}</dt><dd>{feeLabel(data.validity)}</dd></>}
+        {data.durationOfStay && <><dt>{window.t("detail.duration_of_stay")}</dt><dd>{feeLabel(data.durationOfStay)}</dd></>}
       </dl>
-      {data.notes && <div className="note note-warn" style={{ margin: "10px 0 0", fontSize: 12.5 }}><span className="note-s" style={{ margin: 0, color: "var(--ink-2)" }}>{data.notes}</span></div>}
+      {data.notes && <div className="note note-warn" style={{ margin: "10px 0 0", fontSize: 12.5 }}><span className="note-s" style={{ margin: 0, color: "var(--ink-2)" }}>{feeLabel(data.notes)}</span></div>}
       {data.source && (
         <a className="link-quiet" href={data.source} target="_blank" rel="noopener nofollow" style={{ display: "inline-block", marginTop: 8 }}>
           {window.t("detail.official_source")}
@@ -1435,30 +1513,6 @@ function WatchToggle({ iso2 }) {
 // and open total, from window.CHANGELOG.
 const STATUS_RANK = { vr: 0, voa: 1, ev: 2, vf: 3, self: 3, na: 0 };
 
-// Computed ranking — sorts all passports by (vf*3 + ev*2 + voa) so we can
-// always show a rank even when scraper-supplied rank fields are null.
-let _rankCache = null;
-function computedRank(passport) {
-  if (!_rankCache) {
-    if (!window.PASSPORT_LIST || !window.tally) return null;
-    const scores = window.PASSPORT_LIST.map(p => {
-      const t = window.tally(p.iso2);
-      const score = t ? (t.vf * 3 + t.ev * 2 + t.voa * 1) : 0;
-      return { iso2: p.iso2, score };
-    }).sort((a, b) => b.score - a.score);
-    _rankCache = {};
-    let lastScore = null, lastRank = 0;
-    scores.forEach((s, i) => {
-      // Tied-score passports share a rank (1, 1, 3 …).
-      const rank = s.score === lastScore ? lastRank : i + 1;
-      _rankCache[s.iso2] = rank;
-      lastScore = s.score;
-      lastRank = rank;
-    });
-  }
-  return _rankCache[passport] || null;
-}
-
 function passportPulse(passport, days = 30) {
   if (!passport || !window.CHANGELOG) return { gains: 0, losses: 0, items: [] };
   const cutoff = Date.now() - days * 86400_000;
@@ -1483,8 +1537,10 @@ function PassportPulse({ passport }) {
   const tally = useMemo(() => window.tally ? window.tally(passport) : null, [passport]);
   const meta = passport ? window.PASSPORTS[passport] : null;
   if (!meta || !tally) return null;
-  const totalOpen = tally.vf + tally.ev + tally.voa;
-  const rank = meta.rank || computedRank(passport);
+  // Same numbers as the ledger above and the /passport/ pages.
+  const totalOpen = window.accessScore(tally);
+  const rankInfo = window.passportRank(passport);
+  const rank = rankInfo && rankInfo.rank;
   const hasMovement = pulse.gains + pulse.losses > 0;
   const windowKey = days === 30 ? "daily.window_30" : "daily.window_90";
   return (

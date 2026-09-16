@@ -348,7 +348,7 @@ td.rule.r0 { color: color-mix(in oklab, var(--vf), var(--ink) 25%); }
 .stat:last-child { border-right: 0; }
 .stat .n { font-family: var(--font-display); font-size: 44px; font-weight: 800; line-height: 0.95; color: var(--ink); font-variant-numeric: tabular-nums; }
 .stat .l { margin-top: 2px; font-size: 13px; color: var(--ink-3); }
-.stat.vf { --tone: var(--vf); } .stat.ev { --tone: var(--ev); } .stat.voa { --tone: var(--voa); } .stat.vr { --tone: var(--vr); } .stat.ban { --tone: var(--ban); }
+.stat.idc { --tone: var(--idc); } .stat.vf { --tone: var(--vf); } .stat.eta { --tone: var(--eta); } .stat.ev { --tone: var(--ev); } .stat.voa { --tone: var(--voa); } .stat.vr { --tone: var(--vr); } .stat.ban { --tone: var(--ban); }
 .analysis p, .faq p { font-size: 17px; }
 .analysis .lead { font-size: 19px; color: var(--ink); }
 .faq .qa { margin-bottom: 18px; }

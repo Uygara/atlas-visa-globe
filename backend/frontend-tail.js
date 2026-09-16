@@ -164,3 +164,43 @@ window.tallyIncoming = function(myIso2) {
 
 window.PASSPORT_LIST = Object.values(window.PASSPORTS)
   .sort((a, b) => a.name.localeCompare(b.name));
+
+// ─── One set of numbers for every surface ────────────────────────────────
+// The map panel, the passport card and the /passport/<iso>/ pages all read
+// these, so a passport never shows two different ranks or totals.
+//   accessScore   — destinations open in any form short of a consular visa
+//                   (ID card, visa-free, travel authorisation, eVisa, on arrival).
+//   mobilityScore — the part that needs NO visa arranged in advance (eVisa
+//                   excluded).
+// Passports are ranked by accessScore, ties broken by mobilityScore, so the rank
+// follows the big "destinations accessible" number people actually see.
+window.accessScore = function (t) {
+  return t ? (t.idc || 0) + t.vf + (t.eta || 0) + t.ev + t.voa : 0;
+};
+window.mobilityScore = function (t) {
+  return t ? (t.idc || 0) + t.vf + (t.eta || 0) + t.voa : 0;
+};
+let _passportRanks = null;
+// { rank, total, access, mobility }; exact ties share a rank (1, 1, 3 …). Computed on
+// the ordinary passport with no residence permits, whatever the UI has toggled.
+window.passportRank = function (iso2) {
+  if (!_passportRanks) {
+    const permits = window.ATLAS_RESIDENCE_PERMITS;
+    window.ATLAS_RESIDENCE_PERMITS = [];
+    try {
+      const scored = Object.keys(window.PASSPORTS)
+        .map(iso => { const t = window.tally(iso); return { iso, access: window.accessScore(t), mobility: window.mobilityScore(t) }; })
+        .sort((a, b) => b.access - a.access || b.mobility - a.mobility);
+      _passportRanks = {};
+      scored.forEach((s, i) => {
+        const prev = scored[i - 1];
+        const tied = prev && prev.access === s.access && prev.mobility === s.mobility;
+        const rank = tied ? _passportRanks[prev.iso].rank : i + 1;
+        _passportRanks[s.iso] = { rank, total: scored.length, access: s.access, mobility: s.mobility };
+      });
+    } finally {
+      window.ATLAS_RESIDENCE_PERMITS = permits;
+    }
+  }
+  return _passportRanks[iso2] || null;
+};

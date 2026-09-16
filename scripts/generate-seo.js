@@ -7,7 +7,9 @@
 //     rank, regional strengths/weaknesses, curated notable destinations, FAQ) —
 //     so the page adds genuine commentary/curation on top of the raw data
 //     instead of just reproducing a third-party table (AdSense "thin content").
-//   • Visa counts (vf/ev/voa/vr) computed from live scraped data
+//   • Visa counts and the global rank computed by the SAME data layer the map
+//     uses (data/passports.js + visa-overrides.js, run in a Node sandbox), so a
+//     passport page never disagrees with the map
 //   • A full table of every destination + the resolved visa status
 //   • Internal links to related passport pages + guides + tools (SEO + retention)
 //   • OG / Twitter cards / canonical / JSON-LD Article + FAQPage + Breadcrumbs
@@ -15,11 +17,25 @@
 
 const fs = require("fs");
 const path = require("path");
+const vm = require("vm");
 const { headAssets, masthead, footer } = require("./partials");
 
 const ROOT       = path.resolve(__dirname, "..");
 const SNAPSHOT   = JSON.parse(fs.readFileSync(path.join(ROOT, "data", "passports-snapshot.json"), "utf8"));
-const COUNTRIES  = parseCountries(fs.readFileSync(path.join(ROOT, "data", "countries.js"), "utf8"));
+
+// The browser data layer, loaded as-is: resolveStatus (ID-card travel, travel
+// authorisations, hand-curated overrides, destination floors), tally and
+// passportRank are exactly what the map shows.
+const DATA = (() => {
+  const ctx = { console };
+  ctx.window = ctx;
+  vm.createContext(ctx);
+  for (const f of ["countries.js", "passports.js", "visa-overrides.js"]) {
+    vm.runInContext(fs.readFileSync(path.join(ROOT, "data", f), "utf8"), ctx, { filename: f });
+  }
+  return ctx;
+})();
+const COUNTRIES  = DATA.COUNTRIES;
 // Absolute URLs everywhere (sitemap <loc>, canonicals, og:url). The sitemap
 // protocol REQUIRES absolute URLs — relative ones are ignored by Google, which
 // was hurting discovery. Defaults to the live domain; override via SITE_URL.
@@ -27,7 +43,9 @@ const SITE_URL   = process.env.SITE_URL || "https://travelnow.info";
 
 // Colours come from the design tokens (assets/tokens.css: --vf, --ev, …).
 const STATUS_INFO = {
+  idc: { label: "ID card travel",   note: "Travel on a national ID card" },
   vf:  { label: "Visa-free",        note: "No visa required" },
+  eta: { label: "Travel authorization", note: "Online authorization before travel, no visa" },
   ev:  { label: "eVisa",            note: "Apply online before travel" },
   voa: { label: "Visa on arrival",  note: "Issued at the border" },
   vr:  { label: "Visa required",    note: "Apply at embassy or consulate" },
@@ -50,66 +68,28 @@ const MAJOR_DESTS = [
   "AR", "ZA", "EG", "TR", "GR",
 ];
 
-function parseCountries(js) {
-  // Extract { iso2, name, flag, continent } from the COUNTRIES = [ ... ] array.
-  const out = [];
-  const re = /iso2:\s*"([A-Z]{2})",\s*name:\s*"([^"]+)"[^}]*continent:\s*"([A-Z]{2})"[^}]*flag:\s*"([^"]+)"/g;
-  let m;
-  while ((m = re.exec(js))) {
-    out.push({ iso2: m[1], name: m[2], continent: m[3], flag: m[4] });
-  }
-  return out;
+// Same statuses and numbers as the map (see DATA above). snapshot is unused but
+// kept in the signatures the page renderers already call.
+function resolveStatus(passportIso2, destIso2) {
+  return DATA.resolveStatus(passportIso2, destIso2);
 }
 
-// Dependent territories inherit their parent country's visa policy.
-const TERRITORY_ALIAS = {
-  EH: "MA", GL: "DK", FK: "GB", PR: "US",
-  NC: "FR", PF: "FR", TF: "FR",
-};
-
-function resolveStatus(passportIso2, destIso2, snapshot) {
-  if (passportIso2 === destIso2) return { status: "self", days: null };
-  if (TERRITORY_ALIAS[destIso2] && TERRITORY_ALIAS[destIso2] !== passportIso2) {
-    destIso2 = TERRITORY_ALIAS[destIso2];
-  }
-  const p = snapshot[passportIso2];
-  if (!p) return { status: "na", days: null };
-  for (const s of ["vf", "ev", "voa", "vr"]) {
-    for (const entry of (p[s] || [])) {
-      const code = Array.isArray(entry) ? entry[0] : entry;
-      const days = Array.isArray(entry) ? entry[1] : null;
-      if (code === destIso2) return { status: s, days };
-    }
-  }
-  if (p.default === "vf") return { status: "vf", days: p.defaultDays || null };
-  return { status: p.default || "na", days: null };
-}
+// Destinations that need no consular visa arranged in advance.
+const EASY = new Set(["idc", "vf", "eta", "voa"]);
 
 function escapeHtml(s) {
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
           .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 }
 
-// Resolve every (non-self) destination once and return enriched rows.
-function resolveAllRows(passport, snapshot) {
+// Resolve every destination the map counts (no own country, no Antarctica).
+function resolveAllRows(passport) {
   return COUNTRIES
-    .filter(c => c.iso2 !== passport)
+    .filter(c => c.iso2 !== passport && c.continent !== "AN")
     .map(c => {
-      const r = resolveStatus(passport, c.iso2, snapshot);
+      const r = resolveStatus(passport, c.iso2);
       return { ...c, status: r.status, days: r.days };
     });
-}
-
-function countStatuses(rows) {
-  const counts = { vf: 0, ev: 0, voa: 0, vr: 0, ban: 0 };
-  rows.forEach(r => { if (counts[r.status] != null) counts[r.status]++; });
-  return counts;
-}
-
-// Mobility score = destinations reachable WITHOUT arranging a visa in advance
-// (visa-free + visa on arrival). This is the standard "passport power" metric.
-function mobilityScore(counts) {
-  return counts.vf + counts.voa;
 }
 
 function nameOf(iso, snapshot) {
@@ -127,7 +107,15 @@ function listJoin(names) {
 // ── The value-add: a unique, data-driven written analysis of this passport ──
 function renderProse(passport, name, rows, counts, ranks, snapshot) {
   const total = rows.length;
-  const visaFreeTotal = counts.vf + counts.voa;   // no advance visa needed
+  const visaFreeTotal = DATA.mobilityScore(counts);   // no advance visa needed
+  const accessTotal = DATA.accessScore(counts);
+  // "71 visa-free, 3 with an ID card, 13 with a visa on arrival"
+  const easyParts = [
+    `${counts.vf} visa-free`,
+    counts.idc ? `${counts.idc} with just a national ID card` : "",
+    counts.eta ? `${counts.eta} with an online travel authorization` : "",
+    `${counts.voa} with a visa on arrival`,
+  ].filter(Boolean);
   const rankInfo = ranks.get(passport);
   const rank = rankInfo ? rankInfo.rank : null;
   const rankTotal = rankInfo ? rankInfo.total : null;
@@ -138,7 +126,7 @@ function renderProse(passport, name, rows, counts, ranks, snapshot) {
     if (r.continent === "AN") return; // Antarctica: not a normal destination
     const b = byCont[r.continent] || (byCont[r.continent] = { easy: 0, total: 0 });
     b.total++;
-    if (r.status === "vf" || r.status === "voa") b.easy++;
+    if (EASY.has(r.status)) b.easy++;
   });
   const regionLines = Object.keys(byCont)
     .map(k => ({ k, ...byCont[k], pct: byCont[k].easy / byCont[k].total }))
@@ -149,8 +137,8 @@ function renderProse(passport, name, rows, counts, ranks, snapshot) {
   // Curated notable destinations among the MAJOR set
   const majorResolved = MAJOR_DESTS
     .filter(iso => iso !== passport && snapshot[iso])
-    .map(iso => ({ iso, ...resolveStatus(passport, iso, snapshot) }));
-  const easyMajors = majorResolved.filter(d => d.status === "vf" || d.status === "voa")
+    .map(iso => ({ iso, ...resolveStatus(passport, iso) }));
+  const easyMajors = majorResolved.filter(d => EASY.has(d.status))
     .map(d => nameOf(d.iso, snapshot)).slice(0, 8);
   const hardMajors = majorResolved.filter(d => d.status === "vr" || d.status === "ev")
     .map(d => ({ name: nameOf(d.iso, snapshot), status: d.status }));
@@ -158,9 +146,11 @@ function renderProse(passport, name, rows, counts, ranks, snapshot) {
   const evisaMajors = hardMajors.filter(d => d.status === "ev").map(d => d.name).slice(0, 5);
 
   // Representative checks for the FAQ
-  const usR  = resolveStatus(passport, "US", snapshot);
-  const deR  = resolveStatus(passport, "DE", snapshot);
+  const usR  = resolveStatus(passport, "US");
+  const deR  = resolveStatus(passport, "DE");
   const statusPhrase = (r) => {
+    if (r.status === "idc") return "can travel with just a national ID card";
+    if (r.status === "eta") return "need no visa, only an online travel authorization before departure";
     if (r.status === "vf")  return "can enter visa-free" + (r.days ? ` for up to ${r.days} days` : "");
     if (r.status === "voa") return "can get a visa on arrival";
     if (r.status === "ev")  return "need an eVisa (applied for online before travel)";
@@ -179,12 +169,14 @@ function renderProse(passport, name, rows, counts, ranks, snapshot) {
   // Lead
   html += `<p class="lead">A <strong>${escapeHtml(name)} passport</strong> currently gives its holder access to about
     <strong>${visaFreeTotal} of the ${total} destinations</strong> we track without arranging a visa beforehand —
-    ${counts.vf} visa-free and ${counts.voa} with a visa on arrival.`;
-  if (rank) {
-    html += ` On that measure it sits around <strong>#${rank} of ${rankTotal}</strong> passports worldwide.`;
-  }
+    ${listJoin(easyParts)}.`;
   html += ` Beyond those, ${counts.ev} destinations offer an eVisa you apply for online, and ${counts.vr}
-    still require a traditional embassy visa${counts.ban ? `, while ${counts.ban} refuse entry to this nationality` : ""}.</p>`;
+    still require a traditional embassy visa${counts.ban ? `, while ${counts.ban} refuse entry to this nationality` : ""}.`;
+  if (rank) {
+    html += ` With <strong>${accessTotal} destinations</strong> open without an embassy visa, it ranks
+      <strong>#${rank} of ${rankTotal}</strong> passports worldwide.`;
+  }
+  html += `</p>`;
 
   // Regional
   if (strongest && weakest && strongest.k !== weakest.k) {
@@ -222,7 +214,7 @@ function renderProse(passport, name, rows, counts, ranks, snapshot) {
   const faqs = [
     {
       q: `How many countries can ${name} passport holders visit without a visa?`,
-      a: `Around ${visaFreeTotal} of the ${total} destinations we track need no visa arranged in advance — ${counts.vf} are visa-free and ${counts.voa} grant a visa on arrival. A further ${counts.ev} offer an eVisa online.`,
+      a: `Around ${visaFreeTotal} of the ${total} destinations we track need no visa arranged in advance — ${listJoin(easyParts)}. A further ${counts.ev} offer an eVisa online.`,
     },
     {
       q: `Do ${name} passport holders need a visa for the United States?`,
@@ -234,7 +226,7 @@ function renderProse(passport, name, rows, counts, ranks, snapshot) {
     },
     {
       q: `How is this ranked, and how current is the data?`,
-      a: `The ranking compares passports by how many destinations they reach without a visa arranged in advance (visa-free plus visa on arrival). Figures are rebuilt every 24 hours from public visa-policy sources, so this page reflects the most recent change we have recorded. Always confirm with the destination's embassy before booking.`,
+      a: `Passports are ranked by how many destinations they can enter without an embassy visa — visa-free, with a national ID card, with an online travel authorization, with an eVisa or with a visa on arrival — and ties are broken by how many of those need nothing arranged in advance. It is the same ranking the interactive map shows. Figures are rebuilt every 24 hours from public visa-policy sources, so this page reflects the most recent change we have recorded. Always confirm with the destination's embassy before booking.`,
     },
   ];
 
@@ -265,17 +257,17 @@ function renderPage(passport, allPassports, snapshot, ranks) {
   const flag = country.flag;
   const slug = passport.toLowerCase();
 
-  const rows = resolveAllRows(passport, snapshot);
-  const counts = countStatuses(rows);
+  const rows = resolveAllRows(passport);
+  const counts = DATA.tally(passport);
 
-  // Sort: vf, ev, voa, vr, then alpha
-  const order = { vf: 0, ev: 1, voa: 2, vr: 3, ban: 4 };
+  // Sort by how easy entry is, then alphabetically.
+  const order = { idc: 0, vf: 1, eta: 2, ev: 3, voa: 4, vr: 5, ban: 6 };
   rows.sort((a, b) => (order[a.status] ?? 9) - (order[b.status] ?? 9) || a.name.localeCompare(b.name));
 
   const { proseHtml, faqHtml, faqSchema } = renderProse(passport, name, rows, counts, ranks, snapshot);
 
   const rankInfo = ranks.get(passport);
-  const titleText = `${name} passport visa requirements 2026 — ${counts.vf + counts.voa} visa-free destinations`;
+  const titleText = `${name} passport visa requirements 2026 — ${DATA.mobilityScore(counts)} destinations without a visa`;
   const description = `Where can a ${name} passport take you? ${counts.vf} visa-free, ${counts.voa} visa on arrival, ${counts.ev} eVisa, ${counts.vr} visa required. Global rank #${rankInfo ? rankInfo.rank : "?"}. Updated daily.`;
 
   const canonical = SITE_URL ? `${SITE_URL}/passport/${slug}/` : `/passport/${slug}/`;
@@ -381,7 +373,9 @@ ${masthead({ path: "/passport/" + slug + "/", i18n: false })}
   </header>
 
   <section class="stats">
+    ${counts.idc ? `<div class="stat idc"><div class="n">${counts.idc}</div><div class="l">ID card</div></div>` : ""}
     <div class="stat vf"><div class="n">${counts.vf}</div><div class="l">Visa-free</div></div>
+    ${counts.eta ? `<div class="stat eta"><div class="n">${counts.eta}</div><div class="l">Travel auth.</div></div>` : ""}
     <div class="stat ev"><div class="n">${counts.ev}</div><div class="l">eVisa</div></div>
     <div class="stat voa"><div class="n">${counts.voa}</div><div class="l">On arrival</div></div>
     <div class="stat vr"><div class="n">${counts.vr}</div><div class="l">Visa required</div></div>
@@ -438,7 +432,7 @@ function renderIndex(allPassports, snapshot, ranks) {
     const n = snapshot[iso] && snapshot[iso].name || (c && c.name);
     if (!c || !n) return "";
     const ri = ranks.get(iso);
-    return `<li><a href="${iso.toLowerCase()}/"><span class="flag">${c.flag}</span> <strong>${escapeHtml(n)}</strong></a> <span class="vf-count">${ri ? ri.mobility : "?"} visa-free/VoA · #${ri ? ri.rank : "?"}</span></li>`;
+    return `<li><a href="${iso.toLowerCase()}/"><span class="flag">${c.flag}</span> <strong>${escapeHtml(n)}</strong></a> <span class="vf-count">${ri ? ri.access : "?"} open · #${ri ? ri.rank : "?"}</span></li>`;
   }).join("");
 
   return `<!DOCTYPE html>
@@ -459,7 +453,8 @@ ${masthead({ path: "/passport/", i18n: false })}
 <div class="wrap">
   <h1>Passport visa-requirement directory</h1>
   <p class="intro">Every passport we track, ranked by <strong>global mobility</strong> — the number of destinations you
-  can enter without arranging a visa in advance (visa-free plus visa on arrival). Open any passport for a full country
+  can enter without an embassy visa (visa-free, ID card, travel authorization, eVisa or visa on arrival), ties broken by
+  how many need nothing arranged in advance. It is the same ranking the interactive map shows. Open any passport for a full country
   breakdown, regional analysis and FAQ. Figures are rebuilt every 24 hours. New here? Start with our
   <a href="/guides/visa-types-explained/">guide to visa types</a>.</p>
   <p style="font-size:13px;color:var(--fg-mute);">${allPassports.length} passports · Data refreshed ${new Date().toISOString().slice(0,10)}</p>
@@ -505,23 +500,19 @@ function renderSitemap(allPassports) {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemap.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`;
 }
 
-// Compute a global mobility ranking across all passports so each page can state
-// its real standing (genuine, derived data — not invented).
-function computeRanks(allPassports, snapshot) {
-  const scored = allPassports.map(iso => {
-    const counts = countStatuses(resolveAllRows(iso, snapshot));
-    return { iso, mobility: mobilityScore(counts) };
-  }).sort((a, b) => b.mobility - a.mobility);
+// Global ranking — the map's own passportRank(), so both always agree.
+function computeRanks(allPassports) {
   const ranks = new Map();
-  scored.forEach((s, i) => {
-    ranks.set(s.iso, { rank: i + 1, total: scored.length, mobility: s.mobility });
-  });
+  for (const iso of allPassports) {
+    const r = DATA.passportRank(iso);
+    if (r) ranks.set(iso, r);
+  }
   return ranks;
 }
 
 function main() {
   const allPassports = Object.keys(SNAPSHOT).sort();
-  const ranks = computeRanks(allPassports, SNAPSHOT);
+  const ranks = computeRanks(allPassports);
   const outDir = path.join(ROOT, "passport");
   fs.mkdirSync(outDir, { recursive: true });
 
