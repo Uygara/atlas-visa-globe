@@ -559,7 +559,8 @@ function computeChangelog(prevData, newData) {
     const oldMap = flatten(op);
     const newMap = flatten(np);
     for (const dest of new Set([...Object.keys(oldMap), ...Object.keys(newMap)])) {
-      if (oldMap[dest] !== newMap[dest]) {
+      // A destination that newly appears as "vr" (missing ⇒ "vr") isn't a change.
+      if ((oldMap[dest] || "vr") !== (newMap[dest] || "vr")) {
         changes.push({
           date: new Date().toISOString().slice(0, 10),
           passport: iso2,
@@ -660,14 +661,18 @@ async function main() {
 
   // Append today's changelog entries
   if (changelog.length > 0) {
-    const changelogPath = path.join(SOURCE_DIR, "changelog.js");
-    let existing = fs.readFileSync(changelogPath, "utf8");
-    // Insert new entries at the top of the CHANGELOG array
-    const newEntries = changelog.slice(0, 50).map(c =>
-      `  {\n    date: "${c.date}",\n    title: "${c.passport} → ${c.dest}: ${c.from} → ${c.to}",\n    affects: { dest: "${c.dest}", passports: ["${c.passport}"] },\n    statusFrom: "${c.from}", statusTo: "${c.to}",\n  },`
-    ).join("\n");
-    existing = existing.replace("window.CHANGELOG = [", `window.CHANGELOG = [\n${newEntries}`);
-    fs.writeFileSync(changelogPath, existing);
+    // Prepend today's entries, then fold edit-war flip-flops (a cell changed and
+    // changed back within days) into their net change so they never reach the
+    // "latest for your passport" feed or alert emails.
+    const { readChangelog, collapseFlipFlops, writeChangelog } = require("./changelog.js");
+    const { header, entries } = readChangelog(path.join(SOURCE_DIR, "changelog.js"));
+    const fresh = changelog.slice(0, 50).map(c => ({
+      date: c.date,
+      title: `${c.passport} → ${c.dest}: ${c.from} → ${c.to}`,
+      affects: { dest: c.dest, passports: [c.passport] },
+      statusFrom: c.from, statusTo: c.to,
+    }));
+    writeChangelog(header, collapseFlipFlops([...fresh, ...entries]), path.join(SOURCE_DIR, "changelog.js"));
   }
 
   console.log(`\n✓ Wrote ${Object.keys(collected).length} passports + ${changelog.length} changelog entries.`);

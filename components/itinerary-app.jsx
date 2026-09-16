@@ -17,7 +17,9 @@ function loadInitial() {
     if (params.get("d")) departure = params.get("d");
   } catch (e) {}
   try {
-    const saved = JSON.parse(sessionStorage.getItem("atlas.itinerary") || "{}");
+    // localStorage so a planned trip survives closing the tab (it used to live in
+    // sessionStorage and vanished); older session-only saves are still picked up.
+    const saved = JSON.parse(localStorage.getItem("atlas.itinerary") || sessionStorage.getItem("atlas.itinerary") || "{}");
     if (!passport && saved.passport) passport = saved.passport;
     if (stops.length === 0 && Array.isArray(saved.stops)) stops = saved.stops;
     if (!departure && saved.departure) departure = saved.departure;
@@ -72,7 +74,7 @@ function ItineraryApp() {
   useEffect(() => { const el = document.getElementById("loading"); if (el) el.classList.add("hidden"); }, []);
   // Persist on every change.
   useEffect(() => {
-    try { sessionStorage.setItem("atlas.itinerary", JSON.stringify({ passport, stops, departure })); } catch (e) {}
+    try { localStorage.setItem("atlas.itinerary", JSON.stringify({ passport, stops, departure })); } catch (e) {}
     try { if (passport) localStorage.setItem("atlas.passport", passport); } catch (e) {}
   }, [passport, stops, departure]);
 

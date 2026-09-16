@@ -140,6 +140,11 @@
   .mh-sheet-foot { display: flex; align-items: center; gap: 10px; padding: 12px 18px 0; margin-top: 6px; border-top: 1px solid var(--rule); }
 }
 
+/* Touch screens: segmented buttons big enough for a thumb (they were 26×19). */
+@media (pointer: coarse) {
+  .seg button { min-width: 36px; min-height: 32px; }
+}
+
 @media (max-width: 380px) {
-  .seg button { padding: 3px 6px; min-width: 26px; }
+  .seg button { padding: 3px 6px; min-width: 30px; }
 }

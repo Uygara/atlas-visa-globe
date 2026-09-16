@@ -3,8 +3,11 @@
 //   1. Wikipedia revision history for "Visa policy of <country>" articles.
 //      We pull recent edit summaries, filter for meaningful policy keywords
 //      (visa-free, abolish, eVisa, fee, …), and emit one VISA_NEWS item per
-//      hit. Destination is the article subject; passport scope defaults to
-//      "all" unless the edit summary names a nationality (best-effort).
+//      hit. Destination is the article subject (for the Schengen article,
+//      the member state named in the summary, else every member state).
+//      Passport scope = nationalities the summary names explicitly; an empty
+//      list means "unknown", and the front end then shows the item only on
+//      the destination, never under a passport.
 //
 //   2. UK FCO foreign-travel-advice Atom feed at
 //      https://www.gov.uk/foreign-travel-advice.atom — one item per country
@@ -92,7 +95,14 @@ const NOISE_KEYWORDS = [
   /^ref(s)?\b/i, /add(ed)? ref/i, /citation/i, /^minor/i,
   /unnecessary space/i, /^update\.?$/i, /^reformat/i, /^copyedit/i,
   /^style\b/i, /^link fix/i, /^\s*$/,
+  // Editorial arguments between editors, not policy changes ("There is no
+  // evidence that passportindex provides false information, …").
+  /\bno evidence\b/i, /\bunsourced\b/i, /\bclaim(s|ed)?\b/i, /social media/i,
+  /passportindex/i, /\btalk page\b/i, /\bvandal/i, /\bundid\b/i,
+  /\bincorrect\b/i, /false information/i, /\bdisputed?\b/i, /\?/,
 ];
+// Real change notes are one sentence; long summaries are discussions.
+const MAX_COMMENT_LEN = 220;
 
 // Section-marker pattern: Wikipedia edit comments often start with
 // "/* Visa exemption */" with nothing meaningful after. Reject those.
@@ -104,6 +114,7 @@ function isSectionOnlyComment(c) {
 
 function classifyComment(comment) {
   if (!comment) return null;
+  if (comment.length > MAX_COMMENT_LEN) return null;
   if (NOISE_KEYWORDS.some(r => r.test(comment))) return null;
   if (isSectionOnlyComment(comment)) return null;
   if (POSITIVE_KEYWORDS.some(r => r.test(comment))) return "positive";
@@ -111,24 +122,90 @@ function classifyComment(comment) {
   return null;
 }
 
-// Best-effort: extract a 2-letter ISO from common phrasings like
-// "Turkish nationals" or "Kenya passport holders". We resolve via a small
-// demonym→ISO table to avoid false positives.
+// Nationality extraction. A country only counts as a PASSPORT scope when the
+// text ties it to people ("Burundi citizens", "nationals of Kenya", "Turkish
+// passport holders"); a bare country name is usually the destination ("transit
+// visa to Belgium"), so it never scopes a passport by itself.
 const DEMONYM_TO_ISO = {
   Turkish: "TR", Kenyan: "KE", Indian: "IN", Chinese: "CN", American: "US",
   British: "GB", Russian: "RU", Brazilian: "BR", Saudi: "SA", Emirati: "AE",
-  Japanese: "JP", Korean: "KR", Thai: "TH", Indonesian: "ID", Filipino: "PH",
-  Malaysian: "MY", Singaporean: "SG", Vietnamese: "VN", Mexican: "MX",
-  Argentine: "AR", Australian: "AU", Canadian: "CA", German: "DE",
-  French: "FR", Italian: "IT", Spanish: "ES", Dutch: "NL", Polish: "PL",
+  Japanese: "JP", Korean: "KR", "South Korean": "KR", Thai: "TH",
+  Indonesian: "ID", Filipino: "PH", Malaysian: "MY", Singaporean: "SG",
+  Vietnamese: "VN", Mexican: "MX", Argentine: "AR", Australian: "AU",
+  Canadian: "CA", German: "DE", French: "FR", Italian: "IT", Spanish: "ES",
+  Dutch: "NL", Polish: "PL", Pakistani: "PK", Bangladeshi: "BD",
+  Nigerian: "NG", Ghanaian: "GH", Egyptian: "EG", Moroccan: "MA",
+  Algerian: "DZ", Tunisian: "TN", Iranian: "IR", Iraqi: "IQ", Syrian: "SY",
+  Afghan: "AF", Ukrainian: "UA", Belarusian: "BY", Georgian: "GE",
+  Armenian: "AM", Azerbaijani: "AZ", Kazakh: "KZ", Uzbek: "UZ", Israeli: "IL",
+  Jordanian: "JO", Lebanese: "LB", Qatari: "QA", Kuwaiti: "KW", Omani: "OM",
+  Colombian: "CO", Peruvian: "PE", Chilean: "CL", Venezuelan: "VE",
+  Cuban: "CU", Ethiopian: "ET", Eritrean: "ER", Somali: "SO", Sudanese: "SD",
+  "Sri Lankan": "LK", Nepalese: "NP", Taiwanese: "TW", Burundian: "BI",
 };
+const PEOPLE = "(?:citizens?|nationals?|passports?|passport[- ]holders?|holders?|travell?ers|visitors|residents|tourists)";
+const NAME_ALIASES = {
+  "Turkey": "TR", "Türkiye": "TR", "USA": "US", "the United States": "US",
+  "UK": "GB", "the United Kingdom": "GB", "Britain": "GB", "Russia": "RU",
+  "Czech Republic": "CZ", "Czechia": "CZ", "Ivory Coast": "CI",
+  "DR Congo": "CD", "Democratic Republic of the Congo": "CD",
+  "Republic of the Congo": "CG", "Korea": "KR", "UAE": "AE",
+  "the Philippines": "PH", "the Netherlands": "NL", "Vietnam": "VN",
+  "Macedonia": "MK", "Eswatini": "SZ", "Swaziland": "SZ", "Myanmar": "MM",
+  "Burma": "MM", "Laos": "LA", "Moldova": "MD", "Bolivia": "BO",
+  "Venezuela": "VE", "Tanzania": "TZ", "Syria": "SY", "Iran": "IR",
+};
+const escapeRe = (t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+function loadCountryNames() {
+  const names = { ...NAME_ALIASES };
+  try {
+    const w = {};
+    new Function("window", fs.readFileSync(path.join(__dirname, "..", "data", "countries.js"), "utf-8"))(w);
+    for (const c of w.COUNTRIES || []) {
+      // "Congo (DRC)" → keep only the plain part; aliases cover the rest.
+      const plain = c.name.replace(/\s*\(.*\)\s*$/, "");
+      if (!names[plain]) names[plain] = c.iso2;
+    }
+  } catch (e) {
+    console.warn(`[news] country list unavailable: ${e.message}`);
+  }
+  // Longest first so "South Sudan" is tried before "Sudan".
+  return Object.entries(names).sort((a, b) => b[0].length - a[0].length);
+}
+const COUNTRY_NAMES = loadCountryNames();
+const DEMONYMS = Object.entries(DEMONYM_TO_ISO).sort((a, b) => b[0].length - a[0].length);
 
 function extractPassports(text) {
   const found = new Set();
-  for (const [d, iso] of Object.entries(DEMONYM_TO_ISO)) {
-    if (new RegExp(`\\b${d}\\b`).test(text)) found.add(iso);
+  // Blank out each match so "South Sudan nationals" doesn't also count Sudan.
+  let rest = text;
+  for (const [d, iso] of DEMONYMS) {
+    const re = new RegExp(`\\b${escapeRe(d)}\\s+${PEOPLE}\\b`, "g");
+    if (re.test(rest)) { found.add(iso); rest = rest.replace(re, " "); }
+  }
+  for (const [name, iso] of COUNTRY_NAMES) {
+    const n = escapeRe(name);
+    const re = new RegExp(`\\b${n}\\s+${PEOPLE}\\b|\\b${PEOPLE}\\s+(?:of|from)\\s+(?:the\\s+)?${n}\\b`, "g");
+    if (re.test(rest)) { found.add(iso); rest = rest.replace(re, " "); }
   }
   return [...found];
+}
+
+// Schengen member states (mirrors data/etias-rules.js schengenStates).
+const SCHENGEN_STATES = [
+  "AT","BE","BG","HR","CZ","DK","EE","FI","FR","DE","GR","HU","IS","IT",
+  "LV","LI","LT","LU","MT","NL","NO","PL","PT","RO","SK","SI","ES","SE","CH",
+];
+
+// For the Schengen article: the member state(s) the summary names, else all.
+function schengenDestinations(text, passports) {
+  const found = new Set();
+  for (const [name, iso] of COUNTRY_NAMES) {
+    if (!SCHENGEN_STATES.includes(iso) || passports.includes(iso)) continue;
+    if (new RegExp(`\\b${escapeRe(name)}\\b`).test(text)) found.add(iso);
+  }
+  return found.size ? [...found] : SCHENGEN_STATES.slice();
 }
 
 // ─── Wikipedia ──────────────────────────────────────────────────────────
@@ -173,7 +250,7 @@ async function collectFromWiki() {
           summary: cleanComment.length > 110 ? cleanComment : "",
           affects: {
             passports,
-            destinations: iso === "EU" ? [] : [iso],
+            destinations: iso === "EU" ? schengenDestinations(cleanComment, passports) : [iso],
           },
           severity,
         });

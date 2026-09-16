@@ -200,15 +200,6 @@ html.theme-dark .country:hover, body.theme-dark .country:hover { filter: brightn
 .check.is-on { color: var(--ink); font-weight: 600; }
 .check input { accent-color: var(--accent); margin: 0; }
 
-.daily {
-  display: grid; gap: 8px; width: 100%; padding: 10px 12px; text-align: left; cursor: pointer;
-  background: var(--paper); border: 1px solid var(--rule); border-radius: var(--radius); color: var(--ink);
-}
-.daily:hover { border-color: var(--rule-strong); }
-.daily-top { display: flex; align-items: center; gap: 10px; }
-.daily-name { display: block; font-family: var(--font-display); font-size: 22px; font-weight: 750; line-height: 1; }
-.daily-status { display: inline-flex; align-items: center; gap: 5px; margin-top: 3px; font-size: 12.5px; color: var(--ink-2); }
-.daily-tip { font-size: 13px; line-height: 1.45; color: var(--ink-2); }
 .search + .dd { margin-top: 4px; }
 
 /* ── Chips ───────────────────────────────────────────────────────────── */
@@ -503,6 +494,9 @@ a.feed-item:hover { border-color: var(--rule-strong); border-left-color: var(--t
   .sheet-handle:active { cursor: grabbing; }
   .sheet-grabber { width: 40px; height: 4px; border-radius: 4px; background: var(--rule-strong); touch-action: none; }
 
+  /* The sheet covers the lower part of the stage: fit the globe to the strip
+     left visible above it instead of centring it behind the sheet. */
+  .globe-wrap { height: max(45%, calc(100% - var(--sheet-h, 48vh) + 8px)) !important; }
   .map-key { left: 10px; right: 58px; bottom: auto; top: 10px; padding: 6px 8px; font-size: 11px; }
   .map-key ul { grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 2px 8px; }
   .map-key .sw { width: 9px; height: 9px; }

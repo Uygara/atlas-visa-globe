@@ -200,7 +200,6 @@ function Panel({
           {!groupActive && <PassportPulse passport={passport} />}
           <WatchlistCard onOpen={(iso2) => { setDetailCountry(iso2); }} />
           <ItineraryCTA />
-          {!groupActive && <DailySuggestion passport={passport} onOpen={(iso2) => { setDetailCountry(iso2); }} />}
           <PassportNewsFeed passport={passport} />
         </ForYouSection>
       )}
@@ -1204,20 +1203,21 @@ function AffiliatePartners({ status, iso2 }) {
 
 // ─── News filtering helpers ───────────────────────────────────────────────
 // VISA_NEWS items have affects.{passports, destinations} as ISO2 arrays.
-// Empty array means "applies to all".
-function matchesPassport(item, passport) {
-  if (!passport) return false;
-  const arr = item.affects?.passports || [];
-  return arr.length === 0 || arr.includes(passport);
+// An EMPTY array means "we couldn't tell who it affects", NOT "everyone": an
+// item only surfaces under a passport/destination that it names explicitly.
+// (Treating empty as "all" put "Burundi citizens now need a transit visa to
+// Belgium" under every passport.)
+function namesPassport(item, passport) {
+  return !!passport && (item.affects?.passports || []).includes(passport);
 }
-function matchesDest(item, dest) {
-  if (!dest) return false;
-  const arr = item.affects?.destinations || [];
-  return arr.length === 0 || arr.includes(dest);
+function namesDest(item, dest) {
+  return !!dest && (item.affects?.destinations || []).includes(dest);
 }
 function sortNewsDesc(a, b) {
   return (b.date || "").localeCompare(a.date || "");
 }
+
+const NEWS_SOURCE_LABEL = { wiki: "Wikipedia", fco: "UK FCDO" };
 
 const SEVERITY_TONE = {
   positive: "var(--vf)",
@@ -1241,7 +1241,7 @@ function NewsItem({ item, compact }) {
       <div className="feed-meta">
         <time dateTime={item.date}>{fmtDay(item.date, true)}</time>
         <span>·</span>
-        <span>{item.source}</span>
+        <span>{NEWS_SOURCE_LABEL[item.source] || item.source}</span>
       </div>
       <div className="feed-title">{item.title}</div>
       {!compact && item.summary && <div className="feed-sum">{item.summary}</div>}
@@ -1266,8 +1266,7 @@ function weeklyDigest(passport) {
     for (const n of window.VISA_NEWS) {
       if (new Date(n.date + "T00:00:00").getTime() < cutoff) continue;
       total++;
-      const arr = n.affects?.passports || [];
-      if (passport && (arr.length === 0 || arr.includes(passport))) mine++;
+      if (namesPassport(n, passport)) mine++;
     }
   }
   return { total, mine };
@@ -1291,7 +1290,7 @@ function WeeklyDigest({ passport }) {
 // Empty state = soft "plan a trip" nudge; active state = summary + continue.
 function readItinerary() {
   try {
-    const raw = sessionStorage.getItem("atlas.itinerary");
+    const raw = localStorage.getItem("atlas.itinerary") || sessionStorage.getItem("atlas.itinerary");
     return raw ? JSON.parse(raw) : null;
   } catch (e) { return null; }
 }
@@ -1530,80 +1529,35 @@ function PassportPulse({ passport }) {
   );
 }
 
-// ─── Daily destination pick ──────────────────────────────────────────────
-// One visa-free / eVisa / VoA destination per day, deterministic by
-// (passport + UTC date), so it's stable through the day and rotates tomorrow.
-const STATUS_PRIORITY = { vf: 3, ev: 2, voa: 1 };
-
-function hashStr(s) {
-  let h = 0;
-  for (let i = 0; i < s.length; i++) {
-    h = ((h << 5) - h + s.charCodeAt(i)) | 0;
-  }
-  return Math.abs(h);
-}
-
-function pickDailyDestination(passport) {
-  if (!passport || !window.COUNTRIES) return null;
-  const opts = [];
-  for (const c of window.COUNTRIES) {
-    if (c.iso2 === passport) continue;
-    if (c.continent === "AN") continue; // skip Antarctica
-    const r = window.resolveStatus(passport, c.iso2);
-    if (STATUS_PRIORITY[r.status]) {
-      opts.push({ iso2: c.iso2, status: r.status });
-    }
-  }
-  if (opts.length === 0) return null;
-  // Prefer countries with a curated tip — they read better in the card.
-  const tipped = opts.filter(o => window.DESTINATION_TIPS && window.DESTINATION_TIPS[o.iso2]);
-  const pool = tipped.length >= 8 ? tipped : opts;
-  const today = new Date().toISOString().slice(0, 10);
-  const idx = hashStr(passport + "|" + today) % pool.length;
-  return pool[idx];
-}
-
-function DailySuggestion({ passport, onOpen }) {
-  const pick = useMemo(() => pickDailyDestination(passport), [passport]);
-  if (!pick) return null;
-  const country = window.byIso2[pick.iso2];
-  if (!country) return null;
-  const tipEntry = window.DESTINATION_TIPS && window.DESTINATION_TIPS[pick.iso2];
-  const lang = window.ATLAS_LANG || "en";
-  const tip = tipEntry ? (tipEntry[lang] || tipEntry.en) : null;
-  return (
-    <div style={{ marginBottom: 16 }}>
-      <div className="p-hint" style={{ margin: "0 0 6px", fontWeight: 600, color: "var(--ink-2)" }}>{window.t("daily.heading")}</div>
-      <button type="button" className="daily" onClick={() => onOpen?.(pick.iso2)}>
-        <span className="daily-top">
-          <span className="flag" style={{ fontSize: 28 }}>{country.flag}</span>
-          <span style={{ flex: 1, minWidth: 0 }}>
-            <span className="daily-name">{window.countryName(pick.iso2)}</span>
-            <span className="daily-status"><Dot s={pick.status} /> {statusLabel(pick.status)}</span>
-          </span>
-          <span className="mono" aria-hidden="true" style={{ color: "var(--ink-3)" }}>→</span>
-        </span>
-        <span className="daily-tip">{tip || window.t("daily.generic_tip")}</span>
-      </button>
-    </div>
-  );
+// Only changes we can tie to THIS passport: verified day-over-day status diffs
+// from CHANGELOG (the dataset itself changed) plus news items that name the
+// passport explicitly.
+const FEED_DAYS = 90;
+function passportFeed(passport) {
+  if (!passport) return [];
+  const cutoff = Date.now() - FEED_DAYS * 86400_000;
+  const recent = (d) => new Date(d + "T00:00:00").getTime() >= cutoff;
+  const changes = (window.CHANGELOG || [])
+    .filter(c => recent(c.date) && c.affects?.passports?.includes(passport))
+    .map((c, i) => ({ kind: "change", key: "c" + i, date: c.date, entry: c }));
+  const news = (window.VISA_NEWS || [])
+    .filter(n => recent(n.date) && namesPassport(n, passport))
+    .map(n => ({ kind: "news", key: n.id, date: n.date, item: n }));
+  return [...changes, ...news].sort(sortNewsDesc);
 }
 
 function PassportNewsFeed({ passport }) {
   const [expanded, setExpanded] = useState(false);
-  const list = useMemo(() => {
-    if (!window.VISA_NEWS) return [];
-    return window.VISA_NEWS
-      .filter(it => matchesPassport(it, passport))
-      .sort(sortNewsDesc);
-  }, [passport]);
+  const list = useMemo(() => passportFeed(passport), [passport]);
   if (list.length === 0) return null;
   const items = expanded ? list : list.slice(0, 3);
   return (
     <div style={{ marginBottom: 16 }}>
       <div className="p-hint" style={{ margin: "0 0 6px", fontWeight: 600, color: "var(--ink-2)" }}>{window.t("news.for_passport", { name: window.countryName(passport) })}</div>
       <div className="feed">
-        {items.map(it => <NewsItem key={it.id} item={it} />)}
+        {items.map(it => it.kind === "change"
+          ? <ChangelogItem key={it.key} entry={it.entry} />
+          : <NewsItem key={it.key} item={it.item} />)}
       </div>
       {list.length > 3 && (
         <button type="button" className="more-btn" onClick={() => setExpanded(!expanded)}>
@@ -1618,7 +1572,10 @@ function NewsBox({ passport, destIso2 }) {
   const list = useMemo(() => {
     if (!window.VISA_NEWS) return [];
     return window.VISA_NEWS
-      .filter(it => matchesDest(it, destIso2) && (!passport || matchesPassport(it, passport)))
+      // Destination named explicitly; passport either named or unscoped
+      // (a destination-wide rule change applies to whoever is going there).
+      .filter(it => namesDest(it, destIso2)
+        && (!passport || (it.affects?.passports || []).length === 0 || namesPassport(it, passport)))
       .sort(sortNewsDesc)
       .slice(0, 2);
   }, [passport, destIso2]);

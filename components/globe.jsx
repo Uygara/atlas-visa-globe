@@ -699,7 +699,7 @@ function Globe({
   const showGlow = mode === "globe3d";
 
   return (
-    <div ref={wrapRef} style={{ width: "100%", height: "100%", position: "relative" }}>
+    <div ref={wrapRef} className="globe-wrap" style={{ width: "100%", height: "100%", position: "relative" }}>
       <svg
         ref={svgRef}
         width={size.w}

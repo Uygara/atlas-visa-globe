@@ -15,12 +15,6 @@ window.CHANGELOG = [
   },
   {
     date: "2026-09-14",
-    title: "UA → ZA: ev → vr",
-    affects: { dest: "ZA", passports: ["UA"] },
-    statusFrom: "ev", statusTo: "vr",
-  },
-  {
-    date: "2026-09-14",
     title: "DM → TH: vf → ev",
     affects: { dest: "TH", passports: ["DM"] },
     statusFrom: "vf", statusTo: "ev",
@@ -29,12 +23,6 @@ window.CHANGELOG = [
     date: "2026-09-13",
     title: "SA → TT: vr → ev",
     affects: { dest: "TT", passports: ["SA"] },
-    statusFrom: "vr", statusTo: "ev",
-  },
-  {
-    date: "2026-09-12",
-    title: "UA → ZA: vr → ev",
-    affects: { dest: "ZA", passports: ["UA"] },
     statusFrom: "vr", statusTo: "ev",
   },
   {
@@ -99,18 +87,6 @@ window.CHANGELOG = [
   },
   {
     date: "2026-08-31",
-    title: "SK → BR: vr → vr",
-    affects: { dest: "BR", passports: ["SK"] },
-    statusFrom: "vr", statusTo: "vr",
-  },
-  {
-    date: "2026-08-31",
-    title: "SK → IN: vr → ev",
-    affects: { dest: "IN", passports: ["SK"] },
-    statusFrom: "vr", statusTo: "ev",
-  },
-  {
-    date: "2026-08-31",
     title: "TW → KI: vr → ban",
     affects: { dest: "KI", passports: ["TW"] },
     statusFrom: "vr", statusTo: "ban",
@@ -126,18 +102,6 @@ window.CHANGELOG = [
     title: "TW → VE: vr → ban",
     affects: { dest: "VE", passports: ["TW"] },
     statusFrom: "vr", statusTo: "ban",
-  },
-  {
-    date: "2026-08-30",
-    title: "SK → IN: ev → vr",
-    affects: { dest: "IN", passports: ["SK"] },
-    statusFrom: "ev", statusTo: "vr",
-  },
-  {
-    date: "2026-08-30",
-    title: "SK → BR: vr → vr",
-    affects: { dest: "BR", passports: ["SK"] },
-    statusFrom: "vr", statusTo: "vr",
   },
   {
     date: "2026-08-30",
@@ -162,18 +126,6 @@ window.CHANGELOG = [
     title: "UA → SB: vr → ev",
     affects: { dest: "SB", passports: ["UA"] },
     statusFrom: "vr", statusTo: "ev",
-  },
-  {
-    date: "2026-08-24",
-    title: "CY → US: vr → vr",
-    affects: { dest: "US", passports: ["CY"] },
-    statusFrom: "vr", statusTo: "vr",
-  },
-  {
-    date: "2026-08-23",
-    title: "CY → US: vr → vr",
-    affects: { dest: "US", passports: ["CY"] },
-    statusFrom: "vr", statusTo: "vr",
   },
   {
     date: "2026-08-23",
@@ -218,12 +170,6 @@ window.CHANGELOG = [
     statusFrom: "vr", statusTo: "ev",
   },
   {
-    date: "2026-08-16",
-    title: "AL → MA: vr → vr",
-    affects: { dest: "MA", passports: ["AL"] },
-    statusFrom: "vr", statusTo: "vr",
-  },
-  {
     date: "2026-08-11",
     title: "SG → AZ: ev → vf",
     affects: { dest: "AZ", passports: ["SG"] },
@@ -234,12 +180,6 @@ window.CHANGELOG = [
     title: "HK → KH: ev → vf",
     affects: { dest: "KH", passports: ["HK"] },
     statusFrom: "ev", statusTo: "vf",
-  },
-  {
-    date: "2026-08-06",
-    title: "KW → CR: vf → vr",
-    affects: { dest: "CR", passports: ["KW"] },
-    statusFrom: "vf", statusTo: "vr",
   },
   {
     date: "2026-08-05",
@@ -278,18 +218,6 @@ window.CHANGELOG = [
     statusFrom: "vr", statusTo: "ev",
   },
   {
-    date: "2026-07-31",
-    title: "KW → CR: vr → vf",
-    affects: { dest: "CR", passports: ["KW"] },
-    statusFrom: "vr", statusTo: "vf",
-  },
-  {
-    date: "2026-07-29",
-    title: "UA → ML: ban → vr",
-    affects: { dest: "ML", passports: ["UA"] },
-    statusFrom: "ban", statusTo: "vr",
-  },
-  {
     date: "2026-07-28",
     title: "BD → KN: vf → ev",
     affects: { dest: "KN", passports: ["BD"] },
@@ -305,12 +233,6 @@ window.CHANGELOG = [
     date: "2026-07-27",
     title: "IL → OM: vr → ban",
     affects: { dest: "OM", passports: ["IL"] },
-    statusFrom: "vr", statusTo: "ban",
-  },
-  {
-    date: "2026-07-27",
-    title: "UA → ML: vr → ban",
-    affects: { dest: "ML", passports: ["UA"] },
     statusFrom: "vr", statusTo: "ban",
   },
   {
@@ -392,12 +314,6 @@ window.CHANGELOG = [
     statusFrom: "ev", statusTo: "vr",
   },
   {
-    date: "2026-07-18",
-    title: "BD → IN: vf → vr",
-    affects: { dest: "IN", passports: ["BD"] },
-    statusFrom: "vf", statusTo: "vr",
-  },
-  {
     date: "2026-07-17",
     title: "TM → NI: voa → ev",
     affects: { dest: "NI", passports: ["TM"] },
@@ -417,9 +333,9 @@ window.CHANGELOG = [
   },
   {
     date: "2026-07-16",
-    title: "CN → SD: ev → voa",
+    title: "CN → SD: vr → voa",
     affects: { dest: "SD", passports: ["CN"] },
-    statusFrom: "ev", statusTo: "voa",
+    statusFrom: "vr", statusTo: "voa",
   },
   {
     date: "2026-07-15",
@@ -432,12 +348,6 @@ window.CHANGELOG = [
     title: "KZ → ID: voa → vf",
     affects: { dest: "ID", passports: ["KZ"] },
     statusFrom: "voa", statusTo: "vf",
-  },
-  {
-    date: "2026-07-15",
-    title: "CN → SD: vr → ev",
-    affects: { dest: "SD", passports: ["CN"] },
-    statusFrom: "vr", statusTo: "ev",
   },
   {
     date: "2026-07-14",
@@ -479,12 +389,6 @@ window.CHANGELOG = [
     date: "2026-07-10",
     title: "BD → SA: vr → vf",
     affects: { dest: "SA", passports: ["BD"] },
-    statusFrom: "vr", statusTo: "vf",
-  },
-  {
-    date: "2026-07-09",
-    title: "BD → IN: vr → vf",
-    affects: { dest: "IN", passports: ["BD"] },
     statusFrom: "vr", statusTo: "vf",
   },
   {
@@ -536,42 +440,6 @@ window.CHANGELOG = [
     statusFrom: "vr", statusTo: "vf",
   },
   {
-    date: "2026-06-29",
-    title: "BT → DM: vr → vf",
-    affects: { dest: "DM", passports: ["BT"] },
-    statusFrom: "vr", statusTo: "vf",
-  },
-  {
-    date: "2026-06-29",
-    title: "BT → GQ: vr → ev",
-    affects: { dest: "GQ", passports: ["BT"] },
-    statusFrom: "vr", statusTo: "ev",
-  },
-  {
-    date: "2026-06-29",
-    title: "BT → BI: vr → voa",
-    affects: { dest: "BI", passports: ["BT"] },
-    statusFrom: "vr", statusTo: "voa",
-  },
-  {
-    date: "2026-06-28",
-    title: "BT → DM: vf → vr",
-    affects: { dest: "DM", passports: ["BT"] },
-    statusFrom: "vf", statusTo: "vr",
-  },
-  {
-    date: "2026-06-28",
-    title: "BT → GQ: ev → vr",
-    affects: { dest: "GQ", passports: ["BT"] },
-    statusFrom: "ev", statusTo: "vr",
-  },
-  {
-    date: "2026-06-28",
-    title: "BT → BI: voa → vr",
-    affects: { dest: "BI", passports: ["BT"] },
-    statusFrom: "voa", statusTo: "vr",
-  },
-  {
     date: "2026-06-25",
     title: "BD → MD: vr → ev",
     affects: { dest: "MD", passports: ["BD"] },
@@ -620,18 +488,6 @@ window.CHANGELOG = [
     statusFrom: "vr", statusTo: "ev",
   },
   {
-    date: "2026-06-17",
-    title: "KN → GH: vr → vr",
-    affects: { dest: "GH", passports: ["KN"] },
-    statusFrom: "vr", statusTo: "vr",
-  },
-  {
-    date: "2026-06-16",
-    title: "TW → NI: vr → vr",
-    affects: { dest: "NI", passports: ["TW"] },
-    statusFrom: "vr", statusTo: "vr",
-  },
-  {
     date: "2026-06-15",
     title: "VN → EG: vr → voa",
     affects: { dest: "EG", passports: ["VN"] },
@@ -669,27 +525,9 @@ window.CHANGELOG = [
   },
   {
     date: "2026-06-14",
-    title: "KN → IE: vr → vr",
-    affects: { dest: "IE", passports: ["KN"] },
-    statusFrom: "vr", statusTo: "vr",
-  },
-  {
-    date: "2026-06-14",
     title: "KW → IE: vr → ev",
     affects: { dest: "IE", passports: ["KW"] },
     statusFrom: "vr", statusTo: "ev",
-  },
-  {
-    date: "2026-06-14",
-    title: "NI → IE: vr → vr",
-    affects: { dest: "IE", passports: ["NI"] },
-    statusFrom: "vr", statusTo: "vr",
-  },
-  {
-    date: "2026-06-14",
-    title: "LC → IE: vr → vr",
-    affects: { dest: "IE", passports: ["LC"] },
-    statusFrom: "vr", statusTo: "vr",
   },
   {
     date: "2026-06-13",
@@ -1023,12 +861,6 @@ window.CHANGELOG = [
   },
   {
     date: "2026-06-08",
-    title: "UA → SG: vr → ev",
-    affects: { dest: "SG", passports: ["UA"] },
-    statusFrom: "vr", statusTo: "ev",
-  },
-  {
-    date: "2026-06-08",
     title: "LY → GH: voa → ev",
     affects: { dest: "GH", passports: ["LY"] },
     statusFrom: "voa", statusTo: "ev",
@@ -1038,12 +870,6 @@ window.CHANGELOG = [
     title: "LY → LR: vr → voa",
     affects: { dest: "LR", passports: ["LY"] },
     statusFrom: "vr", statusTo: "voa",
-  },
-  {
-    date: "2026-06-08",
-    title: "IR → SR: vr → vf",
-    affects: { dest: "SR", passports: ["IR"] },
-    statusFrom: "vr", statusTo: "vf",
   },
   {
     date: "2026-06-07",
@@ -1065,27 +891,21 @@ window.CHANGELOG = [
   },
   {
     date: "2026-06-05",
-    title: "IR → SC: vr → ev",
-    affects: { dest: "SC", passports: ["IR"] },
-    statusFrom: "vr", statusTo: "ev",
-  },
-  {
-    date: "2026-06-05",
     title: "UZ → HK: vr → vf",
     affects: { dest: "HK", passports: ["UZ"] },
     statusFrom: "vr", statusTo: "vf",
   },
   {
     date: "2026-06-05",
+    title: "IR → SC: vr → ev",
+    affects: { dest: "SC", passports: ["IR"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-06-05",
     title: "UZ → MO: vr → voa",
     affects: { dest: "MO", passports: ["UZ"] },
     statusFrom: "vr", statusTo: "voa",
-  },
-  {
-    date: "2026-06-04",
-    title: "TW → CF: vr → vr",
-    affects: { dest: "CF", passports: ["TW"] },
-    statusFrom: "vr", statusTo: "vr",
   },
   {
     date: "2026-06-02",
@@ -1130,12 +950,6 @@ window.CHANGELOG = [
     statusFrom: "vr", statusTo: "ev",
   },
   {
-    date: "2026-05-31",
-    title: "QA → ME: vr → vr",
-    affects: { dest: "ME", passports: ["QA"] },
-    statusFrom: "vr", statusTo: "vr",
-  },
-  {
     date: "2026-05-30",
     title: "DE → SY: voa → ev",
     affects: { dest: "SY", passports: ["DE"] },
@@ -1167,18 +981,6 @@ window.CHANGELOG = [
   },
   {
     date: "2026-05-30",
-    title: "TW → GH: vr → vr",
-    affects: { dest: "GH", passports: ["TW"] },
-    statusFrom: "vr", statusTo: "vr",
-  },
-  {
-    date: "2026-05-30",
-    title: "TW → KZ: vr → vr",
-    affects: { dest: "KZ", passports: ["TW"] },
-    statusFrom: "vr", statusTo: "vr",
-  },
-  {
-    date: "2026-05-30",
     title: "IN → SV: vf → vr",
     affects: { dest: "SV", passports: ["IN"] },
     statusFrom: "vf", statusTo: "vr",
@@ -1194,12 +996,6 @@ window.CHANGELOG = [
     title: "LB → GH: vr → ev",
     affects: { dest: "GH", passports: ["LB"] },
     statusFrom: "vr", statusTo: "ev",
-  },
-  {
-    date: "2026-05-29",
-    title: "IR → SR: vf → vr",
-    affects: { dest: "SR", passports: ["IR"] },
-    statusFrom: "vf", statusTo: "vr",
   },
   {
     date: "2026-05-28",
@@ -1238,18 +1034,6 @@ window.CHANGELOG = [
     statusFrom: "ev", statusTo: "vr",
   },
   {
-    date: "2026-05-26",
-    title: "UA → SG: ev → vr",
-    affects: { dest: "SG", passports: ["UA"] },
-    statusFrom: "ev", statusTo: "vr",
-  },
-  {
-    date: "2026-05-26",
-    title: "UA → GM: vr → vr",
-    affects: { dest: "GM", passports: ["UA"] },
-    statusFrom: "vr", statusTo: "vr",
-  },
-  {
     date: "2026-05-25",
     title: "HK → SN: vr → voa",
     affects: { dest: "SN", passports: ["HK"] },
@@ -1261,15 +1045,4 @@ window.CHANGELOG = [
     affects: { dest: "GH", passports: ["UA"] },
     statusFrom: "vr", statusTo: "ev",
   },
-  {
-    date: "2026-05-24",
-    title: "EE → NI: vr → vr",
-    affects: { dest: "NI", passports: ["EE"] },
-    statusFrom: "vr", statusTo: "vr",
-  },
-  {
-    date: "2026-05-24",
-    title: "HK → SB: vr → vr",
-    affects: { dest: "SB", passports: ["HK"] },
-    statusFrom: "vr", statusTo: "vr",
-  },];
+];
