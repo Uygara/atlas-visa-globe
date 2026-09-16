@@ -56,6 +56,7 @@ const T = {
     "nav.mode":          "Globe view",
     "nav.transit_map":   "Transit map",
     "nav.safety_map":    "Safety map",
+    "nav.account":       "Account",
 
 
     "welcome.title_1":   "Where in the world",
@@ -433,6 +434,7 @@ const T = {
     "nav.mode":          "Küre görünümü",
     "nav.transit_map":   "Transit haritası",
     "nav.safety_map":    "Güvenlik haritası",
+    "nav.account":       "Hesap",
 
     "nav.language":      "Dil",
 

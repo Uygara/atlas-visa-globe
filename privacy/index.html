@@ -11,11 +11,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sofia+Sans:ital,wght@0,400..700;1,400..600&family=Sofia+Sans+Extra+Condensed:wght@600..850&family=DM+Mono:wght@400;500&display=swap">
-<link rel="stylesheet" href="/assets/tokens.css?v=20260916a">
-<link rel="stylesheet" href="/assets/chrome.css?v=20260916a">
-<link rel="stylesheet" href="/assets/site.css?v=20260916a">
+<link rel="stylesheet" href="/assets/tokens.css?v=20260916b">
+<link rel="stylesheet" href="/assets/chrome.css?v=20260916b">
+<link rel="stylesheet" href="/assets/site.css?v=20260916b">
 <script>try{if((JSON.parse(localStorage.getItem("atlas.tweaks")||"{}")).background==="dark")document.documentElement.classList.add("theme-dark")}catch(e){}</script>
-<script src="/assets/site-chrome.js?v=20260916a" defer></script>
+<script src="/assets/account-config.js?v=20260916b"></script>
+<script src="/assets/account-sync.js?v=20260916b"></script>
+<script src="/assets/account.js?v=20260916b"></script>
+<script src="/assets/site-chrome.js?v=20260916b" defer></script>
 <!-- /chrome:head -->
   <script src="/assets/analytics.js"></script>
 </head>
@@ -44,6 +47,7 @@
     </div>
   </nav>
   <div class="mh-tools" data-no-i18n>
+    <a class="mh-account" href="/account/" data-account-link hidden aria-label="Account" title="Account"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><circle cx="8" cy="5.6" r="2.9" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M2.6 14.2c.7-2.8 2.8-4.3 5.4-4.3s4.7 1.5 5.4 4.3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><span data-account-initial></span></a>
     <div class="seg" role="group" aria-label="Theme"><button type="button" data-theme-set="light" aria-pressed="true" aria-label="Light" title="Light"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3" fill="currentColor"/><g stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M8 1.2v1.7M8 13.1v1.7M1.2 8h1.7M13.1 8h1.7M3.2 3.2l1.2 1.2M11.6 11.6l1.2 1.2M12.8 3.2l-1.2 1.2M4.4 11.6l-1.2 1.2"/></g></svg></button><button type="button" data-theme-set="dark" aria-pressed="false" aria-label="Dark" title="Dark"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13.2 9.6A5.6 5.6 0 0 1 6.4 2.8a5.6 5.6 0 1 0 6.8 6.8z" fill="currentColor"/></svg></button></div>
     <select class="lang-select" data-lang-select aria-label="Language"><option value="en">EN · English</option><option value="tr">TR · Türkçe</option><option value="es">ES · Español</option><option value="de">DE · Deutsch</option><option value="fr">FR · Français</option><option value="ar">AR · العربية</option></select>
     <a class="mh-support" href="https://buymeacoffee.com/travelnowinfo" target="_blank" rel="noopener">Support</a>
@@ -69,26 +73,24 @@
 <!-- /chrome:masthead -->
 <div class="wrap">
   <h1>Privacy Policy</h1>
-  <p class="meta">Last updated: 17 June 2026 · Operator: travelnow.info (Uygar Atalay)</p>
+  <p class="meta">Last updated: 16 September 2026 · Operator: travelnow.info (Uygar Atalay)</p>
 
   <h2>What this site is</h2>
   <p>travelnow.info (travelnow.info) is a free reference tool that shows visa
   requirements for travelers worldwide. The dataset is rebuilt every 24
-  hours from authoritative public sources. We do not require an account,
-  and we do not ask for personal information.</p>
+  hours from authoritative public sources. An account is optional:
+  everything works without one, and we only ask for an email address if you
+  choose to create one.</p>
 
   <h2>Information we collect ourselves</h2>
   <p>Aggregate, anonymous usage statistics only — via Google Analytics 4
   (with IP anonymisation enabled) and Matomo Tag Manager. These help us see
   which pages are read and on which devices, so we know what to improve.
   Neither receives an identifier we hold; both set their own cookies (see
-  "Cookies" below). With your
-  permission, the browser's geolocation API may be used to pre-select a
-  likely passport — the coordinates are sent only to OpenStreetMap's
-  Nominatim reverse-geocode endpoint and immediately discarded by us. If
-  you deny the prompt, we fall back to your browser's IANA time zone, used
-  <em>locally in your browser</em> for the same purpose; that value is
-  never sent to us.</p>
+  "Cookies" below).</p>
+  <p>For first-time visitors, the browser's time zone is used locally to guess
+  a likely passport. It never leaves your browser, and we never ask for your
+  location.</p>
 
   <h2>If you subscribe to alerts</h2>
   <p>The travelnow.info alerts service stores only what's needed to deliver mail:
@@ -99,6 +101,18 @@
   <p>Every alert email contains a one-click unsubscribe link that deletes
   your record immediately and (if applicable) cancels your Stripe
   subscription.</p>
+
+  <h2>If you create an account</h2>
+  <p>Accounts are optional. If you sign in, we store your email address and the
+  things you save on the site so they are available on your other devices:
+  your passport and passport type, residence permits you added, watched
+  destinations, your planned trip, Schengen calculator trips, and your language
+  and theme. We never ask for passport numbers or documents.</p>
+  <p>Sign-in and storage are provided by Google Firebase (Firebase
+  Authentication and Cloud Firestore, hosted in the EU). Only you can read or
+  change your record. You can download everything or delete your account,
+  together with all data stored with it, at any time on your account page
+  (travelnow.info/account/).</p>
 
   <h2>Information third parties collect</h2>
   <p>We use the following third-party services, each with their own privacy policy:</p>
@@ -123,9 +137,9 @@
     digests, unsubscribe receipts). They receive your address and the
     rendered message body. <a href="https://resend.com/legal/privacy-policy" target="_blank" rel="noopener">Resend Privacy Policy</a></li>
 
-    <li><strong>OpenStreetMap Nominatim</strong> is only contacted when you
-    explicitly grant the geolocation prompt. Your coordinates are sent there
-    once, never stored on travelnow.info's side.</li>
+    <li><strong>Google Firebase</strong> handles sign-in and stores account
+    data if you create an account.
+    <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Firebase privacy and security</a></li>
 
     <li><strong>Affiliate partners</strong> — when our service partner links
     (iVisa, Airalo, etc.) become available, clicking one takes you to the
@@ -149,9 +163,11 @@
   data from anyone under 13.</p>
 
   <h2>Your rights (GDPR / CCPA)</h2>
-  <p>Since we don't store personal data, there is nothing for you to access,
-  rectify, or delete on our side. For data held by AdSense or our hosting
-  provider, please contact them directly using the policy links above.</p>
+  <p>Without an account we don't store personal data, so there is nothing
+  for you to access, rectify, or delete on our side. With an account you can
+  download or delete everything stored with it at any time on your account
+  page. For data held by AdSense or our hosting provider, please contact them
+  directly using the policy links above.</p>
 
   <h2>Contact</h2>
   <p>Questions about this policy: email
@@ -165,7 +181,7 @@
   days before taking effect.</p>
 
 </div>
-<script src="/data/static-i18n.js?v=20260916a" defer></script>
+<script src="/data/static-i18n.js?v=20260916b" defer></script>
 <!-- chrome:footer -->
 <footer class="site-foot">
   <div class="site-foot-inner">

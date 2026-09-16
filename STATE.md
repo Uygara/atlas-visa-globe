@@ -1,6 +1,6 @@
 # Atlas / travelnow.info — Session handoff (current state)
 
-> **Updated:** 2026-09-15 · **Live:** <https://travelnow.info> · **Repo:** <https://github.com/Uygara/atlas-visa-globe>
+> **Updated:** 2026-09-16 · **Live:** <https://travelnow.info> · **Repo:** <https://github.com/Uygara/atlas-visa-globe>
 > Cloudflare Pages auto-deploys every push to `main` (~30 s).
 > Working language with the owner: **Turkish.** Code comments: English.
 > Hard rule: **never invent visa data.** No fake fees/rules/numbers — if a fact
@@ -9,8 +9,8 @@
 ---
 
 ## What the site is
-A no-build site: a client-rendered React SPA homepage (UMD React + in-browser
-Babel, no bundler) + ~200 static SEO pages. Pick your passport → an interactive
+A static site: a client-rendered React SPA homepage (UMD React, JSX precompiled
+by `tools/build.js` into `build/*.js` — see Round 10) + ~200 static SEO pages. Pick your passport → an interactive
 D3 globe paints every country by visa status (visa-free / eVisa / visa-on-arrival
 / visa required / no-entry-allowed). Visa data re-scraped daily from public sources via a GitHub
 Actions cron. Monetisation: Google AdSense (was REJECTED "needs improvement" —
@@ -21,17 +21,25 @@ removed; backend code is dormant).
 
 ## Current state — what's live right now
 
-**Three globe experiences** (all reuse `components/globe.jsx`):
+**Four globe experiences** (all reuse `components/globe.jsx`):
 1. **Home `/`** — visa globe + side panel. Pick passport, tap a country for a
-   detail card (status, fee, visa shortcuts, passport-validity, transit warning,
-   news). Side panel order: passport picker → direction → tally → search →
-   compare/group modes → collapsible **"For you"** block (weekly digest,
-   passport pulse, watchlist, travel-planner CTA, today's pick, news feed).
+   detail card (status, fee, visa shortcuts, passport-validity, transit note
+   for THIS destination, Schengen 90/180 + checklist links, news). Side panel
+   order: passport picker → direction → tally (tapping a row lists its
+   countries) → search → compare/group modes → collapsible **"For you"** block
+   (weekly digest, passport pulse, watchlist, travel-planner CTA, news feed for
+   the passport). Opens straight onto the map — no intro/welcome/geolocation
+   popups; new visitors get a time-zone passport guess marked inline.
 2. **`/transit-map/`** — transit-visa globe. Whole world: green = airside
    transit open (most countries), red = transit visa required (Schengen ATV /
    UK DATV / US C-1 …), amber = time-limited TWOV. Click a country = its
    transit detail.
-3. **`/itinerary/`** — full SPA "Travel planner" (globe-left / panel-right).
+3. **`/safety-map/`** (beta) — travel-safety globe: every country coloured by
+   government advisories (U.S. State Dept + Government of Canada, stricter of
+   the two, 1–4). Detail card shows both sources, named risks, regional flag,
+   links. Data: `backend/fetch-advisories.js` → `data/travel-advisories.js`
+   (daily cron).
+4. **`/itinerary/`** — full SPA "Travel planner" (globe-left / panel-right).
    Tap countries to add stops; route draws as numbered markers + dashed
    great-circle arcs; panel shows per-stop visa+fee, total cost, application
    order, apply-by reminders, **.ics download**, share URL, and **Print/PDF**.
@@ -42,7 +50,7 @@ about, privacy. visa-shortcuts + passport-validity + esta-rules pages still
 exist (SEO) but are **de-tabbed** — their info now surfaces in the home detail
 card. `/transit-visa/` 301-redirects to `/transit-map/` (via `_redirects`).
 
-**Top nav (every page, one list):** Visa map · Transit map · Travel planner ·
+**Top nav (every page, one list):** Visa map · Transit map · Safety map · Travel planner ·
 Schengen calc · ETIAS 2026 · Passports · Guides · Nomad visas · Second passport ·
 Alerts · About — defined once in `assets/site-nav.js`. Links that don't fit fold
 into **More ▾** from the end (priority+). Always-visible controls: 3D/2D (globe
@@ -61,6 +69,38 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 10 (2026-09-16 — relevance, personas, mobile, build step, accounts, safety map):**
+  - **News relevance.** `affects.passports: []` used to mean "everyone", so a
+    Burundi transit-visa edit showed under every passport. Now items surface only
+    where they NAME the passport/destination; "Latest for <passport>" = that
+    passport's CHANGELOG diffs (90 d) + news naming it. `fetch-news.js` scopes
+    nationality from all country names/demonyms tied to people, maps Schengen
+    summaries to the member state named, rejects editor-debate summaries.
+    `backend/changelog.js` folds edit-war flip-flops (A→B→A within 14 days) into
+    their net change; wired into `scraper.js` (log 210 → 172). Removed "Today's
+    pick" + `destination-tips.js` (had per-passport visa claims hard-coded).
+  - **Persona walkthrough findings shipped** (owner picked): filter → country
+    list; ONE rank + total everywhere (`accessScore`/`mobilityScore`/
+    `passportRank` in `frontend-tail.js`; `generate-seo.js` now runs the browser
+    data layer in a Node `vm`, so /passport/ pages match the map — TR was 75 vs
+    71 visa-free, #91 vs #95 → #96); destination-only transit note; Schengen
+    links; fee strings translated (`data/visa-fees-i18n.js`, TR); no entry
+    popups (intro only via "?"; no geolocation/Nominatim).
+    NOT chosen by owner (still open): collapsing passport type / residence
+    permit, first-visit single step, hiding the broken alerts signup.
+  - **Mobile:** globe fits the strip above the bottom sheet (was centred behind
+    it); thumb-sized segmented controls on touch screens.
+  - **Build step** (`tools/`): JSX → `build/*.js`, production React, no Babel in
+    the browser. See Quirks.
+  - **Accounts (Firebase), code complete but OFF** until `assets/account-config.js`
+    gets a config (owner creates the project: `ACCOUNT-SETUP.md`). Google or email
+    link sign-in; `/account/` page (saved items, download, sign out, delete);
+    localStorage stays the working copy, one Firestore doc `users/{uid}` merged
+    per key, newest write wins (`assets/account-sync.js`, tests
+    `node tools/test-account-sync.js`); rules in `firestore.rules`. Test without
+    Firebase: `localhost:8000/…?account=mock`. The real Firebase path is untested
+    until the project exists.
+  - **Safety map** — see "Current state" 3.
 - **Round 9 (2026-09-15 — "looks like every other AI site" → own visual identity + front-end architecture):**
   Owner: the UI read as generic AI output. Diagnosis: Geist + mono uppercase
   micro-labels, Tailwind's default palette as status colours (green-400,
@@ -683,18 +723,22 @@ EN in those four (engine ready — just add dict entries).
 ---
 
 ## Key files
-- `index.html` — SPA shell + crawlable static content + script loads (cache-bust
-  `?v=YYYYMMDDx` on the 3 JSX tags; **bump it when you change app.jsx / panel.jsx /
-  globe.jsx**).
+- `index.html` — SPA shell + crawlable static content + script loads. The
+  `/build/*.js?v=<hash>` tags are rewritten by `tools/build.js`; data/CSS files
+  still use the manual `?v=YYYYMMDDx` (`ASSET_VERSION` in `scripts/partials.js`).
+- `tools/build.js` — compiles `app.jsx` + `components/*.jsx` → `build/*.js`.
+  `.github/workflows/build.yml` re-runs it on pushes that touch JSX.
+- `assets/account*.js`, `account/index.html`, `firestore.rules`, `ACCOUNT-SETUP.md` — accounts.
+- `components/safety-map.jsx`, `backend/fetch-advisories.js`, `data/travel-advisories.js` — safety map.
 - `assets/tokens.css` / `chrome.css` / `app-shell.css` / `site.css` — the design
   system (see Round 9). `assets/site-nav.js` — the one nav list (browser + Node).
 - `components/chrome.jsx` — shared masthead, ViewToggle/ThemeToggle/LangSelect,
   theme store, MobileSheetHandle, Caption/Swatch/Dot. Load BEFORE globe.jsx.
 - `scripts/partials.js` + `scripts/apply-chrome.js` — static-page head/masthead/footer.
-- `app.jsx` — App root, IntroDialog, WelcomeOverlay, CoachHint, MapKey, detection.
+- `app.jsx` — App root, IntroDialog ("?" only), MapKey, time-zone passport guess.
 - `components/panel.jsx` — side panel (passport data page + MRZ, ledger,
   DetailCard entry stamp) + all widgets + ForYouSection +
-  Changelog/News/Watchlist/Pulse/Digest/DailySuggestion.
+  Changelog/News/Watchlist/Pulse/Digest, FilterList, TransitVisaHint, SchengenHelp.
 - `components/globe.jsx` — D3 globe; optional decoupling props `fillResolver`,
   `hoverRenderer`, `arcs`, `stopMarkers` (used by transit-map + itinerary).
 - `components/transit-map.jsx`, `components/itinerary-app.jsx` — the two SPA pages.
@@ -726,6 +770,13 @@ EN in those four (engine ready — just add dict entries).
 - `scripts/generate-seo.js` — builds `/passport/<iso>/` pages + sitemap.
 
 ## Quirks / gotchas
+- **JSX is precompiled.** Edit `.jsx`, then `cd tools && npm ci && node build.js`
+  (or let the "Build JSX" Action do it after push). Output mirrors the old
+  in-browser Babel: ES5, and every file is a classic script in ONE global scope —
+  a top-level `const foo` becomes `window.foo`. Never reuse a name a data file
+  sets on `window` (a `const feeText` helper once overwrote `window.feeText` →
+  infinite recursion → blank page).
+- The browser pane's time zone is Europe/Berlin, so a fresh visit guesses 🇩🇪.
 - **Preview tool aggressively caches no-query data files** (`data/*.js`), so the
   in-browser preview often shows stale i18n/data. Always confirm against the
   SERVED file (`fetch(... ?bust=)`); production is fine (no-cache meta + Cloudflare).
@@ -827,7 +878,11 @@ EN in those four (engine ready — just add dict entries).
      Continue: Ekşi, X (screen-recording/GIF of the globe), Product Hunt (launch
      once guides are live so visitors land on a full site), niche travel forums.
    - Reapply to AdSense ~2–4 weeks after content + some organic traffic exist.
-3. **Later:** finish es/de/fr/ar for long legal/FAQ prose; re-enable Premium
+3. **Owner decisions waiting (Round 10):** create the Firebase project
+   (`ACCOUNT-SETUP.md`) → paste config → test live; the alerts email signup
+   (`/api/subscribe`) returns 404 live — hide it or wire accounts/alerts; mobile
+   app route (Capacitor + AdMob) once accounts exist.
+4. **Later:** finish es/de/fr/ar for long legal/FAQ prose; re-enable Premium
    (wire Stripe + ungate) once there's traffic to monetise; expand visa-fee DB
    and diplomatic-variant coverage as sources allow.
 

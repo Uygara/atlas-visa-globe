@@ -63,6 +63,16 @@
   font-family: var(--font-display); font-size: 17px; font-weight: 800; line-height: 1; color: var(--ink-3);
 }
 .mh-help:hover { color: var(--ink); border-color: var(--ink-3); }
+.mh-account {
+  display: inline-flex; align-items: center; justify-content: center; flex: none;
+  width: 32px; height: 32px; border: 1px solid var(--rule-strong); border-radius: 50%;
+  background: var(--paper); color: var(--ink-3); text-decoration: none;
+}
+.mh-account[hidden] { display: none; }
+.mh-account:hover { color: var(--ink); border-color: var(--ink-3); }
+.mh-account span:empty { display: none; }
+.mh-account.is-signed-in { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 750; font-size: 14px; }
+.mh-account.is-signed-in svg { display: none; }
 .mh-burger {
   display: none; width: 36px; height: 34px; flex: none;
   align-items: center; justify-content: center;

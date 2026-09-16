@@ -186,6 +186,49 @@ function IconMoon(props) {
     fill: "currentColor"
   }));
 }
+function IconUser(props) {
+  return React.createElement("svg", _extends({
+    viewBox: "0 0 16 16",
+    width: "16",
+    height: "16",
+    "aria-hidden": "true"
+  }, props), React.createElement("circle", {
+    cx: "8",
+    cy: "5.6",
+    r: "2.9",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "1.4"
+  }), React.createElement("path", {
+    d: "M2.6 14.2c.7-2.8 2.8-4.3 5.4-4.3s4.7 1.5 5.4 4.3",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "1.4",
+    strokeLinecap: "round"
+  }));
+}
+function AccountLink() {
+  var acct = window.ATLAS_ACCOUNT;
+  var _useStateC5 = useStateC(0),
+    _useStateC6 = _slicedToArray(_useStateC5, 2),
+    force = _useStateC6[1];
+  useEffectC(function () {
+    return acct && acct.enabled ? acct.onChange(function () {
+      return force(function (x) {
+        return x + 1;
+      });
+    }) : undefined;
+  }, []);
+  if (!acct || !acct.enabled) return null;
+  var user = acct.state.user;
+  var label = tr("nav.account", "Account");
+  return React.createElement("a", {
+    className: "mh-account" + (user ? " is-signed-in" : ""),
+    href: "/account/",
+    "aria-label": label,
+    title: user && user.email ? user.email : label
+  }, user && user.email ? React.createElement("span", null, user.email.charAt(0).toUpperCase()) : React.createElement(IconUser, null));
+}
 function IconMenu(_ref) {
   var open = _ref.open,
     props = _objectWithoutProperties(_ref, _excluded);
@@ -287,18 +330,18 @@ function Masthead(_ref9) {
   };
   var items = nav.NAV;
   var path = location.pathname;
-  var _useStateC5 = useStateC(items.length),
-    _useStateC6 = _slicedToArray(_useStateC5, 2),
-    fit = _useStateC6[0],
-    setFit = _useStateC6[1];
-  var _useStateC7 = useStateC(false),
+  var _useStateC7 = useStateC(items.length),
     _useStateC8 = _slicedToArray(_useStateC7, 2),
-    moreOpen = _useStateC8[0],
-    setMoreOpen = _useStateC8[1];
+    fit = _useStateC8[0],
+    setFit = _useStateC8[1];
   var _useStateC9 = useStateC(false),
     _useStateC0 = _slicedToArray(_useStateC9, 2),
-    sheetOpen = _useStateC0[0],
-    setSheetOpen = _useStateC0[1];
+    moreOpen = _useStateC0[0],
+    setMoreOpen = _useStateC0[1];
+  var _useStateC1 = useStateC(false),
+    _useStateC10 = _slicedToArray(_useStateC1, 2),
+    sheetOpen = _useStateC10[0],
+    setSheetOpen = _useStateC10[1];
   var navRef = useRefC(null);
   var measureRef = useRefC(null);
   var headerRef = useRefC(null);
@@ -434,7 +477,7 @@ function Masthead(_ref9) {
     className: "mh-link mh-more-btn"
   }, moreLabel, React.createElement(IconCaret, null))))), React.createElement("div", {
     className: "mh-tools"
-  }, onView && React.createElement(ViewToggle, {
+  }, React.createElement(AccountLink, null), onView && React.createElement(ViewToggle, {
     value: view,
     onChange: onView
   }), onTheme && React.createElement(ThemeToggle, {

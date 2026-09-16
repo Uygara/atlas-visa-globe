@@ -95,6 +95,26 @@ function IconSun(props) {
 function IconMoon(props) {
   return <svg viewBox="0 0 16 16" aria-hidden="true" {...props}><path d="M13.2 9.6A5.6 5.6 0 0 1 6.4 2.8a5.6 5.6 0 1 0 6.8 6.8z" fill="currentColor" /></svg>;
 }
+function IconUser(props) {
+  return <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" {...props}><circle cx="8" cy="5.6" r="2.9" fill="none" stroke="currentColor" strokeWidth="1.4" /><path d="M2.6 14.2c.7-2.8 2.8-4.3 5.4-4.3s4.7 1.5 5.4 4.3" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /></svg>;
+}
+
+// Link to /account/ — only when accounts are switched on (assets/account.js);
+// shows the signed-in person's initial.
+function AccountLink() {
+  const acct = window.ATLAS_ACCOUNT;
+  const [, force] = useStateC(0);
+  useEffectC(() => (acct && acct.enabled ? acct.onChange(() => force(x => x + 1)) : undefined), []);
+  if (!acct || !acct.enabled) return null;
+  const user = acct.state.user;
+  const label = tr("nav.account", "Account");
+  return (
+    <a className={"mh-account" + (user ? " is-signed-in" : "")} href="/account/" aria-label={label} title={user && user.email ? user.email : label}>
+      {user && user.email ? <span>{user.email.charAt(0).toUpperCase()}</span> : <IconUser />}
+    </a>
+  );
+}
+
 function IconMenu({ open, ...props }) {
   return (
     <svg viewBox="0 0 18 18" width="18" height="18" aria-hidden="true" {...props}>
@@ -234,6 +254,7 @@ function Masthead({ view, onView, theme, onTheme, onHelp }) {
       </nav>
 
       <div className="mh-tools">
+        <AccountLink />
         {onView && <ViewToggle value={view} onChange={onView} />}
         {onTheme && <ThemeToggle value={theme} onChange={onTheme} />}
         <LangSelect />
