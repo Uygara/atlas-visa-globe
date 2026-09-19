@@ -6,6 +6,6 @@
 //                sourceUrl is just a domain homepage (no specific path).
 
 window.VISA_NEWS = [
-  {"id":"fco:f273a4a687", "date":"2026-09-08", "source":"fco", "sourceUrl":"https://www.gov.uk/foreign-travel-advice/thailand", "title":"Thailand", "summary":"Updated information about visa requirements and the rainy season in Thailand ('Entry requirements' and 'Safety and security' pages).", "affects":{"passports":[], "destinations":["TH"]}, "severity":"neutral"},
+  {"id":"fco:b24c4f465a", "date":"2026-09-18", "source":"fco", "sourceUrl":"https://www.gov.uk/foreign-travel-advice/thailand", "title":"Thailand", "summary":"Updated information on visa exemption scheme, business ownership and deportation ('Entry requirements' and ‘Safety and security’ pages)", "affects":{"passports":[], "destinations":["TH"]}, "severity":"neutral"},
   {"id":"wiki:127b44bc00", "date":"2026-08-01", "source":"wiki", "sourceUrl":"https://en.wikipedia.org/wiki/Visa_policy_of_the_Schengen_Area", "title":"the Schengen Area: Update. Burundi citizens now require a transit visa to Belgium.", "summary":"", "affects":{"passports":["BI"], "destinations":["BE"]}, "severity":"warning"}
 ];
