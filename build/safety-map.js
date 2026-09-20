@@ -128,8 +128,7 @@ function SafetyMapApp() {
   }, []);
   var loadedFor = useRef(null);
   useEffect(function () {
-    var a = selected && advisoryFor(selected);
-    if (!selected || !a || !(a.regions && a.regions.length)) {
+    if (!selected) {
       setRegions(null);
       loadedFor.current = null;
       return;
@@ -180,12 +179,11 @@ function SafetyMapApp() {
     }
     return map;
   }, [selected]);
+  var countryLevel = selected && advisoryFor(selected) ? advisoryFor(selected).level : 0;
   var regionFill = useCallback(function (f) {
     var id = f.properties && f.properties.id;
-    var lvl = regionLevels[id];
-    if (!lvl) return "transparent";
-    return LEVEL_COLOR[lvl];
-  }, [regionLevels]);
+    return LEVEL_COLOR[regionLevels[id] || countryLevel || 0];
+  }, [regionLevels, countryLevel]);
   var hoverRenderer = useCallback(function (hover) {
     return React.createElement(SafetyHover, {
       hover: hover
@@ -603,7 +601,12 @@ function SafetyDetail(_ref9) {
     style: {
       fontWeight: 500
     }
-  }, tr("safety.disagree", ""))), (regions.length > 0 || notes.length > 0) && React.createElement("div", {
+  }, tr("safety.disagree", ""))), regions.length === 0 && notes.length === 0 && React.createElement("p", {
+    className: "p-fine",
+    style: {
+      margin: "0 0 12px"
+    }
+  }, tr("safety.regions_none", "No region of this country carries its own warning — the provinces on the map all sit at the country's level.")), (regions.length > 0 || notes.length > 0) && React.createElement("div", {
     style: {
       marginBottom: 12
     }

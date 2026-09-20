@@ -79,11 +79,12 @@ function SafetyMapApp() {
     return () => { alive = false; };
   }, []);
 
-  // Province outlines for the selected country, fetched on demand.
+  // Province outlines for the selected country, fetched on demand — for EVERY
+  // country, not just the ones an advisory names by region: seeing the country
+  // break into its provinces is how you know whether a warning is local or not.
   const loadedFor = useRef(null);
   useEffect(() => {
-    const a = selected && advisoryFor(selected);
-    if (!selected || !a || !(a.regions && a.regions.length)) { setRegions(null); loadedFor.current = null; return; }
+    if (!selected) { setRegions(null); loadedFor.current = null; return; }
     if (loadedFor.current === selected) return;
     loadedFor.current = selected;
     let alive = true;
@@ -105,21 +106,20 @@ function SafetyMapApp() {
     return { color: LEVEL_COLOR[level] };
   }, [filter]);
 
-  // Provinces: the ones named in an advisory take its level, the rest keep the
-  // country's own level (a shade lighter so the warning areas stand out).
+  // Provinces named in an advisory take its level; the rest keep the country's
+  // own level, so the warned areas stand out inside their own country.
   const regionLevels = useMemo(() => {
     const a = selected && advisoryFor(selected);
     const map = {};
     for (const r of (a && a.regions) || []) map[r.id] = r.level;
     return map;
   }, [selected]);
+  const countryLevel = selected && advisoryFor(selected) ? advisoryFor(selected).level : 0;
 
   const regionFill = useCallback((f) => {
     const id = f.properties && f.properties.id;
-    const lvl = regionLevels[id];
-    if (!lvl) return "transparent";
-    return LEVEL_COLOR[lvl];
-  }, [regionLevels]);
+    return LEVEL_COLOR[regionLevels[id] || countryLevel || 0];
+  }, [regionLevels, countryLevel]);
 
   const hoverRenderer = useCallback((hover) => <SafetyHover hover={hover} />, []);
 
@@ -387,6 +387,9 @@ function SafetyDetail({ iso2, names, onClose }) {
       {disagree && <div className="note note-info"><span className="note-k" style={{ fontWeight: 500 }}>{tr("safety.disagree", "")}</span></div>}
 
       {/* Regions, the part a country-level colour hides. */}
+      {regions.length === 0 && notes.length === 0 && (
+        <p className="p-fine" style={{ margin: "0 0 12px" }}>{tr("safety.regions_none", "No region of this country carries its own warning — the provinces on the map all sit at the country's level.")}</p>
+      )}
       {(regions.length > 0 || notes.length > 0) && (
         <div style={{ marginBottom: 12 }}>
           <div className="p-hint" style={{ margin: "0 0 6px", fontWeight: 600, color: "var(--ink-2)" }}>
