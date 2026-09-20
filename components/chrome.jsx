@@ -172,6 +172,9 @@ function Masthead({ view, onView, theme, onTheme, onHelp }) {
   const nav = window.SITE_NAV || { NAV: [], SUPPORT: null, isCurrent: () => false };
   const items = nav.NAV;
   const path = location.pathname;
+  // A reader of Turkish is sent to the Turkish twin of every page that has one.
+  const lang = window.ATLAS_LANG || "en";
+  const to = (h) => (nav.localHref ? nav.localHref(h, lang) : h);
   const [fit, setFit] = useStateC(items.length);
   const [moreOpen, setMoreOpen] = useStateC(false);
   const [sheetOpen, setSheetOpen] = useStateC(false);
@@ -220,7 +223,7 @@ function Masthead({ view, onView, theme, onTheme, onHelp }) {
 
   return (
     <header ref={headerRef} className={"masthead" + (sheetOpen ? " is-open" : "")}>
-      <a className="brand" href="/" aria-label="travelnow.info">
+      <a className="brand" href={to("/")} aria-label="travelnow.info">
         <BrandMark className="brand-mark" />
         <span className="brand-word">travelnow<span className="brand-tld">.info</span></span>
       </a>
@@ -229,7 +232,7 @@ function Masthead({ view, onView, theme, onTheme, onHelp }) {
         <ul className="mh-links">
           {items.map((it, i) => (
             <li key={it.href} hidden={i >= fit}>
-              <a className="mh-link" href={it.href} aria-current={nav.isCurrent(it, path) ? "page" : undefined}>{label(it)}</a>
+              <a className="mh-link" href={to(it.href)} aria-current={nav.isCurrent(it, path) ? "page" : undefined}>{label(it)}</a>
             </li>
           ))}
         </ul>
@@ -240,7 +243,7 @@ function Masthead({ view, onView, theme, onTheme, onHelp }) {
           {moreOpen && (
             <ul className="mh-menu">
               {overflow.map(it => (
-                <li key={it.href}><a href={it.href} aria-current={nav.isCurrent(it, path) ? "page" : undefined}>{label(it)}</a></li>
+                <li key={it.href}><a href={to(it.href)} aria-current={nav.isCurrent(it, path) ? "page" : undefined}>{label(it)}</a></li>
               ))}
             </ul>
           )}
@@ -272,7 +275,7 @@ function Masthead({ view, onView, theme, onTheme, onHelp }) {
 
       <div className="mh-sheet">
         {items.map(it => (
-          <a key={it.href} className="mh-sheet-link" href={it.href} aria-current={nav.isCurrent(it, path) ? "page" : undefined}>{label(it)}</a>
+          <a key={it.href} className="mh-sheet-link" href={to(it.href)} aria-current={nav.isCurrent(it, path) ? "page" : undefined}>{label(it)}</a>
         ))}
         <div className="mh-sheet-foot">
           <LangSelect />

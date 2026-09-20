@@ -13,6 +13,10 @@
 (function () {
   // Read lang from localStorage; same key the SPA uses.
   function currentLang() {
+    // A page generated as a Turkish twin (/tr/…) is Turkish whatever is stored;
+    // this only keeps JS-inserted English strings (calculator verdicts…) in step.
+    var pinned = document.documentElement.getAttribute("data-page-lang");
+    if (pinned) return pinned;
     try { return localStorage.getItem("atlas.lang") || "en"; }
     catch (e) { return "en"; }
   }

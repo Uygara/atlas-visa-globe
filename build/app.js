@@ -239,6 +239,8 @@ function App() {
     setTweak = _useTweaks2[1];
   var _useState3 = useState(function () {
       try {
+        var q = (new URLSearchParams(location.search).get("p") || "").toUpperCase();
+        if (q && window.PASSPORTS[q]) return q;
         var saved = localStorage.getItem("atlas.passport");
         return saved && window.PASSPORTS[saved] ? saved : null;
       } catch (e) {

@@ -336,6 +336,70 @@ td.rule.r0 { color: color-mix(in oklab, var(--vf), var(--ink) 25%); }
 .legend .dot { display: inline-block; width: 11px; height: 11px; border-radius: 1px; }
 
 /* ── Passport pages (scripts/generate-seo.js) ────────────────────────── */
+/* Bio-data card: the site's passport identity (guilloche, real MRZ) — the same
+   object as the map panel's passport picker, so the pages Google sends people
+   to look like the product. */
+.bio {
+  position: relative; margin: 6px 0 24px; padding: 12px 16px 0; overflow: hidden;
+  background: var(--paper-raised) var(--guilloche); background-size: 120px 28px;
+  border: 1px solid var(--rule-strong); border-radius: var(--radius-lg);
+}
+.bio-doc { font-family: var(--font-display); font-size: 12px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--foil); }
+.bio-main { display: flex; align-items: center; gap: 16px; padding: 10px 0 16px; }
+.bio-main > div { min-width: 0; }
+.bio h1 { margin: 0; font-size: clamp(28px, 5.4vw, 46px); line-height: 0.98; text-wrap: balance; }
+.bio .hero-flag { font-size: clamp(40px, 8vw, 58px); flex: none; }
+.bio .subtitle { margin: 8px 0 0; }
+.mrz {
+  display: block; margin: 0 -16px; padding: 7px 16px 8px;
+  background: var(--paper-raised); border-top: 1px dashed var(--rule-strong);
+  font-family: var(--font-mono); font-size: clamp(9px, 2.5vw, 12.5px); line-height: 1.55; letter-spacing: 0.04em;
+  color: var(--ink-3); white-space: nowrap; overflow: hidden;
+}
+.mrz span { display: block; overflow: hidden; }
+
+/* Tally — one headline number, the eVisa-inclusive total as a second line, and
+   a ledger whose rows jump to each status group. */
+.tally { margin: 0 0 26px; }
+.score { display: flex; align-items: flex-end; gap: 12px; margin: 2px 0 10px; }
+.score-n { font-family: var(--font-display); font-size: 72px; font-weight: 800; line-height: 0.8; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
+.score-l { padding-bottom: 2px; font-size: 15px; line-height: 1.3; color: var(--ink-2); }
+.score-l .mono { color: var(--ink-3); font-size: 12.5px; }
+.score-sub { margin: 0 0 12px; font-size: 14px; color: var(--ink-3); }
+.bar { display: flex; gap: 1px; height: 10px; margin-bottom: 10px; background: var(--paper-raised); }
+.bar span { display: block; min-width: 2px; }
+.ledger { list-style: none; margin: 0; padding: 0; max-width: 520px; }
+.ledger li { margin: 0; }
+.lg-row { display: flex; align-items: center; gap: 10px; padding: 5px 6px; margin: 0 -6px; color: var(--ink-2); font-size: 15px; line-height: 1.3; text-decoration: none; border-radius: 2px; }
+.lg-row:hover { background: var(--paper-sunk); color: var(--ink); }
+.lg-label { white-space: nowrap; }
+.lg-dots { flex: 1; min-width: 12px; align-self: flex-end; margin-bottom: 5px; border-bottom: 1px dotted var(--rule-strong); }
+.lg-n { font-family: var(--font-mono); font-size: 14px; color: var(--ink); font-variant-numeric: tabular-nums; }
+
+/* Destinations by status — compact printed-index columns instead of a 205-row table. */
+.grp { margin: 0 0 22px; scroll-margin-top: 64px; }
+.grp-h { display: flex; align-items: center; gap: 9px; margin: 0 0 6px; padding-bottom: 5px; border-bottom: 1px solid var(--rule-strong); font-size: 18px; }
+.grp-h .n { margin-left: auto; font-family: var(--font-mono); font-size: 13px; font-weight: 500; color: var(--ink-3); }
+.cols { list-style: none; margin: 0; padding: 0; columns: 3 200px; column-gap: 28px; font-size: 15px; line-height: 1.35; }
+.cols li { break-inside: avoid; padding: 3px 0; border-bottom: 1px solid var(--rule); color: var(--ink); }
+.cols .flag { font-size: 16px; margin-right: 2px; }
+.cols .days { display: block; margin: 0 0 0 26px; font-size: 11.5px; }
+
+/* Same textures as the map, so chips read without colour. */
+.sw[data-s="eta"] { background: repeating-linear-gradient(45deg, transparent 0 2.4px, rgba(255,255,255,.7) 2.4px 3.4px), var(--sw); }
+.sw[data-s="ev"] { background: radial-gradient(circle at 50% 50%, rgba(22,32,42,.45) 0 1.1px, transparent 1.3px) 0 0 / 5px 5px, var(--sw); }
+.sw[data-s="vr"] { background: repeating-linear-gradient(-45deg, transparent 0 2.3px, rgba(255,255,255,.55) 2.3px 3.1px), var(--sw); }
+
+/* "Open this passport on the map" — the way from a search-result page into the product. */
+.map-cta {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 30;
+  display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap;
+  padding: 9px 16px calc(9px + env(safe-area-inset-bottom, 0px));
+  background: var(--paper-raised); border-top: 1px solid var(--rule-strong);
+  box-shadow: 0 -10px 26px -18px rgba(22, 32, 42, 0.5); font-size: 14.5px;
+}
+.map-cta .btn { text-decoration: none; }
+body.has-map-cta { padding-bottom: 60px; }
 .pp-hero { display: flex; align-items: center; gap: 16px; margin-bottom: 8px; }
 .pp-hero .hero-flag { font-size: 56px; }
 .pp-hero h1 { margin: 0; }
@@ -408,6 +472,9 @@ ul.dir { columns: 2; margin-top: 22px; }
   ul.dir { columns: 1; }
   .stat .n { font-size: 36px; }
   .pp-hero .hero-flag { font-size: 44px; }
+  .score-n { font-size: 60px; }
+  .cols { columns: 2 140px; column-gap: 18px; }
+  .map-cta span { display: none; }
 }
 
 @media print {

@@ -1428,6 +1428,9 @@ const T = {
 
 // ── Runtime ─────────────────────────────────────────────────────────────
 function detectLang() {
+  // A page generated as a Turkish twin (/tr/…) is Turkish whatever is stored.
+  const pinned = document.documentElement.getAttribute("data-page-lang");
+  if (pinned && T[pinned]) return pinned;
   try {
     const stored = localStorage.getItem("atlas.lang");
     if (stored && T[stored]) return stored;
@@ -1450,8 +1453,17 @@ window.t = function (key, vars) {
 
 window.setLang = function (code) {
   if (!T[code]) return;
-  window.ATLAS_LANG = code;
   try { localStorage.setItem("atlas.lang", code); } catch (e) {}
+  // Turkish is its own URL (/tr/…, real Turkish HTML for search engines): moving
+  // to or from it navigates. Every other language translates the page in place.
+  var nav = window.SITE_NAV, p = location.pathname;
+  if (nav && nav.hasTr) {
+    var to = null;
+    if (code === "tr" && nav.hasTr(p)) to = nav.toTr(p);
+    else if (code !== "tr" && nav.isTrPath(p)) to = nav.fromTr(p);
+    if (to) { location.href = to + location.search + location.hash; return; }
+  }
+  window.ATLAS_LANG = code;
   // Notify any subscribed React components / vanilla code.
   window.dispatchEvent(new CustomEvent("atlas:lang", { detail: { code } }));
   // Set html[lang] and dir=rtl for RTL languages

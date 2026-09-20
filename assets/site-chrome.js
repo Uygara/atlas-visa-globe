@@ -48,12 +48,28 @@
     var selects = head.querySelectorAll("[data-lang-select]");
     var lang = "en";
     try { lang = localStorage.getItem("atlas.lang") || "en"; } catch (e) {}
+    // Pages with a Turkish twin (/x/ ↔ /tr/x/) carry <link rel="alternate"
+    // hreflang>; on a Turkish page the language IS the page's, not the stored one.
+    var pageLang = document.documentElement.getAttribute("data-page-lang");
+    if (pageLang) lang = pageLang;
+    function twin(code) {
+      var l = document.querySelector('link[rel="alternate"][hreflang="' + code + '"]');
+      return l ? l.getAttribute("href") : null;
+    }
     selects.forEach(function (sel) {
       sel.value = lang;
       sel.addEventListener("change", function () {
         var code = sel.value;
         selects.forEach(function (s) { s.value = code; });
         try { localStorage.setItem("atlas.lang", code); } catch (e) {}
+        // Between the two twins, navigate: the Turkish text is real HTML, not a
+        // client-side overlay. From a Turkish page to es/de/fr/ar go to the
+        // English twin, which translates in place.
+        var target = (code === "en" || code === "tr") ? twin(code) : (pageLang === "tr" ? twin("en") : null);
+        if (target && target.replace(/^https?:\/\/[^/]+/, "") !== location.pathname) {
+          location.href = target.replace(/^https?:\/\/[^/]+/, "") + location.hash;
+          return;
+        }
         if (window.ATLAS_STATIC_I18N) window.ATLAS_STATIC_I18N.apply(code);
         window.dispatchEvent(new CustomEvent("atlas:lang", { detail: { code: code } }));
       });

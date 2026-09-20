@@ -330,6 +330,10 @@ function Masthead(_ref9) {
   };
   var items = nav.NAV;
   var path = location.pathname;
+  var lang = window.ATLAS_LANG || "en";
+  var to = function to(h) {
+    return nav.localHref ? nav.localHref(h, lang) : h;
+  };
   var _useStateC7 = useStateC(items.length),
     _useStateC8 = _slicedToArray(_useStateC7, 2),
     fit = _useStateC8[0],
@@ -411,7 +415,7 @@ function Masthead(_ref9) {
     className: "masthead" + (sheetOpen ? " is-open" : "")
   }, React.createElement("a", {
     className: "brand",
-    href: "/",
+    href: to("/"),
     "aria-label": "travelnow.info"
   }, React.createElement(BrandMark, {
     className: "brand-mark"
@@ -431,7 +435,7 @@ function Masthead(_ref9) {
       hidden: i >= fit
     }, React.createElement("a", {
       className: "mh-link",
-      href: it.href,
+      href: to(it.href),
       "aria-current": nav.isCurrent(it, path) ? "page" : undefined
     }, label(it)));
   })), React.createElement("div", {
@@ -452,7 +456,7 @@ function Masthead(_ref9) {
     return React.createElement("li", {
       key: it.href
     }, React.createElement("a", {
-      href: it.href,
+      href: to(it.href),
       "aria-current": nav.isCurrent(it, path) ? "page" : undefined
     }, label(it)));
   }))), React.createElement("ul", {
@@ -512,7 +516,7 @@ function Masthead(_ref9) {
     return React.createElement("a", {
       key: it.href,
       className: "mh-sheet-link",
-      href: it.href,
+      href: to(it.href),
       "aria-current": nav.isCurrent(it, path) ? "page" : undefined
     }, label(it));
   }), React.createElement("div", {

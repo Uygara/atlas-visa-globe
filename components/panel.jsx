@@ -15,30 +15,6 @@ function _permitLabel(code) {
   return map[code] || code;
 }
 
-// ICAO issuing-state codes for the decorative machine-readable zone on the
-// passport card. (Germany is "D" in real MRZs.) Unknown → ISO2 + filler.
-const _ISO3 = Object.fromEntries(("AF:AFG,AL:ALB,DZ:DZA,AD:AND,AO:AGO,AG:ATG,AR:ARG,AM:ARM,AU:AUS,AT:AUT,AZ:AZE,BS:BHS,BH:BHR,BD:BGD,BB:BRB,BY:BLR,BE:BEL,BZ:BLZ,BJ:BEN,BT:BTN,BO:BOL,BA:BIH,BW:BWA,BR:BRA,BN:BRN,BG:BGR,BF:BFA,BI:BDI,CV:CPV,KH:KHM,CM:CMR,CA:CAN,CF:CAF,TD:TCD,CL:CHL,CN:CHN,CO:COL,KM:COM,CG:COG,CD:COD,CR:CRI,CI:CIV,HR:HRV,CU:CUB,CY:CYP,CZ:CZE,DK:DNK,DJ:DJI,DM:DMA,DO:DOM,EC:ECU,EG:EGY,SV:SLV,GQ:GNQ,ER:ERI,EE:EST,SZ:SWZ,ET:ETH,FJ:FJI,FI:FIN,FR:FRA,GA:GAB,GM:GMB,GE:GEO,DE:D<<,GH:GHA,GR:GRC,GD:GRD,GT:GTM,GN:GIN,GW:GNB,GY:GUY,HT:HTI,HN:HND,HU:HUN,IS:ISL,IN:IND,ID:IDN,IR:IRN,IQ:IRQ,IE:IRL,IL:ISR,IT:ITA,JM:JAM,JP:JPN,JO:JOR,KZ:KAZ,KE:KEN,KI:KIR,KP:PRK,KR:KOR,KW:KWT,KG:KGZ,LA:LAO,LV:LVA,LB:LBN,LS:LSO,LR:LBR,LY:LBY,LI:LIE,LT:LTU,LU:LUX,MG:MDG,MW:MWI,MY:MYS,MV:MDV,ML:MLI,MT:MLT,MH:MHL,MR:MRT,MU:MUS,MX:MEX,FM:FSM,MD:MDA,MC:MCO,MN:MNG,ME:MNE,MA:MAR,MZ:MOZ,MM:MMR,NA:NAM,NR:NRU,NP:NPL,NL:NLD,NZ:NZL,NI:NIC,NE:NER,NG:NGA,MK:MKD,NO:NOR,OM:OMN,PK:PAK,PW:PLW,PS:PSE,PA:PAN,PG:PNG,PY:PRY,PE:PER,PH:PHL,PL:POL,PT:PRT,QA:QAT,RO:ROU,RU:RUS,RW:RWA,KN:KNA,LC:LCA,VC:VCT,WS:WSM,SM:SMR,ST:STP,SA:SAU,SN:SEN,RS:SRB,XK:RKS,SC:SYC,SL:SLE,SG:SGP,SK:SVK,SI:SVN,SB:SLB,SO:SOM,ZA:ZAF,SS:SSD,ES:ESP,LK:LKA,SD:SDN,SR:SUR,SE:SWE,CH:CHE,SY:SYR,TW:TWN,TJ:TJK,TZ:TZA,TH:THA,TL:TLS,TG:TGO,TO:TON,TT:TTO,TN:TUN,TR:TUR,TM:TKM,TV:TUV,UG:UGA,UA:UKR,AE:ARE,GB:GBR,US:USA,UY:URY,UZ:UZB,VU:VUT,VA:VAT,VE:VEN,VN:VNM,YE:YEM,ZM:ZMB,ZW:ZWE,HK:HKG,MO:MAC")
-  .split(",").map(p => p.split(":")));
-
-// Two 44-character MRZ lines built from real data: issuing state + English
-// country name, then the passport's status counts and the snapshot date.
-function mrzLines(iso2) {
-  const c = window.byIso2[iso2];
-  const name = ((c && c.name) || iso2)
-    .normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/ı/g, "i")
-    .toUpperCase().replace(/[^A-Z]+/g, "<");
-  const code = _ISO3[iso2] || (iso2 + "<");
-  const l1 = ("P<" + code + name + "<<").padEnd(44, "<").slice(0, 44);
-  const t = window.tally ? window.tally(iso2) : null;
-  const pad = (n) => String(n || 0).padStart(3, "0");
-  const body = t
-    ? ["IDC" + pad(t.idc), "VF" + pad(t.vf), "ETA" + pad(t.eta), "EV" + pad(t.ev), "VOA" + pad(t.voa), "VR" + pad(t.vr)].join("<")
-    : "";
-  const date = String(window.SNAPSHOT_DATE || "").replace(/-/g, "").slice(2, 8);
-  const l2 = (body + "<<").padEnd(38, "<").slice(0, 38) + date.padStart(6, "<");
-  return [l1, l2];
-}
-
 function Panel({
   passport, setPassport, autoDetected,
   compare, setCompare, compareMode, setCompareMode,
@@ -562,7 +538,10 @@ function GroupAddDropdown({ existing, onPick }) {
 function PassportPicker({ value, open, setOpen, onChange, isCompare, placeholder, allowClear }) {
   const current = value ? window.PASSPORTS[value] : null;
   const country = value ? window.byIso2[value] : null;
-  const mrz = value ? mrzLines(value) : null;
+  // The machine-readable zone comes from data/mrz.js, shared with the generated
+  // /passport/ pages. Call it through window: a top-level function named mrzLines
+  // here would replace it (all compiled JSX shares one global scope) and recurse.
+  const mrz = value && window.mrzLines ? window.mrzLines(value) : null;
   return (
     <div>
       <button type="button" className={"pp-card" + (isCompare ? " is-compare" : "")} onClick={() => setOpen(!open)} aria-expanded={open}

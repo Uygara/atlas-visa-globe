@@ -10,8 +10,9 @@
 // (overflow "More" menu, mobile sheet, theme + language controls).
 
 const { NAV, SUPPORT, isCurrent } = require("../assets/site-nav.js");
+const { makeT, hasTr, toTr, hreflang } = require("./locales");
 
-const ASSET_VERSION = "20260920b";
+const ASSET_VERSION = "20260920c";
 
 function esc(s) {
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -26,10 +27,24 @@ const MENU = `<svg viewBox="0 0 18 18" width="18" height="18" aria-hidden="true"
 
 const LANGS = [["en", "English"], ["tr", "Türkçe"], ["es", "Español"], ["de", "Deutsch"], ["fr", "Français"], ["ar", "العربية"]];
 
-// Fonts + design-system stylesheets + the pre-paint theme switch.
-function headAssets() {
+// The hreflang alternates for a page that has a Turkish twin, plus the language
+// routing: a reader who chose Turkish is sent from an English page to its twin
+// before anything paints, and landing on a Turkish page makes Turkish the stored
+// choice. `enPath` is the page's English URL path. Empty for pages without a twin.
+function langHead({ enPath = null, lang = "en" } = {}) {
+  if (!enPath || !hasTr(enPath)) return "";
+  const route = lang === "tr"
+    ? `<script>try{localStorage.setItem("atlas.lang","tr")}catch(e){}</script>`
+    : `<script>try{if(localStorage.getItem("atlas.lang")==="tr")location.replace("/tr"+location.pathname+location.search+location.hash)}catch(e){}</script>`;
+  return hreflang(enPath) + "\n" + route;
+}
+
+// Fonts + design-system stylesheets + the pre-paint theme switch (after the
+// language block above when the page has a Turkish twin).
+function headAssets({ enPath = null, lang = "en" } = {}) {
   const v = ASSET_VERSION;
-  return `<link rel="preconnect" href="https://fonts.googleapis.com">
+  const lh = langHead({ enPath, lang });
+  return `${lh ? lh + "\n" : ""}<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sofia+Sans:ital,wght@0,400..700;1,400..600&family=Sofia+Sans+Extra+Condensed:wght@600..850&family=DM+Mono:wght@400;500&display=swap">
 <link rel="stylesheet" href="/assets/tokens.css?v=${v}">
@@ -42,60 +57,70 @@ function headAssets() {
 <script src="/assets/site-chrome.js?v=${v}" defer></script>`;
 }
 
-// `path` is the page's URL path ("/guides/", "/passport/tr/") for aria-current.
-// `i18n` adds the language select (only pages that load data/static-i18n.js).
-function masthead({ path = "/", i18n = true } = {}) {
+// `path` is the page's ENGLISH URL path ("/guides/", "/passport/tr/") for
+// aria-current and for the twin links. `i18n` adds the full language select
+// (only pages that load data/static-i18n.js); pages with a Turkish twin get an
+// EN/TR select that navigates between the twins. `lang: "tr"` renders the
+// Turkish page: labels from the site dictionary, links to Turkish twins.
+const UI_TR = { menu: "Menü", theme: "Tema", light: "Açık", dark: "Koyu", lang: "Dil", account: "Hesap", main: "Ana menü", home: "travelnow.info ana sayfa" };
+function masthead({ path = "/", i18n = true, lang = "en" } = {}) {
+  const t = makeT(lang);
+  const u = (k, en) => (lang === "tr" ? UI_TR[k] : en);
+  const href = (h) => (lang === "tr" && hasTr(h) ? toTr(h) : h);
   const cur = (it) => isCurrent(it, path) ? ' aria-current="page"' : "";
-  const links = NAV.map(it => `      <li><a class="mh-link" href="${it.href}"${cur(it)}>${esc(it.en)}</a></li>`).join("\n");
-  const sheet = NAV.map(it => `    <a class="mh-sheet-link" href="${it.href}"${cur(it)}>${esc(it.en)}</a>`).join("\n");
-  const lang = i18n
-    ? `<select class="lang-select" data-lang-select aria-label="Language">${LANGS.map(([c, n]) => `<option value="${c}">${c.toUpperCase()} · ${n}</option>`).join("")}</select>`
+  const links = NAV.map(it => `      <li><a class="mh-link" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a></li>`).join("\n");
+  const sheet = NAV.map(it => `    <a class="mh-sheet-link" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a>`).join("\n");
+  const langs = i18n ? LANGS : (hasTr(path) ? LANGS.filter(([c]) => c === "en" || c === "tr") : []);
+  const langSelect = langs.length
+    ? `<select class="lang-select" data-lang-select aria-label="${u("lang", "Language")}">${langs.map(([c, n]) => `<option value="${c}"${c === lang ? " selected" : ""}>${c.toUpperCase()} · ${n}</option>`).join("")}</select>`
     : "";
   return `<header class="masthead">
-  <a class="brand" href="/" aria-label="travelnow.info home">${BRAND_MARK}<span class="brand-word">travelnow<span class="brand-tld">.info</span></span></a>
-  <nav class="mh-nav" aria-label="Main">
+  <a class="brand" href="${href("/")}" aria-label="${u("home", "travelnow.info home")}">${BRAND_MARK}<span class="brand-word">travelnow<span class="brand-tld">.info</span></span></a>
+  <nav class="mh-nav" aria-label="${u("main", "Main")}">
     <ul class="mh-links">
 ${links}
     </ul>
     <div class="mh-more" hidden>
-      <button type="button" class="mh-link mh-more-btn" aria-expanded="false">More${CARET}</button>
+      <button type="button" class="mh-link mh-more-btn" aria-expanded="false">${esc(t("More"))}${CARET}</button>
       <ul class="mh-menu" hidden></ul>
     </div>
   </nav>
   <div class="mh-tools" data-no-i18n>
-    <a class="mh-account" href="/account/" data-account-link hidden aria-label="Account" title="Account">${USER}<span data-account-initial></span></a>
-    <div class="seg" role="group" aria-label="Theme"><button type="button" data-theme-set="light" aria-pressed="true" aria-label="Light" title="Light">${SUN}</button><button type="button" data-theme-set="dark" aria-pressed="false" aria-label="Dark" title="Dark">${MOON}</button></div>
-    ${lang}
-    <a class="mh-support" href="${SUPPORT.href}" target="_blank" rel="noopener">${esc(SUPPORT.en)}</a>
+    <a class="mh-account" href="/account/" data-account-link hidden aria-label="${u("account", "Account")}" title="${u("account", "Account")}">${USER}<span data-account-initial></span></a>
+    <div class="seg" role="group" aria-label="${u("theme", "Theme")}"><button type="button" data-theme-set="light" aria-pressed="true" aria-label="${u("light", "Light")}" title="${u("light", "Light")}">${SUN}</button><button type="button" data-theme-set="dark" aria-pressed="false" aria-label="${u("dark", "Dark")}" title="${u("dark", "Dark")}">${MOON}</button></div>
+    ${langSelect}
+    <a class="mh-support" href="${SUPPORT.href}" target="_blank" rel="noopener">${esc(t(SUPPORT.en))}</a>
   </div>
-  <button type="button" class="mh-burger" aria-label="Menu" aria-expanded="false">${MENU}</button>
+  <button type="button" class="mh-burger" aria-label="${u("menu", "Menu")}" aria-expanded="false">${MENU}</button>
   <div class="mh-sheet">
 ${sheet}
-    <div class="mh-sheet-foot" data-no-i18n>${lang}<a class="mh-support" style="display:inline-block" href="${SUPPORT.href}" target="_blank" rel="noopener">${esc(SUPPORT.en)}</a></div>
+    <div class="mh-sheet-foot" data-no-i18n>${langSelect}<a class="mh-support" style="display:inline-block" href="${SUPPORT.href}" target="_blank" rel="noopener">${esc(t(SUPPORT.en))}</a></div>
   </div>
 </header>
 <div class="doc-band" aria-hidden="true"></div>`;
 }
 
-function footer() {
+function footer({ lang = "en" } = {}) {
+  const t = makeT(lang);
+  const href = (h) => (lang === "tr" && hasTr(h) ? toTr(h) : h);
   const col = (title, items) => `    <div>
-      <h2>${esc(title)}</h2>
+      <h2>${esc(t(title))}</h2>
       <ul>
-${items.map(([href, label]) => `        <li><a href="${href}">${esc(label)}</a></li>`).join("\n")}
+${items.map(([h, label]) => `        <li><a href="${href(h)}">${esc(t(label))}</a></li>`).join("\n")}
       </ul>
     </div>`;
   return `<footer class="site-foot">
   <div class="site-foot-inner">
     <div>
-      <a class="brand" href="/" aria-label="travelnow.info home">${BRAND_MARK}<span class="brand-word">travelnow<span class="brand-tld">.info</span></span></a>
-      <p class="site-foot-about">An independent visa atlas, built and maintained by Uygar Atalay. Corrections and questions: <a href="mailto:hello@travelnow.info">hello@travelnow.info</a></p>
+      <a class="brand" href="${href("/")}" aria-label="travelnow.info">${BRAND_MARK}<span class="brand-word">travelnow<span class="brand-tld">.info</span></span></a>
+      <p class="site-foot-about">${esc(t("An independent visa atlas, built and maintained by Uygar Atalay. Corrections and questions:"))} <a href="mailto:hello@travelnow.info">hello@travelnow.info</a></p>
     </div>
 ${col("Tools", [["/", "Visa map"], ["/transit-map/", "Transit map"], ["/itinerary/", "Travel planner"], ["/schengen-calculator/", "Schengen calc"], ["/etias/", "ETIAS 2026"], ["/passport-validity/", "Passport validity"], ["/alerts/", "Alerts"]])}
 ${col("Read", [["/guides/", "Guides"], ["/passport/", "All passports"], ["/visa-shortcuts/", "Visa shortcuts"], ["/digital-nomad-visa/", "Nomad visas"], ["/citizenship-by-investment/", "Second passport"]])}
 ${col("The project", [["/about/", "About"], ["/contact/", "Contact"], ["/privacy/", "Privacy"], ["/terms/", "Terms"], ["https://github.com/Uygara/atlas-visa-globe", "Source on GitHub"]])}
-    <p class="site-foot-note">Visa rules change often — always confirm with the destination's embassy or consulate before you book. Data is rebuilt every 24 hours from public visa-policy sources.</p>
+    <p class="site-foot-note">${esc(t("Visa rules change often — always confirm with the destination's embassy or consulate before you book. Data is rebuilt every 24 hours from public visa-policy sources."))}</p>
   </div>
 </footer>`;
 }
 
-module.exports = { ASSET_VERSION, headAssets, masthead, footer, BRAND_MARK };
+module.exports = { ASSET_VERSION, langHead, headAssets, masthead, footer, BRAND_MARK };

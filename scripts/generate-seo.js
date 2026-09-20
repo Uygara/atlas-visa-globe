@@ -1,129 +1,301 @@
-// Generates /passport/<iso2>/index.html for every passport in data/passports-snapshot.json.
+// Generates the passport pages, in English and Turkish, plus sitemap.xml.
 // Run: node scripts/generate-seo.js
-// Output: ./passport/<iso2>/index.html  +  ./sitemap.xml
+// Output: ./passport/<iso2>/index.html (+ index)      English
+//         ./tr/passport/<iso2>/index.html (+ index)   Turkish
+//         ./sitemap.xml                               with hreflang alternates
 //
 // Each page is a real, indexable static HTML document with:
-//   • A unique, data-driven written analysis of THIS passport (global mobility
-//     rank, regional strengths/weaknesses, curated notable destinations, FAQ) —
-//     so the page adds genuine commentary/curation on top of the raw data
-//     instead of just reproducing a third-party table (AdSense "thin content").
-//   • Visa counts and the global rank computed by the SAME data layer the map
-//     uses (data/passports.js + visa-overrides.js, run in a Node sandbox), so a
-//     passport page never disagrees with the map
-//   • A full table of every destination + the resolved visa status
-//   • Internal links to related passport pages + guides + tools (SEO + retention)
-//   • OG / Twitter cards / canonical / JSON-LD Article + FAQPage + Breadcrumbs
+//   • A bio-data card (the site's passport identity: guilloche, real MRZ) and the
+//     same headline number, ledger and ranking the interactive map shows —
+//     computed by the SAME data layer (data/passports.js + visa-overrides.js,
+//     run in a Node sandbox), so a page never disagrees with the map
+//   • A unique, data-driven written analysis of THIS passport (rank, regional
+//     strengths/weaknesses, notable destinations, FAQ) — genuine commentary on
+//     top of the raw data, not a reproduced third-party table
+//   • Every destination grouped by status, in compact columns
+//   • Internal links to related passports + guides + tools
+//   • OG / Twitter / canonical / hreflang / JSON-LD Article + FAQPage + breadcrumbs
 //   • The shared masthead + footer + design-system CSS from scripts/partials.js
+//
+// The Turkish pages are written in Turkish (LOC.tr below), not machine-mangled
+// English: Turkish searchers are the site's core audience, and text that only
+// appears after client-side translation is invisible to crawlers.
 
 const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
 const { headAssets, masthead, footer } = require("./partials");
+const { TR_PAGES, hasTr, toTr } = require("./locales");
 
 const ROOT       = path.resolve(__dirname, "..");
 const SNAPSHOT   = JSON.parse(fs.readFileSync(path.join(ROOT, "data", "passports-snapshot.json"), "utf8"));
 
 // The browser data layer, loaded as-is: resolveStatus (ID-card travel, travel
-// authorisations, hand-curated overrides, destination floors), tally and
-// passportRank are exactly what the map shows.
+// authorisations, hand-curated overrides, destination floors), tally,
+// passportRank, the MRZ and the localized country names are exactly what the
+// map shows.
 const DATA = (() => {
   const ctx = { console };
   ctx.window = ctx;
   vm.createContext(ctx);
-  for (const f of ["countries.js", "passports.js", "visa-overrides.js"]) {
+  for (const f of ["countries.js", "country-names.js", "passports.js", "visa-overrides.js", "mrz.js"]) {
     vm.runInContext(fs.readFileSync(path.join(ROOT, "data", f), "utf8"), ctx, { filename: f });
   }
   return ctx;
 })();
 const COUNTRIES  = DATA.COUNTRIES;
 // Absolute URLs everywhere (sitemap <loc>, canonicals, og:url). The sitemap
-// protocol REQUIRES absolute URLs — relative ones are ignored by Google, which
-// was hurting discovery. Defaults to the live domain; override via SITE_URL.
+// protocol REQUIRES absolute URLs — relative ones are ignored by Google.
 const SITE_URL   = process.env.SITE_URL || "https://travelnow.info";
 
-// Colours come from the design tokens (assets/tokens.css: --vf, --ev, …).
-const STATUS_INFO = {
-  idc: { label: "ID card travel",   note: "Travel on a national ID card" },
-  vf:  { label: "Visa-free",        note: "No visa required" },
-  eta: { label: "Travel authorization", note: "Online authorization before travel, no visa" },
-  ev:  { label: "eVisa",            note: "Apply online before travel" },
-  voa: { label: "Visa on arrival",  note: "Issued at the border" },
-  vr:  { label: "Visa required",    note: "Apply at embassy or consulate" },
-  ban: { label: "No entry allowed", note: "Entry refused to this nationality" },
-};
-
-// Human continent names for the regional-breakdown prose.
-const CONTINENT_NAME = {
-  EU: "Europe", AS: "Asia", AF: "Africa",
-  NA: "the Americas (North & Central)", SA: "South America",
-  OC: "Oceania", AN: "Antarctica",
-};
+const STATUS_ORDER = ["idc", "vf", "eta", "ev", "voa", "vr", "ban"];
 
 // A curated set of high-interest destinations used to write the "notable"
-// commentary. These are the places readers most often ask about — naming the
-// real resolved status for them is the curation/value-add Google looks for.
+// commentary. Naming the real resolved status for them is the curation/value-add
+// Google looks for.
 const MAJOR_DESTS = [
   "US", "GB", "DE", "FR", "IT", "ES", "NL", "CH", "CA", "AU", "NZ", "JP",
   "KR", "CN", "IN", "RU", "AE", "SA", "TH", "SG", "MY", "ID", "BR", "MX",
   "AR", "ZA", "EG", "TR", "GR",
 ];
 
-// Same statuses and numbers as the map (see DATA above). snapshot is unused but
-// kept in the signatures the page renderers already call.
-function resolveStatus(passportIso2, destIso2) {
-  return DATA.resolveStatus(passportIso2, destIso2);
-}
-
 // Destinations that need no consular visa arranged in advance.
 const EASY = new Set(["idc", "vf", "eta", "voa"]);
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Locale strings. Every user-visible sentence lives here, per language.
+// ─────────────────────────────────────────────────────────────────────────────
+const strong = (s) => `<strong>${s}</strong>`;
+
+const LOC = {
+  en: {
+    code: "en", prefix: "", intl: "en",
+    status: {
+      idc: "ID card travel", vf: "Visa-free", eta: "Travel authorization", ev: "eVisa",
+      voa: "Visa on arrival", vr: "Visa required", ban: "No entry allowed",
+    },
+    cont: { EU: "Europe", AS: "Asia", AF: "Africa", NA: "the Americas (North & Central)", SA: "South America", OC: "Oceania", AN: "Antarctica" },
+    join: (a) => a.length <= 1 ? (a[0] || "") : a.length === 2 ? `${a[0]} and ${a[1]}` : `${a.slice(0, -1).join(", ")}, and ${a[a.length - 1]}`,
+    upTo: (n) => `up to ${n} days`,
+    docBand: "PASSPORT · PASAPORT · PASSEPORT",
+    crumbs: (name) => ({ home: "travelnow.info", passports: "Passports", here: name }),
+    title: (name, mob) => `${name} passport visa requirements 2026 — ${mob} destinations without a visa`,
+    description: (name, c, rank) => `Where can a ${name} passport take you? ${c.vf} visa-free, ${c.voa} visa on arrival, ${c.ev} eVisa, ${c.vr} visa required. Global rank #${rank}. Updated daily.`,
+    h1: (name) => `${name} passport visa requirements`,
+    subtitle: (n, rank, date) => `${n} destinations${rank ? ` · Global rank #${rank}` : ""} · Updated ${date}`,
+    scoreLabel: "destinations without a visa application",
+    ofTotal: (n) => `of ${n}`,
+    withEvisa: (n) => `${n} counting eVisas (apply online, no embassy visit)`,
+    tallyLabel: "Visa status breakdown",
+    ctaTop: "See every country on the interactive map →",
+    ctaBar: (name) => `See the ${name} passport on the map`,
+    ctaBarBtn: "Open the map →",
+    guidesHead: "Helpful guides",
+    guides: [
+      ["/guides/visa-types-explained/", "Visa-free, eVisa, visa on arrival — what's the difference?"],
+      ["/guides/schengen-90-180-rule/", "How the Schengen 90/180-day rule works"],
+      ["/guides/passport-validity-six-month-rule/", "The six-month passport-validity rule"],
+      ["/guides/", "All travel guides →"],
+    ],
+    allHead: (name) => `All destinations for a ${name} passport`,
+    relatedHead: "Compare related passports",
+    browseAll: (n) => `Or <a href="%ALL%">browse all ${n} passports</a>.`,
+    faqHead: (name) => `${name} passport — frequently asked questions`,
+    lead: (c) => {
+      const easy = [
+        `${c.vf} visa-free`,
+        c.idc ? `${c.idc} with just a national ID card` : "",
+        c.eta ? `${c.eta} with an online travel authorization` : "",
+        `${c.voa} with a visa on arrival`,
+      ].filter(Boolean);
+      let h = `A ${strong(`${c.name} passport`)} currently gives its holder access to about ${strong(`${c.mob} of the ${c.total} destinations`)} we track without arranging a visa beforehand — ${LOC.en.join(easy)}.`;
+      h += ` Beyond those, ${c.ev} destinations offer an eVisa you apply for online — counting them, that is ${strong(c.acc)} destinations with no embassy visit — and ${c.vr} still require a traditional embassy visa${c.ban ? `, while ${c.ban} refuse entry to this nationality` : ""}.`;
+      if (c.rank) h += ` By visa-free access it ranks ${strong(`#${c.rank} of ${c.rankTotal}`)} passports worldwide.`;
+      return h;
+    },
+    regional: (c) => `Looking at it region by region, the ${c.name} passport is strongest in ${strong(c.S)}, where ${c.Se} of ${c.St} countries are open without a prior visa, and most limited in ${strong(c.W)} (${c.We} of ${c.Wt}). The full regional picture: ${c.all}.`,
+    easyMajors: (list) => `Among the destinations travellers ask about most, you can travel without a visa (or get one on arrival) to ${strong(LOC.en.join(list))}.`,
+    hardMajors: (vr, ev) => {
+      const parts = [];
+      if (vr.length) parts.push(`a full visa to ${strong(LOC.en.join(vr))}`);
+      if (ev.length) parts.push(`an eVisa for ${strong(LOC.en.join(ev))}`);
+      return `You should plan ahead for ${LOC.en.join(parts)}. Sort these out before you book non-refundable travel.`;
+    },
+    howTo: `If a destination shows <em>eVisa</em> or <em>visa on arrival</em> below, you usually don't need to visit an embassy: an eVisa is applied for on the destination's official portal and arrives by email, while a visa on arrival is issued at the airport or land border (carry the fee and a passport valid for at least six months). Our <a href="%SHORTCUTS%">Visa Shortcuts</a> tool also shows when a visa or residence permit you already hold can unlock easier entry elsewhere.`,
+    dest: { US: "the United States", DE: "Germany" },
+    entry: (name, dest, r, key) => {
+      const d = LOC.en.dest[key];
+      const phrase = {
+        idc: `can travel to ${d} with just a national ID card`,
+        eta: `need no visa for ${d}, only an online travel authorization before departure`,
+        vf: `can enter ${d} visa-free${r.days ? ` for up to ${r.days} days` : ""}`,
+        voa: `can get a visa on arrival in ${d}`,
+        ev: `need an eVisa for ${d} (applied for online before travel)`,
+        vr: `need a visa for ${d} arranged in advance at an embassy or consulate`,
+        ban: `are currently refused entry to ${d}`,
+      }[r.status] || `should check the latest requirement for ${d}`;
+      return key === "US"
+        ? `Travellers on a ${name} passport ${phrase}. The US visa-waiver programme also requires an approved ESTA travel authorization even when no visa is needed — our ESTA checker covers who qualifies.`
+        : `Germany stands in for the Schengen Area: holders of a ${name} passport ${phrase}. From 2026 the EU's ETIAS travel authorization also applies to many visa-free visitors — see our ETIAS checker.`;
+    },
+    faq: (c) => [
+      { q: `How many countries can ${c.name} passport holders visit without a visa?`,
+        a: `Around ${c.mob} of the ${c.total} destinations we track need no visa arranged in advance — ${LOC.en.join(c.easyParts)}. A further ${c.ev} offer an eVisa online.` },
+      { q: `Do ${c.name} passport holders need a visa for the United States?`, a: LOC.en.entry(c.name, "US", c.usR, "US") },
+      { q: `Can you travel to Europe (the Schengen Area) on a ${c.name} passport?`, a: LOC.en.entry(c.name, "DE", c.deR, "DE") },
+      { q: `How is this ranked, and how current is the data?`,
+        a: `Passports are ranked by how many destinations they can enter without applying for a visa — visa-free, with a national ID card, with an online travel authorization or with a visa on arrival — the same measure passport indexes use; ties are broken by eVisa access. It is the same number and the same ranking the interactive map shows. Figures are rebuilt every 24 hours from public visa-policy sources, so this page reflects the most recent change we have recorded. Always confirm with the destination's embassy before booking.` },
+    ],
+    easyParts: (c) => [
+      `${c.vf} visa-free`,
+      c.idc ? `${c.idc} with just a national ID card` : "",
+      c.eta ? `${c.eta} with an online travel authorization` : "",
+      `${c.voa} with a visa on arrival`,
+    ].filter(Boolean),
+    dirTitle: (y) => `Passport visa requirements directory ${y} · travelnow.info`,
+    dirDesc: (n) => `Browse visa requirements and the global mobility ranking for ${n} passports. Updated daily from public visa-policy sources.`,
+    dirH1: "Passport visa-requirement directory",
+    dirIntro: `Every passport we track, ranked by ${strong("global mobility")} — the number of destinations you can enter without applying for a visa (visa-free, ID card, travel authorization or visa on arrival), ties broken by eVisa access. It is the same ranking the interactive map shows. Open any passport for a full country breakdown, regional analysis and FAQ. Figures are rebuilt every 24 hours. New here? Start with our <a href="%TYPES%">guide to visa types</a>.`,
+    dirMeta: (n, date) => `${n} passports · Data refreshed ${date}`,
+    dirItem: (mob, rank) => `${mob} without a visa · #${rank}`,
+  },
+
+  tr: {
+    code: "tr", prefix: "/tr", intl: "tr",
+    status: {
+      idc: "Kimlikle giriş", vf: "Vizesiz", eta: "Seyahat izni", ev: "e-Vize",
+      voa: "Varışta vize", vr: "Vize gerekli", ban: "Girişe kapalı",
+    },
+    cont: { EU: "Avrupa", AS: "Asya", AF: "Afrika", NA: "Kuzey ve Orta Amerika", SA: "Güney Amerika", OC: "Okyanusya", AN: "Antarktika" },
+    join: (a) => a.length <= 1 ? (a[0] || "") : `${a.slice(0, -1).join(", ")} ve ${a[a.length - 1]}`,
+    upTo: (n) => `${n} güne kadar`,
+    docBand: "PASSPORT · PASAPORT · PASSEPORT",
+    crumbs: (name) => ({ home: "travelnow.info", passports: "Pasaportlar", here: name }),
+    title: (name, mob) => `${name} pasaportu vize şartları 2026 — vize gerekmeyen ${mob} destinasyon`,
+    description: (name, c, rank) => `${name} pasaportuyla nereye gidebilirsin? ${c.vf} vizesiz, ${c.voa} varışta vize, ${c.ev} e-Vize, ${c.vr} vize gerekli. Dünya sıralaması ${rank}. Her gün güncellenir.`,
+    h1: (name) => `${name} pasaportu vize şartları`,
+    subtitle: (n, rank, date) => `${n} destinasyon${rank ? ` · Dünya sıralaması ${rank}.` : ""} · Güncelleme ${date}`,
+    scoreLabel: "vize başvurusu gerektirmeyen destinasyon",
+    ofTotal: (n) => `/ ${n}`,
+    withEvisa: (n) => `e-Vize dahil ${n} (çevrimiçi başvuru, konsolosluğa gitmeden)`,
+    tallyLabel: "Vize durumu dağılımı",
+    ctaTop: "Tüm ülkeleri etkileşimli haritada gör →",
+    ctaBar: (name) => `${name} pasaportunu haritada gör`,
+    ctaBarBtn: "Haritayı aç →",
+    guidesHead: "Faydalı rehberler",
+    guides: [
+      ["/guides/visa-types-explained/", "Vizesiz, e-Vize, varışta vize — fark nedir?"],
+      ["/guides/schengen-90-180-rule/", "Schengen 90/180 gün kuralı nasıl işler?"],
+      ["/guides/passport-validity-six-month-rule/", "Altı aylık pasaport geçerlilik kuralı"],
+      ["/guides/", "Tüm seyahat rehberleri →"],
+    ],
+    allHead: (name) => `${name} pasaportuyla gidilecek tüm destinasyonlar`,
+    relatedHead: "İlgili pasaportları karşılaştır",
+    browseAll: (n) => `Ya da <a href="%ALL%">tüm ${n} pasaporta göz at</a>.`,
+    faqHead: (name) => `${name} pasaportu — sık sorulan sorular`,
+    lead: (c) => {
+      const easy = [
+        `${c.vf} vizesiz`,
+        c.idc ? `yalnızca ulusal kimlik kartıyla ${c.idc}` : "",
+        c.eta ? `çevrimiçi seyahat iziniyle ${c.eta}` : "",
+        `varışta vizeyle ${c.voa}`,
+      ].filter(Boolean);
+      let h = `${strong(`${c.name} pasaportu`)}, takip ettiğimiz ${c.total} destinasyondan yaklaşık ${strong(`${c.mob} tanesine`)} önceden vize almadan giriş sağlıyor — ${LOC.tr.join(easy)}.`;
+      h += ` Bunların ötesinde ${c.ev} destinasyon çevrimiçi başvurulan e-Vize sunuyor; onları da sayarsan konsolosluğa gitmeden ${strong(c.acc)} destinasyona ulaşılıyor. ${c.vr} destinasyon ise hâlâ büyükelçilik vizesi istiyor${c.ban ? `, ${c.ban} destinasyon bu uyruğa girişe kapalı` : ""}.`;
+      if (c.rank) h += ` Vizesiz erişimde dünya genelinde ${c.rankTotal} pasaport arasında ${strong(`${c.rank}.`)} sırada.`;
+      return h;
+    },
+    regional: (c) => `Bölge bölge bakınca ${c.name} pasaportu en çok ${strong(c.S)} bölgesinde güçlü: ${c.St} ülkenin ${c.Se} tanesine önceden vize gerekmeden giriliyor. En sınırlı olduğu bölge ise ${strong(c.W)} (${c.Wt} ülkenin ${c.We} tanesi). Bölgelere göre tam dağılım: ${c.all}.`,
+    easyMajors: (list) => `En çok sorulan destinasyonlar arasında ${strong(LOC.tr.join(list))} ülkelerine vizesiz (ya da varışta vizeyle) gidebilirsin.`,
+    hardMajors: (vr, ev) => {
+      const parts = [];
+      if (vr.length) parts.push(`${strong(LOC.tr.join(vr))} için tam vize`);
+      if (ev.length) parts.push(`${strong(LOC.tr.join(ev))} için e-Vize`);
+      return `Şunlar için önceden plan yap: ${LOC.tr.join(parts)}. İade edilmeyen bilet almadan önce bunları hallet.`;
+    },
+    howTo: `Aşağıda <em>e-Vize</em> ya da <em>varışta vize</em> yazan ülkelerde genellikle büyükelçiliğe gitmen gerekmez: e-Vize, ülkenin resmî portalından başvurulur ve e-postayla gelir; varışta vize ise havalimanı veya kara sınırında verilir (ücreti ve en az altı ay geçerli pasaportunu yanında bulundur). <a href="%SHORTCUTS%">Vize kısayolları</a> aracımız, elindeki bir vize ya da oturum izninin başka ülkelerde girişi nasıl kolaylaştırdığını da gösterir.`,
+    dest: { US: { dat: "ABD'ye", nom: "ABD" }, DE: { dat: "Almanya'ya", nom: "Almanya" } },
+    entry: (name, dest, r, key) => {
+      const d = LOC.tr.dest[key];
+      const phrase = {
+        idc: `${d.dat} yalnızca ulusal kimlik kartıyla girebilir`,
+        eta: `${d.dat} vize gerekmeden, yalnızca çevrimiçi seyahat iziniyle girebilir`,
+        vf: `${d.dat} vizesiz girebilir${r.days ? ` (en fazla ${r.days} gün)` : ""}`,
+        voa: `${d.dat} girişte, varışta vize alabilir`,
+        ev: `${d.dat} girmek için önceden çevrimiçi e-Vize almalı`,
+        vr: `${d.dat} seyahatten önce büyükelçilik veya konsolosluktan vize almalı`,
+      }[r.status];
+      const sentence = r.status === "ban"
+        ? `${name} pasaportu sahipleri için ${d.nom} girişi şu anda kapalı`
+        : phrase ? `${name} pasaportu sahipleri ${phrase}` : `${name} pasaportu sahipleri ${d.nom} için güncel şartı kontrol etmeli`;
+      return key === "US"
+        ? `${sentence}. Vize gerekmeyen durumlarda bile ABD Vize Muafiyeti Programı onaylı bir ESTA seyahat izni ister — kimlerin uygun olduğunu ESTA denetleyicimiz gösterir.`
+        : `Almanya, Schengen Bölgesi için temsilci ülke: ${sentence}. 2026'dan itibaren AB'nin ETIAS seyahat izni de vizesiz gelen birçok ziyaretçi için geçerli olacak — ETIAS denetleyicimize bak.`;
+    },
+    faq: (c) => [
+      { q: `${c.name} pasaportuyla vizesiz kaç ülkeye gidilebilir?`,
+        a: `Takip ettiğimiz ${c.total} destinasyondan yaklaşık ${c.mob} tanesi önceden vize gerektirmiyor — ${LOC.tr.join(c.easyParts)}. ${c.ev} destinasyon ise çevrimiçi e-Vize sunuyor.` },
+      { q: `${c.name} pasaportuyla Amerika Birleşik Devletleri için vize gerekir mi?`, a: LOC.tr.entry(c.name, "US", c.usR, "US") },
+      { q: `${c.name} pasaportuyla Avrupa'ya (Schengen Bölgesi) gidilebilir mi?`, a: LOC.tr.entry(c.name, "DE", c.deR, "DE") },
+      { q: `Sıralama nasıl yapılıyor, veriler ne kadar güncel?`,
+        a: `Pasaportlar, vize başvurusu yapmadan girebildikleri destinasyon sayısına göre sıralanır — vizesiz, ulusal kimlik kartıyla, çevrimiçi seyahat iziniyle ya da varışta vizeyle — pasaport endekslerinin de kullandığı ölçüt bu; eşitlikte e-Vize erişimi belirleyici olur. Etkileşimli haritanın gösterdiği sayı ve sıralamayla aynıdır. Rakamlar her 24 saatte bir kamuya açık vize politikası kaynaklarından yeniden oluşturulur; yani bu sayfa kaydettiğimiz en son değişikliği yansıtır. Rezervasyondan önce mutlaka gideceğin ülkenin büyükelçiliğinden doğrula.` },
+    ],
+    easyParts: (c) => [
+      `${c.vf} vizesiz`,
+      c.idc ? `yalnızca ulusal kimlik kartıyla ${c.idc}` : "",
+      c.eta ? `çevrimiçi seyahat iziniyle ${c.eta}` : "",
+      `varışta vizeyle ${c.voa}`,
+    ].filter(Boolean),
+    dirTitle: (y) => `Pasaport vize şartları rehberi ${y} · travelnow.info`,
+    dirDesc: (n) => `${n} pasaportun vize şartlarına ve küresel hareketlilik sıralamasına göz at. Her gün kamuya açık vize politikası kaynaklarından güncellenir.`,
+    dirH1: "Pasaport vize şartları rehberi",
+    dirIntro: `Takip ettiğimiz her pasaport, ${strong("küresel hareketlilik")}e göre sıralı — yani vize başvurusu yapmadan girilebilen destinasyon sayısı (vizesiz, kimlikle, seyahat iziniyle ya da varışta vizeyle); eşitlikte e-Vize erişimi belirleyici. Etkileşimli haritadaki sıralamayla aynıdır. Ülke dökümü, bölgesel analiz ve sık sorulan sorular için herhangi bir pasaportu aç. Rakamlar her 24 saatte bir yenilenir. Yeni misin? <a href="%TYPES%">Vize türleri rehberimizle</a> başla.`,
+    dirMeta: (n, date) => `${n} pasaport · Veri yenilenme tarihi ${date}`,
+    dirItem: (mob, rank) => `vizesiz ${mob} · ${rank}. sıra`,
+  },
+};
+
+// ── Helpers ──────────────────────────────────────────────────────────────────
 function escapeHtml(s) {
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
           .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 }
+const resolveStatus = (passportIso2, destIso2) => DATA.resolveStatus(passportIso2, destIso2);
+
+// Localized country name (data/country-names.js reads window.ATLAS_LANG).
+function cn(iso, lang) {
+  DATA.ATLAS_LANG = lang;
+  return DATA.countryName(iso);
+}
+// Passport display name: English uses the snapshot's name, Turkish the localized one.
+function passportName(iso, lang) {
+  return lang === "tr" ? cn(iso, "tr") : (SNAPSHOT[iso] && SNAPSHOT[iso].name) || cn(iso, "en");
+}
+const sortCollator = (lang) => new Intl.Collator(lang === "tr" ? "tr" : "en");
 
 // Resolve every destination the map counts (no own country, no Antarctica).
-function resolveAllRows(passport) {
+function resolveAllRows(passport, lang) {
   return COUNTRIES
     .filter(c => c.iso2 !== passport && c.continent !== "AN")
     .map(c => {
       const r = resolveStatus(passport, c.iso2);
-      return { ...c, status: r.status, days: r.days };
+      return { ...c, label: cn(c.iso2, lang), status: r.status, days: r.days };
     });
 }
 
-function nameOf(iso, snapshot) {
-  const c = COUNTRIES.find(x => x.iso2 === iso);
-  return (snapshot[iso] && snapshot[iso].name) || (c && c.name) || iso;
-}
-
-function listJoin(names) {
-  if (names.length === 0) return "";
-  if (names.length === 1) return names[0];
-  if (names.length === 2) return names[0] + " and " + names[1];
-  return names.slice(0, -1).join(", ") + ", and " + names[names.length - 1];
-}
-
-// ── The value-add: a unique, data-driven written analysis of this passport ──
-function renderProse(passport, name, rows, counts, ranks, snapshot) {
+// ── Analysis prose + FAQ ─────────────────────────────────────────────────────
+function buildProse(L, passport, name, rows, counts, ranks, lang) {
   const total = rows.length;
-  const visaFreeTotal = DATA.mobilityScore(counts);   // no advance visa needed
-  const accessTotal = DATA.accessScore(counts);
-  // "71 visa-free, 3 with an ID card, 13 with a visa on arrival"
-  const easyParts = [
-    `${counts.vf} visa-free`,
-    counts.idc ? `${counts.idc} with just a national ID card` : "",
-    counts.eta ? `${counts.eta} with an online travel authorization` : "",
-    `${counts.voa} with a visa on arrival`,
-  ].filter(Boolean);
+  const mob = DATA.mobilityScore(counts);
+  const acc = DATA.accessScore(counts);
   const rankInfo = ranks.get(passport);
-  const rank = rankInfo ? rankInfo.rank : null;
-  const rankTotal = rankInfo ? rankInfo.total : null;
+  const c = { ...counts, name, total, mob, acc, rank: rankInfo && rankInfo.rank, rankTotal: rankInfo && rankInfo.total };
+  c.easyParts = L.easyParts(c);
 
   // Regional breakdown
   const byCont = {};
   rows.forEach(r => {
-    if (r.continent === "AN") return; // Antarctica: not a normal destination
+    if (r.continent === "AN") return;
     const b = byCont[r.continent] || (byCont[r.continent] = { easy: 0, total: 0 });
     b.total++;
     if (EASY.has(r.status)) b.easy++;
@@ -131,192 +303,124 @@ function renderProse(passport, name, rows, counts, ranks, snapshot) {
   const regionLines = Object.keys(byCont)
     .map(k => ({ k, ...byCont[k], pct: byCont[k].easy / byCont[k].total }))
     .sort((a, b) => b.pct - a.pct);
-  const strongest = regionLines[0];
-  const weakest = regionLines[regionLines.length - 1];
+  const S = regionLines[0], W = regionLines[regionLines.length - 1];
 
-  // Curated notable destinations among the MAJOR set
-  const majorResolved = MAJOR_DESTS
-    .filter(iso => iso !== passport && snapshot[iso])
+  // Notable destinations among the MAJOR set
+  const major = MAJOR_DESTS.filter(iso => iso !== passport && SNAPSHOT[iso])
     .map(iso => ({ iso, ...resolveStatus(passport, iso) }));
-  const easyMajors = majorResolved.filter(d => EASY.has(d.status))
-    .map(d => nameOf(d.iso, snapshot)).slice(0, 8);
-  const hardMajors = majorResolved.filter(d => d.status === "vr" || d.status === "ev")
-    .map(d => ({ name: nameOf(d.iso, snapshot), status: d.status }));
-  const visaMajors = hardMajors.filter(d => d.status === "vr").map(d => d.name).slice(0, 6);
-  const evisaMajors = hardMajors.filter(d => d.status === "ev").map(d => d.name).slice(0, 5);
+  const nm = (iso) => cn(iso, lang);
+  const easyMajors = major.filter(d => EASY.has(d.status)).map(d => nm(d.iso)).slice(0, 8);
+  const visaMajors = major.filter(d => d.status === "vr").map(d => nm(d.iso)).slice(0, 6);
+  const evisaMajors = major.filter(d => d.status === "ev").map(d => nm(d.iso)).slice(0, 5);
 
-  // Representative checks for the FAQ
-  const usR  = resolveStatus(passport, "US");
-  const deR  = resolveStatus(passport, "DE");
-  const statusPhrase = (r) => {
-    if (r.status === "idc") return "can travel with just a national ID card";
-    if (r.status === "eta") return "need no visa, only an online travel authorization before departure";
-    if (r.status === "vf")  return "can enter visa-free" + (r.days ? ` for up to ${r.days} days` : "");
-    if (r.status === "voa") return "can get a visa on arrival";
-    if (r.status === "ev")  return "need an eVisa (applied for online before travel)";
-    if (r.status === "vr")  return "need a visa arranged in advance at an embassy or consulate";
-    if (r.status === "ban") return "are currently refused entry";
-    return "should check the latest requirement";
-  };
+  const sub = (h) => h
+    .replace("%SHORTCUTS%", lang === "tr" ? "/tr/visa-shortcuts/" : "/visa-shortcuts/")
+    .replace("%TYPES%", lang === "tr" ? "/tr/guides/visa-types-explained/" : "/guides/visa-types-explained/");
 
-  const regionStr = regionLines.map(r =>
-    `${CONTINENT_NAME[r.k] || r.k} (${r.easy}/${r.total})`
-  ).join(", ");
-
-  // ── Build the prose ──
   let html = `<section class="analysis">`;
-
-  // Lead
-  html += `<p class="lead">A <strong>${escapeHtml(name)} passport</strong> currently gives its holder access to about
-    <strong>${visaFreeTotal} of the ${total} destinations</strong> we track without arranging a visa beforehand —
-    ${listJoin(easyParts)}.`;
-  html += ` Beyond those, ${counts.ev} destinations offer an eVisa you apply for online — counting them, that is
-    <strong>${accessTotal}</strong> destinations with no embassy visit — and ${counts.vr}
-    still require a traditional embassy visa${counts.ban ? `, while ${counts.ban} refuse entry to this nationality` : ""}.`;
-  if (rank) {
-    html += ` By visa-free access it ranks <strong>#${rank} of ${rankTotal}</strong> passports worldwide.`;
+  html += `<p class="lead">${L.lead(c)}</p>`;
+  if (S && W && S.k !== W.k) {
+    html += `<p>${L.regional({
+      name, S: L.cont[S.k] || S.k, Se: S.easy, St: S.total, W: L.cont[W.k] || W.k, We: W.easy, Wt: W.total,
+      all: regionLines.map(r => `${L.cont[r.k] || r.k} (${r.easy}/${r.total})`).join(", "),
+    })}</p>`;
   }
-  html += `</p>`;
-
-  // Regional
-  if (strongest && weakest && strongest.k !== weakest.k) {
-    html += `<p>Looking at it region by region, the ${escapeHtml(name)} passport is strongest in
-      <strong>${CONTINENT_NAME[strongest.k] || strongest.k}</strong>, where ${strongest.easy} of ${strongest.total}
-      countries are open without a prior visa, and most limited in
-      <strong>${CONTINENT_NAME[weakest.k] || weakest.k}</strong> (${weakest.easy} of ${weakest.total}).
-      The full regional picture: ${regionStr}.</p>`;
-  }
-
-  // Notable easy
-  if (easyMajors.length) {
-    html += `<p>Among the destinations travellers ask about most, you can travel without a visa (or get one on arrival) to
-      <strong>${escapeHtml(listJoin(easyMajors))}</strong>.</p>`;
-  }
-  // Notable hard
-  if (visaMajors.length || evisaMajors.length) {
-    html += `<p>You should plan ahead for `;
-    const parts = [];
-    if (visaMajors.length) parts.push(`a full visa to <strong>${escapeHtml(listJoin(visaMajors))}</strong>`);
-    if (evisaMajors.length) parts.push(`an eVisa for <strong>${escapeHtml(listJoin(evisaMajors))}</strong>`);
-    html += listJoin(parts) + `. Sort these out before you book non-refundable travel.</p>`;
-  }
-
-  // How to travel more easily
-  html += `<p>If a destination shows <em>eVisa</em> or <em>visa on arrival</em> below, you usually don't need to visit an
-    embassy: an eVisa is applied for on the destination's official portal and arrives by email, while a visa on arrival
-    is issued at the airport or land border (carry the fee and a passport valid for at least six months). Our
-    <a href="/visa-shortcuts/">Visa Shortcuts</a> tool also shows when a visa or residence permit you already hold can
-    unlock easier entry elsewhere.</p>`;
-
+  if (easyMajors.length) html += `<p>${L.easyMajors(easyMajors.map(escapeHtml))}</p>`;
+  if (visaMajors.length || evisaMajors.length) html += `<p>${L.hardMajors(visaMajors.map(escapeHtml), evisaMajors.map(escapeHtml))}</p>`;
+  html += `<p>${sub(L.howTo)}</p>`;
   html += `</section>`;
 
-  // ── FAQ (also emitted as FAQPage structured data) ──
-  const faqs = [
-    {
-      q: `How many countries can ${name} passport holders visit without a visa?`,
-      a: `Around ${visaFreeTotal} of the ${total} destinations we track need no visa arranged in advance — ${listJoin(easyParts)}. A further ${counts.ev} offer an eVisa online.`,
-    },
-    {
-      q: `Do ${name} passport holders need a visa for the United States?`,
-      a: `Travellers on a ${name} passport ${statusPhrase(usR)} for the United States. The US visa-waiver programme also requires an approved ESTA travel authorization even when no visa is needed — our ESTA checker covers who qualifies.`,
-    },
-    {
-      q: `Can you travel to Europe (the Schengen Area) on a ${name} passport?`,
-      a: `For Germany, a representative Schengen country, holders of a ${name} passport ${statusPhrase(deR)}. From 2026 the EU's ETIAS travel authorization also applies to many visa-free visitors — see our ETIAS checker.`,
-    },
-    {
-      q: `How is this ranked, and how current is the data?`,
-      a: `Passports are ranked by how many destinations they can enter without applying for a visa — visa-free, with a national ID card, with an online travel authorization or with a visa on arrival — the same measure passport indexes use; ties are broken by eVisa access. It is the same number and the same ranking the interactive map shows. Figures are rebuilt every 24 hours from public visa-policy sources, so this page reflects the most recent change we have recorded. Always confirm with the destination's embassy before booking.`,
-    },
-  ];
-
-  let faqHtml = `<section class="faq"><h2>${escapeHtml(name)} passport — frequently asked questions</h2>`;
-  faqs.forEach(f => {
-    faqHtml += `<div class="qa"><h3>${escapeHtml(f.q)}</h3><p>${escapeHtml(f.a)}</p></div>`;
-  });
+  c.usR = resolveStatus(passport, "US");
+  c.deR = resolveStatus(passport, "DE");
+  const faqs = L.faq(c);
+  let faqHtml = `<section class="faq"><h2>${escapeHtml(L.faqHead(name))}</h2>`;
+  faqs.forEach(f => { faqHtml += `<div class="qa"><h3>${escapeHtml(f.q)}</h3><p>${escapeHtml(f.a)}</p></div>`; });
   faqHtml += `</section>`;
-
   const faqSchema = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": faqs.map(f => ({
-      "@type": "Question",
-      "name": f.q,
-      "acceptedAnswer": { "@type": "Answer", "text": f.a },
-    })),
+    "@context": "https://schema.org", "@type": "FAQPage", "inLanguage": lang,
+    "mainEntity": faqs.map(f => ({ "@type": "Question", "name": f.q, "acceptedAnswer": { "@type": "Answer", "text": f.a } })),
   };
-
-  return { proseHtml: html, faqHtml, faqSchema, mobility: visaFreeTotal, rank };
+  return { proseHtml: html, faqHtml, faqSchema, mob, acc, rank: c.rank };
 }
 
-function renderPage(passport, allPassports, snapshot, ranks) {
-  const pp = snapshot[passport];
+// ── Ads: rendered only when the slot id exists (data/ads.js) ─────────────────
+function adConfig() {
+  const adsJs = fs.readFileSync(path.join(ROOT, "data", "ads.js"), "utf8");
+  const client = (adsJs.match(/clientId:\s*"([^"]*)"/) || [])[1] || "";
+  const top = (adsJs.match(/seoTop:\s*"([^"]*)"/) || [])[1] || "";
+  const bottom = (adsJs.match(/seoBottom:\s*"([^"]*)"/) || [])[1] || "";
+  const unit = (slot) => (client && slot)
+    ? `<div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="${client}" data-ad-slot="${slot}" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>`
+    : "";
+  return {
+    loader: client ? `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${client}" crossorigin="anonymous"></script>` : "",
+    top: unit(top), bottom: unit(bottom),
+  };
+}
+
+// ── One passport page ───────────────────────────────────────────────────────
+function renderPage(passport, allPassports, ranks, lang, ads) {
+  const L = LOC[lang];
+  const pp = SNAPSHOT[passport];
   const country = COUNTRIES.find(c => c.iso2 === passport);
   if (!country || !pp) return null;
-  const name = pp.name;
-  const flag = country.flag;
+  const name = passportName(passport, lang);
   const slug = passport.toLowerCase();
+  const enPath = `/passport/${slug}/`;
+  const pagePath = L.prefix + enPath;
+  const canonical = SITE_URL + pagePath;
+  const today = new Date().toISOString().slice(0, 10);
 
-  const rows = resolveAllRows(passport);
+  const rows = resolveAllRows(passport, lang);
   const counts = DATA.tally(passport);
+  const collator = sortCollator(lang);
+  rows.sort((a, b) => collator.compare(a.label, b.label));
 
-  // Sort by how easy entry is, then alphabetically.
-  const order = { idc: 0, vf: 1, eta: 2, ev: 3, voa: 4, vr: 5, ban: 6 };
-  rows.sort((a, b) => (order[a.status] ?? 9) - (order[b.status] ?? 9) || a.name.localeCompare(b.name));
+  const { proseHtml, faqHtml, faqSchema, mob, acc, rank } = buildProse(L, passport, name, rows, counts, ranks, lang);
+  const total = rows.length;
+  const titleText = L.title(name, mob);
+  const description = L.description(name, counts, rank || "?");
+  const mrz = DATA.mrzLines(passport);
 
-  const { proseHtml, faqHtml, faqSchema } = renderProse(passport, name, rows, counts, ranks, snapshot);
+  const P = (p) => (lang === "tr" && hasTr(p) ? toTr(p) : p);   // link into the same language
+  const crumbs = L.crumbs(name);
 
-  const rankInfo = ranks.get(passport);
-  const titleText = `${name} passport visa requirements 2026 — ${DATA.mobilityScore(counts)} destinations without a visa`;
-  const description = `Where can a ${name} passport take you? ${counts.vf} visa-free, ${counts.voa} visa on arrival, ${counts.ev} eVisa, ${counts.vr} visa required. Global rank #${rankInfo ? rankInfo.rank : "?"}. Updated daily.`;
+  // Tally: ledger rows (only statuses that exist), each jumping to its group.
+  const present = STATUS_ORDER.filter(s => counts[s] > 0);
+  const swatch = (s) => `<span class="sw${s === "ban" ? " sw-ban" : ""}" data-s="${s}" style="--sw:var(--${s})" aria-hidden="true"></span>`;
+  const bar = present.map(s => `<span${s === "ban" ? ' class="sw-ban"' : ""} style="flex:${counts[s]} 0 0;${s === "ban" ? "" : `background:var(--${s})`}"></span>`).join("");
+  const ledger = present.map(s =>
+    `<li><a class="lg-row" href="#g-${s}">${swatch(s)}<span class="lg-label">${escapeHtml(L.status[s])}</span><span class="lg-dots"></span><span class="lg-n">${counts[s]}</span></a></li>`
+  ).join("");
+  const tally = `<section class="tally" aria-label="${escapeHtml(L.tallyLabel)}">
+    <div class="score"><span class="score-n">${mob}</span><span class="score-l">${escapeHtml(L.scoreLabel)}<br><span class="mono">${escapeHtml(L.ofTotal(total))}</span></span></div>
+    ${acc > mob ? `<p class="score-sub">${escapeHtml(L.withEvisa(acc))}</p>` : ""}
+    <div class="bar" aria-hidden="true">${bar}</div>
+    <ul class="ledger">${ledger}</ul>
+  </section>`;
 
-  const canonical = SITE_URL ? `${SITE_URL}/passport/${slug}/` : `/passport/${slug}/`;
+  // Destinations, grouped by status in compact columns.
+  const groups = present.map(s => {
+    const items = rows.filter(r => r.status === s).map(r =>
+      `<li><span class="flag" aria-hidden="true">${r.flag}</span> ${escapeHtml(r.label)}${r.days ? ` <span class="days">${escapeHtml(L.upTo(r.days))}</span>` : ""}</li>`
+    ).join("");
+    return `<section class="grp" id="g-${s}"><h3 class="grp-h">${swatch(s)}${escapeHtml(L.status[s])} <span class="n">${counts[s]}</span></h3><ul class="cols">${items}</ul></section>`;
+  }).join("");
 
-  // Ad configuration is read from ../data/ads.js at build time.
-  const adsJs = fs.readFileSync(path.join(ROOT, "data", "ads.js"), "utf8");
-  const adsenseClient = (adsJs.match(/clientId:\s*"([^"]*)"/) || [])[1] || "";
-  const slotTop       = (adsJs.match(/seoTop:\s*"([^"]*)"/) || [])[1] || "";
-  const slotBottom    = (adsJs.match(/seoBottom:\s*"([^"]*)"/) || [])[1] || "";
-  const adsenseLoader = adsenseClient
-    ? `<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClient}" crossorigin="anonymous"></script>`
-    : "";
-  const adInsTop = (adsenseClient && slotTop)
-    ? `<div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="${adsenseClient}" data-ad-slot="${slotTop}" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>`
-    : "";
-  const adInsBottom = (adsenseClient && slotBottom)
-    ? `<div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="${adsenseClient}" data-ad-slot="${slotBottom}" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>`
-    : "";
-
-  // Curated, on-topic internal links (same-region + high-traffic anchors).
-  const sameRegion = COUNTRIES
-    .filter(c => c.continent === country.continent && c.iso2 !== passport && snapshot[c.iso2])
-    .slice(0, 6)
-    .map(c => c.iso2);
-  const anchors = ["US", "GB", "DE", "JP"].filter(iso => iso !== passport && snapshot[iso]);
+  // Related passports: same region + high-traffic anchors.
+  const sameRegion = COUNTRIES.filter(c => c.continent === country.continent && c.iso2 !== passport && SNAPSHOT[c.iso2]).slice(0, 6).map(c => c.iso2);
+  const anchors = ["US", "GB", "DE", "JP"].filter(iso => iso !== passport && SNAPSHOT[iso]);
   const related = Array.from(new Set([...sameRegion, ...anchors])).slice(0, 10);
   const otherPassports = related.map(iso => {
     const c = COUNTRIES.find(x => x.iso2 === iso);
-    const n = snapshot[iso] && snapshot[iso].name || (c && c.name);
-    if (!c || !n) return "";
-    return `<li><a href="../${iso.toLowerCase()}/"><span class="flag">${c.flag}</span> ${escapeHtml(n)}</a></li>`;
+    return c ? `<li><a href="../${iso.toLowerCase()}/"><span class="flag">${c.flag}</span> ${escapeHtml(passportName(iso, lang))}</a></li>` : "";
   }).join("");
 
-  const rowsHtml = rows.map(r => {
-    const info = STATUS_INFO[r.status];
-    if (!info) return "";
-    const days = r.days ? `<span class="days">up to ${r.days} days</span>` : "";
-    return `
-      <tr class="row-${r.status}">
-        <td class="flag">${r.flag}</td>
-        <td class="name">${escapeHtml(r.name)}</td>
-        <td class="status"><span class="sw${r.status === "ban" ? " sw-ban" : ""}" style="--sw:var(--${r.status})" aria-hidden="true"></span>${info.label} ${days}</td>
-      </tr>`;
-  }).join("");
-
-  const today = new Date().toISOString().slice(0, 10);
+  const guides = L.guides.map(([href, text]) => `<li><a href="${P(href)}">${escapeHtml(text)}</a></li>`).join("");
+  const mapHref = `${lang === "tr" ? "/tr/" : "/"}?p=${passport}`;
 
   return `<!DOCTYPE html>
-<html lang="en">
+<html lang="${lang}"${lang === "tr" ? ' data-page-lang="tr"' : ""}>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -326,181 +430,174 @@ function renderPage(passport, allPassports, snapshot, ranks) {
 <meta name="author" content="Uygar Atalay">
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
 <link rel="apple-touch-icon" href="/assets/favicon.svg">
-<meta property="og:image" content="${SITE_URL || ""}/assets/og.png">
+<meta property="og:image" content="${SITE_URL}/assets/og.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="${SITE_URL || ""}/assets/og.png">
+<meta name="twitter:image" content="${SITE_URL}/assets/og.png">
 <meta property="og:title" content="${escapeHtml(titleText)}">
 <meta property="og:description" content="${escapeHtml(description)}">
 <meta property="og:type" content="article">
-${SITE_URL ? `<meta property="og:url" content="${canonical}">` : ""}
+<meta property="og:locale" content="${lang === "tr" ? "tr_TR" : "en_US"}">
+<meta property="og:url" content="${canonical}">
 <meta name="twitter:title" content="${escapeHtml(titleText)}">
 <meta name="twitter:description" content="${escapeHtml(description)}">
-${adsenseLoader}
+${ads.loader}
 <script src="/assets/analytics.js"></script>
 <script type="application/ld+json">${JSON.stringify({
   "@context": "https://schema.org",
   "@type": "Article",
+  "inLanguage": lang,
   "headline": titleText,
   "description": description,
   "datePublished": today,
   "dateModified": today,
   "author": { "@type": "Person", "name": "Uygar Atalay" },
-  "publisher": { "@type": "Organization", "name": "travelnow.info", "url": SITE_URL || "/" },
+  "publisher": { "@type": "Organization", "name": "travelnow.info", "url": SITE_URL },
   "about": { "@type": "Country", "name": name },
   "breadcrumb": {
     "@type": "BreadcrumbList",
     "itemListElement": [
-      { "@type": "ListItem", "position": 1, "name": "travelnow.info", "item": SITE_URL || "/" },
-      { "@type": "ListItem", "position": 2, "name": "Passports", "item": (SITE_URL || "") + "/passport/" },
-      { "@type": "ListItem", "position": 3, "name": name + " passport" },
+      { "@type": "ListItem", "position": 1, "name": "travelnow.info", "item": SITE_URL + (lang === "tr" ? "/tr/" : "/") },
+      { "@type": "ListItem", "position": 2, "name": crumbs.passports, "item": SITE_URL + L.prefix + "/passport/" },
+      { "@type": "ListItem", "position": 3, "name": name },
     ],
   },
 })}</script>
 <script type="application/ld+json">${JSON.stringify(faqSchema)}</script>
-${headAssets()}
+${headAssets({ enPath, lang })}
 <style>.wrap{max-width:820px}</style>
 </head>
-<body>
-${masthead({ path: "/passport/" + slug + "/", i18n: false })}
+<body class="has-map-cta">
+${masthead({ path: enPath, i18n: false, lang })}
 <div class="wrap">
-  <p class="crumbs"><a href="/">travelnow.info</a> › <a href="/passport/">Passports</a> › ${escapeHtml(name)}</p>
-  <header class="pp-hero">
-    <span class="hero-flag flag" aria-hidden="true">${flag}</span>
-    <div>
-      <h1>${escapeHtml(name)} passport visa requirements</h1>
-      <p class="subtitle">${rows.length} destinations${rankInfo ? ` · Global mobility rank #${rankInfo.rank}` : ""} · Updated ${today}</p>
+  <p class="crumbs"><a href="${P("/")}">${crumbs.home}</a> › <a href="${P("/passport/")}">${escapeHtml(crumbs.passports)}</a> › ${escapeHtml(name)}</p>
+
+  <header class="bio">
+    <div class="bio-doc">${L.docBand}</div>
+    <div class="bio-main">
+      <span class="hero-flag flag" aria-hidden="true">${country.flag}</span>
+      <div>
+        <h1>${escapeHtml(L.h1(name))}</h1>
+        <p class="subtitle">${escapeHtml(L.subtitle(total, rank, today))}</p>
+      </div>
     </div>
+    <div class="mrz" aria-hidden="true"><span>${escapeHtml(mrz[0])}</span><span>${escapeHtml(mrz[1])}</span></div>
   </header>
 
-  <section class="stats">
-    ${counts.idc ? `<div class="stat idc"><div class="n">${counts.idc}</div><div class="l">ID card</div></div>` : ""}
-    <div class="stat vf"><div class="n">${counts.vf}</div><div class="l">Visa-free</div></div>
-    ${counts.eta ? `<div class="stat eta"><div class="n">${counts.eta}</div><div class="l">Travel auth.</div></div>` : ""}
-    <div class="stat ev"><div class="n">${counts.ev}</div><div class="l">eVisa</div></div>
-    <div class="stat voa"><div class="n">${counts.voa}</div><div class="l">On arrival</div></div>
-    <div class="stat vr"><div class="n">${counts.vr}</div><div class="l">Visa required</div></div>
-    ${counts.ban ? `<div class="stat ban"><div class="n">${counts.ban}</div><div class="l">No entry</div></div>` : ""}
-  </section>
+  ${tally}
 
   ${proseHtml}
 
-  <p class="cta-row"><a class="primary" href="/">See every country on the interactive map →</a></p>
+  <p class="cta-row"><a class="primary" href="${mapHref}">${escapeHtml(L.ctaTop)}</a></p>
 
-  ${adInsTop}
+  ${ads.top}
 
   <div class="related-guides">
-    <h2>Helpful guides</h2>
-    <ul>
-      <li><a href="/guides/visa-types-explained/">Visa-free, eVisa, visa on arrival — what's the difference?</a></li>
-      <li><a href="/guides/schengen-90-180-rule/">How the Schengen 90/180-day rule works</a></li>
-      <li><a href="/guides/passport-validity-six-month-rule/">The six-month passport-validity rule</a></li>
-      <li><a href="/guides/">All travel guides →</a></li>
-    </ul>
+    <h2>${escapeHtml(L.guidesHead)}</h2>
+    <ul>${guides}</ul>
   </div>
 
-  <h2>All destinations for a ${escapeHtml(name)} passport</h2>
-  <table>
-    <thead><tr><th></th><th>Country</th><th>Status</th></tr></thead>
-    <tbody>${rowsHtml}</tbody>
-  </table>
+  <h2>${escapeHtml(L.allHead(name))}</h2>
+  ${groups}
 
   ${faqHtml}
 
   <div class="other-passports">
-    <h2>Compare related passports</h2>
+    <h2>${escapeHtml(L.relatedHead)}</h2>
     <ul>${otherPassports}</ul>
-    <p class="fine" style="margin-top:14px;">
-      Or <a href="/passport/">browse all ${allPassports.length} passports</a>.
-    </p>
+    <p class="fine" style="margin-top:14px;">${L.browseAll(allPassports.length).replace("%ALL%", P("/passport/"))}</p>
   </div>
 
-  ${adInsBottom}
+  ${ads.bottom}
 </div>
-${footer()}
+<div class="map-cta"><span>${escapeHtml(L.ctaBar(name))}</span><a class="btn btn-primary" href="${mapHref}">${escapeHtml(L.ctaBarBtn)}</a></div>
+${footer({ lang })}
 </body>
 </html>`;
 }
 
-function renderIndex(allPassports, snapshot, ranks) {
-  // Sort the directory by mobility rank so the strongest passports lead.
+// ── The directory page ──────────────────────────────────────────────────────
+function renderIndex(allPassports, ranks, lang) {
+  const L = LOC[lang];
+  const enPath = "/passport/";
+  const canonical = SITE_URL + L.prefix + enPath;
+  const collator = sortCollator(lang);
   const ordered = [...allPassports].sort((a, b) => {
     const ra = ranks.get(a), rb = ranks.get(b);
-    return (ra ? ra.rank : 999) - (rb ? rb.rank : 999);
+    return (ra ? ra.rank : 999) - (rb ? rb.rank : 999) || collator.compare(passportName(a, lang), passportName(b, lang));
   });
   const items = ordered.map(iso => {
     const c = COUNTRIES.find(x => x.iso2 === iso);
-    const n = snapshot[iso] && snapshot[iso].name || (c && c.name);
-    if (!c || !n) return "";
+    if (!c || !SNAPSHOT[iso]) return "";
     const ri = ranks.get(iso);
-    return `<li><a href="${iso.toLowerCase()}/"><span class="flag">${c.flag}</span> <strong>${escapeHtml(n)}</strong></a> <span class="vf-count">${ri ? ri.mobility : "?"} without a visa · #${ri ? ri.rank : "?"}</span></li>`;
+    return `<li><a href="${iso.toLowerCase()}/"><span class="flag">${c.flag}</span> <strong>${escapeHtml(passportName(iso, lang))}</strong></a> <span class="vf-count">${escapeHtml(L.dirItem(ri ? ri.mobility : "?", ri ? ri.rank : "?"))}</span></li>`;
   }).join("");
+  const date = new Date().toISOString().slice(0, 10);
+  const types = lang === "tr" ? "/tr/guides/visa-types-explained/" : "/guides/visa-types-explained/";
 
   return `<!DOCTYPE html>
-<html lang="en">
+<html lang="${lang}"${lang === "tr" ? ' data-page-lang="tr"' : ""}>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Passport visa requirements directory ${new Date().getFullYear()} · travelnow.info</title>
-<meta name="description" content="Browse visa requirements and the global mobility ranking for ${allPassports.length} passports. Updated daily from public visa-policy sources.">
-<link rel="canonical" href="${SITE_URL ? SITE_URL + "/passport/" : "/passport/"}">
+<title>${escapeHtml(L.dirTitle(new Date().getFullYear()))}</title>
+<meta name="description" content="${escapeHtml(L.dirDesc(allPassports.length))}">
+<link rel="canonical" href="${canonical}">
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
-${headAssets()}
+<meta property="og:locale" content="${lang === "tr" ? "tr_TR" : "en_US"}">
+${headAssets({ enPath, lang })}
 <style>.wrap{max-width:880px}</style>
 <script src="/assets/analytics.js"></script>
 </head>
 <body>
-${masthead({ path: "/passport/", i18n: false })}
+${masthead({ path: enPath, i18n: false, lang })}
 <div class="wrap">
-  <h1>Passport visa-requirement directory</h1>
-  <p class="intro">Every passport we track, ranked by <strong>global mobility</strong> — the number of destinations you
-  can enter without applying for a visa (visa-free, ID card, travel authorization or visa on arrival), ties broken by
-  eVisa access. It is the same ranking the interactive map shows. Open any passport for a full country
-  breakdown, regional analysis and FAQ. Figures are rebuilt every 24 hours. New here? Start with our
-  <a href="/guides/visa-types-explained/">guide to visa types</a>.</p>
-  <p style="font-size:13px;color:var(--fg-mute);">${allPassports.length} passports · Data refreshed ${new Date().toISOString().slice(0,10)}</p>
+  <h1>${escapeHtml(L.dirH1)}</h1>
+  <p class="intro">${L.dirIntro.replace("%TYPES%", types)}</p>
+  <p style="font-size:13px;color:var(--fg-mute);">${escapeHtml(L.dirMeta(allPassports.length, date))}</p>
   <ul class="dir">${items}</ul>
 </div>
-${footer()}
+${footer({ lang })}
 </body>
 </html>`;
 }
 
+// ── sitemap.xml — with hreflang alternates for every page that has a twin ───
 function renderSitemap(allPassports) {
-  const base = SITE_URL || "";
-  const today = new Date().toISOString().slice(0,10);
+  const today = new Date().toISOString().slice(0, 10);
   const guides = [
     "visa-types-explained", "schengen-90-180-rule", "etias-2026-explained",
     "transit-visa-guide", "passport-validity-six-month-rule",
   ];
-  const urls = [
-    `<url><loc>${base}/</loc><lastmod>${today}</lastmod><priority>1.0</priority></url>`,
-    `<url><loc>${base}/guides/</loc><lastmod>${today}</lastmod><priority>0.9</priority></url>`,
-    ...guides.map(g => `<url><loc>${base}/guides/${g}/</loc><lastmod>${today}</lastmod><priority>0.85</priority></url>`),
-    `<url><loc>${base}/alerts/</loc><lastmod>${today}</lastmod><priority>0.7</priority></url>`,
-    `<url><loc>${base}/digital-nomad-visa/</loc><lastmod>${today}</lastmod><priority>0.9</priority></url>`,
-    `<url><loc>${base}/citizenship-by-investment/</loc><lastmod>${today}</lastmod><priority>0.9</priority></url>`,
-    `<url><loc>${base}/transit-map/</loc><lastmod>${today}</lastmod><priority>0.95</priority></url>`,
-    `<url><loc>${base}/safety-map/</loc><lastmod>${today}</lastmod><priority>0.9</priority></url>`,
-    `<url><loc>${base}/etias/</loc><lastmod>${today}</lastmod><priority>0.95</priority></url>`,
-    `<url><loc>${base}/passport-validity/</loc><lastmod>${today}</lastmod><priority>0.95</priority></url>`,
-    `<url><loc>${base}/visa-shortcuts/</loc><lastmod>${today}</lastmod><priority>0.9</priority></url>`,
-    `<url><loc>${base}/esta-rules/</loc><lastmod>${today}</lastmod><priority>0.9</priority></url>`,
-    `<url><loc>${base}/visa-checklist/tr-schengen/</loc><lastmod>${today}</lastmod><priority>0.9</priority></url>`,
-    `<url><loc>${base}/schengen-calculator/</loc><lastmod>${today}</lastmod><priority>0.95</priority></url>`,
-    `<url><loc>${base}/itinerary/</loc><lastmod>${today}</lastmod><priority>0.8</priority></url>`,
-    `<url><loc>${base}/about/</loc><lastmod>${today}</lastmod><priority>0.6</priority></url>`,
-    `<url><loc>${base}/contact/</loc><lastmod>${today}</lastmod><priority>0.5</priority></url>`,
-    `<url><loc>${base}/privacy/</loc><lastmod>${today}</lastmod><priority>0.3</priority></url>`,
-    `<url><loc>${base}/terms/</loc><lastmod>${today}</lastmod><priority>0.3</priority></url>`,
-    `<url><loc>${base}/passport/</loc><lastmod>${today}</lastmod><priority>0.8</priority></url>`,
-    ...allPassports.map(iso =>
-      `<url><loc>${base}/passport/${iso.toLowerCase()}/</loc><lastmod>${today}</lastmod><priority>0.6</priority></url>`
-    ),
+  // [english path, priority]
+  const pages = [
+    ["/", 1.0], ["/guides/", 0.9],
+    ...guides.map(g => [`/guides/${g}/`, 0.85]),
+    ["/alerts/", 0.7], ["/digital-nomad-visa/", 0.9], ["/citizenship-by-investment/", 0.9],
+    ["/transit-map/", 0.95], ["/safety-map/", 0.9], ["/etias/", 0.95], ["/passport-validity/", 0.95],
+    ["/visa-shortcuts/", 0.9], ["/esta-rules/", 0.9], ["/visa-checklist/tr-schengen/", 0.9],
+    ["/schengen-calculator/", 0.95], ["/itinerary/", 0.8], ["/about/", 0.6], ["/contact/", 0.5],
+    ["/privacy/", 0.3], ["/terms/", 0.3], ["/passport/", 0.8],
+    ...allPassports.map(iso => [`/passport/${iso.toLowerCase()}/`, 0.6]),
   ];
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemap.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>\n`;
+  const entry = (p, pri, prefix) => {
+    const twin = hasTr(p);
+    const alt = twin
+      ? `<xhtml:link rel="alternate" hreflang="en" href="${SITE_URL}${p}"/>` +
+        `<xhtml:link rel="alternate" hreflang="tr" href="${SITE_URL}${toTr(p)}"/>` +
+        `<xhtml:link rel="alternate" hreflang="x-default" href="${SITE_URL}${p}"/>`
+      : "";
+    return `<url><loc>${SITE_URL}${prefix ? toTr(p) : p}</loc><lastmod>${today}</lastmod><priority>${pri.toFixed(2).replace(/0$/, "")}</priority>${alt}</url>`;
+  };
+  const urls = [];
+  for (const [p, pri] of pages) {
+    urls.push(entry(p, pri, false));
+    if (hasTr(p)) urls.push(entry(p, Math.max(0.3, pri - 0.05), true));
+  }
+  // NOTE the namespace: sitemaps.org (with the "s"). A missing "s" makes Google
+  // reject the whole file.
+  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls.join("\n")}\n</urlset>\n`;
 }
 
-// Global ranking — the map's own passportRank(), so both always agree.
 function computeRanks(allPassports) {
   const ranks = new Map();
   for (const iso of allPassports) {
@@ -513,29 +610,31 @@ function computeRanks(allPassports) {
 function main() {
   const allPassports = Object.keys(SNAPSHOT).sort();
   const ranks = computeRanks(allPassports);
-  const outDir = path.join(ROOT, "passport");
-  fs.mkdirSync(outDir, { recursive: true });
-
+  const ads = adConfig();
   let written = 0;
-  for (const iso of allPassports) {
-    const html = renderPage(iso, allPassports, SNAPSHOT, ranks);
-    if (!html) { console.log(`✗ skip ${iso} (no country / no data)`); continue; }
-    const dir = path.join(outDir, iso.toLowerCase());
-    fs.mkdirSync(dir, { recursive: true });
-    fs.writeFileSync(path.join(dir, "index.html"), html);
-    written++;
+
+  for (const lang of ["en", "tr"]) {
+    const L = LOC[lang];
+    const outDir = path.join(ROOT, ...(L.prefix ? [L.prefix.slice(1)] : []), "passport");
+    fs.mkdirSync(outDir, { recursive: true });
+    for (const iso of allPassports) {
+      const html = renderPage(iso, allPassports, ranks, lang, ads);
+      if (!html) { console.log(`✗ skip ${iso} (no country / no data)`); continue; }
+      const dir = path.join(outDir, iso.toLowerCase());
+      fs.mkdirSync(dir, { recursive: true });
+      fs.writeFileSync(path.join(dir, "index.html"), html);
+      written++;
+    }
+    fs.writeFileSync(path.join(outDir, "index.html"), renderIndex(allPassports, ranks, lang));
   }
 
-  fs.writeFileSync(path.join(outDir, "index.html"), renderIndex(allPassports, SNAPSHOT, ranks));
   fs.writeFileSync(path.join(ROOT, "sitemap.xml"), renderSitemap(allPassports));
 
   const robotsPath = path.join(ROOT, "robots.txt");
   if (!fs.existsSync(robotsPath)) {
-    const robots = `User-agent: *\nAllow: /\n${SITE_URL ? `Sitemap: ${SITE_URL}/sitemap.xml\n` : "Sitemap: /sitemap.xml\n"}`;
-    fs.writeFileSync(robotsPath, robots);
+    fs.writeFileSync(robotsPath, `User-agent: *\nAllow: /\nSitemap: ${SITE_URL}/sitemap.xml\n`);
   }
-
-  console.log(`✓ wrote ${written} passport pages + index + sitemap.xml`);
+  console.log(`✓ wrote ${written} passport pages (en + tr) + 2 directories + sitemap.xml`);
 }
 
 main();

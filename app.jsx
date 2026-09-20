@@ -138,6 +138,9 @@ function App() {
   // brand-new visitors with nothing saved fall through to auto-detection.
   const [passport, setPassport] = useState(() => {
     try {
+      // ?p=TR — links from the /passport/<iso>/ pages open on that passport.
+      const q = (new URLSearchParams(location.search).get("p") || "").toUpperCase();
+      if (q && window.PASSPORTS[q]) return q;
       const saved = localStorage.getItem("atlas.passport");
       return saved && window.PASSPORTS[saved] ? saved : null;
     } catch (e) { return null; }
