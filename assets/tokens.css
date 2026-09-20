@@ -52,6 +52,14 @@
   --vr:   #C74A34;   /* visa required */
   --ban:  #3A1D28;   /* no entry allowed */
   --na:   #D0D3C8;   /* no data */
+
+  /* Travel-safety advisory levels — deliberately NOT the visa palette: the
+     visa map's green must never read as "safe" on the safety map. One ink,
+     four strengths, plus a paper tone for "normal precautions". */
+  --risk1: #CFC8AC;  /* normal precautions */
+  --risk2: #D69C3C;  /* increased caution */
+  --risk3: #B05A2A;  /* reconsider travel */
+  --risk4: #7C1F2B;  /* do not travel */
   --self: #1E3A5F;   /* the passport's own country */
   --compare-self: #8A4FA3;
 
@@ -122,6 +130,11 @@ body.theme-dark {
   --vr:   #DA684E;
   --ban:  #6E3042;
   --na:   #2A3A51;
+
+  --risk1: #47525B;
+  --risk2: #C8913C;
+  --risk3: #B4602F;
+  --risk4: #8E2733;
   --self: #D3B36C;
   --compare-self: #B78BCF;
 

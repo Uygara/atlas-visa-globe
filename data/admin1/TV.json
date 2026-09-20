@@ -1,0 +1,1 @@
+{"type":"Topology","arcs":[[[105,0],[2,5],[-1,4],[2,0],[2,-5],[-5,-4]],[[3,211],[-3,5],[5,-2],[-2,-3]]],"transform":{"scale":[0.004999999999999845,0.004990740740740738],"translate":[178.66800000000003,-8.542]},"objects":{"in":{"type":"GeometryCollection","geometries":[{"arcs":[[[0]],[[1]]],"type":"MultiPolygon","properties":{"id":"TV-X01~","nm":"Tuvalu"}}]}}}

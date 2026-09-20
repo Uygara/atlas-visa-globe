@@ -1,0 +1,1 @@
+{"type":"Topology","arcs":[[[0,1],[1,0],[0,-1],[-1,0],[0,1]]],"transform":{"scale":[0.0010000000000012221,0.0010000000000047748],"translate":[12.453,41.903]},"objects":{"in":{"type":"GeometryCollection","geometries":[{"arcs":[[0]],"type":"Polygon","properties":{"id":"VA-X01~","nm":"Vatican"}}]}}}

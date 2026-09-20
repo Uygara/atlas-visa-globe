@@ -247,6 +247,7 @@ a.note:hover { background: color-mix(in oklab, var(--tone) 14%, transparent); }
 .note-info { --tone: var(--idc); }
 .note-accent { --tone: var(--accent); }
 
+.is-stale { color: var(--voa); font-weight: 600; }
 .link-quiet { color: var(--ink-3); text-decoration: underline dotted; text-underline-offset: 3px; font-size: 12.5px; }
 .link-quiet:hover { color: var(--ink); }
 

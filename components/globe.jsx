@@ -61,6 +61,11 @@ function Globe({
   // The home page passes neither, so its behaviour is unchanged.
   fillResolver,
   hoverRenderer,
+  // ── Sub-national overlay (used by the Safety Map) ───────────────────────
+  // regionFeatures: GeoJSON features of one country's provinces/states, drawn
+  // over the country layer; regionFill(feature) returns each one's colour.
+  regionFeatures,
+  regionFill,
   // ── Route overlay (used by the Itinerary globe) ──────────────────────────
   // arcs: [{ from: iso2, to: iso2 }] — great-circle routes drawn over the map.
   // stopMarkers: [{ iso2, label }] — numbered dots at each stop centroid.
@@ -159,7 +164,7 @@ function Globe({
   // ─── Projection (recomputed on size / mode) ────────────────────────────────
   const redrawPaths = useCallback(() => {
     if (!pathRef.current || !svgRef.current) return;
-    const paths = svgRef.current.querySelectorAll("path.country");
+    const paths = svgRef.current.querySelectorAll("path.country, path.region");
     paths.forEach(p => {
       const d = pathRef.current(p.__feature);
       if (d) p.setAttribute("d", d);
@@ -598,6 +603,11 @@ function Globe({
     if (topology) redrawPaths();
   }, [arcs, stopMarkers, topology, redrawPaths]);
 
+  // Provinces of the focused country: redraw as soon as they arrive.
+  useEffect(() => {
+    if (topology) redrawPaths();
+  }, [regionFeatures, topology, redrawPaths]);
+
   // ─── Fill resolution ───────────────────────────────────────────────────────
   // resolveOne picks the right resolver for the active mode. Group mode
   // overrides direction. Self-highlight (blue) still works because the
@@ -790,6 +800,24 @@ function Globe({
             );
           })}
         </g>
+
+        {/* Provinces / states of one country, above the country layer. */}
+        {regionFeatures && regionFeatures.length > 0 && (
+          <g style={{ pointerEvents: "none" }}>
+            {regionFeatures.map((f, i) => (
+              <path
+                key={(f.properties && f.properties.id) || `r-${i}`}
+                ref={(el) => { if (el) el.__feature = f; }}
+                className="region"
+                d=""
+                fill={regionFill ? regionFill(f) : "none"}
+                stroke="var(--paper-raised)"
+                strokeWidth="0.5"
+                strokeOpacity="0.7"
+              />
+            ))}
+          </g>
+        )}
 
         {/* Limb shading + sphere outline, above the countries, below labels. */}
         {showGlobe && (

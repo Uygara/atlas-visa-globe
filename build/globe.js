@@ -104,6 +104,8 @@ function Globe(_ref) {
     focusedCountry = _ref.focusedCountry,
     fillResolver = _ref.fillResolver,
     hoverRenderer = _ref.hoverRenderer,
+    regionFeatures = _ref.regionFeatures,
+    regionFill = _ref.regionFill,
     arcs = _ref.arcs,
     stopMarkers = _ref.stopMarkers;
   var groupActive = Array.isArray(groupPassports) && groupPassports.length > 0;
@@ -210,7 +212,7 @@ function Globe(_ref) {
   }, []);
   var redrawPaths = useCallback(function () {
     if (!pathRef.current || !svgRef.current) return;
-    var paths = svgRef.current.querySelectorAll("path.country");
+    var paths = svgRef.current.querySelectorAll("path.country, path.region");
     paths.forEach(function (p) {
       var d = pathRef.current(p.__feature);
       if (d) p.setAttribute("d", d);else p.setAttribute("d", "");
@@ -615,6 +617,9 @@ function Globe(_ref) {
   useEffect(function () {
     if (topology) redrawPaths();
   }, [arcs, stopMarkers, topology, redrawPaths]);
+  useEffect(function () {
+    if (topology) redrawPaths();
+  }, [regionFeatures, topology, redrawPaths]);
   var resolveOne = useCallback(function (iso2) {
     if (groupActive) {
       if (groupPassports.includes(iso2)) return {
@@ -841,6 +846,23 @@ function Globe(_ref) {
       onClick: function onClick() {
         return handleClick(f);
       }
+    });
+  })), regionFeatures && regionFeatures.length > 0 && React.createElement("g", {
+    style: {
+      pointerEvents: "none"
+    }
+  }, regionFeatures.map(function (f, i) {
+    return React.createElement("path", {
+      key: f.properties && f.properties.id || "r-".concat(i),
+      ref: function ref(el) {
+        if (el) el.__feature = f;
+      },
+      className: "region",
+      d: "",
+      fill: regionFill ? regionFill(f) : "none",
+      stroke: "var(--paper-raised)",
+      strokeWidth: "0.5",
+      strokeOpacity: "0.7"
     });
   })), showGlobe && React.createElement("g", {
     style: {
