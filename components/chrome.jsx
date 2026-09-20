@@ -376,7 +376,7 @@ function Caption({ n, children, aside }) {
 // inline in text. The "ban" swatch is hatched, like a restricted zone on a map.
 function Swatch({ s }) {
   if (s === "ban") return <span className="sw sw-ban" aria-hidden="true" />;
-  return <span className="sw" aria-hidden="true" style={{ "--sw": `var(--${s})` }} />;
+  return <span className="sw" data-s={s} aria-hidden="true" style={{ "--sw": `var(--${s})` }} />;
 }
 function Dot({ s }) {
   return <span className="dot" aria-hidden="true" style={{ "--sw": `var(--${s})` }} />;

@@ -79,6 +79,11 @@ function statusLabel(s) {
   }
   return ((_STATUS_COLOR$s2 = STATUS_COLOR[s]) === null || _STATUS_COLOR$s2 === void 0 ? void 0 : _STATUS_COLOR$s2.label) || s;
 }
+var TEXTURED = {
+  eta: "url(#tex-eta)",
+  ev: "url(#tex-ev)",
+  vr: "url(#tex-vr)"
+};
 var STATUS_HEX = {
   idc: "var(--idc)",
   vf: "var(--vf)",
@@ -657,6 +662,7 @@ function Globe(_ref) {
       return "url(#permit-".concat(r.status, ")");
     }
     if (r.status === "ban") return "url(#hatch-ban)";
+    if (TEXTURED[r.status]) return TEXTURED[r.status];
     return ((_STATUS_COLOR$r$statu = STATUS_COLOR[r.status]) === null || _STATUS_COLOR$r$statu === void 0 ? void 0 : _STATUS_COLOR$r$statu.fill) || STATUS_COLOR.na.fill;
   }, [passport, filter, resolveOne, groupActive, comparePassport, direction, fillResolver]);
   var opacityFor = useCallback(function (iso2) {
@@ -742,6 +748,63 @@ function Globe(_ref) {
     style: {
       stopColor: "var(--ink)",
       stopOpacity: 0.16
+    }
+  })), React.createElement("pattern", {
+    id: "tex-eta",
+    width: "5",
+    height: "5",
+    patternUnits: "userSpaceOnUse",
+    patternTransform: "rotate(45)"
+  }, React.createElement("rect", {
+    width: "5",
+    height: "5",
+    style: {
+      fill: "var(--eta)"
+    }
+  }), React.createElement("rect", {
+    width: "1.1",
+    height: "5",
+    style: {
+      fill: "var(--paper-raised)",
+      fillOpacity: 0.7
+    }
+  })), React.createElement("pattern", {
+    id: "tex-ev",
+    width: "5",
+    height: "5",
+    patternUnits: "userSpaceOnUse"
+  }, React.createElement("rect", {
+    width: "5",
+    height: "5",
+    style: {
+      fill: "var(--ev)"
+    }
+  }), React.createElement("circle", {
+    cx: "2.5",
+    cy: "2.5",
+    r: "1.05",
+    style: {
+      fill: "var(--ink)",
+      fillOpacity: 0.42
+    }
+  })), React.createElement("pattern", {
+    id: "tex-vr",
+    width: "4.5",
+    height: "4.5",
+    patternUnits: "userSpaceOnUse",
+    patternTransform: "rotate(-45)"
+  }, React.createElement("rect", {
+    width: "4.5",
+    height: "4.5",
+    style: {
+      fill: "var(--vr)"
+    }
+  }), React.createElement("rect", {
+    width: "0.9",
+    height: "4.5",
+    style: {
+      fill: "var(--paper-raised)",
+      fillOpacity: 0.45
     }
   })), React.createElement("pattern", {
     id: "hatch-ban",

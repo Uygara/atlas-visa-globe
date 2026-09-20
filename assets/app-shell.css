@@ -169,6 +169,10 @@ html.theme-dark .country:hover, body.theme-dark .country:hover { filter: brightn
 .lg-n { font-family: var(--font-mono); font-size: 13px; color: var(--ink); font-variant-numeric: tabular-nums; }
 .sw { flex: none; display: inline-block; width: 11px; height: 11px; border-radius: 1px; background: var(--sw, var(--na)); }
 .sw-ban, .sw[data-s="ban"] { background: repeating-linear-gradient(135deg, var(--ban) 0 2.5px, transparent 2.5px 4.5px), var(--paper-raised); box-shadow: inset 0 0 0 1px var(--ban); }
+/* Same textures as the map, so the key can be read without colour. */
+.sw[data-s="eta"] { background: repeating-linear-gradient(45deg, transparent 0 2.4px, rgba(255,255,255,.7) 2.4px 3.4px), var(--sw); }
+.sw[data-s="ev"] { background: radial-gradient(circle at 50% 50%, rgba(22,32,42,.45) 0 1.1px, transparent 1.3px) 0 0 / 5px 5px, var(--sw); }
+.sw[data-s="vr"] { background: repeating-linear-gradient(-45deg, transparent 0 2.3px, rgba(255,255,255,.55) 2.3px 3.1px), var(--sw); }
 .sw-all { background: transparent; box-shadow: inset 0 0 0 1.5px var(--ink-3); }
 .sw-permit { background: repeating-linear-gradient(135deg, var(--vf) 0 3px, var(--self) 3px 4.5px); }
 .dot { flex: none; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: var(--sw, var(--na)); }

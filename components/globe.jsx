@@ -28,6 +28,9 @@ function statusLabel(s) {
 // Pattern / resolver colours. These used to be hard-coded hex because pattern
 // tiles were painted through attributes; they're set through `style` now, so
 // the design tokens (and therefore light/dark) apply inside patterns too.
+// Statuses drawn with a texture as well as a colour (patterns in <defs> below).
+const TEXTURED = { eta: "url(#tex-eta)", ev: "url(#tex-ev)", vr: "url(#tex-vr)" };
+
 const STATUS_HEX = {
   idc: "var(--idc)",
   vf: "var(--vf)",
@@ -657,6 +660,7 @@ function Globe({
       return `url(#permit-${r.status})`;
     }
     if (r.status === "ban") return "url(#hatch-ban)";
+    if (TEXTURED[r.status]) return TEXTURED[r.status];
     return STATUS_COLOR[r.status]?.fill || STATUS_COLOR.na.fill;
   }, [passport, filter, resolveOne, groupActive, comparePassport, direction, fillResolver]);
 
@@ -724,6 +728,23 @@ function Globe({
             <stop offset="62%" style={{ stopColor: "var(--ink)", stopOpacity: 0 }} />
             <stop offset="100%" style={{ stopColor: "var(--ink)", stopOpacity: 0.16 }} />
           </radialGradient>
+          {/* Textures make the status readable without colour (colour-blind
+              readers, greyscale prints): travel authorisation = fine 45° lines,
+              eVisa = dot grid, visa required = fine 135° hatching. Visa-free,
+              ID card and visa on arrival stay solid. */}
+          <pattern id="tex-eta" width="5" height="5" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <rect width="5" height="5" style={{ fill: "var(--eta)" }} />
+            <rect width="1.1" height="5" style={{ fill: "var(--paper-raised)", fillOpacity: 0.7 }} />
+          </pattern>
+          <pattern id="tex-ev" width="5" height="5" patternUnits="userSpaceOnUse">
+            <rect width="5" height="5" style={{ fill: "var(--ev)" }} />
+            <circle cx="2.5" cy="2.5" r="1.05" style={{ fill: "var(--ink)", fillOpacity: 0.42 }} />
+          </pattern>
+          <pattern id="tex-vr" width="4.5" height="4.5" patternUnits="userSpaceOnUse" patternTransform="rotate(-45)">
+            <rect width="4.5" height="4.5" style={{ fill: "var(--vr)" }} />
+            <rect width="0.9" height="4.5" style={{ fill: "var(--paper-raised)", fillOpacity: 0.45 }} />
+          </pattern>
+
           {/* "No entry allowed": hatched like a restricted zone on a chart. */}
           <pattern id="hatch-ban" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
             <rect width="6" height="6" style={{ fill: "var(--ban)" }} />

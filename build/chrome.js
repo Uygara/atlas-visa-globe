@@ -634,6 +634,7 @@ function Swatch(_ref1) {
   });
   return React.createElement("span", {
     className: "sw",
+    "data-s": s,
     "aria-hidden": "true",
     style: {
       "--sw": "var(--".concat(s, ")")

@@ -45,11 +45,11 @@
 
   /* ── Status inks ─────────────────────────────────────────────────────── */
   --idc:  #3F79A8;   /* ID card / freedom of movement */
-  --vf:   #2E8555;   /* visa-free */
+  --vf:   #145A37;   /* visa-free — deep green; luminance well below --vr */
   --eta:  #5FA88C;   /* travel authorization (ESTA, eTA, UK ETA…) */
   --ev:   #A5B545;   /* eVisa */
   --voa:  #DFA132;   /* visa on arrival */
-  --vr:   #C74A34;   /* visa required */
+  --vr:   #CF4F38;   /* visa required */
   --ban:  #3A1D28;   /* no entry allowed */
   --na:   #D0D3C8;   /* no data */
 
@@ -123,11 +123,11 @@ body.theme-dark {
   --shadow-lift:  0 22px 56px -20px rgba(0, 0, 0, 0.85);
 
   --idc:  #6D9FCB;
-  --vf:   #4EA573;
+  --vf:   #6FC48F;
   --eta:  #7EBFA4;
   --ev:   #BAC961;
   --voa:  #E5B04A;
-  --vr:   #DA684E;
+  --vr:   #BF4E37;
   --ban:  #6E3042;
   --na:   #2A3A51;
 

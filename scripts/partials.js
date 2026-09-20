@@ -11,7 +11,7 @@
 
 const { NAV, SUPPORT, isCurrent } = require("../assets/site-nav.js");
 
-const ASSET_VERSION = "20260920a";
+const ASSET_VERSION = "20260920b";
 
 function esc(s) {
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
