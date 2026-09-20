@@ -437,3 +437,6 @@ ul.dir { columns: 2; margin-top: 22px; }
 /* AdSense leaves a 280px hole when a unit goes unfilled; collapse it. */
 ins.adsbygoogle[data-ad-status="unfilled"] { display: none !important; }
 .ad-slot:has(> ins.adsbygoogle[data-ad-status="unfilled"]) { margin: 0; }
+/* An ad unit with no slot id can never fill, yet AdSense still reserves ~330px
+   for it — never render the space (add the slot id in data/ads.js to enable). */
+.ad-slot:has(> ins.adsbygoogle[data-ad-slot=""]), ins.adsbygoogle[data-ad-slot=""] { display: none !important; }

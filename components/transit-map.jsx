@@ -35,6 +35,12 @@ function TransitMapApp() {
     try { sessionStorage.setItem("atlas.globeStyle", v); } catch (e) {}
   };
 
+  // A tapped country must not stay hidden under the peeking mobile sheet.
+  const openCountry = (iso2) => {
+    setSelected(iso2);
+    window.atlasSheet && window.atlasSheet.ensure(0.48);
+  };
+
   useEffect(() => { savePassport(passport); }, [passport]);
 
   // Hide the loading screen once mounted.
@@ -62,7 +68,7 @@ function TransitMapApp() {
           mode={mode}
           fillResolver={fillResolver}
           hoverRenderer={hoverRenderer}
-          onCountryClick={(iso2) => setSelected(iso2)}
+          onCountryClick={openCountry}
           focusedCountry={selected}
         />
         <TransitLegend />
@@ -78,7 +84,7 @@ function TransitMapApp() {
         {passport && selected && (
           <TransitDetail passport={passport} iso2={selected} onClose={() => setSelected(null)} />
         )}
-        {passport && <TransitHubList passport={passport} onOpen={(iso2) => setSelected(iso2)} />}
+        {passport && <TransitHubList passport={passport} onOpen={openCountry} />}
         <footer className="panel-foot">{window.t("tmap.disclaimer")}</footer>
       </aside>
     </div>

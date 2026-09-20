@@ -587,11 +587,19 @@ function MobileSheetHandle() {
         setH(nearest(lastH));
       }
     };
+    window.atlasSheet = {
+      ensure: function ensure(fraction) {
+        if (!isMobile()) return;
+        var want = Math.round(window.innerHeight * fraction);
+        if (curH() < want - 4) setH(want);
+      }
+    };
     handle.addEventListener("pointerdown", down);
     window.addEventListener("pointermove", move);
     window.addEventListener("pointerup", settle);
     window.addEventListener("pointercancel", settle);
     return function () {
+      delete window.atlasSheet;
       handle.removeEventListener("pointerdown", down);
       window.removeEventListener("pointermove", move);
       window.removeEventListener("pointerup", settle);

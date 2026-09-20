@@ -332,11 +332,21 @@ function MobileSheetHandle() {
         setH(nearest(lastH));
       }
     };
+    // Opening a country while the sheet is peeking would hide it: rise to at
+    // least `fraction` of the screen (no-op on desktop and if already taller).
+    window.atlasSheet = {
+      ensure: (fraction) => {
+        if (!isMobile()) return;
+        const want = Math.round(window.innerHeight * fraction);
+        if (curH() < want - 4) setH(want);
+      },
+    };
     handle.addEventListener("pointerdown", down);
     window.addEventListener("pointermove", move);
     window.addEventListener("pointerup", settle);
     window.addEventListener("pointercancel", settle);
     return () => {
+      delete window.atlasSheet;
       handle.removeEventListener("pointerdown", down);
       window.removeEventListener("pointermove", move);
       window.removeEventListener("pointerup", settle);

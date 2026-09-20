@@ -259,7 +259,7 @@ function App() {
   var _useState9 = useState(null),
     _useState0 = _slicedToArray(_useState9, 2),
     detailCountry = _useState0[0],
-    setDetailCountry = _useState0[1];
+    _setDetailCountry = _useState0[1];
   var _useState1 = useState(""),
     _useState10 = _slicedToArray(_useState1, 2),
     search = _useState10[0],
@@ -373,7 +373,7 @@ function App() {
     var onKey = function onKey(e) {
       if (e.key === "Escape") {
         if (showIntro) dismissIntro();
-        if (detailCountry) setDetailCountry(null);
+        if (detailCountry) _setDetailCountry(null);
       }
       if (e.key === "/" && !/^(INPUT|TEXTAREA|SELECT)$/.test(e.target && e.target.tagName || "")) {
         var _document$getElementB;
@@ -396,12 +396,14 @@ function App() {
       if (window.PASSPORTS[iso2]) choosePassport(iso2);
       return;
     }
-    setDetailCountry(iso2);
+    _setDetailCountry(iso2);
     setFocusedCountry(iso2);
+    window.atlasSheet && window.atlasSheet.ensure(0.48);
   };
   var onPickFromSearch = function onPickFromSearch(iso2) {
-    setDetailCountry(iso2);
+    _setDetailCountry(iso2);
     setFocusedCountry(iso2);
+    window.atlasSheet && window.atlasSheet.ensure(0.48);
   };
   return React.createElement("div", {
     className: "layout"
@@ -455,7 +457,10 @@ function App() {
     direction: direction,
     setDirection: setDirection,
     detailCountry: detailCountry,
-    setDetailCountry: setDetailCountry,
+    setDetailCountry: function setDetailCountry(v) {
+      _setDetailCountry(v);
+      if (v && window.atlasSheet) window.atlasSheet.ensure(0.48);
+    },
     search: search,
     setSearch: setSearch,
     onPickFromSearch: onPickFromSearch,

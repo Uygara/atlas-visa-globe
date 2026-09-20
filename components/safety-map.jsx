@@ -125,6 +125,7 @@ function SafetyMapApp() {
 
   const open = (iso2) => {
     setSelected(iso2);
+    window.atlasSheet && window.atlasSheet.ensure(0.48);
     if (window.matchMedia("(max-width: 900px)").matches) {
       requestAnimationFrame(() => document.querySelector(".panel")?.scrollTo({ top: 0, behavior: "smooth" }));
     }

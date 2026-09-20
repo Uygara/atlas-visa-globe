@@ -65,6 +65,10 @@ function TransitMapApp() {
       sessionStorage.setItem("atlas.globeStyle", v);
     } catch (e) {}
   };
+  var openCountry = function openCountry(iso2) {
+    setSelected(iso2);
+    window.atlasSheet && window.atlasSheet.ensure(0.48);
+  };
   useEffect(function () {
     savePassport(passport);
   }, [passport]);
@@ -102,9 +106,7 @@ function TransitMapApp() {
     mode: mode,
     fillResolver: fillResolver,
     hoverRenderer: hoverRenderer,
-    onCountryClick: function onCountryClick(iso2) {
-      return setSelected(iso2);
-    },
+    onCountryClick: openCountry,
     focusedCountry: selected
   }), React.createElement(TransitLegend, null)), React.createElement("aside", {
     className: "panel"
@@ -131,9 +133,7 @@ function TransitMapApp() {
     }
   }), passport && React.createElement(TransitHubList, {
     passport: passport,
-    onOpen: function onOpen(iso2) {
-      return setSelected(iso2);
-    }
+    onOpen: openCountry
   }), React.createElement("footer", {
     className: "panel-foot"
   }, window.t("tmap.disclaimer"))));

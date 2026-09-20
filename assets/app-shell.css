@@ -480,11 +480,25 @@ a.feed-item:hover { border-color: var(--rule-strong); border-left-color: var(--t
   /* The sheet covers the lower part of the stage: fit the globe to the strip
      left visible above it instead of centring it behind the sheet. */
   .globe-wrap { height: max(45%, calc(100% - var(--sheet-h, 48vh) + 8px)) !important; }
-  .map-key { left: 10px; right: 58px; bottom: auto; top: 10px; padding: 6px 8px; font-size: 11px; }
-  .map-key ul { grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 2px 8px; }
+  /* The key is ONE scrollable row here: seven stacked lines used to cover the
+     top third of the globe. The fade on the right says "there is more". */
+  .map-key { left: 10px; right: 10px; bottom: auto; top: 10px; padding: 5px 8px; font-size: 11px; }
+  .map-key ul { display: flex; gap: 0 12px; overflow-x: auto; scrollbar-width: none;
+    -webkit-mask-image: linear-gradient(90deg, #000 88%, transparent); mask-image: linear-gradient(90deg, #000 88%, transparent); }
+  .map-key ul::-webkit-scrollbar { display: none; }
+  .map-key li { flex: none; }
   .map-key .sw { width: 9px; height: 9px; }
   .map-key-title { display: none; }
-  .zoom { right: 10px; bottom: auto; top: 10px; }
+  .zoom { right: 10px; bottom: auto; top: 46px; }
+  /* Pinch zooms the globe; the +/− tower (34×32 targets) is desktop furniture. */
+  @media (pointer: coarse) { .zoom { display: none; } }
+
+  /* The country you tapped must never sit under the sheet handle: its title row
+     stays pinned below the handle while the card scrolls, and scrollIntoView
+     leaves room for the handle. */
+  .entry { scroll-margin-top: 36px; }
+  .entry-top { position: sticky; top: 34px; z-index: 2; margin: -14px -14px 6px; padding: 14px 14px 8px;
+    background: var(--paper); border-bottom: 1px solid var(--rule); }
   .floater { display: none; }
   .compare-strip { top: auto; bottom: calc(var(--sheet-h, 48vh) + 10px); left: 10px; }
   .dialog h1 { font-size: 34px; }

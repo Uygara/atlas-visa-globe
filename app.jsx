@@ -276,11 +276,13 @@ function App() {
     }
     setDetailCountry(iso2);
     setFocusedCountry(iso2);
+    window.atlasSheet && window.atlasSheet.ensure(0.48);
   };
 
   const onPickFromSearch = (iso2) => {
     setDetailCountry(iso2);
     setFocusedCountry(iso2);
+    window.atlasSheet && window.atlasSheet.ensure(0.48);
   };
 
   // ─── Render ─────────────────────────────────────────────────────────────
@@ -333,7 +335,7 @@ function App() {
         direction={direction}
         setDirection={setDirection}
         detailCountry={detailCountry}
-        setDetailCountry={setDetailCountry}
+        setDetailCountry={(v) => { setDetailCountry(v); if (v && window.atlasSheet) window.atlasSheet.ensure(0.48); }}
         search={search}
         setSearch={setSearch}
         onPickFromSearch={onPickFromSearch}
