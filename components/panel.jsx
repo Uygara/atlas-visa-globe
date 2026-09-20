@@ -862,7 +862,7 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
       </div>
 
       <div className="entry-verdict">
-        <div className="stamp" style={{ "--st": stampVar(r.status) }}>
+        <div className="stamp" key={iso2} style={{ "--st": stampVar(r.status) }}>
           <span className="stamp-k">{r.fom ? window.t("detail.fom") : statusLabel(r.status)}</span>
           {r.fom
             ? <span className="stamp-s">{window.t("detail.fom_sub")}</span>

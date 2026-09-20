@@ -110,10 +110,14 @@ function Globe({
   const baseScaleRef = useRef(1);          // base scale computed from size
   const autoRef = useRef(false);           // auto-rotate flag (starts off, kicks in after idle)
   const lastInteractRef = useRef(performance.now());       // ms timestamp
+  const velRef = useRef([0, 0]);           // drag momentum, degrees/second (lon, lat)
+  const dragMovedRef = useRef(false);      // the last press travelled > CLICK_SLOP: its click is a drag, not a selection
+  const restRef = useRef(false);           // a country is focused or hovered: hold still (no auto-rotate)
   const rafRef = useRef(null);
   const projRef = useRef(null);
   const pathRef = useRef(null);
   const [zoomDisplay, setZoomDisplay] = useState(1);  // for UI label
+  useEffect(() => { restRef.current = !!focusedCountry || !!hover; }, [focusedCountry, hover]);
 
   // ─── Topology load ─────────────────────────────────────────────────────────
   useEffect(() => {
@@ -376,6 +380,7 @@ function Globe({
     const t0 = performance.now();
     const dur = 800;
     autoRef.current = false;
+    velRef.current = [0, 0];
     lastInteractRef.current = performance.now();
     const tween = (now) => {
       const t = Math.min(1, (now - t0) / dur);
@@ -443,19 +448,39 @@ function Globe({
     let startPt = null;
     const sensitivity = 0.35;
 
+    // Feel. Releasing a drag keeps the globe turning (friction); after a short
+    // stillness it starts a slow spin that eases in; a press that travelled more
+    // than a few px is a drag, never a selection. Everything is time-based with a
+    // capped step, so it looks the same at 60 and 120 Hz and does not jump when a
+    // background tab wakes up. Reduced-motion users get none of the motion.
+    const reduceMotion = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    const IDLE_MS = 2500;      // still for this long -> start turning
+    const SPIN_DPS = 4;        // cruising speed, degrees per second
+    const FRICTION = 3.2;      // momentum decay rate, 1/second
+    const CLICK_SLOP = 6;      // px of travel that turns a press into a drag
+    let spin = 0;              // eased auto-rotate speed, degrees per second
+    let trail = [];            // recent { t, lon, lat } while dragging (for the release velocity)
+    let lastFrame = performance.now();
+    let frameNo = 0;
+
     const onDown = (e) => {
       dragging = true;
       autoRef.current = false;
+      spin = 0;
+      velRef.current = [0, 0];
+      dragMovedRef.current = false;
       lastInteractRef.current = performance.now();
       startRot = [...rotRef.current];
       startPan = [...panRef.current];
       startPt = [e.clientX, e.clientY];
+      trail = [{ t: performance.now(), lon: rotRef.current[0], lat: rotRef.current[1] }];
       svg.style.cursor = "grabbing";
     };
     const onMove = (e) => {
       if (!dragging) return;
       const dx = e.clientX - startPt[0];
       const dy = e.clientY - startPt[1];
+      if (Math.hypot(dx, dy) > CLICK_SLOP) dragMovedRef.current = true;
       if (mode === "flat") {
         // Horizontal pan → longitude rotation so the world wraps. Vertical pan
         // stays as a translate (limited by clamping later if needed).
@@ -484,14 +509,32 @@ function Globe({
           redrawPaths();
         }
       }
+      const now = performance.now();
+      trail.push({ t: now, lon: rotRef.current[0], lat: rotRef.current[1] });
+      while (trail.length > 2 && now - trail[0].t > 120) trail.shift();
     };
     const onUp = () => {
+      if (dragging && dragMovedRef.current && !reduceMotion && trail.length >= 2) {
+        const a = trail[0], b = trail[trail.length - 1];
+        const secs = (b.t - a.t) / 1000;
+        // Only a globe that was still moving when let go keeps moving.
+        if (secs > 0.01 && performance.now() - b.t < 80) {
+          let dLon = b.lon - a.lon;
+          if (dLon > 180) dLon -= 360; else if (dLon < -180) dLon += 360;
+          const cap = (v) => Math.max(-360, Math.min(360, v));
+          velRef.current = [cap(dLon / secs), mode === "flat" ? 0 : cap((b.lat - a.lat) / secs)];
+        }
+      }
+      trail = [];
       dragging = false;
       svg.style.cursor = "grab";
       lastInteractRef.current = performance.now();
     };
+    // A moving pointer is not an idle one.
+    const onHoverMove = () => { lastInteractRef.current = performance.now(); };
 
     svg.addEventListener("mousedown", onDown);
+    svg.addEventListener("mousemove", onHoverMove);
     window.addEventListener("mousemove", onMove);
     window.addEventListener("mouseup", onUp);
 
@@ -549,28 +592,51 @@ function Globe({
     // Prevent browser default pinch-zoom on the globe area
     svg.style.touchAction = "none";
 
-    // Auto-rotate loop — only runs in globe modes (rotating a flat map makes no sense)
-    if (mode !== "flat") {
-      const tick = () => {
-        const now = performance.now();
-        const idleFor = now - lastInteractRef.current;
-        if (autoRef.current || idleFor > 60000) {
-          autoRef.current = true;
-          rotRef.current[0] += 0.035;
-          if (rotRef.current[0] > 180) rotRef.current[0] -= 360;
-          if (projRef.current && projRef.current.rotate) {
-            projRef.current.rotate(rotRef.current);
-            redrawPaths();
-          }
+    // Momentum after a drag (every mode) + the idle spin (globes only: turning
+    // a flat map makes no sense).
+    const tick = (now) => {
+      const dt = Math.min(0.05, Math.max(0, (now - lastFrame) / 1000));
+      lastFrame = now;
+      frameNo++;
+      let lon = rotRef.current[0], lat = rotRef.current[1];
+      let moved = false, glide = false;
+      if (!dragging) {
+        const v = velRef.current;
+        if (Math.abs(v[0]) > 1.5 || Math.abs(v[1]) > 1.5) {
+          const k = Math.exp(-FRICTION * dt);
+          velRef.current = [v[0] * k, v[1] * k];
+          lon += v[0] * dt;
+          lat = Math.max(-90, Math.min(90, lat + v[1] * dt));
+          if (lat === 90 || lat === -90) velRef.current[1] = 0;
+          moved = glide = true;
+        } else if (v[0] || v[1]) {
+          velRef.current = [0, 0];
         }
-        rafRef.current = requestAnimationFrame(tick);
-      };
+        const idle = now - lastInteractRef.current > IDLE_MS;
+        const want = mode !== "flat" && !reduceMotion && idle && !restRef.current && !document.hidden ? SPIN_DPS : 0;
+        // Ease in slowly, stop quickly.
+        spin += (want - spin) * (1 - Math.exp(-dt / (want > spin ? 1.2 : 0.25)));
+        if (want === 0 && spin < 0.02) spin = 0;
+        if (spin > 0) { lon += spin * dt; moved = true; }
+        autoRef.current = spin > 0;
+      }
+      if (moved) {
+        if (lon > 180) lon -= 360; else if (lon < -180) lon += 360;
+        rotRef.current = [lon, mode === "flat" ? 0 : lat, 0];
+        if (projRef.current && projRef.current.rotate) {
+          projRef.current.rotate(rotRef.current);
+          // A slow spin needs no more than 30 fps; a glide follows the finger's speed.
+          if (glide || frameNo % 2 === 0) redrawPaths();
+        }
+      }
       rafRef.current = requestAnimationFrame(tick);
-    }
+    };
+    rafRef.current = requestAnimationFrame(tick);
 
     return () => {
       svg.removeEventListener("wheel", onWheel);
       svg.removeEventListener("mousedown", onDown);
+      svg.removeEventListener("mousemove", onHoverMove);
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseup", onUp);
       svg.removeEventListener("touchstart", onTouchStart);
@@ -700,6 +766,8 @@ function Globe({
     onCountryHover?.(null);
   };
   const handleClick = (feature) => {
+    // A drag that happens to end on a country is not a selection.
+    if (dragMovedRef.current) { dragMovedRef.current = false; return; }
     const iso2 = featureToIso2(feature);
     if (iso2) onCountryClick?.(iso2);
   };

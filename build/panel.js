@@ -1184,6 +1184,7 @@ function DetailCard(_ref14) {
     className: "entry-verdict"
   }, React.createElement("div", {
     className: "stamp",
+    key: iso2,
     style: {
       "--st": stampVar(r.status)
     }

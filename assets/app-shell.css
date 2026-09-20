@@ -291,6 +291,15 @@ a.note:hover { background: color-mix(in oklab, var(--tone) 14%, transparent); }
   transform: rotate(-2.5deg);
   font-family: var(--font-display); text-transform: uppercase; text-align: center;
 }
+/* The verdict is pressed onto the page: lands large, dips, settles. Remounted per
+   country (key in panel.jsx), so every new card gets its own stamp. */
+@keyframes stamp-press {
+  0%   { transform: rotate(-2.5deg) scale(1.45); opacity: 0; }
+  55%  { transform: rotate(-2.5deg) scale(0.93); opacity: 1; }
+  100% { transform: rotate(-2.5deg) scale(1); opacity: 1; }
+}
+.entry-verdict .stamp:not(.is-small) { animation: stamp-press 280ms cubic-bezier(0.2, 0.9, 0.3, 1.15) both; }
+@media (prefers-reduced-motion: reduce) { .entry-verdict .stamp:not(.is-small) { animation: none; } }
 .stamp-k { font-size: 21px; font-weight: 800; letter-spacing: 0.05em; line-height: 1.05; }
 .stamp-s { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.06em; text-transform: none; margin-top: 1px; }
 .stamp.is-small { min-width: 0; padding: 2px 7px 1px; border-width: 1.5px; outline: none; transform: rotate(-1.5deg); }

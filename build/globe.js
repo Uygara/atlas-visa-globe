@@ -156,6 +156,9 @@ function Globe(_ref) {
   var baseScaleRef = useRef(1);
   var autoRef = useRef(false);
   var lastInteractRef = useRef(performance.now());
+  var velRef = useRef([0, 0]);
+  var dragMovedRef = useRef(false);
+  var restRef = useRef(false);
   var rafRef = useRef(null);
   var projRef = useRef(null);
   var pathRef = useRef(null);
@@ -163,6 +166,9 @@ function Globe(_ref) {
     _useState0 = _slicedToArray(_useState9, 2),
     zoomDisplay = _useState0[0],
     setZoomDisplay = _useState0[1];
+  useEffect(function () {
+    restRef.current = !!focusedCountry || !!hover;
+  }, [focusedCountry, hover]);
   useEffect(function () {
     var alive = true;
     fetch("https://unpkg.com/world-atlas@2.0.2/countries-110m.json").then(function (r) {
@@ -415,6 +421,7 @@ function Globe(_ref) {
     var t0 = performance.now();
     var dur = 800;
     autoRef.current = false;
+    velRef.current = [0, 0];
     lastInteractRef.current = performance.now();
     var _tween = function tween(now) {
       var t = Math.min(1, (now - t0) / dur);
@@ -470,19 +477,37 @@ function Globe(_ref) {
     var startPan = null;
     var startPt = null;
     var sensitivity = 0.35;
+    var reduceMotion = !!(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    var IDLE_MS = 2500;
+    var SPIN_DPS = 4;
+    var FRICTION = 3.2;
+    var CLICK_SLOP = 6;
+    var spin = 0;
+    var trail = [];
+    var lastFrame = performance.now();
+    var frameNo = 0;
     var onDown = function onDown(e) {
       dragging = true;
       autoRef.current = false;
+      spin = 0;
+      velRef.current = [0, 0];
+      dragMovedRef.current = false;
       lastInteractRef.current = performance.now();
       startRot = _toConsumableArray(rotRef.current);
       startPan = _toConsumableArray(panRef.current);
       startPt = [e.clientX, e.clientY];
+      trail = [{
+        t: performance.now(),
+        lon: rotRef.current[0],
+        lat: rotRef.current[1]
+      }];
       svg.style.cursor = "grabbing";
     };
     var onMove = function onMove(e) {
       if (!dragging) return;
       var dx = e.clientX - startPt[0];
       var dy = e.clientY - startPt[1];
+      if (Math.hypot(dx, dy) > CLICK_SLOP) dragMovedRef.current = true;
       if (mode === "flat") {
         var scale = projRef.current ? projRef.current.scale() : baseScaleRef.current;
         var degPerPx = 180 / (Math.PI * scale);
@@ -504,13 +529,38 @@ function Globe(_ref) {
           redrawPaths();
         }
       }
+      var now = performance.now();
+      trail.push({
+        t: now,
+        lon: rotRef.current[0],
+        lat: rotRef.current[1]
+      });
+      while (trail.length > 2 && now - trail[0].t > 120) trail.shift();
     };
     var onUp = function onUp() {
+      if (dragging && dragMovedRef.current && !reduceMotion && trail.length >= 2) {
+        var a = trail[0],
+          b = trail[trail.length - 1];
+        var secs = (b.t - a.t) / 1000;
+        if (secs > 0.01 && performance.now() - b.t < 80) {
+          var dLon = b.lon - a.lon;
+          if (dLon > 180) dLon -= 360;else if (dLon < -180) dLon += 360;
+          var cap = function cap(v) {
+            return Math.max(-360, Math.min(360, v));
+          };
+          velRef.current = [cap(dLon / secs), mode === "flat" ? 0 : cap((b.lat - a.lat) / secs)];
+        }
+      }
+      trail = [];
       dragging = false;
       svg.style.cursor = "grab";
       lastInteractRef.current = performance.now();
     };
+    var onHoverMove = function onHoverMove() {
+      lastInteractRef.current = performance.now();
+    };
     svg.addEventListener("mousedown", onDown);
+    svg.addEventListener("mousemove", onHoverMove);
     window.addEventListener("mousemove", onMove);
     window.addEventListener("mouseup", onUp);
     var pinching = false;
@@ -575,26 +625,51 @@ function Globe(_ref) {
     svg.addEventListener("touchcancel", onTouchEnd);
     svg.style.cursor = "grab";
     svg.style.touchAction = "none";
-    if (mode !== "flat") {
-      var _tick = function tick() {
-        var now = performance.now();
-        var idleFor = now - lastInteractRef.current;
-        if (autoRef.current || idleFor > 60000) {
-          autoRef.current = true;
-          rotRef.current[0] += 0.035;
-          if (rotRef.current[0] > 180) rotRef.current[0] -= 360;
-          if (projRef.current && projRef.current.rotate) {
-            projRef.current.rotate(rotRef.current);
-            redrawPaths();
-          }
+    var _tick = function tick(now) {
+      var dt = Math.min(0.05, Math.max(0, (now - lastFrame) / 1000));
+      lastFrame = now;
+      frameNo++;
+      var lon = rotRef.current[0],
+        lat = rotRef.current[1];
+      var moved = false,
+        glide = false;
+      if (!dragging) {
+        var v = velRef.current;
+        if (Math.abs(v[0]) > 1.5 || Math.abs(v[1]) > 1.5) {
+          var k = Math.exp(-FRICTION * dt);
+          velRef.current = [v[0] * k, v[1] * k];
+          lon += v[0] * dt;
+          lat = Math.max(-90, Math.min(90, lat + v[1] * dt));
+          if (lat === 90 || lat === -90) velRef.current[1] = 0;
+          moved = glide = true;
+        } else if (v[0] || v[1]) {
+          velRef.current = [0, 0];
         }
-        rafRef.current = requestAnimationFrame(_tick);
-      };
+        var idle = now - lastInteractRef.current > IDLE_MS;
+        var want = mode !== "flat" && !reduceMotion && idle && !restRef.current && !document.hidden ? SPIN_DPS : 0;
+        spin += (want - spin) * (1 - Math.exp(-dt / (want > spin ? 1.2 : 0.25)));
+        if (want === 0 && spin < 0.02) spin = 0;
+        if (spin > 0) {
+          lon += spin * dt;
+          moved = true;
+        }
+        autoRef.current = spin > 0;
+      }
+      if (moved) {
+        if (lon > 180) lon -= 360;else if (lon < -180) lon += 360;
+        rotRef.current = [lon, mode === "flat" ? 0 : lat, 0];
+        if (projRef.current && projRef.current.rotate) {
+          projRef.current.rotate(rotRef.current);
+          if (glide || frameNo % 2 === 0) redrawPaths();
+        }
+      }
       rafRef.current = requestAnimationFrame(_tick);
-    }
+    };
+    rafRef.current = requestAnimationFrame(_tick);
     return function () {
       svg.removeEventListener("wheel", onWheel);
       svg.removeEventListener("mousedown", onDown);
+      svg.removeEventListener("mousemove", onHoverMove);
       window.removeEventListener("mousemove", onMove);
       window.removeEventListener("mouseup", onUp);
       svg.removeEventListener("touchstart", onTouchStart);
@@ -706,6 +781,10 @@ function Globe(_ref) {
     onCountryHover === null || onCountryHover === void 0 || onCountryHover(null);
   };
   var handleClick = function handleClick(feature) {
+    if (dragMovedRef.current) {
+      dragMovedRef.current = false;
+      return;
+    }
     var iso2 = featureToIso2(feature);
     if (iso2) onCountryClick === null || onCountryClick === void 0 || onCountryClick(iso2);
   };
