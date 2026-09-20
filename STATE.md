@@ -1,6 +1,6 @@
 # Atlas / travelnow.info — Session handoff (current state)
 
-> **Updated:** 2026-09-16 · **Live:** <https://travelnow.info> · **Repo:** <https://github.com/Uygara/atlas-visa-globe>
+> **Updated:** 2026-09-20 · **Live:** <https://travelnow.info> · **Repo:** <https://github.com/Uygara/atlas-visa-globe>
 > Cloudflare Pages auto-deploys every push to `main` (~30 s).
 > Working language with the owner: **Turkish.** Code comments: English.
 > Hard rule: **never invent visa data.** No fake fees/rules/numbers — if a fact
@@ -35,10 +35,15 @@ removed; backend code is dormant).
    UK DATV / US C-1 …), amber = time-limited TWOV. Click a country = its
    transit detail.
 3. **`/safety-map/`** (beta) — travel-safety globe: every country coloured by
-   government advisories (U.S. State Dept + Government of Canada, stricter of
-   the two, 1–4). Detail card shows both sources, named risks, regional flag,
-   links. Data: `backend/fetch-advisories.js` → `data/travel-advisories.js`
-   (daily cron).
+   government advisories (UK FCDO + U.S. State Dept + Government of Canada,
+   strictest of the three, 1–4) in its OWN ink ramp (`--risk1…4`; the visa
+   green must never read as "safe" here). Pick a country and its provinces are
+   drawn from `data/admin1/<ISO2>.json` and shaded by the advisory that names
+   them. Detail card: per-source level + how old it is, regional warnings,
+   areas that exist only as words, GDACS disaster alerts, and the FCDO change
+   history ("what changed, when"). Data: `backend/fetch-advisories.js` →
+   `data/travel-advisories.js` (daily cron); boundaries built once by
+   `tools/build-admin1.js` (Natural Earth 10m, public domain).
 4. **`/itinerary/`** — full SPA "Travel planner" (globe-left / panel-right).
    Tap countries to add stops; route draws as numbered markers + dashed
    great-circle arcs; panel shows per-stop visa+fee, total cost, application
@@ -69,6 +74,31 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 11 (2026-09-20 — safety map v2, 13-designer review, open-work list):**
+  - **Safety map v2.** The US reissues some advisories yearly (Germany read
+    "updated May 2025") and one border province coloured a whole country.
+    Added **UK FCDO** (OGL v3) — the freshest source, with a dated change
+    history that reads as a current-events feed — and mapped the regional
+    warnings: FCDO's "areas we advise against travel to" plus the State
+    Department's "Do Not Travel To:" lists are matched against Natural Earth
+    admin-1 names, giving **252 mapped provinces in 64 countries**. Areas that
+    exist only as words ("within 10 km of the border with Syria") stay text.
+    Added **GDACS** orange/red disaster alerts, per-source freshness ("13 months
+    ago" flagged), and the map's own colour ramp. `globe.jsx` gained an optional
+    `regionFeatures`/`regionFill` overlay.
+  - **13 designer personas** (brand, data-viz, mobile, a11y, typography, growth,
+    gov-service, motion, travel UX, cartography, social, RTL, an AI-slop critic)
+    each reviewed the live site from screenshots in
+    `tools/`-independent scratch captures. All 13 scored it **3/10** on
+    "looks AI-generated" and named the same signatures (MRZ strip, ledger,
+    stamp). The consensus problems are in `TODO.md`; the loudest: mobile detail
+    card's title is clipped by the sheet handle (8×), empty ad slot on tool
+    pages (5×), passport pages carry none of the identity (5×), mobile legend
+    eats the globe (5×), "138 accessible" vs "87 without a visa" (3×),
+    colour-blind-unsafe status palette (3×), and every page shipping
+    `<html lang="en">` with no hreflang.
+  - **`TODO.md`** — the open-work list (owner tasks, site, safety map, app,
+    data). Keep it current; closed items belong in these round notes.
 - **Round 10 (2026-09-16 — relevance, personas, mobile, build step, accounts, safety map):**
   - **News relevance.** `affects.passports: []` used to mean "everyone", so a
     Burundi transit-visa edit showed under every passport. Now items surface only
@@ -729,6 +759,7 @@ EN in those four (engine ready — just add dict entries).
 - `tools/build.js` — compiles `app.jsx` + `components/*.jsx` → `build/*.js`.
   `.github/workflows/build.yml` re-runs it on pushes that touch JSX.
 - `assets/account*.js`, `account/index.html`, `firestore.rules`, `ACCOUNT-SETUP.md` — accounts.
+- `TODO.md` — open work only (Round 11). `tools/build-admin1.js` → `data/admin1/`.
 - `components/safety-map.jsx`, `backend/fetch-advisories.js`, `data/travel-advisories.js` — safety map.
 - `assets/tokens.css` / `chrome.css` / `app-shell.css` / `site.css` — the design
   system (see Round 9). `assets/site-nav.js` — the one nav list (browser + Node).
