@@ -96,6 +96,10 @@ const T = {
     "status.short.vr":  "Visa req.",
 
     "tally.accessible":  "destinations accessible",
+    "tally.no_visa":     "destinations without a visa application",
+    "tally.incoming_label": "nationalities entering without a visa application",
+    "tally.group_score": "destinations without a visa, on your best passport",
+    "tally.with_evisa":  "{n} counting eVisas (apply online, no embassy visit)",
     "tally.group_label": "destinations you can enter",
     "tally.of":          "of",
     "tally.worst_case":  "best combined access",
@@ -245,7 +249,7 @@ const T = {
 
     "pulse.heading":             "Passport pulse",
     "pulse.rank":                "Global rank",
-    "pulse.open":                "Open today",
+    "pulse.open":                "No visa needed",
     "pulse.gains_msg":           "Gained access to {n} destination(s) in this window.",
     "pulse.losses_msg":          "Lost access to {n} destination(s).",
 
@@ -499,6 +503,10 @@ const T = {
     "status.short.vr":  "Vize gerek.",
 
     "tally.accessible":  "ulaşılabilir destinasyon",
+    "tally.no_visa":     "vize başvurusu gerektirmeyen destinasyon",
+    "tally.incoming_label": "vize başvurusu olmadan giriş yapan uyruk",
+    "tally.group_score": "en iyi pasaportunla vizesiz giriş yapılan destinasyon",
+    "tally.with_evisa":  "e-Vize dahil {n} (çevrimiçi başvuru, konsolosluğa gitmeden)",
     "tally.group_label": "girebileceğin destinasyon",
     "tally.of":          "/",
     "tally.worst_case":  "en iyi ortak erişim",
@@ -647,7 +655,7 @@ const T = {
 
     "pulse.heading":             "Pasaport hareketi",
     "pulse.rank":                "Sıralama",
-    "pulse.open":                "Bugün açık",
+    "pulse.open":                "Vize gerekmez",
     "pulse.gains_msg":           "Bu süreçte {n} yeni destinasyon eklendi.",
     "pulse.losses_msg":          "{n} destinasyona erişim kapandı.",
 

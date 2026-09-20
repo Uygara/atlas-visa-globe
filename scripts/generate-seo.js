@@ -170,11 +170,11 @@ function renderProse(passport, name, rows, counts, ranks, snapshot) {
   html += `<p class="lead">A <strong>${escapeHtml(name)} passport</strong> currently gives its holder access to about
     <strong>${visaFreeTotal} of the ${total} destinations</strong> we track without arranging a visa beforehand —
     ${listJoin(easyParts)}.`;
-  html += ` Beyond those, ${counts.ev} destinations offer an eVisa you apply for online, and ${counts.vr}
+  html += ` Beyond those, ${counts.ev} destinations offer an eVisa you apply for online — counting them, that is
+    <strong>${accessTotal}</strong> destinations with no embassy visit — and ${counts.vr}
     still require a traditional embassy visa${counts.ban ? `, while ${counts.ban} refuse entry to this nationality` : ""}.`;
   if (rank) {
-    html += ` With <strong>${accessTotal} destinations</strong> open without an embassy visa, it ranks
-      <strong>#${rank} of ${rankTotal}</strong> passports worldwide.`;
+    html += ` By visa-free access it ranks <strong>#${rank} of ${rankTotal}</strong> passports worldwide.`;
   }
   html += `</p>`;
 
@@ -226,7 +226,7 @@ function renderProse(passport, name, rows, counts, ranks, snapshot) {
     },
     {
       q: `How is this ranked, and how current is the data?`,
-      a: `Passports are ranked by how many destinations they can enter without an embassy visa — visa-free, with a national ID card, with an online travel authorization, with an eVisa or with a visa on arrival — and ties are broken by how many of those need nothing arranged in advance. It is the same ranking the interactive map shows. Figures are rebuilt every 24 hours from public visa-policy sources, so this page reflects the most recent change we have recorded. Always confirm with the destination's embassy before booking.`,
+      a: `Passports are ranked by how many destinations they can enter without applying for a visa — visa-free, with a national ID card, with an online travel authorization or with a visa on arrival — the same measure passport indexes use; ties are broken by eVisa access. It is the same number and the same ranking the interactive map shows. Figures are rebuilt every 24 hours from public visa-policy sources, so this page reflects the most recent change we have recorded. Always confirm with the destination's embassy before booking.`,
     },
   ];
 
@@ -432,7 +432,7 @@ function renderIndex(allPassports, snapshot, ranks) {
     const n = snapshot[iso] && snapshot[iso].name || (c && c.name);
     if (!c || !n) return "";
     const ri = ranks.get(iso);
-    return `<li><a href="${iso.toLowerCase()}/"><span class="flag">${c.flag}</span> <strong>${escapeHtml(n)}</strong></a> <span class="vf-count">${ri ? ri.access : "?"} open · #${ri ? ri.rank : "?"}</span></li>`;
+    return `<li><a href="${iso.toLowerCase()}/"><span class="flag">${c.flag}</span> <strong>${escapeHtml(n)}</strong></a> <span class="vf-count">${ri ? ri.mobility : "?"} without a visa · #${ri ? ri.rank : "?"}</span></li>`;
   }).join("");
 
   return `<!DOCTYPE html>
@@ -453,8 +453,8 @@ ${masthead({ path: "/passport/", i18n: false })}
 <div class="wrap">
   <h1>Passport visa-requirement directory</h1>
   <p class="intro">Every passport we track, ranked by <strong>global mobility</strong> — the number of destinations you
-  can enter without an embassy visa (visa-free, ID card, travel authorization, eVisa or visa on arrival), ties broken by
-  how many need nothing arranged in advance. It is the same ranking the interactive map shows. Open any passport for a full country
+  can enter without applying for a visa (visa-free, ID card, travel authorization or visa on arrival), ties broken by
+  eVisa access. It is the same ranking the interactive map shows. Open any passport for a full country
   breakdown, regional analysis and FAQ. Figures are rebuilt every 24 hours. New here? Start with our
   <a href="/guides/visa-types-explained/">guide to visa types</a>.</p>
   <p style="font-size:13px;color:var(--fg-mute);">${allPassports.length} passports · Data refreshed ${new Date().toISOString().slice(0,10)}</p>

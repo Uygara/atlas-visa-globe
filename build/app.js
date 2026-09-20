@@ -562,11 +562,8 @@ function CompareStrip(_ref2) {
   var ta = window.tally(passport);
   var tb = window.tally(compare);
   if (!a || !b || !ta || !tb) return null;
-  var open = function open(x) {
-    return (x.idc || 0) + x.vf + (x.eta || 0) + x.ev + x.voa;
-  };
-  var sa = open(ta),
-    sb = open(tb);
+  var sa = window.mobilityScore(ta),
+    sb = window.mobilityScore(tb);
   var d = sa - sb;
   return React.createElement("div", {
     className: "compare-strip overlay-card"

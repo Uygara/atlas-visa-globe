@@ -430,8 +430,7 @@ function CompareStrip({ enabled, passport, compare }) {
   const ta = window.tally(passport);
   const tb = window.tally(compare);
   if (!a || !b || !ta || !tb) return null;
-  const open = (x) => (x.idc || 0) + x.vf + (x.eta || 0) + x.ev + x.voa;
-  const sa = open(ta), sb = open(tb);
+  const sa = window.mobilityScore(ta), sb = window.mobilityScore(tb);
   const d = sa - sb;
   return (
     <div className="compare-strip overlay-card">

@@ -137,7 +137,7 @@ function Panel({
           {passport && !groupMode && (
             <DirectionToggle value={direction} onChange={setDirection} passport={passport} />
           )}
-          <Tally tally={tallyData} filter={filter} setFilter={setFilter} groupActive={groupActive} />
+          <Tally tally={tallyData} filter={filter} setFilter={setFilter} groupActive={groupActive} direction={direction} />
           {filter !== "all" && (
             <FilterList
               filter={filter}
@@ -648,7 +648,7 @@ function PassportDropdown({ value, onChange, allowClear, onClear }) {
 
 // The ledger: one big number, a proportional bar, and filter rows with dotted
 // leaders — printed-index style.
-function Tally({ tally, filter, setFilter, groupActive }) {
+function Tally({ tally, filter, setFilter, groupActive, direction }) {
   const total = (tally.idc || 0) + tally.vf + (tally.eta || 0) + tally.ev + tally.voa + tally.vr + (tally.ban || 0);
   const rows = [
     // ID-card travel only when present; ETA only when present; ban only when present.
@@ -660,16 +660,25 @@ function Tally({ tally, filter, setFilter, groupActive }) {
     { k: "vr", n: tally.vr },
     ...((tally.ban || 0) > 0 ? [{ k: "ban", n: tally.ban }] : []),
   ];
-  const accessScore = (tally.idc || 0) + tally.vf + (tally.eta || 0) + tally.ev + tally.voa;
+  // One headline number: destinations you can enter WITHOUT applying for a
+  // visa. eVisas are shown as a second line, never folded into the headline.
+  const noVisa = window.mobilityScore(tally);
+  const withEvisa = window.accessScore(tally);
+  const scoreLabel = groupActive ? window.t("tally.group_score")
+    : direction === "incoming" ? window.t("tally.incoming_label")
+    : window.t("tally.no_visa");
   return (
     <div>
       <div className="score">
-        <span className="score-n">{accessScore}</span>
+        <span className="score-n">{noVisa}</span>
         <span className="score-l">
-          {groupActive ? window.t("tally.group_label") : window.t("tally.accessible")}<br />
+          {scoreLabel}<br />
           <span className="mono">{window.t("tally.of")} {total}{groupActive && " · " + window.t("tally.worst_case")}</span>
         </span>
       </div>
+      {withEvisa > noVisa && (
+        <p className="score-sub">{window.t("tally.with_evisa", { n: withEvisa })}</p>
+      )}
 
       <div className="bar" aria-hidden="true">
         {rows.map(r => r.n > 0 && (
@@ -1538,7 +1547,7 @@ function PassportPulse({ passport }) {
   const meta = passport ? window.PASSPORTS[passport] : null;
   if (!meta || !tally) return null;
   // Same numbers as the ledger above and the /passport/ pages.
-  const totalOpen = window.accessScore(tally);
+  const totalOpen = window.mobilityScore(tally);
   const rankInfo = window.passportRank(passport);
   const rank = rankInfo && rankInfo.rank;
   const hasMovement = pulse.gains + pulse.losses > 0;

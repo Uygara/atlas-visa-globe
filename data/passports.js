@@ -72423,9 +72423,10 @@ window.PASSPORT_LIST = Object.values(window.PASSPORTS)
 //   accessScore   — destinations open in any form short of a consular visa
 //                   (ID card, visa-free, travel authorisation, eVisa, on arrival).
 //   mobilityScore — the part that needs NO visa arranged in advance (eVisa
-//                   excluded).
-// Passports are ranked by accessScore, ties broken by mobilityScore, so the rank
-// follows the big "destinations accessible" number people actually see.
+//                   excluded). This is THE headline number everywhere (panel,
+//                   pulse, compare strip, /passport/ pages) and the ranking
+//                   measure — the same one passport indexes use.
+// Passports are ranked by mobilityScore, ties broken by accessScore (eVisa).
 window.accessScore = function (t) {
   return t ? (t.idc || 0) + t.vf + (t.eta || 0) + t.ev + t.voa : 0;
 };
@@ -72442,7 +72443,7 @@ window.passportRank = function (iso2) {
     try {
       const scored = Object.keys(window.PASSPORTS)
         .map(iso => { const t = window.tally(iso); return { iso, access: window.accessScore(t), mobility: window.mobilityScore(t) }; })
-        .sort((a, b) => b.access - a.access || b.mobility - a.mobility);
+        .sort((a, b) => b.mobility - a.mobility || b.access - a.access);
       _passportRanks = {};
       scored.forEach((s, i) => {
         const prev = scored[i - 1];

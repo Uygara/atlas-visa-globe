@@ -142,7 +142,8 @@ function Panel(_ref) {
     tally: tallyData,
     filter: filter,
     setFilter: setFilter,
-    groupActive: groupActive
+    groupActive: groupActive,
+    direction: direction
   }), filter !== "all" && React.createElement(FilterList, {
     filter: filter,
     passport: passport,
@@ -881,7 +882,8 @@ function Tally(_ref11) {
   var tally = _ref11.tally,
     filter = _ref11.filter,
     setFilter = _ref11.setFilter,
-    groupActive = _ref11.groupActive;
+    groupActive = _ref11.groupActive,
+    direction = _ref11.direction;
   var total = (tally.idc || 0) + tally.vf + (tally.eta || 0) + tally.ev + tally.voa + tally.vr + (tally.ban || 0);
   var rows = [].concat(_toConsumableArray((tally.idc || 0) > 0 ? [{
     k: "idc",
@@ -905,16 +907,22 @@ function Tally(_ref11) {
     k: "ban",
     n: tally.ban
   }] : []));
-  var accessScore = (tally.idc || 0) + tally.vf + (tally.eta || 0) + tally.ev + tally.voa;
+  var noVisa = window.mobilityScore(tally);
+  var withEvisa = window.accessScore(tally);
+  var scoreLabel = groupActive ? window.t("tally.group_score") : direction === "incoming" ? window.t("tally.incoming_label") : window.t("tally.no_visa");
   return React.createElement("div", null, React.createElement("div", {
     className: "score"
   }, React.createElement("span", {
     className: "score-n"
-  }, accessScore), React.createElement("span", {
+  }, noVisa), React.createElement("span", {
     className: "score-l"
-  }, groupActive ? window.t("tally.group_label") : window.t("tally.accessible"), React.createElement("br", null), React.createElement("span", {
+  }, scoreLabel, React.createElement("br", null), React.createElement("span", {
     className: "mono"
-  }, window.t("tally.of"), " ", total, groupActive && " · " + window.t("tally.worst_case")))), React.createElement("div", {
+  }, window.t("tally.of"), " ", total, groupActive && " · " + window.t("tally.worst_case")))), withEvisa > noVisa && React.createElement("p", {
+    className: "score-sub"
+  }, window.t("tally.with_evisa", {
+    n: withEvisa
+  })), React.createElement("div", {
     className: "bar",
     "aria-hidden": "true"
   }, rows.map(function (r) {
@@ -2219,7 +2227,7 @@ function PassportPulse(_ref33) {
   }, [passport]);
   var meta = passport ? window.PASSPORTS[passport] : null;
   if (!meta || !tally) return null;
-  var totalOpen = window.accessScore(tally);
+  var totalOpen = window.mobilityScore(tally);
   var rankInfo = window.passportRank(passport);
   var rank = rankInfo && rankInfo.rank;
   var hasMovement = pulse.gains + pulse.losses > 0;
