@@ -94,28 +94,24 @@ function BrandMark(props) {
     rx: "2",
     stroke: "currentColor",
     strokeWidth: "1.5"
-  }), React.createElement("circle", {
-    cx: "12",
-    cy: "11",
-    r: "5.25",
-    stroke: "currentColor",
-    strokeWidth: "1.3"
-  }), React.createElement("ellipse", {
-    cx: "12",
-    cy: "11",
-    rx: "2.2",
-    ry: "5.25",
-    stroke: "currentColor",
-    strokeWidth: "1.1"
   }), React.createElement("path", {
-    d: "M6.9 11h10.2",
+    d: "M6.4 14.6V6.8h2.9a2.4 2.4 0 0 1 0 4.8H6.4",
     stroke: "currentColor",
-    strokeWidth: "1.1"
+    strokeWidth: "1.6",
+    strokeLinecap: "round",
+    strokeLinejoin: "round"
   }), React.createElement("path", {
-    d: "M8 19h8",
+    d: "M16.9 7.3 13.9 10.7l3 3.4",
     stroke: "currentColor",
-    strokeWidth: "1.3",
-    strokeLinecap: "round"
+    strokeWidth: "1.6",
+    strokeLinecap: "round",
+    strokeLinejoin: "round"
+  }), React.createElement("path", {
+    d: "M6.4 18.3h11.2",
+    stroke: "currentColor",
+    strokeWidth: "1.4",
+    strokeLinecap: "round",
+    strokeDasharray: "0.1 2.3"
   }));
 }
 function IconCaret(props) {

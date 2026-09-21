@@ -179,7 +179,7 @@ async function translate(html, enPath) {
     else english = textNodesOf(u).some((n) => before.has(n) && n.nodeValue === before.get(n) && wordsOf(n.nodeValue).length > 0);
     if (english) left.push(u);
   }
-  return { dom, left, total: units.length };
+  return { dom, left, total: units.length, ids: units.map((u) => u.id) };
 }
 
 // Internal links go to the Turkish twin when there is one.
@@ -233,7 +233,7 @@ async function buildPage(enPath) {
   ]) html = replaceBetween(html, name, content);
   html = localiseHead(html, enPath, meta);
 
-  const { dom, left, total } = await translate(html, enPath);
+  const { dom, left, total, ids } = await translate(html, enPath);
   const doc = dom.window.document;
   rewriteLinks(doc);
   rewriteJsonLd(doc, enPath, meta);
@@ -244,7 +244,7 @@ async function buildPage(enPath) {
   doc.documentElement.setAttribute("dir", "ltr");
   const out = "<!DOCTYPE html>\n" + doc.documentElement.outerHTML + "\n";
   dom.window.close();
-  return { out, left, total };
+  return { out, left, total, ids };
 }
 
 // ── The visa map (/tr/): the SPA shell with a Turkish crawlable fallback ────────
@@ -254,6 +254,9 @@ function buildHome() {
   const meta = META["/"];
   let html = read("index.html");
   html = localiseHead(html, "/", meta);
+  // The Turkish home has its own social card (scripts/og-cards.js).
+  html = html.replace(/(<meta property="og:image" content=")[^"]*(")/, (_, a, b) => a + SITE_URL + "/assets/og/home-tr.png" + b);
+  html = html.replace(/(<meta name="twitter:image" content=")[^"]*(")/, (_, a, b) => a + SITE_URL + "/assets/og/home-tr.png" + b);
   // hreflang + language routing live in a stamped block (apply-chrome.js).
   html = html.replace(/<!-- lang:head -->[\s\S]*?<!-- \/lang:head -->/, () => `<!-- lang:head -->\n${langHead({ enPath: "/", lang: "tr" })}\n<!-- /lang:head -->`);
   // The shell lives one directory deeper: relative script paths must be absolute.
@@ -295,6 +298,15 @@ async function main() {
     }
   }
   if (TODO) return;
+
+  // Entries no unit asks for any more — the English changed and the old sentence is
+  // still here. Harmless, but they hide which pages are really translated.
+  if (!ONLY) {
+    const used = new Set(jobs.flatMap((j) => j.ids || []));
+    const orphans = Object.keys(STRINGS).filter((id) => !used.has(id));
+    if (orphans.length) console.warn(`
+! ${orphans.length} unused entr${orphans.length === 1 ? "y" : "ies"} in scripts/tr-strings (English changed?): ${orphans.slice(0, 12).join(" ")}${orphans.length > 12 ? " …" : ""}`);
+  }
 
   if (bad) {
     console.error(`\n${bad} page(s) not fully translated — run with --todo to list what is missing. Nothing written.`);

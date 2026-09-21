@@ -157,6 +157,23 @@ EN in those four (engine ready — just add dict entries).
     labelled "(beta)" in every language select (`LANGS` in `i18n.js`/`partials.js`).
     Still English in those languages: passport-variant labels
     (`data/passport-variants.js`), long static-page prose beyond the dictionary.
+  - **Brand.** The globe-on-a-cover mark (the category's most copied symbol) is
+    replaced by a passport page opening its MRZ: "P<" over a dotted filler line
+    (`BRAND_MARK` in `partials.js`, `BrandMark` in `chrome.jsx`, the SPA loading
+    marks). The favicon is the same P< as a navy tile with a gold chevron;
+    `node scripts/make-icons.js` draws `favicon.svg/png`, `apple-touch-icon.png`
+    (180, full-bleed) and `icon-512.png` (for the app). `scripts/make-og.py` (which
+    would have overwritten them) is gone; the generic social image `assets/og.png` and
+    `assets/og/home-tr.png` now come from `og-cards.js` (home card, versioned
+    separately). ".info" stays visible on phones (hidden only below 370 px).
+  - **Planner.** The departure date moved from step 3 to step 2 and says what a date
+    buys; `applyPlan()` (apply-by = processing + 7 days) is computed once and feeds both
+    the date row — which now shows a red "not enough time at normal speed" note naming
+    the stops whose deadline has passed — and the reminders list.
+  - **Dates and labels.** ISO dates in prose became "21 September 2026" / "21 Eylül
+    2026" (`fmtDate` in `generate-seo.js`, the "Last reviewed" lines on 7 static pages);
+    the truncated Turkish nav/status labels ("Schengen hesap.", "Vize gerek.") are full
+    words. Mixed-currency fee strings in `visa-fees.js` stay as curated.
   - **Gotcha (caught before push):** all compiled JSX shares one global scope, so
     a top-level `function mrzLines` in `panel.jsx` replaced `window.mrzLines`
     (from `data/mrz.js`) and recursed forever. Call shared helpers through

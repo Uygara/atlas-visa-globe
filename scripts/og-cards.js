@@ -5,6 +5,9 @@
 //   node scripts/og-cards.js --force    render all of them
 //   node scripts/og-cards.js tr us      only these passports
 //
+// Also draws the home card (assets/og/home-<lang>.png; the English one is copied to
+// assets/og.png, the image every page without its own card falls back to).
+//
 // Each /passport/<iso>/ page used to share one generic image, so a shared link
 // looked the same for all 200 passports. The card is the passport's identity page
 // in miniature: flag + name, the headline number, the rank as a stamp, the MRZ and
@@ -28,7 +31,8 @@ const { DATA, SNAPSHOT, LOC, computeRanks, passportName } = require("./generate-
 
 const OUT = path.join(ROOT, "assets", "og");
 const MANIFEST = path.join(OUT, "manifest.json");
-const TEMPLATE_VERSION = 3;
+const TEMPLATE_VERSION = 4;   // passport cards
+const HOME_VERSION = 2;       // home cards
 const FORCE = process.argv.includes("--force");
 const ONLY = process.argv.slice(2).filter((a) => /^[a-z]{2}$/i.test(a)).map((a) => a.toUpperCase());
 
@@ -118,6 +122,56 @@ ${f.rank ? `<div class="stamp"><span>${esc(L.rank)}</span><b>#${f.rank}</b></div
 </div></body></html>`;
 }
 
+// The home card: the site's pitch in the passport-page language of the other 400.
+const HOME = {
+  en: {
+    eyebrow: "VISA REQUIREMENTS · 200+ PASSPORTS",
+    head: "Where can your passport take you?",
+    sub: "Every country coloured by what you need to enter today. Free, no signup, refreshed daily from public sources.",
+  },
+  tr: {
+    eyebrow: "VİZE GEREKLİLİKLERİ · 200+ PASAPORT",
+    head: "Pasaportun seni nereye götürebilir?",
+    sub: "Her ülke, bugün girmek için ihtiyacın olana göre renkli. Ücretsiz, üyelik yok, kamuya açık kaynaklardan her gün yenilenir.",
+  },
+};
+const HOME_STATUSES = ["vf", "eta", "ev", "voa", "vr"];
+
+function homeHtml(lang, tokensCss) {
+  const H = HOME[lang], S = LOC[lang];
+  const chips = HOME_STATUSES.map((s) => `<span class="chip"><i style="background:var(--${s})"></i>${esc(S.status[s])}</span>`).join("");
+  const bar = HOME_STATUSES.map((s) => `<i style="flex:1 0 0;background:var(--${s})"></i>`).join("");
+  return `<!doctype html><html lang="${lang}"><head><meta charset="utf-8">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@400..700&family=Sofia+Sans+Extra+Condensed:wght@600..850&family=DM+Mono:wght@400;500&display=swap">
+<style>${tokensCss}
+html,body{margin:0;width:1200px;height:630px;overflow:hidden;background:var(--paper)}
+.card{position:relative;width:1200px;height:630px;background:var(--paper);color:var(--ink);font-family:var(--font-sans)}
+.edge{position:absolute;inset:16px;border:2px solid var(--rule-strong)}
+.edge::after{content:"";position:absolute;inset:6px;border:1px solid var(--rule)}
+.top{position:absolute;left:52px;right:52px;top:44px;display:flex;justify-content:space-between;align-items:center}
+.brand{display:flex;align-items:center;gap:14px;font:800 46px/1 var(--font-display);color:var(--ink)}
+.brand svg{width:46px;height:46px}
+.brand .tld{font:500 26px var(--font-mono);color:var(--ink-3)}
+.band{font:500 15px var(--font-mono);letter-spacing:.2em;color:var(--ink-4)}
+.eyebrow{position:absolute;left:56px;top:150px;font:500 22px var(--font-mono);letter-spacing:.2em;color:var(--ink-3)}
+.head{position:absolute;left:56px;top:182px;width:1000px;font:850 108px/.92 var(--font-display);letter-spacing:-.005em;color:var(--ink)}
+.sub{position:absolute;left:56px;top:396px;width:900px;font:500 28px/1.3 var(--font-sans);color:var(--ink-2)}
+.chips{position:absolute;left:56px;bottom:100px;display:flex;gap:26px;font:600 20px var(--font-mono);letter-spacing:.02em;color:var(--ink-2)}
+.chip{display:flex;align-items:center;gap:9px}.chip i{width:20px;height:20px;border-radius:3px;display:block}
+.mrz{position:absolute;right:56px;top:178px;text-align:right}
+.bar{position:absolute;left:34px;right:34px;bottom:34px;height:22px;display:flex;gap:3px}
+.bar i{display:block;border-radius:2px}
+</style></head><body><div class="card">
+<div class="edge"></div>
+<div class="top"><div class="brand">${BRAND_MARK}<span>travelnow<span class="tld">.info</span></span></div><div class="band">${esc(S.docBand)}</div></div>
+<div class="eyebrow">${esc(H.eyebrow)}</div>
+<div class="head">${esc(H.head)}</div>
+<div class="sub">${esc(H.sub)}</div>
+<div class="chips">${chips}</div>
+<div class="bar">${bar}</div>
+</div></body></html>`;
+}
+
 async function main() {
   fs.mkdirSync(OUT, { recursive: true });
   const manifest = fs.existsSync(MANIFEST) ? JSON.parse(fs.readFileSync(MANIFEST, "utf8")) : {};
@@ -138,6 +192,13 @@ async function main() {
       todo.push({ f, file, sig });
     }
   }
+  for (const lang of ["en", "tr"]) {
+    if (ONLY.length) break;
+    const file = `home-${lang}.png`;
+    const sig = crypto.createHash("sha1").update(JSON.stringify([HOME_VERSION, "home", HOME[lang], LOC[lang].status, LOC[lang].docBand])).digest("hex").slice(0, 12);
+    if (!FORCE && manifest[file] === sig && fs.existsSync(path.join(OUT, file))) continue;
+    todo.push({ home: lang, file, sig });
+  }
   if (!todo.length) { console.log("✓ all cards are up to date"); return; }
 
   const browser = await puppeteer.launch({ executablePath: chromePath(), headless: "new", args: ["--disable-gpu", "--no-first-run", "--hide-scrollbars"] });
@@ -146,12 +207,12 @@ async function main() {
     const page = await browser.newPage();
     await page.setViewport({ width: 1200, height: 630, deviceScaleFactor: 1 });
     for (const [i, job] of todo.entries()) {
-      await page.setContent(cardHtml(job.f, tokensCss), { waitUntil: "load", timeout: 60000 });
+      await page.setContent(job.home ? homeHtml(job.home, tokensCss) : cardHtml(job.f, tokensCss), { waitUntil: "load", timeout: 60000 });
       // Web fonts (and the flag font, fetched only when a flag is on the page) load
       // after "load"; wait for them, then a beat for the paint.
       await page.evaluate(() => document.fonts.ready);
       // A long name wraps to two lines: shrink it until it clears the number below.
-      await page.evaluate(() => {
+      if (!job.home) await page.evaluate(() => {
         const n = document.querySelector(".name"), row = document.querySelector(".idrow");
         let size = parseFloat(getComputedStyle(n).fontSize);
         while (row.getBoundingClientRect().bottom > 300 && size > 56) { size -= 4; n.style.fontSize = size + "px"; }
@@ -168,6 +229,9 @@ async function main() {
   // Palette-PNG squeeze: flat colours + text quantise to ~30 KB with no visible loss.
   const q = spawnSync(process.env.PYTHON || "python", [path.join(__dirname, "quantize-og.py"), ...written], { stdio: "inherit" });
   if (q.status !== 0) console.warn("! quantize-og.py did not run (Python + Pillow missing?) — cards are valid but larger");
+
+  // The generic image every page without its own card points at.
+  if (written.some((f) => path.basename(f) === "home-en.png")) fs.copyFileSync(path.join(OUT, "home-en.png"), path.join(ROOT, "assets", "og.png"));
 
   const sorted = Object.fromEntries(Object.entries(manifest).sort(([a], [b]) => a.localeCompare(b)));
   fs.writeFileSync(MANIFEST, JSON.stringify(sorted, null, 1) + "\n");

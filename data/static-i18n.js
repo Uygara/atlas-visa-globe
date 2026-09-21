@@ -132,7 +132,6 @@
 
     // ── ETIAS body + FAQ (fragments; <strong>/<a> split into separate nodes) ──
     "From late 2026, every non-EU visitor entering the Schengen Area without a visa will need an": { tr:"2026 sonundan itibaren, Schengen Bölgesi'ne vizesiz giren her AB-dışı ziyaretçinin şuna ihtiyacı olacak:" },
-    "Last reviewed 2026-05-24 · Source:": { tr:"Son inceleme 2026-05-24 · Kaynak:" },
     "Application fee": { tr:"Başvuru ücreti" },
     "Days per stay": { tr:"Kalış başına gün" },
     "Approval time": { tr:"Onay süresi" },

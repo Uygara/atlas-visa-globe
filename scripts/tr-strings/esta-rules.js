@@ -1,7 +1,7 @@
 // Turkish text for /esta-rules/ — see scripts/tr-strings/index.js for the format.
 // Country names follow data/country-names.js (Turkish).
 module.exports = {
-  "bab58613": `Ücretsiz · Kaynak: <a href="https://esta.cbp.dhs.gov/" target="_blank" rel="noopener">esta.cbp.dhs.gov</a> · Son gözden geçirme 2026-05-24`,
+  "d35c0fef": `Ücretsiz · Kaynak: <a href="https://esta.cbp.dhs.gov/" target="_blank" rel="noopener">esta.cbp.dhs.gov</a> · Son gözden geçirme 24 Mayıs 2026`,
   "67683830": `1 Mart 2011'den bu yana İran, Irak, Suriye, Libya, Sudan, Somali, Yemen, Küba veya Kuzey Kore'ye seyahat ettiysen`,
   "fb6cc856": `Sınırlı diplomatik / askerî / gazetecilik muafiyetleri vardır. Havaalanı içi (airside) transit bile sayılabilir.`,
   "f16d74a5": `Başka bir pasaport taşımak işe yaramaz — bu ülkelerle çifte vatandaşlık başlı başına bir VWP diskalifiye nedenidir.`,

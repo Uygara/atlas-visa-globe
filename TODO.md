@@ -25,13 +25,6 @@
 
 ## Site — tasarım incelemesinden (benim yapacaklarım)
 
-- [ ] **P3 · Türkçe kırpmalar ve tarih/para biçimi** [1] — "Schengen hesap.", "Vize gerek."
-      gibi sözlükte kısaltılmış metinler; düzyazıda ISO tarih (2026-05-22) ve çift para birimi.
-      `Intl` ile biçimlendir. ~yarım gün.
-- [ ] **P3 · Marka işareti** [2] — dünya ikonu kategorinin en çok kopyalanan simgesi;
-      `P<` (MRZ göstergesi) öneriliyor. ".info" mobilde kayboluyor.
-- [ ] **P3 · Planlayıcıda tarih ve son başvuru** [2] — kalkış tarihi en altta ve opsiyonel;
-      "işlem süresi + bugün > kalkış" uyarısı yok.
 - [ ] **P3 · Transit haritasında IATA kodları / bacak bazlı sorgu** [1].
 - [ ] **P3 · Rehber dizini ve menü** [2] — beş özdeş kutu yerine basılı içindekiler;
       11 eşit menü linkini gruplara böl.

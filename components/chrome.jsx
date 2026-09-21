@@ -63,15 +63,14 @@ function useSiteTheme() {
 
 // ─── Icons ───────────────────────────────────────────────────────────────
 function BrandMark(props) {
-  // A cover emblem: globe with one meridian and one parallel inside a
-  // document frame. Drawn in currentColor so it takes the accent.
+  // A passport page opening its machine-readable zone: "P<" over a dotted filler
+  // line. Drawn in currentColor so it takes the accent.
   return (
     <svg viewBox="0 0 24 24" fill="none" aria-hidden="true" {...props}>
       <rect x="2.75" y="1.75" width="18.5" height="20.5" rx="2" stroke="currentColor" strokeWidth="1.5" />
-      <circle cx="12" cy="11" r="5.25" stroke="currentColor" strokeWidth="1.3" />
-      <ellipse cx="12" cy="11" rx="2.2" ry="5.25" stroke="currentColor" strokeWidth="1.1" />
-      <path d="M6.9 11h10.2" stroke="currentColor" strokeWidth="1.1" />
-      <path d="M8 19h8" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
+      <path d="M6.4 14.6V6.8h2.9a2.4 2.4 0 0 1 0 4.8H6.4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M16.9 7.3 13.9 10.7l3 3.4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M6.4 18.3h11.2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeDasharray="0.1 2.3" />
     </svg>
   );
 }

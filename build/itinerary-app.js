@@ -124,6 +124,7 @@ function ItineraryApp() {
       if (passport) localStorage.setItem("atlas.passport", passport);
     } catch (e) {}
   }, [passport, stops, departure]);
+  var plan = applyPlan(passport, stops, departure);
   var addStop = useCallback(function (iso) {
     setStops(function (prev) {
       return prev.includes(iso) ? prev : [].concat(_toConsumableArray(prev), [iso]);
@@ -260,7 +261,15 @@ function ItineraryApp() {
   })), passport && React.createElement("section", {
     className: "p-sec"
   }, React.createElement(Caption, {
-    n: 2,
+    n: 2
+  }, window.t("itin.depart_label")), React.createElement(DepartureRow, {
+    departure: departure,
+    setDeparture: setDeparture,
+    plan: plan
+  })), passport && React.createElement("section", {
+    className: "p-sec"
+  }, React.createElement(Caption, {
+    n: 3,
     aside: stops.length ? React.createElement("span", {
       className: "mono"
     }, stops.length) : null
@@ -272,20 +281,14 @@ function ItineraryApp() {
     passport: passport,
     stops: stops,
     onAdd: addStop
-  })), passport && React.createElement("section", {
-    className: "p-sec"
-  }, React.createElement(Caption, {
-    n: 3
-  }, window.t("itin.depart_label")), React.createElement(DepartureRow, {
-    departure: departure,
-    setDeparture: setDeparture
   })), React.createElement(Summary, {
     passport: passport,
     stops: stops
   }), React.createElement(Reminders, {
     passport: passport,
     stops: stops,
-    departure: departure
+    departure: departure,
+    plan: plan
   }), React.createElement("footer", {
     className: "panel-foot"
   }, window.t("tmap.disclaimer"))));
@@ -489,9 +492,50 @@ function StopsList(_ref3) {
     }, React.createElement(IconClose, null)));
   }));
 }
+function applyPlan(passport, stops, departure) {
+  if (!passport || !stops.length || !departure) return null;
+  var dep = new Date(departure + "T00:00:00Z");
+  if (isNaN(dep)) return null;
+  var today = new Date();
+  today.setUTCHours(0, 0, 0, 0);
+  if (dep - today < 0) return {
+    past: true,
+    items: [],
+    late: []
+  };
+  var items = stops.map(function (iso) {
+    var r = window.resolveStatus(passport, iso);
+    if (r.status === "vf" || r.status === "self") return null;
+    var proc = procDays(passport, iso) || 14;
+    var lead = proc + 7;
+    var applyBy = new Date(dep.getTime() - lead * 86400000);
+    return {
+      iso: iso,
+      status: r.status,
+      applyBy: applyBy,
+      lead: lead,
+      proc: proc,
+      overdue: applyBy < today
+    };
+  }).filter(Boolean).sort(function (a, b) {
+    return a.applyBy - b.applyBy;
+  });
+  var earliest = items.length ? items[0].applyBy : null;
+  return {
+    dep: dep,
+    today: today,
+    items: items,
+    late: items.filter(function (i) {
+      return i.overdue;
+    }),
+    earliest: earliest,
+    earliestDays: earliest ? Math.ceil((earliest - today) / 86400000) : null
+  };
+}
 function DepartureRow(_ref4) {
   var departure = _ref4.departure,
-    setDeparture = _ref4.setDeparture;
+    setDeparture = _ref4.setDeparture,
+    plan = _ref4.plan;
   var dep = departure ? new Date(departure + "T00:00:00Z") : null;
   var hint = "";
   if (dep && !isNaN(dep)) {
@@ -502,7 +546,8 @@ function DepartureRow(_ref4) {
       n: days
     });
   }
-  return React.createElement("div", {
+  var late = plan && plan.late ? plan.late : [];
+  return React.createElement("div", null, React.createElement("div", {
     style: {
       display: "flex",
       alignItems: "center",
@@ -531,7 +576,27 @@ function DepartureRow(_ref4) {
     style: {
       margin: 0
     }
-  }, hint));
+  }, hint)), !departure && React.createElement("p", {
+    className: "p-hint",
+    style: {
+      margin: "8px 0 0"
+    }
+  }, window.t("itin.depart_hint")), late.length > 0 && React.createElement("div", {
+    className: "note note-risk",
+    style: {
+      display: "block",
+      marginTop: 10
+    },
+    role: "alert"
+  }, React.createElement("div", {
+    className: "note-k"
+  }, window.t("itin.late_title")), React.createElement("div", {
+    className: "note-s"
+  }, window.t("itin.late_body", {
+    names: late.map(function (i) {
+      return window.countryName(i.iso);
+    }).join(", ")
+  }))));
 }
 function Summary(_ref5) {
   var passport = _ref5.passport,
@@ -628,32 +693,14 @@ function Summary(_ref5) {
 function Reminders(_ref6) {
   var passport = _ref6.passport,
     stops = _ref6.stops,
-    departure = _ref6.departure;
+    departure = _ref6.departure,
+    plan = _ref6.plan;
   var _useState11 = useState(""),
     _useState12 = _slicedToArray(_useState11, 2),
     shareMsg = _useState12[0],
     setShareMsg = _useState12[1];
-  if (!passport || stops.length === 0 || !departure) return null;
-  var dep = new Date(departure + "T00:00:00Z");
-  if (isNaN(dep)) return null;
-  var today = new Date();
-  today.setUTCHours(0, 0, 0, 0);
-  if (dep - today < 0) return null;
-  var items = stops.map(function (iso) {
-    var r = window.resolveStatus(passport, iso);
-    if (r.status === "vf" || r.status === "self") return null;
-    var proc = procDays(passport, iso) || 14;
-    var lead = proc + 7;
-    var applyBy = new Date(dep.getTime() - lead * 86400000);
-    return {
-      iso: iso,
-      status: r.status,
-      applyBy: applyBy,
-      lead: lead,
-      proc: proc,
-      overdue: applyBy < today
-    };
-  }).filter(Boolean);
+  if (!plan || plan.past) return null;
+  var items = plan.items;
   if (items.length === 0) {
     return React.createElement("div", {
       className: "note note-ok",
@@ -668,11 +715,8 @@ function Reminders(_ref6) {
       name: window.countryName(passport)
     })));
   }
-  items.sort(function (a, b) {
-    return a.applyBy - b.applyBy;
-  });
-  var earliest = items[0].applyBy;
-  var earliestDays = Math.ceil((earliest - today) / 86400000);
+  var earliest = plan.earliest,
+    earliestDays = plan.earliestDays;
   var downloadICS = function downloadICS() {
     var lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//travelnow.info//Visa Reminder//EN", "CALSCALE:GREGORIAN"];
     var stamp = new Date().toISOString().replace(/[-:]/g, "").split(".")[0] + "Z";

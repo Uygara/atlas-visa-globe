@@ -1,10 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
-  <!-- Pure-white circular tile, friendly for both light and dark browser chrome.
-       Subtle blue equator/meridian + a single accent dot give it a "globe"
-       silhouette without the muddiness of the previous continent traces. -->
-  <rect width="64" height="64" rx="14" fill="#ffffff"/>
-  <circle cx="32" cy="32" r="22" fill="none" stroke="#60a5fa" stroke-width="2"/>
-  <ellipse cx="32" cy="32" rx="9" ry="22" fill="none" stroke="#60a5fa" stroke-width="1.4"/>
-  <path d="M10 32 H54" stroke="#60a5fa" stroke-width="1.4" fill="none"/>
-  <circle cx="40" cy="22" r="2.8" fill="#22c55e"/>
+  <rect width="64" height="64" rx="12" fill="#1E3A5F"/>
+  <path d="M15 47V17h11a8 8 0 0 1 0 16H15" fill="none" stroke="#F4F2E8" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M50 20 41.5 31.5 50 43" fill="none" stroke="#D3B36C" stroke-width="5.2" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

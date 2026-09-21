@@ -79,6 +79,7 @@ function ItineraryApp() {
     try { localStorage.setItem("atlas.itinerary", JSON.stringify({ passport, stops, departure })); } catch (e) {}
     try { if (passport) localStorage.setItem("atlas.passport", passport); } catch (e) {}
   }, [passport, stops, departure]);
+  const plan = applyPlan(passport, stops, departure);
 
   const addStop = useCallback((iso) => {
     setStops(prev => prev.includes(iso) ? prev : [...prev, iso]);
@@ -162,19 +163,19 @@ function ItineraryApp() {
         </section>
         {passport && (
           <section className="p-sec">
-            <Caption n={2} aside={stops.length ? <span className="mono">{stops.length}</span> : null}>{window.t("itin.add_destination")}</Caption>
-            <StopsList passport={passport} stops={stops} onRemove={removeStop} />
-            <AddDestinationRow passport={passport} stops={stops} onAdd={addStop} />
+            <Caption n={2}>{window.t("itin.depart_label")}</Caption>
+            <DepartureRow departure={departure} setDeparture={setDeparture} plan={plan} />
           </section>
         )}
         {passport && (
           <section className="p-sec">
-            <Caption n={3}>{window.t("itin.depart_label")}</Caption>
-            <DepartureRow departure={departure} setDeparture={setDeparture} />
+            <Caption n={3} aside={stops.length ? <span className="mono">{stops.length}</span> : null}>{window.t("itin.add_destination")}</Caption>
+            <StopsList passport={passport} stops={stops} onRemove={removeStop} />
+            <AddDestinationRow passport={passport} stops={stops} onAdd={addStop} />
           </section>
         )}
         <Summary passport={passport} stops={stops} />
-        <Reminders passport={passport} stops={stops} departure={departure} />
+        <Reminders passport={passport} stops={stops} departure={departure} plan={plan} />
         <footer className="panel-foot">{window.t("tmap.disclaimer")}</footer>
       </aside>
     </div>
@@ -276,7 +277,31 @@ function StopsList({ passport, stops, onRemove }) {
   );
 }
 
-function DepartureRow({ departure, setDeparture }) {
+// Apply-by dates for every stop that needs an application, given a departure date.
+// Lead time = the country's processing time + a week's margin. `late` are the stops
+// whose apply-by date is already behind us: not enough time at normal speed.
+function applyPlan(passport, stops, departure) {
+  if (!passport || !stops.length || !departure) return null;
+  const dep = new Date(departure + "T00:00:00Z");
+  if (isNaN(dep)) return null;
+  const today = new Date(); today.setUTCHours(0, 0, 0, 0);
+  if (dep - today < 0) return { past: true, items: [], late: [] };
+  const items = stops.map(iso => {
+    const r = window.resolveStatus(passport, iso);
+    if (r.status === "vf" || r.status === "self") return null;
+    const proc = procDays(passport, iso) || 14;
+    const lead = proc + 7;
+    const applyBy = new Date(dep.getTime() - lead * 86400000);
+    return { iso, status: r.status, applyBy, lead, proc, overdue: applyBy < today };
+  }).filter(Boolean).sort((a, b) => a.applyBy - b.applyBy);
+  const earliest = items.length ? items[0].applyBy : null;
+  return {
+    dep, today, items, late: items.filter(i => i.overdue),
+    earliest, earliestDays: earliest ? Math.ceil((earliest - today) / 86400000) : null,
+  };
+}
+
+function DepartureRow({ departure, setDeparture, plan }) {
   const dep = departure ? new Date(departure + "T00:00:00Z") : null;
   let hint = "";
   if (dep && !isNaN(dep)) {
@@ -284,11 +309,21 @@ function DepartureRow({ departure, setDeparture }) {
     const days = Math.floor((dep - today) / 86400000);
     hint = days < 0 ? window.t("itin.date_past") : window.t("itin.days_until", { n: days });
   }
+  const late = plan && plan.late ? plan.late : [];
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-      <input type="date" className="field" style={{ width: "auto" }} value={departure} onChange={(e) => setDeparture(e.target.value)} aria-label={window.t("itin.depart_label")} />
-      {departure && <button type="button" className="btn btn-quiet" onClick={() => setDeparture("")}>{window.t("itin.depart_clear")}</button>}
-      {hint && <span className="p-hint" style={{ margin: 0 }}>{hint}</span>}
+    <div>
+      <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+        <input type="date" className="field" style={{ width: "auto" }} value={departure} onChange={(e) => setDeparture(e.target.value)} aria-label={window.t("itin.depart_label")} />
+        {departure && <button type="button" className="btn btn-quiet" onClick={() => setDeparture("")}>{window.t("itin.depart_clear")}</button>}
+        {hint && <span className="p-hint" style={{ margin: 0 }}>{hint}</span>}
+      </div>
+      {!departure && <p className="p-hint" style={{ margin: "8px 0 0" }}>{window.t("itin.depart_hint")}</p>}
+      {late.length > 0 && (
+        <div className="note note-risk" style={{ display: "block", marginTop: 10 }} role="alert">
+          <div className="note-k">{window.t("itin.late_title")}</div>
+          <div className="note-s">{window.t("itin.late_body", { names: late.map(i => window.countryName(i.iso)).join(", ") })}</div>
+        </div>
+      )}
     </div>
   );
 }
@@ -341,22 +376,10 @@ function Summary({ passport, stops }) {
 }
 
 // ─── Apply-by reminders + ICS + share ─────────────────────────────────────
-function Reminders({ passport, stops, departure }) {
+function Reminders({ passport, stops, departure, plan }) {
   const [shareMsg, setShareMsg] = useState("");
-  if (!passport || stops.length === 0 || !departure) return null;
-  const dep = new Date(departure + "T00:00:00Z");
-  if (isNaN(dep)) return null;
-  const today = new Date(); today.setUTCHours(0, 0, 0, 0);
-  if ((dep - today) < 0) return null;
-
-  const items = stops.map(iso => {
-    const r = window.resolveStatus(passport, iso);
-    if (r.status === "vf" || r.status === "self") return null;
-    const proc = procDays(passport, iso) || 14;
-    const lead = proc + 7;
-    const applyBy = new Date(dep.getTime() - lead * 86400000);
-    return { iso, status: r.status, applyBy, lead, proc, overdue: applyBy < today };
-  }).filter(Boolean);
+  if (!plan || plan.past) return null;
+  const { items } = plan;
 
   if (items.length === 0) {
     return (
@@ -366,9 +389,7 @@ function Reminders({ passport, stops, departure }) {
       </div>
     );
   }
-  items.sort((a, b) => a.applyBy - b.applyBy);
-  const earliest = items[0].applyBy;
-  const earliestDays = Math.ceil((earliest - today) / 86400000);
+  const { earliest, earliestDays } = plan;
 
   const downloadICS = () => {
     const lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//travelnow.info//Visa Reminder//EN", "CALSCALE:GREGORIAN"];

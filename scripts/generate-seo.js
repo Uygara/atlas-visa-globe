@@ -271,6 +271,8 @@ function cn(iso, lang) {
 function passportName(iso, lang) {
   return lang === "tr" ? cn(iso, "tr") : (SNAPSHOT[iso] && SNAPSHOT[iso].name) || cn(iso, "en");
 }
+// "20 September 2026" / "20 Eylül 2026" — ISO dates read as machine output in prose.
+const fmtDate = (iso, lang) => new Intl.DateTimeFormat(lang === "tr" ? "tr-TR" : "en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(iso + "T00:00:00Z"));
 const sortCollator = (lang) => new Intl.Collator(lang === "tr" ? "tr" : "en");
 
 // Resolve every destination the map counts (no own country, no Antarctica).
@@ -433,7 +435,7 @@ function renderPage(passport, allPassports, ranks, lang, ads) {
 <link rel="canonical" href="${canonical}">
 <meta name="author" content="Uygar Atalay">
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
-<link rel="apple-touch-icon" href="/assets/favicon.svg">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
 <meta property="og:image" content="${ogImage}">${ogCard ? `
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -486,7 +488,7 @@ ${masthead({ path: enPath, i18n: false, lang })}
       <span class="hero-flag flag" aria-hidden="true">${country.flag}</span>
       <div>
         <h1>${escapeHtml(L.h1(name))}</h1>
-        <p class="subtitle">${escapeHtml(L.subtitle(total, rank, today))}</p>
+        <p class="subtitle">${escapeHtml(L.subtitle(total, rank, fmtDate(today, lang)))}</p>
       </div>
     </div>
     <div class="mrz" aria-hidden="true"><span>${escapeHtml(mrz[0])}</span><span>${escapeHtml(mrz[1])}</span></div>
@@ -562,7 +564,7 @@ ${masthead({ path: enPath, i18n: false, lang })}
 <div class="wrap">
   <h1>${escapeHtml(L.dirH1)}</h1>
   <p class="intro">${L.dirIntro.replace("%TYPES%", types)}</p>
-  <p style="font-size:13px;color:var(--fg-mute);">${escapeHtml(L.dirMeta(allPassports.length, date))}</p>
+  <p style="font-size:13px;color:var(--fg-mute);">${escapeHtml(L.dirMeta(allPassports.length, fmtDate(date, lang)))}</p>
   <ul class="dir">${items}</ul>
 </div>
 ${footer({ lang })}

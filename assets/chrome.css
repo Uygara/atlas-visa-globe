@@ -135,7 +135,6 @@
 @media (max-width: 900px) {
   .masthead { gap: 8px; padding: 0 10px; }
   .brand-word { font-size: var(--fs-lg); }
-  .brand-tld { display: none; }
   .mh-nav, .mh-tools .lang-select, .mh-tools .mh-support, .mh-tools .mh-help { display: none; }
   .mh-tools { margin-inline-start: auto; gap: 6px; }
   .mh-burger { display: inline-flex; }
@@ -174,4 +173,9 @@
 
 @media (max-width: 380px) {
   .seg button { padding: 3px 6px; min-width: 30px; }
+}
+
+/* Phones keep the whole wordmark; only the narrowest drop ".info". */
+@media (max-width: 370px) {
+  .brand-tld { display: none; }
 }
