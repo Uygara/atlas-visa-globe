@@ -292,6 +292,9 @@ function ThemeToggle(_ref5) {
     }, icon);
   }));
 }
+function grpStart(list, i) {
+  return i > 0 && list[i].g !== list[i - 1].g ? "mh-grp-start" : "";
+}
 function LangSelect(_ref8) {
   var className = _ref8.className;
   useLangTick();
@@ -431,7 +434,8 @@ function Masthead(_ref9) {
   }, items.map(function (it, i) {
     return React.createElement("li", {
       key: it.href,
-      hidden: i >= fit
+      hidden: i >= fit,
+      className: grpStart(items, i)
     }, React.createElement("a", {
       className: "mh-link",
       href: to(it.href),
@@ -451,9 +455,10 @@ function Masthead(_ref9) {
     }
   }, moreLabel, React.createElement(IconCaret, null)), moreOpen && React.createElement("ul", {
     className: "mh-menu"
-  }, overflow.map(function (it) {
+  }, overflow.map(function (it, j) {
     return React.createElement("li", {
-      key: it.href
+      key: it.href,
+      className: grpStart(overflow, j)
     }, React.createElement("a", {
       href: to(it.href),
       "aria-current": nav.isCurrent(it, path) ? "page" : undefined
@@ -514,7 +519,7 @@ function Masthead(_ref9) {
   }, items.map(function (it) {
     return React.createElement("a", {
       key: it.href,
-      className: "mh-sheet-link",
+      className: "mh-sheet-link " + grpStart(items, items.indexOf(it)),
       href: to(it.href),
       "aria-current": nav.isCurrent(it, path) ? "page" : undefined
     }, label(it));

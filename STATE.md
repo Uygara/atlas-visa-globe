@@ -174,6 +174,13 @@ EN in those four (engine ready — just add dict entries).
     2026" (`fmtDate` in `generate-seo.js`, the "Last reviewed" lines on 7 static pages);
     the truncated Turkish nav/status labels ("Schengen hesap.", "Vize gerek.") are full
     words. Mixed-currency fee strings in `visa-fees.js` stay as curated.
+  - **Menu and guide index.** The twelve equal masthead links are four groups
+    (`g` in `assets/site-nav.js`: maps + planner | Passports, Guides | Schengen,
+    ETIAS | nomad, second passport, alerts, about); the first link of a group gets
+    `mh-grp-start` — a divider in the bar (drawn on the item's own box so the
+    priority+ measurement counts it), a rule in the More menu and the phone sheet.
+    `/guides/` is a numbered table of contents in three groups with reading times
+    instead of five identical cards.
   - **Gotcha (caught before push):** all compiled JSX shares one global scope, so
     a top-level `function mrzLines` in `panel.jsx` replaced `window.mrzLines`
     (from `data/mrz.js`) and recursed forever. Call shared helpers through

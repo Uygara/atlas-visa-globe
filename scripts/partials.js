@@ -70,8 +70,10 @@ function masthead({ path = "/", i18n = true, lang = "en" } = {}) {
   const u = (k, en) => (lang === "tr" ? UI_TR[k] : en);
   const href = (h) => (lang === "tr" && hasTr(h) ? toTr(h) : h);
   const cur = (it) => isCurrent(it, path) ? ' aria-current="page"' : "";
-  const links = NAV.map(it => `      <li><a class="mh-link" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a></li>`).join("\n");
-  const sheet = NAV.map(it => `    <a class="mh-sheet-link" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a>`).join("\n");
+  // The first link of each group carries `mh-grp-start` (a divider in the bar and the menus).
+  const start = (i) => (i > 0 && NAV[i].g !== NAV[i - 1].g ? " mh-grp-start" : "");
+  const links = NAV.map((it, i) => `      <li${start(i) ? ` class="${start(i).trim()}"` : ""}><a class="mh-link" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a></li>`).join("\n");
+  const sheet = NAV.map((it, i) => `    <a class="mh-sheet-link${start(i)}" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a>`).join("\n");
   const langs = i18n ? LANGS : (hasTr(path) ? LANGS.filter(([c]) => c === "en" || c === "tr") : []);
   const langSelect = langs.length
     ? `<select class="lang-select" data-lang-select aria-label="${u("lang", "Language")}">${langs.map(([c, n, beta]) => `<option value="${c}"${c === lang ? " selected" : ""}>${c.toUpperCase()} · ${n}${beta ? " (beta)" : ""}</option>`).join("")}</select>`

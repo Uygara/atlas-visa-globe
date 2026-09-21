@@ -179,3 +179,10 @@
 @media (max-width: 370px) {
   .brand-tld { display: none; }
 }
+
+/* Group dividers: twelve links read as four clusters. The rule lives on the item's own
+   box (padding + border, not margin) so the priority+ measurement includes it. */
+.mh-links > li.mh-grp-start { padding-inline-start: 10px; margin-inline-start: 2px; border-inline-start: 1px solid var(--rule-strong); }
+.mh-menu li.mh-grp-start { border-top: 1px solid var(--rule); margin-top: 4px; padding-top: 4px; }
+.mh-menu li.mh-grp-start:first-child { border-top: 0; margin-top: 0; padding-top: 0; }
+.mh-sheet-link.mh-grp-start { border-top: 1px solid var(--rule); margin-top: 6px; padding-top: 16px; }

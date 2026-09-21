@@ -12,4 +12,11 @@ module.exports = {
   "94d7ce9a": `Airside ve landside farkı, insanları şaşırtan havaalanları ve bağlantının vize gerektirip gerektirmediğini anlama yolu.`,
   "cfb4c8b1": `Altı aylık pasaport geçerlilik kuralı`,
   "1ecd1d97": `Geçerli bir pasaportun neden yine de reddedilebildiği, kuralın nasıl hesaplandığı ve üç ayın ne zaman yettiği.`,
+  // table of contents
+  "63d15496": `Buradan başla`,
+  "5e7f29c6": `Yolcuları en çok yanıltan kurallar`,
+  "9ee2285d": `Avrupa'ya gelirken`,
+  "a09e5000": `6 dk okuma`,
+  "4b777feb": `7 dk okuma`,
+  "aed747aa": `5 dk okuma`,
 };

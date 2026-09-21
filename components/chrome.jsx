@@ -150,6 +150,11 @@ function ThemeToggle({ value, onChange }) {
   );
 }
 
+// Divider class for the first link of a new group (see `g` in assets/site-nav.js).
+function grpStart(list, i) {
+  return i > 0 && list[i].g !== list[i - 1].g ? "mh-grp-start" : "";
+}
+
 function LangSelect({ className }) {
   useLangTick();
   const cur = window.ATLAS_LANG || "en";
@@ -231,7 +236,7 @@ function Masthead({ view, onView, theme, onTheme, onHelp }) {
       <nav ref={navRef} className="mh-nav" aria-label={tr("nav.main", "Main")}>
         <ul className="mh-links">
           {items.map((it, i) => (
-            <li key={it.href} hidden={i >= fit}>
+            <li key={it.href} hidden={i >= fit} className={grpStart(items, i)}>
               <a className="mh-link" href={to(it.href)} aria-current={nav.isCurrent(it, path) ? "page" : undefined}>{label(it)}</a>
             </li>
           ))}
@@ -242,8 +247,8 @@ function Masthead({ view, onView, theme, onTheme, onHelp }) {
           </button>
           {moreOpen && (
             <ul className="mh-menu">
-              {overflow.map(it => (
-                <li key={it.href}><a href={to(it.href)} aria-current={nav.isCurrent(it, path) ? "page" : undefined}>{label(it)}</a></li>
+              {overflow.map((it, j) => (
+                <li key={it.href} className={grpStart(overflow, j)}><a href={to(it.href)} aria-current={nav.isCurrent(it, path) ? "page" : undefined}>{label(it)}</a></li>
               ))}
             </ul>
           )}
@@ -275,7 +280,7 @@ function Masthead({ view, onView, theme, onTheme, onHelp }) {
 
       <div className="mh-sheet">
         {items.map(it => (
-          <a key={it.href} className="mh-sheet-link" href={to(it.href)} aria-current={nav.isCurrent(it, path) ? "page" : undefined}>{label(it)}</a>
+          <a key={it.href} className={"mh-sheet-link " + grpStart(items, items.indexOf(it))} href={to(it.href)} aria-current={nav.isCurrent(it, path) ? "page" : undefined}>{label(it)}</a>
         ))}
         <div className="mh-sheet-foot">
           <LangSelect />

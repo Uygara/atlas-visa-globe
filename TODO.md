@@ -26,8 +26,6 @@
 ## Site — tasarım incelemesinden (benim yapacaklarım)
 
 - [ ] **P3 · Transit haritasında IATA kodları / bacak bazlı sorgu** [1].
-- [ ] **P3 · Rehber dizini ve menü** [2] — beş özdeş kutu yerine basılı içindekiler;
-      11 eşit menü linkini gruplara böl.
 - [ ] **P3 · Paylaşım kartlarını yenile** — veri toplu değişince `node scripts/og-cards.js`
       (yalnızca sayısı değişen kartları çizer; yerel Chrome + Python/Pillow ister). Günlük
       iş bunu yapmıyor.

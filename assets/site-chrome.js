@@ -127,6 +127,7 @@
           var a = li.querySelector("a").cloneNode(true);
           a.className = "";
           var item = document.createElement("li");
+          if (li.classList.contains("mh-grp-start")) item.className = "mh-grp-start";
           item.appendChild(a);
           menu.appendChild(item);
         }

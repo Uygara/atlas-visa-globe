@@ -6,19 +6,22 @@
 // Order is priority order: when the bar is too narrow, items fold into "More"
 // from the END of the list, so keep the most-used tools first.
 (function (root) {
+  // `g` is the group: maps and the planner, the two reference indexes, the two
+  // rule checkers, then the specialist pages and the site itself. Every header
+  // draws a divider where the group changes so twelve links read as four clusters.
   var NAV = [
-    { href: "/",                          key: "nav.visa_map",    en: "Visa map" },
-    { href: "/transit-map/",              key: "nav.transit_map", en: "Transit map" },
-    { href: "/safety-map/",               key: "nav.safety_map",  en: "Safety map" },
-    { href: "/itinerary/",                key: "nav.itinerary",   en: "Travel planner" },
-    { href: "/schengen-calculator/",      key: "nav.schengen",    en: "Schengen calc" },
-    { href: "/etias/",                    key: "nav.etias",       en: "ETIAS 2026" },
-    { href: "/passport/",                 key: "nav.passports",   en: "Passports" },
-    { href: "/guides/",                   key: "nav.guides",      en: "Guides" },
-    { href: "/digital-nomad-visa/",       key: "nav.nomad",       en: "Nomad visas" },
-    { href: "/citizenship-by-investment/", key: "nav.cbi",        en: "Second passport" },
-    { href: "/alerts/",                   key: "nav.alerts",      en: "Alerts" },
-    { href: "/about/",                    key: "nav.about",       en: "About" }
+    { href: "/",                          key: "nav.visa_map",    en: "Visa map",        g: 0 },
+    { href: "/transit-map/",              key: "nav.transit_map", en: "Transit map",     g: 0 },
+    { href: "/safety-map/",               key: "nav.safety_map",  en: "Safety map",      g: 0 },
+    { href: "/itinerary/",                key: "nav.itinerary",   en: "Travel planner",  g: 0 },
+    { href: "/passport/",                 key: "nav.passports",   en: "Passports",       g: 1 },
+    { href: "/guides/",                   key: "nav.guides",      en: "Guides",          g: 1 },
+    { href: "/schengen-calculator/",      key: "nav.schengen",    en: "Schengen calc",   g: 2 },
+    { href: "/etias/",                    key: "nav.etias",       en: "ETIAS 2026",      g: 2 },
+    { href: "/digital-nomad-visa/",       key: "nav.nomad",       en: "Nomad visas",     g: 3 },
+    { href: "/citizenship-by-investment/", key: "nav.cbi",        en: "Second passport", g: 3 },
+    { href: "/alerts/",                   key: "nav.alerts",      en: "Alerts",          g: 3 },
+    { href: "/about/",                    key: "nav.about",       en: "About",           g: 3 }
   ];
   var SUPPORT = { href: "https://buymeacoffee.com/travelnowinfo", key: "nav.support", en: "Support" };
 
