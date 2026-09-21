@@ -142,6 +142,21 @@ EN in those four (engine ready — just add dict entries).
     the mobile sheet handle is a labelled focusable button (arrows/Home/End/Enter);
     live regions on the score, the country verdict and every calculator result.
     Not yet done: a real screen-reader pass (VoiceOver/TalkBack).
+  - **Arabic (RTL) and the other beta languages.** Layout: every physical
+    `left/right` in `site.css`/`app-shell.css`/`chrome.css` (and the few in JSX)
+    became a logical property (`margin-inline-start`, `border-inline-start`,
+    `text-align: start`, `inset-inline-*`), so `dir="rtl"` mirrors the panel, the
+    callouts and the lists; identical in LTR. MRZ and codes are `direction: ltr`.
+    Type: `html[lang="ar"]` puts IBM Plex Sans Arabic behind Sofia Sans (font link
+    in `partials.js` + the SPA shells) and zeroes the tracking. English text left
+    inside an Arabic static page gets its own direction (`static-i18n.js`
+    `fixMixedDirection`, cleared on leaving Arabic) instead of a full stop on the
+    wrong end. Text: es/de/fr/ar were missing ~175 of the 366 SPA keys (safety map,
+    planner, transit map, change feed…): all filled (`data/i18n.js`, placeholders
+    checked), tail-country names fall back to `Intl.DisplayNames`. es/de/fr/ar are
+    labelled "(beta)" in every language select (`LANGS` in `i18n.js`/`partials.js`).
+    Still English in those languages: passport-variant labels
+    (`data/passport-variants.js`), long static-page prose beyond the dictionary.
   - **Gotcha (caught before push):** all compiled JSX shares one global scope, so
     a top-level `function mrzLines` in `panel.jsx` replaced `window.mrzLines`
     (from `data/mrz.js`) and recursed forever. Call shared helpers through

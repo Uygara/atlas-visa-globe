@@ -208,7 +208,13 @@ button, input, select, textarea { font: inherit; color: inherit; }
 }
 
 /* Arabic (and any joined script): tracking pulls the letterforms apart. */
-html[lang="ar"] { --ls-tight: 0; --ls-caps: 0; --ls-label: 0; --ls-wide: 0; }
+html[lang="ar"] {
+  --ls-tight: 0; --ls-caps: 0; --ls-label: 0; --ls-wide: 0;
+  /* Latin stays in Sofia Sans; Arabic letters come from Plex (the system fallback
+     differs per OS and is thin next to the condensed display face). */
+  --font-sans:    "Twemoji Country Flags", "Sofia Sans", "IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Twemoji Country Flags", "Sofia Sans Extra Condensed", "IBM Plex Sans Arabic", "Arial Narrow", sans-serif;
+}
 
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }

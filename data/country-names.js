@@ -133,11 +133,26 @@
 
   // Look-up helper. iso2 → localised string; falls back to English `name` from
   // window.byIso2, then to the iso2 code itself.
+  const displayNames = {};
+  function regionName(lang, iso2) {
+    try {
+      if (!displayNames[lang]) displayNames[lang] = new Intl.DisplayNames([lang], { type: "region" });
+      const v = displayNames[lang].of(iso2);
+      return v && v !== iso2 ? v : null;
+    } catch (e) { return null; }
+  }
+
   window.countryName = function (iso2) {
     if (!iso2) return "";
     const lang = window.ATLAS_LANG || "en";
     const dict = NAMES[lang];
     if (dict && dict[iso2]) return dict[iso2];
+    // Tail countries the tables above don't cover: the browser's own CLDR names
+    // (Intl.DisplayNames) beat falling back to English in an Arabic/German page.
+    if (lang !== "en") {
+      const v = regionName(lang, iso2);
+      if (v) return v;
+    }
     return (window.byIso2 && window.byIso2[iso2] && window.byIso2[iso2].name) || iso2;
   };
 })();

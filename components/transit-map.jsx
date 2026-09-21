@@ -252,7 +252,7 @@ function TransitHubList({ passport, onOpen }) {
               {r.line ? <Swatch s={r.line.s} /> : <span className="sw sw-all" aria-hidden="true" />}
               <span className="lg-label" style={{ whiteSpace: "normal" }}>{r.hubLabel}</span>
               <span className="lg-dots" />
-              <span className="lg-n" style={{ fontSize: 11.5, color: "var(--ink-2)", textAlign: "right" }}>{r.line ? r.line.label : "—"}</span>
+              <span className="lg-n" style={{ fontSize: 11.5, color: "var(--ink-2)", textAlign: "end" }}>{r.line ? r.line.label : "—"}</span>
             </button>
           </li>
         ))}

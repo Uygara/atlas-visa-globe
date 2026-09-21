@@ -152,7 +152,7 @@ function SafetyMapApp() {
         <header className="p-head" style={{ display: "block" }}>
           <div className="p-head-title">
             {tr("safety.title", "Travel Safety Map")}{" "}
-            <span className="stamp is-small" style={{ "--st": "var(--foil)", verticalAlign: "middle", marginLeft: 6 }}>
+            <span className="stamp is-small" style={{ "--st": "var(--foil)", verticalAlign: "middle", marginInlineStart: 6 }}>
               <span className="stamp-k" style={{ fontSize: 12 }}>{tr("safety.draft", "Beta")}</span>
             </span>
           </div>
@@ -254,14 +254,14 @@ function RecentlyUpdated({ onOpen }) {
     <div>
       <div className="feed">
         {shown.map(r => (
-          <button key={r.iso2} type="button" className="feed-item" style={{ "--tone": LEVEL_COLOR[r.level], textAlign: "left", width: "100%", cursor: "pointer" }} onClick={() => onOpen(r.iso2)}>
+          <button key={r.iso2} type="button" className="feed-item" style={{ "--tone": LEVEL_COLOR[r.level], textAlign: "start", width: "100%", cursor: "pointer" }} onClick={() => onOpen(r.iso2)}>
             <div className="feed-meta">
               <time dateTime={r.date}>{fmtDate(r.date)}</time>
               <span>·</span>
               <span className="flag">{window.byIso2[r.iso2]?.flag}</span>
               <span>{window.countryName(r.iso2)}</span>
             </div>
-            <div className="feed-sum">{r.note}</div>
+            <div className="feed-sum" dir="auto">{r.note}</div>
           </button>
         ))}
       </div>
@@ -404,7 +404,7 @@ function SafetyDetail({ iso2, names, onClose }) {
                     <span className="sw" style={{ "--sw": LEVEL_COLOR[r.level] }} aria-hidden="true" />
                     <span className="lg-label" style={{ whiteSpace: "normal" }}>{regionName(r.id)}</span>
                     <span className="lg-dots" />
-                    <span className="lg-n" style={{ fontSize: 11.5, color: "var(--ink-2)", textAlign: "right" }}>{levelLabel(r.level)}</span>
+                    <span className="lg-n" style={{ fontSize: 11.5, color: "var(--ink-2)", textAlign: "end" }}>{levelLabel(r.level)}</span>
                   </div>
                 </li>
               ))}
@@ -440,7 +440,7 @@ function SafetyDetail({ iso2, names, onClose }) {
             {updates.slice(0, 4).map((u, i) => (
               <div key={i} className="feed-item" style={{ "--tone": "var(--rule-strong)" }}>
                 <div className="feed-meta"><time dateTime={u.date}>{fmtDate(u.date)}</time><span>·</span><span>UK FCDO</span></div>
-                <div className="feed-sum">{u.note}</div>
+                <div className="feed-sum" dir="auto">{u.note}</div>
               </div>
             ))}
           </div>

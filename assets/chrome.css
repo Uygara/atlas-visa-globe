@@ -22,7 +22,7 @@
   font-family: var(--font-display); font-weight: 800; font-size: var(--fs-lg);
   letter-spacing: 0; line-height: 1;
 }
-.brand-tld { font-family: var(--font-mono); font-weight: 400; font-size: var(--fs-2xs); color: var(--ink-3); margin-left: 1px; letter-spacing: 0; }
+.brand-tld { font-family: var(--font-mono); font-weight: 400; font-size: var(--fs-2xs); color: var(--ink-3); margin-inline-start: 1px; letter-spacing: 0; }
 
 .mh-nav { position: relative; flex: 1; min-width: 0; display: flex; align-items: center; height: 100%; }
 .mh-links { display: flex; align-items: stretch; height: 100%; margin: 0; padding: 0; list-style: none; min-width: 0; }
@@ -41,7 +41,7 @@
 }
 .mh-more { position: relative; display: flex; height: 100%; }
 .mh-more[hidden] { display: none !important; }
-.mh-more-btn svg { width: 10px; height: 10px; margin-left: 5px; }
+.mh-more-btn svg { width: 10px; height: 10px; margin-inline-start: 5px; }
 .mh-menu {
   position: absolute; top: calc(100% + 1px); left: 0; min-width: 200px;
   padding: 6px 0; margin: 0; list-style: none;
@@ -129,15 +129,15 @@
 .field:focus { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
 .field::placeholder { color: var(--ink-3); }
 .search { position: relative; }
-.search svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 14px; height: 14px; color: var(--ink-3); pointer-events: none; }
-.search .field { padding-left: 32px; }
+.search svg { position: absolute; inset-inline-start: 10px; top: 50%; transform: translateY(-50%); width: 14px; height: 14px; color: var(--ink-3); pointer-events: none; }
+.search .field { padding-inline-start: 32px; }
 
 @media (max-width: 900px) {
   .masthead { gap: 8px; padding: 0 10px; }
   .brand-word { font-size: var(--fs-lg); }
   .brand-tld { display: none; }
   .mh-nav, .mh-tools .lang-select, .mh-tools .mh-support, .mh-tools .mh-help { display: none; }
-  .mh-tools { margin-left: auto; gap: 6px; }
+  .mh-tools { margin-inline-start: auto; gap: 6px; }
   .mh-burger { display: inline-flex; }
   .masthead.is-open .mh-sheet {
     display: block; position: absolute; top: 100%; left: 0; right: 0;

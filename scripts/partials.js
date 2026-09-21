@@ -25,7 +25,8 @@ const MOON = `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13.2 9.6A5.6
 const USER = `<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><circle cx="8" cy="5.6" r="2.9" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M2.6 14.2c.7-2.8 2.8-4.3 5.4-4.3s4.7 1.5 5.4 4.3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>`;
 const MENU = `<svg viewBox="0 0 18 18" width="18" height="18" aria-hidden="true"><path d="M3 5.5h12M3 9h12M3 12.5h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`;
 
-const LANGS = [["en", "English"], ["tr", "Türkçe"], ["es", "Español"], ["de", "Deutsch"], ["fr", "Français"], ["ar", "العربية"]];
+// The last flag marks languages that are not fully translated yet (shown as "beta").
+const LANGS = [["en", "English"], ["tr", "Türkçe"], ["es", "Español", 1], ["de", "Deutsch", 1], ["fr", "Français", 1], ["ar", "العربية", 1]];
 
 // The hreflang alternates for a page that has a Turkish twin, plus the language
 // routing: a reader who chose Turkish is sent from an English page to its twin
@@ -46,7 +47,7 @@ function headAssets({ enPath = null, lang = "en" } = {}) {
   const lh = langHead({ enPath, lang });
   return `${lh ? lh + "\n" : ""}<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sofia+Sans:ital,wght@0,400..700;1,400..600&family=Sofia+Sans+Extra+Condensed:wght@600..850&family=DM+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sofia+Sans:ital,wght@0,400..700;1,400..600&family=Sofia+Sans+Extra+Condensed:wght@600..850&family=DM+Mono:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="/assets/tokens.css?v=${v}">
 <link rel="stylesheet" href="/assets/chrome.css?v=${v}">
 <link rel="stylesheet" href="/assets/site.css?v=${v}">
@@ -72,7 +73,7 @@ function masthead({ path = "/", i18n = true, lang = "en" } = {}) {
   const sheet = NAV.map(it => `    <a class="mh-sheet-link" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a>`).join("\n");
   const langs = i18n ? LANGS : (hasTr(path) ? LANGS.filter(([c]) => c === "en" || c === "tr") : []);
   const langSelect = langs.length
-    ? `<select class="lang-select" data-lang-select aria-label="${u("lang", "Language")}">${langs.map(([c, n]) => `<option value="${c}"${c === lang ? " selected" : ""}>${c.toUpperCase()} · ${n}</option>`).join("")}</select>`
+    ? `<select class="lang-select" data-lang-select aria-label="${u("lang", "Language")}">${langs.map(([c, n, beta]) => `<option value="${c}"${c === lang ? " selected" : ""}>${c.toUpperCase()} · ${n}${beta ? " (beta)" : ""}</option>`).join("")}</select>`
     : "";
   return `<header class="masthead">
   <a class="brand" href="${href("/")}" aria-label="${u("home", "travelnow.info home")}">${BRAND_MARK}<span class="brand-word">travelnow<span class="brand-tld">.info</span></span></a>

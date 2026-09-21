@@ -234,7 +234,7 @@ function SafetyMapApp() {
     style: {
       "--st": "var(--foil)",
       verticalAlign: "middle",
-      marginLeft: 6
+      marginInlineStart: 6
     }
   }, React.createElement("span", {
     className: "stamp-k",
@@ -411,7 +411,7 @@ function RecentlyUpdated(_ref6) {
       className: "feed-item",
       style: {
         "--tone": LEVEL_COLOR[r.level],
-        textAlign: "left",
+        textAlign: "start",
         width: "100%",
         cursor: "pointer"
       },
@@ -425,7 +425,8 @@ function RecentlyUpdated(_ref6) {
     }, fmtDate(r.date)), React.createElement("span", null, "\xB7"), React.createElement("span", {
       className: "flag"
     }, (_window$byIso2$r$iso = window.byIso2[r.iso2]) === null || _window$byIso2$r$iso === void 0 ? void 0 : _window$byIso2$r$iso.flag), React.createElement("span", null, window.countryName(r.iso2))), React.createElement("div", {
-      className: "feed-sum"
+      className: "feed-sum",
+      dir: "auto"
     }, r.note));
   })), rows.length > 5 && React.createElement("button", {
     type: "button",
@@ -649,7 +650,7 @@ function SafetyDetail(_ref9) {
       style: {
         fontSize: 11.5,
         color: "var(--ink-2)",
-        textAlign: "right"
+        textAlign: "end"
       }
     }, levelLabel(r.level))));
   })), notes.map(function (n, i) {
@@ -722,7 +723,8 @@ function SafetyDetail(_ref9) {
     }, React.createElement("time", {
       dateTime: u.date
     }, fmtDate(u.date)), React.createElement("span", null, "\xB7"), React.createElement("span", null, "UK FCDO")), React.createElement("div", {
-      className: "feed-sum"
+      className: "feed-sum",
+      dir: "auto"
     }, u.note));
   }))), SOURCE_ORDER.map(function (key) {
     return React.createElement(SourceRow, {

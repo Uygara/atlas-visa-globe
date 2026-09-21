@@ -445,7 +445,7 @@ function TransitHubList(_ref4) {
       style: {
         fontSize: 11.5,
         color: "var(--ink-2)",
-        textAlign: "right"
+        textAlign: "end"
       }
     }, r.line ? r.line.label : "—")));
   })));

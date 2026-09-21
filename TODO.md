@@ -25,11 +25,6 @@
 
 ## Site — tasarım incelemesinden (benim yapacaklarım)
 
-- [ ] **P2 · Arapça (RTL)** [2] — `dir`/`lang` ayarlanmıyor, CSS tamamen fiziksel
-      (left/right). Arapça şu an düzen olarak yok. ~1–2 gün.
-- [ ] **P2 · Arapça yazı tipi ve eksik metinler** [1] — Arapçada tipografi sistem fontuna
-      düşüyor, `letter-spacing` bitişik yazıyı koparıyor, panelin yarısı İngilizce kalıyor.
-      Dil seçicide es/de/fr/ar "beta" olarak işaretlensin. ~1 gün.
 - [ ] **P3 · Türkçe kırpmalar ve tarih/para biçimi** [1] — "Schengen hesap.", "Vize gerek."
       gibi sözlükte kısaltılmış metinler; düzyazıda ISO tarih (2026-05-22) ve çift para birimi.
       `Intl` ile biçimlendir. ~yarım gün.
@@ -45,6 +40,9 @@
       iş bunu yapmıyor.
 - [ ] **P3 · Ekran okuyucu turu** — VoiceOver/TalkBack ile harita, ülke kartı ve hesaplayıcıları
       bir kez dinle; canlı bölgeler (`aria-live`) ve odak sırası gerçek cihazda doğrulansın.
+- [ ] **P3 · es/de/fr/ar'ı "beta"dan çıkar** — SPA metinleri tam (366/366) ama çevirileri ana
+      dili konuşan biri okumadı; pasaport türü etiketleri (`passport-variants.js`) ve statik
+      sayfaların uzun düzyazısı hâlâ İngilizce/Türkçe. Bir okuyucu bulununca `beta` bayrağı kalksın.
 - [ ] **P2 · Gizlilik ve Koşullar'ın Türkçesi** — bu iki sayfa bilerek yalnızca İngilizce
       (hukuki metin; çeviriyi sen ya da bir avukat onaylamalı). Onaylanmış çeviri gelince
       `scripts/tr-strings/` altına eklenip `TR_PAGES`'e alınır.

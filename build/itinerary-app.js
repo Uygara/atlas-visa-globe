@@ -761,7 +761,7 @@ function Reminders(_ref6) {
       lead: it.lead
     }))), React.createElement("span", {
       style: {
-        textAlign: "right"
+        textAlign: "end"
       }
     }, React.createElement("span", {
       className: "stop-name",

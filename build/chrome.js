@@ -311,7 +311,7 @@ function LangSelect(_ref8) {
     return React.createElement("option", {
       key: l.code,
       value: l.code
-    }, l.code.toUpperCase(), " \xB7 ", l["native"]);
+    }, l.code.toUpperCase(), " \xB7 ", l["native"], l.beta ? " (beta)" : "");
   }));
 }
 function Masthead(_ref9) {

@@ -158,7 +158,7 @@ function LangSelect({ className }) {
     <select className={"lang-select" + (className ? " " + className : "")} value={cur}
       aria-label={tr("nav.language", "Language")}
       onChange={(e) => window.setLang && window.setLang(e.target.value)}>
-      {(window.LANGS || []).map(l => <option key={l.code} value={l.code}>{l.code.toUpperCase()} · {l.native}</option>)}
+      {(window.LANGS || []).map(l => <option key={l.code} value={l.code}>{l.code.toUpperCase()} · {l.native}{l.beta ? " (beta)" : ""}</option>)}
     </select>
   );
 }

@@ -390,7 +390,7 @@ function DualCitizenshipHint({ primary, onAccept }) {
   return (
     <div className="note note-accent" style={{ marginTop: 10, marginBottom: 0 }}>
       <span className="note-k">
-        {cflag && <span className="flag" style={{ marginRight: 6 }}>{cflag.flag}</span>}
+        {cflag && <span className="flag" style={{ marginInlineEnd: 6 }}>{cflag.flag}</span>}
         {verbKey} {T("dual.a_passport", "a")} {sec.name} {T("dual.passport_word", "passport")}.
       </span>
       <button type="button" className="btn btn-primary" style={{ gridRow: "1 / span 2", gridColumn: 2, padding: "5px 10px", fontSize: 12.5 }} onClick={() => onAccept(hint.suggest)}>
@@ -556,8 +556,8 @@ function PassportPicker({ value, open, setOpen, onChange, isCompare, placeholder
             <span style={{ minWidth: 0, flex: 1 }}>
               <span className="pp-name" style={{ display: "block" }}>{window.countryName(value)}</span>
               <span className="pp-meta" style={{ display: "block" }}>
-                {value}
-                {window.passportRank(value) && <> · {window.t("pulse.rank")} #{window.passportRank(value).rank}</>}
+                <bdi dir="ltr">{value}</bdi>
+                {window.passportRank(value) && <> · {window.t("pulse.rank")} <bdi dir="ltr">#{window.passportRank(value).rank}</bdi></>}
               </span>
             </span>
           </span>
@@ -915,7 +915,7 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <span className="flag" style={{ fontSize: 18 }}>{window.byIso2[compare]?.flag}</span>
             <span className="stamp is-small" style={{ "--st": stampVar(rc.status) }}><span className="stamp-k">{statusLabel(rc.status)}</span></span>
-            {rc.days && <span className="mono" style={{ marginLeft: "auto", fontSize: 12, color: "var(--ink-3)" }}>{window.t("detail.up_to_days", { n: rc.days })}</span>}
+            {rc.days && <span className="mono" style={{ marginInlineStart: "auto", fontSize: 12, color: "var(--ink-3)" }}>{window.t("detail.up_to_days", { n: rc.days })}</span>}
           </div>
           {recommended && (
             <div className="entry-recommend">
@@ -986,7 +986,7 @@ function ConditionsBox({ passport, destIso2, baseStatus }) {
               <span style={{ color: "var(--ink-3)" }}>→ {window.t("cond.becomes")}</span>
               <Dot s={row.then} />
               <strong style={{ fontWeight: 650 }}>{statusLabel(row.then)}</strong>
-              {row.days && <span className="mono" style={{ marginLeft: "auto", color: "var(--ink-3)", fontSize: 11.5 }}>{window.t("detail.up_to_days", { n: row.days })}</span>}
+              {row.days && <span className="mono" style={{ marginInlineStart: "auto", color: "var(--ink-3)", fontSize: 11.5 }}>{window.t("detail.up_to_days", { n: row.days })}</span>}
             </div>
             {note && <div className="note-s" style={{ marginTop: 5 }}>{note}</div>}
             {row.source && (

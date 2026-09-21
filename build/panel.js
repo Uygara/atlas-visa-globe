@@ -486,7 +486,7 @@ function DualCitizenshipHint(_ref6) {
   }, cflag && React.createElement("span", {
     className: "flag",
     style: {
-      marginRight: 6
+      marginInlineEnd: 6
     }
   }, cflag.flag), verbKey, " ", T("dual.a_passport", "a"), " ", sec.name, " ", T("dual.passport_word", "passport"), "."), React.createElement("button", {
     type: "button",
@@ -772,7 +772,11 @@ function PassportPicker(_ref1) {
     style: {
       display: "block"
     }
-  }, value, window.passportRank(value) && React.createElement(React.Fragment, null, " \xB7 ", window.t("pulse.rank"), " #", window.passportRank(value).rank)))) : React.createElement("span", {
+  }, React.createElement("bdi", {
+    dir: "ltr"
+  }, value), window.passportRank(value) && React.createElement(React.Fragment, null, " \xB7 ", window.t("pulse.rank"), " ", React.createElement("bdi", {
+    dir: "ltr"
+  }, "#", window.passportRank(value).rank))))) : React.createElement("span", {
     className: "pp-empty",
     style: {
       display: "block"
@@ -1283,7 +1287,7 @@ function DetailCard(_ref14) {
   }, statusLabel(rc.status))), rc.days && React.createElement("span", {
     className: "mono",
     style: {
-      marginLeft: "auto",
+      marginInlineStart: "auto",
       fontSize: 12,
       color: "var(--ink-3)"
     }
@@ -1425,7 +1429,7 @@ function ConditionsBox(_ref16) {
     }, statusLabel(row.then)), row.days && React.createElement("span", {
       className: "mono",
       style: {
-        marginLeft: "auto",
+        marginInlineStart: "auto",
         color: "var(--ink-3)",
         fontSize: 11.5
       }

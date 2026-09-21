@@ -411,7 +411,7 @@ function Reminders({ passport, stops, departure }) {
               <span className="stop-name">{window.countryName(it.iso)}</span>
               <span className="stop-meta">{window.t("itin.proc_lead", { proc: it.proc, lead: it.lead })}</span>
             </span>
-            <span style={{ textAlign: "right" }}>
+            <span style={{ textAlign: "end" }}>
               <span className="stop-name" style={{ fontSize: 12.5, color: it.overdue ? "var(--vr)" : "var(--ink)" }}>{it.overdue ? window.t("itin.apply_asap") : window.t("itin.apply_by")}</span>
               <span className="stop-meta">{fmtDate(it.applyBy)}</span>
             </span>

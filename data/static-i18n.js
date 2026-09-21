@@ -771,6 +771,25 @@
   // translating (otherwise translateTextNodes would re-trigger itself).
   let _applying = false;
 
+  // In a right-to-left page, a block that is still English must not be laid out
+  // right-to-left: its full stop lands on the wrong end and it hugs the wrong
+  // edge. Blocks with no Arabic in them get their own direction; blocks that
+  // carry Arabic (even with an English brand name in them) inherit rtl.
+  var BLOCKS = "p, li, h1, h2, h3, h4, h5, h6, td, th, summary, dt, dd, figcaption, label, .callout, .fine, .sub, .meta, .lead";
+  function fixMixedDirection(lang) {
+    document.querySelectorAll("[data-atlas-dir]").forEach(function (el) {
+      el.removeAttribute("dir"); el.removeAttribute("data-atlas-dir");
+    });
+    if (lang !== "ar") return;
+    document.body.querySelectorAll(BLOCKS).forEach(function (el) {
+      if (el.closest("[data-no-i18n]") || el.querySelector(BLOCKS)) return; // innermost block decides
+      var text = el.textContent || "";
+      if (/[\u0600-\u06FF]/.test(text) || !/[A-Za-z]{3}/.test(text)) return;
+      el.setAttribute("dir", "ltr");
+      el.setAttribute("data-atlas-dir", "");
+    });
+  }
+
   function applyLang(lang) {
     _applying = true;
     // Always restore first so re-applies don't double-translate.
@@ -783,6 +802,7 @@
     }
     document.documentElement.setAttribute("lang", lang);
     document.documentElement.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
+    fixMixedDirection(lang);
     _applying = false;
   }
 
