@@ -92,7 +92,7 @@
       <label for="email">Your email</label>
       <input type="email" id="email" required autocomplete="email" placeholder="you@example.com">
 
-      <label for="search">Countries to watch <span id="counter" style="color:var(--fg-dim);">(0 / 3)</span></label>
+      <label for="search">Countries to watch <span id="counter" aria-live="polite" style="color:var(--fg-dim);">(0 / 3)</span></label>
       <div class="picker">
         <input type="text" id="search" class="search" placeholder="Filter…" autocomplete="off">
         <div id="list"></div>
@@ -102,7 +102,7 @@
       <button type="submit" class="cta" style="margin-top:18px;" id="submit">
         Send confirmation email
       </button>
-      <div id="msg"></div>
+      <div id="msg" role="status" aria-live="polite"></div>
       <p class="fine">By subscribing you agree to receive transactional emails about visa policy changes from travelnow.info. We never share your address. <a href="/privacy/">Privacy</a>.</p>
     </form>
   </div>

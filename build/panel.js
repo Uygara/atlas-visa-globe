@@ -80,7 +80,9 @@ function Panel(_ref) {
   var groupActive = groupMode && groupPassports && groupPassports.length > 0;
   var tallyData = groupActive ? window.tallyGroup(groupPassports) : passport ? direction === "incoming" ? window.tallyIncoming(passport) : variant && variant !== "ordinary" ? window.tallyVariant(passport, variant) : window.tally(passport) : null;
   return React.createElement("aside", {
-    className: "panel"
+    className: "panel",
+    id: "panel",
+    tabIndex: -1
   }, React.createElement(MobileSheetHandle, null), React.createElement(PanelHeader, null), React.createElement("section", {
     className: "p-sec"
   }, React.createElement(Caption, {
@@ -894,7 +896,9 @@ function Tally(_ref11) {
   var withEvisa = window.accessScore(tally);
   var scoreLabel = groupActive ? window.t("tally.group_score") : direction === "incoming" ? window.t("tally.incoming_label") : window.t("tally.no_visa");
   return React.createElement("div", null, React.createElement("div", {
-    className: "score"
+    className: "score",
+    "aria-live": "polite",
+    "aria-atomic": "true"
   }, React.createElement("span", {
     className: "score-n"
   }, noVisa), React.createElement("span", {
@@ -1181,7 +1185,8 @@ function DetailCard(_ref14) {
     onClick: onClose,
     "aria-label": window.t("detail.close")
   }, React.createElement(IconClose, null)))), React.createElement("div", {
-    className: "entry-verdict"
+    className: "entry-verdict",
+    "aria-live": "polite"
   }, React.createElement("div", {
     className: "stamp",
     key: iso2,
@@ -2276,7 +2281,7 @@ function PassportPulse(_ref33) {
     }
   }, " \u2212", pulse.losses)) : React.createElement("span", {
     style: {
-      color: "var(--ink-4)"
+      color: "var(--ink-3)"
     }
   }, "\u2014")), React.createElement("div", {
     className: "l"

@@ -381,6 +381,10 @@ function renderPage(passport, allPassports, ranks, lang, ads) {
   const titleText = L.title(name, mob);
   const description = L.description(name, counts, rank || "?");
   const mrz = DATA.mrzLines(passport);
+  // The passport's own social card (scripts/og-cards.js); the generic one until it exists.
+  const ogCard = fs.existsSync(path.join(ROOT, "assets", "og", `${slug}-${lang}.png`));
+  const ogImage = ogCard ? `${SITE_URL}/assets/og/${slug}-${lang}.png` : `${SITE_URL}/assets/og.png`;
+  const ogAlt = `${name} — ${mob} ${L.scoreLabel}`;
 
   const P = (p) => (lang === "tr" && hasTr(p) ? toTr(p) : p);   // link into the same language
   const crumbs = L.crumbs(name);
@@ -430,9 +434,13 @@ function renderPage(passport, allPassports, ranks, lang, ads) {
 <meta name="author" content="Uygar Atalay">
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
 <link rel="apple-touch-icon" href="/assets/favicon.svg">
-<meta property="og:image" content="${SITE_URL}/assets/og.png">
+<meta property="og:image" content="${ogImage}">${ogCard ? `
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="${escapeHtml(ogAlt)}">
+<meta name="twitter:image:alt" content="${escapeHtml(ogAlt)}">` : ""}
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="${SITE_URL}/assets/og.png">
+<meta name="twitter:image" content="${ogImage}">
 <meta property="og:title" content="${escapeHtml(titleText)}">
 <meta property="og:description" content="${escapeHtml(description)}">
 <meta property="og:type" content="article">
@@ -448,6 +456,7 @@ ${ads.loader}
   "inLanguage": lang,
   "headline": titleText,
   "description": description,
+  "image": ogImage,
   "datePublished": today,
   "dateModified": today,
   "author": { "@type": "Person", "name": "Uygar Atalay" },
@@ -637,4 +646,7 @@ function main() {
   console.log(`✓ wrote ${written} passport pages (en + tr) + 2 directories + sitemap.xml`);
 }
 
-main();
+// `node scripts/generate-seo.js` writes the pages; scripts/og-cards.js requires this
+// file for the same data layer and strings without writing anything.
+if (require.main === module) main();
+module.exports = { DATA, SNAPSHOT, LOC, computeRanks, passportName };

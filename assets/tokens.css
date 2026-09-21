@@ -30,7 +30,7 @@
   --paper-deep:   #D8DBCF;
   --ink:          #16202A;
   --ink-2:        #3B4650;
-  --ink-3:        #5C6770;
+  --ink-3:        #56616A;   /* >= 4.5:1 on every paper tone */
   --ink-4:        #8A928D;
   --rule:         #D2D6CA;
   --rule-strong:  #AEB5A8;
@@ -39,6 +39,7 @@
   --accent:       #1E3A5F;
   --on-accent:    #F4F2E8;
   --foil:         #9A7732;
+  --foil-ink:     #755A1E;   /* foil as TEXT: 5.6:1 on paper (the plain foil is 3.6:1 — decoration only) */
   --link:         #1D4C85;
   --shadow:       0 1px 0 rgba(22, 32, 42, 0.04), 0 8px 24px -12px rgba(22, 32, 42, 0.28);
   --shadow-lift:  0 18px 48px -18px rgba(22, 32, 42, 0.45);
@@ -74,6 +75,28 @@
   --font-sans:    "Twemoji Country Flags", "Sofia Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-display: "Twemoji Country Flags", "Sofia Sans Extra Condensed", "Sofia Sans Condensed", "Arial Narrow", sans-serif;
   --font-mono:    "DM Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  /* ── Type scale ───────────────────────────────────────────
+     One ladder for every font-size in site.css, app-shell.css and chrome.css
+     (there used to be ~33 different pixel sizes and 10 letter-spacings). Pick the
+     step by ROLE, not by eye; the two neighbours 14/15 are UI text vs. running text. */
+  --fs-2xs:  11px;    /* mono captions, source tags, fine print */
+  --fs-xs:   12.5px;  /* meta lines, badges, secondary text */
+  --fs-sm:   14px;    /* dense UI: tables, chips, form controls */
+  --fs-base: 15px;    /* running text in cards and panels */
+  --fs-md:   17px;    /* long-form body, small headings */
+  --fs-lg:   20px;    /* lead paragraphs, card titles */
+  --fs-xl:   26px;    /* h2 */
+  --fs-2xl:  32px;
+  --fs-3xl:  40px;    /* stat numerals */
+  --fs-4xl:  56px;
+  --fs-5xl:  72px;    /* the headline number */
+  /* Tracking: uppercase labels open up, display type tightens, body stays at 0. */
+  --ls-tight: -0.01em;
+  --ls-caps:   0.06em;
+  --ls-label:  0.1em;
+  --ls-wide:   0.14em;
+  --measure:   66ch;  /* longest comfortable line of running text */
 
   --radius:    4px;   /* documents have tight corners */
   --radius-lg: 6px;
@@ -118,6 +141,7 @@ body.theme-dark {
   --accent:       #D3B36C;
   --on-accent:    #0E1928;
   --foil:         #D3B36C;
+  --foil-ink:     #D3B36C;
   --link:         #DDC084;
   --shadow:       0 1px 0 rgba(0, 0, 0, 0.2), 0 10px 28px -14px rgba(0, 0, 0, 0.7);
   --shadow-lift:  0 22px 56px -20px rgba(0, 0, 0, 0.85);
@@ -157,7 +181,7 @@ html, body {
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-sans);
-  font-size: 15px;
+  font-size: var(--fs-base);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
@@ -182,6 +206,9 @@ button, input, select, textarea { font: inherit; color: inherit; }
   font-style: normal;
   line-height: 1;
 }
+
+/* Arabic (and any joined script): tracking pulls the letterforms apart. */
+html[lang="ar"] { --ls-tight: 0; --ls-caps: 0; --ls-label: 0; --ls-wide: 0; }
 
 ::-webkit-scrollbar { width: 10px; height: 10px; }
 ::-webkit-scrollbar-track { background: transparent; }

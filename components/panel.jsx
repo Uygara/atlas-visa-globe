@@ -58,7 +58,7 @@ function Panel({
         : null);
 
   return (
-    <aside className="panel">
+    <aside className="panel" id="panel" tabIndex={-1}>
       <MobileSheetHandle />
       <PanelHeader />
 
@@ -648,7 +648,7 @@ function Tally({ tally, filter, setFilter, groupActive, direction }) {
     : window.t("tally.no_visa");
   return (
     <div>
-      <div className="score">
+      <div className="score" aria-live="polite" aria-atomic="true">
         <span className="score-n">{noVisa}</span>
         <span className="score-l">
           {scoreLabel}<br />
@@ -861,7 +861,7 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
         </div>
       </div>
 
-      <div className="entry-verdict">
+      <div className="entry-verdict" aria-live="polite">
         <div className="stamp" key={iso2} style={{ "--st": stampVar(r.status) }}>
           <span className="stamp-k">{r.fom ? window.t("detail.fom") : statusLabel(r.status)}</span>
           {r.fom
@@ -1557,7 +1557,7 @@ function PassportPulse({ passport }) {
                 <span style={{ color: "var(--vf)" }}>+{pulse.gains}</span>
                 {pulse.losses > 0 && <span style={{ color: "var(--vr)" }}> −{pulse.losses}</span>}
               </>
-            ) : <span style={{ color: "var(--ink-4)" }}>—</span>}
+            ) : <span style={{ color: "var(--ink-3)" }}>—</span>}
           </div>
           <div className="l">{window.t(windowKey)}</div>
         </div>

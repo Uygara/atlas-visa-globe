@@ -419,6 +419,8 @@ const T = {
 
     // Mobile menu
     "nav.menu":                  "Menu",
+    "a11y.skip": "Skip to content",
+    "sheet.resize": "Resize panel",
     "nav.tools":                  "Tools",
     "nav.shortcuts":              "Visa shortcuts",
 
@@ -817,6 +819,8 @@ const T = {
 
 
     "nav.menu":                  "Menü",
+    "a11y.skip": "İçeriğe geç",
+    "sheet.resize": "Paneli yeniden boyutlandır",
     "nav.tools":                  "Araçlar",
     "nav.shortcuts":              "Vize kestirmeleri",
 
@@ -969,6 +973,8 @@ const T = {
     "changelog.show_less": "Mostrar menos", "changelog.more": "+ {n} cambios más",
     "zoom.in": "Acercar", "zoom.out": "Alejar", "zoom.current": "Zoom actual", "zoom.reset": "Restablecer",
     "nav.menu": "Menú",
+    "a11y.skip": "Saltar al contenido",
+    "sheet.resize": "Cambiar el tamaño del panel",
     "nav.tools":                  "Herramientas",
     "nav.shortcuts":              "Atajos de visa",
     "cond.title": "Vía más fácil disponible",
@@ -1119,6 +1125,8 @@ const T = {
     "changelog.show_less": "Weniger zeigen", "changelog.more": "+ {n} weitere Änderungen",
     "zoom.in": "Vergrößern", "zoom.out": "Verkleinern", "zoom.current": "Zoom-Stufe", "zoom.reset": "Zurücksetzen",
     "nav.menu": "Menü",
+    "a11y.skip": "Zum Inhalt springen",
+    "sheet.resize": "Panelgröße ändern",
     "nav.tools":                  "Werkzeuge",
     "nav.shortcuts":              "Visa-Abkürzungen",
     "cond.title": "Einfacherer Weg verfügbar",
@@ -1269,6 +1277,8 @@ const T = {
     "changelog.show_less": "Voir moins", "changelog.more": "+ {n} autres changements",
     "zoom.in": "Zoom +", "zoom.out": "Zoom -", "zoom.current": "Zoom actuel", "zoom.reset": "Réinitialiser",
     "nav.menu": "Menu",
+    "a11y.skip": "Aller au contenu",
+    "sheet.resize": "Redimensionner le panneau",
     "nav.tools":                  "Outils",
     "nav.shortcuts":              "Raccourcis visa",
     "cond.title": "Voie plus simple disponible",
@@ -1418,6 +1428,8 @@ const T = {
     "changelog.show_less": "عرض أقل", "changelog.more": "+ {n} تغييرات أخرى",
     "zoom.in": "تكبير", "zoom.out": "تصغير", "zoom.current": "مستوى الزوم", "zoom.reset": "إعادة",
     "nav.menu": "القائمة",
+    "a11y.skip": "تخطَّ إلى المحتوى",
+    "sheet.resize": "تغيير حجم اللوحة",
     "nav.tools":                  "الأدوات",
     "nav.shortcuts":              "اختصارات التأشيرة",
     "cond.title": "مسار أسهل متاح",

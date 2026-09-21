@@ -115,6 +115,33 @@ EN in those four (engine ready — just add dict entries).
     `node scripts/apply-chrome.js && node scripts/build-tr.js && node scripts/generate-seo.js`
     (`node scripts/build-tr.js --todo <page>` lists the English still to translate;
     `--check` exits 1 when a twin is stale). `tools/` gained `jsdom`.
+  - **The globe feels alive** (`components/globe.jsx`): a released drag keeps
+    gliding (friction, velocity from the last 120 ms), the idle spin starts after
+    2.5 s (was 60 s) and eases in/out, a press that moved > 6 px is a drag and never
+    selects, the verdict stamp presses onto the card (`stamp-press`). Time-based
+    with a capped step; holds still while a country is focused/hovered, in a hidden
+    tab and under `prefers-reduced-motion`.
+  - **Per-passport social cards** (`scripts/og-cards.js`, `assets/og/<iso>-<lang>.png`,
+    400 files, ~25 KB each): flag + name, headline number, rank stamp, MRZ and the
+    status bar, drawn by headless Chrome from the site's own tokens and fonts, then
+    palette-squeezed by `scripts/quantize-og.py`. Passport pages point `og:image` at
+    their own card (generic image if missing). Cards show the *month*, and are only
+    re-rendered when their numbers change (`assets/og/manifest.json`): re-run
+    `node scripts/og-cards.js` after a batch of visa-data changes — the daily job
+    does not. Needs local Chrome + Python/Pillow; `tools/` gained `puppeteer-core`.
+  - **Type scale.** ~33 pixel sizes and 10 letter-spacings collapsed into tokens
+    (`--fs-2xs … --fs-5xl`, `--ls-tight/caps/label/wide`, `--measure: 66ch` in
+    `tokens.css`; 214 + 32 declarations rewritten by rule, every value moves <= 4 px).
+    Running text stops at 66 characters; long-form guide paragraphs are 17 px.
+    `html[lang="ar"]` zeroes the tracking tokens.
+  - **Accessibility.** Contrast: `--ink-3` darkened to >= 4.5:1 on every paper tone,
+    `--ink-4` no longer used for text, foil as text is `--foil-ink` (5.6:1; plain
+    `--foil` is decoration). Touch: 44 px targets on `(pointer: coarse)` (header
+    controls grow a hit area instead of a box). Skip link on every page (SPA: to the
+    panel; static: injected by `site-chrome.js`, translated by `static-i18n.js`);
+    the mobile sheet handle is a labelled focusable button (arrows/Home/End/Enter);
+    live regions on the score, the country verdict and every calculator result.
+    Not yet done: a real screen-reader pass (VoiceOver/TalkBack).
   - **Gotcha (caught before push):** all compiled JSX shares one global scope, so
     a top-level `function mrzLines` in `panel.jsx` replaced `window.mrzLines`
     (from `data/mrz.js`) and recursed forever. Call shared helpers through

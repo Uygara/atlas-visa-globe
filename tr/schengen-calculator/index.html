@@ -105,7 +105,7 @@
   <p class="sub">Ücretsiz, anında, üyeliksiz. Schengen Bölgesi'ne geçmiş seyahatlerini gir — kayan 180 günlük pencerede 90 gününün ne kadarını kullandığını tam olarak gör ve kuralı çiğnemeden ileriki ziyaretleri planla.</p>
 
 
-  <div id="hero" class="hero"><!-- filled by JS --></div>
+  <div id="hero" aria-live="polite" class="hero"><!-- filled by JS --></div>
 
   <div class="card">
     <h3>Seyahat ekle</h3>
@@ -130,7 +130,7 @@
       <input type="date" id="ref">
       <button id="ref-today">Bugün</button>
     </div>
-    <div id="ref-result" style="margin-top:14px;"></div>
+    <div id="ref-result" aria-live="polite" style="margin-top:14px;"></div>
   </div>
 
 
@@ -156,7 +156,7 @@
         <input id="cascade-clean" type="checkbox" checked=""> Schengen'den her zaman zamanında çıktım (aşım yok)
       </label>
     </div>
-    <div id="cascade-verdict"></div>
+    <div id="cascade-verdict" aria-live="polite"></div>
   </div>
 
   <div class="card">

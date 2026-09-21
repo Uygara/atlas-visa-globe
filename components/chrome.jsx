@@ -223,6 +223,7 @@ function Masthead({ view, onView, theme, onTheme, onHelp }) {
 
   return (
     <header ref={headerRef} className={"masthead" + (sheetOpen ? " is-open" : "")}>
+      <a className="skip-link" href="#panel">{tr("a11y.skip", "Skip to content")}</a>
       <a className="brand" href={to("/")} aria-label="travelnow.info">
         <BrandMark className="brand-mark" />
         <span className="brand-word">travelnow<span className="brand-tld">.info</span></span>
@@ -344,12 +345,29 @@ function MobileSheetHandle() {
         if (curH() < want - 4) setH(want);
       },
     };
+    // Keyboard: arrows step through the snap points, Enter/Space cycle like a tap.
+    const onKey = (e) => {
+      if (!isMobile()) return;
+      const order = snaps();
+      const i = order.indexOf(nearest(curH()));
+      let next = null;
+      if (e.key === "ArrowUp") next = Math.min(order.length - 1, i + 1);
+      else if (e.key === "ArrowDown") next = Math.max(0, i - 1);
+      else if (e.key === "Home") next = 0;
+      else if (e.key === "End") next = order.length - 1;
+      else if (e.key === "Enter" || e.key === " ") next = (i + 1) % order.length;
+      if (next == null) return;
+      e.preventDefault();
+      setH(order[next]);
+    };
+    handle.addEventListener("keydown", onKey);
     handle.addEventListener("pointerdown", down);
     window.addEventListener("pointermove", move);
     window.addEventListener("pointerup", settle);
     window.addEventListener("pointercancel", settle);
     return () => {
       delete window.atlasSheet;
+      handle.removeEventListener("keydown", onKey);
       handle.removeEventListener("pointerdown", down);
       window.removeEventListener("pointermove", move);
       window.removeEventListener("pointerup", settle);
@@ -357,8 +375,9 @@ function MobileSheetHandle() {
     };
   }, []);
   return (
-    <div ref={ref} className="sheet-handle" aria-hidden="true">
-      <span className="sheet-grabber" />
+    <div ref={ref} className="sheet-handle" role="button" tabIndex={0}
+         aria-label={tr("sheet.resize", "Resize panel")}>
+      <span className="sheet-grabber" aria-hidden="true" />
     </div>
   );
 }

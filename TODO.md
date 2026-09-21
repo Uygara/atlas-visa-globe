@@ -25,15 +25,6 @@
 
 ## Site — tasarım incelemesinden (benim yapacaklarım)
 
-- [ ] **P2 · Küre ölü duruyor** [2] — otomatik dönüş 60 sn sonra ve ani başlıyor; sürüklemede
-      momentum yok; sürükleyip bırakınca yanlışlıkla kart açılıyor. Eşik 2,5 sn, rampalı hız,
-      6 px tıklama koruması, damga basma animasyonu. ~1 gün.
-- [ ] **P2 · Pasaport başına paylaşım görseli (OG)** [2] — 200 sayfa tek jenerik görseli
-      paylaşıyor. Üretim betiğine kart üreticisi ekle (damga + sayı + MRZ). ~1 gün.
-- [ ] **P2 · Tip ölçeği ve satır uzunluğu** [1] — iki CSS dosyasında ~33 farklı punto,
-      10 farklı harf aralığı; metin sütunu 90+ karakter. Yedi basamaklı ölçek + 66ch. ~1 gün.
-- [ ] **P2 · Erişilebilirlik** [1] — 11 px gri satırlar kontrast altında (4.5:1 yok),
-      dokunma hedefleri 28–34 px, panel tutamağı klavyeye kapalı, `aria-live` yok. ~1 gün.
 - [ ] **P2 · Arapça (RTL)** [2] — `dir`/`lang` ayarlanmıyor, CSS tamamen fiziksel
       (left/right). Arapça şu an düzen olarak yok. ~1–2 gün.
 - [ ] **P2 · Arapça yazı tipi ve eksik metinler** [1] — Arapçada tipografi sistem fontuna
@@ -49,6 +40,11 @@
 - [ ] **P3 · Transit haritasında IATA kodları / bacak bazlı sorgu** [1].
 - [ ] **P3 · Rehber dizini ve menü** [2] — beş özdeş kutu yerine basılı içindekiler;
       11 eşit menü linkini gruplara böl.
+- [ ] **P3 · Paylaşım kartlarını yenile** — veri toplu değişince `node scripts/og-cards.js`
+      (yalnızca sayısı değişen kartları çizer; yerel Chrome + Python/Pillow ister). Günlük
+      iş bunu yapmıyor.
+- [ ] **P3 · Ekran okuyucu turu** — VoiceOver/TalkBack ile harita, ülke kartı ve hesaplayıcıları
+      bir kez dinle; canlı bölgeler (`aria-live`) ve odak sırası gerçek cihazda doğrulansın.
 - [ ] **P2 · Gizlilik ve Koşullar'ın Türkçesi** — bu iki sayfa bilerek yalnızca İngilizce
       (hukuki metin; çeviriyi sen ya da bir avukat onaylamalı). Onaylanmış çeviri gelince
       `scripts/tr-strings/` altına eklenip `TR_PAGES`'e alınır.

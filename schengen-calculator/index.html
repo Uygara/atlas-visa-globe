@@ -100,7 +100,7 @@
   <p class="sub">Free, instant, no signup. Enter your past trips into the Schengen Area — see exactly how many of your 90 days you've already used in the rolling 180-day window, and plan future visits without breaking the rule.</p>
 
 
-  <div id="hero" class="hero"><!-- filled by JS --></div>
+  <div id="hero" aria-live="polite" class="hero"><!-- filled by JS --></div>
 
   <div class="card">
     <h3>Add a trip</h3>
@@ -125,7 +125,7 @@
       <input type="date" id="ref">
       <button id="ref-today">Today</button>
     </div>
-    <div id="ref-result" style="margin-top:14px;"></div>
+    <div id="ref-result" aria-live="polite" style="margin-top:14px;"></div>
   </div>
 
 
@@ -158,7 +158,7 @@
         <input id="cascade-clean" type="checkbox" checked> Always exited Schengen on time (no overstays)
       </label>
     </div>
-    <div id="cascade-verdict"></div>
+    <div id="cascade-verdict" aria-live="polite"></div>
   </div>
 
   <div class="card">

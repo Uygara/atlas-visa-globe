@@ -41,6 +41,18 @@
       if (e.key === "atlas.tweaks") applyTheme(readTheme());
     });
 
+    // Skip link: the first tab stop, past the masthead to the page's content.
+    // (Its text is translated by static-i18n.js like the rest of the page.)
+    var content = document.querySelector("main, .wrap");
+    if (content && !document.querySelector(".skip-link")) {
+      if (!content.id) content.id = "main-content";
+      content.setAttribute("tabindex", "-1");
+      var skip = document.createElement("a");
+      skip.className = "skip-link";
+      skip.href = "#" + content.id;
+      skip.textContent = "Skip to content";
+      document.body.insertBefore(skip, document.body.firstChild);
+    }
     var head = document.querySelector("body > .masthead");
     if (!head) return;
 

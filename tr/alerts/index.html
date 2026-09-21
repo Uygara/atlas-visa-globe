@@ -92,7 +92,7 @@
       <label for="email">E-postanız</label>
       <input type="email" id="email" required="" autocomplete="email" placeholder="you@example.com">
 
-      <label for="search">İzlenecek ülkeler <span id="counter" style="color:var(--fg-dim);">(0 / 3)</span></label>
+      <label for="search">İzlenecek ülkeler <span id="counter" aria-live="polite" style="color:var(--fg-dim);">(0 / 3)</span></label>
       <div class="picker">
         <input type="text" id="search" class="search" placeholder="Filtrele…" autocomplete="off">
         <div id="list"></div>
@@ -102,7 +102,7 @@
       <button type="submit" class="cta" style="margin-top:18px;" id="submit">
         Onay e-postası gönder
       </button>
-      <div id="msg"></div>
+      <div id="msg" role="status" aria-live="polite"></div>
       <p class="fine">Abone olarak, travelnow.info'tan vize politikası değişiklikleri hakkında işlemsel e-postalar almayı kabul edersin. Adresini asla paylaşmayız. <a href="/privacy/">Gizlilik</a>.</p>
     </form>
   </div>

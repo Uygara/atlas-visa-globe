@@ -414,6 +414,9 @@ function Masthead(_ref9) {
     ref: headerRef,
     className: "masthead" + (sheetOpen ? " is-open" : "")
   }, React.createElement("a", {
+    className: "skip-link",
+    href: "#panel"
+  }, tr("a11y.skip", "Skip to content")), React.createElement("a", {
     className: "brand",
     href: to("/"),
     "aria-label": "travelnow.info"
@@ -598,12 +601,24 @@ function MobileSheetHandle() {
         if (curH() < want - 4) setH(want);
       }
     };
+    var onKey = function onKey(e) {
+      if (!isMobile()) return;
+      var order = snaps();
+      var i = order.indexOf(nearest(curH()));
+      var next = null;
+      if (e.key === "ArrowUp") next = Math.min(order.length - 1, i + 1);else if (e.key === "ArrowDown") next = Math.max(0, i - 1);else if (e.key === "Home") next = 0;else if (e.key === "End") next = order.length - 1;else if (e.key === "Enter" || e.key === " ") next = (i + 1) % order.length;
+      if (next == null) return;
+      e.preventDefault();
+      setH(order[next]);
+    };
+    handle.addEventListener("keydown", onKey);
     handle.addEventListener("pointerdown", down);
     window.addEventListener("pointermove", move);
     window.addEventListener("pointerup", settle);
     window.addEventListener("pointercancel", settle);
     return function () {
       delete window.atlasSheet;
+      handle.removeEventListener("keydown", onKey);
       handle.removeEventListener("pointerdown", down);
       window.removeEventListener("pointermove", move);
       window.removeEventListener("pointerup", settle);
@@ -613,9 +628,12 @@ function MobileSheetHandle() {
   return React.createElement("div", {
     ref: ref,
     className: "sheet-handle",
-    "aria-hidden": "true"
+    role: "button",
+    tabIndex: 0,
+    "aria-label": tr("sheet.resize", "Resize panel")
   }, React.createElement("span", {
-    className: "sheet-grabber"
+    className: "sheet-grabber",
+    "aria-hidden": "true"
   }));
 }
 function Caption(_ref0) {

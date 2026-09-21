@@ -38,6 +38,7 @@
     "Alerts": { tr:"Uyarılar", es:"Alertas", de:"Benachrichtigungen", fr:"Alertes", ar:"التنبيهات" },
     "About": { tr:"Hakkında", es:"Acerca de", de:"Über uns", fr:"À propos", ar:"حول" },
     "More": { tr:"Daha fazla", es:"Más", de:"Mehr", fr:"Plus", ar:"المزيد" },
+    "Skip to content": { tr:"İçeriğe geç", es:"Saltar al contenido", de:"Zum Inhalt springen", fr:"Aller au contenu", ar:"تخطَّ إلى المحتوى" },
     "Support": { tr:"Destek ol", es:"Apoyar", de:"Unterstützen", fr:"Soutenir", ar:"ادعمنا" },
     "Tools": { tr:"Araçlar", es:"Herramientas", de:"Werkzeuge", fr:"Outils", ar:"الأدوات" },
     "Read": { tr:"Okuma", es:"Lecturas", de:"Lesen", fr:"Lire", ar:"اقرأ" },
