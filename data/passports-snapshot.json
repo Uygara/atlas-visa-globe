@@ -7475,7 +7475,7 @@
       ],
       [
         "TH",
-        60
+        30
       ],
       [
         "UZ",
@@ -23044,6 +23044,7 @@
         "PG",
         60
       ],
+      "PH",
       [
         "QA",
         90
@@ -23074,6 +23075,10 @@
       [
         "SO",
         30
+      ],
+      [
+        "ZA",
+        90
       ],
       "SS",
       [
@@ -23172,13 +23177,11 @@
       "MA",
       "NR",
       "NE",
-      "PH",
       [
         "RU",
         90
       ],
       "LC",
-      "ZA",
       "SD",
       "TN",
       "TM",
@@ -39035,18 +39038,6 @@
           "then": "vf",
           "days": 90,
           "note": "Visa-free for a maximum stay of 90 days within 180 days for valid visa holders of the Schengen Area member states, the United Kingdom and the United States."
-        }
-      ],
-      "AG": [
-        {
-          "ifHolds": [
-            "SCHENGEN",
-            "US",
-            "GB"
-          ],
-          "then": "vf",
-          "days": 30,
-          "note": "Visa-free for a maximum stay of 30 days for valid visa holders or residents of the Schengen Area member states, the United Kingdom, the United States and Canada."
         }
       ],
       "BA": [
