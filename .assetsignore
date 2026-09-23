@@ -1,3 +1,6 @@
-# Not part of the website: the Capacitor shell (native projects, node_modules,
-# generated www copy). Cloudflare deploys the repo root as static assets.
+# Not part of the website: internal notes, the Capacitor shell, editor config.
+# Cloudflare deploys the repo root as static assets, so anything listed here stays private.
 app/
+*.md
+docs/
+.claude/

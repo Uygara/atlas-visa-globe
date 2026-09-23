@@ -1,6 +1,6 @@
 # Atlas / travelnow.info — Session handoff (current state)
 
-> **Updated:** 2026-09-20 · **Live:** <https://travelnow.info> · **Repo:** <https://github.com/Uygara/atlas-visa-globe>
+> **Updated:** 2026-09-24 · (start sessions from `TODO.md`; this file is history — grep it, don't read it whole) · **Live:** <https://travelnow.info> · **Repo:** <https://github.com/Uygara/atlas-visa-globe>
 > Cloudflare Pages auto-deploys every push to `main` (~30 s).
 > Working language with the owner: **Turkish.** Code comments: English.
 > Hard rule: **never invent visa data.** No fake fees/rules/numbers — if a fact
@@ -74,6 +74,34 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 13 (2026-09-24 — Firebase sign-in, the mobile app, every passport's types, push):**
+  - Pushed the 9 design commits (merged 3 daily-refresh commits; generated pages regenerated, not hand-merged).
+    Schengen guide: BG/RO are full members (air/sea Mar 2024, land 1 Jan 2025), CY is not yet — when the Council
+    admits Cyprus update `_SCHENGEN_AREA` (`data/visa-overrides.js`), the guide, `tr-strings/guide-schengen.js`.
+  - **Accounts:** Google, email + password (+reset), phone (SMS code, invisible reCAPTCHA), emailed link;
+    native Google/phone through `@capacitor-firebase/authentication` (`skipNativeAuth`, then `signInWithCredential`);
+    `users/{uid}/devices/{token}` push tokens (rules allow platform/lang/tz/updatedAt + the job's `sent`/`lastPush`);
+    `firebase.json` + `.firebaserc` (project `travelnow-a0cf3`) deploy providers and rules. **Not live:** the CLI is
+    not logged in (owner must run `firebase login`), no apps registered, phone auth needs the console switch.
+    Firebase plugin installed (`firebase@firebase`, skills in `~/.claude/plugins/marketplaces/firebase`).
+  - **Passport types for all:** `backend/fetch-variants.js` rewritten. Sources: destination pages ("Visa policy of X",
+    D/O/S/Sp legend, footnote numbers via legend, `*` = VoA only if legend says so, EU/GCC/ASEAN group entries,
+    "any country (except …)"), the Schengen page's per-state lists (`parseSchengen`; member states *redirect* to that
+    page — a title check skips any other redirect), passport pages (parentheticals, type tables) and the old
+    consolidated-list anchor (CN 142, RU 124, ID 113 ⊇ before). D → `diplomatik`, O/S/Sp/C/PA → `hizmet`; qualified
+    entries ("(biometric only)") are dropped. 200 passports get both; the picker shows one only when it opens ≥5
+    destinations the ordinary map lacks (`_VARIANT_MIN_GAIN`, lazy). TR (hand-curated) and GB classes untouched.
+  - **App (`app/`):** Capacitor 8, iOS (SPM) + Android generated, `build-www.js` bundles the pages offline (vendored
+    React/D3/fonts, no AdSense/analytics, `/dir/` → `/dir/index.html` because Capacitor answers extension-less paths
+    with the root page), `assets/app-native.js` (tab bar, offline strip, push on demand, consented AdMob banner on
+    Planner/Schengen only, test IDs). Never run on a device. See `MOBILE-SETUP.md`.
+  - **Push:** `backend/dispatch-push.js` (visa change for own passport, safety level change for watched/planned
+    countries; ≤1/device/day, quiet 21–08 local, sent-once ledger); runs in the daily job when the secret exists.
+  - **Safety map:** Canada area lists (per-country pages), Turkish Foreign Ministry announcements (dated, no level),
+    region notes no stricter than the country level dropped (376 → 236).
+  - **Transit map:** connection check by IATA codes (`data/airports.js`, weekly refresh) + `transitLeg()`.
+  - Share cards re-rendered (400). Privacy page extended for phone/push/AdMob (owner should review).
+  - Workflow: `tr/passport/` was never staged by the cron — fixed. `CLAUDE.md` + a short `TODO.md` now start sessions.
 - **Round 12 (2026-09-20/21 — the design-review items, Turkish mirror):**
   - **One headline number.** The panel, pass card, compare strip, passport pages
     and the rank all lead with `mobilityScore` = destinations you can enter

@@ -1,74 +1,65 @@
 # travelnow.info — açık işler
 
-> Güncelleme: 2026-09-21 · Yalnızca **açık** işler burada. Biten işler
-> `STATE.md` içindeki tur notlarında. Öncelik: **P1** sıradaki, **P2** yakında,
-> **P3** sonra. Süre tahminleri tek kişilik iş içindir.
->
-> Tasarım maddelerinin çoğu 13 tasarımcı karakterinin site incelemesinden
-> çıktı (2026-09-20); köşeli parantezdeki sayı kaç tasarımcının aynı şeyi
-> işaret ettiğini gösteriyor.
+> Güncelleme: 2026-09-24 · **Yalnızca açık işler.** Biten iş bu listeden silinir; ne yapıldığı `STATE.md`'de
+> tur notunda. Öncelik: **P1** sıradaki, **P2** yakında, **P3** sonra. Her oturum sonunda bu liste güncellenir
+> (kurallar `CLAUDE.md`'de). Mobil ayrıntılar: `MOBILE-SETUP.md`.
 
-## Senin yapacakların (hesap açmam gereken yerler)
+## ▶ Yeni oturumda buradan başla
 
-- [ ] **P1 · Firebase projesi** — `ACCOUNT-SETUP.md`'deki 6 adım (~15 dk, ücretsiz).
-      Sonra config'i bana ver; üyeliği açıp canlıda test ederim.
-- [ ] **P1 · Search Console** — yayından sonra sitemap'i yeniden gönder (adresteki
-      `sitemap.org` yazım hatası düzeldi, 200 pasaport için `/tr/` ikizleri ve hreflang
-      eklendi), `/tr/`, `/guides/` ve `/safety-map/` için "dizine ekleme iste".
-- [ ] **P2 · AdSense** — içerik + biraz organik trafik oluştuktan sonra yeniden başvur.
-      (Boş reklam yuvaları kaldırıldı, pasaport sayfaları yenilendi; sırada trafik ve içerik var.)
-- [ ] **P3 · Mağaza hesapları** — uygulamaya karar verince: Google Play 25 $ (tek sefer),
-      Apple Developer 99 $/yıl.
-- [ ] **P1 · Karar: e-posta uyarıları** — `/alerts/` formu canlıda 404 veriyor
-      (`/api/subscribe` yok). Seçenekler: (a) formu gizle, (b) Firebase'den sonra
-      hesaba bağlı uyarılar, (c) Cloudflare Worker + e-posta servisi kur.
+1. **Firebase girişi** — sen `npx -y firebase-tools@latest login` çalıştırdıysan ben `MOBILE-SETUP.md` §1'i
+   yürütürüm: uygulamaları kaydet (Web/iOS/Android), config'leri yaz, `deploy --only auth,firestore:rules`,
+   sonra canlıda dört giriş yöntemini dene (Google, e-posta/şifre, telefon, e-posta bağlantısı).
+2. Apple ile Giriş (App Store 4.8) — Apple Developer hesabı gelince.
+3. Mac'te ilk iOS derlemesi + gerçek cihaz turu (Mac ve Apple hesabı gerekir).
 
-## Site — tasarım incelemesinden (benim yapacaklarım)
+## Senin yapacakların
 
-- [ ] **P3 · Transit haritasında IATA kodları / bacak bazlı sorgu** [1].
-- [ ] **P3 · Paylaşım kartlarını yenile** — veri toplu değişince `node scripts/og-cards.js`
-      (yalnızca sayısı değişen kartları çizer; yerel Chrome + Python/Pillow ister). Günlük
-      iş bunu yapmıyor.
-- [ ] **P3 · Ekran okuyucu turu** — VoiceOver/TalkBack ile harita, ülke kartı ve hesaplayıcıları
-      bir kez dinle; canlı bölgeler (`aria-live`) ve odak sırası gerçek cihazda doğrulansın.
-- [ ] **P3 · es/de/fr/ar'ı "beta"dan çıkar** — SPA metinleri tam (366/366) ama çevirileri ana
-      dili konuşan biri okumadı; pasaport türü etiketleri (`passport-variants.js`) ve statik
-      sayfaların uzun düzyazısı hâlâ İngilizce/Türkçe. Bir okuyucu bulununca `beta` bayrağı kalksın.
-- [ ] **P2 · Gizlilik ve Koşullar'ın Türkçesi** — bu iki sayfa bilerek yalnızca İngilizce
-      (hukuki metin; çeviriyi sen ya da bir avukat onaylamalı). Onaylanmış çeviri gelince
-      `scripts/tr-strings/` altına eklenip `TR_PAGES`'e alınır.
-- [ ] **P3 · Schengen rehberinde bir cümleyi doğrula** — "Bulgaristan, Romanya ve Kıbrıs son
-      yıllarda tam üyeliğe girip çıkıyor" ifadesi güncel olmayabilir (Bulgaristan ve Romanya
-      1 Ocak 2025'te tam üye oldu; Kıbrıs henüz değil). Doğruysa İngilizce metni düzelt,
-      `node scripts/build-tr.js --todo guides/schengen-90-180-rule` Türkçesini yeniden ister.
-- [ ] **P3 · Türkçe ikizler için CI denetimi** — `node scripts/build-tr.js --check` bir
-      GitHub Actions adımı olsun; İngilizce sayfa değişip ikizi eskirse kırmızı görünsün.
+- [ ] **P1 · Firebase CLI girişi (30 sn)** — `npx -y firebase-tools@latest login` (tarayıcıda Google ile onay);
+      bunu benim yerime yapamam. Sonra bana "girdim" yaz.
+- [ ] **P1 · Firebase Console: telefon girişi** — Authentication → Sign-in method → **Phone** → Etkinleştir
+      (CLI ile açılamıyor). SMS ücretsiz kotası sınırlı; gerekirse Blaze planı kararı da senin.
+- [ ] **P1 · Karar: e-posta uyarıları** — `/alerts/` formu canlıda 404 veriyor (`/api/subscribe` yok).
+      Seçenekler: (a) formu gizle, (b) uyarıları hesaba/bildirime bağla (uygulamada push var, en doğrusu bu),
+      (c) Cloudflare Worker + e-posta servisi kur. Önerim (b) + formu o zamana dek gizlemek.
+- [ ] **P1 · Search Console** — yayından sonra sitemap'i yeniden gönder; `/tr/`, `/guides/`, `/safety-map/`
+      için "dizine ekleme iste".
+- [ ] **P2 · Push için GitHub gizli anahtarı** — Firebase Console → Proje ayarları → Hizmet hesapları → Yeni özel
+      anahtar → JSON'un tamamını repo Secrets'a `FIREBASE_SERVICE_ACCOUNT` diye ekle. Eklenene dek bildirim adımı atlanır.
+- [ ] **P2 · Gizlilik metnini onayla** — `/privacy/` 2026-09-24'te uygulama (telefon, bildirim jetonu, AdMob)
+      için genişletildi; mağaza formlarındaki cevaplar buna uymalı. Türkçesi hâlâ yok (hukuki metin; sen ya da
+      avukat onaylayınca `scripts/tr-strings/` + `TR_PAGES`).
+- [ ] **P2 · Mağaza/reklam hesapları** — Apple Developer 99 $/yıl, Google Play 25 $ (tek sefer), AdMob (ücretsiz).
+- [ ] **P2 · AdSense** — içerik + biraz organik trafik oluşunca yeniden başvur.
+- [ ] **P3 · es/de/fr/ar okuyucusu** — SPA metinleri tam ama ana dili konuşan biri okumadı; bulununca "beta" bayrağı kalkar.
 
-## Güvenlik haritası (v2 yayına hazır, sıradakiler)
+## Benim yapacaklarım — mobil uygulama
 
-- [ ] **P2 · Kanada bölgesel uyarıları** — ülke sayfalarındaki bölge listeleri şu an
-      alınmıyor (yalnızca "bölgesel uyarı var" bayrağı). HTML ayrıştırması gerekiyor.
-- [ ] **P3 · Bölge eşleşmesini genişlet** — 64 ülkede 252 bölge eşleşti; kalanlar
-      "sınıra 10 km" gibi sözel alanlar. Şehir/bölge adı sözlüğü eklenebilir.
-- [ ] **P3 · Türkiye Dışişleri uyarıları** — otomatik isteklere kapalı (403);
-      elle küratörlük ya da farklı kaynak gerekir.
+- [ ] **P1 · Firebase kurulumu** (yukarıdaki giriş sonrası) — ayrıntı `MOBILE-SETUP.md` §1–2; `node app/firebase-native.js`.
+- [ ] **P1 · Apple ile Giriş** — Google sunduğumuz için App Store 4.8; Firebase Auth `apple.com` sağlayıcısı + native.
+- [ ] **P2 · Gerçek cihaz turu** (Mac) — çevrimdışı açılış, güvenli alan/sekme çubuğu, hesap, bildirim, reklam rızası; mağaza ekran görüntüleri.
+- [ ] **P2 · Bildirim kuralı 3: son başvuru hatırlatması** — planlayıcının `applyPlan()` mantığı Node'a taşınıp
+      `backend/dispatch-push.js`'e üçüncü kural olarak eklenecek (kural 1 ve 2 hazır).
+- [ ] **P2 · Uygulamada veri tazeliği kararı** — veri şimdi pakette (şerit tarihi gösterir). Mağaza güncellemesi
+      olmadan yenilemek için veriyi mantıktan ayırıp **JSON** indirmek gerekir (Apple 2.5.2: kod değil veri).
+- [ ] **P3 · Bildirime dokununca ülkeye git** (`?p=` + ülke), evrensel bağlantılar; bildirim tercihleri (sessiz saat).
+- [ ] **P3 · Uygulamada alt sekme adları** — 5 sekme dar telefonlarda kısalıyor mu, gerçek cihazda bak.
 
-## Mobil uygulama (üyelik açıldıktan sonra)
+## Site
 
-- [ ] **P2 · Capacitor iskeleti** — iOS + Android kabuğu, aynı web kodu, derleme adımı hazır.
-- [ ] **P2 · Push bildirimleri** — yalnızca: (1) kendi pasaportun/izlediğin ülke için kural
-      değişikliği, (2) planındaki ülkenin güvenlik seviyesi değişimi, (3) son başvuru
-      hatırlatması. Metin kararın kendisi olsun: "Japonya: vizesiz → e-Vize · 1 Kasım'dan
-      itibaren". Asla pazarlama, asla "bir şeyler değişti", gece sessiz, ülke başına günde 1.
-- [ ] **P2 · Çevrimdışı** — kayıtlı pasaportun tam tablosu ve son bakılan kart cihazda;
-      üstte "3 gün önceki veri" şeridi.
-- [ ] **P3 · AdMob** — reklam damga ile ücret satırı arasına asla girmesin; liste sonu
-      ve rehber araları. Açılışta tam ekran reklam yok.
-- [ ] **P3 · Alt sekme çubuğu** — Harita · Planlayıcı · İzlenenler · Hesap.
+- [ ] **P2 · Rehber yazıları (3–5)** — hedef aramalar. Yalnızca kaynaklı, zamansız içerik (ücret/tutar yazma).
+      Adaylar: ESTA/eTA/ETA/ETIAS "seyahat izni" rehberi (haritadaki "Travel authorization" durumunun açıklaması),
+      "vizesiz ≠ varışta vize ≠ e-vize: hangisi ne demek" (kısa özet), "aktarma (transit) vizesi: ne zaman gerekir",
+      "pasaport süresi ve boş sayfa kuralı". Yeni sayfa `TR_PAGES`'e ve `scripts/tr-strings/`'e de eklenir.
+- [ ] **P3 · Pasaport türü etiketleri** — `passportVariantLabel` yalnızca tr/en; es/de/fr/ar İngilizce görünüyor.
+- [ ] **P3 · Ekran okuyucu turu** — VoiceOver/TalkBack ile harita, ülke kartı, hesaplayıcılar, yeni transit kutusu.
+- [ ] **P3 · Türkçe ikizler için CI denetimi** — `node scripts/build-tr.js --check` bir GitHub Actions adımı olsun.
 
 ## Veri ve içerik
 
-- [ ] **P2 · Rehber makaleleri** — hedef aramalar için 3–5 yazı daha
-      ("Türk pasaportu vizesiz ülkeler 2026", "transit vize rehberi" gibi).
+- [ ] **P2 · Vize ücreti verisi** — 80 çift var; yüksek trafikli rotalar için genişlet.
+- [ ] **P3 · Güvenlik haritası: ABD düzyazısı** — TR, IN gibi bazı ülkelerde ABD metninin paragrafları "bölge notu"
+      gibi görünüyor (`parseRegions`, ABD dizisi); ayrıştırıcıyı sıkılaştır.
+- [ ] **P3 · Güvenlik haritası: il altı sınırlar** — kalan bölge notları şehir/yol/sınır şeridi; il (admin-1)
+      eşleştirmenin tavanına ulaşıldı. Devam etmek admin-2 sınırları demek (büyük iş, düşük getiri).
+- [ ] **P3 · Pasaport türleri: koşullu girişler** — "(biometric only)" gibi koşullu satırlar şu an dışarıda; koşullu gösterim.
 - [ ] **P3 · es/de/fr/ar uzun metinler** — hukuki/SSS metinleri hâlâ İngilizce'ye düşüyor.
-- [ ] **P3 · Vize ücreti verisi** — 80 çift var; yüksek trafikli rotalar için genişlet.

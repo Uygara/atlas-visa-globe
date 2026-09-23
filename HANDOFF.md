@@ -1,3 +1,5 @@
+> **ARCHIVE (2026-05).** Superseded by `TODO.md` (open work) and `STATE.md` (history). Do not read this at session start.
+
 # Atlas / travelnow.info — Project Handoff
 
 > **Last updated:** 2026-05-25 · **Live:** <https://travelnow.info> · **Repo:** <https://github.com/Uygara/atlas-visa-globe>
