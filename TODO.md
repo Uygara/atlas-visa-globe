@@ -46,10 +46,11 @@
 
 ## Site
 
-- [ ] **P2 · Rehber yazıları (3–5)** — hedef aramalar. Yalnızca kaynaklı, zamansız içerik (ücret/tutar yazma).
-      Adaylar: ESTA/eTA/ETA/ETIAS "seyahat izni" rehberi (haritadaki "Travel authorization" durumunun açıklaması),
-      "vizesiz ≠ varışta vize ≠ e-vize: hangisi ne demek" (kısa özet), "aktarma (transit) vizesi: ne zaman gerekir",
-      "pasaport süresi ve boş sayfa kuralı". Yeni sayfa `TR_PAGES`'e ve `scripts/tr-strings/`'e de eklenir.
+- [ ] **P2 · Rehber yazıları (2–4 daha)** — "Nasıl sayıyoruz" yazıldı (`/guides/how-we-count/`, sitenin kendi
+      tanımlarına dayanıyor). Kalan adaylar: ESTA/eTA/UK ETA/ETIAS karşılaştırması (ücret ve tarih **yazma**, resmi
+      sayfaya bağla), "pasaportta boş sayfa ve hasar kuralı", "e-Vize sahte siteleri nasıl ayırt edilir".
+      Yeni sayfa için: `TR_PAGES` (assets/site-nav.js), `scripts/tr-meta.js`, `scripts/tr-strings/`, `guides/index.html`,
+      `generate-seo.js` (sitemap + "Faydalı rehberler"), sonra rebuild sırası (CLAUDE.md).
 - [ ] **P3 · Pasaport türü etiketleri** — `passportVariantLabel` yalnızca tr/en; es/de/fr/ar İngilizce görünüyor.
 - [ ] **P3 · Ekran okuyucu turu** — VoiceOver/TalkBack ile harita, ülke kartı, hesaplayıcılar, yeni transit kutusu.
 - [ ] **P3 · Türkçe ikizler için CI denetimi** — `node scripts/build-tr.js --check` bir GitHub Actions adımı olsun.

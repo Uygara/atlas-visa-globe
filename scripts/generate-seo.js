@@ -95,6 +95,7 @@ const LOC = {
       ["/guides/visa-types-explained/", "Visa-free, eVisa, visa on arrival — what's the difference?"],
       ["/guides/schengen-90-180-rule/", "How the Schengen 90/180-day rule works"],
       ["/guides/passport-validity-six-month-rule/", "The six-month passport-validity rule"],
+      ["/guides/how-we-count/", "How to read a passport's visa-free number"],
       ["/guides/", "All travel guides →"],
     ],
     allHead: (name) => `All destinations for a ${name} passport`,
@@ -187,6 +188,7 @@ const LOC = {
       ["/guides/visa-types-explained/", "Vizesiz, e-Vize, varışta vize — fark nedir?"],
       ["/guides/schengen-90-180-rule/", "Schengen 90/180 gün kuralı nasıl işler?"],
       ["/guides/passport-validity-six-month-rule/", "Altı aylık pasaport geçerlilik kuralı"],
+      ["/guides/how-we-count/", "Pasaportun vizesiz sayısı nasıl okunur?"],
       ["/guides/", "Tüm seyahat rehberleri →"],
     ],
     allHead: (name) => `${name} pasaportuyla gidilecek tüm destinasyonlar`,
@@ -577,7 +579,7 @@ function renderSitemap(allPassports) {
   const today = new Date().toISOString().slice(0, 10);
   const guides = [
     "visa-types-explained", "schengen-90-180-rule", "etias-2026-explained",
-    "transit-visa-guide", "passport-validity-six-month-rule",
+    "transit-visa-guide", "passport-validity-six-month-rule", "how-we-count",
   ];
   // [english path, priority]
   const pages = [

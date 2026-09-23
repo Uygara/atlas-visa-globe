@@ -32,7 +32,7 @@
   var TR_PAGES = [
     "/", "/about/", "/alerts/", "/citizenship-by-investment/", "/contact/",
     "/digital-nomad-visa/", "/esta-rules/", "/etias/", "/guides/",
-    "/guides/etias-2026-explained/", "/guides/passport-validity-six-month-rule/",
+    "/guides/etias-2026-explained/", "/guides/how-we-count/", "/guides/passport-validity-six-month-rule/",
     "/guides/schengen-90-180-rule/", "/guides/transit-visa-guide/",
     "/guides/visa-types-explained/", "/passport-validity/",
     "/schengen-calculator/", "/visa-checklist/tr-schengen/",

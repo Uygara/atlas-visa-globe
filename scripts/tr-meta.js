@@ -56,6 +56,12 @@ module.exports = {
     description: "Yolcuları en çok yanıltan kurallar için sade rehberler: vize türleri, Schengen 90/180 gün kuralı, ETIAS, transit vizeler ve altı aylık pasaport kuralı.",
     ogDescription: "Vizeler, Schengen günleri, ETIAS, transit vizeler ve pasaport geçerliliği için açık, pratik rehberler.",
   },
+  "/guides/how-we-count/": {
+    title: "Pasaportun vizesiz sayısı nasıl okunur (ve neyi sayıyoruz)",
+    description: "travelnow.info'daki ana sayının neyi saydığı, e-Vizelerin neden ayrı gösterildiği, pasaportların nasıl sıralandığı ve sayılarımızın diğer sıralamalardan neden farklı olabileceği.",
+    ogTitle: "Pasaportun vizesiz sayısı nasıl okunur",
+    ogDescription: "Neyin sayıldığı, neyin sayılmadığı, pasaportların nasıl sıralandığı — ve iki sıralamanın neden ikisinin de doğru olabileceği.",
+  },
   "/guides/etias-2026-explained/": {
     title: "2026'da ETIAS: kimler için gerekli, ne kadar tutuyor, vizeden farkı ne",
     description: "AB'nin ETIAS seyahat izni için sade bir rehber: kimler için gerekli, kimler muaf, ne kadar tutuyor, ne kadar geçerli ve neden vize değil.",
