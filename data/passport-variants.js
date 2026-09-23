@@ -141,7 +141,7 @@ window.PASSPORT_VARIANTS = {
 if (window.PASSPORT_VARIANTS_DATA) {
   const labels = {
     diplomatik: { label: "Diplomatik", labelEn: "Diplomatic", sub: "Diplomatik pasaport hamilleri", subEn: "Diplomatic passport holders" },
-    hizmet:     { label: "Hizmet/Servis", labelEn: "Service", sub: "Hizmet/servis pasaportu hamilleri", subEn: "Service passport holders" },
+    hizmet:     { label: "Hizmet / resmi", labelEn: "Service / official", sub: "Hizmet, resmi ve özel pasaport hamilleri", subEn: "Official, service and special passport holders" },
   };
   for (const iso of Object.keys(window.PASSPORT_VARIANTS_DATA)) {
     if (iso === "lastUpdated") continue;
@@ -153,6 +153,7 @@ if (window.PASSPORT_VARIANTS_DATA) {
       existing[vk] = {
         ...(labels[vk] || { label: vk, labelEn: vk }),
         source: e.source || null,
+        auto: true,
         vf: e.vf || [], ev: e.ev || [], voa: e.voa || [], vr: e.vr || [],
       };
     }
@@ -204,13 +205,34 @@ function _ensureVariantMap(v) {
   return m;
 }
 
+// A scraped diplomatic/official list only earns a place in the picker when it opens
+// at least MIN_GAIN destinations that the ordinary passport doesn't already give
+// (a list of countries the ordinary passport enters freely anyway changes nothing).
+// Counted lazily, per passport, the first time its picker is drawn.
+const _VARIANT_MIN_GAIN = 5;
+const _VARIANT_RANK = { idc: 0, vf: 1, eta: 2, ev: 3, voa: 4, vr: 5, ban: 6 };
+const _variantGainCache = {};
+function _variantGain(passportIso2, key) {
+  const id = passportIso2 + "/" + key;
+  if (id in _variantGainCache) return _variantGainCache[id];
+  const v = window.PASSPORT_VARIANTS[passportIso2][key];
+  let gain = 0;
+  ["vf", "voa", "ev"].forEach(status => (v[status] || []).forEach(e => {
+    const dest = Array.isArray(e) ? e[0] : e;
+    const ord = window.resolveStatus(passportIso2, dest);
+    if (!ord || ord.status === "self") return;
+    if ((_VARIANT_RANK[ord.status] ?? 9) > _VARIANT_RANK[status]) gain++;
+  }));
+  return (_variantGainCache[id] = gain);
+}
+
 // Returns the list of variant keys defined for a passport (excluding the
 // implicit "ordinary"). Used by the UI to decide whether to render the
 // variant segmented control.
 window.passportVariants = function (passportIso2) {
   const v = window.PASSPORT_VARIANTS[passportIso2];
   if (!v) return [];
-  return Object.keys(v);
+  return Object.keys(v).filter(k => !v[k].auto || _variantGain(passportIso2, k) >= _VARIANT_MIN_GAIN);
 };
 
 // Returns the human label for a variant in the active language.
