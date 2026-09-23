@@ -118,7 +118,7 @@ jobs:
         run: |
           git config user.name "atlas-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add data/passports.js data/passports-snapshot.json data/changelog.js data/visa-news.js data/transit-visa-data.js data/passport-variants-data.js data/passport-variants-gb.js data/travel-advisories.js data/airports.js passport/ sitemap.xml robots.txt
+          git add data/passports.js data/passports-snapshot.json data/changelog.js data/visa-news.js data/transit-visa-data.js data/passport-variants-data.js data/passport-variants-gb.js data/travel-advisories.js data/airports.js passport/ tr/passport/ sitemap.xml robots.txt
           if git diff --staged --quiet; then
             echo "No changes."
           else
