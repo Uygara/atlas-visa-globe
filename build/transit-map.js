@@ -131,6 +131,9 @@ function TransitMapApp() {
     onClose: function onClose() {
       return setSelected(null);
     }
+  }), passport && React.createElement(TransitLegChecker, {
+    passport: passport,
+    onOpen: openCountry
   }), passport && React.createElement(TransitHubList, {
     passport: passport,
     onOpen: openCountry
@@ -397,9 +400,166 @@ function TransitDetail(_ref3) {
     rel: "noopener noreferrer"
   }, window.t("tmap.source"), " \u2192"));
 }
-function TransitHubList(_ref4) {
+function TransitLegChecker(_ref4) {
   var passport = _ref4.passport,
     onOpen = _ref4.onOpen;
+  var _useState1 = useState({
+      from: "",
+      via: "",
+      to: ""
+    }),
+    _useState10 = _slicedToArray(_useState1, 2),
+    codes = _useState10[0],
+    setCodes = _useState10[1];
+  var A = window.AIRPORTS || {};
+  var set = function set(k) {
+    return function (e) {
+      return setCodes(function (c) {
+        return _objectSpread(_objectSpread({}, c), {}, _defineProperty({}, k, e.target.value.replace(/[^a-z]/gi, "").toUpperCase().slice(0, 3)));
+      });
+    };
+  };
+  var known = function known(c) {
+    return c.length === 3 && !!A[c];
+  };
+  var place = function place(c) {
+    return A[c] ? A[c][1] + ", " + window.countryName(A[c][0]) : null;
+  };
+  var leg = codes.via.length === 3 ? window.transitLeg(passport, codes.from, codes.via, codes.to) : null;
+  var t = leg && !leg.error ? leg.status : null;
+  var line = t ? transitLine(t) : null;
+  var field = function field(k, label) {
+    return React.createElement("label", {
+      style: {
+        flex: "1 1 0",
+        minWidth: 0
+      }
+    }, React.createElement("span", {
+      className: "p-hint",
+      style: {
+        display: "block",
+        margin: "0 0 3px"
+      }
+    }, label), React.createElement("input", {
+      className: "field",
+      value: codes[k],
+      onChange: set(k),
+      inputMode: "text",
+      autoCapitalize: "characters",
+      autoComplete: "off",
+      spellCheck: "false",
+      maxLength: 3,
+      placeholder: {
+        from: "IST",
+        via: "FRA",
+        to: "JFK"
+      }[k],
+      style: {
+        width: "100%",
+        textTransform: "uppercase",
+        letterSpacing: "0.08em"
+      },
+      "aria-label": label
+    }));
+  };
+  return React.createElement("section", {
+    className: "p-sec"
+  }, React.createElement(Caption, {
+    n: 2
+  }, window.t("tmap.leg_title")), React.createElement("p", {
+    className: "p-hint",
+    style: {
+      margin: "0 0 8px"
+    }
+  }, window.t("tmap.leg_hint")), React.createElement("div", {
+    style: {
+      display: "flex",
+      gap: 8
+    }
+  }, field("from", window.t("tmap.leg_from")), field("via", window.t("tmap.leg_via")), field("to", window.t("tmap.leg_to"))), ["from", "via", "to"].map(function (k) {
+    return codes[k].length === 3 && !known(codes[k]) && React.createElement("p", {
+      key: k,
+      className: "p-fine",
+      style: {
+        margin: "6px 0 0"
+      }
+    }, codes[k], " \u2014 ", window.t("tmap.leg_unknown"));
+  }), leg && !leg.error && React.createElement("div", {
+    style: {
+      marginTop: 10
+    },
+    "aria-live": "polite"
+  }, React.createElement("p", {
+    className: "entry-note",
+    style: {
+      margin: "0 0 6px"
+    }
+  }, window.t("tmap.leg_in", {
+    place: leg.via[1],
+    country: window.countryName(leg.viaIso)
+  })), leg.entry ? React.createElement("div", {
+    className: "note note-info"
+  }, React.createElement("span", {
+    className: "note-k",
+    style: {
+      fontWeight: 500
+    }
+  }, window.t("tmap.leg_not_transit", {
+    country: window.countryName(leg.viaIso)
+  }))) : React.createElement(React.Fragment, null, line && React.createElement("div", {
+    className: "note " + (t.status === "vr" ? "note-risk" : t.status === "twov" ? "note-warn" : "note-ok")
+  }, React.createElement("span", {
+    className: "note-k",
+    style: {
+      fontWeight: 600
+    }
+  }, line.label)), t.generic && React.createElement("p", {
+    className: "entry-note"
+  }, window.t("tmap.generic_note")), t.exemption && t.exemption.note && React.createElement("div", {
+    className: "note note-ok"
+  }, React.createElement("span", {
+    className: "note-k",
+    style: {
+      fontWeight: 500
+    }
+  }, window.t("tmap.exempt_via", {
+    note: t.exemption.note
+  }))), leg.legExemptions.map(function (ex, i) {
+    return React.createElement("div", {
+      key: i,
+      className: "note note-info"
+    }, React.createElement("span", {
+      className: "note-k",
+      style: {
+        fontWeight: 500
+      }
+    }, window.t("tmap.leg_exempt", {
+      country: window.countryName((ex.holds || []).find(function (h) {
+        return [leg.fromIso, leg.toIso].includes(String(h).toUpperCase());
+      }))
+    })));
+  }), t.status === "twov" && leg.thirdCountry !== null && React.createElement("p", {
+    className: "entry-note"
+  }, window.t("tmap.leg_third", {
+    answer: window.t(leg.thirdCountry ? "tmap.leg_yes" : "tmap.leg_no")
+  })), t.notes && React.createElement("p", {
+    className: "entry-note"
+  }, t.notes)), React.createElement("button", {
+    type: "button",
+    className: "btn",
+    style: {
+      marginTop: 6
+    },
+    onClick: function onClick() {
+      return onOpen(leg.viaIso);
+    }
+  }, window.t("tmap.leg_open", {
+    country: window.countryName(leg.viaIso)
+  }))));
+}
+function TransitHubList(_ref5) {
+  var passport = _ref5.passport,
+    onOpen = _ref5.onOpen;
   var hubs = window.COMMON_TRANSIT_HUBS || [];
   var repIso = function repIso(area) {
     return area === "SCHENGEN" ? "DE" : area;
@@ -416,7 +576,7 @@ function TransitHubList(_ref4) {
   return React.createElement("section", {
     className: "p-sec"
   }, React.createElement(Caption, {
-    n: 2
+    n: 3
   }, window.t("tmap.hubs")), React.createElement("ul", {
     className: "ledger"
   }, rows.map(function (r) {

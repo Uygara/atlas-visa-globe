@@ -297,6 +297,38 @@ window.transitStatusForGlobe = function (passport, destIso2, opts) {
   return { status: "free", ...base };
 };
 
+// ── Connection check: from → via → to, by IATA airport code ───────────────
+// The transit rules above are per country; a real ticket names airports. This maps
+// the codes (data/airports.js) to countries, resolves the connection airport's
+// rule for the passport, and adds what only the two flights around it can say:
+//   • a trip that starts or ends in the connection country is entry, not transit
+//   • an exemption of the form "valid X visa AND travelling to/from X" applies when
+//     the trip really touches X (we say so; holding the visa is the traveller's part)
+//   • a Transit-Without-Visa programme needs an onward ticket to a THIRD country
+window.transitLeg = function (passport, fromCode, viaCode, toCode, opts) {
+  const A = window.AIRPORTS || {};
+  const ap = (c) => A[String(c || "").trim().toUpperCase()] || null;
+  const from = ap(fromCode), via = ap(viaCode), to = ap(toCode);
+  if (!via) return { error: "via" };
+  const alias = (iso) => (window.TERRITORY_ALIAS && window.TERRITORY_ALIAS[iso]) || iso;
+  const viaIso = alias(via[0]);
+  const fromIso = from ? alias(from[0]) : null, toIso = to ? alias(to[0]) : null;
+  const area = window.transitAreaForDest(viaIso);
+  const status = window.transitStatusForGlobe(passport, viaIso, opts);
+  const touches = [fromIso, toIso].filter(Boolean);
+  const inSchengen = (iso) => !!(window.ETIAS && (window.ETIAS.schengenStates || []).includes(iso));
+  // Inside the Schengen Area a hop between member states is no transit at all.
+  const sameZone = (a, b) => a && b && (a === b || (area === "SCHENGEN" && inSchengen(a) && inSchengen(b)));
+  const entry = touches.some((iso) => sameZone(iso, viaIso));
+  const rule = area && window.TRANSIT_RULES[area];
+  const legExemptions = !entry && rule && status.status === "vr"
+    ? (rule.exemptions || []).filter((ex) => /to\/from|to or from/i.test(ex.note || "")
+        && (ex.holds || []).some((h) => touches.includes(String(h).toUpperCase())))
+    : [];
+  const third = fromIso && toIso ? !(fromIso === toIso || sameZone(fromIso, viaIso) || sameZone(toIso, viaIso)) : null;
+  return { from, via, to, viaIso, fromIso, toIso, area, status, entry, legExemptions, thirdCountry: third };
+};
+
 // Colours for the transit globe (hex so they resolve identically inside
 // SVG fills and in both themes). "na" falls back to neutral land.
 window.TRANSIT_GLOBE_COLOR = {

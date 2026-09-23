@@ -84,6 +84,7 @@ function TransitMapApp() {
         {passport && selected && (
           <TransitDetail passport={passport} iso2={selected} onClose={() => setSelected(null)} />
         )}
+        {passport && <TransitLegChecker passport={passport} onOpen={openCountry} />}
         {passport && <TransitHubList passport={passport} onOpen={openCountry} />}
         <footer className="panel-foot">{window.t("tmap.disclaimer")}</footer>
       </aside>
@@ -232,6 +233,68 @@ function TransitDetail({ passport, iso2, onClose }) {
   );
 }
 
+// ─── Connection check: three airport codes ────────────────────────────────
+function TransitLegChecker({ passport, onOpen }) {
+  const [codes, setCodes] = useState({ from: "", via: "", to: "" });
+  const A = window.AIRPORTS || {};
+  const set = (k) => (e) => setCodes(c => ({ ...c, [k]: e.target.value.replace(/[^a-z]/gi, "").toUpperCase().slice(0, 3) }));
+  const known = (c) => c.length === 3 && !!A[c];
+  const place = (c) => (A[c] ? A[c][1] + ", " + window.countryName(A[c][0]) : null);
+  const leg = codes.via.length === 3 ? window.transitLeg(passport, codes.from, codes.via, codes.to) : null;
+  const t = leg && !leg.error ? leg.status : null;
+  const line = t ? transitLine(t) : null;
+  const field = (k, label) => (
+    <label style={{ flex: "1 1 0", minWidth: 0 }}>
+      <span className="p-hint" style={{ display: "block", margin: "0 0 3px" }}>{label}</span>
+      <input className="field" value={codes[k]} onChange={set(k)} inputMode="text" autoCapitalize="characters" autoComplete="off" spellCheck="false"
+        maxLength={3} placeholder={{ from: "IST", via: "FRA", to: "JFK" }[k]} style={{ width: "100%", textTransform: "uppercase", letterSpacing: "0.08em" }}
+        aria-label={label} />
+    </label>
+  );
+  return (
+    <section className="p-sec">
+      <Caption n={2}>{window.t("tmap.leg_title")}</Caption>
+      <p className="p-hint" style={{ margin: "0 0 8px" }}>{window.t("tmap.leg_hint")}</p>
+      <div style={{ display: "flex", gap: 8 }}>
+        {field("from", window.t("tmap.leg_from"))}
+        {field("via", window.t("tmap.leg_via"))}
+        {field("to", window.t("tmap.leg_to"))}
+      </div>
+      {["from", "via", "to"].map(k => codes[k].length === 3 && !known(codes[k]) && (
+        <p key={k} className="p-fine" style={{ margin: "6px 0 0" }}>{codes[k]} — {window.t("tmap.leg_unknown")}</p>
+      ))}
+      {leg && !leg.error && (
+        <div style={{ marginTop: 10 }} aria-live="polite">
+          <p className="entry-note" style={{ margin: "0 0 6px" }}>{window.t("tmap.leg_in", { place: leg.via[1], country: window.countryName(leg.viaIso) })}</p>
+          {leg.entry ? (
+            <div className="note note-info"><span className="note-k" style={{ fontWeight: 500 }}>{window.t("tmap.leg_not_transit", { country: window.countryName(leg.viaIso) })}</span></div>
+          ) : (
+            <>
+              {line && <div className={"note " + (t.status === "vr" ? "note-risk" : t.status === "twov" ? "note-warn" : "note-ok")}><span className="note-k" style={{ fontWeight: 600 }}>{line.label}</span></div>}
+              {t.generic && <p className="entry-note">{window.t("tmap.generic_note")}</p>}
+              {t.exemption && t.exemption.note && (
+                <div className="note note-ok"><span className="note-k" style={{ fontWeight: 500 }}>{window.t("tmap.exempt_via", { note: t.exemption.note })}</span></div>
+              )}
+              {leg.legExemptions.map((ex, i) => (
+                <div key={i} className="note note-info"><span className="note-k" style={{ fontWeight: 500 }}>
+                  {window.t("tmap.leg_exempt", { country: window.countryName((ex.holds || []).find(h => [leg.fromIso, leg.toIso].includes(String(h).toUpperCase()))) })}
+                </span></div>
+              ))}
+              {t.status === "twov" && leg.thirdCountry !== null && (
+                <p className="entry-note">{window.t("tmap.leg_third", { answer: window.t(leg.thirdCountry ? "tmap.leg_yes" : "tmap.leg_no") })}</p>
+              )}
+              {t.notes && <p className="entry-note">{t.notes}</p>}
+            </>
+          )}
+          <button type="button" className="btn" style={{ marginTop: 6 }} onClick={() => onOpen(leg.viaIso)}>
+            {window.t("tmap.leg_open", { country: window.countryName(leg.viaIso) })}
+          </button>
+        </div>
+      )}
+    </section>
+  );
+}
+
 // ─── Hub list ───────────────────────────────────────────────────────────────
 function TransitHubList({ passport, onOpen }) {
   const hubs = window.COMMON_TRANSIT_HUBS || [];
@@ -244,7 +307,7 @@ function TransitHubList({ passport, onOpen }) {
   });
   return (
     <section className="p-sec">
-      <Caption n={2}>{window.t("tmap.hubs")}</Caption>
+      <Caption n={3}>{window.t("tmap.hubs")}</Caption>
       <ul className="ledger">
         {rows.map(r => (
           <li key={r.area}>

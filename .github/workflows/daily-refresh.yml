@@ -64,6 +64,14 @@ jobs:
         continue-on-error: true
         run: node fetch-british-classes.js
 
+      - name: Refresh airport codes (Mondays only)
+        # IATA code -> country/city for the transit map's connection check (OurAirports,
+        # public domain). Airports rarely change, so weekly is plenty; a short download
+        # keeps the previous file.
+        working-directory: backend
+        continue-on-error: true
+        run: if [ "$(date -u +%u)" = "1" ]; then node fetch-airports.js; else echo "not Monday - skipping"; fi
+
       - name: Regenerate SEO pages
         run: node scripts/generate-seo.js
         env:
@@ -110,7 +118,7 @@ jobs:
         run: |
           git config user.name "atlas-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add data/passports.js data/passports-snapshot.json data/changelog.js data/visa-news.js data/transit-visa-data.js data/passport-variants-data.js data/passport-variants-gb.js data/travel-advisories.js passport/ sitemap.xml robots.txt
+          git add data/passports.js data/passports-snapshot.json data/changelog.js data/visa-news.js data/transit-visa-data.js data/passport-variants-data.js data/passport-variants-gb.js data/travel-advisories.js data/airports.js passport/ sitemap.xml robots.txt
           if git diff --staged --quiet; then
             echo "No changes."
           else
