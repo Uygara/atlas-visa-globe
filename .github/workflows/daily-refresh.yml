@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    env:
+      # Job-level so the push step's `if` can see whether the secret exists.
+      FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
     steps:
       - uses: actions/checkout@v4
 
@@ -91,6 +94,17 @@ jobs:
           JWT_SECRET:                 ${{ secrets.JWT_SECRET }}
           SITE_URL:                   ${{ vars.SITE_URL }}
           FROM_EMAIL:                 ${{ vars.FROM_EMAIL }}
+
+      - name: Send app push notifications (visa-rule and safety-level changes)
+        # Runs only once the FIREBASE_SERVICE_ACCOUNT secret exists (MOBILE-SETUP.md).
+        # Compares today's data with the committed copy of yesterday's, so it must run
+        # before the commit step below. Soft-fails: a push problem never blocks the data.
+        if: env.FIREBASE_SERVICE_ACCOUNT != ''
+        continue-on-error: true
+        working-directory: backend
+        run: |
+          npm install --no-save firebase-admin@13
+          node dispatch-push.js
 
       - name: Commit + push if changed
         run: |

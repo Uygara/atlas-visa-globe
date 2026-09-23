@@ -221,7 +221,10 @@
       // backend/dispatch-push.js (Admin SDK); the person can only touch their own.
       registerDevice: function (uid, token, info) {
         return ready.then(function (x) {
-          return x.F.setDoc(x.F.doc(x.db, "users", uid, "devices", token), { platform: String(info.platform || ""), lang: String(info.lang || "en"), updatedAt: x.F.serverTimestamp() });
+          // merge: the daily job keeps its own bookkeeping (sent, lastPush) on this document.
+          var tz = ""; try { tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ""; } catch (e) {}
+          return x.F.setDoc(x.F.doc(x.db, "users", uid, "devices", token),
+            { platform: String(info.platform || ""), lang: String(info.lang || "en"), tz: String(tz).slice(0, 40), updatedAt: x.F.serverTimestamp() }, { merge: true });
         });
       },
       unregisterDevice: function (uid, token) {
