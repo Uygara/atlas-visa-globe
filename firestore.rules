@@ -17,6 +17,18 @@ service cloud.firestore {
         && request.resource.data.data.size() <= 20;
     }
 
+    // Push tokens of the person's phones (the app writes them; the daily job reads
+    // them with the Admin SDK, which bypasses these rules). One small document per
+    // token: platform, language, updatedAt — nothing else can be stored.
+    match /users/{uid}/devices/{token} {
+      allow read, delete: if request.auth != null && request.auth.uid == uid;
+      allow create, update: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['platform', 'lang', 'updatedAt'])
+        && request.resource.data.platform is string && request.resource.data.platform.size() <= 16
+        && request.resource.data.lang is string && request.resource.data.lang.size() <= 8
+        && request.resource.data.updatedAt == request.time;
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }

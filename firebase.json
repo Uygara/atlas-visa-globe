@@ -1,0 +1,21 @@
+{
+  "firestore": {
+    "rules": "firestore.rules"
+  },
+  "auth": {
+    "authorizedDomains": [
+      "localhost",
+      "travelnow.info",
+      "www.travelnow.info",
+      "travelnow-a0cf3.firebaseapp.com",
+      "travelnow-a0cf3.web.app"
+    ],
+    "providers": {
+      "emailPassword": true,
+      "googleSignIn": {
+        "oAuthBrandDisplayName": "travelnow.info",
+        "supportEmail": "uygaratly@gmail.com"
+      }
+    }
+  }
+}
