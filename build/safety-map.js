@@ -558,6 +558,7 @@ function SafetyDetail(_ref9) {
   var notes = a && a.regionNotes || [];
   var events = a && a.events || [];
   var updates = a && a.uk && a.uk.updates || [];
+  var mfa = a && a.mfa || [];
   var disagree = a && a.uk && a.us && a.ca && Math.max(a.uk.level, a.us.level, a.ca.level) - Math.min(a.uk.level, a.us.level, a.ca.level) >= 2;
   return React.createElement("article", {
     className: "entry"
@@ -726,7 +727,34 @@ function SafetyDetail(_ref9) {
       className: "feed-sum",
       dir: "auto"
     }, u.note));
-  }))), SOURCE_ORDER.map(function (key) {
+  }))), mfa.length > 0 && React.createElement("div", {
+    style: {
+      marginBottom: 12
+    }
+  }, React.createElement("div", {
+    className: "p-hint",
+    style: {
+      margin: "0 0 6px",
+      fontWeight: 600,
+      color: "var(--ink-2)"
+    }
+  }, tr("safety.mfa_title", "Turkish Foreign Ministry")), mfa.map(function (m, i) {
+    return React.createElement("a", {
+      key: i,
+      className: "note note-info",
+      href: m.url,
+      target: "_blank",
+      rel: "noopener noreferrer"
+    }, React.createElement("span", {
+      className: "note-k",
+      dir: "auto"
+    }, m.title), React.createElement("span", {
+      className: "note-s"
+    }, fmtDate(m.date)), React.createElement("span", {
+      className: "note-go",
+      "aria-hidden": "true"
+    }, "\u2192"));
+  })), SOURCE_ORDER.map(function (key) {
     return React.createElement(SourceRow, {
       key: key,
       k: key,

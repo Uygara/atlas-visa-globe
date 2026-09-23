@@ -35,6 +35,7 @@
 const fs = require("fs");
 const path = require("path");
 const fetch = require("node-fetch");
+const cheerio = require("cheerio");
 
 const OUT_PATH = path.join(__dirname, "..", "data", "travel-advisories.js");
 const ADMIN1_INDEX = path.join(__dirname, "..", "data", "admin1", "index.json");
@@ -49,6 +50,7 @@ const EVENT_MAX_AGE_DAYS = 45;
 const US_URL = "https://cadataapi.state.gov/api/TravelAdvisories";
 const CA_URL = "https://data.international.gc.ca/travel-voyage/index-alpha-eng.json";
 const UK_INDEX = "https://www.gov.uk/api/content/foreign-travel-advice";
+const TR_URL = "https://www.mfa.gov.tr/sub.tr.mfa?b3026181-6b8f-4fc6-9327-a5113446ce95=";
 const GDACS_URL = "https://www.gdacs.org/gdacsapi/api/events/geteventlist/SEARCH?eventlist=EQ;TC;FL;VO;WF;DR&alertlevel=Orange;Red";
 
 const sleep = (ms) => new Promise(r => setTimeout(r, ms));
@@ -137,6 +139,8 @@ const REGION_STOPWORDS = new Set([
 ]);
 const REGION_NOISE = /^(before you travel|travel insurance|about fcdo|get travel advice|support from|find out more|areas where|your travel insurance|if you|this advice|read the|see|for more|the fcdo|follow)/i;
 
+const WHOLE_COUNTRY = /\b(for any reason|the whole country|the entire country|all of the country)\b/i;
+
 function buildRegionMatcher(units) {
   const entries = [];
   for (const u of units || []) {
@@ -177,8 +181,11 @@ function parseRegions(lines, directives, matchRegions) {
       if (m && (hit == null || m.index < hit.index)) hit = { index: m.index, level: d.level, m };
     }
     if (hit) {
-      mode = hit.level;
       const after = line.slice(hit.index + hit.m[0].length).trim();
+      // "Do not travel to Burma for any reason due to …" covers the whole country: it
+      // starts no list of areas, and the prose that follows is not one either.
+      if (WHOLE_COUNTRY.test(after)) { mode = 0; continue; }
+      mode = hit.level;
       // "…to: " introduces a list; anything else names the area inline.
       if (after && !/^[:：]?$/.test(after)) addBlock(out, mode, after, matchRegions);
       continue;
@@ -198,7 +205,9 @@ function addBlock(out, level, text, matchRegions) {
     last.text = (last.text + " " + clean).slice(0, 300);
     return;
   }
-  out.push({ level, ids, text: clean.slice(0, 300) });
+  // Unmatched notes keep their first sentence: "within 10km of the border … terrorism. If you are in Syria, …"
+  const shown = ids.length ? clean : (clean.match(/^.{20,}?[.!?](?=\s+[A-Z]|$)/) || [clean])[0];
+  out.push({ level, ids, text: shown.slice(0, 300) });
 }
 
 function mergeRegions(entries) {
@@ -355,6 +364,116 @@ async function fetchCA() {
   return { countries: out };
 }
 
+// The JSON above only says a country HAS regional advisories. Each country page
+// lists them as headings — "<Area> - Avoid all travel" / "<Area> - Avoid
+// non-essential travel", or "Regional Advisory - …" followed by a list of states:
+//   <h3>Manipur - Avoid non-essential travel</h3><p>Avoid non-essential travel to Manipur …</p>
+//   <h3>Regional advisory - Avoid all travel</h3><p>Avoid all travel to:</p><ul><li>the province of Balochistan</li>…
+// Canada's ladder: "Avoid non-essential travel" = 3, "Avoid all travel" = 4.
+// Areas defined by distance ("within 10 km of the border with Pakistan") name whole
+// states only as where the strip runs, so they stay text and are never painted.
+const CA_AREA_LEVEL = { "avoid all travel": 4, "avoid non-essential travel": 3 };
+const CA_PARTIAL = /within\s+\d+\s*(?:km|kilomet|mile)|\bnear the border|\bborder(?:s| areas?)?\s+with\b|\balong the border/i;
+const CA_HEAD = /^(.*?)\s*[-–]\s*(avoid all travel|avoid non-essential travel)\s*$/i;
+const CA_CUT = /\b(excluding|excludes|except)\b/i;   // "Chiapas, excluding: the city of …" names Chiapas only
+
+async function fetchCARegions(caCountries, admin1) {
+  const out = {};
+  let pages = 0;
+  for (const [iso, c] of Object.entries(caCountries)) {
+    if (!c.regional || !c.url || !/^https:\/\/travel\.gc\.ca\//.test(c.url)) continue;
+    let html;
+    try {
+      const r = await fetch(c.url, { headers: { "User-Agent": UA, Accept: "text/html" } });
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      html = await r.text();
+    } catch (e) { console.warn("  [ca] " + iso + ": " + e.message); await sleep(UK_DELAY_MS); continue; }
+    pages++;
+    const $ = cheerio.load(html);
+    const match = buildRegionMatcher(admin1[iso]);
+    const blocks = [];
+    $("h3").each((i, h) => {
+      const m = CA_HEAD.exec($(h).text().replace(/\s+/g, " ").trim());
+      if (!m) return;
+      const level = CA_AREA_LEVEL[m[2].toLowerCase()];
+      const lines = [];
+      let el = $(h).next();
+      while (el.length && !el.is("h2, h3")) {
+        if (el.is("p")) lines.push(el.text().replace(/\s+/g, " ").trim());
+        else el.find("li").each((k, li) => { if (!$(li).parents("li").length) lines.push($(li).text().replace(/\s+/g, " ").trim()); });
+        el = el.next();
+      }
+      const whole = [m[1], ...lines].join(" ");
+      const partial = CA_PARTIAL.test(whole);
+      const named = /^regional advis/i.test(m[1]) ? [] : [m[1]];
+      for (const line of lines) {
+        if (!line || /^(this advisory (excludes|includes)|if you|for more|see )/i.test(line)) continue;
+        // A lead sentence may name the area inline: "Avoid non-essential travel to Manipur due to …"
+        const lead = /^avoid (?:all|non-essential) travel to\s+(?!the following|within|areas)(.+?)(?:\s+due to\b|\s+because\b|[:.]|$)/i.exec(line);
+        named.push(lead ? lead[1] : (/^avoid (?:all|non-essential) travel/i.test(line) ? "" : line));
+      }
+      for (const t of named) {
+        const head = String(t).split(CA_CUT)[0].trim();
+        if (!head) continue;
+        // distance-defined blocks stay words: an empty matcher keeps them as text notes
+        addBlock(blocks, level, head, partial ? () => [] : match);
+      }
+    });
+    if (blocks.length) out[iso] = blocks.map(b => ({ ...b, src: "ca" }));
+    await sleep(UK_DELAY_MS * 3);
+  }
+  return { regions: out, pages };
+}
+
+// ─── Türkiye Foreign Ministry (T.C. Dışişleri Bakanlığı) ──────────────────
+// No levels: the ministry publishes dated "Güvenlik ve Seyahat Duyurusu" / "Seyahat
+// Uyarısı" pages per country ("Myanmar’a Yönelik Güvenlik ve Seyahat Duyurusu, 1 Kasım
+// 2025"). We list the newest two per country as announcements — with their date, so
+// an old one reads as old — and never fold them into the 1–4 level.
+const TR_MONTHS = { ocak: 1, subat: 2, mart: 3, nisan: 4, mayis: 5, haziran: 6, temmuz: 7, agustos: 8, eylul: 9, ekim: 10, kasim: 11, aralik: 12 };
+const TR_NAME_ALIASES = { "abd": "US", "kirgiz cumhuriyeti": "KG", "ekvator": "EC", "kuzey kibris": "XN" };
+
+function loadTurkishNames() {
+  const map = new Map(Object.entries(TR_NAME_ALIASES));
+  const win = { addEventListener() {}, dispatchEvent() {} };
+  const sandbox = { window: win, document: { documentElement: { getAttribute() { return null; }, setAttribute() {} } }, localStorage: { getItem: () => null }, navigator: { language: "tr" } };
+  win.window = win;
+  const run = (f) => new Function("window", "document", "localStorage", "navigator", fs.readFileSync(path.join(__dirname, "..", "data", f), "utf8"))(win, sandbox.document, sandbox.localStorage, sandbox.navigator);
+  run("countries.js"); run("country-names.js");
+  win.ATLAS_LANG = "tr";
+  for (const c of win.COUNTRIES || []) { const n = win.countryName(c.iso2); if (n) map.set(deburr(n), c.iso2); }
+  return map;
+}
+
+async function fetchTR() {
+  const r = await fetch(TR_URL, { headers: { "User-Agent": UA, Accept: "text/html", "Accept-Language": "tr" } });
+  if (!r.ok) throw new Error("HTTP " + r.status + " " + TR_URL);
+  const $ = cheerio.load(await r.text());
+  const tr = loadTurkishNames();
+  const out = {};
+  let seen = 0;
+  $("a").each((i, a) => {
+    const text = $(a).text().replace(/\s+/g, " ").trim();
+    const href = $(a).attr("href") || "";
+    const dm = /,\s*(\d{1,2})\s+(\p{L}+)\s+(\d{4})\s*$/u.exec(text);
+    if (!dm || !/(Duyuru|Uyar[ıi])/i.test(text) || !/\.tr\.mfa$/.test(href)) return;
+    const month = TR_MONTHS[deburr(dm[2])];
+    if (!month) return;
+    seen++;
+    const date = dm[3] + "-" + String(month).padStart(2, "0") + "-" + String(dm[1]).padStart(2, "0");
+    const title = text.slice(0, dm.index).trim();
+    // "İsrail’e ve Filistin’e Yönelik …", "Kırgız Cumhuriyeti’ne Yönelik …", "İtalya için …"
+    const lead = title.split(/\s+(?:Yönelik|İlişkin|için)\b/i)[0];
+    for (const part of lead.split(/\s+ve\s+/)) {
+      const iso = tr.get(deburr(part.replace(/[’'][\p{L}]*$/u, "").trim()));
+      if (!iso) continue;
+      (out[iso] = out[iso] || []).push({ date, title, url: "https://www.mfa.gov.tr" + (href.startsWith("/") ? href : "/" + href) });
+    }
+  });
+  for (const iso of Object.keys(out)) out[iso] = out[iso].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 2);
+  return { countries: out, seen };
+}
+
 // ─── GDACS current disaster alerts ────────────────────────────────────────
 const GDACS_TYPE = { EQ: "earthquake", TC: "storm", FL: "flood", VO: "volcano", WF: "wildfire", DR: "drought" };
 
@@ -462,10 +581,26 @@ function perSource(prev, key) {
     try {
       const res = await fetchCA();
       const n = Object.keys(res.countries).length;
-      if (n >= MIN_COUNTRIES) { ca = res.countries; sources.ca.fetched = today(); }
-      else console.warn(`  [ca] only ${n} countries — keeping previous`);
+      if (n >= MIN_COUNTRIES) {
+        ca = res.countries; sources.ca.fetched = today();
+        // Area lists come from each country's page (only the ~60 with a regional advisory).
+        try {
+          const reg = await fetchCARegions(ca, admin1);
+          for (const [iso, r] of Object.entries(reg.regions)) freshRegions[iso] = (freshRegions[iso] || []).concat(r);
+          console.log(`  regional advisories read on ${reg.pages} country pages; areas found in ${Object.keys(reg.regions).length}`);
+        } catch (e) { console.warn(`  [ca] regions skipped: ${e.message}`); }
+      } else console.warn(`  [ca] only ${n} countries — keeping previous`);
       console.log(`Canada: ${n} countries`);
     } catch (e) { console.warn(`[ca] skipped: ${e.message}`); }
+  }
+  let mfa = {};
+  for (const [iso, c] of Object.entries((prev && prev.countries) || {})) if (c.mfa) mfa[iso] = c.mfa;
+  if (want("tr")) {
+    try {
+      const res = await fetchTR();
+      if (res.seen >= 8) { mfa = res.countries; console.log(`Türkiye Foreign Ministry: ${res.seen} announcements → ${Object.keys(res.countries).length} countries`); }
+      else console.warn(`  [tr] only ${res.seen} announcements — keeping previous`);
+    } catch (e) { console.warn(`[tr] skipped: ${e.message}`); }
   }
   if (want("gdacs")) {
     try {
@@ -483,13 +618,17 @@ function perSource(prev, key) {
     if (us[iso]) c.us = us[iso];
     if (ca[iso]) c.ca = ca[iso];
     if (events[iso]) c.events = events[iso];
+    if (mfa[iso]) c.mfa = mfa[iso];
     c.level = Math.max(c.uk ? c.uk.level : 0, c.us ? c.us.level : 0, c.ca ? c.ca.level : 0) || 1;
     c.updated = [c.uk && c.uk.updated, c.us && c.us.updated, c.ca && c.ca.updated]
       .filter(Boolean).sort().pop() || null;
     const fresh = freshRegions[iso];
     const merged = fresh && fresh.length ? mergeRegions(fresh) : (regionsPrev[iso] || null);
     if (merged && merged.regions && merged.regions.length) c.regions = merged.regions;
-    if (merged && merged.notes && merged.notes.length) c.regionNotes = merged.notes;
+    // A note that is no stricter than the whole country's own level says nothing new
+    // ("Do not travel: Burma for any reason …" on a level-4 country is just its prose).
+    const notes = merged && merged.notes ? merged.notes.filter(n => n.level > c.level) : [];
+    if (notes.length) c.regionNotes = notes;
     countries[iso] = c;
   }
 

@@ -363,6 +363,7 @@ function SafetyDetail({ iso2, names, onClose }) {
   const notes = (a && a.regionNotes) || [];
   const events = (a && a.events) || [];
   const updates = (a && a.uk && a.uk.updates) || [];
+  const mfa = (a && a.mfa) || [];
   const disagree = a && a.uk && a.us && a.ca &&
     (Math.max(a.uk.level, a.us.level, a.ca.level) - Math.min(a.uk.level, a.us.level, a.ca.level) >= 2);
 
@@ -444,6 +445,20 @@ function SafetyDetail({ iso2, names, onClose }) {
               </div>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* T.C. Dışişleri Bakanlığı: dated announcements, no level (never part of the colour). */}
+      {mfa.length > 0 && (
+        <div style={{ marginBottom: 12 }}>
+          <div className="p-hint" style={{ margin: "0 0 6px", fontWeight: 600, color: "var(--ink-2)" }}>{tr("safety.mfa_title", "Turkish Foreign Ministry")}</div>
+          {mfa.map((m, i) => (
+            <a key={i} className="note note-info" href={m.url} target="_blank" rel="noopener noreferrer">
+              <span className="note-k" dir="auto">{m.title}</span>
+              <span className="note-s">{fmtDate(m.date)}</span>
+              <span className="note-go" aria-hidden="true">→</span>
+            </a>
+          ))}
         </div>
       )}
 
