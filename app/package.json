@@ -1,0 +1,31 @@
+{
+  "name": "travelnow-app",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Capacitor shell that wraps travelnow.info as an iOS and Android app. See ../MOBILE-SETUP.md.",
+  "scripts": {
+    "www": "node build-www.js",
+    "resources": "node make-resources.js && capacitor-assets generate --iconBackgroundColor #1E3A5F --iconBackgroundColorDark #1E3A5F --splashBackgroundColor #F1ECDD --splashBackgroundColorDark #0F1B2D",
+    "sync": "node build-www.js && cap sync",
+    "ios": "node build-www.js && cap sync ios && cap open ios",
+    "android": "node build-www.js && cap sync android && cap open android",
+    "sync:android": "node build-www.js && cap sync android"
+  },
+  "dependencies": {
+    "@capacitor-community/admob": "^8.1.0",
+    "@capacitor-firebase/authentication": "^8.5.2",
+    "@capacitor-firebase/messaging": "^8.5.2",
+    "@capacitor/android": "^8.5.2",
+    "@capacitor/app": "^8.1.1",
+    "@capacitor/core": "^8.5.2",
+    "@capacitor/ios": "^8.5.2",
+    "@capacitor/network": "^8.0.1",
+    "@capacitor/splash-screen": "^8.0.2",
+    "@capacitor/status-bar": "^8.0.3",
+    "firebase": "^12.19.0"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^8.5.2"
+  }
+}

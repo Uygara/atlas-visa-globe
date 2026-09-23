@@ -1,0 +1,7 @@
+# generated / downloaded — rebuilt by `npm run www`
+node_modules/
+www/
+.cache/
+# Firebase app config: added after the iOS/Android apps are registered (MOBILE-SETUP.md)
+ios/App/App/GoogleService-Info.plist
+android/app/google-services.json

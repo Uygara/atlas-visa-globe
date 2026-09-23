@@ -1,0 +1,3 @@
+# Not part of the website: the Capacitor shell (native projects, node_modules,
+# generated www copy). Cloudflare deploys the repo root as static assets.
+app/

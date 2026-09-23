@@ -1,0 +1,33 @@
+{
+  "appId": "info.travelnow.app",
+  "appName": "travelnow.info",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "backgroundColor": "#F1ECDD",
+  "experimental": {
+    "ios": {
+      "spm": {
+        "packageOptions": {
+          "@capacitor-firebase/authentication": { "symlink": true },
+          "@capacitor-firebase/messaging": { "symlink": true }
+        }
+      }
+    }
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchAutoHide": false,
+      "backgroundColor": "#F1ECDD",
+      "showSpinner": false
+    },
+    "FirebaseAuthentication": {
+      "skipNativeAuth": true,
+      "providers": ["google.com", "phone"]
+    },
+    "FirebaseMessaging": {
+      "presentationOptions": ["alert", "badge"]
+    }
+  }
+}

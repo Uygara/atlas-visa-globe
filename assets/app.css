@@ -1,0 +1,55 @@
+/* In-app styles (iOS/Android build only — injected by app/build-www.js).
+   The website never loads this file. */
+
+html.in-app {
+  --tabbar-h: calc(56px + env(safe-area-inset-bottom, 0px));
+  --strip-h: 0px;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  overscroll-behavior: none;
+}
+html.in-app body { -webkit-user-select: none; user-select: none; }
+html.in-app input, html.in-app textarea, html.in-app select, html.in-app [contenteditable] { -webkit-user-select: text; user-select: text; }
+
+/* The four site links become a bottom tab bar; only tools stay in the top bar. */
+html.in-app .mh-nav, html.in-app .mh-burger, html.in-app .mh-sheet,
+html.in-app .mh-more, html.in-app .mh-support { display: none !important; }
+html.in-app .masthead { padding-top: env(safe-area-inset-top, 0px); }
+html.in-app .doc-band { display: none; }
+
+/* Room for the tab bar: the map apps shrink, document pages get bottom padding. */
+html.in-app #root { height: calc(100vh - var(--tabbar-h)); height: calc(100dvh - var(--tabbar-h)); }
+html.in-app body { padding-bottom: var(--tabbar-h); }
+html.in-app body:has(#root) { padding-bottom: 0; }
+@media (max-width: 900px) {
+  html.in-app .layout { grid-template-rows: calc(52px + env(safe-area-inset-top, 0px)) minmax(0, 1fr); }
+  html.in-app .panel { bottom: var(--tabbar-h); max-height: calc(92vh - var(--tabbar-h)); }
+}
+
+.app-tabbar {
+  position: fixed; inset-inline: 0; bottom: 0; z-index: 1000;
+  height: var(--tabbar-h); padding-bottom: env(safe-area-inset-bottom, 0px);
+  display: flex; background: var(--paper-raised, #fff);
+  border-top: 1px solid var(--rule-strong, #b9b3a3);
+}
+.app-tab {
+  flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+  color: var(--ink-3, #5a6470); text-decoration: none; font: 600 var(--fs-2xs, 11px)/1.1 var(--font-sans, system-ui);
+  padding: 4px 2px;
+}
+.app-tab svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.app-tab span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.app-tab[aria-current="page"] { color: var(--ink, #16202a); }
+.app-tab[aria-current="page"] svg { stroke-width: 2; }
+
+/* Offline / stale-data strip under the top bar. */
+.app-strip {
+  position: fixed; inset-inline: 0; top: calc(52px + env(safe-area-inset-top, 0px)); z-index: 999;
+  padding: 6px 12px; font: 500 var(--fs-xs, 12px)/1.3 var(--font-sans, system-ui);
+  background: var(--ink, #16202a); color: var(--paper, #f1ecdd); text-align: center;
+}
+.app-strip[hidden] { display: none; }
+
+/* Notification switch on /account/. */
+.app-push { margin-top: 18px; }
+.app-push .btn { margin-inline-end: 8px; }

@@ -42,6 +42,8 @@
   function fromTr(p) { return isTrPath(p) ? (p.replace(/^\/tr(?=\/)/, "") || "/") : p; }
   // English path → its Turkish twin (every /passport/<iso>/ has one too).
   function hasTr(p) {
+    // The iOS/Android app (app/) ships the English pages only and translates in place.
+    if (typeof window !== "undefined" && window.ATLAS_APP) return false;
     return TR_PAGES.indexOf(p) !== -1 || /^\/passport\/[a-z]{2}\/$/.test(p);
   }
   function toTr(p) { return "/tr" + p; }

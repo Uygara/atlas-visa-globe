@@ -4,14 +4,36 @@
     {
       "name": "Static site (Python)",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "8000"],
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8000"
+      ],
       "port": 8000
     },
     {
       "name": "Static site (npx serve)",
       "runtimeExecutable": "npx",
-      "runtimeArgs": ["-y", "serve", "-l", "3000", "."],
+      "runtimeArgs": [
+        "-y",
+        "serve",
+        "-l",
+        "3000",
+        "."
+      ],
       "port": 3000
+    },
+    {
+      "name": "App www (Python)",
+      "runtimeExecutable": "python",
+      "runtimeArgs": [
+        "-m",
+        "http.server",
+        "8001",
+        "--directory",
+        "app/www"
+      ],
+      "port": 8001
     }
   ]
 }
