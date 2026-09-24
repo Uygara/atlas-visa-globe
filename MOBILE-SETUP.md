@@ -18,19 +18,19 @@ Son güncelleme: 2026-09-24 · Firebase projesi: `travelnow-a0cf3` · Uygulama k
 
 **Henüz yok / denenmedi:**
 - Hiçbir şey **gerçek cihazda** çalıştırılmadı (bu bilgisayarda Xcode/Android SDK yok).
-- Firebase'e bu bilgisayardan giriş yapılmadı → uygulamalar kayıtlı değil, config dosyaları yok.
+- Telefonla giriş: Console'da açılmadı (adım 2) → kod hazır, canlıda denenmedi.
 - Apple ile Giriş yok (aşağıda "App Store kuralı").
 
-## 1. Firebase girişi (sadece sen, ~30 sn)
+## 1. Firebase kurulumu — YAPILDI (2026-09-24)
 
-Firebase komut satırı tarayıcıda Google ile giriş ister; bunu senin adına yapamam.
-Terminalde bir kez:
-
-```bash
-npx -y firebase-tools@latest login
-```
-
-Sonra bana "girdim" de. Ben şunları çalıştırırım (hepsi `travelnow-a0cf3` projesinde):
+Kayıtlı uygulamalar (`travelnow-a0cf3`, proje no 530717343321): Web `1:530717343321:web:282fd55bf13240ad733b48`,
+iOS `…:ios:09f2aada09e1a1ab733b48`, Android `…:android:8d7a13d7066fd9e4733b48` (hepsi `info.travelnow.app`).
+Web config `assets/account-config.js`'te; `GoogleService-Info.plist` ve `google-services.json` **commit'li**
+(kamuya açık kimlikler; Mac'te derleme için gerekli). Google+e-posta/şifre açık (`firebase.json`), Firestore
+`(default)` **eur3**'te, kurallar yayında, yetkili alan adları: `travelnow.info`, `www.travelnow.info`, `localhost`.
+iOS'ta Google için URL şeması `Info.plist`'e eklendi (`node app/firebase-native.js`).
+Canlı testte (localhost, gerçek Firebase): şifreyle kayıt → Firestore eşitleme → çıkış → yanlış şifre → giriş → veri
+geri geldi → hesap silme. Yeniden kurmak gerekirse komutlar:
 
 ```bash
 npx -y firebase-tools@latest apps:create WEB "travelnow web" --project travelnow-a0cf3
@@ -42,7 +42,7 @@ npx -y firebase-tools@latest apps:sdkconfig ANDROID <ANDROID_APP_ID>  # → app/
 npx -y firebase-tools@latest deploy --only auth,firestore:rules       # firebase.json + firestore.rules
 ```
 
-Ardından `cd app && node firebase-native.js` çalışır: `GoogleService-Info.plist` içindeki `REVERSED_CLIENT_ID`
+Ardından `cd app && node firebase-native.js` çalıştırılır (iOS URL şeması + Android kontrolü): `GoogleService-Info.plist` içindeki `REVERSED_CLIENT_ID`
 değeri `app/ios/App/App/Info.plist`'e URL şeması olarak eklenir (Google girişi iOS'ta buna dönüyor).
 Android için Firebase Console → Proje ayarları → Android uygulaması → **SHA-1** parmak izi eklenir
 (`cd app/android && ./gradlew signingReport`).
@@ -50,10 +50,11 @@ Android için Firebase Console → Proje ayarları → Android uygulaması → *
 ## 2. Konsolda elle açılacaklar (sadece sen)
 
 1. **Authentication → Sign-in method → Phone → Etkinleştir.** CLI ile açılamıyor (yalnızca Google,
-   e-posta/şifre, anonim açılıyor; onlar `firebase.json`'da).
+   e-posta/şifre, anonim açılıyor; onlar `firebase.json`'da). **SMS bölge politikası**nı da ayarla (Authentication →
+   Settings → SMS region policy): yalnızca kullanıcılarının olduğu ülkeler; yoksa toplu sahte SMS istekleri maliyet yaratır.
    SMS'in ücretsiz kotası sınırlı; kota üstü için **Blaze** (kullandıkça öde) plan gerekebilir — konsolda
    Authentication → Usage kısmında güncel sınırı gör. Test için Phone → "Test telefon numaraları" ekleyebilirsin.
-2. **Authentication → Ayarlar → Yetkili alan adları**: `travelnow.info` listede olmalı (`firebase.json` ekliyor).
+2. Yetkili alan adları eklendi (not: `deploy --only auth` `authorizedDomains`'i uygulamıyor; ben CLI'nin kendi yardımcısıyla ekledim).
 3. Push için: Firebase Console → Proje ayarları → **Hizmet hesapları → Yeni özel anahtar oluştur** → indirilen JSON'un
    tamamını GitHub repo → Settings → Secrets → `FIREBASE_SERVICE_ACCOUNT` olarak yapıştır. Bunu ekleyene kadar
    günlük iş bildirim adımını atlar (hata vermez).

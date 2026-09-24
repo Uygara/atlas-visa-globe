@@ -1,3 +1,5 @@
+> **ARŞİV.** Kurulum 2026-09-24'te yapıldı; güncel bilgi `MOBILE-SETUP.md` (ve `firebase.json`). Bu dosya e-posta bağlantılı ilk plana aittir.
+
 # travelnow.info — Üyelik (Firebase) Kurulum Rehberi
 
 Üyelik kodu hazır ve sitede, ama **kapalı**. `assets/account-config.js` içinde

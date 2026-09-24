@@ -101,6 +101,14 @@ EN in those four (engine ready — just add dict entries).
     region notes no stricter than the country level dropped (376 → 236).
   - **Transit map:** connection check by IATA codes (`data/airports.js`, weekly refresh) + `transitLeg()`.
   - Share cards re-rendered (400). Privacy page extended for phone/push/AdMob (owner should review).
+  - **Firebase went live (same evening):** CLI login done by the owner; Web/iOS/Android apps registered, configs
+    written (plist/json committed), `deploy --only auth` enabled Google + email/password (email-link and phone have no
+    CLI switch: email-link UI removed, phone waits for the console), Firestore `(default)` in **eur3** (the first
+    deploy created it in nam5 by default — deleted while empty and recreated; `firebase.json` now pins the location),
+    rules deployed, authorized domains added through firebase-tools' own `gcp/auth` helper (needs `setActiveAccount`
+    first; `deploy --only auth` ignores `authorizedDomains`). Verified on localhost against the real project:
+    sign-up, sync round trip, wrong password, delete. Not testable headless: Google popup, reCAPTCHA/SMS (added a 90 s
+    give-up so the form never hangs). Accounts are now ON for every visitor (config no longer null).
   - Workflow: `tr/passport/` was never staged by the cron — fixed. `CLAUDE.md` + a short `TODO.md` now start sessions.
 - **Round 12 (2026-09-20/21 — the design-review items, Turkish mirror):**
   - **One headline number.** The panel, pass card, compare strip, passport pages

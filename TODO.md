@@ -1,23 +1,25 @@
 # travelnow.info — açık işler
 
-> Güncelleme: 2026-09-24 · **Yalnızca açık işler.** Biten iş bu listeden silinir; ne yapıldığı `STATE.md`'de
+> Güncelleme: 2026-09-24 (akşam: Firebase kuruldu) · **Yalnızca açık işler.** Biten iş bu listeden silinir; ne yapıldığı `STATE.md`'de
 > tur notunda. Öncelik: **P1** sıradaki, **P2** yakında, **P3** sonra. Her oturum sonunda bu liste güncellenir
 > (kurallar `CLAUDE.md`'de). Mobil ayrıntılar: `MOBILE-SETUP.md`.
 
 ## ▶ Yeni oturumda buradan başla
 
-1. **Firebase girişi** — sen `npx -y firebase-tools@latest login` çalıştırdıysan ben `MOBILE-SETUP.md` §1'i
-   yürütürüm: uygulamaları kaydet (Web/iOS/Android), config'leri yaz, `deploy --only auth,firestore:rules`,
-   sonra canlıda dört giriş yöntemini dene (Google, e-posta/şifre, telefon, e-posta bağlantısı).
-2. Apple ile Giriş (App Store 4.8) — Apple Developer hesabı gelince.
-3. Mac'te ilk iOS derlemesi + gerçek cihaz turu (Mac ve Apple hesabı gerekir).
+Firebase kuruldu ve canlıya çıktı: e-posta/şifre + Google açık, hesaplar sitede AÇIK, Firestore `eur3`'te,
+kurallar yayında. Sıradaki:
+
+1. **Telefonla giriş** — sen Console'da Phone'u açınca ben canlıda dener (gerçek numara gerekir; test numarası da olur).
+2. **Apple ile Giriş** (App Store 4.8) — Apple Developer hesabı gelince.
+3. **Mac'te ilk iOS derlemesi + gerçek cihaz turu** (Mac ve Apple hesabı gerekir; `MOBILE-SETUP.md` §3).
 
 ## Senin yapacakların
 
-- [ ] **P1 · Firebase CLI girişi (30 sn)** — `npx -y firebase-tools@latest login` (tarayıcıda Google ile onay);
-      bunu benim yerime yapamam. Sonra bana "girdim" yaz.
+- [ ] **P1 · Canlıda Google ile giriş (1 dk)** — travelnow.info/account/ → "Google ile devam et". Açılır pencere
+      etkileşimli olduğu için otomatik deneyemedim; `travelnow.info` yetkili alan adı olarak eklendi.
 - [ ] **P1 · Firebase Console: telefon girişi** — Authentication → Sign-in method → **Phone** → Etkinleştir
-      (CLI ile açılamıyor). SMS ücretsiz kotası sınırlı; gerekirse Blaze planı kararı da senin.
+      (CLI ile açılamıyor). Açarken **SMS bölge politikası** ayarla (yalnızca gerçek kullanıcı ülkeleri; aksi halde SMS
+      dolandırıcılığına açık) ve SMS ücretsiz kotası dolarsa **Blaze** kararı senin.
 - [ ] **P1 · Karar: e-posta uyarıları** — `/alerts/` formu canlıda 404 veriyor (`/api/subscribe` yok).
       Seçenekler: (a) formu gizle, (b) uyarıları hesaba/bildirime bağla (uygulamada push var, en doğrusu bu),
       (c) Cloudflare Worker + e-posta servisi kur. Önerim (b) + formu o zamana dek gizlemek.
@@ -34,7 +36,7 @@
 
 ## Benim yapacaklarım — mobil uygulama
 
-- [ ] **P1 · Firebase kurulumu** (yukarıdaki giriş sonrası) — ayrıntı `MOBILE-SETUP.md` §1–2; `node app/firebase-native.js`.
+- [ ] **P1 · Telefon girişini canlıda dene** — Phone açılınca (yukarıda); reCAPTCHA + SMS akışı headless'ta çözülmüyor.
 - [ ] **P1 · Apple ile Giriş** — Google sunduğumuz için App Store 4.8; Firebase Auth `apple.com` sağlayıcısı + native.
 - [ ] **P2 · Gerçek cihaz turu** (Mac) — çevrimdışı açılış, güvenli alan/sekme çubuğu, hesap, bildirim, reklam rızası; mağaza ekran görüntüleri.
 - [ ] **P2 · Bildirim kuralı 3: son başvuru hatırlatması** — planlayıcının `applyPlan()` mantığı Node'a taşınıp
