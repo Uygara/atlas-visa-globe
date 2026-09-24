@@ -122,17 +122,9 @@
       root.appendChild(passwordForm());
       root.appendChild(h("h2", { text: "Phone number" }));
       root.appendChild(phoneForm());
-      // An emailed link opens in the phone's browser, not the app: website only.
-      if (!window.ATLAS_APP) {
-        root.appendChild(h("h2", { text: "Or get a sign-in link by email" }));
-        if (ui.linkSent) {
-          root.appendChild(note("Check your inbox — we sent a sign-in link. Open it on this device.", "ok"));
-        } else {
-          root.appendChild(emailForm("Email me a link", function (email) {
-            return acct.sendEmailLink(email).then(function () { ui.linkSent = email; });
-          }));
-        }
-      }
+      // (Sign-in by an emailed link is not offered: it needs a separate switch in the Firebase
+      // console and email + password already covers "no social account". acct.sendEmailLink
+      // and the link-landing handler below stay, so old links still work if it is ever enabled.)
       root.appendChild(h("h2", { text: "What an account stores" }));
       root.appendChild(h("p", { class: "fine", text: "Your email address and the items listed below — nothing else. No passport numbers or documents. You can download or delete it all at any time." }));
       root.appendChild(savedTable());

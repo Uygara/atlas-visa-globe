@@ -183,7 +183,11 @@
           }
           if (verifier) { try { verifier.clear(); } catch (e) {} verifier = null; }
           verifier = new x.A.RecaptchaVerifier(x.auth, el, { size: "invisible" });
-          return x.A.signInWithPhoneNumber(x.auth, number, verifier).then(function (r) { phoneCtx = { confirmation: r }; });
+          // reCAPTCHA can hang (blocked by a content blocker, or a challenge nobody solves):
+          // never leave the form stuck in "busy" — give up after 90 s with the offline message.
+          var send = x.A.signInWithPhoneNumber(x.auth, number, verifier).then(function (r) { phoneCtx = { confirmation: r }; });
+          var giveUp = new Promise(function (_, reject) { setTimeout(function () { reject({ code: "auth/network-request-failed" }); }, 90000); });
+          return Promise.race([send, giveUp]);
         }).catch(function (e) {
           if (verifier) { try { verifier.clear(); } catch (e2) {} verifier = null; }
           throw e;
