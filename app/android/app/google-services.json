@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "530717343321",
+    "project_id": "travelnow-a0cf3",
+    "storage_bucket": "travelnow-a0cf3.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:530717343321:android:8d7a13d7066fd9e4733b48",
+        "android_client_info": {
+          "package_name": "info.travelnow.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "530717343321-mh968h8n8gpaf4jji4kqvchp9ero2qir.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwIY1rRQkCpnGC9eMAqxx_1Y6d7Y0rSjs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "530717343321-mh968h8n8gpaf4jji4kqvchp9ero2qir.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "530717343321-8pr3c8q0n22jct3o583n98q3gp981501.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "info.travelnow.app"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

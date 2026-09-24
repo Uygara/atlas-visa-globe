@@ -84,6 +84,15 @@
 	<!-- Only standard HTTPS encryption: skips the export-compliance question on every upload. -->
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.530717343321-8pr3c8q0n22jct3o583n98q3gp981501</string>
+			</array>
+		</dict>
+	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
 </dict>

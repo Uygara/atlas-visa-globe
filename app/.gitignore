@@ -2,6 +2,6 @@
 node_modules/
 www/
 .cache/
-# Firebase app config: added after the iOS/Android apps are registered (MOBILE-SETUP.md)
-ios/App/App/GoogleService-Info.plist
-android/app/google-services.json
+# GoogleService-Info.plist and google-services.json ARE committed: they hold public project
+# identifiers (like the web config), and a Mac build needs them. Access is enforced by
+# firestore.rules and the sign-in provider settings, not by hiding these.
