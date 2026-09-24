@@ -54,6 +54,8 @@ kurallar yayında. Sıradaki:
       Yeni sayfa için: `TR_PAGES` (assets/site-nav.js), `scripts/tr-meta.js`, `scripts/tr-strings/`, `guides/index.html`,
       `generate-seo.js` (sitemap + "Faydalı rehberler"), sonra rebuild sırası (CLAUDE.md).
 - [ ] **P3 · Pasaport türü etiketleri** — `passportVariantLabel` yalnızca tr/en; es/de/fr/ar İngilizce görünüyor.
+- [ ] **P3 · Telefon gönderimi sırasında diğer giriş formları kilitleniyor** — `run()` tüm düğmeleri `busy` yapıyor;
+      reCAPTCHA takılırsa 90 sn'lik zaman aşımına kadar e-posta/şifre de kullanılamıyor. Telefon için ayrı bayrak.
 - [ ] **P3 · Ekran okuyucu turu** — VoiceOver/TalkBack ile harita, ülke kartı, hesaplayıcılar, yeni transit kutusu.
 - [ ] **P3 · Türkçe ikizler için CI denetimi** — `node scripts/build-tr.js --check` bir GitHub Actions adımı olsun.
 
