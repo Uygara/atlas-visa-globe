@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "530717343321-2l9dstlass2sliuaurdn05jf6vnmuf9g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "info.travelnow.app",
+            "certificate_hash": "56ff10cd36f18b320348a69136a165ae27a92ea5"
+          }
+        },
+        {
           "client_id": "530717343321-mh968h8n8gpaf4jji4kqvchp9ero2qir.apps.googleusercontent.com",
           "client_type": 3
         }

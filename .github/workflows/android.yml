@@ -1,0 +1,74 @@
+name: Android build
+
+# Builds the Capacitor app for Android.
+#   - Always: a debug APK (artifact "travelnow-debug-apk") that can be installed on any Android
+#     phone for testing, signed with the shared debug key (app/android/debug.keystore).
+#   - When the Play upload key secrets exist: a signed release bundle (AAB) for Google Play.
+# Runs by hand (Actions > Android build > Run workflow) and when the app or its web pages change.
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths:
+      - "app/**"
+      - "assets/app-*.js"
+      - "assets/app.css"
+      - ".github/workflows/android.yml"
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+    env:
+      HAS_UPLOAD_KEY: ${{ secrets.ANDROID_UPLOAD_KEYSTORE_BASE64 != '' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Install app dependencies
+        working-directory: app
+        run: npm ci
+
+      - name: Build the web bundle and sync it into the Android project
+        working-directory: app
+        run: |
+          node build-www.js
+          npx cap sync android
+
+      - name: Debug APK
+        working-directory: app/android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: travelnow-debug-apk
+          path: app/android/app/build/outputs/apk/debug/app-debug.apk
+          retention-days: 30
+
+      - name: Release bundle (only with the Play upload key)
+        if: env.HAS_UPLOAD_KEY == 'true'
+        working-directory: app/android
+        env:
+          UPLOAD_STORE_PASSWORD: ${{ secrets.ANDROID_UPLOAD_STORE_PASSWORD }}
+          UPLOAD_KEY_ALIAS: ${{ secrets.ANDROID_UPLOAD_KEY_ALIAS }}
+          UPLOAD_KEY_PASSWORD: ${{ secrets.ANDROID_UPLOAD_KEY_PASSWORD }}
+        run: |
+          echo "${{ secrets.ANDROID_UPLOAD_KEYSTORE_BASE64 }}" | base64 -d > "$RUNNER_TEMP/upload.jks"
+          UPLOAD_KEYSTORE="$RUNNER_TEMP/upload.jks" ./gradlew bundleRelease --no-daemon
+
+      - uses: actions/upload-artifact@v4
+        if: env.HAS_UPLOAD_KEY == 'true'
+        with:
+          name: travelnow-release-aab
+          path: app/android/app/build/outputs/bundle/release/app-release.aab
+          retention-days: 30

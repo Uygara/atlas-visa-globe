@@ -16,10 +16,34 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    signingConfigs {
+        // One shared debug key (standard public "android" passwords, not a secret), so every
+        // test build has the same SHA-1 and Google sign-in keeps working. Its SHA-1/SHA-256 are
+        // registered in Firebase (Android app info.travelnow.app).
+        debug {
+            storeFile file('../debug.keystore')
+            storePassword 'android'
+            keyAlias 'androiddebugkey'
+            keyPassword 'android'
+        }
+        // Play upload key: supplied by CI from secrets (MOBILE-SETUP.md), never committed.
+        release {
+            if (System.getenv('UPLOAD_KEYSTORE')) {
+                storeFile file(System.getenv('UPLOAD_KEYSTORE'))
+                storePassword System.getenv('UPLOAD_STORE_PASSWORD')
+                keyAlias System.getenv('UPLOAD_KEY_ALIAS')
+                keyPassword System.getenv('UPLOAD_KEY_PASSWORD')
+            }
+        }
+    }
     buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            if (System.getenv('UPLOAD_KEYSTORE')) signingConfig signingConfigs.release
         }
     }
 }
