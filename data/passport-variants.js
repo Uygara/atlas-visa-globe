@@ -235,22 +235,49 @@ window.passportVariants = function (passportIso2) {
   return Object.keys(v).filter(k => !v[k].auto || _variantGain(passportIso2, k) >= _VARIANT_MIN_GAIN);
 };
 
+// Generic type names in the other interface languages (native-speaker reviewed).
+// The hand-curated TR entries keep their own Turkish/English labels.
+const _VARIANT_TEXT = {
+  es: { ordinary: "Ordinario", gb: "Ciudadano británico", diplomatik: "Diplomático", hizmet: "Servicio / oficial",
+        sub_diplomatik: "Titulares de pasaporte diplomático", sub_hizmet: "Titulares de pasaporte oficial, de servicio o especial" },
+  de: { ordinary: "Standard", gb: "Britischer Staatsbürger", diplomatik: "Diplomatenpass", hizmet: "Dienst-/Amtspass",
+        sub_diplomatik: "Inhaber eines Diplomatenpasses", sub_hizmet: "Inhaber von Dienst-, Amts- und Sonderpässen" },
+  fr: { ordinary: "Ordinaire", gb: "Citoyen britannique", diplomatik: "Diplomatique", hizmet: "Service / officiel",
+        sub_diplomatik: "Titulaires d'un passeport diplomatique", sub_hizmet: "Titulaires d'un passeport officiel, de service ou spécial" },
+  ar: { ordinary: "عادي", gb: "مواطن بريطاني", diplomatik: "دبلوماسي", hizmet: "خدمة / رسمي",
+        sub_diplomatik: "حاملو جوازات السفر الدبلوماسية", sub_hizmet: "حاملو جوازات السفر الرسمية أو الخاصة أو جوازات الخدمة" },
+};
+
 // Returns the human label for a variant in the active language.
 window.passportVariantLabel = function (passportIso2, variantKey) {
+  const lang = window.ATLAS_LANG || "en";
+  const T = _VARIANT_TEXT[lang];
   if (!variantKey || variantKey === "ordinary") {
-    // The "ordinary" GB passport is the full British Citizen one — name it so the
+    // The "ordinary" GB passport is the full British Citizen one: name it so the
     // class picker reads "British Citizen · BOTC · BOC" rather than "Ordinary".
-    if (passportIso2 === "GB") return window.ATLAS_LANG === "tr" ? "İngiliz Vatandaşı" : "British Citizen";
+    if (passportIso2 === "GB") return lang === "tr" ? "İngiliz Vatandaşı" : T ? T.gb : "British Citizen";
     // TR's own ordinary passport is burgundy ("Bordo"); for every other
     // country just say "Ordinary" so the label isn't TR-specific.
-    if (window.ATLAS_LANG === "tr") return passportIso2 === "TR" ? "Bordo (Umuma Mahsus)" : "Umuma Mahsus";
-    return "Ordinary";
+    if (lang === "tr") return passportIso2 === "TR" ? "Bordo (Umuma Mahsus)" : "Umuma Mahsus";
+    return T ? T.ordinary : "Ordinary";
   }
   const entry = window.PASSPORT_VARIANTS[passportIso2]
     && window.PASSPORT_VARIANTS[passportIso2][variantKey];
   if (!entry) return variantKey;
+  if (lang === "tr") return entry.label || variantKey;
+  if (T && entry.auto && T[variantKey]) return T[variantKey];
+  return entry.labelEn || entry.label || variantKey;
+};
+
+// The short line under the type picker, in the active language.
+window.passportVariantSub = function (passportIso2, variantKey) {
+  const entry = window.PASSPORT_VARIANTS[passportIso2] && window.PASSPORT_VARIANTS[passportIso2][variantKey];
+  if (!entry) return null;
   const lang = window.ATLAS_LANG || "en";
-  return lang === "tr" ? (entry.label || variantKey) : (entry.labelEn || entry.label || variantKey);
+  if (lang === "tr") return entry.sub || null;
+  const T = _VARIANT_TEXT[lang];
+  if (T && entry.auto && T["sub_" + variantKey]) return T["sub_" + variantKey];
+  return entry.subEn || entry.sub || null;
 };
 
 // Resolve status honouring the chosen variant. Variant entries override

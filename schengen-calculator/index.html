@@ -34,14 +34,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sofia+Sans:ital,wght@0,400..700;1,400..600&family=Sofia+Sans+Extra+Condensed:wght@600..850&family=DM+Mono:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="/assets/tokens.css?v=20260924c">
-<link rel="stylesheet" href="/assets/chrome.css?v=20260924c">
-<link rel="stylesheet" href="/assets/site.css?v=20260924c">
+<link rel="stylesheet" href="/assets/tokens.css?v=20260926a">
+<link rel="stylesheet" href="/assets/chrome.css?v=20260926a">
+<link rel="stylesheet" href="/assets/site.css?v=20260926a">
 <script>try{if((JSON.parse(localStorage.getItem("atlas.tweaks")||"{}")).background==="dark")document.documentElement.classList.add("theme-dark")}catch(e){}</script>
-<script src="/assets/account-config.js?v=20260924c"></script>
-<script src="/assets/account-sync.js?v=20260924c"></script>
-<script src="/assets/account.js?v=20260924c"></script>
-<script src="/assets/site-chrome.js?v=20260924c" defer></script>
+<script src="/assets/account-config.js?v=20260926a"></script>
+<script src="/assets/account-sync.js?v=20260926a"></script>
+<script src="/assets/account.js?v=20260926a"></script>
+<script src="/assets/site-chrome.js?v=20260926a" defer></script>
 <!-- /chrome:head -->
 <style>.wrap{max-width:780px}</style>
   <script src="/assets/analytics.js"></script>
@@ -70,10 +70,10 @@
       <ul class="mh-menu" hidden></ul>
     </div>
   </nav>
-  <div class="mh-tools" data-no-i18n>
+  <div class="mh-tools">
     <a class="mh-account" href="/account/" data-account-link hidden aria-label="Account" title="Account"><svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><circle cx="8" cy="5.6" r="2.9" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M2.6 14.2c.7-2.8 2.8-4.3 5.4-4.3s4.7 1.5 5.4 4.3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg><span data-account-initial></span></a>
     <div class="seg" role="group" aria-label="Theme"><button type="button" data-theme-set="light" aria-pressed="true" aria-label="Light" title="Light"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3" fill="currentColor"/><g stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M8 1.2v1.7M8 13.1v1.7M1.2 8h1.7M13.1 8h1.7M3.2 3.2l1.2 1.2M11.6 11.6l1.2 1.2M12.8 3.2l-1.2 1.2M4.4 11.6l-1.2 1.2"/></g></svg></button><button type="button" data-theme-set="dark" aria-pressed="false" aria-label="Dark" title="Dark"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13.2 9.6A5.6 5.6 0 0 1 6.4 2.8a5.6 5.6 0 1 0 6.8 6.8z" fill="currentColor"/></svg></button></div>
-    <select class="lang-select" data-lang-select aria-label="Language"><option value="en" selected>EN · English</option><option value="tr">TR · Türkçe</option><option value="es">ES · Español (beta)</option><option value="de">DE · Deutsch (beta)</option><option value="fr">FR · Français (beta)</option><option value="ar">AR · العربية (beta)</option></select>
+    <select class="lang-select" data-lang-select data-no-i18n aria-label="Language"><option value="en" selected>EN · English</option><option value="tr">TR · Türkçe</option><option value="es">ES · Español (beta)</option><option value="de">DE · Deutsch (beta)</option><option value="fr">FR · Français (beta)</option><option value="ar">AR · العربية (beta)</option></select>
     <a class="mh-support" href="https://buymeacoffee.com/travelnowinfo" target="_blank" rel="noopener">Support</a>
   </div>
   <button type="button" class="mh-burger" aria-label="Menu" aria-expanded="false"><svg viewBox="0 0 18 18" width="18" height="18" aria-hidden="true"><path d="M3 5.5h12M3 9h12M3 12.5h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button>
@@ -90,7 +90,7 @@
     <a class="mh-sheet-link" href="/citizenship-by-investment/">Second passport</a>
     <a class="mh-sheet-link" href="/alerts/">Alerts</a>
     <a class="mh-sheet-link" href="/about/">About</a>
-    <div class="mh-sheet-foot" data-no-i18n><select class="lang-select" data-lang-select aria-label="Language"><option value="en" selected>EN · English</option><option value="tr">TR · Türkçe</option><option value="es">ES · Español (beta)</option><option value="de">DE · Deutsch (beta)</option><option value="fr">FR · Français (beta)</option><option value="ar">AR · العربية (beta)</option></select><a class="mh-support" style="display:inline-block" href="https://buymeacoffee.com/travelnowinfo" target="_blank" rel="noopener">Support</a></div>
+    <div class="mh-sheet-foot" data-no-i18n><select class="lang-select" data-lang-select data-no-i18n aria-label="Language"><option value="en" selected>EN · English</option><option value="tr">TR · Türkçe</option><option value="es">ES · Español (beta)</option><option value="de">DE · Deutsch (beta)</option><option value="fr">FR · Français (beta)</option><option value="ar">AR · العربية (beta)</option></select><a class="mh-support" style="display:inline-block" href="https://buymeacoffee.com/travelnowinfo" target="_blank" rel="noopener">Support</a></div>
   </div>
 </header>
 <div class="doc-band" aria-hidden="true"></div>
@@ -100,7 +100,7 @@
   <p class="sub">Free, instant, no signup. Enter your past trips into the Schengen Area — see exactly how many of your 90 days you've already used in the rolling 180-day window, and plan future visits without breaking the rule.</p>
 
 
-  <div id="hero" aria-live="polite" class="hero"><!-- filled by JS --></div>
+  <div id="hero" aria-live="polite" class="hero" data-no-i18n><!-- filled by JS --></div>
 
   <div class="card">
     <h3>Add a trip</h3>
@@ -114,8 +114,8 @@
 
   <div class="card">
     <h3>Your trips</h3>
-    <ul id="trips" class="trips"></ul>
-    <div id="timeline"></div>
+    <ul id="trips" class="trips" data-no-i18n></ul>
+    <div id="timeline" data-no-i18n></div>
   </div>
 
   <div class="card">
@@ -125,7 +125,7 @@
       <input type="date" id="ref">
       <button id="ref-today">Today</button>
     </div>
-    <div id="ref-result" aria-live="polite" style="margin-top:14px;"></div>
+    <div id="ref-result" aria-live="polite" style="margin-top:14px;" data-no-i18n></div>
   </div>
 
 
@@ -212,6 +212,209 @@
   const MAX_DAYS = 90;
   const MS_PER_DAY = 86_400_000;
 
+  // ── i18n for dynamic, JS-built strings (numbers/dates make these unmatchable
+  // by the static text-node dictionary in /data/static-i18n.js) ─────────────
+  const DATE_LOCALE = { en: "en-GB", tr: "tr-TR", es: "es-ES", de: "de-DE", fr: "fr-FR", ar: "ar" };
+  const L10N = {
+    en: {
+      "hero.ofDays": "of {max} days",
+      "hero.remaining_one": "{n} day remaining",
+      "hero.remaining_other": "{n} days remaining",
+      "hero.maxedTitle": "You have used your {max} days",
+      "hero.breachMsg": "Entering Schengen now would be a breach. Wait until enough older days fall out of the 180-day window.",
+      "hero.windowMsg": "In the 180-day window ending {date}, you have used {n} of your {max} short-stay days.",
+      "trips.empty": "No trips yet. Add one above to start tracking.",
+      "trips.days_one": "{n} day",
+      "trips.days_other": "{n} days",
+      "trips.removeAria": "Remove",
+      "timeline.caption": "180-day window ending {date}. Your stays are the blue blocks below.",
+      "timeline.today": "today",
+      "ref.over_one": "On {date} you would be {n} day over the limit.",
+      "ref.over_other": "On {date} you would be {n} days over the limit.",
+      "ref.earliestReentry": "Earliest re-entry: {date}",
+      "ref.maxedOut": "On {date} you have maxed out. Adding one more day would breach the rule.",
+      "ref.available_one": "{n} day available on {date}.",
+      "ref.available_other": "{n} days available on {date}.",
+      "cascade.badgeTier": "Tier",
+      "cascade.badge5y": "5-YEAR MEV",
+      "cascade.badge2y": "2-YEAR MEV",
+      "cascade.badge1y": "1-YEAR MEV",
+      "cascade.badgeFirst": "FIRST APPLICATION",
+      "cascade.badgeReset": "CASCADE RESET",
+      "cascade.sourceLabel": "Source:",
+      "cascade.sourceTitle": "EU Visa Code, Article 24",
+      "form.entryBeforeExit": "Entry date must be before exit date.",
+    },
+    tr: {
+      "hero.ofDays": "{max} günden",
+      "hero.remaining_one": "{n} gün kaldı",
+      "hero.remaining_other": "{n} gün kaldı",
+      "hero.maxedTitle": "{max} gününü kullandın",
+      "hero.breachMsg": "Şu anda Schengen'e girmek kural ihlali olur. Yeterince eski gün 180 günlük pencereden çıkana kadar bekle.",
+      "hero.windowMsg": "{date} tarihinde biten 180 günlük pencerede, {max} kısa süreli kalış gününden {n} tanesini kullandın.",
+      "trips.empty": "Henüz seyahat yok. Takibe başlamak için yukarıdan bir seyahat ekle.",
+      "trips.days_one": "{n} gün",
+      "trips.days_other": "{n} gün",
+      "trips.removeAria": "Kaldır",
+      "timeline.caption": "{date} tarihinde biten 180 günlük pencere. Kalışların aşağıda mavi bloklarla gösteriliyor.",
+      "timeline.today": "bugün",
+      "ref.over_one": "{date} tarihinde limitin {n} gün üzerinde olurdun.",
+      "ref.over_other": "{date} tarihinde limitin {n} gün üzerinde olurdun.",
+      "ref.earliestReentry": "En erken giriş: {date}",
+      "ref.maxedOut": "{date} tarihinde limitin tamamını kullanmış olursun. Bir gün daha eklemek kuralı ihlal eder.",
+      "ref.available_one": "{date} tarihinde {n} gün kullanılabilir.",
+      "ref.available_other": "{date} tarihinde {n} gün kullanılabilir.",
+      "cascade.badgeTier": "Kademe",
+      "cascade.badge5y": "5 Yıllık MEV",
+      "cascade.badge2y": "2 Yıllık MEV",
+      "cascade.badge1y": "1 Yıllık MEV",
+      "cascade.badgeFirst": "İlk Başvuru",
+      "cascade.badgeReset": "Kademe Sıfırlandı",
+      "cascade.sourceLabel": "Kaynak:",
+      "cascade.sourceTitle": "AB Vize Kodu, Madde 24",
+      "form.entryBeforeExit": "Giriş tarihi çıkış tarihinden önce olmalı.",
+    },
+    es: {
+      "hero.ofDays": "de {max} días",
+      "hero.remaining_one": "Queda {n} día",
+      "hero.remaining_other": "Quedan {n} días",
+      "hero.maxedTitle": "Has usado tus {max} días",
+      "hero.breachMsg": "Entrar en el espacio Schengen ahora sería una infracción. Espera hasta que suficientes días antiguos salgan de la ventana de 180 días.",
+      "hero.windowMsg": "En la ventana de 180 días que termina el {date}, has usado {n} de tus {max} días de estancia corta.",
+      "trips.empty": "Aún no hay viajes. Añade uno arriba para empezar a hacer seguimiento.",
+      "trips.days_one": "{n} día",
+      "trips.days_other": "{n} días",
+      "trips.removeAria": "Eliminar",
+      "timeline.caption": "Ventana de 180 días que termina el {date}. Tus estancias son los bloques azules de abajo.",
+      "timeline.today": "hoy",
+      "ref.over_one": "El {date} estarías {n} día por encima del límite.",
+      "ref.over_other": "El {date} estarías {n} días por encima del límite.",
+      "ref.earliestReentry": "Reingreso más temprano: {date}",
+      "ref.maxedOut": "El {date} habrás agotado el límite. Añadir un día más infringiría la norma.",
+      "ref.available_one": "{n} día disponible el {date}.",
+      "ref.available_other": "{n} días disponibles el {date}.",
+      "cascade.badgeTier": "Nivel",
+      "cascade.badge5y": "MEV de 5 años",
+      "cascade.badge2y": "MEV de 2 años",
+      "cascade.badge1y": "MEV de 1 año",
+      "cascade.badgeFirst": "Primera solicitud",
+      "cascade.badgeReset": "Cascada reiniciada",
+      "cascade.sourceLabel": "Fuente:",
+      "cascade.sourceTitle": "Código de Visados de la UE, artículo 24",
+      "form.entryBeforeExit": "La fecha de entrada debe ser anterior a la fecha de salida.",
+    },
+    de: {
+      "hero.ofDays": "von {max} Tagen",
+      "hero.remaining_one": "Noch {n} Tag übrig",
+      "hero.remaining_other": "Noch {n} Tage übrig",
+      "hero.maxedTitle": "Du hast deine {max} Tage aufgebraucht",
+      "hero.breachMsg": "Jetzt in den Schengen-Raum einzureisen wäre ein Verstoß. Warte, bis genügend ältere Tage aus dem 180-Tage-Fenster fallen.",
+      "hero.windowMsg": "Im 180-Tage-Fenster bis zum {date} hast du {n} deiner {max} Kurzaufenthaltstage verbraucht.",
+      "trips.empty": "Noch keine Reisen. Füge oben eine hinzu, um mit dem Verfolgen zu beginnen.",
+      "trips.days_one": "{n} Tag",
+      "trips.days_other": "{n} Tage",
+      "trips.removeAria": "Entfernen",
+      "timeline.caption": "180-Tage-Fenster bis zum {date}. Deine Aufenthalte sind unten die blauen Blöcke.",
+      "timeline.today": "heute",
+      "ref.over_one": "Am {date} wärst du {n} Tag über dem Limit.",
+      "ref.over_other": "Am {date} wärst du {n} Tage über dem Limit.",
+      "ref.earliestReentry": "Frühestmögliche Wiedereinreise: {date}",
+      "ref.maxedOut": "Am {date} hast du das Limit ausgeschöpft. Ein weiterer Tag würde gegen die Regel verstoßen.",
+      "ref.available_one": "{n} Tag verfügbar am {date}.",
+      "ref.available_other": "{n} Tage verfügbar am {date}.",
+      "cascade.badgeTier": "Stufe",
+      "cascade.badge5y": "5-Jahres-MEV",
+      "cascade.badge2y": "2-Jahres-MEV",
+      "cascade.badge1y": "1-Jahres-MEV",
+      "cascade.badgeFirst": "Erstantrag",
+      "cascade.badgeReset": "Kaskade zurückgesetzt",
+      "cascade.sourceLabel": "Quelle:",
+      "cascade.sourceTitle": "EU-Visakodex, Artikel 24",
+      "form.entryBeforeExit": "Das Einreisedatum muss vor dem Ausreisedatum liegen.",
+    },
+    fr: {
+      "hero.ofDays": "sur {max} jours",
+      "hero.remaining_one": "Il reste {n} jour",
+      "hero.remaining_other": "Il reste {n} jours",
+      "hero.maxedTitle": "Tu as utilisé tes {max} jours",
+      "hero.breachMsg": "Entrer dans l'espace Schengen maintenant serait une infraction. Attends que suffisamment de jours anciens sortent de la fenêtre de 180 jours.",
+      "hero.windowMsg": "Dans la fenêtre de 180 jours se terminant le {date}, tu as utilisé {n} de tes {max} jours de court séjour.",
+      "trips.empty": "Aucun voyage pour le moment. Ajoute-en un ci-dessus pour commencer le suivi.",
+      "trips.days_one": "{n} jour",
+      "trips.days_other": "{n} jours",
+      "trips.removeAria": "Supprimer",
+      "timeline.caption": "Fenêtre de 180 jours se terminant le {date}. Tes séjours sont les blocs bleus ci-dessous.",
+      "timeline.today": "aujourd'hui",
+      "ref.over_one": "Le {date}, tu serais {n} jour au-dessus de la limite.",
+      "ref.over_other": "Le {date}, tu serais {n} jours au-dessus de la limite.",
+      "ref.earliestReentry": "Réentrée au plus tôt : {date}",
+      "ref.maxedOut": "Le {date}, tu auras atteint la limite. Ajouter un jour de plus enfreindrait la règle.",
+      "ref.available_one": "{n} jour disponible le {date}.",
+      "ref.available_other": "{n} jours disponibles le {date}.",
+      "cascade.badgeTier": "Palier",
+      "cascade.badge5y": "MEV 5 ans",
+      "cascade.badge2y": "MEV 2 ans",
+      "cascade.badge1y": "MEV 1 an",
+      "cascade.badgeFirst": "Première demande",
+      "cascade.badgeReset": "Cascade réinitialisée",
+      "cascade.sourceLabel": "Source :",
+      "cascade.sourceTitle": "Code des visas de l'UE, article 24",
+      "form.entryBeforeExit": "La date d'entrée doit précéder la date de sortie.",
+    },
+    ar: {
+      "hero.ofDays": "من {max} يوما",
+      "hero.remaining_one": "{n} أيام متبقية",
+      "hero.remaining_other": "{n} أيام متبقية",
+      "hero.maxedTitle": "لقد استخدمت أيامك الـ{max}",
+      "hero.breachMsg": "الدخول إلى منطقة شنغن الآن سيُعد مخالفة. انتظر حتى تخرج أيام قديمة كافية من نافذة الـ180 يوما.",
+      "hero.windowMsg": "خلال نافذة الـ180 يوما المنتهية في {date}، استخدمت {n} من أيام إقامتك القصيرة البالغة {max} يوما.",
+      "trips.empty": "لا رحلات بعد. أضف واحدة أعلاه لتبدأ التتبع.",
+      "trips.days_one": "{n} أيام",
+      "trips.days_other": "{n} أيام",
+      "trips.removeAria": "إزالة",
+      "timeline.caption": "نافذة الـ180 يوما المنتهية في {date}. إقاماتك هي المربعات الزرقاء أدناه.",
+      "timeline.today": "اليوم",
+      "ref.over_one": "في {date} ستكون قد تجاوزت الحد بمقدار {n} أيام.",
+      "ref.over_other": "في {date} ستكون قد تجاوزت الحد بمقدار {n} أيام.",
+      "ref.earliestReentry": "أقرب موعد لإعادة الدخول: {date}",
+      "ref.maxedOut": "في {date} ستكون قد استنفدت الحد الأقصى. إضافة يوم واحد آخر ستخالف القاعدة.",
+      "ref.available_one": "{n} أيام متاحة في {date}.",
+      "ref.available_other": "{n} أيام متاحة في {date}.",
+      "cascade.badgeTier": "المستوى",
+      "cascade.badge5y": "MEV لخمس سنوات",
+      "cascade.badge2y": "MEV لسنتين",
+      "cascade.badge1y": "MEV لسنة واحدة",
+      "cascade.badgeFirst": "الطلب الأول",
+      "cascade.badgeReset": "إعادة ضبط التدرج",
+      "cascade.sourceLabel": "المصدر:",
+      "cascade.sourceTitle": "قانون التأشيرات الأوروبي، المادة 24",
+      "form.entryBeforeExit": "يجب أن يكون تاريخ الدخول قبل تاريخ الخروج.",
+    },
+  };
+
+  function currentLang() {
+    const pinned = document.documentElement.getAttribute("data-page-lang");
+    if (pinned) return pinned;
+    try { return localStorage.getItem("atlas.lang") || "en"; } catch (e) { return "en"; }
+  }
+
+  function L(key, vars) {
+    const lang = currentLang();
+    const table = L10N[lang] || L10N.en;
+    let s = table[key] != null ? table[key] : (L10N.en[key] != null ? L10N.en[key] : key);
+    if (vars) {
+      s = s.replace(/\{(\w+)\}/g, (m, k) => (vars[k] != null ? vars[k] : m));
+    }
+    return s;
+  }
+
+  // Plural helper: picks "<base>_one" for n === 1, "<base>_other" otherwise
+  // (Arabic uses one invariant plural form for all n, per L10N.ar above).
+  function Lp(base, n, vars) {
+    const key = base + (n === 1 ? "_one" : "_other");
+    return L(key, Object.assign({ n: n }, vars));
+  }
+
   function todayISO() { return new Date().toISOString().slice(0, 10); }
   function parseDate(s) {
     const [y, m, d] = (s || "").split("-").map(Number);
@@ -224,7 +427,8 @@
   }
   function fmtPretty(d) {
     if (!d) return "";
-    return d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
+    const lang = currentLang();
+    return d.toLocaleDateString(DATE_LOCALE[lang] || "en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
   }
   function daysBetween(a, b) {
     return Math.round((b - a) / MS_PER_DAY) + 1; // inclusive of both endpoints
@@ -293,23 +497,23 @@
         </svg>
         <div class="label">
           <div class="num">${used}</div>
-          <div class="small">of ${MAX_DAYS} days</div>
+          <div class="small">${L("hero.ofDays", { max: MAX_DAYS })}</div>
         </div>
       </div>
       <div class="info">
         <h2>${danger
-          ? "You have used your 90 days"
-          : `${remaining} day${remaining === 1 ? "" : "s"} remaining`}</h2>
+          ? L("hero.maxedTitle", { max: MAX_DAYS })
+          : Lp("hero.remaining", remaining)}</h2>
         <p>${danger
-          ? "Entering Schengen now would be a breach. Wait until enough older days fall out of the 180-day window."
-          : `In the 180-day window ending ${fmtPretty(parseDate(refDate))}, you've used ${used} of your 90 short-stay days.`}</p>
+          ? L("hero.breachMsg")
+          : L("hero.windowMsg", { date: fmtPretty(parseDate(refDate)), n: used, max: MAX_DAYS })}</p>
       </div>`;
   }
 
   function renderTrips() {
     const ul = document.getElementById("trips");
     if (trips.length === 0) {
-      ul.innerHTML = '<li class="empty">No trips yet. Add one above to start tracking.</li>';
+      ul.innerHTML = `<li class="empty">${L("trips.empty")}</li>`;
       document.getElementById("timeline").innerHTML = "";
       return;
     }
@@ -320,8 +524,8 @@
       return `
         <li class="trip">
           <div class="dates">${fmtPretty(e)} → ${fmtPretty(x)}</div>
-          <div class="days">${n} day${n === 1 ? "" : "s"}</div>
-          <button class="del" data-i="${i}" aria-label="Remove">×</button>
+          <div class="days">${Lp("trips.days", n)}</div>
+          <button class="del" data-i="${i}" aria-label="${L("trips.removeAria")}">×</button>
         </li>`;
     }).join("");
 
@@ -348,11 +552,11 @@
     document.getElementById("timeline").innerHTML = `
       <div class="timeline">
         <div style="font-size:11px; color:var(--fg-mute); margin-bottom:8px;">
-          180-day window ending ${fmtPretty(ref)} — your stays are the blue blocks below.
+          ${L("timeline.caption", { date: fmtPretty(ref) })}
         </div>
         <div class="timeline-track">
           ${bars}
-          <div class="timeline-today" style="left:${todayLeft}%;" title="today"></div>
+          <div class="timeline-today" style="left:${todayLeft}%;" title="${L("timeline.today")}"></div>
         </div>
         <div class="timeline-labels">
           <span>${fmtPretty(start)}</span>
@@ -366,12 +570,15 @@
     const remaining = Math.max(0, MAX_DAYS - used);
     let msg = "";
     if (used > MAX_DAYS) {
+      const over = used - MAX_DAYS;
       const next = nextAvailableDate(trips, 1, parseDate(refDate) || new Date());
-      msg = `<div class="msg err">On ${fmtPretty(parseDate(refDate))} you'd be ${used - MAX_DAYS} day${used - MAX_DAYS === 1 ? "" : "s"} over the limit. ${next ? "Earliest re-entry: <strong>" + fmtPretty(next) + "</strong>" : ""}</div>`;
+      const overText = Lp("ref.over", over, { date: fmtPretty(parseDate(refDate)) });
+      const nextText = next ? " " + L("ref.earliestReentry", { date: "<strong>" + fmtPretty(next) + "</strong>" }) : "";
+      msg = `<div class="msg err">${overText}${nextText}</div>`;
     } else if (used === MAX_DAYS) {
-      msg = `<div class="msg warn">On ${fmtPretty(parseDate(refDate))} you've maxed out. Adding one more day would breach the rule.</div>`;
+      msg = `<div class="msg warn">${L("ref.maxedOut", { date: fmtPretty(parseDate(refDate)) })}</div>`;
     } else {
-      msg = `<div class="msg ok">${remaining} day${remaining === 1 ? "" : "s"} available on ${fmtPretty(parseDate(refDate))}.</div>`;
+      msg = `<div class="msg ok">${Lp("ref.available", remaining, { date: fmtPretty(parseDate(refDate)) })}</div>`;
     }
     document.getElementById("ref-result").innerHTML = msg;
   }
@@ -388,7 +595,7 @@
     const entry = document.getElementById("entry").value;
     const exit  = document.getElementById("exit").value;
     if (!entry || !exit) return;
-    if (entry > exit) return alert("Entry date must be before exit date.");
+    if (entry > exit) return alert(L("form.entryBeforeExit"));
     trips.push({ entry, exit });
     save();
     document.getElementById("entry").value = "";
@@ -453,24 +660,28 @@
 
   function renderCascade() {
     const r = cascadeTier();
-    let toneCls = "ok", badge = "Tier";
-    if (r.tier === "5y" || r.tier === "5y-renew") { toneCls = "ok"; badge = "5-YEAR MEV"; }
-    else if (r.tier === "2y") { toneCls = "ok"; badge = "2-YEAR MEV"; }
-    else if (r.tier === "1y") { toneCls = "ok"; badge = "1-YEAR MEV"; }
-    else if (r.tier === "first") { toneCls = ""; badge = "FIRST APPLICATION"; }
-    else if (r.tier === "reset") { toneCls = "warn"; badge = "CASCADE RESET"; }
+    let toneCls = "ok", badge = L("cascade.badgeTier");
+    if (r.tier === "5y" || r.tier === "5y-renew") { toneCls = "ok"; badge = L("cascade.badge5y"); }
+    else if (r.tier === "2y") { toneCls = "ok"; badge = L("cascade.badge2y"); }
+    else if (r.tier === "1y") { toneCls = "ok"; badge = L("cascade.badge1y"); }
+    else if (r.tier === "first") { toneCls = ""; badge = L("cascade.badgeFirst"); }
+    else if (r.tier === "reset") { toneCls = "warn"; badge = L("cascade.badgeReset"); }
     const bg  = toneCls === "ok" ? "rgba(34,197,94,0.10)"
               : toneCls === "warn" ? "rgba(250,204,21,0.10)"
               : "rgba(96,165,250,0.10)";
     const bd  = toneCls === "ok" ? "rgba(34,197,94,0.40)"
               : toneCls === "warn" ? "rgba(250,204,21,0.40)"
               : "rgba(96,165,250,0.40)";
+    // r.label / r.note are fixed English strings that already have exact-match
+    // entries in /data/static-i18n.js, so they're left untagged here and keep
+    // being translated by that dictionary's MutationObserver. Only the badge
+    // and source line (built via L(), not in that dictionary) get data-no-i18n.
     cascadeOut.innerHTML = `<div style="background:${bg}; border:1px solid ${bd}; border-radius:10px; padding:14px;">
-      <div style="font-size:11px; font-family:ui-monospace,monospace; color:var(--fg-mute); text-transform:uppercase; letter-spacing:0.06em; font-weight:600; margin-bottom:6px;">${badge}</div>
+      <div data-no-i18n style="font-size:11px; font-family:ui-monospace,monospace; color:var(--fg-mute); text-transform:uppercase; letter-spacing:0.06em; font-weight:600; margin-bottom:6px;">${badge}</div>
       <div style="font-size:15px; font-weight:600; color:var(--fg); margin-bottom:6px;">${r.label}</div>
       <div style="font-size:13px; color:var(--fg-dim); line-height:1.55;">${r.note}</div>
-      <div style="font-size:11px; color:var(--fg-mute); margin-top:8px; font-family:ui-monospace,monospace;">
-        Source: <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32009R0810" target="_blank" rel="noopener" style="color:var(--fg-mute);">EU Visa Code, Article 24</a>
+      <div data-no-i18n style="font-size:11px; color:var(--fg-mute); margin-top:8px; font-family:ui-monospace,monospace;">
+        ${L("cascade.sourceLabel")} <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32009R0810" target="_blank" rel="noopener" style="color:var(--fg-mute);">${L("cascade.sourceTitle")}</a>
       </div>
     </div>`;
   }
@@ -478,9 +689,16 @@
   cascadeLast.addEventListener("change", renderCascade);
   cascadeClean.addEventListener("change", renderCascade);
   renderCascade();
+
+  // Re-render every JS-built string (dates, counts, badges…) when the
+  // language switcher fires, since these never match the static dictionary.
+  window.addEventListener("atlas:lang", () => {
+    rerender();
+    renderCascade();
+  });
 })();
 </script>
-<script src="/data/static-i18n.js?v=20260924c" defer></script>
+<script src="/data/static-i18n.js?v=20260926a" defer></script>
 <!-- chrome:footer -->
 <footer class="site-foot">
   <div class="site-foot-inner">

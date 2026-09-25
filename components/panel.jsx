@@ -259,7 +259,7 @@ function PassportTypeSelector({ passport, value, onChange }) {
       return {
         key: k,
         label: window.passportVariantLabel(passport, k),
-        sub: lang === "tr" ? (e.sub || null) : (e.subEn || e.sub || null),
+        sub: window.passportVariantSub ? window.passportVariantSub(passport, k) : (lang === "tr" ? (e.sub || null) : (e.subEn || e.sub || null)),
         source: e.source || null,
       };
     }),
@@ -871,7 +871,7 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
         {(from || to) && (
           <span className="route" aria-hidden="true">
             {from && <span className="flag">{from}</span>}
-            <span>→</span>
+            <span className="cta-go">→</span>
             {to && <span className="flag">{to}</span>}
           </span>
         )}
@@ -1703,7 +1703,7 @@ function ChangelogItem({ entry }) {
         <time dateTime={entry.date}>{fmtDay(entry.date)}</time>
         <span>·</span>
         {passport && <><span className="flag">{passport.flag}</span><span>{window.countryName(passportIso)}</span></>}
-        <span>→</span>
+        <span className="cta-go">→</span>
         {dest && <><span className="flag">{dest.flag}</span><span>{window.countryName(entry.affects.dest)}</span></>}
       </div>
       <div className="feed-title" style={{ fontWeight: 500 }}>{describeStatusChange(entry.statusFrom, entry.statusTo)}</div>
@@ -1734,7 +1734,7 @@ function PanelFooter() {
         <a href="/passport/">{window.t("footer.all_passports")}</a>
         <a href="https://github.com/Uygara/atlas-visa-globe" target="_blank" rel="noopener">{window.t("footer.source")}</a>
       </nav>
-      <div className="byline">© {new Date().getFullYear()} travelnow.info · Uygar Atalay</div>
+      <div className="byline" dir="ltr" style={{ textAlign: "start" }}>© {new Date().getFullYear()} travelnow.info · Uygar Atalay</div>
     </footer>
   );
 }

@@ -55,7 +55,7 @@
       FK:"Falkland Adaları", PR:"Porto Riko",
     },
     es: {
-      AF:"Afganistán", AL:"Albania", DZ:"Argelia", AD:"Andorra", AO:"Angola",
+      CI:"Costa de Marfil", AF:"Afganistán", AL:"Albania", DZ:"Argelia", AD:"Andorra", AO:"Angola",
       AG:"Antigua y Barbuda", AR:"Argentina", AM:"Armenia", AU:"Australia", AT:"Austria",
       AZ:"Azerbaiyán", BS:"Bahamas", BH:"Baréin", BD:"Bangladés", BY:"Bielorrusia",
       BE:"Bélgica", BO:"Bolivia", BA:"Bosnia y Herzegovina", BR:"Brasil", BG:"Bulgaria",

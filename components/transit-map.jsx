@@ -303,7 +303,10 @@ function TransitHubList({ passport, onOpen }) {
   const rows = hubs.map(h => {
     const iso = repIso(h.area);
     const t = window.transitStatusForGlobe(passport, iso);
-    return { ...h, iso, t, line: transitLine(t) };
+    // Hubs named after a whole country ("United States", "Singapore") follow the interface language.
+    const c = window.byIso2[iso];
+    const hubLabel = c && h.hubLabel === c.name.replace(/\s*\(.*\)$/, "") ? window.countryName(iso) : h.hubLabel;
+    return { ...h, hubLabel, iso, t, line: transitLine(t) };
   });
   return (
     <section className="p-sec">

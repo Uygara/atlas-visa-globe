@@ -12,7 +12,7 @@
 const { NAV, SUPPORT, isCurrent } = require("../assets/site-nav.js");
 const { makeT, hasTr, toTr, hreflang } = require("./locales");
 
-const ASSET_VERSION = "20260924c";
+const ASSET_VERSION = "20260926a";
 
 function esc(s) {
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -76,7 +76,7 @@ function masthead({ path = "/", i18n = true, lang = "en" } = {}) {
   const sheet = NAV.map((it, i) => `    <a class="mh-sheet-link${start(i)}" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a>`).join("\n");
   const langs = i18n ? LANGS : (hasTr(path) ? LANGS.filter(([c]) => c === "en" || c === "tr") : []);
   const langSelect = langs.length
-    ? `<select class="lang-select" data-lang-select aria-label="${u("lang", "Language")}">${langs.map(([c, n, beta]) => `<option value="${c}"${c === lang ? " selected" : ""}>${c.toUpperCase()} · ${n}${beta ? " (beta)" : ""}</option>`).join("")}</select>`
+    ? `<select class="lang-select" data-lang-select data-no-i18n aria-label="${u("lang", "Language")}">${langs.map(([c, n, beta]) => `<option value="${c}"${c === lang ? " selected" : ""}>${c.toUpperCase()} · ${n}${beta ? " (beta)" : ""}</option>`).join("")}</select>`
     : "";
   return `<header class="masthead">
   <a class="brand" href="${href("/")}" aria-label="${u("home", "travelnow.info home")}">${BRAND_MARK}<span class="brand-word">travelnow<span class="brand-tld">.info</span></span></a>
@@ -89,7 +89,7 @@ ${links}
       <ul class="mh-menu" hidden></ul>
     </div>
   </nav>
-  <div class="mh-tools" data-no-i18n>
+  <div class="mh-tools">
     <a class="mh-account" href="/account/" data-account-link hidden aria-label="${u("account", "Account")}" title="${u("account", "Account")}">${USER}<span data-account-initial></span></a>
     <div class="seg" role="group" aria-label="${u("theme", "Theme")}"><button type="button" data-theme-set="light" aria-pressed="true" aria-label="${u("light", "Light")}" title="${u("light", "Light")}">${SUN}</button><button type="button" data-theme-set="dark" aria-pressed="false" aria-label="${u("dark", "Dark")}" title="${u("dark", "Dark")}">${MOON}</button></div>
     ${langSelect}
