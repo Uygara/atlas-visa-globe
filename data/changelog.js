@@ -8,6 +8,102 @@
 
 window.CHANGELOG = [
   {
+    date: "2026-09-25",
+    title: "AZ → ZA: vr → ev",
+    affects: { dest: "ZA", passports: ["AZ"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-09-25",
+    title: "BH → ZA: vr → ev",
+    affects: { dest: "ZA", passports: ["BH"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-09-25",
+    title: "AF → ZA: vr → ev",
+    affects: { dest: "ZA", passports: ["AF"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-09-25",
+    title: "BI → ZA: vr → ev",
+    affects: { dest: "ZA", passports: ["BI"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-09-25",
+    title: "TD → ZA: vr → ev",
+    affects: { dest: "ZA", passports: ["TD"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-09-25",
+    title: "KM → ZA: vr → ev",
+    affects: { dest: "ZA", passports: ["KM"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-09-25",
+    title: "FJ → ZA: vr → ev",
+    affects: { dest: "ZA", passports: ["FJ"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-09-25",
+    title: "HT → RS: vr → ev",
+    affects: { dest: "RS", passports: ["HT"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-09-25",
+    title: "HT → ZA: vr → ev",
+    affects: { dest: "ZA", passports: ["HT"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-09-25",
+    title: "FM → ZA: vr → ev",
+    affects: { dest: "ZA", passports: ["FM"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-09-25",
+    title: "MN → ZA: vr → ev",
+    affects: { dest: "ZA", passports: ["MN"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-09-25",
+    title: "NI → ZA: vr → ev",
+    affects: { dest: "ZA", passports: ["NI"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-09-25",
+    title: "TJ → ZA: vr → ev",
+    affects: { dest: "ZA", passports: ["TJ"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-09-25",
+    title: "UZ → ZA: vr → ev",
+    affects: { dest: "ZA", passports: ["UZ"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-09-25",
+    title: "XK → TH: vf → ev",
+    affects: { dest: "TH", passports: ["XK"] },
+    statusFrom: "vf", statusTo: "ev",
+  },
+  {
+    date: "2026-09-25",
+    title: "XK → SA: vr → ev",
+    affects: { dest: "SA", passports: ["XK"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
     date: "2026-09-22",
     title: "UA → PH: vr → ev",
     affects: { dest: "PH", passports: ["UA"] },
