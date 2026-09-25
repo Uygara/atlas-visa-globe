@@ -186,3 +186,24 @@
 .mh-menu li.mh-grp-start { border-top: 1px solid var(--rule); margin-top: 4px; padding-top: 4px; }
 .mh-menu li.mh-grp-start:first-child { border-top: 0; margin-top: 0; padding-top: 0; }
 .mh-sheet-link.mh-grp-start { border-top: 1px solid var(--rule); margin-top: 6px; padding-top: 16px; }
+
+/* ── Press feedback (Apple: respond on touch-down, instantly) ───────────────
+   Every tappable thing answers the moment it is pressed, not on release, and
+   double-tap zoom is off on controls so a tap is never delayed. */
+a, button, [role="button"], select, input, label, summary { touch-action: manipulation; }
+html { -webkit-tap-highlight-color: transparent; }
+.btn, .seg button, .mh-link, .mh-sheet-link, .lg-row, .dd-item, .chip, .icon-btn, .app-tab,
+.toc-row, .al-hit, .al-x, .pp-card, .zoom button {
+  transition: transform 140ms cubic-bezier(.2, .8, .2, 1), background-color 120ms ease, color 120ms ease;
+}
+.btn:active, .seg button:active, .icon-btn:active, .chip:active, .al-x:active, .zoom button:active { transform: scale(0.96); transition-duration: 60ms; }
+.lg-row:active, .dd-item:active, .toc-row:active, .al-hit:active, .pp-card:active, .mh-sheet-link:active, .app-tab:active { transform: scale(0.985); transition-duration: 60ms; }
+@media (prefers-reduced-motion: reduce) {
+  .btn, .seg button, .mh-link, .mh-sheet-link, .lg-row, .dd-item, .chip, .icon-btn, .app-tab,
+  .toc-row, .al-hit, .al-x, .pp-card, .zoom button { transition: background-color 120ms ease, color 120ms ease; }
+  .btn:active, .seg button:active, .icon-btn:active, .chip:active, .al-x:active, .zoom button:active,
+  .lg-row:active, .dd-item:active, .toc-row:active, .al-hit:active, .pp-card:active, .mh-sheet-link:active, .app-tab:active { transform: none; }
+}
+@media (prefers-contrast: more) {
+  .btn, .field, .seg { border-color: var(--ink); }
+}

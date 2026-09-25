@@ -293,7 +293,15 @@ function Masthead({ view, onView, theme, onTheme, onHelp }) {
 
 // ─── Mobile bottom sheet handle ──────────────────────────────────────────
 // Turns the side panel into a draggable sheet (peek / half / full) below
-// 900px. Drives height through --sheet-h; a tap cycles the snap points.
+// 900px. The feel follows Apple's fluid-interface rules (WWDC 2018):
+//   • 1:1 tracking from where it was grabbed, rubber-band resistance past the ends;
+//   • on release the velocity projects a resting point (UIScrollView deceleration)
+//     and the nearest snap to THAT point wins, so a flick carries the sheet on;
+//   • a spring (critically damped, or slightly under-damped after a flick) takes
+//     the release velocity, so there is no seam between finger and animation;
+//   • grabbing a moving sheet stops the spring where it is on screen.
+// The panel's height is driven directly; --sheet-h (read by the globe and the
+// overlays) is set to where the sheet is going, so the globe re-fits once.
 function MobileSheetHandle() {
   const ref = useRefC(null);
   useEffectC(() => {
@@ -301,32 +309,77 @@ function MobileSheetHandle() {
     const panel = handle && handle.closest(".panel");
     if (!panel) return;
     const isMobile = () => window.matchMedia("(max-width: 900px)").matches;
+    const reduced = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const snaps = () => [96, Math.round(window.innerHeight * 0.48), Math.round(window.innerHeight * 0.88)];
-    let startY = 0, startH = 0, dragging = false, moved = false, lastH = 0;
-    const setH = (h) => {
-      lastH = h;
+    const MIN = 72, max = () => window.innerHeight * 0.92;
+    let startY = 0, startH = 0, dragging = false, moved = false, lastH = 0, hist = [], raf = 0;
+
+    const publish = (h) => {
       panel.style.setProperty("--sheet-h", h + "px");
       // Mirror on <html> so overlays outside the panel (coach hint, compare
       // strip) can sit just above the sheet.
       document.documentElement.style.setProperty("--sheet-h", h + "px");
     };
+    const paint = (h) => { lastH = h; panel.style.height = h + "px"; };
     const curH = () => panel.getBoundingClientRect().height;
     const nearest = (h) => snaps().reduce((a, b) => Math.abs(b - h) < Math.abs(a - h) ? b : a);
+    // Progressive resistance past a bound instead of a hard stop.
+    const rubber = (over, dim) => (over * dim * 0.55) / (dim + 0.55 * Math.abs(over));
+    const clampSoft = (h) => {
+      const hi = max();
+      // The stretch approaches the room that is left (never past the top of the screen).
+      if (h > hi) return hi + rubber(h - hi, window.innerHeight - hi);
+      if (h < MIN) return MIN - rubber(MIN - h, MIN / 2);
+      return h;
+    };
+    const stop = () => { if (raf) cancelAnimationFrame(raf); raf = 0; };
+
+    // Spring to `target` from the on-screen height, starting at velocity v0 (px/s,
+    // positive = growing). damping 1 = no overshoot; 0.8 only after a flick.
+    const springTo = (target, v0 = 0, damping = 1, response = 0.32) => {
+      stop();
+      // Read the on-screen height and pin it BEFORE --sheet-h moves to the target:
+      // with no inline height the panel would otherwise jump there at once.
+      let x = curH(), v = v0, t0 = performance.now();
+      paint(x);
+      publish(target);
+      if (reduced()) { paint(target); panel.style.height = ""; return; }
+      const k = Math.pow((2 * Math.PI) / response, 2), c = (4 * Math.PI * damping) / response;
+      const step = (now) => {
+        let dt = Math.min(0.032, (now - t0) / 1000); t0 = now;
+        // two half-steps keep the integration stable on slow frames
+        for (let i = 0; i < 2; i++) { const a = -k * (x - target) - c * v; v += a * dt / 2; x += v * dt / 2; }
+        if (Math.abs(x - target) < 0.5 && Math.abs(v) < 8) { paint(target); panel.style.height = ""; raf = 0; return; }
+        paint(x);
+        raf = requestAnimationFrame(step);
+      };
+      raf = requestAnimationFrame(step);
+    };
+
     const down = (e) => {
       if (!isMobile()) return;
+      stop();                                   // catch it mid-flight, where it is
       dragging = true; moved = false;
-      startY = e.clientY; startH = curH(); lastH = startH;
+      startY = e.clientY; startH = curH(); paint(startH);
+      hist = [{ t: e.timeStamp, h: startH }];
       panel.classList.add("sheet-dragging");
       try { handle.setPointerCapture(e.pointerId); } catch (err) {}
     };
     const move = (e) => {
       if (!dragging) return;
       const dy = startY - e.clientY;
-      if (Math.abs(dy) > 3) moved = true;
-      setH(Math.min(window.innerHeight * 0.92, Math.max(72, startH + dy)));
+      if (Math.abs(dy) > 6) moved = true;       // small hysteresis before it's a drag
+      if (!moved) return;
+      const h = clampSoft(startH + dy);
+      paint(h); publish(Math.min(max(), Math.max(MIN, h)));
+      hist.push({ t: e.timeStamp, h }); if (hist.length > 6) hist.shift();
     };
-    // Snap from lastH (what we set during the drag), not a fresh measurement —
-    // re-reading after the transition is re-enabled returns the old height.
+    // Release velocity from the last ~100 ms of movement (px/s, + = up).
+    const velocity = () => {
+      const last = hist[hist.length - 1], first = hist.find((p) => last.t - p.t <= 100) || hist[0];
+      const dt = (last.t - first.t) / 1000;
+      return dt > 0 ? (last.h - first.h) / dt : 0;
+    };
     // iOS fires pointercancel instead of pointerup when it reclassifies a touch.
     const settle = () => {
       if (!dragging) return;
@@ -335,10 +388,14 @@ function MobileSheetHandle() {
       if (!moved) {
         const order = snaps();
         const i = order.indexOf(nearest(curH()));
-        setH(order[(i + 1) % order.length]);
-      } else {
-        setH(nearest(lastH));
+        springTo(order[(i + 1) % order.length]);
+        return;
       }
+      const v = velocity();
+      // Where the flick would come to rest (decelerationRate 0.998), then the snap nearest it.
+      const projected = lastH + (v / 1000) * 0.998 / (1 - 0.998);
+      const target = nearest(Math.min(max(), Math.max(MIN, projected)));
+      springTo(target, v, Math.abs(v) > 600 ? 0.8 : 1);
     };
     // Opening a country while the sheet is peeking would hide it: rise to at
     // least `fraction` of the screen (no-op on desktop and if already taller).
@@ -346,7 +403,7 @@ function MobileSheetHandle() {
       ensure: (fraction) => {
         if (!isMobile()) return;
         const want = Math.round(window.innerHeight * fraction);
-        if (curH() < want - 4) setH(want);
+        if (curH() < want - 4) springTo(want);
       },
     };
     // Keyboard: arrows step through the snap points, Enter/Space cycle like a tap.
@@ -362,7 +419,7 @@ function MobileSheetHandle() {
       else if (e.key === "Enter" || e.key === " ") next = (i + 1) % order.length;
       if (next == null) return;
       e.preventDefault();
-      setH(order[next]);
+      springTo(order[next]);
     };
     handle.addEventListener("keydown", onKey);
     handle.addEventListener("pointerdown", down);
@@ -370,6 +427,7 @@ function MobileSheetHandle() {
     window.addEventListener("pointerup", settle);
     window.addEventListener("pointercancel", settle);
     return () => {
+      stop();
       delete window.atlasSheet;
       handle.removeEventListener("keydown", onKey);
       handle.removeEventListener("pointerdown", down);

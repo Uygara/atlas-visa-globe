@@ -476,12 +476,12 @@ a.feed-item:hover { border-color: var(--rule-strong); border-inline-start-color:
   }
   .panel {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 8;
-    height: var(--sheet-h, 48vh); max-height: 92vh; min-height: 72px;
+    height: var(--sheet-h, 48vh); max-height: 100vh; max-height: 100dvh; min-height: 36px;
     padding: 0 16px 16px;
     border-inline-start: 0; border-top: 1px solid var(--rule-strong);
     border-radius: 12px 12px 0 0;
     box-shadow: 0 -12px 32px -12px rgba(22, 32, 42, 0.35);
-    transition: height 260ms cubic-bezier(.22, 1, .36, 1);
+    will-change: height;
   }
   .panel.sheet-dragging { transition: none; }
   .sheet-handle {
@@ -532,3 +532,6 @@ ins.adsbygoogle[data-ad-status="unfilled"] { display: none !important; }
   .sheet-handle::before { content: ""; position: absolute; inset: -14px 0 0 0; }
 }
 .sheet-handle:focus-visible { outline-offset: -3px; }
+
+/* Right-to-left: arrows that point "forward" turn round with the reading direction. */
+html[dir="rtl"] .note-go, html[dir="rtl"] .cta-go { display: inline-block; transform: scaleX(-1); }
