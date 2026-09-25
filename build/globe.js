@@ -67,7 +67,7 @@ var STATUS_COLOR = {
   na: {
     fill: "var(--na)",
     label: "No data",
-    "short": "—"
+    "short": "-"
   }
 };
 function statusLabel(s) {

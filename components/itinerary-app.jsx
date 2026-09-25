@@ -259,7 +259,7 @@ function StopsList({ passport, stops, onRemove }) {
         const fee = window.visaFee && window.visaFee(passport, iso);
         // Visa-free and ID-card travel need no application, so no fee to look up.
         const noApp = r.status === "vf" || r.status === "idc";
-        const feeText = (fee && fee.fee) ? itinFeeLabel(fee.fee) : (noApp ? window.t("itin.fee_free") : (r.status === "self" ? "—" : window.t("itin.fee_missing")));
+        const feeText = (fee && fee.fee) ? itinFeeLabel(fee.fee) : (noApp ? window.t("itin.fee_free") : (r.status === "self" ? "-" : window.t("itin.fee_missing")));
         const proc = (fee && fee.processingDays) ? itinFeeLabel(fee.processingDays) : ((noApp || r.status === "self") ? window.t("itin.no_app_needed") : "");
         return (
           <li key={iso} className="stop" style={{ "--tone": `var(--${r.status}, var(--rule-strong))` }}>
@@ -343,8 +343,8 @@ function Summary({ passport, stops }) {
     if (pd > maxProc) maxProc = pd;
   }
   const order = visaStops.slice().sort((a, b) => procDays(passport, b.iso) - procDays(passport, a.iso));
-  const totalStr = totalFee > 0 ? `$${totalFee.toFixed(0)}` : "—";
-  const procStr = maxProc > 0 ? `${maxProc}d` : "—";
+  const totalStr = totalFee > 0 ? `$${totalFee.toFixed(0)}` : "-";
+  const procStr = maxProc > 0 ? `${maxProc}d` : "-";
   return (
     <section className="p-sec">
       <Caption n={4}>{window.t("itin.order_title")}</Caption>

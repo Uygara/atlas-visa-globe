@@ -48,7 +48,7 @@ CUBA_EVISA_INELIGIBLE.forEach((pp) => {
 // eVisa while US→KR read visa-free. Align Canada to the current reality.
 (window.STATUS_OVERRIDES["CA"] = window.STATUS_OVERRIDES["CA"] || {})["KR"] = {
   status: "vf", days: 90,
-  note: "K-ETA requirement temporarily waived through 31 Dec 2026 — visa-free for now.",
+  note: "K-ETA requirement temporarily waived through 31 Dec 2026: visa-free for now.",
 };
 
 // Israeli passport — states with no diplomatic relations with Israel that refuse
@@ -147,8 +147,8 @@ window.applyIdcDisplay = function (r, passportIso2, destIso2) {
 // statuses it actually applies to (omit = always). Sourced, not invented.
 window.ENTRY_CAVEATS = {
   IN: { whenStatus: ["ev"],
-        note: "Hindistan e-Vizesi yalnızca belirli hava/deniz limanlarından girişte geçerli — kara sınırlarında (ör. Attari–Wagah) etiket vize gerekir.",
-        noteEn: "India's eVisa is valid only at designated airports/seaports — land borders (e.g. Attari–Wagah) require a sticker visa." },
+        note: "Hindistan e-Vizesi yalnızca belirli hava/deniz limanlarından girişte geçerlidir. Kara sınırlarında (ör. Attari–Wagah) etiket vize gerekir.",
+        noteEn: "India's eVisa is valid only at designated airports/seaports. Land borders (e.g. Attari–Wagah) require a sticker visa." },
   RU: { whenStatus: ["vf", "ev"],
         note: "Bazı vizesiz / e-vize girişleri yalnızca belirli havalimanlarıyla sınırlıdır.",
         noteEn: "Some visa-free / e-visa entries are limited to specific airports only." },
@@ -159,7 +159,7 @@ window.ENTRY_CAVEATS = {
         note: "Güney Afrika e-Vizesi yalnızca havalimanından girişte geçerlidir.",
         noteEn: "South Africa's e-Visa is valid for entry via airports only." },
   CN: { whenStatus: ["vf"],
-        note: "Vizesiz giriş geçici bir uygulamadır — şu an 31 Aralık 2026'ya kadar yürürlükte.",
+        note: "Vizesiz giriş geçici bir uygulamadır: şu an 31 Aralık 2026'ya kadar yürürlükte.",
         noteEn: "Visa-free entry is a temporary scheme, currently in effect through 31 Dec 2026." },
 };
 

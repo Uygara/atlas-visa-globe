@@ -30,7 +30,7 @@ window.AFFILIATES = [
   {
     id: "visahq",
     label: "Get visa help from VisaHQ",
-    blurb: "Embassy-required visas — full-service application.",
+    blurb: "Embassy-required visas: full-service application.",
     url: "", // e.g. "https://www.visahq.com/?ref=YOUR_ID"
     signup: "https://www.visahq.com/partners",
     shownFor: ["vr"],

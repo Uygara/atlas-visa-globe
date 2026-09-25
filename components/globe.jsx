@@ -13,7 +13,7 @@ const STATUS_COLOR = {
   vr:   { fill: "var(--vr)",   label: "Visa required",    short: "Visa req." },
   ban:  { fill: "var(--ban)",  label: "No entry allowed", short: "No entry" },
   self: { fill: "var(--self)", label: "Your passport",    short: "Home" },
-  na:   { fill: "var(--na)",   label: "No data",          short: "—" },
+  na:   { fill: "var(--na)",   label: "No data",          short: "-" },
 };
 
 // Localised status label. Falls through to STATUS_COLOR.label if i18n missing.

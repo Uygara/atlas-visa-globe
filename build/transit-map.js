@@ -483,7 +483,7 @@ function TransitLegChecker(_ref4) {
       style: {
         margin: "6px 0 0"
       }
-    }, codes[k], " \u2014 ", window.t("tmap.leg_unknown"));
+    }, codes[k], ": ", window.t("tmap.leg_unknown"));
   }), leg && !leg.error && React.createElement("div", {
     style: {
       marginTop: 10
@@ -610,7 +610,7 @@ function TransitHubList(_ref5) {
         color: "var(--ink-2)",
         textAlign: "end"
       }
-    }, r.line ? r.line.label : "—")));
+    }, r.line ? r.line.label : "-")));
   })));
 }
 ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(TransitMapApp, null));

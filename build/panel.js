@@ -101,7 +101,7 @@ function Panel(_ref) {
     onClick: function onClick() {
       return setShowPicker(true);
     }
-  }, tr("picker.guessed", "Guessed from your time zone — not your passport? Change it")), passport && setVariant && window.passportVariants && window.passportVariants(passport).length > 0 && React.createElement(PassportTypeSelector, {
+  }, tr("picker.guessed", "Guessed from your time zone. Not your passport? Change it")), passport && setVariant && window.passportVariants && window.passportVariants(passport).length > 0 && React.createElement(PassportTypeSelector, {
     passport: passport,
     value: variant || "ordinary",
     onChange: setVariant
@@ -408,7 +408,7 @@ function ResidencePermitPicker(_ref4) {
     style: {
       margin: "8px 0 0"
     }
-  }, T("permits.hint", "Holding any of these unlocks easier entry to certain destinations — the map and the tally update automatically."))));
+  }, T("permits.hint", "Holding any of these unlocks easier entry to certain destinations. The map and the tally update automatically."))));
 }
 var _POPULAR_DESTS = {
   US: ["MX", "CA", "GB", "FR", "IT", "DO", "JP", "ES"]
@@ -1157,7 +1157,7 @@ function DetailCard(_ref14) {
       };
     }
   }
-  var continent = dest.continent ? window.t("cont." + dest.continent) !== "cont." + dest.continent ? window.t("cont." + dest.continent) : dest.continent : "—";
+  var continent = dest.continent ? window.t("cont." + dest.continent) !== "cont." + dest.continent ? window.t("cont." + dest.continent) : dest.continent : "-";
   var caveat = window.entryCaveat ? window.entryCaveat(iso2, r.status) : null;
   var cautions = [r.note, caveat].filter(Boolean);
   var from = incoming ? dest.flag : groupActive ? "" : myPp === null || myPp === void 0 ? void 0 : myPp.flag;
@@ -1531,7 +1531,7 @@ function TransitVisaHint(_ref18) {
     className: "note-k"
   }, tr(note.key, "", vars)), React.createElement("span", {
     className: "note-s"
-  }, tr("detail.transit_dest_sub", "Airport transit rules — see the transit map.")), React.createElement("span", {
+  }, tr("detail.transit_dest_sub", "Airport transit rules. See the transit map.")), React.createElement("span", {
     className: "note-go",
     "aria-hidden": "true"
   }, "\u2192"));
@@ -2266,7 +2266,7 @@ function PassportPulse(_ref33) {
     className: "stats3"
   }, React.createElement("div", null, React.createElement("div", {
     className: "n"
-  }, rank ? "#" + rank : "—"), React.createElement("div", {
+  }, rank ? "#" + rank : "-"), React.createElement("div", {
     className: "l"
   }, window.t("pulse.rank"))), React.createElement("div", null, React.createElement("div", {
     className: "n",
@@ -2289,7 +2289,7 @@ function PassportPulse(_ref33) {
     style: {
       color: "var(--ink-3)"
     }
-  }, "\u2014")), React.createElement("div", {
+  }, "-")), React.createElement("div", {
     className: "l"
   }, window.t(windowKey)))), hasMovement && React.createElement("p", {
     className: "p-hint"

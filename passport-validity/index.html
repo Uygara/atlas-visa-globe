@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Passport Validity Checker — 6-month rule, per country · travelnow.info</title>
+<title>Passport Validity Checker: 6-month rule, per country · travelnow.info</title>
 <meta name="description" content="Will your passport be accepted? Per-destination passport-validity rules (3 months Schengen, 6 months most of Asia + Middle East + Africa). Enter your passport expiry and get a clear ✓ or ✗ for each country.">
 <link rel="canonical" href="https://travelnow.info/passport-validity/">
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
@@ -22,14 +22,14 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sofia+Sans:ital,wght@0,400..700;1,400..600&family=Sofia+Sans+Extra+Condensed:wght@600..850&family=DM+Mono:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="/assets/tokens.css?v=20260926a">
-<link rel="stylesheet" href="/assets/chrome.css?v=20260926a">
-<link rel="stylesheet" href="/assets/site.css?v=20260926a">
+<link rel="stylesheet" href="/assets/tokens.css?v=20260926b">
+<link rel="stylesheet" href="/assets/chrome.css?v=20260926b">
+<link rel="stylesheet" href="/assets/site.css?v=20260926b">
 <script>try{if((JSON.parse(localStorage.getItem("atlas.tweaks")||"{}")).background==="dark")document.documentElement.classList.add("theme-dark")}catch(e){}</script>
-<script src="/assets/account-config.js?v=20260926a"></script>
-<script src="/assets/account-sync.js?v=20260926a"></script>
-<script src="/assets/account.js?v=20260926a"></script>
-<script src="/assets/site-chrome.js?v=20260926a" defer></script>
+<script src="/assets/account-config.js?v=20260926b"></script>
+<script src="/assets/account-sync.js?v=20260926b"></script>
+<script src="/assets/account.js?v=20260926b"></script>
+<script src="/assets/site-chrome.js?v=20260926b" defer></script>
 <!-- /chrome:head -->
 <style>.wrap{max-width:780px}</style>
 <script src="/data/countries.js"></script>
@@ -91,7 +91,7 @@
   <p class="sub" data-i18n-html="pv.lead">Most countries require your passport to be valid for
   <strong>6 months past your intended stay</strong>. Schengen states
   ask for 3 months. The US and Canada accept passports valid only
-  for the duration of your stay. Don't get denied boarding — check
+  for the duration of your stay. Don't get denied boarding: check
   each leg of your trip before you fly.</p>
   <div class="meta">Free · Rules sourced from each country's immigration page and IATA Timatic · Last reviewed 24 May 2026</div>
 
@@ -115,13 +115,13 @@
 
   <h2>The three rule tiers</h2>
   <ul>
-    <li><strong>6 months past stay</strong> — most of Asia, the Middle
+    <li><strong>6 months past stay</strong>: most of Asia, the Middle
     East, Africa, Latin America, plus several others (China, India,
     Indonesia, Türkiye, UAE, Saudi Arabia, Brazil, South Africa…).</li>
-    <li><strong>3 months past stay</strong> — the Schengen Area (all
+    <li><strong>3 months past stay</strong>: the Schengen Area (all
     29 states), plus most Balkan and North African states (Albania,
     Bosnia, Morocco, Tunisia, Algeria, South Korea).</li>
-    <li><strong>Valid for the duration of stay only</strong> — the
+    <li><strong>Valid for the duration of stay only</strong>: the
     United States, Canada, Mexico, Ireland and the United Kingdom.</li>
   </ul>
 
@@ -135,14 +135,14 @@
   <footer class="fine-block">
     <p><strong>Why airlines care.</strong> If you arrive at the
     destination with a passport that violates the rule, the airline
-    has to fly you back at their cost — plus a fine in many
+    has to fly you back at their cost, plus a fine in many
     jurisdictions. So they check at check-in and refuse boarding.</p>
     <p><strong>Renewal lead times.</strong> US passport renewal:
     routine ~6 weeks, expedited ~3. UK: ~3 weeks. Türkiye: same day
-    at PTT. India: 4-6 weeks. Plan accordingly — don't book the
+    at PTT. India: 4-6 weeks. Plan accordingly: don't book the
     flight first.</p>
     <p><strong>Special cases.</strong> Diplomatic, service, refugee
-    travel documents have different rules per destination — always
+    travel documents have different rules per destination. Always
     check with the embassy. Children's passports often have shorter
     validity (5 vs 10 years).</p>
     <p>Spot a wrong rule? Open an issue at
@@ -179,13 +179,13 @@
       vEl.innerHTML = `<div class="verdict ok">
         <div class="badge">Cleared</div>
         <div class="title">Your passport satisfies ${destName}'s rule</div>
-        <div class="body"><p>${destName} requires ${res.ruleLabel}. You have ${res.monthsLeftOnExit} months left on your passport at the exit date — ${res.marginDays} days of buffer.</p></div>
+        <div class="body"><p>${destName} requires ${res.ruleLabel}. You have ${res.monthsLeftOnExit} months left on your passport at the exit date: ${res.marginDays} days of buffer.</p></div>
       </div>`;
     } else if (res.ok === false) {
       vEl.innerHTML = `<div class="verdict bad">
         <div class="badge">Will be refused boarding</div>
         <div class="title">Passport too short for ${destName}</div>
-        <div class="body"><p>${destName} requires ${res.ruleLabel}. Your passport only has ${res.monthsLeftOnExit} months left on the exit date — short by ${Math.abs(res.marginDays)} days. Renew your passport BEFORE booking the flight.</p></div>
+        <div class="body"><p>${destName} requires ${res.ruleLabel}. Your passport only has ${res.monthsLeftOnExit} months left on the exit date: short by ${Math.abs(res.marginDays)} days. Renew your passport BEFORE booking the flight.</p></div>
       </div>`;
     } else {
       vEl.innerHTML = `<div class="verdict info">
@@ -216,7 +216,7 @@
   }).join("");
 })();
 </script>
-<script src="/data/static-i18n.js?v=20260926a" defer></script>
+<script src="/data/static-i18n.js?v=20260926b" defer></script>
 <!-- chrome:footer -->
 <footer class="site-foot">
   <div class="site-foot-inner">
@@ -256,7 +256,7 @@
         <li><a href="https://github.com/Uygara/atlas-visa-globe">Source on GitHub</a></li>
       </ul>
     </div>
-    <p class="site-foot-note">Visa rules change often — always confirm with the destination's embassy or consulate before you book. Data is rebuilt every 24 hours from public visa-policy sources.</p>
+    <p class="site-foot-note">Visa rules change often. Always confirm with the destination's embassy or consulate before you book. Data is rebuilt every 24 hours from public visa-policy sources.</p>
   </div>
 </footer>
 <!-- /chrome:footer -->

@@ -261,7 +261,7 @@ function TransitLegChecker({ passport, onOpen }) {
         {field("to", window.t("tmap.leg_to"))}
       </div>
       {["from", "via", "to"].map(k => codes[k].length === 3 && !known(codes[k]) && (
-        <p key={k} className="p-fine" style={{ margin: "6px 0 0" }}>{codes[k]} — {window.t("tmap.leg_unknown")}</p>
+        <p key={k} className="p-fine" style={{ margin: "6px 0 0" }}>{codes[k]}: {window.t("tmap.leg_unknown")}</p>
       ))}
       {leg && !leg.error && (
         <div style={{ marginTop: 10 }} aria-live="polite">
@@ -318,7 +318,7 @@ function TransitHubList({ passport, onOpen }) {
               {r.line ? <Swatch s={r.line.s} /> : <span className="sw sw-all" aria-hidden="true" />}
               <span className="lg-label" style={{ whiteSpace: "normal" }}>{r.hubLabel}</span>
               <span className="lg-dots" />
-              <span className="lg-n" style={{ fontSize: 11.5, color: "var(--ink-2)", textAlign: "end" }}>{r.line ? r.line.label : "—"}</span>
+              <span className="lg-n" style={{ fontSize: 11.5, color: "var(--ink-2)", textAlign: "end" }}>{r.line ? r.line.label : "-"}</span>
             </button>
           </li>
         ))}

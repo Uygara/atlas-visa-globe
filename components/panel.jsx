@@ -72,7 +72,7 @@ function Panel({
         />
         {autoDetected && !showPicker && (
           <button type="button" className="link-quiet guess-note" onClick={() => setShowPicker(true)}>
-            {tr("picker.guessed", "Guessed from your time zone — not your passport? Change it")}
+            {tr("picker.guessed", "Guessed from your time zone. Not your passport? Change it")}
           </button>
         )}
 
@@ -330,7 +330,7 @@ function ResidencePermitPicker({ value, onChange }) {
             ))}
           </div>
           <p className="p-fine" style={{ margin: "8px 0 0" }}>
-            {T("permits.hint", "Holding any of these unlocks easier entry to certain destinations — the map and the tally update automatically.")}
+            {T("permits.hint", "Holding any of these unlocks easier entry to certain destinations. The map and the tally update automatically.")}
           </p>
         </div>
       )}
@@ -841,7 +841,7 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
   }
   const continent = dest.continent
     ? (window.t("cont." + dest.continent) !== ("cont." + dest.continent) ? window.t("cont." + dest.continent) : dest.continent)
-    : "—";
+    : "-";
   const caveat = window.entryCaveat ? window.entryCaveat(iso2, r.status) : null;
   const cautions = [r.note, caveat].filter(Boolean);
   const from = incoming ? dest.flag : (groupActive ? "" : myPp?.flag);
@@ -1059,7 +1059,7 @@ function TransitVisaHint({ passport, destIso2 }) {
   return (
     <a className={"note " + note.tone} href="/transit-map/">
       <span className="note-k">{tr(note.key, "", vars)}</span>
-      <span className="note-s">{tr("detail.transit_dest_sub", "Airport transit rules — see the transit map.")}</span>
+      <span className="note-s">{tr("detail.transit_dest_sub", "Airport transit rules. See the transit map.")}</span>
       <span className="note-go" aria-hidden="true">→</span>
     </a>
   );
@@ -1543,7 +1543,7 @@ function PassportPulse({ passport }) {
       </div>
       <div className="stats3">
         <div>
-          <div className="n">{rank ? "#" + rank : "—"}</div>
+          <div className="n">{rank ? "#" + rank : "-"}</div>
           <div className="l">{window.t("pulse.rank")}</div>
         </div>
         <div>
@@ -1557,7 +1557,7 @@ function PassportPulse({ passport }) {
                 <span style={{ color: "var(--vf)" }}>+{pulse.gains}</span>
                 {pulse.losses > 0 && <span style={{ color: "var(--vr)" }}> −{pulse.losses}</span>}
               </>
-            ) : <span style={{ color: "var(--ink-3)" }}>—</span>}
+            ) : <span style={{ color: "var(--ink-3)" }}>-</span>}
           </div>
           <div className="l">{window.t(windowKey)}</div>
         </div>

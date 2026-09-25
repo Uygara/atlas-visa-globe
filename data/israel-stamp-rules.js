@@ -22,7 +22,7 @@ window.ISRAEL_STAMP_RISK = {
   // Kuwait — historically strict, has relaxed in last few years; verify.
   KW: { level: "relaxed",    note: "Kuwait historically refused entry on this basis. Enforcement has relaxed in recent years but you should verify with the embassy before flying." },
   // Algeria, Iraq, Pakistan — case-by-case
-  DZ: { level: "relaxed",    note: "Algeria's policy is inconsistent — Israeli stamps have led to refusal in some cases. Travel with a clean passport if possible." },
+  DZ: { level: "relaxed",    note: "Algeria's policy is inconsistent. Israeli stamps have led to refusal in some cases. Travel with a clean passport if possible." },
   IQ: { level: "relaxed",    note: "Iraq's policy is unclear and inconsistent; risk of refusal exists." },
   PK: { level: "relaxed",    note: "Pakistan does not officially recognise Israel; old Israeli stamps could complicate a visa application or border entry. Verify before travel." },
 };

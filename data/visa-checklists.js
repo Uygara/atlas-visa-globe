@@ -16,8 +16,8 @@
 
 window.VISA_CHECKLISTS = {
   "TR-SCHENGEN": {
-    title: "Schengen Tourist Visa — Turkish citizens",
-    titleTr: "Schengen Turist Vizesi — Türkiye Cumhuriyeti vatandaşları",
+    title: "Schengen Tourist Visa · Turkish citizens",
+    titleTr: "Schengen Turist Vizesi · Türkiye Cumhuriyeti vatandaşları",
     intro: "Schengen short-stay (Type C) visa, tourist purpose, valid for any of the 29 Schengen Area states. Apply at the consulate of the country where you'll spend the most days. This list reflects the documentation a Turkish citizen typically needs in 2026.",
     introTr: "Schengen kısa süreli (Tip C) turist vizesi, 29 Schengen üyesi ülkesinin herhangi birinde geçerlidir. Başvuru, en çok zaman geçireceğin ülkenin konsolosluğuna yapılır. Aşağıdaki liste 2026'da Türk vatandaşlarının tipik olarak ihtiyaç duyduğu belgeleri yansıtır.",
     sections: [
@@ -46,17 +46,17 @@ window.VISA_CHECKLISTS = {
         name: "Travel insurance",
         nameTr: "Seyahat sigortası",
         items: [
-          { label: "Travel medical insurance — €30,000 minimum coverage, valid in all Schengen",
-            labelTr: "Seyahat sağlık sigortası — en az €30.000 teminat, tüm Schengen'de geçerli",
-            desc: "Must cover repatriation. Buy from a Turkish insurer (Aksigorta, Anadolu Sigorta) or via VFS — €25-40 typical." },
+          { label: "Travel medical insurance: €30,000 minimum coverage, valid in all Schengen",
+            labelTr: "Seyahat sağlık sigortası: en az €30.000 teminat, tüm Schengen'de geçerli",
+            desc: "Must cover repatriation. Buy from a Turkish insurer (Aksigorta, Anadolu Sigorta) or via VFS, €25-40 typical." },
         ],
       },
       {
         name: "Itinerary & accommodation",
         nameTr: "Rota & konaklama",
         items: [
-          { label: "Flight reservation (round-trip) — reservation only, not paid ticket",
-            labelTr: "Uçak rezervasyonu (gidiş-dönüş) — sadece rezervasyon, ödenmiş bilet değil",
+          { label: "Flight reservation (round-trip): reservation only, not paid ticket",
+            labelTr: "Uçak rezervasyonu (gidiş-dönüş): sadece rezervasyon, ödenmiş bilet değil",
             desc: "Travel agency or services like onwardticket.com provide refundable reservations for €15-30. Don't buy the actual ticket before approval." },
           { label: "Hotel reservations for full stay, OR rental contract, OR friend/family invitation",
             labelTr: "Tüm konaklama süresince otel rezervasyonu, VEYA kira sözleşmesi, VEYA arkadaş/aile davetiyesi",
@@ -70,11 +70,11 @@ window.VISA_CHECKLISTS = {
         name: "Financial proof",
         nameTr: "Mali durum belgeleri",
         items: [
-          { label: "Bank statements — last 3 months, stamped by the bank",
-            labelTr: "Banka hesap dökümü — son 3 ay, banka mühürlü",
+          { label: "Bank statements: last 3 months, stamped by the bank",
+            labelTr: "Banka hesap dökümü: son 3 ay, banka mühürlü",
             desc: "Minimum €50/day in your account is a common benchmark; check the specific consulate." },
-          { label: "Salary slips — last 3 months",
-            labelTr: "Maaş bordroları — son 3 ay",
+          { label: "Salary slips: last 3 months",
+            labelTr: "Maaş bordroları: son 3 ay",
             conditional: "employed" },
           { label: "Title deeds, vehicle registration (optional financial strength evidence)",
             labelTr: "Tapu, araç ruhsatı (opsiyonel mali güç kanıtı)" },
@@ -84,8 +84,8 @@ window.VISA_CHECKLISTS = {
         name: "Employment / profession",
         nameTr: "İş & meslek",
         items: [
-          { label: "Employer letter — confirming employment, salary, position, leave dates, signed/stamped",
-            labelTr: "İşveren yazısı — istihdam, maaş, pozisyon, izin tarihleri; imzalı/mühürlü",
+          { label: "Employer letter: confirming employment, salary, position, leave dates, signed/stamped",
+            labelTr: "İşveren yazısı: istihdam, maaş, pozisyon, izin tarihleri; imzalı/mühürlü",
             conditional: "employed" },
           { label: "SGK service breakdown (SGK Hizmet Dökümü) from e-Devlet",
             labelTr: "e-Devlet'ten SGK Hizmet Dökümü",
@@ -117,8 +117,8 @@ window.VISA_CHECKLISTS = {
         name: "Application & fees",
         nameTr: "Başvuru & ücretler",
         items: [
-          { label: "Visa fee — €90 adult / €45 children 6-12 / free under 6",
-            labelTr: "Vize ücreti — yetişkin €90 / 6-12 yaş €45 / 6 yaş altı ücretsiz",
+          { label: "Visa fee: €90 adult / €45 children 6-12 / free under 6",
+            labelTr: "Vize ücreti: yetişkin €90 / 6-12 yaş €45 / 6 yaş altı ücretsiz",
             desc: "Plus a VFS service fee €30-40 depending on the country." },
           { label: "Biometric appointment at VFS / consulate (fingerprints, photo)",
             labelTr: "VFS / konsoloslukta biyometrik randevu (parmak izi, fotoğraf)",

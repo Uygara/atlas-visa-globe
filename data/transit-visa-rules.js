@@ -52,23 +52,23 @@ window.TRANSIT_RULES = {
   // The UK list is broader than Schengen's — covers ~35 nationalities.
   // Source: gov.uk visit-uk-in-transit
   GB: {
-    label: "United Kingdom (Direct Airside Transit Visa — DATV)",
+    label: "United Kingdom (Direct Airside Transit Visa, DATV)",
     requiredFor: [
       "AF","BD","BY","BI","CM","CN","CU","CD","ER","ET","GH","IR","IQ","JO",
       "KE","LB","LR","LY","ML","MD","MM","NG","KP","PK","PS","SL","SO","LK",
       "SD","SY","TJ","TM","UZ","YE","ZW",
     ],
     exemptions: [
-      { holds: ["US"],         note: "Valid US visa AND travelling to/from the US (within 6 months) — exempt" },
-      { holds: ["CA"],         note: "Valid Canadian visa AND travelling to/from Canada — exempt" },
-      { holds: ["AU"],         note: "Valid Australian visa AND travelling to/from Australia — exempt" },
-      { holds: ["NZ"],         note: "Valid New Zealand visa AND travelling to/from New Zealand — exempt" },
-      { holds: ["SCHENGEN"],   note: "Schengen visa Cat C/D AND travelling to/from a Schengen state (within 6 months) — exempt" },
-      { holds: ["IE"],         note: "Irish biometric visa Cat C/D — exempt" },
-      { passportType: "diplomatic", note: "Diplomatic / service passport in some cases — verify with carrier" },
+      { holds: ["US"],         note: "Valid US visa AND travelling to/from the US (within 6 months): exempt" },
+      { holds: ["CA"],         note: "Valid Canadian visa AND travelling to/from Canada: exempt" },
+      { holds: ["AU"],         note: "Valid Australian visa AND travelling to/from Australia: exempt" },
+      { holds: ["NZ"],         note: "Valid New Zealand visa AND travelling to/from New Zealand: exempt" },
+      { holds: ["SCHENGEN"],   note: "Schengen visa Cat C/D AND travelling to/from a Schengen state (within 6 months): exempt" },
+      { holds: ["IE"],         note: "Irish biometric visa Cat C/D: exempt" },
+      { passportType: "diplomatic", note: "Diplomatic / service passport in some cases: verify with carrier" },
     ],
     twovHours: null, twovEligible: [],
-    notes: "DATV is NOT a landside visa — to leave the airport you need a Visitor in Transit Visa instead. Always check before connecting through London Heathrow.",
+    notes: "DATV is NOT a landside visa. To leave the airport you need a Visitor in Transit Visa instead. Always check before connecting through London Heathrow.",
     source: "https://www.gov.uk/transit-visa",
   },
 
@@ -79,8 +79,8 @@ window.TRANSIT_RULES = {
     label: "United States (no airside transit anywhere)",
     requiredFor: "*",
     exemptions: [
-      { holds: ["ESTA"], note: "Visa Waiver Program nationalities (39 countries) can use ESTA — but you still clear immigration" },
-      { holds: ["US"],   note: "Valid US visa (any class) — covers transit too" },
+      { holds: ["ESTA"], note: "Visa Waiver Program nationalities (39 countries) can use ESTA, but you still clear immigration" },
+      { holds: ["US"],   note: "Valid US visa (any class): covers transit too" },
     ],
     twovHours: null, twovEligible: [],
     notes: "No US airport has a sterile international transit zone. Even a 90-minute connection requires either an ESTA or a C-1 transit visa.",
@@ -92,7 +92,7 @@ window.TRANSIT_RULES = {
     label: "Canada (Transit Visa required; CTAS exception)",
     requiredFor: "*",
     exemptions: [
-      { holds: ["CA"], note: "Holders of a valid Canadian visa / eTA — covered" },
+      { holds: ["CA"], note: "Holders of a valid Canadian visa / eTA: covered" },
       { holds: ["CTAS-CN"], note: "China Transit Program: certain Chinese passport holders flying to/from the US via Vancouver YVR or Toronto YYZ" },
       { holds: ["CTAS-PH"], note: "Transit Without Visa Program: Filipino passport holders with valid US visa flying via YVR / YYZ" },
       { passportType: "diplomatic", note: "Diplomatic passport holders of select countries are exempt" },
@@ -104,18 +104,18 @@ window.TRANSIT_RULES = {
 
   // ─── Japan (Shore Pass / 72h TWOV) ──────────────────────────────────
   JP: {
-    label: "Japan (Shore Pass — up to 72h transit)",
+    label: "Japan (Shore Pass, up to 72h transit)",
     requiredFor: [], // no airside transit visa per se
     exemptions: [],
     twovHours: 72,
     twovEligible: "*",
-    notes: "Up to 72-hour 'Shore Pass' allows airside or landside transit when continuing to a third country with a confirmed onward ticket. Issued at the airport on a case-by-case basis — not guaranteed.",
+    notes: "Up to 72-hour 'Shore Pass' allows airside or landside transit when continuing to a third country with a confirmed onward ticket. Issued at the airport on a case-by-case basis, not guaranteed.",
     source: "https://www.mofa.go.jp/j_info/visit/visa/short/landing.html",
   },
 
   // ─── Singapore (Visa-Free Transit Facility — 96h) ───────────────────
   SG: {
-    label: "Singapore (Visa-Free Transit Facility — 96h)",
+    label: "Singapore (Visa-Free Transit Facility, 96h)",
     requiredFor: ["AF","BD","IN","MM","PK","CN","PS","SY","TM","UZ"],
     exemptions: [
       { holds: ["US","GB","CA","AU","NZ","JP","KR","DE","CH","SCHENGEN"],
@@ -146,7 +146,7 @@ window.TRANSIT_RULES = {
 
   // ─── Hong Kong (visa-free transit, generous) ────────────────────────
   HK: {
-    label: "Hong Kong (visa-free transit — 7 to 14 days for most)",
+    label: "Hong Kong (visa-free transit, 7 to 14 days for most)",
     requiredFor: ["AF","AL","CU","KP","LA","MN","NG","SO","LK","TJ","TM","VN"],
     exemptions: [
       { holds: ["US","GB","CA","AU","JP","SCHENGEN"],
@@ -171,7 +171,7 @@ window.TRANSIT_RULES = {
 
   // ─── Qatar (Doha) ───────────────────────────────────────────────────
   QA: {
-    label: "Qatar — Doha airside transit",
+    label: "Qatar · Doha airside transit",
     requiredFor: [],
     exemptions: [],
     twovHours: null,
@@ -182,7 +182,7 @@ window.TRANSIT_RULES = {
 
   // ─── Turkey (Istanbul) ──────────────────────────────────────────────
   TR: {
-    label: "Türkiye — Istanbul airside transit",
+    label: "Türkiye · Istanbul airside transit",
     requiredFor: [],
     exemptions: [],
     twovHours: null,

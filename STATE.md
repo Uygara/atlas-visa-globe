@@ -74,6 +74,18 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 14 (2026-09-25/26: alerts on the web, honest privacy page, four-language review, fluid sheet, Android CI):**
+  - Alerts = account + notifications. `/alerts/` picks passport + ≤20 watched countries (synced keys) and turns on
+    FCM web push (`assets/push-web.js`, `/firebase-messaging-sw.js`, default VAPID key); devices `platform:"web"`,
+    dispatcher adds `webpush.fcmOptions.link`. Shared texts `assets/push-text.js` (app-native uses them too).
+  - Privacy rewritten short and true (12 sections, GDPR/UK/KVKK/California) + `/tr/privacy/` (formal "siz"). Matomo
+    removed; GA4 consent mode denied by region (EU/EEA, GB, CH, TR) so no cookies there. Legal pages use `.wrap.legal`.
+  - es/de/fr/ar: 4 sonnet "native" reviews (176 fixes) + fill of every static dictionary entry (689). French = "tu".
+  - Mobile sheet: 1:1 drag, rubber band, velocity projection (0.998), spring with velocity handoff, catchable.
+  - Firebase: service account key in `.secrets/` (ignored); APIs analyticsdata/searchconsole enabled; the SA is GA4 Viewer
+    + GSC Full user → `tools/analytics-report.js`. Sitemap submitted to the domain property; indexing requested
+    for /tr/, /guides/, /safety-map/, /guides/how-we-count/. Debug keystore shared + SHA registered; `android.yml`.
+  - Writing rule (no em dashes, no AI phrasing) in CLAUDE.md; `tools/lint-copy.js`; site-wide dash sweep by 2 agents.
 - **Round 13 (2026-09-24 — Firebase sign-in, the mobile app, every passport's types, push):**
   - Pushed the 9 design commits (merged 3 daily-refresh commits; generated pages regenerated, not hand-merged).
     Schengen guide: BG/RO are full members (air/sea Mar 2024, land 1 Jan 2025), CY is not yet — when the Council

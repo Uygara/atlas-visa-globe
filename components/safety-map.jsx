@@ -305,7 +305,7 @@ function SafetyHover({ hover }) {
         <span>{level ? `${level} · ${levelLabel(level)}` : levelLabel(0)}</span>
       </div>
       {a && a.regions && a.regions.length > 0 && (
-        <div className="hovercard-row hovercard-cap">{tr("safety.has_regions", "Some regions are worse — tap to see them")}</div>
+        <div className="hovercard-row hovercard-cap">{tr("safety.has_regions", "Some regions are worse. Tap to see them")}</div>
       )}
     </div>
   );
@@ -337,7 +337,7 @@ function SafetySearch({ onPick }) {
               <button key={c.iso2} type="button" className="dd-item" onClick={() => { onPick(c.iso2); setQ(""); }}>
                 <span className="flag">{c.flag}</span>
                 <span className="dd-grow">{window.countryName(c.iso2)}</span>
-                <span className="dd-code">{level ? levelLabel(level) : "—"}</span>
+                <span className="dd-code">{level ? levelLabel(level) : "-"}</span>
                 <span className="dot" style={{ "--sw": LEVEL_COLOR[level] }} />
               </button>
             );
@@ -390,7 +390,7 @@ function SafetyDetail({ iso2, names, onClose }) {
 
       {/* Regions, the part a country-level colour hides. */}
       {regions.length === 0 && notes.length === 0 && (
-        <p className="p-fine" style={{ margin: "0 0 12px" }}>{tr("safety.regions_none", "No region of this country carries its own warning — the provinces on the map all sit at the country's level.")}</p>
+        <p className="p-fine" style={{ margin: "0 0 12px" }}>{tr("safety.regions_none", "No region of this country carries its own warning. The provinces on the map all sit at the country's level.")}</p>
       )}
       {(regions.length > 0 || notes.length > 0) && (
         <div style={{ marginBottom: 12 }}>
@@ -416,7 +416,7 @@ function SafetyDetail({ iso2, names, onClose }) {
               <strong style={{ color: "var(--ink-2)" }}>{levelLabel(n.level)}:</strong> {n.text}
             </div>
           ))}
-          <p className="p-fine" style={{ margin: "4px 0 0" }}>{tr("safety.regions_note", "Shaded on the map. Areas described only in words (\"within 10km of the border\") cannot be drawn — read the full advisory.")}</p>
+          <p className="p-fine" style={{ margin: "4px 0 0" }}>{tr("safety.regions_note", "Shaded on the map. Areas described only in words (\"within 10km of the border\") cannot be drawn. Read the full advisory.")}</p>
         </div>
       )}
 
@@ -426,7 +426,7 @@ function SafetyDetail({ iso2, names, onClose }) {
           <div className="p-hint" style={{ margin: "0 0 6px", fontWeight: 600, color: "var(--ink-2)" }}>{tr("safety.events_title", "Active alerts")}</div>
           {events.map((e, i) => (
             <a key={i} className={"note " + (e.level === "red" ? "note-risk" : "note-warn")} href={e.url} target="_blank" rel="noopener noreferrer">
-              <span className="note-k">{tr(EVENT_LABEL[e.type] || "safety.event.other", e.type)}{e.name ? " — " + e.name : ""}</span>
+              <span className="note-k">{tr(EVENT_LABEL[e.type] || "safety.event.other", e.type)}{e.name ? ": " + e.name : ""}</span>
               <span className="note-s">{tr("safety.event_since", "since {date}", { date: fmtDate(e.from) })} · GDACS</span>
               <span className="note-go" aria-hidden="true">→</span>
             </a>

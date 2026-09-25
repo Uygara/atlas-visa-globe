@@ -40,10 +40,10 @@
     var watch = read("atlas.watchlist") || [];
     var trip = read("atlas.itinerary") || {};
     var schengen = read("atlas.schengen.trips") || [];
-    rows.push(["Passport", passport ? name(passport) : "—"]);
-    rows.push(["Watched destinations", Array.isArray(watch) && watch.length ? watch.map(name).join(", ") : "—"]);
-    rows.push(["Planned trip", Array.isArray(trip.stops) && trip.stops.length ? trip.stops.map(function (s) { return name(s.iso2 || s); }).join(" → ") : "—"]);
-    rows.push(["Schengen calculator trips", Array.isArray(schengen) ? String(schengen.length) : "—"]);
+    rows.push(["Passport", passport ? name(passport) : "-"]);
+    rows.push(["Watched destinations", Array.isArray(watch) && watch.length ? watch.map(name).join(", ") : "-"]);
+    rows.push(["Planned trip", Array.isArray(trip.stops) && trip.stops.length ? trip.stops.map(function (s) { return name(s.iso2 || s); }).join(" → ") : "-"]);
+    rows.push(["Schengen calculator trips", Array.isArray(schengen) ? String(schengen.length) : "-"]);
     return rows;
   }
 
@@ -67,11 +67,11 @@
     if (/popup-closed|cancelled-popup/.test(code)) return "Sign-in was cancelled.";
     if (/invalid-email/.test(code)) return "That email address doesn't look right.";
     if (/invalid-action-code|expired-action-code/.test(code)) return "This sign-in link has expired or was already used. Ask for a new one.";
-    if (/network-request-failed/.test(code)) return "No connection — try again.";
+    if (/network-request-failed/.test(code)) return "No connection. Try again.";
     if (/requires-recent-login/.test(code)) return "For your security, sign out, sign in again, then delete.";
     if (/unauthorized-domain/.test(code)) return "Sign-in isn't set up for this address yet.";
     if (/invalid-credential|wrong-password|user-not-found|invalid-login/.test(code)) return "That email and password don't match.";
-    if (/email-already-in-use/.test(code)) return "There is already an account with that email — sign in instead.";
+    if (/email-already-in-use/.test(code)) return "There is already an account with that email. Sign in instead.";
     if (/weak-password/.test(code)) return "Use a password of at least 6 characters.";
     if (/missing-password/.test(code)) return "Enter your password.";
     if (/too-many-requests/.test(code)) return "Too many attempts. Wait a few minutes and try again.";
@@ -97,7 +97,7 @@
     var st = acct.state || {};
 
     if (!acct.enabled) {
-      root.appendChild(h("p", { text: "Accounts aren't switched on yet. Everything you save — your passport, watched destinations, planned trip and Schengen calculator trips — stays in this browser only." }));
+      root.appendChild(h("p", { text: "Accounts aren't switched on yet. Everything you save (your passport, watched destinations, planned trip and Schengen calculator trips) stays in this browser only." }));
       root.appendChild(h("h2", { text: "Saved in this browser" }));
       root.appendChild(savedTable());
       return;
@@ -126,14 +126,14 @@
       // console and email + password already covers "no social account". acct.sendEmailLink
       // and the link-landing handler below stay, so old links still work if it is ever enabled.)
       root.appendChild(h("h2", { text: "What an account stores" }));
-      root.appendChild(h("p", { class: "fine", text: "Your email address and the items listed below — nothing else. No passport numbers or documents. You can download or delete it all at any time." }));
+      root.appendChild(h("p", { class: "fine", text: "Your email address and the items listed below. Nothing else. No passport numbers or documents. You can download or delete it all at any time." }));
       root.appendChild(savedTable());
       return;
     }
 
     // Signed in
     root.appendChild(h("p", {}, ["Signed in as ", h("strong", { "data-no-i18n": true, text: st.user.email || st.user.phone || st.user.name || "" })]));
-    var status = st.syncing ? "Syncing…" : st.error ? "Couldn't sync — will retry when you change something." : st.lastSync ? "Up to date on this device." : "";
+    var status = st.syncing ? "Syncing…" : st.error ? "Couldn't sync. Will retry when you change something." : st.lastSync ? "Up to date on this device." : "";
     if (status) root.appendChild(h("p", { class: "fine", text: status }));
     root.appendChild(h("h2", { text: "Saved to your account" }));
     root.appendChild(savedTable());
@@ -191,7 +191,7 @@
     var forgot = h("button", { type: "button", class: "btn-link", disabled: ui.busy, on: { click: function () {
       var em = email.value.trim();
       if (!em) { ui.message = "Enter your email above, then tap “Forgot password?”."; ui.messageTone = "info"; render(); return; }
-      run(acct.resetPassword(em), "We sent a password reset link — check your inbox.");
+      run(acct.resetPassword(em), "We sent a password reset link. Check your inbox.");
     } } }, ["Forgot password?"]);
     return h("div", {}, [form, h("p", { class: "fine" }, [forgot])]);
   }

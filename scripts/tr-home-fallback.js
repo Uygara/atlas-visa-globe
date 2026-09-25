@@ -9,7 +9,7 @@ const passports = [
 ];
 
 module.exports = `<main class="seo-fallback">
-      <h1>travelnow.info — Her pasaport için vize gereklilikleri</h1>
+      <h1>travelnow.info: Her pasaport için vize gereklilikleri</h1>
       <p>Pasaportunu seç; etkileşimli bir küre her ülkeyi bugün girmek için ihtiyacın olana göre boyar: <strong>vizesiz</strong>, <strong>e-Vize</strong>, <strong>varışta vize</strong> ya da <strong>vize gerekli</strong>. Ücretsiz, üyelik yok ve vize verileri her gün kamuya açık kaynaklardan yenileniyor.</p>
       <p>200'den fazla pasaportu ve 200'den fazla varış noktasını kapsıyoruz; ayrıca havaalanı transit vizeleri, Schengen 90/180 gün kuralı, AB'nin yeni ETIAS izni, 6 aylık pasaport geçerlilik kuralı ve çok duraklı seyahat planlama için ücretsiz araçlar sunuyoruz. Her ülkenin ayrıca kendi sayfası ve eksiksiz bir vize gereklilikleri dökümü var.</p>
 
@@ -21,18 +21,18 @@ ${passports.map(([iso, name]) => `        <li><a href="/tr/passport/${iso}/">${n
 
       <h2>Ücretsiz vize araçları</h2>
       <ul>
-        <li><a href="/transit-map/">Transit Haritası</a> — vize gerektirmeden hangi havaalanlarından aktarma yapabileceğin</li>
-        <li><a href="/tr/schengen-calculator/">Schengen 90/180 Hesaplayıcı</a> — Schengen Bölgesi'ndeki günlerini takip et</li>
-        <li><a href="/tr/etias/">ETIAS Kontrolü</a> — AB'nin 2026 seyahat izni sana uygulanıyor mu?</li>
-        <li><a href="/tr/passport-validity/">Pasaport Geçerlilik Kontrolü</a> — 6 ay kuralı, varış noktasına göre</li>
-        <li><a href="/itinerary/">Seyahat Planlayıcı</a> — çok duraklı bir gezi için vizeler, maliyetler ve süreler</li>
-        <li><a href="/tr/visa-shortcuts/">Vize Kestirmeleri</a> — elindeki vizelerle daha kolay giriş</li>
+        <li><a href="/transit-map/">Transit Haritası</a>: vize gerektirmeden hangi havaalanlarından aktarma yapabileceğin</li>
+        <li><a href="/tr/schengen-calculator/">Schengen 90/180 Hesaplayıcı</a>: Schengen Bölgesi'ndeki günlerini takip et</li>
+        <li><a href="/tr/etias/">ETIAS Kontrolü</a>: AB'nin 2026 seyahat izni sana uygulanıyor mu?</li>
+        <li><a href="/tr/passport-validity/">Pasaport Geçerlilik Kontrolü</a>: 6 ay kuralı, varış noktasına göre</li>
+        <li><a href="/itinerary/">Seyahat Planlayıcı</a>: çok duraklı bir gezi için vizeler, maliyetler ve süreler</li>
+        <li><a href="/tr/visa-shortcuts/">Vize Kestirmeleri</a>: elindeki vizelerle daha kolay giriş</li>
         <li><a href="/tr/digital-nomad-visa/">Dijital Göçebe Vizeleri</a> · <a href="/tr/citizenship-by-investment/">Yatırımla Vatandaşlık</a></li>
       </ul>
 
       <h2>Seyahat rehberleri</h2>
       <ul>
-        <li><a href="/tr/guides/visa-types-explained/">Vizesiz, e-Vize, varışta vize — aradaki fark gerçekte ne demek</a></li>
+        <li><a href="/tr/guides/visa-types-explained/">Vizesiz, e-Vize, varışta vize: aradaki fark gerçekte ne demek</a></li>
         <li><a href="/tr/guides/schengen-90-180-rule/">Schengen 90/180 gün kuralı gerçekte nasıl işler</a></li>
         <li><a href="/tr/guides/etias-2026-explained/">2026'da ETIAS: kimler için gerekli ve vizeden farkı ne</a></li>
         <li><a href="/tr/guides/transit-visa-guide/">Transit vizeler: aktarma ne zaman evrak gerektirir</a></li>
@@ -40,7 +40,7 @@ ${passports.map(([iso, name]) => `        <li><a href="/tr/passport/${iso}/">${n
       </ul>
 
       <h2>Veriler nasıl oluşturuluyor</h2>
-      <p>Vize gereklilikleri her gün kamuya açık vize politikası sayfalarından ve resmî devlet kaynaklarından yeniden toplanıyor; üzerine resmî kaynaklarla kontrol edilen, elle hazırlanmış bir düzeltme katmanı biniyor. Transit vize listeleri Birleşik Krallık'ın Immigration (Passenger Transit Visa) Order düzenlemesinden ve AB Vize Tüzüğü'nden geliyor. Veri uydurmuyoruz: bir bilgi kaynaklandırılamıyorsa dışarıda bırakıyoruz. Rezervasyon yapmadan önce mutlaka varış ülkesinin büyükelçiliğine danış — <a href="/tr/about/">Hakkında</a>, <a href="/terms/">Koşullar</a> ve <a href="/tr/privacy/">Gizlilik</a> sayfalarımıza bak.</p>
+      <p>Vize gereklilikleri her gün kamuya açık vize politikası sayfalarından ve resmî devlet kaynaklarından yeniden toplanıyor; üzerine resmî kaynaklarla kontrol edilen, elle hazırlanmış bir düzeltme katmanı biniyor. Transit vize listeleri Birleşik Krallık'ın Immigration (Passenger Transit Visa) Order düzenlemesinden ve AB Vize Tüzüğü'nden geliyor. Veri uydurmuyoruz: bir bilgi kaynaklandırılamıyorsa dışarıda bırakıyoruz. Rezervasyon yapmadan önce mutlaka varış ülkesinin büyükelçiliğine danış. <a href="/tr/about/">Hakkında</a>, <a href="/terms/">Koşullar</a> ve <a href="/tr/privacy/">Gizlilik</a> sayfalarımıza bak.</p>
       <p>travelnow.info, Uygar Atalay tarafından geliştirilen ve sürdürülen bağımsız bir projedir. Sorun ya da veri düzeltmesi mi var? <a href="mailto:hello@travelnow.info">hello@travelnow.info</a> adresine yaz.</p>
       <p>Etkileşimli harita yükleniyor… görünmezse JavaScript'i etkinleştir.</p>
 

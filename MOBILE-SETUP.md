@@ -75,13 +75,20 @@ Firebase Console → Proje ayarları → Cloud Messaging → iOS uygulaması →
 sunmalı — pratikte **Apple ile Giriş** (kural 4.8). E-posta/şifre kendi hesabımız olduğu için kuralın kapsamı dışında
 sayılabilir, ama incelemeciler çoğu zaman Apple ile Giriş ister. Riski sıfırlamak için eklenmeli (Firebase Auth destekliyor).
 
-## 4. Android
+## 4. Android (önce bu; 2026-09-26 kararı)
 
-```bash
-cd app && npm run android      # Android Studio'yu açar (Windows'ta `npm run sync:android` yeterli)
-```
-
-Google Play Console hesabı (25 $ tek sefer) gerekir. `google-services.json` ve SHA-1 (adım 1) olmadan Google/telefon girişi çalışmaz.
+- **Test APK her değişiklikte CI'da çıkar**: `.github/workflows/android.yml` → artifact `travelnow-debug-apk`. Paylaşılan
+  hata ayıklama anahtarı `app/android/debug.keystore` (herkese açık "android" parolası); SHA-1/SHA-256 Firebase'de kayıtlı,
+  yani Google girişi test APK'sında da çalışır. Bu bilgisayarda Android SDK yok; derleme yalnızca CI'da.
+- **Play Console (25 $ tek sefer, kişisel hesap)**: kimlik doğrulaması + yayından önce 12 test kullanıcısıyla 14 gün
+  kesintisiz kapalı test zorunlu (13 Kasım 2023 sonrası açılan kişisel hesaplar; kaynak: Play Console Help 14151465).
+- **İmzalı sürüm**: Play hesabı açılınca yükleme anahtarı üretilir (`.secrets/`), 4 gizli anahtar eklenir:
+  `ANDROID_UPLOAD_KEYSTORE_BASE64`, `ANDROID_UPLOAD_STORE_PASSWORD`, `ANDROID_UPLOAD_KEY_ALIAS`, `ANDROID_UPLOAD_KEY_PASSWORD`.
+  CI o zaman `travelnow-release-aab` da üretir. Play App Signing açık olsun (asıl imza anahtarını Google tutar);
+  Play'in uygulama imzalama sertifikasının SHA-1'i de Firebase'e eklenmeli (`firebase apps:android:sha:create`).
+- **Mağaza metni ve Veri güvenliği formu**: `store/play-listing.md` (EN + TR, karakter sınırları kontrol edildi).
+- **Fiyat**: ücretsiz + AdMob. Play'de ücretsiz bir uygulama sonradan ücretliye çevrilemez, ama uygulama içi
+  "reklamsız" satın alma sonradan eklenebilir.
 
 ## 5. AdMob (reklam)
 

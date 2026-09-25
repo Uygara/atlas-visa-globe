@@ -33,7 +33,7 @@ window.VISA_FEES = {
       fee: "€90 EUR (~$98)", processingDays: "15 days (up to 45 in peak season)",
       validity: "180 days", durationOfStay: "90 days in any 180", type: "Schengen Type C",
       source: "https://tuerkei.diplo.de/", lastReviewed: "2026-05-22",
-      notes: "Same fee for ALL Schengen countries — apply to whichever you'll spend most time in.",
+      notes: "Same fee for ALL Schengen countries. Apply to whichever you'll spend most time in.",
     },
     "FR": { fee: "€90 EUR (~$98)", processingDays: "15 days", validity: "180 days", durationOfStay: "90 days", type: "Schengen", source: "https://france-visas.gouv.fr/", lastReviewed: "2026-05-22" },
     "IT": { fee: "€90 EUR (~$98)", processingDays: "15 days", validity: "180 days", durationOfStay: "90 days", type: "Schengen", source: "https://vistoperitalia.esteri.it/", lastReviewed: "2026-05-22" },
@@ -48,7 +48,7 @@ window.VISA_FEES = {
       fee: "AUD $20 service fee", processingDays: "1–3 days (online)",
       validity: "1 year (multi-entry)", durationOfStay: "90 days/visit", type: "ETA (subclass 601)",
       source: "https://immi.homeaffairs.gov.au/", lastReviewed: "2026-05-22",
-      notes: "Turkish passport holders can apply for ETA online — no embassy visit.",
+      notes: "Turkish passport holders can apply for ETA online. No embassy visit.",
     },
     "CN": {
       fee: "$170 USD (Chinese embassy single entry)", processingDays: "4 working days standard",
@@ -60,7 +60,7 @@ window.VISA_FEES = {
       fee: "$0 (free e-visa)", processingDays: "4 days",
       validity: "60 days from issue", durationOfStay: "16 days", type: "Unified e-visa",
       source: "https://evisa.kdmid.ru/", lastReviewed: "2026-05-22",
-      notes: "Turkish citizens are visa-free up to 60 days — e-visa is for longer stays via specific entry points.",
+      notes: "Turkish citizens are visa-free up to 60 days. E-visa is for longer stays via specific entry points.",
     },
     "IN": {
       fee: "$25 USD (1 month) / $40 (1 year) / $80 (5 year)", processingDays: "3–5 days",
@@ -100,13 +100,13 @@ window.VISA_FEES = {
       fee: "$160 USD", processingDays: "10 working days (varies)",
       validity: "3 years", durationOfStay: "60 days/visit", type: "Tourist",
       source: "https://washington.mid.ru/en/", lastReviewed: "2026-05-22",
-      notes: "Service is suspended for many US passport holders — check before applying.",
+      notes: "Service is suspended for many US passport holders. Check before applying.",
     },
     "CU": {
       fee: "$50 USD tourist card", processingDays: "Same day (online)",
       validity: "180 days", durationOfStay: "30 days", type: "Tourist card",
       source: "https://www.cubavisaservices.com/", lastReviewed: "2026-05-22",
-      notes: "Restrictions for US persons under OFAC rules — see Treasury OFAC guidance.",
+      notes: "Restrictions for US persons under OFAC rules. See Treasury OFAC guidance.",
     },
     "IN": {
       fee: "$40 (1 yr) / $80 (5 yr)", processingDays: "3–5 days",
@@ -241,7 +241,7 @@ window.VISA_FEES = {
       fee: "AUD $190 (~$125)", processingDays: "Up to 29 days (90% of cases)",
       validity: "1 year multi-entry", durationOfStay: "90 days/visit", type: "Visitor (subclass 600)",
       source: "https://immi.homeaffairs.gov.au/", lastReviewed: "2026-05-24",
-      notes: "China is not eligible for ETA — full visitor visa required.",
+      notes: "China is not eligible for ETA. Full visitor visa required.",
     },
     "JP": {
       fee: "¥3000 (~$20)", processingDays: "5 working days",
@@ -314,7 +314,7 @@ window.VISA_FEES = {
       fee: "KRW 35,000 (~$26)", processingDays: "4 working days",
       validity: "3 months from issue", durationOfStay: "30 days (single)", type: "L tourist",
       source: "http://kr.china-embassy.gov.cn/", lastReviewed: "2026-05-24",
-      notes: "Korea is on China's 30-day visa-free list as of 2024 — verify if you still need this.",
+      notes: "Korea is on China's 30-day visa-free list as of 2024. Verify if you still need this.",
     },
     "RU": {
       fee: "$0 free / $50 expedited", processingDays: "10 working days",
@@ -370,7 +370,7 @@ window.VISA_FEES = {
       fee: "CAD $100 (~$73)", processingDays: "12–16 weeks",
       validity: "10 years multi-entry", durationOfStay: "180 days/visit", type: "Visitor TRV",
       source: "https://www.canada.ca/en/immigration-refugees-citizenship.html", lastReviewed: "2026-05-24",
-      notes: "Visa-free pilot ended 2024 — full TRV again required.",
+      notes: "Visa-free pilot ended 2024. Full TRV again required.",
     },
     "AU": {
       fee: "AUD $190 (~$125)", processingDays: "Up to 29 days",
@@ -396,7 +396,7 @@ window.VISA_FEES = {
       fee: "BRL 0 (free)", processingDays: "5 working days",
       validity: "3 months", durationOfStay: "Up to 90 days", type: "Temporary Visitor",
       source: "https://www.br.emb-japan.go.jp/", lastReviewed: "2026-05-24",
-      notes: "Visa-free since September 2023 — visa entry no longer needed.",
+      notes: "Visa-free since September 2023. Visa entry no longer needed.",
     },
     "SA": {
       fee: "SAR 535 (~$143)", processingDays: "Instant",
@@ -441,11 +441,11 @@ window.VISA_FEES = {
       source: "https://indianvisaonline.gov.in/", lastReviewed: "2026-05-24",
     },
     "CN": {
-      fee: "$0 (visa-free since 2018 — info entry retained for clarity)",
-      processingDays: "—", validity: "—", durationOfStay: "30 days visa-free",
+      fee: "$0 (visa-free since 2018, info entry retained for clarity)",
+      processingDays: "-", validity: "-", durationOfStay: "30 days visa-free",
       type: "Visa-free",
       source: "http://ae.china-embassy.gov.cn/", lastReviewed: "2026-05-24",
-      notes: "UAE citizens enjoy 30-day visa-free entry to China since 2018 — no fee paid.",
+      notes: "UAE citizens enjoy 30-day visa-free entry to China since 2018. No fee paid.",
     },
     "RU": {
       fee: "$0 (free e-visa)", processingDays: "4 days",

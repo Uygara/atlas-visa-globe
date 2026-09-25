@@ -457,7 +457,7 @@ function StopsList(_ref3) {
     var r = window.resolveStatus(passport, iso);
     var fee = window.visaFee && window.visaFee(passport, iso);
     var noApp = r.status === "vf" || r.status === "idc";
-    var feeText = fee && fee.fee ? itinFeeLabel(fee.fee) : noApp ? window.t("itin.fee_free") : r.status === "self" ? "—" : window.t("itin.fee_missing");
+    var feeText = fee && fee.fee ? itinFeeLabel(fee.fee) : noApp ? window.t("itin.fee_free") : r.status === "self" ? "-" : window.t("itin.fee_missing");
     var proc = fee && fee.processingDays ? itinFeeLabel(fee.processingDays) : noApp || r.status === "self" ? window.t("itin.no_app_needed") : "";
     return React.createElement("li", {
       key: iso,
@@ -630,8 +630,8 @@ function Summary(_ref5) {
   var order = visaStops.slice().sort(function (a, b) {
     return procDays(passport, b.iso) - procDays(passport, a.iso);
   });
-  var totalStr = totalFee > 0 ? "$".concat(totalFee.toFixed(0)) : "—";
-  var procStr = maxProc > 0 ? "".concat(maxProc, "d") : "—";
+  var totalStr = totalFee > 0 ? "$".concat(totalFee.toFixed(0)) : "-";
+  var procStr = maxProc > 0 ? "".concat(maxProc, "d") : "-";
   return React.createElement("section", {
     className: "p-sec"
   }, React.createElement(Caption, {

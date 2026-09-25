@@ -79,7 +79,7 @@ const LOC = {
     upTo: (n) => `up to ${n} days`,
     docBand: "PASSPORT · PASAPORT · PASSEPORT",
     crumbs: (name) => ({ home: "travelnow.info", passports: "Passports", here: name }),
-    title: (name, mob) => `${name} passport visa requirements 2026 — ${mob} destinations without a visa`,
+    title: (name, mob) => `${name} passport visa requirements 2026: ${mob} destinations without a visa`,
     description: (name, c, rank) => `Where can a ${name} passport take you? ${c.vf} visa-free, ${c.voa} visa on arrival, ${c.ev} eVisa, ${c.vr} visa required. Global rank #${rank}. Updated daily.`,
     h1: (name) => `${name} passport visa requirements`,
     subtitle: (n, rank, date) => `${n} destinations${rank ? ` · Global rank #${rank}` : ""} · Updated ${date}`,
@@ -92,7 +92,7 @@ const LOC = {
     ctaBarBtn: "Open the map →",
     guidesHead: "Helpful guides",
     guides: [
-      ["/guides/visa-types-explained/", "Visa-free, eVisa, visa on arrival — what's the difference?"],
+      ["/guides/visa-types-explained/", "Visa-free, eVisa, visa on arrival: what's the difference?"],
       ["/guides/schengen-90-180-rule/", "How the Schengen 90/180-day rule works"],
       ["/guides/passport-validity-six-month-rule/", "The six-month passport-validity rule"],
       ["/guides/how-we-count/", "How to read a passport's visa-free number"],
@@ -101,7 +101,7 @@ const LOC = {
     allHead: (name) => `All destinations for a ${name} passport`,
     relatedHead: "Compare related passports",
     browseAll: (n) => `Or <a href="%ALL%">browse all ${n} passports</a>.`,
-    faqHead: (name) => `${name} passport — frequently asked questions`,
+    faqHead: (name) => `${name} passport: frequently asked questions`,
     lead: (c) => {
       const easy = [
         `${c.vf} visa-free`,
@@ -109,8 +109,8 @@ const LOC = {
         c.eta ? `${c.eta} with an online travel authorization` : "",
         `${c.voa} with a visa on arrival`,
       ].filter(Boolean);
-      let h = `A ${strong(`${c.name} passport`)} currently gives its holder access to about ${strong(`${c.mob} of the ${c.total} destinations`)} we track without arranging a visa beforehand — ${LOC.en.join(easy)}.`;
-      h += ` Beyond those, ${c.ev} destinations offer an eVisa you apply for online — counting them, that is ${strong(c.acc)} destinations with no embassy visit — and ${c.vr} still require a traditional embassy visa${c.ban ? `, while ${c.ban} refuse entry to this nationality` : ""}.`;
+      let h = `A ${strong(`${c.name} passport`)} currently gives its holder access to about ${strong(`${c.mob} of the ${c.total} destinations`)} we track without arranging a visa beforehand: ${LOC.en.join(easy)}.`;
+      h += ` Beyond those, ${c.ev} destinations offer an eVisa you apply for online (counting them, that is ${strong(c.acc)} destinations with no embassy visit), and ${c.vr} still require a traditional embassy visa${c.ban ? `, while ${c.ban} refuse entry to this nationality` : ""}.`;
       if (c.rank) h += ` By visa-free access it ranks ${strong(`#${c.rank} of ${c.rankTotal}`)} passports worldwide.`;
       return h;
     },
@@ -136,16 +136,16 @@ const LOC = {
         ban: `are currently refused entry to ${d}`,
       }[r.status] || `should check the latest requirement for ${d}`;
       return key === "US"
-        ? `Travellers on a ${name} passport ${phrase}. The US visa-waiver programme also requires an approved ESTA travel authorization even when no visa is needed — our ESTA checker covers who qualifies.`
-        : `Germany stands in for the Schengen Area: holders of a ${name} passport ${phrase}. From 2026 the EU's ETIAS travel authorization also applies to many visa-free visitors — see our ETIAS checker.`;
+        ? `Travellers on a ${name} passport ${phrase}. The US visa-waiver programme also requires an approved ESTA travel authorization even when no visa is needed: our ESTA checker covers who qualifies.`
+        : `Germany stands in for the Schengen Area: holders of a ${name} passport ${phrase}. From 2026 the EU's ETIAS travel authorization also applies to many visa-free visitors: see our ETIAS checker.`;
     },
     faq: (c) => [
       { q: `How many countries can ${c.name} passport holders visit without a visa?`,
-        a: `Around ${c.mob} of the ${c.total} destinations we track need no visa arranged in advance — ${LOC.en.join(c.easyParts)}. A further ${c.ev} offer an eVisa online.` },
+        a: `Around ${c.mob} of the ${c.total} destinations we track need no visa arranged in advance: ${LOC.en.join(c.easyParts)}. A further ${c.ev} offer an eVisa online.` },
       { q: `Do ${c.name} passport holders need a visa for the United States?`, a: LOC.en.entry(c.name, "US", c.usR, "US") },
       { q: `Can you travel to Europe (the Schengen Area) on a ${c.name} passport?`, a: LOC.en.entry(c.name, "DE", c.deR, "DE") },
       { q: `How is this ranked, and how current is the data?`,
-        a: `Passports are ranked by how many destinations they can enter without applying for a visa — visa-free, with a national ID card, with an online travel authorization or with a visa on arrival — the same measure passport indexes use; ties are broken by eVisa access. It is the same number and the same ranking the interactive map shows. Figures are rebuilt every 24 hours from public visa-policy sources, so this page reflects the most recent change we have recorded. Always confirm with the destination's embassy before booking.` },
+        a: `Passports are ranked by how many destinations they can enter without applying for a visa: visa-free, with a national ID card, with an online travel authorization or with a visa on arrival (the same measure passport indexes use); ties are broken by eVisa access. It is the same number and the same ranking the interactive map shows. Figures are rebuilt every 24 hours from public visa-policy sources, so this page reflects the most recent change we have recorded. Always confirm with the destination's embassy before booking.` },
     ],
     easyParts: (c) => [
       `${c.vf} visa-free`,
@@ -156,7 +156,7 @@ const LOC = {
     dirTitle: (y) => `Passport visa requirements directory ${y} · travelnow.info`,
     dirDesc: (n) => `Browse visa requirements and the global mobility ranking for ${n} passports. Updated daily from public visa-policy sources.`,
     dirH1: "Passport visa-requirement directory",
-    dirIntro: `Every passport we track, ranked by ${strong("global mobility")} — the number of destinations you can enter without applying for a visa (visa-free, ID card, travel authorization or visa on arrival), ties broken by eVisa access. It is the same ranking the interactive map shows. Open any passport for a full country breakdown, regional analysis and FAQ. Figures are rebuilt every 24 hours. New here? Start with our <a href="%TYPES%">guide to visa types</a>.`,
+    dirIntro: `Every passport we track, ranked by ${strong("global mobility")}: the number of destinations you can enter without applying for a visa (visa-free, ID card, travel authorization or visa on arrival), ties broken by eVisa access. It is the same ranking the interactive map shows. Open any passport for a full country breakdown, regional analysis and FAQ. Figures are rebuilt every 24 hours. New here? Start with our <a href="%TYPES%">guide to visa types</a>.`,
     dirMeta: (n, date) => `${n} passports · Data refreshed ${date}`,
     dirItem: (mob, rank) => `${mob} without a visa · #${rank}`,
   },
@@ -172,7 +172,7 @@ const LOC = {
     upTo: (n) => `${n} güne kadar`,
     docBand: "PASSPORT · PASAPORT · PASSEPORT",
     crumbs: (name) => ({ home: "travelnow.info", passports: "Pasaportlar", here: name }),
-    title: (name, mob) => `${name} pasaportu vize şartları 2026 — vize gerekmeyen ${mob} destinasyon`,
+    title: (name, mob) => `${name} pasaportu vize şartları 2026: vize gerekmeyen ${mob} destinasyon`,
     description: (name, c, rank) => `${name} pasaportuyla nereye gidebilirsin? ${c.vf} vizesiz, ${c.voa} varışta vize, ${c.ev} e-Vize, ${c.vr} vize gerekli. Dünya sıralaması ${rank}. Her gün güncellenir.`,
     h1: (name) => `${name} pasaportu vize şartları`,
     subtitle: (n, rank, date) => `${n} destinasyon${rank ? ` · Dünya sıralaması ${rank}.` : ""} · Güncelleme ${date}`,
@@ -185,7 +185,7 @@ const LOC = {
     ctaBarBtn: "Haritayı aç →",
     guidesHead: "Faydalı rehberler",
     guides: [
-      ["/guides/visa-types-explained/", "Vizesiz, e-Vize, varışta vize — fark nedir?"],
+      ["/guides/visa-types-explained/", "Vizesiz, e-Vize, varışta vize: fark nedir?"],
       ["/guides/schengen-90-180-rule/", "Schengen 90/180 gün kuralı nasıl işler?"],
       ["/guides/passport-validity-six-month-rule/", "Altı aylık pasaport geçerlilik kuralı"],
       ["/guides/how-we-count/", "Pasaportun vizesiz sayısı nasıl okunur?"],
@@ -194,7 +194,7 @@ const LOC = {
     allHead: (name) => `${name} pasaportuyla gidilecek tüm destinasyonlar`,
     relatedHead: "İlgili pasaportları karşılaştır",
     browseAll: (n) => `Ya da <a href="%ALL%">tüm ${n} pasaporta göz at</a>.`,
-    faqHead: (name) => `${name} pasaportu — sık sorulan sorular`,
+    faqHead: (name) => `${name} pasaportu: sık sorulan sorular`,
     lead: (c) => {
       const easy = [
         `${c.vf} vizesiz`,
@@ -202,7 +202,7 @@ const LOC = {
         c.eta ? `çevrimiçi seyahat iziniyle ${c.eta}` : "",
         `varışta vizeyle ${c.voa}`,
       ].filter(Boolean);
-      let h = `${strong(`${c.name} pasaportu`)}, takip ettiğimiz ${c.total} destinasyondan yaklaşık ${strong(`${c.mob} tanesine`)} önceden vize almadan giriş sağlıyor — ${LOC.tr.join(easy)}.`;
+      let h = `${strong(`${c.name} pasaportu`)}, takip ettiğimiz ${c.total} destinasyondan yaklaşık ${strong(`${c.mob} tanesine`)} önceden vize almadan giriş sağlıyor: ${LOC.tr.join(easy)}.`;
       h += ` Bunların ötesinde ${c.ev} destinasyon çevrimiçi başvurulan e-Vize sunuyor; onları da sayarsan konsolosluğa gitmeden ${strong(c.acc)} destinasyona ulaşılıyor. ${c.vr} destinasyon ise hâlâ büyükelçilik vizesi istiyor${c.ban ? `, ${c.ban} destinasyon bu uyruğa girişe kapalı` : ""}.`;
       if (c.rank) h += ` Vizesiz erişimde dünya genelinde ${c.rankTotal} pasaport arasında ${strong(`${c.rank}.`)} sırada.`;
       return h;
@@ -231,16 +231,16 @@ const LOC = {
         ? `${name} pasaportu sahipleri için ${d.nom} girişi şu anda kapalı`
         : phrase ? `${name} pasaportu sahipleri ${phrase}` : `${name} pasaportu sahipleri ${d.nom} için güncel şartı kontrol etmeli`;
       return key === "US"
-        ? `${sentence}. Vize gerekmeyen durumlarda bile ABD Vize Muafiyeti Programı onaylı bir ESTA seyahat izni ister — kimlerin uygun olduğunu ESTA denetleyicimiz gösterir.`
-        : `Almanya, Schengen Bölgesi için temsilci ülke: ${sentence}. 2026'dan itibaren AB'nin ETIAS seyahat izni de vizesiz gelen birçok ziyaretçi için geçerli olacak — ETIAS denetleyicimize bak.`;
+        ? `${sentence}. Vize gerekmeyen durumlarda bile ABD Vize Muafiyeti Programı onaylı bir ESTA seyahat izni ister: kimlerin uygun olduğunu ESTA denetleyicimiz gösterir.`
+        : `Almanya, Schengen Bölgesi için temsilci ülke: ${sentence}. 2026'dan itibaren AB'nin ETIAS seyahat izni de vizesiz gelen birçok ziyaretçi için geçerli olacak: ETIAS denetleyicimize bak.`;
     },
     faq: (c) => [
       { q: `${c.name} pasaportuyla vizesiz kaç ülkeye gidilebilir?`,
-        a: `Takip ettiğimiz ${c.total} destinasyondan yaklaşık ${c.mob} tanesi önceden vize gerektirmiyor — ${LOC.tr.join(c.easyParts)}. ${c.ev} destinasyon ise çevrimiçi e-Vize sunuyor.` },
+        a: `Takip ettiğimiz ${c.total} destinasyondan yaklaşık ${c.mob} tanesi önceden vize gerektirmiyor: ${LOC.tr.join(c.easyParts)}. ${c.ev} destinasyon ise çevrimiçi e-Vize sunuyor.` },
       { q: `${c.name} pasaportuyla Amerika Birleşik Devletleri için vize gerekir mi?`, a: LOC.tr.entry(c.name, "US", c.usR, "US") },
       { q: `${c.name} pasaportuyla Avrupa'ya (Schengen Bölgesi) gidilebilir mi?`, a: LOC.tr.entry(c.name, "DE", c.deR, "DE") },
       { q: `Sıralama nasıl yapılıyor, veriler ne kadar güncel?`,
-        a: `Pasaportlar, vize başvurusu yapmadan girebildikleri destinasyon sayısına göre sıralanır — vizesiz, ulusal kimlik kartıyla, çevrimiçi seyahat iziniyle ya da varışta vizeyle — pasaport endekslerinin de kullandığı ölçüt bu; eşitlikte e-Vize erişimi belirleyici olur. Etkileşimli haritanın gösterdiği sayı ve sıralamayla aynıdır. Rakamlar her 24 saatte bir kamuya açık vize politikası kaynaklarından yeniden oluşturulur; yani bu sayfa kaydettiğimiz en son değişikliği yansıtır. Rezervasyondan önce mutlaka gideceğin ülkenin büyükelçiliğinden doğrula.` },
+        a: `Pasaportlar, vize başvurusu yapmadan girebildikleri destinasyon sayısına göre sıralanır: vizesiz, ulusal kimlik kartıyla, çevrimiçi seyahat iziniyle ya da varışta vizeyle (pasaport endekslerinin de kullandığı ölçüt bu); eşitlikte e-Vize erişimi belirleyici olur. Etkileşimli haritanın gösterdiği sayı ve sıralamayla aynıdır. Rakamlar her 24 saatte bir kamuya açık vize politikası kaynaklarından yeniden oluşturulur; yani bu sayfa kaydettiğimiz en son değişikliği yansıtır. Rezervasyondan önce mutlaka gideceğin ülkenin büyükelçiliğinden doğrula.` },
     ],
     easyParts: (c) => [
       `${c.vf} vizesiz`,
@@ -251,7 +251,7 @@ const LOC = {
     dirTitle: (y) => `Pasaport vize şartları rehberi ${y} · travelnow.info`,
     dirDesc: (n) => `${n} pasaportun vize şartlarına ve küresel hareketlilik sıralamasına göz at. Her gün kamuya açık vize politikası kaynaklarından güncellenir.`,
     dirH1: "Pasaport vize şartları rehberi",
-    dirIntro: `Takip ettiğimiz her pasaport, ${strong("küresel hareketlilik")}e göre sıralı — yani vize başvurusu yapmadan girilebilen destinasyon sayısı (vizesiz, kimlikle, seyahat iziniyle ya da varışta vizeyle); eşitlikte e-Vize erişimi belirleyici. Etkileşimli haritadaki sıralamayla aynıdır. Ülke dökümü, bölgesel analiz ve sık sorulan sorular için herhangi bir pasaportu aç. Rakamlar her 24 saatte bir yenilenir. Yeni misin? <a href="%TYPES%">Vize türleri rehberimizle</a> başla.`,
+    dirIntro: `Takip ettiğimiz her pasaport, ${strong("küresel hareketlilik")}e göre sıralı: yani vize başvurusu yapmadan girilebilen destinasyon sayısı (vizesiz, kimlikle, seyahat iziniyle ya da varışta vizeyle); eşitlikte e-Vize erişimi belirleyici. Etkileşimli haritadaki sıralamayla aynıdır. Ülke dökümü, bölgesel analiz ve sık sorulan sorular için herhangi bir pasaportu aç. Rakamlar her 24 saatte bir yenilenir. Yeni misin? <a href="%TYPES%">Vize türleri rehberimizle</a> başla.`,
     dirMeta: (n, date) => `${n} pasaport · Veri yenilenme tarihi ${date}`,
     dirItem: (mob, rank) => `vizesiz ${mob} · ${rank}. sıra`,
   },
@@ -388,7 +388,7 @@ function renderPage(passport, allPassports, ranks, lang, ads) {
   // The passport's own social card (scripts/og-cards.js); the generic one until it exists.
   const ogCard = fs.existsSync(path.join(ROOT, "assets", "og", `${slug}-${lang}.png`));
   const ogImage = ogCard ? `${SITE_URL}/assets/og/${slug}-${lang}.png` : `${SITE_URL}/assets/og.png`;
-  const ogAlt = `${name} — ${mob} ${L.scoreLabel}`;
+  const ogAlt = `${name} · ${mob} ${L.scoreLabel}`;
 
   const P = (p) => (lang === "tr" && hasTr(p) ? toTr(p) : p);   // link into the same language
   const crumbs = L.crumbs(name);

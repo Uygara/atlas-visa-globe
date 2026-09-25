@@ -5,8 +5,9 @@
 //   node tools/lint-copy.js path ...   only these files
 //
 // Scans the strings people read: static pages (text outside tags), the SPA and
-// static dictionaries, Turkish strings, page generators. Code comments are skipped
-// where they are easy to recognise (lines starting with // or *). Exit code 1 when
+// static dictionaries, Turkish strings, page generators. Code and HTML comments are
+// skipped (a `//` counts as a comment only after whitespace or punctuation, so URLs
+// in strings stay scanned). Exit code 1 when
 // something is found, so it can gate a commit or a CI step later.
 const fs = require("fs");
 const path = require("path");
@@ -44,7 +45,11 @@ const rows = [];
 for (const f of files()) {
   const rel = path.relative(ROOT, f).replace(/\\/g, "/");
   const html = /\.html$/.test(f);
-  const lines = fs.readFileSync(f, "utf8").split(/\r?\n/);
+  // Blank out comments (keeping line breaks so line numbers stay right).
+  const blank = (m) => m.replace(/[^\n]/g, " ");
+  let src = fs.readFileSync(f, "utf8").replace(html ? /<!--[\s\S]*?-->/g : /\/\*[\s\S]*?\*\//g, blank);
+  if (!html) src = src.replace(/(^|[\s;,({])\/\/[^\n]*/gm, (m, pre) => pre + blank(m.slice(pre.length)));
+  const lines = src.split(/\r?\n/);
   let n = 0;
   lines.forEach((line, i) => {
     const t = line.trim();

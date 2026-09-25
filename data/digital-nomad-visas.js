@@ -29,7 +29,7 @@ window.DIGITAL_NOMAD_VISAS = [
   { iso2: "EE", name: "Estonia", program: "Digital Nomad Visa (Type D)",
     income: 4965, fee: "100", duration: "1 yr", renewable: false,
     familyOK: true, taxBreak: "Estonian tax on Estonian income only",
-    source: "https://www.politsei.ee/en/digital-nomad-visa", notes: "Pioneering programme — opened 2020." },
+    source: "https://www.politsei.ee/en/digital-nomad-visa", notes: "Pioneering programme, opened 2020." },
   { iso2: "HR", name: "Croatia", program: "Privremeni boravak za digitalne nomade",
     income: 2870, fee: "60", duration: "1 yr", renewable: false,
     familyOK: true, taxBreak: "Exempt from Croatian income tax",
@@ -81,7 +81,7 @@ window.DIGITAL_NOMAD_VISAS = [
   { iso2: "CY", name: "Cyprus", program: "Digital Nomad Visa",
     income: 3850, fee: "70", duration: "1 yr", renewable: true,
     familyOK: true, taxBreak: "Non-dom regime: dividend/interest exempt 17 yr",
-    source: "https://www.moi.gov.cy/", notes: "Cap of 500 permits — usually filled." },
+    source: "https://www.moi.gov.cy/", notes: "Cap of 500 permits, usually filled." },
 
   // ── Americas ──────────────────────────────────────────────────────────
   { iso2: "MX", name: "Mexico", program: "Temporary Resident Visa",
@@ -92,9 +92,9 @@ window.DIGITAL_NOMAD_VISAS = [
     income: 3000, fee: "100", duration: "1 yr", renewable: true,
     familyOK: true, taxBreak: "Foreign income tax-exempt",
     source: "https://migracion.go.cr/", notes: "Health insurance ≥$50k coverage required." },
-  { iso2: "PA", name: "Panama", program: "Permanent Resident — Remote Worker",
+  { iso2: "PA", name: "Panama", program: "Permanent Resident: Remote Worker",
     income: 3000, fee: "300", duration: "9 mo (then perm residency)", renewable: true,
-    familyOK: true, taxBreak: "Territorial — foreign income exempt",
+    familyOK: true, taxBreak: "Territorial: foreign income exempt",
     source: "https://www.migracion.gob.pa/", notes: "Path to permanent residency in 9 months." },
   { iso2: "AR", name: "Argentina", program: "Nómadas Digitales",
     income: 0, fee: "200", duration: "6 mo", renewable: true,
@@ -125,7 +125,7 @@ window.DIGITAL_NOMAD_VISAS = [
   { iso2: "MU", name: "Mauritius", program: "Premium Travel Visa",
     income: 1500, fee: "0", duration: "1 yr", renewable: true,
     familyOK: true, taxBreak: "Foreign income exempt if not remitted",
-    source: "https://passport.govmu.org/", notes: "Free of charge — rare." },
+    source: "https://passport.govmu.org/", notes: "Free of charge, rare." },
   { iso2: "ZA", name: "South Africa", program: "Remote Work Visa",
     income: 5050, fee: "60", duration: "3 yr", renewable: true,
     familyOK: true, taxBreak: "Worldwide income taxable after 91 days",
@@ -148,7 +148,7 @@ window.DIGITAL_NOMAD_VISAS = [
     source: "https://www.workcation.sc/", notes: "Health insurance proof required." },
 
   // ── Asia / Oceania ────────────────────────────────────────────────────
-  { iso2: "JP", name: "Japan", program: "Designated Activities — Digital Nomad",
+  { iso2: "JP", name: "Japan", program: "Designated Activities: Digital Nomad",
     income: 68000, fee: "60", duration: "6 mo", renewable: false,
     familyOK: true, taxBreak: "Not tax-resident under 6 mo",
     source: "https://www.moj.go.jp/", notes: "Annual income, ~$10M JPY. Launched April 2024." },

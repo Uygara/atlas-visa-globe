@@ -486,7 +486,7 @@ function SafetyHover(_ref7) {
     }
   }), React.createElement("span", null, level ? "".concat(level, " \xB7 ").concat(levelLabel(level)) : levelLabel(0))), a && a.regions && a.regions.length > 0 && React.createElement("div", {
     className: "hovercard-row hovercard-cap"
-  }, tr("safety.has_regions", "Some regions are worse — tap to see them")));
+  }, tr("safety.has_regions", "Some regions are worse. Tap to see them")));
 }
 function SafetySearch(_ref8) {
   var onPick = _ref8.onPick;
@@ -531,7 +531,7 @@ function SafetySearch(_ref8) {
       className: "dd-grow"
     }, window.countryName(c.iso2)), React.createElement("span", {
       className: "dd-code"
-    }, level ? levelLabel(level) : "—"), React.createElement("span", {
+    }, level ? levelLabel(level) : "-"), React.createElement("span", {
       className: "dot",
       style: {
         "--sw": LEVEL_COLOR[level]
@@ -609,7 +609,7 @@ function SafetyDetail(_ref9) {
     style: {
       margin: "0 0 12px"
     }
-  }, tr("safety.regions_none", "No region of this country carries its own warning — the provinces on the map all sit at the country's level.")), (regions.length > 0 || notes.length > 0) && React.createElement("div", {
+  }, tr("safety.regions_none", "No region of this country carries its own warning. The provinces on the map all sit at the country's level.")), (regions.length > 0 || notes.length > 0) && React.createElement("div", {
     style: {
       marginBottom: 12
     }
@@ -671,7 +671,7 @@ function SafetyDetail(_ref9) {
     style: {
       margin: "4px 0 0"
     }
-  }, tr("safety.regions_note", "Shaded on the map. Areas described only in words (\"within 10km of the border\") cannot be drawn — read the full advisory."))), events.length > 0 && React.createElement("div", {
+  }, tr("safety.regions_note", "Shaded on the map. Areas described only in words (\"within 10km of the border\") cannot be drawn. Read the full advisory."))), events.length > 0 && React.createElement("div", {
     style: {
       marginBottom: 12
     }
@@ -691,7 +691,7 @@ function SafetyDetail(_ref9) {
       rel: "noopener noreferrer"
     }, React.createElement("span", {
       className: "note-k"
-    }, tr(EVENT_LABEL[e.type] || "safety.event.other", e.type), e.name ? " — " + e.name : ""), React.createElement("span", {
+    }, tr(EVENT_LABEL[e.type] || "safety.event.other", e.type), e.name ? ": " + e.name : ""), React.createElement("span", {
       className: "note-s"
     }, tr("safety.event_since", "since {date}", {
       date: fmtDate(e.from)

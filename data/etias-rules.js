@@ -64,7 +64,7 @@ window.etiasStatus = function (passportIso, destIso) {
   const dest     = String(destIso).toUpperCase();
   if (!window.ETIAS.schengenStates.includes(dest)) return null;
   if (window.ETIAS.exemptNationalities.includes(passport)) {
-    return { kind: "exempt", note: "EU/EEA/Swiss citizens are exempt — freedom of movement." };
+    return { kind: "exempt", note: "EU/EEA/Swiss citizens are exempt: freedom of movement." };
   }
   if (window.ETIAS.affectedNationalities.includes(passport)) {
     return {
@@ -76,7 +76,7 @@ window.etiasStatus = function (passportIso, destIso) {
     };
   }
   // Otherwise the traveller already needs a Schengen visa — no ETIAS layer.
-  return { kind: "visa", note: "You already need a Schengen visa — ETIAS does not apply." };
+  return { kind: "visa", note: "You already need a Schengen visa. ETIAS does not apply." };
 };
 
 // Days until launch (used for the countdown banner).
