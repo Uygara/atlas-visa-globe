@@ -123,5 +123,11 @@ jobs:
             echo "No changes."
           else
             git commit -m "data: daily refresh $(date -u +%Y-%m-%d)"
-            git push
+            # Someone may have pushed while this job ran (2026-09-24 failed that way):
+            # rebase this data commit on top and retry, keeping the freshly generated files.
+            for attempt in 1 2 3; do
+              git push && exit 0
+              git pull --rebase -X theirs origin main || { git rebase --abort; exit 1; }
+            done
+            exit 1
           fi
