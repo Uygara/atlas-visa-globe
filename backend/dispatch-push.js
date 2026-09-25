@@ -171,12 +171,20 @@ async function main() {
     if (isQuiet(dev.tz, now)) { console.log(`  quiet hours for ${dev.token.slice(0, 8)}… — held for later`); continue; }
     const lang = profile.lang || (TXT[dev.lang] ? dev.lang : "en");
     const m = compose(changes, lang, W);
-    messages.push({
+    const msg = {
       token: dev.token,
       notification: { title: m.title, body: m.body },
       data: { path: m.path },
-      android: { priority: "normal", notification: { channelId: "rules" } },
-    });
+    };
+    if (dev.platform === "web") {
+      // A browser opens the website: app paths ("/safety-map/index.html") become site URLs.
+      let web = m.path.replace(/index\.html$/, "");
+      if (lang === "tr" && web === "/") web = "/tr/";
+      msg.webpush = { fcmOptions: { link: "https://travelnow.info" + web }, notification: { icon: "https://travelnow.info/assets/icon-512.png" } };
+    } else {
+      msg.android = { priority: "normal", notification: { channelId: "rules" } };
+    }
+    messages.push(msg);
     bookkeeping.push({ dev, keys: m.keys });
     console.log(`  → ${dev.token.slice(0, 8)}… [${lang}] ${m.title}`);
   }

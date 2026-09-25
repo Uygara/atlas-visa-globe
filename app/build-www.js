@@ -109,7 +109,7 @@ function transformHtml(html, fontLink) {
   // App flag first in <head>, native bridge + tab bar last in <body>.
   h = h.replace(/<head>/, '<head>\n<script>window.ATLAS_APP=true;document.documentElement.classList.add("in-app");</script>');
   h = h.replace(/<\/head>/, '<link rel="stylesheet" href="/assets/app.css" />\n</head>');
-  h = h.replace(/<\/body>/, '<script src="/assets/app-config.js"></script>\n<script src="/assets/app-native.js"></script>\n</body>');
+  h = h.replace(/<\/body>/, '<script src="/assets/app-config.js"></script>\n<script src="/assets/push-text.js"></script>\n<script src="/assets/app-native.js"></script>\n</body>');
   return rewriteText(h);
 }
 

@@ -119,7 +119,7 @@
       var app = appMod.initializeApp(cfg);
       var auth = A.getAuth(app);
       var db = F.getFirestore(app);
-      return { A: A, F: F, auth: auth, db: db };
+      return { A: A, F: F, auth: auth, db: db, app: app };
     });
     var toUser = function (u) { return u && { uid: u.uid, email: u.email, phone: u.phoneNumber, name: u.displayName, photo: u.photoURL, provider: (u.providerData[0] || {}).providerId }; };
     return {
@@ -221,7 +221,25 @@
           return x.F.setDoc(x.F.doc(x.db, "users", uid), { v: 1, updatedAt: x.F.serverTimestamp(), data: data });
         });
       },
-      // Push tokens of this person's phones: users/{uid}/devices/{token}. Read by
+      // Browser notifications (website): an FCM token for this browser, through the
+      // service worker at /firebase-messaging-sw.js. No VAPID key is passed, so the SDK
+      // uses Firebase's default one. The app gets its token natively instead.
+      webPushToken: function (reg) {
+        return ready.then(function (x) {
+          return load(SDK + "firebase-messaging.js").then(function (M) {
+            return M.isSupported().then(function (ok) {
+              if (!ok) throw { code: "messaging/unsupported-browser" };
+              return M.getToken(M.getMessaging(x.app), { serviceWorkerRegistration: reg });
+            });
+          });
+        });
+      },
+      deleteWebPushToken: function () {
+        return ready.then(function (x) {
+          return load(SDK + "firebase-messaging.js").then(function (M) { return M.deleteToken(M.getMessaging(x.app)); });
+        });
+      },
+      // Push tokens of this person's devices: users/{uid}/devices/{token}. Read by
       // backend/dispatch-push.js (Admin SDK); the person can only touch their own.
       registerDevice: function (uid, token, info) {
         return ready.then(function (x) {
@@ -287,6 +305,8 @@
         });
       },
       resetPassword: function () { return later(); },
+      webPushToken: function () { return later("mock-web-token-" + Date.now()); },
+      deleteWebPushToken: function () { return later(); },
       registerDevice: function (uid, token, info) {
         var d = get("atlas.account.mock.devices") || {}; d[token] = info;
         rawSet.call(ls, "atlas.account.mock.devices", JSON.stringify(d)); return later();
@@ -395,6 +415,8 @@
       history.replaceState(null, "", location.pathname);
     });
   };
+  api.webPushToken = function (reg) { return backend.webPushToken(reg); };
+  api.deleteWebPushToken = function () { return backend.deleteWebPushToken(); };
   api.registerDevice = function (token, info) {
     return state.user ? backend.registerDevice(state.user.uid, token, info || {}) : Promise.reject({ code: "auth/no-user" });
   };

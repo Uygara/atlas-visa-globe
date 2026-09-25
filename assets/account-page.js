@@ -63,7 +63,7 @@
   }
   function errorText(e) {
     var code = (e && e.code) || "";
-    if (/^push-/.test(code) && window.ATLAS_PUSH) return window.ATLAS_PUSH.text({ denied: "push_denied", signin: "push_signin" }[code.slice(5)] || "push_fail");
+    if (/^push-/.test(code) && window.ATLAS_PUSH) return window.ATLAS_PUSH.text({ denied: "push_denied", signin: "push_signin", unsupported: "push_unsupported" }[code.slice(5)] || "push_fail");
     if (/popup-closed|cancelled-popup/.test(code)) return "Sign-in was cancelled.";
     if (/invalid-email/.test(code)) return "That email address doesn't look right.";
     if (/invalid-action-code|expired-action-code/.test(code)) return "This sign-in link has expired or was already used. Ask for a new one.";
@@ -174,7 +174,7 @@
   }
 
   function passwordForm() {
-    var email = h("input", { class: "field", type: "email", required: true, autocomplete: "email", placeholder: "you@example.com", "aria-label": "Email address", value: acct.pendingEmail && acct.pendingEmail() || "" });
+    var email = h("input", { class: "field", type: "email", dir: "ltr", required: true, autocomplete: "email", placeholder: "you@example.com", "aria-label": "Email address", value: acct.pendingEmail && acct.pendingEmail() || "" });
     var pw = h("input", { class: "field", type: "password", required: true, minlength: "6", autocomplete: "current-password", placeholder: "Password", "aria-label": "Password" });
     var create = false;
     var form = h("form", { class: "account-email", on: { submit: function (e) {
@@ -211,7 +211,7 @@
         h("button", { type: "button", class: "btn", disabled: ui.busy, on: { click: function () { ui.phoneStep = 0; render(); } } }, ["Use another number"]),
       ]);
     }
-    var num = h("input", { class: "field", type: "tel", required: true, autocomplete: "tel", placeholder: "+90 5xx xxx xx xx", "aria-label": "Phone number", value: ui.phoneNumber });
+    var num = h("input", { class: "field", type: "tel", dir: "ltr", required: true, autocomplete: "tel", placeholder: "+90 5xx xxx xx xx", "aria-label": "Phone number", value: ui.phoneNumber });
     return h("form", { class: "account-email", on: { submit: function (e) {
       e.preventDefault();
       // Firebase wants E.164: a leading + and digits only.
@@ -223,7 +223,7 @@
   }
 
   function emailForm(label, submit) {
-    var input = h("input", { class: "field", type: "email", required: true, autocomplete: "email", placeholder: "you@example.com", "aria-label": "Email address", value: acct.pendingEmail && acct.pendingEmail() || "" });
+    var input = h("input", { class: "field", type: "email", dir: "ltr", required: true, autocomplete: "email", placeholder: "you@example.com", "aria-label": "Email address", value: acct.pendingEmail && acct.pendingEmail() || "" });
     var form = h("form", { class: "account-email", on: { submit: function (e) {
       e.preventDefault();
       var email = input.value.trim();

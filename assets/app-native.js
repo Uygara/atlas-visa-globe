@@ -25,20 +25,8 @@
   var ls = function (k, v) { try { if (v === undefined) return localStorage.getItem(k); localStorage.setItem(k, v); } catch (e) {} return null; };
   var lang = function () { return window.ATLAS_LANG || ls("atlas.lang") || "en"; };
 
-  // Short strings only; the rest of the UI is translated by the pages themselves.
-  var TXT = {
-    en: { offline: "You're offline. Showing data from {d}.", stale: "Showing data from {d}. Update the app for newer rules.", push: "Notifications", push_on: "Notifications are on.", push_off: "Get a notification when a rule changes for your passport, a watched country or a planned trip.", push_enable: "Turn on notifications", push_disable: "Turn off", push_denied: "Notifications are blocked. Allow them in your phone's Settings.", push_signin: "Sign in first, so we know whom to notify.", push_fail: "Couldn't turn notifications on. Try again." },
-    tr: { offline: "Çevrimdışısın. {d} tarihli veriler gösteriliyor.", stale: "{d} tarihli veriler gösteriliyor. Yeni kurallar için uygulamayı güncelle.", push: "Bildirimler", push_on: "Bildirimler açık.", push_off: "Pasaportun, izlediğin bir ülke ya da planındaki bir seyahat için kural değişince bildirim al.", push_enable: "Bildirimleri aç", push_disable: "Kapat", push_denied: "Bildirimler engelli. Telefonunun Ayarlar'ından izin ver.", push_signin: "Kime bildirim göndereceğimizi bilmemiz için önce giriş yap.", push_fail: "Bildirimler açılamadı. Tekrar dene." },
-    es: { offline: "Sin conexión. Mostrando datos del {d}.", stale: "Mostrando datos del {d}. Actualiza la app para ver reglas nuevas.", push: "Notificaciones", push_on: "Notificaciones activadas.", push_off: "Recibe un aviso cuando cambie una norma de tu pasaporte, de un país que sigues o de un viaje planificado.", push_enable: "Activar notificaciones", push_disable: "Desactivar", push_denied: "Las notificaciones están bloqueadas. Permítelas en los Ajustes del teléfono.", push_signin: "Inicia sesión primero para saber a quién avisar.", push_fail: "No se pudieron activar las notificaciones. Inténtalo de nuevo." },
-    de: { offline: "Du bist offline. Angezeigt werden Daten vom {d}.", stale: "Angezeigt werden Daten vom {d}. Aktualisiere die App für neuere Regeln.", push: "Benachrichtigungen", push_on: "Benachrichtigungen sind an.", push_off: "Werde benachrichtigt, wenn sich eine Regel für deinen Pass, ein beobachtetes Land oder eine geplante Reise ändert.", push_enable: "Benachrichtigungen einschalten", push_disable: "Ausschalten", push_denied: "Benachrichtigungen sind blockiert. Erlaube sie in den Einstellungen deines Telefons.", push_signin: "Melde dich zuerst an, damit wir wissen, wen wir benachrichtigen.", push_fail: "Benachrichtigungen konnten nicht eingeschaltet werden. Versuche es erneut." },
-    fr: { offline: "Vous êtes hors ligne. Données du {d}.", stale: "Données du {d}. Mettez l'application à jour pour les règles récentes.", push: "Notifications", push_on: "Les notifications sont activées.", push_off: "Soyez averti quand une règle change pour votre passeport, un pays suivi ou un voyage prévu.", push_enable: "Activer les notifications", push_disable: "Désactiver", push_denied: "Les notifications sont bloquées. Autorisez-les dans les Réglages du téléphone.", push_signin: "Connectez-vous d'abord, pour que nous sachions qui prévenir.", push_fail: "Impossible d'activer les notifications. Réessayez." },
-    ar: { offline: "أنت غير متصل. تُعرض بيانات {d}.", stale: "تُعرض بيانات {d}. حدّث التطبيق للحصول على قواعد أحدث.", push: "الإشعارات", push_on: "الإشعارات مفعّلة.", push_off: "احصل على إشعار عند تغيّر قاعدة تخص جواز سفرك أو بلدًا تتابعه أو رحلة مخططة.", push_enable: "تفعيل الإشعارات", push_disable: "إيقاف", push_denied: "الإشعارات محظورة. اسمح بها من إعدادات هاتفك.", push_signin: "سجّل الدخول أولًا لنعرف من نُخطِر.", push_fail: "تعذّر تفعيل الإشعارات. حاول مرة أخرى." },
-  };
-  function tr(key, vars) {
-    var s = (TXT[lang()] && TXT[lang()][key]) || TXT.en[key] || key;
-    for (var k in (vars || {})) s = s.replace("{" + k + "}", vars[k]);
-    return s;
-  }
+  // Short strings live in assets/push-text.js (shared with the website).
+  function tr(key, vars) { return window.atlasPushText ? window.atlasPushText(key, vars) : key; }
   var bundled = ["/"];
   var pagePath = location.pathname;
 
