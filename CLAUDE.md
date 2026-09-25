@@ -10,10 +10,32 @@ Cloudflare deploys every push to `main` (~30 s). Daily data refresh: `.github/wo
   (accounts, payments, console clicks, logins) go in `TODO.md` "Senin yapacakların", with the exact command.
 - The owner wants shipped work pushed. Test first, then commit and push; report the commit hash.
 
-## Session protocol (sessions get long and expensive — keep the start light)
-**Start:** read `TODO.md` only (≈90 lines; its first block says where to begin). Do **not** read `STATE.md`
-whole (1000+ lines): `grep` it by topic when you need history. `HANDOFF.md` is old (May); ignore it.
-**During:** small verified steps; use headless Chrome for UI checks (see Gotchas).
+## Writing style (every language, every visible word: pages, UI strings, emails, notifications, store text)
+The owner's rule: nothing may read like AI-generated text. Write like a careful human editor.
+- **No em dash (—) or en dash (–) as punctuation.** Use a full stop, comma, colon, semicolon or brackets.
+  An en dash inside a number range (9–17) is fine. Check new copy with `node tools/lint-copy.js`.
+- Plain, specific, professional sentences. Say what the thing does; no hype.
+- Banned: "seamless", "robust", "leverage", "delve", "unlock", "empower", "elevate", "game-changer",
+  "In today's world", "Whether you're X or Y", "It's worth noting", "rest assured", "navigate the complexities",
+  "comprehensive guide", rhetorical triplets, exclamation marks, emoji in body text, Title Case Headings.
+- Don't pad: no summary that repeats the paragraph above it, no "In conclusion".
+- Turkish: natural Turkish, not translated English word order. UI uses "sen"; legal pages use "siz".
+- Legal text (privacy, terms): claim only what the code really does. If you change data handling
+  (analytics, ads, accounts, notifications), update `/privacy/` and its Turkish twin in the same commit.
+
+## Session protocol (sessions get long and expensive, so keep every step light)
+**Start:** read `TODO.md` only (its first block says where to begin), then run
+`node tools/analytics-report.js` (GA4 + Search Console + Cloudflare in ~40 lines; the owner wants traffic
+followed) and mention anything notable in one line. `STATE.md` is short on purpose; older history is in
+`docs/STATE-archive.md`: grep it, never read it whole. `HANDOFF.md` and `ACCOUNT-SETUP.md` are archives.
+**During (token budget):**
+- Read files by range (offset/limit) or Grep; never `cat` big files or `grep -r` the repo from Bash.
+- Edit files with the Edit tool. Rewriting a file you already read/edited with `sed`/`cat >>`/a script makes the
+  harness echo the whole file back. For scratch scripts, write them once with Write and run them.
+- Pipe command output through `tail`/`cut`; test scripts print one line per check.
+- Delegate big mechanical work (translations, copy sweeps, reviews) to `sonnet` subagents with a brief file in
+  the scratchpad; they write JSON results to disk and reply in ≤8 lines. Apply the JSON yourself.
+- Use analytics via the report script, not dashboard screenshots.
 **End (before the last message):**
 1. `TODO.md`: delete what is closed, add what appeared, refresh the "buradan başla" block. Keep it under ~90 lines.
 2. `STATE.md`: add a ≤12-line round note (what shipped + gotchas) at the top of the round list. No code-level detail.

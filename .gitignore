@@ -12,3 +12,12 @@ Thumbs.db
 !.dev.vars.example
 .env*
 !.env.example
+
+# Private keys and tokens (service accounts, API tokens). Never commit.
+.secrets/
+*firebase-adminsdk*.json
+
+# Locally installed agent skills (npx skills add ...)
+.agents/
+.claude/skills/
+skills-lock.json
