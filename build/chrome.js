@@ -544,18 +544,30 @@ function MobileSheetHandle() {
     var isMobile = function isMobile() {
       return window.matchMedia("(max-width: 900px)").matches;
     };
+    var reduced = function reduced() {
+      return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    };
     var snaps = function snaps() {
       return [96, Math.round(window.innerHeight * 0.48), Math.round(window.innerHeight * 0.88)];
     };
+    var MIN = 72,
+      max = function max() {
+        return window.innerHeight * 0.92;
+      };
     var startY = 0,
       startH = 0,
       dragging = false,
       moved = false,
-      lastH = 0;
-    var setH = function setH(h) {
-      lastH = h;
+      lastH = 0,
+      hist = [],
+      raf = 0;
+    var publish = function publish(h) {
       panel.style.setProperty("--sheet-h", h + "px");
       document.documentElement.style.setProperty("--sheet-h", h + "px");
+    };
+    var paint = function paint(h) {
+      lastH = h;
+      panel.style.height = h + "px";
     };
     var curH = function curH() {
       return panel.getBoundingClientRect().height;
@@ -565,13 +577,67 @@ function MobileSheetHandle() {
         return Math.abs(b - h) < Math.abs(a - h) ? b : a;
       });
     };
+    var rubber = function rubber(over, dim) {
+      return over * dim * 0.55 / (dim + 0.55 * Math.abs(over));
+    };
+    var clampSoft = function clampSoft(h) {
+      var hi = max();
+      if (h > hi) return hi + rubber(h - hi, window.innerHeight - hi);
+      if (h < MIN) return MIN - rubber(MIN - h, MIN / 2);
+      return h;
+    };
+    var stop = function stop() {
+      if (raf) cancelAnimationFrame(raf);
+      raf = 0;
+    };
+    var springTo = function springTo(target) {
+      var v0 = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+      var damping = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 1;
+      var response = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 0.32;
+      stop();
+      var x = curH(),
+        v = v0,
+        t0 = performance.now();
+      paint(x);
+      publish(target);
+      if (reduced()) {
+        paint(target);
+        panel.style.height = "";
+        return;
+      }
+      var k = Math.pow(2 * Math.PI / response, 2),
+        c = 4 * Math.PI * damping / response;
+      var _step = function step(now) {
+        var dt = Math.min(0.032, (now - t0) / 1000);
+        t0 = now;
+        for (var i = 0; i < 2; i++) {
+          var a = -k * (x - target) - c * v;
+          v += a * dt / 2;
+          x += v * dt / 2;
+        }
+        if (Math.abs(x - target) < 0.5 && Math.abs(v) < 8) {
+          paint(target);
+          panel.style.height = "";
+          raf = 0;
+          return;
+        }
+        paint(x);
+        raf = requestAnimationFrame(_step);
+      };
+      raf = requestAnimationFrame(_step);
+    };
     var down = function down(e) {
       if (!isMobile()) return;
+      stop();
       dragging = true;
       moved = false;
       startY = e.clientY;
       startH = curH();
-      lastH = startH;
+      paint(startH);
+      hist = [{
+        t: e.timeStamp,
+        h: startH
+      }];
       panel.classList.add("sheet-dragging");
       try {
         handle.setPointerCapture(e.pointerId);
@@ -580,8 +646,24 @@ function MobileSheetHandle() {
     var move = function move(e) {
       if (!dragging) return;
       var dy = startY - e.clientY;
-      if (Math.abs(dy) > 3) moved = true;
-      setH(Math.min(window.innerHeight * 0.92, Math.max(72, startH + dy)));
+      if (Math.abs(dy) > 6) moved = true;
+      if (!moved) return;
+      var h = clampSoft(startH + dy);
+      paint(h);
+      publish(Math.min(max(), Math.max(MIN, h)));
+      hist.push({
+        t: e.timeStamp,
+        h: h
+      });
+      if (hist.length > 6) hist.shift();
+    };
+    var velocity = function velocity() {
+      var last = hist[hist.length - 1],
+        first = hist.find(function (p) {
+          return last.t - p.t <= 100;
+        }) || hist[0];
+      var dt = (last.t - first.t) / 1000;
+      return dt > 0 ? (last.h - first.h) / dt : 0;
     };
     var settle = function settle() {
       if (!dragging) return;
@@ -590,16 +672,19 @@ function MobileSheetHandle() {
       if (!moved) {
         var order = snaps();
         var i = order.indexOf(nearest(curH()));
-        setH(order[(i + 1) % order.length]);
-      } else {
-        setH(nearest(lastH));
+        springTo(order[(i + 1) % order.length]);
+        return;
       }
+      var v = velocity();
+      var projected = lastH + v / 1000 * 0.998 / (1 - 0.998);
+      var target = nearest(Math.min(max(), Math.max(MIN, projected)));
+      springTo(target, v, Math.abs(v) > 600 ? 0.8 : 1);
     };
     window.atlasSheet = {
       ensure: function ensure(fraction) {
         if (!isMobile()) return;
         var want = Math.round(window.innerHeight * fraction);
-        if (curH() < want - 4) setH(want);
+        if (curH() < want - 4) springTo(want);
       }
     };
     var onKey = function onKey(e) {
@@ -610,7 +695,7 @@ function MobileSheetHandle() {
       if (e.key === "ArrowUp") next = Math.min(order.length - 1, i + 1);else if (e.key === "ArrowDown") next = Math.max(0, i - 1);else if (e.key === "Home") next = 0;else if (e.key === "End") next = order.length - 1;else if (e.key === "Enter" || e.key === " ") next = (i + 1) % order.length;
       if (next == null) return;
       e.preventDefault();
-      setH(order[next]);
+      springTo(order[next]);
     };
     handle.addEventListener("keydown", onKey);
     handle.addEventListener("pointerdown", down);
@@ -618,6 +703,7 @@ function MobileSheetHandle() {
     window.addEventListener("pointerup", settle);
     window.addEventListener("pointercancel", settle);
     return function () {
+      stop();
       delete window.atlasSheet;
       handle.removeEventListener("keydown", onKey);
       handle.removeEventListener("pointerdown", down);

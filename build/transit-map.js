@@ -567,7 +567,10 @@ function TransitHubList(_ref5) {
   var rows = hubs.map(function (h) {
     var iso = repIso(h.area);
     var t = window.transitStatusForGlobe(passport, iso);
+    var c = window.byIso2[iso];
+    var hubLabel = c && h.hubLabel === c.name.replace(/\s*\(.*\)$/, "") ? window.countryName(iso) : h.hubLabel;
     return _objectSpread(_objectSpread({}, h), {}, {
+      hubLabel: hubLabel,
       iso: iso,
       t: t,
       line: transitLine(t)

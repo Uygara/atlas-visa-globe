@@ -269,7 +269,7 @@ function PassportTypeSelector(_ref3) {
     return {
       key: k,
       label: window.passportVariantLabel(passport, k),
-      sub: lang === "tr" ? e.sub || null : e.subEn || e.sub || null,
+      sub: window.passportVariantSub ? window.passportVariantSub(passport, k) : lang === "tr" ? e.sub || null : e.subEn || e.sub || null,
       source: e.source || null
     };
   })));
@@ -1210,7 +1210,9 @@ function DetailCard(_ref14) {
     "aria-hidden": "true"
   }, from && React.createElement("span", {
     className: "flag"
-  }, from), React.createElement("span", null, "\u2192"), to && React.createElement("span", {
+  }, from), React.createElement("span", {
+    className: "cta-go"
+  }, "\u2192"), to && React.createElement("span", {
     className: "flag"
   }, to))), r.upgradedBy && React.createElement("div", {
     className: "note note-info"
@@ -2492,7 +2494,9 @@ function ChangelogItem(_ref37) {
     dateTime: entry.date
   }, fmtDay(entry.date)), React.createElement("span", null, "\xB7"), passport && React.createElement(React.Fragment, null, React.createElement("span", {
     className: "flag"
-  }, passport.flag), React.createElement("span", null, window.countryName(passportIso))), React.createElement("span", null, "\u2192"), dest && React.createElement(React.Fragment, null, React.createElement("span", {
+  }, passport.flag), React.createElement("span", null, window.countryName(passportIso))), React.createElement("span", {
+    className: "cta-go"
+  }, "\u2192"), dest && React.createElement(React.Fragment, null, React.createElement("span", {
     className: "flag"
   }, dest.flag), React.createElement("span", null, window.countryName(entry.affects.dest)))), React.createElement("div", {
     className: "feed-title",
@@ -2548,7 +2552,11 @@ function PanelFooter() {
     target: "_blank",
     rel: "noopener"
   }, window.t("footer.source"))), React.createElement("div", {
-    className: "byline"
+    className: "byline",
+    dir: "ltr",
+    style: {
+      textAlign: "start"
+    }
   }, "\xA9 ", new Date().getFullYear(), " travelnow.info \xB7 Uygar Atalay"));
 }
 Object.assign(window, {
