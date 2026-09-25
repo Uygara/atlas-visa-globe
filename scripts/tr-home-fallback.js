@@ -40,7 +40,7 @@ ${passports.map(([iso, name]) => `        <li><a href="/tr/passport/${iso}/">${n
       </ul>
 
       <h2>Veriler nasıl oluşturuluyor</h2>
-      <p>Vize gereklilikleri her gün kamuya açık vize politikası sayfalarından ve resmî devlet kaynaklarından yeniden toplanıyor; üzerine resmî kaynaklarla kontrol edilen, elle hazırlanmış bir düzeltme katmanı biniyor. Transit vize listeleri Birleşik Krallık'ın Immigration (Passenger Transit Visa) Order düzenlemesinden ve AB Vize Tüzüğü'nden geliyor. Veri uydurmuyoruz: bir bilgi kaynaklandırılamıyorsa dışarıda bırakıyoruz. Rezervasyon yapmadan önce mutlaka varış ülkesinin büyükelçiliğine danış — <a href="/tr/about/">Hakkında</a>, <a href="/terms/">Koşullar</a> ve <a href="/privacy/">Gizlilik</a> sayfalarımıza bak.</p>
+      <p>Vize gereklilikleri her gün kamuya açık vize politikası sayfalarından ve resmî devlet kaynaklarından yeniden toplanıyor; üzerine resmî kaynaklarla kontrol edilen, elle hazırlanmış bir düzeltme katmanı biniyor. Transit vize listeleri Birleşik Krallık'ın Immigration (Passenger Transit Visa) Order düzenlemesinden ve AB Vize Tüzüğü'nden geliyor. Veri uydurmuyoruz: bir bilgi kaynaklandırılamıyorsa dışarıda bırakıyoruz. Rezervasyon yapmadan önce mutlaka varış ülkesinin büyükelçiliğine danış — <a href="/tr/about/">Hakkında</a>, <a href="/terms/">Koşullar</a> ve <a href="/tr/privacy/">Gizlilik</a> sayfalarımıza bak.</p>
       <p>travelnow.info, Uygar Atalay tarafından geliştirilen ve sürdürülen bağımsız bir projedir. Sorun ya da veri düzeltmesi mi var? <a href="mailto:hello@travelnow.info">hello@travelnow.info</a> adresine yaz.</p>
       <p>Etkileşimli harita yükleniyor… görünmezse JavaScript'i etkinleştir.</p>
 
@@ -48,7 +48,7 @@ ${passports.map(([iso, name]) => `        <li><a href="/tr/passport/${iso}/">${n
         <a href="/tr/passport/">Tüm pasaportlar</a>
         <a href="/tr/guides/">Rehberler</a>
         <a href="/tr/about/">Hakkında</a>
-        <a href="/privacy/">Gizlilik</a>
+        <a href="/tr/privacy/">Gizlilik</a>
         <a href="/terms/">Koşullar</a>
         <a href="/tr/contact/">İletişim</a>
       </nav>

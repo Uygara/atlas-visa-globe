@@ -12,6 +12,10 @@ module.exports = {
     description: "200'den fazla pasaport için etkileşimli vize küresi. Her gün Vikipedi'den yenilenir. Pasaportunla nerelere vizesiz, e-Vize veya varışta vizeyle gidebildiğini, nerelerde vize gerektiğini gör.",
     ogDescription: "200'den fazla pasaportun vize gerekliliklerini etkileşimli bir küre üzerinde gör. Ücretsiz, her gün Vikipedi'den yenilenir.",
   },
+  "/privacy/": {
+    title: "Gizlilik Politikası · travelnow.info",
+    description: "travelnow.info ve uygulamasının hangi kişisel verileri, neden ve ne kadar süre işlediği; verilerine nasıl erişip silebileceğin.",
+  },
   "/about/": {
     title: "travelnow.info hakkında",
     description: "travelnow.info, dünya genelinde 200'den fazla pasaportu kapsayan, her gün yenilenen ücretsiz bir vize gereklilikleri aracıdır.",

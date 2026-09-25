@@ -542,3 +542,11 @@ p[data-atlas-dir], h1[data-atlas-dir], h2[data-atlas-dir], h3[data-atlas-dir] { 
   .toc-row { grid-template-columns: 1.8rem 1fr; }
   .toc-min { grid-column: 2; }
 }
+
+/* Legal pages (privacy, terms): a compact reading size and short measure. */
+.wrap.legal { max-width: 680px; }
+.wrap.legal h1 { font-size: clamp(32px, 5vw, 44px); }
+.wrap.legal h2 { font-size: var(--fs-lg); margin: 28px 0 6px; }
+.wrap.legal p, .wrap.legal li { font-size: var(--fs-base); line-height: 1.6; }
+.wrap.legal .lead { font-size: var(--fs-md); margin-bottom: 18px; }
+.wrap.legal li { margin-bottom: 4px; }

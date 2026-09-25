@@ -31,7 +31,7 @@
   // other interface languages (es, de, fr, ar) translate the English page in place.
   var TR_PAGES = [
     "/", "/about/", "/alerts/", "/citizenship-by-investment/", "/contact/",
-    "/digital-nomad-visa/", "/esta-rules/", "/etias/", "/guides/",
+    "/digital-nomad-visa/", "/esta-rules/", "/etias/", "/guides/", "/privacy/",
     "/guides/etias-2026-explained/", "/guides/how-we-count/", "/guides/passport-validity-six-month-rule/",
     "/guides/schengen-90-180-rule/", "/guides/transit-visa-guide/",
     "/guides/visa-types-explained/", "/passport-validity/",
