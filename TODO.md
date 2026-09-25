@@ -33,8 +33,8 @@
 
 ## Benim yapacaklarım
 
-- [ ] **P1 · Tire temizliğini bitir**: iki ajan çalışıyordu (A: SPA metinleri, B: sayfalar + Türkçe ikizler). Sonucu uygula,
-      `node tools/lint-copy.js` 0 olsun, testler + push. Bundan sonra yeni metinde tire yok (CLAUDE.md).
+- [ ] **P3 · Birkaç Türkçe çeviri boşluğu**: hakkında sayfasının giriş paragrafı ve Schengen hesaplayıcıda iki cümle hiç
+      çevrilmemiş (`node scripts/build-tr.js --todo`). `data/travel-advisories.js` resmi metin alıntısı; tireler orada kalır.
 - [ ] **P1 · Play yükleme anahtarı + imzalı AAB**: Play hesabı açılınca. Anahtar `.secrets/`'ta kalır; sen 4 GitHub gizli
       anahtarı eklersin (`ANDROID_UPLOAD_*`), CI `travelnow-release-aab` üretir. Play App Signing açık olacak.
 - [ ] **P2 · Mağaza ekran görüntüleri**: app/www'den headless Chrome ile, EN + TR, 6 adet (`store/play-listing.md` sonu).
