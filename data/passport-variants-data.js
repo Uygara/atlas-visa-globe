@@ -5,7 +5,7 @@
 // explicitly is emitted. passport-variants.js merges these under hand-curated entries.
 
 window.PASSPORT_VARIANTS_DATA = {
- "lastUpdated": "2026-09-26",
+ "lastUpdated": "2026-09-27",
  "AD": {
   "diplomatik": {"vf":["BO","BR","IL","IN","JP","KR",["KZ",90],"MA","MW","MY","QA",["RU",90]],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Andorran_citizens"},
   "hizmet": {"vf":["BO","BR","IL","IN","JP","KR",["KZ",90],"MA","MW","MY","QA"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Andorran_citizens"}
@@ -220,7 +220,7 @@ window.PASSPORT_VARIANTS_DATA = {
  },
  "ES": {
   "diplomatik": {"vf":["AO","AZ","BO",["BY",90],["CN",90],"CV","DZ","EG","ET","IL","IN","JP","KR","KW",["KZ",90],"MA","ML","MW","MY","NR","PH","RU","SA","TH","TR","VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Spanish_citizens"},
-  "hizmet": {"vf":["AO","BO",["BY",90],"CV","DZ","EG","ET","IL","JP","KR","KW",["KZ",90],"MA","ML","MW","MY","PH","SA","TR","VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Spanish_citizens"}
+  "hizmet": {"vf":["BO",["BY",90],"CV","DZ","EG","ET","IL","JP","KR","KW",["KZ",90],"MA","ML","MW","MY","PH","SA","TR","VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Spanish_citizens"}
  },
  "ET": {
   "diplomatik": {"vf":["AE","BO","BR","CN","DZ","GA","HK","IN","KR","MW","MX","NA","RU","SC","SD","TR"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Ethiopian_citizens"},
@@ -399,8 +399,8 @@ window.PASSPORT_VARIANTS_DATA = {
   "hizmet": {"vf":["BD","BN","BO","BR","CH","CU","CZ","HK","HU",["ID",14],"IN","JP",["KH",30],"KP","KR","KW",["KZ",90],"LI","MA",["MM",30],"MW","MX","MY","PE","PK","PL","RS","RU","SK",["TH",30],"UA","VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Laotian_citizens"}
  },
  "LB": {
-  "diplomatik": {"vf":["AM","BF","BH","BO","BR","BY","CH","CL","CN","CO",["CU",90],"CV","CY","EG","ET","GY","HU","IQ",["IR",30],"JO","KR","LI","ML","MT","MW","MY",["OM",30],"PE",["PY",30],"QA","RS","SR","SS","SY","TR","UY","VE","YE"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Lebanese_citizens"},
-  "hizmet": {"vf":["AM","BF","BH","BO","BR","CH","CL","CN","CO",["CU",90],"CV","CY","EG","ET","GY","HU","IQ",["IR",30],"JO","KR","ML","MT","MW","MY",["OM",30],"PE",["PY",30],"QA","RS","SR","SS","SY","TR","UY","VE","YE"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Lebanese_citizens"}
+  "diplomatik": {"vf":["AM","BF","BH","BO","BR","BY","CH","CL","CN","CO",["CU",90],"CV","CY","EG","ET","GY","HU","IQ",["IR",30],"JO","KR","LI","ML","MT","MW","MY",["OM",30],"PE",["PY",30],"QA","RS",["RU",90],"SR","SS","SY","TR","UY","VE","YE"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Lebanese_citizens"},
+  "hizmet": {"vf":["AM","BF","BH","BO","BR","CH","CL","CN","CO",["CU",90],"CV","CY","EG","ET","GY","HU","IQ",["IR",30],"JO","KR","ML","MT","MW","MY",["OM",30],"PE",["PY",30],"QA","RS",["RU",90],"SR","SS","SY","TR","UY","VE","YE"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Lebanese_citizens"}
  },
  "LC": {
   "diplomatik": {"vf":["BO","CL","CU","IL","IN","KR","MW","MX","TR"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Saint_Lucian_citizens"},
