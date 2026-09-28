@@ -5,7 +5,7 @@
 // explicitly is emitted. passport-variants.js merges these under hand-curated entries.
 
 window.PASSPORT_VARIANTS_DATA = {
- "lastUpdated": "2026-09-27",
+ "lastUpdated": "2026-09-28",
  "AD": {
   "diplomatik": {"vf":["BO","BR","IL","IN","JP","KR",["KZ",90],"MA","MW","MY","QA",["RU",90]],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Andorran_citizens"},
   "hizmet": {"vf":["BO","BR","IL","IN","JP","KR",["KZ",90],"MA","MW","MY","QA"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Andorran_citizens"}
@@ -199,8 +199,8 @@ window.PASSPORT_VARIANTS_DATA = {
   "hizmet": {"vf":["BO","BZ","CH","CL","CN","CR","CU","FR","GT","IL","IN","IT","JP","KR","LI","MA","MW","MX","MY",["PY",60],"RS","RU","SV","UA","VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Dominican_Republic_citizens"}
  },
  "DZ": {
-  "diplomatik": {"vf":["AE","AL","AO","AZ","BA","BG","BO","BR","BY","CH","CN","CU","DE","EG","ES","FI","FR","GR","HR","HU","ID","IN","IT","KR","KW","LI",["MA",90],"MT","MW","MX",["MY",90],"NA","PE","PL","PT","QA","RS",["RU",90],"SD","SK","TR","VN",["ZA",30]],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Algerian_citizens"},
-  "hizmet": {"vf":["AE","AL","AO","AZ","BA","BG","BO","BR","CH","CN","CU","EG","ES","FR","GR","ID","IN","IT","KR","KW","LI",["MA",90],"MT","MW","MX",["MY",90],"NA","PE","PL","PT","QA","RS",["RU",90],"SD","SK","TR","VN",["ZA",30]],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Algerian_citizens"}
+  "diplomatik": {"vf":["AE","AL","AO","AZ","BA","BG","BO","BR","BY","CH","CN","CU","DE","EG","ES","FI","FR","GR","HR","HU","ID","IN","IT","KR","KW","LI","MA","MT","MW","MX",["MY",90],"NA","PE","PL","PT","QA","RS",["RU",90],"SD","SK","TR","VN",["ZA",30]],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Algerian_citizens"},
+  "hizmet": {"vf":["AE","AL","AO","AZ","BA","BG","BO","BR","CH","CN","CU","EG","ES","FR","GR","ID","IN","IT","KR","KW","LI","MA","MT","MW","MX",["MY",90],"NA","PE","PL","PT","QA","RS",["RU",90],"SD","SK","TR","VN",["ZA",30]],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Algerian_citizens"}
  },
  "EC": {
   "diplomatik": {"vf":["AL","AT","BE","BG","BO",["BY",90],"BZ","CH","CN","CR",["CU",90],"CZ","DE",["DO",90],"EG","ES","FR","GT","HR","HU","ID","IL","IN",["IR",90],"IT","JP",["KH",30],"KR",["KZ",30],"LA","LI","LU","MT","MW","MX","NL","OM","PL","PT","QA","RO","RS","RU","SI",["TH",30],"VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Ecuadorian_citizens"},
@@ -615,8 +615,8 @@ window.PASSPORT_VARIANTS_DATA = {
   "hizmet": {"vf":["AE","AZ","BO","BR","CN","DZ","ID","IL","IN",["KZ",30],"MA","MW","NA",["RU",90],"TR",["ZA",30]],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Rwandan_citizens"}
  },
  "SA": {
-  "diplomatik": {"vf":["AL","AO","AZ","BA","BN","BO","CN","CY","ES","FR","GR","HU","IN","IT","JP",["KR",90],["KZ",90],"MT","MW",["MY",90],"PL","PT","RU","TH","VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Saudi_Arabian_citizens"},
-  "hizmet": {"vf":["AL","AO","AZ","BA","BN","BO","CN","CY","ES","FR","GR","HU","IN","IT","JP",["KR",90],["KZ",90],"MT","MW",["MY",90],"PL","PT","RU","TH","VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Saudi_Arabian_citizens"}
+  "diplomatik": {"vf":["AL","AO","AZ","BA","BN","BO","CN","CR","CY","ES","FR","GR","HU","IN","IT","JP",["KR",90],["KZ",90],"MT","MW",["MY",90],"PL","PT","RU","TH","TJ",["UZ",90],"VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Saudi_Arabian_citizens"},
+  "hizmet": {"vf":["AL","AO","AZ","BA","BN","BO","CN","CR","CY","ES","FR","GR","HU","IN","IT","JP",["KR",90],["KZ",90],"MT","MW",["MY",90],"PL","PT","RU","TH","VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Saudi_Arabian_citizens"}
  },
  "SB": {
   "diplomatik": {"vf":["BO","CN","ID","IL","IN","JP","KR","MA","MW","SA"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Solomon_Islands_citizens"},
