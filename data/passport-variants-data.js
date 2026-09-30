@@ -5,7 +5,7 @@
 // explicitly is emitted. passport-variants.js merges these under hand-curated entries.
 
 window.PASSPORT_VARIANTS_DATA = {
- "lastUpdated": "2026-09-29",
+ "lastUpdated": "2026-09-30",
  "AD": {
   "diplomatik": {"vf":["BO","BR","IL","IN","JP","KR",["KZ",90],"MA","MW","MY","QA",["RU",90]],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Andorran_citizens"},
   "hizmet": {"vf":["BO","BR","IL","IN","JP","KR",["KZ",90],"MA","MW","MY","QA"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Andorran_citizens"}
@@ -288,7 +288,7 @@ window.PASSPORT_VARIANTS_DATA = {
  },
  "GY": {
   "diplomatik": {"vf":["BO","CH","CN","CU","ES","GE","GT","HN","ID","IL","IN","IR","IT","KR","LI","MT","MW","MX","RU","SV","TR"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Guyanese_citizens"},
-  "hizmet": {"vf":["BO","CH","CN","CU","GE","GT","HN","ID","IL","IN","IR","IT","KR","LI","MW","MX","SV","TR"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Guyanese_citizens"}
+  "hizmet": {"vf":["BO","CH","CN","CU","GE","GT","HN","ID","IL","IN","IR","IT","KR","LI","MW","MX","RU","SV","TR"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Guyanese_citizens"}
  },
  "HK": {
   "diplomatik": {"vf":[["AZ",14],"BB",["BN",14],"BO","IL",["KH",14],["KZ",14],["LA",14],"LK","MA","MW",["SA",30],["TH",30]],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Chinese_citizens_of_Hong_Kong"},

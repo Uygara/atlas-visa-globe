@@ -24538,6 +24538,10 @@
       ],
       "KG",
       [
+        "LA",
+        30
+      ],
+      [
         "MY",
         30
       ],
@@ -24555,6 +24559,10 @@
       ],
       [
         "ME",
+        30
+      ],
+      [
+        "MM",
         30
       ],
       [
@@ -24710,10 +24718,6 @@
         90
       ],
       [
-        "LA",
-        30
-      ],
-      [
         "LB",
         30
       ],
@@ -24740,10 +24744,6 @@
       [
         "MZ",
         30
-      ],
-      [
-        "MM",
-        28
       ],
       [
         "NA",
@@ -35059,6 +35059,10 @@
     "defaultDays": null,
     "vf": [
       [
+        "BY",
+        30
+      ],
+      [
         "BN",
         30
       ],
@@ -37029,6 +37033,16 @@
           "then": "vf",
           "days": null,
           "note": "No visa required for holders of a valid multiple entry visa or Permanent Residence Card from the USA, multiple entry Schengen visa, multiple entry visa or Permanent Residence Card from Canada."
+        }
+      ],
+      "CO": [
+        {
+          "ifHolds": [
+            "SCHENGEN"
+          ],
+          "then": "vf",
+          "days": null,
+          "note": "Visa-free for holders of valid visa for Schengen area or the US"
         }
       ],
       "MX": [
