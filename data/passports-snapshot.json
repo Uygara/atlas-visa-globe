@@ -13244,6 +13244,7 @@
         "TO",
         30
       ],
+      "TM",
       [
         "UG",
         90
@@ -13316,7 +13317,6 @@
       "RU",
       "SD",
       "SY",
-      "TM",
       "YE"
     ],
     "ban": []
@@ -22450,7 +22450,11 @@
     "vf": [
       [
         "AG",
-        30
+        180
+      ],
+      [
+        "AM",
+        180
       ],
       [
         "BB",
@@ -22469,6 +22473,10 @@
         365
       ],
       [
+        "KG",
+        60
+      ],
+      [
         "MY",
         30
       ],
@@ -22477,11 +22485,11 @@
         30
       ],
       [
-        "PE",
-        183
+        "RW",
+        30
       ],
       [
-        "RW",
+        "ZM",
         30
       ]
     ],
@@ -22502,10 +22510,6 @@
       ],
       "BT",
       [
-        "BO",
-        30
-      ],
-      [
         "BW",
         90
       ],
@@ -22515,8 +22519,10 @@
         30
       ],
       "CM",
-      "TD",
-      "CG",
+      [
+        "TD",
+        90
+      ],
       [
         "CD",
         7
@@ -22531,7 +22537,7 @@
       ],
       [
         "DJ",
-        90
+        30
       ],
       [
         "EG",
@@ -22544,11 +22550,20 @@
       ],
       "GA",
       [
-        "GN",
+        "GH",
         90
       ],
       [
+        "GN",
+        90
+      ],
+      "GY",
+      [
         "IN",
+        30
+      ],
+      [
+        "ID",
         30
       ],
       [
@@ -22560,7 +22575,10 @@
         "IL",
         90
       ],
-      "JO",
+      [
+        "JO",
+        30
+      ],
       [
         "KE",
         90
@@ -22573,8 +22591,6 @@
         "LB",
         30
       ],
-      "LS",
-      "LR",
       "LY",
       [
         "MG",
@@ -22601,12 +22617,17 @@
         30
       ],
       [
-        "NP",
+        "NA",
         90
       ],
       [
-        "NG",
+        "NP",
         90
+      ],
+      "NZ",
+      [
+        "NG",
+        30
       ],
       [
         "OM",
@@ -22617,12 +22638,13 @@
         90
       ],
       [
-        "PW",
-        30
-      ],
-      [
         "PG",
         60
+      ],
+      "PH",
+      [
+        "QA",
+        30
       ],
       [
         "KN",
@@ -22637,16 +22659,24 @@
         "SL",
         90
       ],
+      "SG",
+      [
+        "SB",
+        90
+      ],
       [
         "SO",
         30
       ],
+      [
+        "ZA",
+        90
+      ],
       "SS",
       [
         "LK",
-        60
+        30
       ],
-      "SY",
       [
         "TZ",
         90
@@ -22659,15 +22689,16 @@
         "TG",
         15
       ],
+      "TT",
       [
         "UG",
         90
       ],
+      "GB",
       "VU",
       "VE",
-      "VN",
       [
-        "ZM",
+        "VN",
         90
       ],
       [
@@ -22684,7 +22715,10 @@
         "BI",
         30
       ],
-      "CV",
+      [
+        "CV",
+        30
+      ],
       [
         "KM",
         45
@@ -22693,18 +22727,24 @@
         "GD",
         90
       ],
-      [
-        "GW",
-        90
-      ],
+      "GW",
       "JM",
+      "LR",
       [
         "MU",
         60
       ],
       [
-        "NA",
+        "PW",
+        30
+      ],
+      [
+        "WS",
         90
+      ],
+      [
+        "SY",
+        15
       ],
       [
         "TL",
@@ -22719,48 +22759,40 @@
       "DZ",
       "AR",
       "BZ",
+      "BO",
       "BN",
       "CA",
       "CF",
       "CN",
+      "CG",
       "CR",
       "DO",
-      "SV",
       "ER",
       "SZ",
       "GM",
-      "GH",
       "GT",
-      "GY",
       "HN",
-      "ID",
       "IE",
       "JP",
       "KI",
       "KP",
       "KR",
       "KW",
+      "LS",
       "ML",
       "MH",
       "MX",
       "MA",
       "MM",
       "NR",
-      "NZ",
       "NE",
       "PY",
-      "PH",
       "LC",
       "SA",
       "SN",
-      "SG",
-      "SB",
-      "ZA",
       "SD",
       "TO",
-      "TT",
       "TM",
-      "GB",
       "US",
       "UY",
       "YE"
@@ -22776,7 +22808,7 @@
           ],
           "then": "ev",
           "days": null,
-          "note": "May apply for an e-Visa if  holding a valid visa or a residency document  issued by one of the following countries:  Schengen Area, Australia, Canada, Ireland,  New Zealand, United Kingdom, United States a residency document issued by Cyprus, Japan, United Arab Emirates."
+          "note": "Citizens of Moldova may obtain an eVisa if they have a valid visa or permanent residency document issued by one of the following countries: any Schengen Area country, Australia, Canada, Ireland, Japan, New Zealand, the United Arab Emirates, the United Kingdom or the United States."
         }
       ]
     }
@@ -23071,7 +23103,10 @@
         90
       ],
       "SG",
-      "SB",
+      [
+        "SB",
+        90
+      ],
       [
         "SO",
         30
@@ -25357,6 +25392,10 @@
         14
       ],
       [
+        "JO",
+        90
+      ],
+      [
         "KZ",
         30
       ],
@@ -25378,10 +25417,6 @@
         90
       ],
       [
-        "ME",
-        90
-      ],
-      [
         "MA",
         90
       ],
@@ -25392,6 +25427,10 @@
       [
         "RU",
         90
+      ],
+      [
+        "KN",
+        30
       ],
       [
         "VC",
@@ -25513,10 +25552,6 @@
         30
       ],
       [
-        "JO",
-        90
-      ],
-      [
         "KE",
         90
       ],
@@ -25571,10 +25606,6 @@
       ],
       [
         "RW",
-        30
-      ],
-      [
-        "KN",
         30
       ],
       "ST",
@@ -63007,6 +63038,7 @@
         "TR",
         30
       ],
+      "TM",
       [
         "UG",
         90
