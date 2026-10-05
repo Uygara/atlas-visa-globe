@@ -1,0 +1,27 @@
+# travelnow.info
+
+> Visa requirements for every passport, shown on an interactive globe, with tools for trip planning. The data is
+> compiled from public sources (mainly Wikipedia's visa-requirement tables and official government advisories) and
+> refreshed daily by an automated job. The site is informational and is not an official source or a visa service:
+> always confirm a requirement with the destination country's embassy or official portal before you travel.
+
+Pages are available in English; many also have a Turkish twin under /tr/. The interface offers five more languages.
+
+## Main tools
+- [Visa globe](https://travelnow.info/): pick a passport and see the entry requirement for every destination.
+- [Itinerary planner](https://travelnow.info/itinerary/): add stops on a globe and see the visas each one needs, with costs where known, lead times and the order to apply in.
+- [Transit map](https://travelnow.info/transit-map/): which airport hubs you can connect through without a transit visa for your passport.
+- [Safety map](https://travelnow.info/safety-map/): countries coloured by official U.S. and Canadian government travel advisories.
+- [Schengen 90/180 calculator](https://travelnow.info/schengen-calculator/): days used and days left in the Schengen Area.
+- [Passport validity checker](https://travelnow.info/passport-validity/): per-destination rules on how long a passport must remain valid.
+
+## Reference pages
+- [Passport pages](https://travelnow.info/passport/): one page per passport with the visa-free, visa-on-arrival, e-visa and visa-required lists.
+- [ETIAS](https://travelnow.info/etias/) and [ESTA rules](https://travelnow.info/esta-rules/): pre-travel authorisation schemes.
+- [Digital nomad visas](https://travelnow.info/digital-nomad-visa/) and [citizenship by investment](https://travelnow.info/citizenship-by-investment/): programme overviews.
+- [Transit visa checker](https://travelnow.info/transit-visa/) and [visa shortcuts](https://travelnow.info/visa-shortcuts/): entry shortcuts for holders of a US, UK, Irish or Schengen visa.
+- [Guides](https://travelnow.info/guides/): explainers, including [how the data is counted](https://travelnow.info/guides/how-we-count/).
+
+## Policies
+- [About](https://travelnow.info/about/), [Contact](https://travelnow.info/contact/), [Privacy](https://travelnow.info/privacy/), [Terms](https://travelnow.info/terms/)
+- Machine-readable page list: [sitemap.xml](https://travelnow.info/sitemap.xml)

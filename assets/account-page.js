@@ -125,6 +125,7 @@
       // (Sign-in by an emailed link is not offered: it needs a separate switch in the Firebase
       // console and email + password already covers "no social account". acct.sendEmailLink
       // and the link-landing handler below stay, so old links still work if it is ever enabled.)
+      root.appendChild(h("p", { class: "fine", text: "By signing in or creating an account you confirm that you are at least 16 years old and accept the terms of use and the privacy policy linked in the footer." }));
       root.appendChild(h("h2", { text: "What an account stores" }));
       root.appendChild(h("p", { class: "fine", text: "Your email address and the items listed below. Nothing else. No passport numbers or documents. You can download or delete it all at any time." }));
       root.appendChild(savedTable());

@@ -12,7 +12,7 @@
 const { NAV, SUPPORT, isCurrent } = require("../assets/site-nav.js");
 const { makeT, hasTr, toTr, hreflang } = require("./locales");
 
-const ASSET_VERSION = "20260926b";
+const ASSET_VERSION = "20261006a";
 
 function esc(s) {
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -46,9 +46,7 @@ function langHead({ enPath = null, lang = "en" } = {}) {
 function headAssets({ enPath = null, lang = "en" } = {}) {
   const v = ASSET_VERSION;
   const lh = langHead({ enPath, lang });
-  return `${lh ? lh + "\n" : ""}<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sofia+Sans:ital,wght@0,400..700;1,400..600&family=Sofia+Sans+Extra+Condensed:wght@600..850&family=DM+Mono:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap">
+  return `${lh ? lh + "\n" : ""}<link rel="stylesheet" href="/assets/fonts.css?v=${v}">
 <link rel="stylesheet" href="/assets/tokens.css?v=${v}">
 <link rel="stylesheet" href="/assets/chrome.css?v=${v}">
 <link rel="stylesheet" href="/assets/site.css?v=${v}">

@@ -74,6 +74,16 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 15 (2026-10-06: pre-launch hardening from two owner checklists):**
+  - Google Fonts self-hosted: `assets/fonts.css` + `assets/fonts/*.woff2` (latin, latin-ext, arabic; regenerate with
+    `node tools/selfhost-fonts.js`). No page contacts fonts.googleapis.com any more (GDPR IP-transfer risk). The app
+    bundler (`app/build-www.js`) finds no Google link now and uses the copied `assets/fonts.css`. Stamp `20261006a`.
+  - `llms.txt` added. Account page and `/terms/` state the 16+ rule (matches privacy section 10; no TR twin of terms).
+  - `node tools/audit-pages.js`: static audit of all pages (title, canonical, h1, alt, broken links, Google fonts).
+    Result: 0 errors; 10 warnings (og:image missing on 5 plain pages and twins, 404 description).
+  - Checked and not applicable: session replay (none), marketing email (none), subscriptions (none), user uploads/DMCA (none).
+  - Still third-party at runtime: unpkg (d3, react, topojson), jsDelivr (flag font), GA4, AdSense. See TODO.
+
 - **Round 14 (2026-09-25/26: alerts on the web, honest privacy page, four-language review, fluid sheet, Android CI):**
   - Alerts = account + notifications. `/alerts/` picks passport + ≤20 watched countries (synced keys) and turns on
     FCM web push (`assets/push-web.js`, `/firebase-messaging-sw.js`, default VAPID key); devices `platform:"web"`,

@@ -1,6 +1,6 @@
 # travelnow.info: açık işler
 
-> Güncelleme: 2026-09-26 · **Yalnızca açık işler.** Biten iş silinir; ne yapıldığı `STATE.md`'de. Öncelik: **P1**
+> Güncelleme: 2026-10-06 · **Yalnızca açık işler.** Biten iş silinir; ne yapıldığı `STATE.md`'de. Öncelik: **P1**
 > sıradaki, **P2** yakında, **P3** sonra. Kurallar ve oturum rutini `CLAUDE.md`'de. Mobil: `MOBILE-SETUP.md`.
 > Oturum başında: `node tools/analytics-report.js` (GA4 + Search Console, ~40 satır).
 
@@ -47,6 +47,17 @@
       gövde metni hâlâ yalnızca EN/TR. İstersen etiketi kaldırırım.
 - [ ] **P3 · Telefon formu**: gönderim sürerken diğer giriş formları da kilitleniyor (`run()` ortak `busy`).
 - [ ] **P3 · Ekran okuyucu turu**, **Türkçe ikizler için CI denetimi** (`build-tr.js --check` Actions adımı).
+
+- [ ] **P2 · Kütüphaneleri kendi sunucuna al**: d3, react, topojson `unpkg`'den, bayrak yazı tipi jsDelivr'den geliyor.
+      Uygulama paketi bunları zaten yerel kopyalıyor (`app/build-www.js`); sitede de aynısı hız, kesintiye dayanıklılık
+      ve ziyaretçi IP'sinin üçüncü tarafa gitmemesi için iyi olur. Babel/SRI kullanımına dikkat.
+- [ ] **P2 · og:image eksik sayfalar**: hakkında, iletişim, pasaport dizini, gizlilik, koşullar (+ TR ikizleri), `404.html` açıklaması.
+- [ ] **P2 · Search Console'da site haritası "hiç okunmadı"**: günlük raporda `read never`. Birkaç gün sonra hâlâ öyleyse
+      yeniden gönder ve kapsam raporuna bak.
+- [ ] **P2 · Trafik düşüşü**: son 7 günde kullanıcı -%43 (99), etkileşim %28. Tek kaynak ABD ve doğrudan trafik; rehber
+      yazıları ve pasaport sayfaları ana kaldıraç (yukarıdaki "Rehber yazıları" maddesi).
+- [ ] **P3 · Uygulama cilası (cihazda test sonrası)**: dokunma alanı ≥44 px taraması, klavye açılınca alan örtülmesi,
+      boş ekran metinleri (izleme listesi, planlanan gezi), hata ve çevrimdışı durumlar, hafif titreşim (haptics).
 
 ## Veri ve içerik
 
