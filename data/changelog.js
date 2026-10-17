@@ -8,6 +8,54 @@
 
 window.CHANGELOG = [
   {
+    date: "2026-10-17",
+    title: "GE → TM: vr → ev",
+    affects: { dest: "TM", passports: ["GE"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-10-17",
+    title: "AM → TH: ev → vr",
+    affects: { dest: "TH", passports: ["AM"] },
+    statusFrom: "ev", statusTo: "vr",
+  },
+  {
+    date: "2026-10-17",
+    title: "PA → TM: vr → ev",
+    affects: { dest: "TM", passports: ["PA"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-10-17",
+    title: "GH → TM: vr → ev",
+    affects: { dest: "TM", passports: ["GH"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-10-17",
+    title: "SY → TM: vr → ev",
+    affects: { dest: "TM", passports: ["SY"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-10-17",
+    title: "BI → TM: vr → ev",
+    affects: { dest: "TM", passports: ["BI"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-10-17",
+    title: "FJ → TM: vr → ev",
+    affects: { dest: "TM", passports: ["FJ"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
+    date: "2026-10-17",
+    title: "TJ → TM: vr → ev",
+    affects: { dest: "TM", passports: ["TJ"] },
+    statusFrom: "vr", statusTo: "ev",
+  },
+  {
     date: "2026-10-16",
     title: "LI → TM: vr → ev",
     affects: { dest: "TM", passports: ["LI"] },
