@@ -6,6 +6,5 @@
 //                sourceUrl is just a domain homepage (no specific path).
 
 window.VISA_NEWS = [
-  {"id":"fco:e6d15b7b78", "date":"2026-10-16", "source":"fco", "sourceUrl":"https://www.gov.uk/foreign-travel-advice/kenya", "title":"Kenya", "summary":"New information about Ebola screening (‘Entry requirements’ page).", "affects":{"passports":[], "destinations":["KE"]}, "severity":"neutral"},
-  {"id":"fco:507cefac8c", "date":"2026-10-12", "source":"fco", "sourceUrl":"https://www.gov.uk/foreign-travel-advice/thailand", "title":"Thailand", "summary":"Updated information about visa requirements for travellers entering Thailand by land or air (‘Entry requirements’ page).", "affects":{"passports":[], "destinations":["TH"]}, "severity":"neutral"}
+  {"id":"fco:e6d15b7b78", "date":"2026-10-16", "source":"fco", "sourceUrl":"https://www.gov.uk/foreign-travel-advice/kenya", "title":"Kenya", "summary":"New information about Ebola screening (‘Entry requirements’ page).", "affects":{"passports":[], "destinations":["KE"]}, "severity":"neutral"}
 ];
