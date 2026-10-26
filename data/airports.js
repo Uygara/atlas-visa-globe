@@ -426,6 +426,7 @@ window.AIRPORTS = {
  "BSC":["CO","Bahía Solano"],
  "BSD":["CN","Baoshan (Longyang)"],
  "BSG":["GQ","Bata"],
+ "BSI":["PH","Balesin"],
  "BSK":["DZ","Biskra"],
  "BSL":["FR","Bâle / Mulhouse"],
  "BSO":["PH","Basco"],
