@@ -5,7 +5,7 @@
 // explicitly is emitted. passport-variants.js merges these under hand-curated entries.
 
 window.PASSPORT_VARIANTS_DATA = {
- "lastUpdated": "2026-11-01",
+ "lastUpdated": "2026-11-02",
  "AD": {
   "diplomatik": {"vf":["BO","BR","IL","IN","JP","KR",["KZ",90],"MA","MW","MY","QA",["RU",90]],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Andorran_citizens"},
   "hizmet": {"vf":["BO","BR","IL","IN","JP","KR",["KZ",90],"MA","MW","MY","QA"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Andorran_citizens"}
@@ -451,8 +451,8 @@ window.PASSPORT_VARIANTS_DATA = {
   "hizmet": {"vf":["AZ","BA",["BB",28],"BO",["BY",90],"CN","HK","ID","IE","IL","IN","IR","JP","KR",["KZ",90],"LA","MW","MY","QA",["RU",90],"TM","VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Moldovan_citizens"}
  },
  "ME": {
-  "diplomatik": {"vf":["AZ","BO",["BY",90],"CN","CU","EG","GT","HN","ID","IE","IL","IR","JP","KP","KR",["KZ",90],"MA","MW","RU","SV","TH","VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Montenegrin_citizens"},
-  "hizmet": {"vf":["AZ","BO",["BY",90],"CN","CU","EG","GT","HN","ID","IE","IL","IR","JP","KP","KR",["KZ",90],"MA","MW","RU","SV","TH","VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Montenegrin_citizens"}
+  "diplomatik": {"vf":["AZ","BO",["BY",90],"CN","CU","EG","GT","HN","ID","IE","IL","IR","JP","KP","KR",["KZ",90],"MA","MW","SV","TH","VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Montenegrin_citizens"},
+  "hizmet": {"vf":["AZ","BO",["BY",90],"CN","CU","EG","GT","HN","ID","IE","IL","IR","JP","KP","KR",["KZ",90],"MA","MW","SV","TH","VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Montenegrin_citizens"}
  },
  "MG": {
   "diplomatik": {"vf":["BO","CN","IL","IN","MW","NA",["ZA",30]],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Malagasy_citizens"},
