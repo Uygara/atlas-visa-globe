@@ -4,7 +4,7 @@
 // EU common list. transit-visa-rules.js merges these over its defaults.
 
 window.TRANSIT_REQUIRED_OVERRIDES = {
-  "lastUpdated": "2026-11-05",
+  "lastUpdated": "2026-11-06",
   "SCHENGEN": [
     "AF",
     "BD",
