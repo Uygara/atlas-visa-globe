@@ -8,6 +8,18 @@
 
 window.CHANGELOG = [
   {
+    date: "2026-11-11",
+    title: "KW → ZA: ev → vr",
+    affects: { dest: "ZA", passports: ["KW"] },
+    statusFrom: "ev", statusTo: "vr",
+  },
+  {
+    date: "2026-11-11",
+    title: "IQ → IQ: vr → vf",
+    affects: { dest: "IQ", passports: ["IQ"] },
+    statusFrom: "vr", statusTo: "vf",
+  },
+  {
     date: "2026-11-10",
     title: "NL → TM: vr → ev",
     affects: { dest: "TM", passports: ["NL"] },
@@ -30,12 +42,6 @@ window.CHANGELOG = [
     title: "IR → PH: ev → vr",
     affects: { dest: "PH", passports: ["IR"] },
     statusFrom: "ev", statusTo: "vr",
-  },
-  {
-    date: "2026-11-08",
-    title: "IQ → SY: vf → vr",
-    affects: { dest: "SY", passports: ["IQ"] },
-    statusFrom: "vf", statusTo: "vr",
   },
   {
     date: "2026-11-08",
@@ -693,14 +699,14 @@ window.CHANGELOG = [
   },
   {
     date: "2026-09-26",
-    title: "AM → ZA: vr → ev",
-    affects: { dest: "ZA", passports: ["AM"] },
+    title: "KW → ZA: vr → ev",
+    affects: { dest: "ZA", passports: ["KW"] },
     statusFrom: "vr", statusTo: "ev",
   },
   {
     date: "2026-09-26",
-    title: "KW → ZA: vr → ev",
-    affects: { dest: "ZA", passports: ["KW"] },
+    title: "AM → ZA: vr → ev",
+    affects: { dest: "ZA", passports: ["AM"] },
     statusFrom: "vr", statusTo: "ev",
   },
   {
