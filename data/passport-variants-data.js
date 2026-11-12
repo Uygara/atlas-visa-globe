@@ -5,7 +5,7 @@
 // explicitly is emitted. passport-variants.js merges these under hand-curated entries.
 
 window.PASSPORT_VARIANTS_DATA = {
- "lastUpdated": "2026-11-11",
+ "lastUpdated": "2026-11-12",
  "AD": {
   "diplomatik": {"vf":["BO","BR","IL","IN","JP","KR",["KZ",90],"MA","MW","MY","QA",["RU",90]],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Andorran_citizens"},
   "hizmet": {"vf":["BO","BR","IL","IN","JP","KR",["KZ",90],"MA","MW","MY","QA"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Andorran_citizens"}
@@ -275,8 +275,8 @@ window.PASSPORT_VARIANTS_DATA = {
   "hizmet": {"vf":["AE","BO","BR","CN",["CU",90],"ID","IN","KR","MA","MW","NA","PT",["RU",90]],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Equatorial_Guinean_citizens"}
  },
  "GR": {
-  "diplomatik": {"vf":["AZ","BH","BO",["BY",90],["CN",90],"CV","DZ","EG","ET","ID","IL","IN","IR","JP","KR","KW",["KZ",90],"MA","ML","MW","MY",["QA",90],"RU","TH","TR","ZW"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Greek_citizens"},
-  "hizmet": {"vf":["BH","BO",["BY",90],"CV","DZ","ET","ID","IL","JP","KR","KW",["KZ",90],"MA","ML","MW","MY",["QA",90],"TH","TR","ZW"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Greek_citizens"}
+  "diplomatik": {"vf":["AZ","BH","BO",["BY",90],["CN",90],"CV","DZ","EG","ET","ID","IL","IN","IR","JP","KR","KW",["KZ",90],"MA","ML","MW","MY",["QA",90],"RU","SA","TH","TR","ZW"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Greek_citizens"},
+  "hizmet": {"vf":["BH","BO",["BY",90],"CV","DZ","ET","ID","IL","JP","KR","KW",["KZ",90],"MA","ML","MW","MY",["QA",90],"SA","TH","TR","ZW"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Greek_citizens"}
  },
  "GT": {
   "diplomatik": {"vf":["BO","BY","CU","DO","EG","GY","IL","IN","JP","KR","MA","MW","MX","RS","RU"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Guatemalan_citizens"},
