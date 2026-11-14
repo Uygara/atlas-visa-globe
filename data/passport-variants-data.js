@@ -5,7 +5,7 @@
 // explicitly is emitted. passport-variants.js merges these under hand-curated entries.
 
 window.PASSPORT_VARIANTS_DATA = {
- "lastUpdated": "2026-11-13",
+ "lastUpdated": "2026-11-14",
  "AD": {
   "diplomatik": {"vf":["BO","BR","IL","IN","JP","KR",["KZ",90],"MA","MW","MY","QA",["RU",90]],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Andorran_citizens"},
   "hizmet": {"vf":["BO","BR","IL","IN","JP","KR",["KZ",90],"MA","MW","MY","QA"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Andorran_citizens"}
@@ -23,8 +23,8 @@ window.PASSPORT_VARIANTS_DATA = {
   "hizmet": {"vf":["BO","CL",["CN",90],"CU","ID","IN","KR","MW","MX",["RU",90]],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Antigua_and_Barbuda_citizens"}
  },
  "AL": {
-  "diplomatik": {"vf":[["AR",90],"AZ",["BB",28],"BO",["CN",90],["CU",90],["DZ",90],["EC",90],"EG","ID","IE","IL","IN","IR",["JP",90],"KR",["KW",90],["KZ",90],"MA",["MH",90],["MN",90],"MW",["MY",90],"OM",["PE",90],["PH",90],["QA",90],["RU",90],["SA",90],"TH",["TN",90],["UY",90],["UZ",90],["VN",90],["ZA",90]],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Albanian_citizens"},
-  "hizmet": {"vf":[["AR",90],"AZ",["BB",28],"BO",["CN",90],["CU",90],["DZ",90],["EC",90],"EG","ID","IE","IL","IN","IR",["JP",90],"KR",["KW",90],["KZ",90],"MA",["MH",90],["MN",90],"MW",["MY",90],"OM",["PE",90],["PH",90],["QA",90],["RU",90],["SA",90],"TH",["TN",90],["UY",90],["UZ",90],["VN",90],["ZA",90]],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Albanian_citizens"}
+  "diplomatik": {"vf":[["AR",90],"AZ",["BB",28],"BO",["CN",90],["CU",90],["DZ",90],["EC",90],"EG","ID","IE","IL","IN","IR",["JP",90],"KR",["KW",90],["KZ",90],"MA",["MH",90],["MN",90],"MW",["MY",90],"OM",["PE",90],["PH",90],["QA",90],["RU",90],"SA","TH",["TN",90],["UY",90],["UZ",90],["VN",90],["ZA",90]],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Albanian_citizens"},
+  "hizmet": {"vf":[["AR",90],"AZ",["BB",28],"BO",["CN",90],["CU",90],["DZ",90],["EC",90],"EG","ID","IE","IL","IN","IR",["JP",90],"KR",["KW",90],["KZ",90],"MA",["MH",90],["MN",90],"MW",["MY",90],"OM",["PE",90],["PH",90],["QA",90],["RU",90],"SA","TH",["TN",90],["UY",90],["UZ",90],["VN",90],["ZA",90]],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Albanian_citizens"}
  },
  "AM": {
   "diplomatik": {"vf":["AE","AT","BA",["BB",28],"BE","BG","BO",["BY",90],"CH","CL",["CN",90],"CY","CZ","DE","DK","EE","EG","ES","FI","FR","GR","HR","HU","ID","IL","IN","IR","IT","KR","KW",["KZ",90],"LA","LI","LT","LU","LV","MT","MW","MX","MY","NL","NO","PH","PL","PT","RO",["RU",90],"SE","SI","SK","TM","VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Armenian_citizens"},
@@ -211,8 +211,8 @@ window.PASSPORT_VARIANTS_DATA = {
   "hizmet": {"vf":["BD","BO",["BY",90],"CV","ET","IL","JP",["KR",90],"KW",["KZ",90],"LA","MA","ML","MW","MY","PH",["QA",90],"TH","TM","TR","ZW"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Estonian_citizens"}
  },
  "EG": {
-  "diplomatik": {"vf":["AE","AL","AM","AO","AT",["AZ",30],"BA","BO","BR","BY","CL","CN","CO","CU","CY","CZ","DK","DZ","EE","ES","GA","GE","GR","GT","GY","HN","HR","HU","ID","IN","IR","IT","KR","KW",["KZ",90],"LT",["LY",90],"MA","ME","MT","MW","NA",["OM",30],"PE","PH","PK","PL","PT","RO","RS","RU","SI","SK","SV","TN","TR","UA","VN","XK",["ZA",30]],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Egyptian_citizens"},
-  "hizmet": {"vf":["AE","AL","AO","AT",["AZ",30],"BA","BO","BR","BY","CL","CN","CO","CU","CY","CZ","DK","DZ","ES","GA","GE","GR","GT","GY","HN","HR","ID","IN","IR","IT","KR","KW",["LY",90],"MA","MT","MW","NA",["OM",30],"PE","PT","RO","RS","RU","SI","SK","SV","TN","TR","UA","VN","XK",["ZA",30]],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Egyptian_citizens"}
+  "diplomatik": {"vf":["AE","AL","AM","AO","AT",["AZ",30],"BA","BO","BR","BY","CL","CN","CO","CU","CY","CZ","DK","DZ","EE","ES","GA","GE","GR","GT","GY","HN","HR","HU","ID","IN","IR","IT","KR","KW",["KZ",90],"LT",["LY",90],"MA","ME","MT","MW","NA",["OM",30],"PE","PH","PK","PL","PT","RO","RS","RU","SA","SI","SK","SV","TN","TR","UA","VN","XK",["ZA",30]],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Egyptian_citizens"},
+  "hizmet": {"vf":["AE","AL","AO","AT",["AZ",30],"BA","BO","BR","BY","CL","CN","CO","CU","CY","CZ","DK","DZ","ES","GA","GE","GR","GT","GY","HN","HR","ID","IN","IR","IT","KR","KW",["LY",90],"MA","MT","MW","NA",["OM",30],"PE","PT","RO","RS","RU","SA","SI","SK","SV","TN","TR","UA","VN","XK",["ZA",30]],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Egyptian_citizens"}
  },
  "ER": {
   "diplomatik": {"vf":["BO",["CN",60],["LY",60],"MW","NA","SD"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Eritrean_citizens"},
@@ -347,20 +347,20 @@ window.PASSPORT_VARIANTS_DATA = {
   "hizmet": {"vf":["AE","AT","BE","BO","CH","CN","CU","GT","HN","IL","KR","LI","LU","MW","NL","RU","SV","TR"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Jamaican_citizens"}
  },
  "JO": {
-  "diplomatik": {"vf":["AE","AL","AM","AZ","BA","BG","BH","BO","BR","CL",["CN",90],"CU","CY","CZ","EE","EG","ES","FR","GR","GT","HR","HU","ID","IN","IT","KR","KW",["KZ",30],"LT","MA",["MM",90],"MT","MW",["MY",90],"NO","NP","OM","PE","PH","PK",["QA",90],"RO","RS",["RU",90],["SA",90],"SK","SV","TJ","TN","VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Jordanian_citizens"},
-  "hizmet": {"vf":["AE","AL","AZ","BA","BG","BH","BO","BR","CL",["CN",90],"CY","CZ","EG","GT","HR","HU","ID","IN","KW",["KZ",30],"MA",["MM",90],"MW",["MY",90],"NP","OM","PE","PH","PK",["QA",90],"RS",["RU",90],["SA",90],"SK","SV","TN","VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Jordanian_citizens"}
+  "diplomatik": {"vf":["AE","AL","AM","AZ","BA","BG","BH","BO","BR","CL",["CN",90],"CU","CY","CZ","EE","EG","ES","FR","GR","GT","HR","HU","ID","IN","IT","KR","KW",["KZ",30],"LT","MA",["MM",90],"MT","MW",["MY",90],"NO","NP","OM","PE","PH","PK",["QA",90],"RO","RS",["RU",90],"SA","SK","SV","TJ","TN","VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Jordanian_citizens"},
+  "hizmet": {"vf":["AE","AL","AZ","BA","BG","BH","BO","BR","CL",["CN",90],"CY","CZ","EG","GT","HR","HU","ID","IN","KW",["KZ",30],"MA",["MM",90],"MW",["MY",90],"NP","OM","PE","PH","PK",["QA",90],"RS",["RU",90],"SA","SK","SV","TN","VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Jordanian_citizens"}
  },
  "JP": {
-  "diplomatik": {"vf":["AZ","BB",["BD",90],"BH","BN","BO","DO","ID","IL","IN","IR","KH","KR",["KZ",90],["LA",90],"MA","MH",["MM",90],"MV","MW","MX","NR","OM","QA",["SA",90],"TH",["TM",90],"VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Japanese_citizens"},
-  "hizmet": {"vf":["BB","BH","BN","BO","DO","ID","IL","IR","KH","KR",["KZ",90],["LA",90],"MA","MH","MV","MW","MX","OM","QA",["SA",90],"TH",["TM",90],"VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Japanese_citizens"}
+  "diplomatik": {"vf":["AZ","BB",["BD",90],"BH","BN","BO","DO","ID","IL","IN","IR","KH","KR",["KZ",90],["LA",90],"MA","MH",["MM",90],"MV","MW","MX","NR","OM","QA","SA","TH",["TM",90],"VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Japanese_citizens"},
+  "hizmet": {"vf":["BB","BH","BN","BO","DO","ID","IL","IR","KH","KR",["KZ",90],["LA",90],"MA","MH","MV","MW","MX","OM","QA","SA","TH",["TM",90],"VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Japanese_citizens"}
  },
  "KE": {
   "diplomatik": {"vf":["BO","BR","CN",["CU",90],"GT","HN","IL","IN","IR","LK","MT","MW","SV","TR",["ZA",30]],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Kenyan_citizens"},
   "hizmet": {"vf":["BO","BR","CN",["CU",90],"GT","HN","IL","IR","LK","MW","SV","TR",["ZA",30]],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Kenyan_citizens"}
  },
  "KG": {
-  "diplomatik": {"vf":["AE","AL","AZ","BB","BO","BR",["BY",90],"CH","CL","CN","EE","FR","GR","HK","HU","ID","IN","IR","IT","JP","KP","KR",["KZ",90],"LA","LI","LT","MA","MT","MW","PK","PL","QA","RO",["RU",90],["SA",60],"SK","TH","TM"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Kyrgyzstani_citizens"},
-  "hizmet": {"vf":["AE","AL","AZ","BB","BO","BR",["BY",90],"CL","CN","HK","HU","ID","IN","IR","JP","KP","KR",["KZ",90],"LA","MA","MW","PK","RO",["RU",90],["SA",60],"TH","TM"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Kyrgyzstani_citizens"}
+  "diplomatik": {"vf":["AE","AL","AZ","BB","BO","BR",["BY",90],"CH","CL","CN","EE","FR","GR","HK","HU","ID","IN","IR","IT","JP","KP","KR",["KZ",90],"LA","LI","LT","MA","MT","MW","PK","PL","QA","RO",["RU",90],"SA","SK","TH","TM"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Kyrgyzstani_citizens"},
+  "hizmet": {"vf":["AE","AL","AZ","BB","BO","BR",["BY",90],"CL","CN","HK","HU","ID","IN","IR","JP","KP","KR",["KZ",90],"LA","MA","MW","PK","RO",["RU",90],"SA","TH","TM"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Kyrgyzstani_citizens"}
  },
  "KH": {
   "diplomatik": {"vf":["AZ","BB","BD",["BN",14],"BO","BR","BY","CN","CO","CU","HK","HU",["ID",14],"IN","IR","JP","KP","KR","KW","LA","LK","MA",["MM",30],"MT","MW","MY","NP","PE","RO","RS",["RU",90],"SK",["TH",30],["TR",30],"UA","VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Cambodian_citizens"},
@@ -383,8 +383,8 @@ window.PASSPORT_VARIANTS_DATA = {
   "hizmet": {"vf":["BG","BO",["BY",90],"CN","CU",["ID",14],"KH",["LA",90],["MM",30],"MW","RS","RU","VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_North_Korean_citizens"}
  },
  "KR": {
-  "diplomatik": {"vf":["AO",["AZ",30],"BD","BN","BO","BY","CN","DO","DZ","EG","GA","ID","IL","IN",["IQ",30],"IR","JP","KH","KW",["KZ",90],["LA",90],"LR","MA",["MM",90],"MW","MZ","OM","PK",["PY",30],["QA",90],"RU",["SA",90],"TH","TJ","TM",["UZ",60],"VE","VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_South_Korean_citizens"},
-  "hizmet": {"vf":["AO",["AZ",30],"BD","BN","BO","BY","CN","DO","DZ","EG","GA","ID","IL","IN","IR","JP","KH","KW",["KZ",90],["LA",90],"LR","MA",["MM",90],"MW","MZ","OM","PK",["PY",30],["QA",90],"RU",["SA",90],"TH","TM","VE","VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_South_Korean_citizens"}
+  "diplomatik": {"vf":["AO",["AZ",30],"BD","BN","BO","BY","CN","DO","DZ","EG","GA","ID","IL","IN",["IQ",30],"IR","JP","KH","KW",["KZ",90],["LA",90],"LR","MA",["MM",90],"MW","MZ","OM","PK",["PY",30],["QA",90],"RU","SA","TH","TJ","TM",["UZ",60],"VE","VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_South_Korean_citizens"},
+  "hizmet": {"vf":["AO",["AZ",30],"BD","BN","BO","BY","CN","DO","DZ","EG","GA","ID","IL","IN","IR","JP","KH","KW",["KZ",90],["LA",90],"LR","MA",["MM",90],"MW","MZ","OM","PK",["PY",30],["QA",90],"RU","SA","TH","TM","VE","VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_South_Korean_citizens"}
  },
  "KW": {
   "diplomatik": {"vf":["AM","AZ","BG","BN","BO","CH","CN",["CU",90],"CY","CZ","DZ","EE","ES","FR","GR","HR","HU","ID","IE","IN",["IQ",30],"IT","JP","KH",["KZ",90],"LA","LI","LR","LV","MA","MT","MW","MX","PE","PK","PL","PT","RO",["RU",90],"UZ","VN"],"voa":[],"source":"https://en.wikipedia.org/wiki/Visa_requirements_for_Kuwaiti_citizens"},
