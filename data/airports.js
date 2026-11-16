@@ -2735,7 +2735,6 @@ window.AIRPORTS = {
  "PUG":["AU","Port Augusta Airport"],
  "PUJ":["DO","Punta Cana"],
  "PUQ":["CL","Punta Arenas"],
- "PUR":["BO","Puerto Rico/Manuripi"],
  "PUS":["KR","Busan"],
  "PUU":["CO","Puerto Asís"],
  "PUW":["US","Pullman"],
