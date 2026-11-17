@@ -21,3 +21,4 @@ Thumbs.db
 .agents/
 .claude/skills/
 skills-lock.json
+.autopilot/
