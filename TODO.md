@@ -13,6 +13,14 @@
 
 ## Senin yapacakların (hesap, ödeme, onay; benim yapamadıklarım)
 
+- [ ] **P1 · iVisa yanıtı (son gün 2 Aralık)**: Gmail'de taslak hazır ("Re: Your iVisa affiliate application").
+      GA4 → Reports → Demographics → Demographic details, tarih "Last 90 days", ülke tablosu görünürken ekran
+      görüntüsü al, taslağa ekle, gönder. Onay gelince bağlantıyı `data/affiliates.js` `url` alanına koyarım.
+- [ ] **P1 · E-posta bildirimleri için Resend (ücretsiz plan)**: resend.com → kayıt → Domains → travelnow.info ekle →
+      verdiği DNS kayıtlarını Cloudflare → DNS'e gir → API Keys → Create (Sending access) → GitHub → Settings →
+      Secrets → Actions → `RESEND_API_KEY`. Pasaport bazlı uyarılar (ROADMAP R1) bunu bekliyor.
+- [ ] **P2 · İkinci editör**: `docs/ONBOARDING.md` bölüm 1 (GitHub, GA, Search Console, Cloudflare davetleri).
+
 - [ ] **P1 · GitHub gizli anahtarı (2 dk)**: github.com/Uygara/atlas-visa-globe → Settings → Secrets and variables →
       Actions → New repository secret → ad `FIREBASE_SERVICE_ACCOUNT`, değer: `.secrets/firebase-admin.json`
       dosyasının tüm içeriği. Bu olmadan günlük bildirimler gitmez (adım atlanır, hata vermez).
@@ -25,8 +33,6 @@
       bir Banner birimi oluştur; uygulama kimliğini ve birim kimliğini bana ver. Yayından sonra mağaza kaydına bağla.
 - [ ] **P2 · Canlıda Google ile giriş (1 dk)**: travelnow.info/account/ → "Continue with Google". Açılır pencere
       otomatik test edilemiyor.
-- [ ] **P2 · Cloudflare analitik anahtarı (isteğe bağlı)**: dash.cloudflare.com → My Profile → API Tokens → Create
-      Token → Custom → izin "Account · Account Analytics · Read" → metni `.secrets/cloudflare-token.txt` dosyasına kaydet.
 - [ ] **P2 · AdSense onaylanınca**: AdSense → Privacy & messaging → Avrupa (GDPR) mesajını aç. Gizlilik metni AB/BK/İsviçre
       için kişiselleştirilmiş reklamdan önce onay istendiğini söylüyor; bu açılmadan reklam o bölgede gösterilmemeli.
 - [ ] **P3 · Apple Developer (99 $/yıl)**: Android'den sonra. Sonra Mac'te iOS derlemesi + Apple ile Giriş.

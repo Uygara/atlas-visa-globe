@@ -35,7 +35,9 @@ visitors who stay (engaged sessions, pages per session), and a site with no brok
 ## The run
 
 ### 1. Read the state (5 min)
-- `TODO.md` top block, the last 3 entries of `docs/autopilot-log.md`, and `.autopilot/metrics.tsv` (local history).
+- `TODO.md` top block, `docs/ROADMAP.md`, the last 3 entries of `docs/autopilot-log.md`, and the local metrics
+  history `.autopilot/metrics.tsv` inside the autopilot worktree (gitignored, survives checkouts; create it with a
+  header row if missing).
 - `git pull --rebase origin main` in the working checkout first.
 
 ### 2. Numbers
@@ -55,7 +57,16 @@ visitors who stay (engaged sessions, pages per session), and a site with no brok
   gets stuck, leaves, or doesn't find the answer.
 
 ### 4. Pick the work
-Score every candidate: expected visitors gained per week, times confidence, divided by effort. Prefer, in order:
+**`docs/ROADMAP.md` comes first.** It is the owner's feature inventory and its "İlkeler" section is how the owner
+thinks about features: give people a reason to come back, filter everything by passport, push changes to them by
+email and app notification, show dates and sources, value traveller experiences. Each run, take the first open
+item in the lowest open stage (skip items marked `bekliyor`; make sure the owner step it waits for is in `TODO.md`),
+split it into steps that fit one run, and ship the next step. Mark progress in `ROADMAP.md` in the same commit.
+New ideas found in steps 2 and 3 go to its "Değerlendirilecek" list, judged by the same principles. Fix
+visitor-facing breakage (below, item 1) before roadmap work; otherwise roadmap work uses at least two of the
+three change slots.
+
+Score every other candidate: expected visitors gained per week, times confidence, divided by effort. Prefer, in order:
 1. Broken things a visitor sees (JS errors, dead links, empty states, layout breaks on phones).
 2. Search fixes on pages that already get impressions (titles, descriptions, h1, structured data, internal links,
    hreflang, sitemap problems, Core Web Vitals).
@@ -87,5 +98,5 @@ the metric each should move.
 ## Mid-week light run
 
 A second, cheaper run on Thursdays does only steps 1, 3 (walk, no `ux-walker`) and 5 for one item: a bug the walk
-found or the top pending item from the log. If the walk is clean and nothing is pending, it writes "clean" in
+found, else the next small step of the current `docs/ROADMAP.md` item, else the top pending item from the log. If the walk is clean and nothing is pending, it writes "clean" in
 the log and stops. It should use well under a tenth of the weekly run's tokens.

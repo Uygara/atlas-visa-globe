@@ -22,7 +22,8 @@ window.AFFILIATES = [
   {
     id: "ivisa",
     label: "Apply for your visa with iVisa",
-    blurb: "Government-approved e-visas, $5–$30 typical fee.",
+    // Keep blurbs free of prices or claims we can't source; the partner's site shows its own fees.
+    blurb: "Paid help with e-visa and visa applications. Check the official government site first.",
     url: "", // e.g. "https://www.ivisa.com/?affId=YOUR_ID&destination={DEST}"
     signup: "https://www.ivisa.com/affiliates",
     shownFor: ["ev", "voa", "vr"],
@@ -38,7 +39,7 @@ window.AFFILIATES = [
   {
     id: "safetywing",
     label: "Travel insurance from SafetyWing",
-    blurb: "Nomad-friendly health cover, from $45/4 weeks.",
+    blurb: "Travel medical insurance for long trips and nomads.",
     url: "", // e.g. "https://safetywing.com/nomad-insurance/?referenceID=YOUR_ID"
     signup: "https://safetywing.com/affiliates",
     shownFor: ["*"],
@@ -46,7 +47,7 @@ window.AFFILIATES = [
   {
     id: "airalo",
     label: "Get an eSIM with Airalo",
-    blurb: "Data plans for 200+ countries, install in minutes.",
+    blurb: "Prepaid mobile data you install before you fly.",
     url: "", // e.g. "https://airalo.pxf.io/YOUR_ID"
     signup: "https://www.airalo.com/partners",
     shownFor: ["*"],
@@ -54,7 +55,7 @@ window.AFFILIATES = [
   {
     id: "wise",
     label: "Travel debit card from Wise",
-    blurb: "Spend abroad with no FX markup.",
+    blurb: "A debit card for spending in other currencies.",
     url: "", // e.g. "https://wise.com/invite/dic/YOUR_ID"
     signup: "https://wise.com/refer",
     shownFor: ["*"],

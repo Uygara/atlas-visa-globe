@@ -24,6 +24,10 @@ The owner's rule: nothing may read like AI-generated text. Write like a careful 
   (analytics, ads, accounts, notifications), update `/privacy/` and its Turkish twin in the same commit.
 
 ## Session protocol (sessions get long and expensive, so keep every step light)
+**Features:** `docs/ROADMAP.md` is the feature inventory and holds the owner's product principles (reasons to
+come back, filter by passport, push changes by email/app, dated sources, traveller experiences). Judge every new
+feature idea by them and add it there. Two people edit the site with Claude (see `docs/ONBOARDING.md`), plus the
+weekly autopilot (`docs/AUTOPILOT.md`): always `git pull --rebase` before pushing.
 **Start:** read `TODO.md` only (its first block says where to begin), then run
 `node tools/analytics-report.js` (GA4 + Search Console + Cloudflare in ~40 lines; the owner wants traffic
 followed) and mention anything notable in one line. `STATE.md` is short on purpose; older history is in
