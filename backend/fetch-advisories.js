@@ -653,4 +653,33 @@ function perSource(prev, key) {
     "window.TRAVEL_ADVISORIES = " + JSON.stringify(data) + ";\n";
   fs.writeFileSync(OUT_PATH, text);
   console.log(`Wrote ${OUT_PATH} (${(text.length / 1024).toFixed(0)} KB)`);
+
+  // Compact dated snapshot for later diffs ("what changed this week"). Levels and
+  // region ids only, no prose. Regions per issuer come from this run's raw entries
+  // when there are any, else from the merged list (each carries its source).
+  try {
+    const snap = { date: new Date().toISOString().slice(0, 10), issuers: { uk: {}, us: {}, ca: {} } };
+    for (const [iso, c] of Object.entries(countries)) {
+      const raw = (freshRegions[iso] && freshRegions[iso].length ? freshRegions[iso] : c.regions || []);
+      for (const k of ["uk", "us", "ca"]) {
+        const level = c[k] ? c[k].level : 0;
+        const best = new Map();
+        for (const r of raw) {
+          if (r.src !== k) continue;
+          for (const id of (r.ids || [r.id])) if (!best.has(id) || best.get(id) < r.level) best.set(id, r.level);
+        }
+        if (!level && !best.size) continue;
+        const e = { level };
+        if (best.size) e.regions = [...best].sort((a, b) => a[0].localeCompare(b[0])).map(([name, lv]) => ({ name, level: lv }));
+        snap.issuers[k][iso] = e;
+      }
+    }
+    const dir = path.join(__dirname, "..", "data", "advisory-history");
+    fs.mkdirSync(dir, { recursive: true });
+    const body = JSON.stringify(snap);
+    fs.writeFileSync(path.join(dir, snap.date + ".json"), body);
+    const old = fs.readdirSync(dir).filter(f => /^\d{4}-\d{2}-\d{2}\.json$/.test(f)).sort();
+    for (const f of old.slice(0, Math.max(0, old.length - 120))) fs.unlinkSync(path.join(dir, f));
+    console.log(`Snapshot ${snap.date}.json (${(body.length / 1024).toFixed(1)} KB)`);
+  } catch (e) { console.warn(`snapshot skipped: ${e.message}`); }
 })().catch(e => { console.error(e); process.exit(1); });
