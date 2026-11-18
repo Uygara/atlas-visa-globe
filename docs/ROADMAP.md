@@ -22,6 +22,21 @@
 
 Durum: `açık` · `sürüyor` · `bekliyor: <neyi>` · `bitti <hash>`
 
+### Aşama 0: arama trafiği (gerekçe: `docs/GROWTH-ANALYSIS.md`)
+
+- **D1 · Hedef ülke sayfaları `/visa/<kod>/`** · sürüyor · "<Ülke> visa requirements" aramalarında 13 bin
+  gösterim, 0 tık. Pasaport seçme denetleyicisi, durum listeleri, "gitmeden önce" bloğu, SSS, EN + TR.
+- **D2 · Pasaport sayfası başlıkları** · D1'den sonra · "<Ülke> passport: N countries without a visa (2026)",
+  TR "<ülke> pasaportu ile vizesiz gidilen ülkeler". 4 hafta sonra Search Console'da karşılaştır.
+- **D7 · AdSense betiğini geciktir** · açık · İlk kaydırma veya boşta yüklenir; sayfa ağırlığı 1,1 MB'tan düşer.
+- **D5 · Aylık pasaport gücü raporu** · açık · `/reports/<yyyy-mm>/`, changelog'dan otomatik, EN + TR, Instagram
+  ve Reddit için kart görselleri. Geri dönme sebebi ve bağlantı kazanma aracı.
+- **D4 · Açık veri seti** · açık · `/data/` sayfası + günlük CSV/JSON + GitHub'da README, CC BY 4.0
+  (kaynak verinin lisansına uyduğunu kontrol et: Wikipedia CC BY-SA ise o lisans).
+- **D3 · Schengen hesaplayıcı: "ne zaman tekrar girebilirim"** · açık · Tek tık cevap, paylaşılabilir bağlantı,
+  EES ve ETIAS açıklaması (resmi kaynaklı).
+- **D6 · Gömülebilir vize denetleyicisi** · açık · `<iframe>` veya küçük betik, altında bağlantı.
+
 ### Aşama 1: sahibinden bir şey gerektirmeyenler
 
 - **R3 · Güvenlik uyarısı geçmişi** · bitti (bkz. log) · `backend/fetch-advisories.js` her gün tarihli özet
