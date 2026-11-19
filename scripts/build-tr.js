@@ -276,7 +276,7 @@ async function main() {
   const jobs = [];
   let bad = 0;
   for (const p of TR_PAGES) {
-    if (p === "/passport/") continue; // generate-seo.js writes the directory + every /passport/<iso>/
+    if (p === "/passport/" || p === "/visa/" || p === "/reports/") continue; // generate-reports.js writes /reports/ and /tr/reports/ // generate-seo.js writes these directories + every /passport/<iso>/ and /visa/<iso>/
     if (ONLY && ONLY !== p) continue;
     if (p === "/") { jobs.push({ p, out: buildHome(), left: [], total: 0 }); continue; }
     jobs.push({ p, ...(await buildPage(p)) });

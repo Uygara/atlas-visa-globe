@@ -36,15 +36,15 @@
     "/guides/schengen-90-180-rule/", "/guides/transit-visa-guide/",
     "/guides/visa-types-explained/", "/passport-validity/",
     "/schengen-calculator/", "/visa-checklist/tr-schengen/",
-    "/visa-shortcuts/", "/passport/"
+    "/visa-shortcuts/", "/passport/", "/visa/", "/reports/"
   ];
   function isTrPath(p) { return /^\/tr(\/|$)/.test(p); }
   function fromTr(p) { return isTrPath(p) ? (p.replace(/^\/tr(?=\/)/, "") || "/") : p; }
-  // English path → its Turkish twin (every /passport/<iso>/ has one too).
+  // English path → its Turkish twin (every /passport/<iso>/ and /visa/<iso>/ has one too).
   function hasTr(p) {
     // The iOS/Android app (app/) ships the English pages only and translates in place.
     if (typeof window !== "undefined" && window.ATLAS_APP) return false;
-    return TR_PAGES.indexOf(p) !== -1 || /^\/passport\/[a-z]{2}\/$/.test(p);
+    return TR_PAGES.indexOf(p) !== -1 || /^\/(passport|visa)\/[a-z]{2}\/$/.test(p) || /^\/reports\/\d{4}-\d{2}\/$/.test(p);
   }
   function toTr(p) { return "/tr" + p; }
   // Where a link should point for a reader of `lang`.

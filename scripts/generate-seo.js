@@ -38,7 +38,10 @@ const DATA = (() => {
   const ctx = { console };
   ctx.window = ctx;
   vm.createContext(ctx);
-  for (const f of ["countries.js", "country-names.js", "passports.js", "visa-overrides.js", "mrz.js"]) {
+  // The rule files below feed the "Before you go" block of the destination pages (/visa/<cc>/).
+  for (const f of ["countries.js", "country-names.js", "passports.js", "visa-overrides.js", "mrz.js",
+                   "passport-validity-rules.js", "travel-advisories.js", "visa-fees.js", "etias-rules.js",
+                   "esta-rules.js", "transit-visa-rules.js"]) {
     vm.runInContext(fs.readFileSync(path.join(ROOT, "data", f), "utf8"), ctx, { filename: f });
   }
   return ctx;
@@ -159,6 +162,8 @@ const LOC = {
     dirIntro: `Every passport we track, ranked by ${strong("global mobility")}: the number of destinations you can enter without applying for a visa (visa-free, ID card, travel authorization or visa on arrival), ties broken by eVisa access. It is the same ranking the interactive map shows. Open any passport for a full country breakdown, regional analysis and FAQ. Figures are rebuilt every 24 hours. New here? Start with our <a href="%TYPES%">guide to visa types</a>.`,
     dirMeta: (n, date) => `${n} passports · Data refreshed ${date}`,
     dirItem: (mob, rank) => `${mob} without a visa · #${rank}`,
+    // Passport page: pointer to the inbound-visa page of the same country.
+    toVisa: (name) => `Planning to visit ${theEn(name.iso, name.label)}? See who needs a visa to enter`,
   },
 
   tr: {
@@ -254,6 +259,7 @@ const LOC = {
     dirIntro: `Takip ettiğimiz her pasaport, ${strong("küresel hareketlilik")}e göre sıralı: yani vize başvurusu yapmadan girilebilen destinasyon sayısı (vizesiz, kimlikle, seyahat iziniyle ya da varışta vizeyle); eşitlikte e-Vize erişimi belirleyici. Etkileşimli haritadaki sıralamayla aynıdır. Ülke dökümü, bölgesel analiz ve sık sorulan sorular için herhangi bir pasaportu aç. Rakamlar her 24 saatte bir yenilenir. Yeni misin? <a href="%TYPES%">Vize türleri rehberimizle</a> başla.`,
     dirMeta: (n, date) => `${n} pasaport · Veri yenilenme tarihi ${date}`,
     dirItem: (mob, rank) => `vizesiz ${mob} · ${rank}. sıra`,
+    toVisa: (name) => `${name.label} ziyareti mi planlıyorsun? Hangi pasaportlara vize gerektiğini gör`,
   },
 };
 
@@ -496,6 +502,8 @@ ${masthead({ path: enPath, i18n: false, lang })}
     <div class="mrz" aria-hidden="true"><span>${escapeHtml(mrz[0])}</span><span>${escapeHtml(mrz[1])}</span></div>
   </header>
 
+  <p class="visa-in"><a href="${P(`/visa/${slug}/`)}">${escapeHtml(L.toVisa({ iso: passport, label: name }))}</a></p>
+
   ${tally}
 
   ${proseHtml}
@@ -523,6 +531,414 @@ ${masthead({ path: enPath, i18n: false, lang })}
   ${ads.bottom}
 </div>
 <div class="map-cta"><span>${escapeHtml(L.ctaBar(name))}</span><a class="btn btn-primary" href="${mapHref}">${escapeHtml(L.ctaBarBtn)}</a></div>
+${footer({ lang })}
+</body>
+</html>`;
+}
+
+// ── Destination pages: who needs a visa to enter <country> ──────────────────
+// /visa/<cc>/ answers the inbound question ("Maldives visa requirements") with
+// the same resolver the passport pages use, read the other way round: for ONE
+// destination, the status of every passport. Everything shown comes from data
+// already in the repo; a "Before you go" line appears only when its source has
+// an entry for this destination.
+const THE_EN = new Set(["AE", "BS", "CF", "DO", "GB", "GM", "KM", "MH", "MV", "NL", "PH", "SB", "US"]);
+function theEn(iso, label) { return THE_EN.has(iso) ? `the ${label}` : label; }
+
+const FAQ_NATIONALITIES = ["US", "GB", "IN", "CN", "DE", "CA", "AU", "TR"];
+
+const VLOC = {
+  en: {
+    crumb: "Visa requirements",
+    title: (name, month) => `${name} visa requirements by nationality (${month}) · travelnow.info`,
+    h1: (name) => `${name} visa requirements`,
+    subtitle: (n, date) => `${n} passports compared · Updated ${date}`,
+    parts: {
+      vf: (n) => `${n} visa-free`, idc: (n) => `${n} with a national ID card`,
+      eta: (n) => `${n} with an online travel authorization`, ev: (n) => `${n} with an eVisa`,
+      voa: (n) => `${n} with a visa on arrival`, vr: (n) => `${n} needing a visa in advance`,
+      ban: (n) => `${n} refused entry`,
+    },
+    description: (the, parts) => `Who needs a visa for ${the}: ${LOC.en.join(parts)}. Check your passport, the passport-validity rule and the current travel advisory. Updated daily.`,
+    lead: (the, n, parts) => `We compare ${n} passports for entry to ${the}: ${LOC.en.join(parts)}. Choose yours below to see the rule for your nationality.`,
+    phrase: {
+      idc: "no visa needed, a national ID card is enough", vf: "visa-free",
+      eta: "no visa, but an online travel authorization is required", ev: "eVisa required, applied for online",
+      voa: "visa on arrival", vr: "visa required, arranged in advance", ban: "entry not allowed",
+    },
+    days: (n) => `, up to ${n} days`,
+    checkHead: "Check your passport",
+    choose: "Choose your passport",
+    who: (name) => `Citizens of ${name}`,
+    more: "All destinations for this passport",
+    mapBtn: "Open on the map →",
+    scoreLabel: "passports can enter without a visa application",
+    beforeHead: "Before you go",
+    validity: (the, rule) => rule > 0
+      ? `Passport validity: the minimum on record for ${the} is ${rule} months beyond your intended stay.`
+      : `Passport validity: for ${the} the rule on record is that the passport must be valid for the length of your stay.`,
+    validityLink: "Check your own passport date",
+    advisory: (items) => `Travel advisories: ${items}.`,
+    advisoryNames: { uk: "UK FCDO", us: "US State Department", ca: "Government of Canada" },
+    levels: { 1: "normal precautions", 2: "increased caution", 3: "reconsider travel", 4: "do not travel" },
+    advisoryMore: (date) => `Levels as of ${date}.`,
+    safetyLink: "Open the safety map",
+    feesHead: "Visa fees we have on record for some nationalities (from the official pages linked):",
+    etias: (the, e, since, until) => `ETIAS: many visa-exempt travellers need an ETIAS authorization for Schengen countries such as ${the} (fee ${e.fee}, valid ${e.validityYears} years). The schedule in our ETIAS tool: starts ${since}, transition period until ${until}.`,
+    etiasLink: "ETIAS checker",
+    esta: (e) => `ESTA: travellers entering under the Visa Waiver Program need an approved ESTA (fee ${e.applicationFee}, valid ${e.validityYears} years).`,
+    estaLink: "ESTA rules",
+    transit: (area, names) => `Airport transit: nationalities that need a transit visa when changing planes in ${area}: ${names}. Exemptions apply.`,
+    transitAll: "all nationalities",
+    transitLink: "Open the transit map",
+    schengen: "the Schengen Area",
+    faqHead: (the) => `${the.charAt(0).toUpperCase() + the.slice(1)} entry: frequently asked questions`,
+    faqQ: (name, the) => `Do citizens of ${name} need a visa for ${the}?`,
+    faqA: {
+      idc: (n, the) => `No visa is needed. Citizens of ${n} can enter ${the} with a national ID card.`,
+      vf: (n, the, d) => `No. Citizens of ${n} can enter ${the} visa-free${d ? ` for up to ${d} days` : ""}.`,
+      eta: (n, the) => `Not a visa, but citizens of ${n} need an online travel authorization for ${the} before departure.`,
+      ev: (n, the) => `Yes, an eVisa. Citizens of ${n} apply online before travelling to ${the}.`,
+      voa: (n, the, d) => `Not in advance. Citizens of ${n} can get a visa on arrival in ${the}${d ? ` (up to ${d} days)` : ""}.`,
+      vr: (n, the) => `Yes. Citizens of ${n} need a visa for ${the} arranged in advance at an embassy or consulate.`,
+      ban: (n, the) => `No. Entry to ${the} is currently not allowed for citizens of ${n}.`,
+    },
+    passportLink: (name) => `Travelling on a ${name} passport? See where it takes you`,
+    relatedHead: "Other destinations in the same region",
+    browseAll: (n, href) => `Or <a href="${href}">browse all ${n} destinations</a>.`,
+    dirTitle: (y) => `Visa requirements by destination country ${y} · travelnow.info`,
+    dirDesc: (n) => `Who needs a visa to enter ${n} countries and territories, by nationality. Updated daily from public visa-policy sources.`,
+    dirH1: "Visa requirements by destination",
+    dirIntro: "Pick the country you want to visit to see which passports can enter visa-free, with a visa on arrival, with an eVisa or only with a visa arranged in advance. Looking for the opposite view, where one passport can go? Use the <a href=\"%PASSPORTS%\">passport directory</a>.",
+    dirMeta: (n, date) => `${n} destinations · Data refreshed ${date}`,
+  },
+
+  tr: {
+    crumb: "Vize şartları",
+    title: (name, month) => `${name} vizesi: hangi pasaporta vize gerekir? (${month}) · travelnow.info`,
+    h1: (name) => `${name} vize şartları`,
+    subtitle: (n, date) => `${n} pasaport karşılaştırıldı · Güncelleme ${date}`,
+    parts: {
+      vf: (n) => `${n} vizesiz`, idc: (n) => `${n} kimlikle`,
+      eta: (n) => `${n} seyahat iziniyle`, ev: (n) => `${n} e-Vize ile`,
+      voa: (n) => `${n} varışta vizeyle`, vr: (n) => `${n} önceden vizeyle`,
+      ban: (n) => `${n} girişe kapalı`,
+    },
+    description: (name, n, parts) => `${name} vizesi kimlere gerekiyor? Takip ettiğimiz ${n} pasaport içinde: ${LOC.tr.join(parts)}. Pasaportunu, geçerlilik kuralını ve güncel seyahat uyarısını kontrol et. Her gün güncellenir.`,
+    lead: (name, n, parts) => `${name} için ${n} pasaportun giriş şartını karşılaştırıyoruz: ${LOC.tr.join(parts)}. Kendi uyruğunun kuralını görmek için pasaportunu aşağıdan seç.`,
+    phrase: {
+      idc: "vize gerekmez, ulusal kimlik kartı yeterli", vf: "vizesiz",
+      eta: "vize yok, ama çevrimiçi seyahat izni gerekli", ev: "e-Vize gerekli, çevrimiçi başvurulur",
+      voa: "varışta vize", vr: "vize gerekli, önceden alınır", ban: "girişe kapalı",
+    },
+    days: (n) => `, ${n} güne kadar`,
+    checkHead: "Pasaportunu kontrol et",
+    choose: "Pasaportunu seç",
+    who: (name) => `${name} pasaportu`,
+    more: "Bu pasaportla gidilecek tüm destinasyonlar",
+    mapBtn: "Haritada aç →",
+    scoreLabel: "pasaport vize başvurusu yapmadan girebiliyor",
+    beforeHead: "Gitmeden önce",
+    validity: (name, rule) => rule > 0
+      ? `Pasaport geçerliliği: ${name} için kayıtlı en düşük süre, planladığın kalışın bitiminden sonra ${rule} aydır.`
+      : `Pasaport geçerliliği: ${name} için kayıtlı kural, pasaportun kalış süresince geçerli olmasıdır.`,
+    validityLink: "Kendi pasaport tarihini denetle",
+    advisory: (items) => `Seyahat uyarıları: ${items}.`,
+    advisoryNames: { uk: "Birleşik Krallık FCDO", us: "ABD Dışişleri", ca: "Kanada Hükümeti" },
+    levels: { 1: "olağan önlemler", 2: "dikkatli ol", 3: "seyahati yeniden düşün", 4: "seyahat etme" },
+    advisoryMore: (date) => `Seviyeler ${date} tarihli.`,
+    safetyLink: "Güvenlik haritasını aç",
+    feesHead: "Bazı uyruklar için kayıtlı vize ücretleri (bağlantılar resmî sayfalara gider):",
+    etias: (name, e, since, until) => `ETIAS: vizeden muaf birçok yolcu, ${name} gibi Schengen ülkeleri için ETIAS izni almalı (ücret ${e.fee}, ${e.validityYears} yıl geçerli). ETIAS aracımızdaki takvim: başlangıç ${since}, geçiş dönemi ${until} tarihine kadar.`,
+    etiasLink: "ETIAS denetleyicisi",
+    esta: (e) => `ESTA: Vize Muafiyeti Programı ile giren yolcuların onaylı bir ESTA'sı olmalı (ücret ${e.applicationFee}, ${e.validityYears} yıl geçerli).`,
+    estaLink: "ESTA kuralları",
+    transit: (area, names) => `Havalimanı transiti: ${area} üzerinden aktarma yaparken transit vizesi gereken uyruklar: ${names}. Muafiyetler geçerli olabilir.`,
+    transitAll: "tüm uyruklar",
+    transitLink: "Transit haritasını aç",
+    schengen: "Schengen Bölgesi",
+    faqHead: (name) => `${name} girişi: sık sorulan sorular`,
+    faqQ: (name, dest) => `${name} pasaportu sahipleri ${dest} için vize almalı mı?`,
+    faqA: {
+      idc: (n, d) => `Vize gerekmez. ${n} pasaportu sahipleri ${d} ülkesine ulusal kimlik kartıyla girebilir.`,
+      vf: (n, d, days) => `Hayır. ${n} pasaportu sahipleri ${d} ülkesine vizesiz girebilir${days ? ` (en fazla ${days} gün)` : ""}.`,
+      eta: (n, d) => `Vize değil, ama ${n} pasaportu sahipleri ${d} ülkesine gitmeden önce çevrimiçi seyahat izni almalı.`,
+      ev: (n, d) => `Evet, e-Vize gerekir. ${n} pasaportu sahipleri ${d} seyahatinden önce çevrimiçi başvurur.`,
+      voa: (n, d, days) => `Önceden gerekmez. ${n} pasaportu sahipleri ${d} ülkesine girişte, varışta vize alabilir${days ? ` (en fazla ${days} gün)` : ""}.`,
+      vr: (n, d) => `Evet. ${n} pasaportu sahipleri ${d} için büyükelçilik veya konsolosluktan önceden vize almalı.`,
+      ban: (n, d) => `Hayır. ${n} pasaportu sahipleri için ${d} girişi şu anda kapalı.`,
+    },
+    passportLink: (name) => `${name} pasaportuyla mı seyahat edeceksin? Nereye gidebildiğine bak`,
+    relatedHead: "Aynı bölgedeki diğer destinasyonlar",
+    browseAll: (n, href) => `Ya da <a href="${href}">tüm ${n} destinasyona göz at</a>.`,
+    dirTitle: (y) => `Ülkeye göre vize şartları ${y} · travelnow.info`,
+    dirDesc: (n) => `${n} ülke ve bölgeye girmek için hangi uyruğa vize gerektiğini gör. Her gün kamuya açık vize politikası kaynaklarından güncellenir.`,
+    dirH1: "Gidilecek ülkeye göre vize şartları",
+    dirIntro: "Gitmek istediğin ülkeyi seç: hangi pasaportların vizesiz, varışta vizeyle, e-Vize ile ya da yalnızca önceden alınan vizeyle girebildiğini göreceksin. Tersini mi arıyorsun, yani bir pasaportla nereye gidilir? <a href=\"%PASSPORTS%\">Pasaport rehberine</a> bak.",
+    dirMeta: (n, date) => `${n} destinasyon · Veri yenilenme tarihi ${date}`,
+  },
+};
+
+// The status of every passport for one destination (cached across the two languages).
+const _destRows = new Map();
+function destRows(dest, allPassports) {
+  if (!_destRows.has(dest)) {
+    _destRows.set(dest, allPassports.filter(p => p !== dest).map(p => {
+      const r = resolveStatus(p, dest);
+      return { iso: p, status: r.status, days: r.days || 0 };
+    }));
+  }
+  return _destRows.get(dest);
+}
+
+const fmtMonth = (iso, lang) => new Intl.DateTimeFormat(lang === "tr" ? "tr-TR" : "en-GB", { month: "long", year: "numeric", timeZone: "UTC" }).format(new Date(iso + "T00:00:00Z"));
+
+function renderDestPage(destCountry, allPassports, lang, ads) {
+  const L = LOC[lang], V = VLOC[lang];
+  const dest = destCountry.iso2;
+  const slug = dest.toLowerCase();
+  const enPath = `/visa/${slug}/`;
+  const canonical = SITE_URL + L.prefix + enPath;
+  const P = (p) => (lang === "tr" && hasTr(p) ? toTr(p) : p);
+  const label = cn(dest, lang);
+  const the = lang === "tr" ? label : theEn(dest, label);
+  const snap = DATA.SNAPSHOT_DATE;
+  const month = fmtMonth(snap, lang);
+  const collator = sortCollator(lang);
+  const flagOf = (iso) => (COUNTRIES.find(c => c.iso2 === iso) || {}).flag || "";
+
+  const rows = destRows(dest, allPassports).map(r => ({ ...r, name: passportName(r.iso, lang) }));
+  rows.sort((a, b) => collator.compare(a.name, b.name));
+  const n = rows.length;
+  const counts = {};
+  STATUS_ORDER.forEach(s => { counts[s] = 0; });
+  rows.forEach(r => { if (counts[r.status] != null) counts[r.status]++; });
+  const present = STATUS_ORDER.filter(s => counts[s] > 0);
+  const easy = rows.filter(r => EASY.has(r.status)).length;
+  const partsAll = present.map(s => V.parts[s](counts[s]));
+  const descOrder = ["vf", "voa", "ev", "vr", "eta", "idc", "ban"].filter(s => counts[s] > 0).slice(0, 4);
+  const partsDesc = descOrder.map(s => V.parts[s](counts[s]));
+  const titleText = V.title(label, month);
+  const description = lang === "tr" ? V.description(label, n, partsDesc) : V.description(the, partsDesc);
+  const pName = (iso) => passportName(iso, lang);
+  const ppHref = (iso) => P(`/passport/${iso.toLowerCase()}/`);
+
+  // Checker: this destination's column only (passport ISO2 → [status, days]).
+  const chk = { p: {}, ph: V.phrase, days: V.days("{n}"), who: V.who("{name}"), pp: P("/passport/"), more: V.more, mapBase: `${lang === "tr" ? "/tr/" : "/"}` };
+  rows.forEach(r => { chk.p[r.iso] = [r.status, r.days]; });
+  const chkJson = JSON.stringify(chk).replace(/</g, "\\u003c");
+  const options = rows.map(r => `<option value="${r.iso}">${escapeHtml(r.name)}</option>`).join("");
+
+  const swatch = (s) => `<span class="sw${s === "ban" ? " sw-ban" : ""}" data-s="${s}" style="--sw:var(--${s})" aria-hidden="true"></span>`;
+  const bar = present.map(s => `<span${s === "ban" ? ' class="sw-ban"' : ""} style="flex:${counts[s]} 0 0;${s === "ban" ? "" : `background:var(--${s})`}"></span>`).join("");
+  const ledger = present.map(s =>
+    `<li><a class="lg-row" href="#g-${s}">${swatch(s)}<span class="lg-label">${escapeHtml(L.status[s])}</span><span class="lg-dots"></span><span class="lg-n">${counts[s]}</span></a></li>`
+  ).join("");
+  const tally = `<section class="tally" aria-label="${escapeHtml(L.tallyLabel)}">
+    <div class="score"><span class="score-n">${easy}</span><span class="score-l">${escapeHtml(V.scoreLabel)}<br><span class="mono">${escapeHtml(L.ofTotal(n))}</span></span></div>
+    <div class="bar" aria-hidden="true">${bar}</div>
+    <ul class="ledger">${ledger}</ul>
+  </section>`;
+
+  const groups = present.map(s => {
+    const items = rows.filter(r => r.status === s).map(r =>
+      `<li><span class="flag" aria-hidden="true">${flagOf(r.iso)}</span> <a href="${ppHref(r.iso)}">${escapeHtml(r.name)}</a>${r.days ? ` <span class="days">${escapeHtml(L.upTo(r.days))}</span>` : ""}</li>`
+    ).join("");
+    return `<details class="vl" id="g-${s}"><summary>${swatch(s)} ${escapeHtml(L.status[s])} <span class="n">${counts[s]}</span></summary><ul class="cols">${items}</ul></details>`;
+  }).join("");
+
+  // ── Before you go: only lines whose source has an entry for this destination ──
+  const before = [];
+  const rule = DATA.PASSPORT_VALIDITY && DATA.PASSPORT_VALIDITY[dest];
+  if (rule != null) {
+    before.push(`${escapeHtml(V.validity(the, rule))} <a href="${P("/passport-validity/")}">${escapeHtml(V.validityLink)}</a>.`);
+  }
+  const adv = DATA.TRAVEL_ADVISORIES && DATA.TRAVEL_ADVISORIES.countries && DATA.TRAVEL_ADVISORIES.countries[dest];
+  if (adv) {
+    const items = ["uk", "us", "ca"].filter(k => adv[k] && adv[k].level >= 1 && adv[k].level <= 4).map(k => {
+      const nm = escapeHtml(V.advisoryNames[k]);
+      const txt = `${nm}: ${escapeHtml(V.levels[adv[k].level])}`;
+      return adv[k].url ? `<a href="${escapeHtml(adv[k].url)}" rel="nofollow noopener">${txt}</a>` : txt;
+    });
+    if (items.length) {
+      before.push(`${V.advisory(items.join("; "))} ${escapeHtml(V.advisoryMore(fmtDate(DATA.TRAVEL_ADVISORIES.generated, lang)))} <a href="${P("/safety-map/")}">${escapeHtml(V.safetyLink)}</a>.`);
+    }
+  }
+  const fees = [];
+  Object.keys(DATA.VISA_FEES || {}).forEach(pp => {
+    const e = DATA.VISA_FEES[pp] && DATA.VISA_FEES[pp][dest];
+    if (e && e.fee && SNAPSHOT[pp]) fees.push({ pp, fee: e.fee, source: e.source, name: pName(pp) });
+  });
+  if (fees.length) {
+    fees.sort((a, b) => collator.compare(a.name, b.name));
+    const li = fees.map(f => `<li>${f.source ? `<a href="${escapeHtml(f.source)}" rel="nofollow noopener">${escapeHtml(f.name)}</a>` : escapeHtml(f.name)}: ${escapeHtml(f.fee)}</li>`).join("");
+    before.push(`${escapeHtml(V.feesHead)}<ul class="fees">${li}</ul>`);
+  }
+  const ETIAS = DATA.ETIAS;
+  if (ETIAS && ETIAS.schengenStates.includes(dest)) {
+    before.push(`${escapeHtml(V.etias(lang === "tr" ? label : the, ETIAS, fmtDate(ETIAS.launchDate, lang), fmtDate(ETIAS.transitionEnds, lang)))} <a href="${P("/etias/")}">${escapeHtml(V.etiasLink)}</a>.`);
+  }
+  if (dest === "US" && DATA.ESTA) {
+    before.push(`${escapeHtml(V.esta(DATA.ESTA))} <a href="${P("/esta-rules/")}">${escapeHtml(V.estaLink)}</a>.`);
+  }
+  const area = DATA.transitAreaForDest && DATA.transitAreaForDest(dest);
+  const trRule = area && DATA.TRANSIT_RULES[area];
+  if (trRule) {
+    let names = null;
+    if (trRule.requiredFor === "*") names = V.transitAll;
+    else if (Array.isArray(trRule.requiredFor)) {
+      const list = trRule.requiredFor.filter(iso => SNAPSHOT[iso] && iso !== dest).map(pName).sort(collator.compare);
+      if (list.length) names = LOC[lang].join(list);
+    }
+    if (names) {
+      const areaName = area === "SCHENGEN" ? V.schengen : (lang === "tr" ? cn(area, "tr") : theEn(area, cn(area, "en")));
+      before.push(`${escapeHtml(V.transit(areaName, names))} <a href="${P("/transit-map/")}">${escapeHtml(V.transitLink)}</a>.`);
+    }
+  }
+  const beforeHtml = before.length
+    ? `<section class="before"><h2>${escapeHtml(V.beforeHead)}</h2><ul>${before.map(b => `<li>${b}</li>`).join("")}</ul></section>`
+    : "";
+
+  // ── FAQ: answered from the resolved status only ──
+  const faqs = FAQ_NATIONALITIES.filter(iso => iso !== dest && SNAPSHOT[iso]).slice(0, 8).map(iso => {
+    const r = rows.find(x => x.iso === iso);
+    const nm = lang === "tr" ? pName(iso) : theEn(iso, pName(iso));
+    const fn = V.faqA[r.status];
+    return fn ? { q: V.faqQ(nm, lang === "tr" ? label : the), a: fn(nm, lang === "tr" ? label : the, r.days) } : null;
+  }).filter(Boolean);
+  const faqHtml = `<section class="faq"><h2>${escapeHtml(V.faqHead(lang === "tr" ? label : the))}</h2>${faqs.map(f => `<div class="qa"><h3>${escapeHtml(f.q)}</h3><p>${escapeHtml(f.a)}</p></div>`).join("")}</section>`;
+  const faqSchema = {
+    "@context": "https://schema.org", "@type": "FAQPage", "inLanguage": lang,
+    "mainEntity": faqs.map(f => ({ "@type": "Question", "name": f.q, "acceptedAnswer": { "@type": "Answer", "text": f.a } })),
+  };
+  const crumbSchema = {
+    "@context": "https://schema.org", "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "travelnow.info", "item": SITE_URL + (lang === "tr" ? "/tr/" : "/") },
+      { "@type": "ListItem", "position": 2, "name": V.crumb, "item": SITE_URL + L.prefix + "/visa/" },
+      { "@type": "ListItem", "position": 3, "name": label },
+    ],
+  };
+
+  // Related destinations: same continent, plus the way back to the passport page.
+  const sameRegion = COUNTRIES.filter(c => c.continent === destCountry.continent && c.iso2 !== dest).slice(0, 8);
+  const related = sameRegion.map(c => `<li><a href="../${c.iso2.toLowerCase()}/"><span class="flag">${c.flag}</span> ${escapeHtml(cn(c.iso2, lang))}</a></li>`).join("");
+  const passportCta = SNAPSHOT[dest]
+    ? `<p class="cta-row"><a class="primary" href="${ppHref(dest)}">${escapeHtml(V.passportLink(passportName(dest, lang)))}</a></p>`
+    : "";
+  const destCount = COUNTRIES.filter(c => c.continent !== "AN").length;
+
+  return `<!DOCTYPE html>
+<html lang="${lang}"${lang === "tr" ? ' data-page-lang="tr"' : ""}>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${escapeHtml(titleText)}</title>
+<meta name="description" content="${escapeHtml(description)}">
+<link rel="canonical" href="${canonical}">
+<meta name="author" content="Uygar Atalay">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<meta property="og:image" content="${SITE_URL}/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="${SITE_URL}/assets/og.png">
+<meta property="og:title" content="${escapeHtml(titleText)}">
+<meta property="og:description" content="${escapeHtml(description)}">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="${lang === "tr" ? "tr_TR" : "en_US"}">
+<meta property="og:url" content="${canonical}">
+<meta name="twitter:title" content="${escapeHtml(titleText)}">
+<meta name="twitter:description" content="${escapeHtml(description)}">
+${ads.loader}
+<script src="/assets/analytics.js"></script>
+<script type="application/ld+json">${JSON.stringify(crumbSchema)}</script>
+<script type="application/ld+json">${JSON.stringify(faqSchema)}</script>
+${headAssets({ enPath, lang })}
+<style>.wrap{max-width:820px}.chk label{display:block;font-weight:650;margin-bottom:8px}.chk select{width:100%;max-width:420px}.chk-out{margin:12px 0 0;font-size:var(--fs-lg)}.chk-map{margin:14px 0 0}details.vl{margin:0 0 10px}details.vl .n{margin-inline-start:8px;font-family:var(--font-mono);font-size:var(--fs-xs);font-weight:500;color:var(--ink-3)}.before ul{padding-inline-start:20px}.before li{margin:0 0 10px;max-width:var(--measure)}.before .fees{columns:2 220px;margin:6px 0 0}.before .fees li{margin:0 0 4px}</style>
+</head>
+<body>
+${masthead({ path: enPath, i18n: false, lang })}
+<div class="wrap">
+  <p class="crumbs"><a href="${P("/")}">travelnow.info</a> › <a href="${P("/visa/")}">${escapeHtml(V.crumb)}</a> › ${escapeHtml(label)}</p>
+
+  <h1><span class="flag" aria-hidden="true">${destCountry.flag}</span> ${escapeHtml(V.h1(label))}</h1>
+  <p class="subtitle">${escapeHtml(V.subtitle(n, fmtDate(snap, lang)))}</p>
+
+  <section class="card chk" aria-label="${escapeHtml(V.checkHead)}">
+    <label for="chk-sel">${escapeHtml(V.checkHead)}</label>
+    <select id="chk-sel"><option value="">${escapeHtml(V.choose)}</option>${options}</select>
+    <p class="chk-out" id="chk-out" aria-live="polite" hidden></p>
+    <p class="chk-map"><a class="primary" id="chk-map" href="${lang === "tr" ? "/tr/" : "/"}">${escapeHtml(V.mapBtn)}</a></p>
+  </section>
+  <script type="application/json" id="chk-data">${chkJson}</script>
+  <script>(function(){var d=JSON.parse(document.getElementById("chk-data").textContent),sel=document.getElementById("chk-sel"),out=document.getElementById("chk-out"),map=document.getElementById("chk-map");
+sel.addEventListener("change",function(){var v=sel.value;if(!v||!d.p[v]){out.hidden=true;out.textContent="";map.href=d.mapBase;return}
+var e=d.p[v],nm=sel.options[sel.selectedIndex].text,t=d.who.replace("{name}",nm)+": "+d.ph[e[0]]+(e[1]?d.days.replace("{n}",e[1]):"")+". ";
+out.textContent=t;var a=document.createElement("a");a.href=d.pp+v.toLowerCase()+"/";a.textContent=d.more;out.appendChild(a);out.hidden=false;map.href=d.mapBase+"?p="+v});
+function openHash(){var h=location.hash.slice(1),el=h&&document.getElementById(h);if(el&&el.tagName==="DETAILS")el.open=true}
+openHash();window.addEventListener("hashchange",openHash);
+Array.prototype.forEach.call(document.querySelectorAll(".lg-row"),function(a){a.addEventListener("click",function(){var el=document.getElementById(a.getAttribute("href").slice(1));if(el)el.open=true})})})();</script>
+
+  <p class="lead">${escapeHtml(lang === "tr" ? V.lead(label, n, partsAll) : V.lead(the, n, partsAll))}</p>
+
+  ${tally}
+
+  ${groups}
+
+  ${beforeHtml}
+
+  ${passportCta}
+
+  ${faqHtml}
+
+  <div class="other-passports">
+    <h2>${escapeHtml(V.relatedHead)}</h2>
+    <ul>${related}</ul>
+    <p class="fine" style="margin-top:14px;">${V.browseAll(destCount, P("/visa/"))}</p>
+  </div>
+
+  ${ads.bottom}
+</div>
+${footer({ lang })}
+</body>
+</html>`;
+}
+
+function renderDestIndex(dests, lang) {
+  const L = LOC[lang], V = VLOC[lang];
+  const enPath = "/visa/";
+  const canonical = SITE_URL + L.prefix + enPath;
+  const collator = sortCollator(lang);
+  const ordered = dests.map(c => ({ c, name: cn(c.iso2, lang) })).sort((a, b) => collator.compare(a.name, b.name));
+  const items = ordered.map(({ c, name }) => `<li><a href="${c.iso2.toLowerCase()}/"><span class="flag">${c.flag}</span> <strong>${escapeHtml(name)}</strong></a></li>`).join("");
+  const P = (p) => (lang === "tr" && hasTr(p) ? toTr(p) : p);
+  const title = V.dirTitle(new Date().getFullYear());
+  const description = V.dirDesc(dests.length);
+  return `<!DOCTYPE html>
+<html lang="${lang}"${lang === "tr" ? ' data-page-lang="tr"' : ""}>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${escapeHtml(title)}</title>
+<meta name="description" content="${escapeHtml(description)}">
+<link rel="canonical" href="${canonical}">
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+<meta property="og:title" content="${escapeHtml(title)}">
+<meta property="og:description" content="${escapeHtml(description)}">
+<meta property="og:image" content="${SITE_URL}/assets/og.png">
+<meta property="og:locale" content="${lang === "tr" ? "tr_TR" : "en_US"}">
+${headAssets({ enPath, lang })}
+<style>.wrap{max-width:880px}</style>
+<script src="/assets/analytics.js"></script>
+</head>
+<body>
+${masthead({ path: enPath, i18n: false, lang })}
+<div class="wrap">
+  <h1>${escapeHtml(V.dirH1)}</h1>
+  <p class="intro">${V.dirIntro.replace("%PASSPORTS%", P("/passport/"))}</p>
+  <p style="font-size:13px;color:var(--fg-mute);">${escapeHtml(V.dirMeta(dests.length, fmtDate(DATA.SNAPSHOT_DATE, lang)))}</p>
+  <ul class="dir">${items}</ul>
+</div>
 ${footer({ lang })}
 </body>
 </html>`;
@@ -575,7 +991,7 @@ ${footer({ lang })}
 }
 
 // ── sitemap.xml — with hreflang alternates for every page that has a twin ───
-function renderSitemap(allPassports) {
+function renderSitemap(allPassports, destinations) {
   const today = new Date().toISOString().slice(0, 10);
   const guides = [
     "visa-types-explained", "schengen-90-180-rule", "etias-2026-explained",
@@ -591,6 +1007,12 @@ function renderSitemap(allPassports) {
     ["/schengen-calculator/", 0.95], ["/itinerary/", 0.8], ["/about/", 0.6], ["/contact/", 0.5],
     ["/privacy/", 0.3], ["/terms/", 0.3], ["/passport/", 0.8],
     ...allPassports.map(iso => [`/passport/${iso.toLowerCase()}/`, 0.6]),
+    ["/visa/", 0.8],
+    ...destinations.map(c => [`/visa/${c.iso2.toLowerCase()}/`, 0.7]),
+    ["/reports/", 0.7],
+    ...require("./generate-reports").reportUrls()
+      .filter(u => !u.includes("/tr/") && /\/reports\/\d{4}-\d{2}\/$/.test(u))
+      .map(u => [u.replace(SITE_URL, "").replace("https://travelnow.info", ""), 0.6]),
   ];
   const entry = (p, pri, prefix) => {
     const twin = hasTr(p);
@@ -624,7 +1046,8 @@ function main() {
   const allPassports = Object.keys(SNAPSHOT).sort();
   const ranks = computeRanks(allPassports);
   const ads = adConfig();
-  let written = 0;
+  let written = 0, destWritten = 0;
+  const destinations = COUNTRIES.filter(c => c.continent !== "AN");
 
   for (const lang of ["en", "tr"]) {
     const L = LOC[lang];
@@ -639,15 +1062,26 @@ function main() {
       written++;
     }
     fs.writeFileSync(path.join(outDir, "index.html"), renderIndex(allPassports, ranks, lang));
+
+    // Destination pages: /visa/<cc>/ (who needs a visa to enter that country).
+    const visaDir = path.join(ROOT, ...(L.prefix ? [L.prefix.slice(1)] : []), "visa");
+    fs.mkdirSync(visaDir, { recursive: true });
+    for (const c of destinations) {
+      const dir = path.join(visaDir, c.iso2.toLowerCase());
+      fs.mkdirSync(dir, { recursive: true });
+      fs.writeFileSync(path.join(dir, "index.html"), renderDestPage(c, allPassports, lang, ads));
+      destWritten++;
+    }
+    fs.writeFileSync(path.join(visaDir, "index.html"), renderDestIndex(destinations, lang));
   }
 
-  fs.writeFileSync(path.join(ROOT, "sitemap.xml"), renderSitemap(allPassports));
+  fs.writeFileSync(path.join(ROOT, "sitemap.xml"), renderSitemap(allPassports, destinations));
 
   const robotsPath = path.join(ROOT, "robots.txt");
   if (!fs.existsSync(robotsPath)) {
     fs.writeFileSync(robotsPath, `User-agent: *\nAllow: /\nSitemap: ${SITE_URL}/sitemap.xml\n`);
   }
-  console.log(`✓ wrote ${written} passport pages (en + tr) + 2 directories + sitemap.xml`);
+  console.log(`✓ wrote ${written} passport pages (en + tr) + ${destWritten} destination pages + 4 directories + sitemap.xml`);
 }
 
 // `node scripts/generate-seo.js` writes the pages; scripts/og-cards.js requires this
