@@ -212,11 +212,21 @@ window.applyEtaDisplay = function (r, destIso2) {
 // (Wikipedia) — Antarctic Treaty Article VII, every visit needs prior permit.
 window.VISA_REQUIRED_DESTS = { KP: 1, AQ: 1 };
 const _FLOOR_EASY = { idc: 1, vf: 1, eta: 1, ev: 1, voa: 1 };
+// Destinations whose free online pre-arrival declaration the scraper misreads as
+// an eVisa. Maldives: every tourist gets a free 30-day visa on arrival with no
+// pre-approval; the IMUGA traveller declaration (imuga.immigration.gov.mv) is a
+// form, not a visa. Wikipedia tables note it next to "visa on arrival", which
+// classified 140 passports as `ev`. Visa-exempt (`vf`) and `ban` rows are kept.
+// Source: Maldives mission, "Maldives visa information"
+// (https://2026.mdvmission.gov.mv/jed/articles/maldives-visa-information-21), checked 2026-11-19.
+window.DECLARATION_NOT_EVISA = { MV: { status: "voa", days: 30 } };
 window.applyDestFloor = function (r, destIso2) {
   if (!r || r.status === "self") return r;
   if (window.VISA_REQUIRED_DESTS[destIso2] && _FLOOR_EASY[r.status]) {
     return { status: "vr", days: null };
   }
+  const decl = window.DECLARATION_NOT_EVISA[destIso2];
+  if (decl && r.status === "ev") return { ...r, status: decl.status, days: decl.days };
   return r;
 };
 
