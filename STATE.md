@@ -74,6 +74,17 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 18 (2026-11-19 evening: iVisa live, IG approvals, two-editor rules):**
+  iVisa accepted us. Partner link `https://www.ivisa.com/?utm_source=travelnow` (from the approval email) is in
+  `data/affiliates.js`: SPA panel for ev/voa/vr destinations (labels now localised) and a sponsored box on every
+  `/visa/<cc>/` page where some passports need a visa. Both fire GA4 `affiliate_click`. Privacy EN+TR updated.
+  iVisa pays monthly on the 15th, $50 minimum; commission rate is not in their PDF, ask the owner.
+  Owner approved the 4 queued IG posts. Roadmap claim tags `[üzerinde: ad, tarih]` (ONBOARDING, AUTOPILOT).
+  Instagram skills (Jakeschincariol/instagram-agent-skill, MIT) reviewed: no network code, publishes nothing.
+  Installed 5 (ig-caption, ig-audit, ig-plan, ig-profile, ig-carousel) in the main checkout's gitignored
+  `.claude/skills/`; dropped reel/dm/comment/reply/story/viral/repurpose (creator-style hooks clash with house style).
+  CLAUDE.md writing rules win over the skills' style advice.
+
 - **Round 17 (2026-11-19 afternoon: iVisa, Instagram kit, Schengen D3):**
   iVisa reply redrafted as a Gmail reply with two real GA4 screenshots attached (Chrome, GA account is authuser=1).
   `scripts/social-cards.js`: Instagram carousels (1080x1350, EN+TR, caption.txt) to `social/out/` (gitignored).

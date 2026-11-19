@@ -41,7 +41,7 @@ const DATA = (() => {
   // The rule files below feed the "Before you go" block of the destination pages (/visa/<cc>/).
   for (const f of ["countries.js", "country-names.js", "passports.js", "visa-overrides.js", "mrz.js",
                    "passport-validity-rules.js", "travel-advisories.js", "visa-fees.js", "etias-rules.js",
-                   "esta-rules.js", "transit-visa-rules.js"]) {
+                   "esta-rules.js", "transit-visa-rules.js", "affiliates.js"]) {
     vm.runInContext(fs.readFileSync(path.join(ROOT, "data", f), "utf8"), ctx, { filename: f });
   }
   return ctx;
@@ -574,6 +574,10 @@ const VLOC = {
     mapBtn: "Open on the map →",
     scoreLabel: "passports can enter without a visa application",
     beforeHead: "Before you go",
+    affHead: "Help with the application",
+    affBody: (the) => `If your passport needs a visa for ${the}, iVisa can fill in and submit the application for you. It charges a service fee on top of the government fee, so applying yourself on the official site costs less.`,
+    affBtn: "Apply with iVisa",
+    affNote: "Sponsored. travelnow.info may earn a commission.",
     validity: (the, rule) => rule > 0
       ? `Passport validity: the minimum on record for ${the} is ${rule} months beyond your intended stay.`
       : `Passport validity: for ${the} the rule on record is that the passport must be valid for the length of your stay.`,
@@ -639,6 +643,10 @@ const VLOC = {
     mapBtn: "Haritada aç →",
     scoreLabel: "pasaport vize başvurusu yapmadan girebiliyor",
     beforeHead: "Gitmeden önce",
+    affHead: "Başvuru için yardım",
+    affBody: (label) => `Pasaportunla ${label} için vize gerekiyorsa iVisa başvuruyu senin yerine doldurup gönderebilir. Devlet harcının üstüne hizmet bedeli alır; resmi sitede kendin başvurursan daha ucuza gelir.`,
+    affBtn: "iVisa ile başvur",
+    affNote: "Sponsorlu. travelnow.info komisyon kazanabilir.",
     validity: (name, rule) => rule > 0
       ? `Pasaport geçerliliği: ${name} için kayıtlı en düşük süre, planladığın kalışın bitiminden sonra ${rule} aydır.`
       : `Pasaport geçerliliği: ${name} için kayıtlı kural, pasaportun kalış süresince geçerli olmasıdır.`,
@@ -799,6 +807,16 @@ function renderDestPage(destCountry, allPassports, lang, ads) {
     ? `<section class="before"><h2>${escapeHtml(V.beforeHead)}</h2><ul>${before.map(b => `<li>${b}</li>`).join("")}</ul></section>`
     : "";
 
+  // Sponsored iVisa box, only where some passports need an eVisa, a visa on arrival or an embassy visa.
+  const iv = (DATA.AFFILIATES || []).find(a => a.id === "ivisa" && a.url);
+  const needVisa = (counts.ev || 0) + (counts.vr || 0) + (counts.voa || 0);
+  const ivisaHtml = iv && needVisa
+    ? `<section class="card aff"><h2>${escapeHtml(V.affHead)}</h2><p>${escapeHtml(V.affBody(the))}</p>` +
+      `<p class="cta-row"><a class="primary" href="${escapeHtml(iv.url)}" target="_blank" rel="sponsored noopener noreferrer" ` +
+      `onclick="window.gtag&&gtag('event','affiliate_click',{partner:'ivisa',destination:'${dest}',placement:'visa_page'})">${escapeHtml(V.affBtn)}</a></p>` +
+      `<p class="ad-label">${escapeHtml(V.affNote)}</p></section>`
+    : "";
+
   // ── FAQ: answered from the resolved status only ──
   const faqs = FAQ_NATIONALITIES.filter(iso => iso !== dest && SNAPSHOT[iso]).slice(0, 8).map(iso => {
     const r = rows.find(x => x.iso === iso);
@@ -854,7 +872,7 @@ ${ads.loader}
 <script type="application/ld+json">${JSON.stringify(crumbSchema)}</script>
 <script type="application/ld+json">${JSON.stringify(faqSchema)}</script>
 ${headAssets({ enPath, lang })}
-<style>.wrap{max-width:820px}.chk label{display:block;font-weight:650;margin-bottom:8px}.chk select{width:100%;max-width:420px}.chk-out{margin:12px 0 0;font-size:var(--fs-lg)}.chk-map{margin:14px 0 0}details.vl{margin:0 0 10px}details.vl .n{margin-inline-start:8px;font-family:var(--font-mono);font-size:var(--fs-xs);font-weight:500;color:var(--ink-3)}.before ul{padding-inline-start:20px}.before li{margin:0 0 10px;max-width:var(--measure)}.before .fees{columns:2 220px;margin:6px 0 0}.before .fees li{margin:0 0 4px}</style>
+<style>.wrap{max-width:820px}.chk label{display:block;font-weight:650;margin-bottom:8px}.chk select{width:100%;max-width:420px}.chk-out{margin:12px 0 0;font-size:var(--fs-lg)}.chk-map{margin:14px 0 0}details.vl{margin:0 0 10px}details.vl .n{margin-inline-start:8px;font-family:var(--font-mono);font-size:var(--fs-xs);font-weight:500;color:var(--ink-3)}.before ul{padding-inline-start:20px}.before li{margin:0 0 10px;max-width:var(--measure)}.before .fees{columns:2 220px;margin:6px 0 0}.before .fees li{margin:0 0 4px}.aff p{max-width:var(--measure)}.aff .ad-label{margin:8px 0 0;font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--ink-3)}</style>
 </head>
 <body>
 ${masthead({ path: enPath, i18n: false, lang })}
@@ -886,6 +904,8 @@ Array.prototype.forEach.call(document.querySelectorAll(".lg-row"),function(a){a.
   ${groups}
 
   ${beforeHtml}
+
+  ${ivisaHtml}
 
   ${passportCta}
 

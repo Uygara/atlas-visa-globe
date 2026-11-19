@@ -1257,7 +1257,8 @@ function AffiliatePartners({ status, iso2 }) {
       <div className="p-hint" style={{ margin: "0 0 6px", fontWeight: 600, color: "var(--ink-2)" }}>{window.t("detail.plan_your_trip")}</div>
       <div className="feed">
         {partners.map(p => (
-          <a key={p.id} className="feed-item" href={p.href} target="_blank" rel="sponsored noopener noreferrer">
+          <a key={p.id} className="feed-item" href={p.href} target="_blank" rel="sponsored noopener noreferrer"
+             onClick={() => { if (window.gtag) window.gtag("event", "affiliate_click", { partner: p.id, destination: iso2 || "", status: status || "", placement: "panel" }); }}>
             <div className="feed-title">{p.label}</div>
             <div className="feed-sum">{p.blurb}</div>
           </a>

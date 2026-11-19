@@ -22,9 +22,12 @@ window.AFFILIATES = [
   {
     id: "ivisa",
     label: "Apply for your visa with iVisa",
+    label_tr: "Vize başvurunu iVisa ile yap",
     // Keep blurbs free of prices or claims we can't source; the partner's site shows its own fees.
     blurb: "Paid help with e-visa and visa applications. Check the official government site first.",
-    url: "", // e.g. "https://www.ivisa.com/?affId=YOUR_ID&destination={DEST}"
+    blurb_tr: "E-vize ve vize başvurusu için ücretli yardım. Önce resmi devlet sitesine bak.",
+    // Partner link from iVisa's approval email (2026-11-19). Country deep links come from the iVisa dashboard.
+    url: "https://www.ivisa.com/?utm_source=travelnow",
     signup: "https://www.ivisa.com/affiliates",
     shownFor: ["ev", "voa", "vr"],
   },
@@ -66,8 +69,13 @@ window.AFFILIATES = [
 window.affiliatesFor = function(status, destIso2) {
   return (window.AFFILIATES || [])
     .filter(a => a.url && (a.shownFor.includes("*") || a.shownFor.includes(status)))
-    .map(a => ({
-      ...a,
-      href: a.url.replace(/\{DEST\}/g, destIso2 || ""),
-    }));
+    .map(a => {
+      const tr = window.ATLAS_LANG === "tr";
+      return {
+        ...a,
+        label: (tr && a.label_tr) || a.label,
+        blurb: (tr && a.blurb_tr) || a.blurb,
+        href: a.url.replace(/\{DEST\}/g, destIso2 || ""),
+      };
+    });
 };

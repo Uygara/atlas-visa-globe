@@ -1800,7 +1800,15 @@ function AffiliatePartners(_ref28) {
       className: "feed-item",
       href: p.href,
       target: "_blank",
-      rel: "sponsored noopener noreferrer"
+      rel: "sponsored noopener noreferrer",
+      onClick: function onClick() {
+        if (window.gtag) window.gtag("event", "affiliate_click", {
+          partner: p.id,
+          destination: iso2 || "",
+          status: status || "",
+          placement: "panel"
+        });
+      }
     }, React.createElement("div", {
       className: "feed-title"
     }, p.label), React.createElement("div", {

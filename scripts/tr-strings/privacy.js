@@ -1,6 +1,7 @@
 // Turkish text for /privacy/ in the formal register usual for legal text. See scripts/tr-strings/index.js.
 module.exports = {
-  "47b37efc": `Son güncelleme: 24 Eylül 2026`,
+  "4d078570": `Son güncelleme: 19 Kasım 2026`,
+  "3aeb41c6": `<strong>Ortaklık bağlantıları.</strong> Bazı sayfalarda ücretli bir vize başvuru hizmeti olan iVisa'ya giden ve "Sponsorlu" olarak işaretlenmiş bağlantılar bulunur. Bağlantı, iVisa'ya yalnızca travelnow.info'dan geldiğinizi bildirir; sizinle ilgili bir bilgi taşımaz. iVisa'nın sitesine geçtiğinizde onun gizlilik politikası geçerlidir. Bu bağlantılara yapılan tıklamaları, bulundukları sayfayla birlikte Google Analytics'te sayarız.`,
   "e4f8a872": `travelnow.info ücretsiz bir vize ve seyahat başvuru kaynağıdır. Bu politika, web sitesinin ve mobil uygulamanın hangi kişisel verileri hangi amaçla işlediğini ve bunları nasıl kontrol edebileceğinizi açıklar. Tüm araçlar hesap olmadan çalışır ve hesabınız yoksa hakkınızda hiçbir kişisel veri saklamayız.`,
   "27fd5670": `1. Veri sorumlusu`,
   "ac7c998d": `Veri sorumlusu, travelnow.info'yu işleten Uygar Atalay'dır. Verilerinizle ilgili her konuda <a href="mailto:hello@travelnow.info">hello@travelnow.info</a> adresine yazabilirsiniz. Başvurulara 30 gün içinde yanıt veririz.`,
