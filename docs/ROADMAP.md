@@ -33,8 +33,9 @@ Durum: `açık` · `sürüyor` · `bekliyor: <neyi>` · `bitti <hash>`
 - **D5 · Aylık pasaport gücü raporu** · bitti 2e353afe1 (kart görselleri A4'te) · `/reports/<yyyy-mm>/`, changelog'dan otomatik, EN + TR, Instagram
   ve Reddit için kart görselleri. Geri dönme sebebi ve bağlantı kazanma aracı.
 - **D4 · Açık veri seti** · bitti 493be8162 · `/open-data/` + günlük CSV/JSON, CC BY-SA 4.0 (Wikipedia'dan türediği için).
-- **D3 · Schengen hesaplayıcı: "ne zaman tekrar girebilirim"** · açık · Tek tık cevap, paylaşılabilir bağlantı,
-  EES ve ETIAS açıklaması (resmi kaynaklı).
+- **D3 · Schengen hesaplayıcı: "ne zaman tekrar girebilirim"** · bitti (2026-11-19) · Tek tık cevap, paylaşılabilir bağlantı,
+  EES ve ETIAS açıklaması (resmi kaynaklı). Yapıldı: "ne zaman tekrar gidebilirim" kartı, #trips= paylaşım bağlantısı,
+  EES bölümü (travel-europe.europa.eu). Ölç: GA `schengen_share` olayı.
 - **D6 · Gömülebilir vize denetleyicisi** · açık · `<iframe>` veya küçük betik, altında bağlantı.
 - **D8 · Veri kalitesi: varış formu eVisa sanılıyor** · kısmen bitti 5d853b274 · Maldivler'de ücretsiz IMUGA beyanı eVisa
   sayılıyordu; 140 pasaport yanlış görünüyordu (bc897c2c9 ile düzeldi). Aynı kalıp Tayland (TDAC), Kolombiya
@@ -86,7 +87,7 @@ Durum: `açık` · `sürüyor` · `bekliyor: <neyi>` · `bitti <hash>`
 ### Aşama 4: dağıtım
 
 - **A3 · Paylaşılabilir sonuç kartları** · açık · Pasaport → ülke sonucu için görsel kart ve kısa bağlantı.
-- **A4 · Instagram içerik hattı** · açık · Her hafta `changelog`dan otomatik gönderi taslakları (görsel + metin,
+- **A4 · Instagram içerik hattı** · kısmen bitti (`scripts/social-cards.js`, aylık carousel + pasaport kartı) · Her hafta `changelog`dan otomatik gönderi taslakları (görsel + metin,
   EN + TR) `content/instagram/<tarih>/` klasörüne. Paylaşımı insan yapar.
 - **A5 · Pasaport başına değişiklik akışı (RSS/JSON)** · açık · `/passport/<kod>/feed.xml`.
 

@@ -74,6 +74,12 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 17 (2026-11-19 afternoon: iVisa, Instagram kit, Schengen D3):**
+  iVisa reply redrafted as a Gmail reply with two real GA4 screenshots attached (Chrome, GA account is authuser=1).
+  `scripts/social-cards.js`: Instagram carousels (1080x1350, EN+TR, caption.txt) to `social/out/` (gitignored).
+  Schengen calculator: 'when can I go back' card, shareable #trips= link (not saved until edited), EES section
+  sourced from travel-europe.europa.eu. nextAvailableDate now checks every day of the stay, not only the exit day.
+  Gotcha: travel-europe.europa.eu is JS-rendered; WebFetch gets an empty page, read it in Chrome.
 - **Round 16 (2026-11-17 to 19: autopilot, roadmap, search intent fix):**
   - Weekly autopilot (`docs/AUTOPILOT.md`, scheduled tasks Mon + Thu, worktree `.claude/worktrees/autopilot`).
     Feature inventory + owner's product principles in `docs/ROADMAP.md`; editor onboarding `docs/ONBOARDING.md`.

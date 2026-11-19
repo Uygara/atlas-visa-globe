@@ -58,5 +58,12 @@ ve Cloudflare yaklaşık 30 saniyede canlıya alır.
 - Gönderi fikri: haftanın vize değişiklikleri (`data/changelog.js`), güvenlik uyarısı değişiklikleri, pasaport
   sıralaması kartları. ROADMAP'teki A4 maddesi bunları her hafta otomatik taslak olarak hazırlayacak; paylaşmak
   sana kalıyor.
+- **Hazır görseller (1080x1350, İngilizce ve Türkçe, açıklama metniyle):** Claude'a "Instagram görsellerini üret"
+  demen yeter, ya da kendin çalıştır:
+  - `node scripts/social-cards.js month` → geçen ayın pasaport gücü raporu, 5 sayfalık carousel.
+  - `node scripts/social-cards.js passport tr` → tek pasaport kartı (`tr` yerine herhangi bir ülke kodu: `de`, `us`, `my`).
+  Çıktı `social/out/<ad>/` klasöründe: `01.png`, `02.png`... ve `caption.txt`. Klasör git'e girmez; telefona
+  aktarıp paylaşırsın. Rakamların hepsi sitenin kendi verisinden gelir, elle sayı yazma.
+- Aylık rapor her ayın ilk günlerinde `/reports/` altında çıkar; carousel'i o zaman üret.
 - Paylaşımda veri gösteriyorsan tarih ve "kaynak: travelnow.info" ekle. Sitenin sesi sade ve doğrudur; abartılı
   slogan ve ünlem kullanılmaz (`CLAUDE.md` yazım kuralları).

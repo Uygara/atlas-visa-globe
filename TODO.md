@@ -6,8 +6,7 @@
 
 ## ▶ Yeni oturumda buradan başla
 
-0. **Özellik işleri `docs/ROADMAP.md`den** (Aşama 0 → 3). Sıradaki: D3 Schengen "ne zaman tekrar girebilirim",
-   D6 gömülebilir denetleyici, D8 kalan veri kontrolleri. 17 Aralık'ta `/visa/` sayfalarının etkisini ölç
+0. **Özellik işleri `docs/ROADMAP.md`den** (Aşama 0 → 3). Sıradaki: D6 gömülebilir denetleyici, D8 kalan veri kontrolleri. 17 Aralık'ta `/visa/` sayfalarının etkisini ölç
    (`docs/autopilot-log.md` en üst kayıt).
 1. **Android test APK'sını telefonda dene**: GitHub → Actions → "Android build" → son çalışma → `travelnow-debug-apk`.
    Telefonda "bilinmeyen kaynaklardan yükleme"ye izin verip kur. Hata/izlenim varsa yaz, düzeltirim.
@@ -17,12 +16,13 @@
 ## Senin yapacakların (hesap, ödeme, onay; benim yapamadıklarım)
 
 - [ ] **P1 · iVisa yanıtı (son gün 2 Aralık)**: Gmail'de taslak hazır ("Re: Your iVisa affiliate application").
-      GA4 → Reports → Demographics → Demographic details, tarih "Last 90 days", ülke tablosu görünürken ekran
-      görüntüsü al, taslağa ekle, gönder. Onay gelince bağlantıyı `data/affiliates.js` `url` alanına koyarım.
+      İki GA4 ekran görüntüsü ekli, metin gerçek rakamlarla güncel. Okuyup gönder. Onay gelince bağlantıyı
+      `data/affiliates.js` `url` alanına koyarım.
 - [ ] **P1 · E-posta bildirimleri için Resend (ücretsiz plan)**: resend.com → kayıt → Domains → travelnow.info ekle →
       verdiği DNS kayıtlarını Cloudflare → DNS'e gir → API Keys → Create (Sending access) → GitHub → Settings →
       Secrets → Actions → `RESEND_API_KEY`. Pasaport bazlı uyarılar (ROADMAP R1) bunu bekliyor.
 - [ ] **P2 · İkinci editör**: `docs/ONBOARDING.md` bölüm 1 (GitHub, GA, Search Console, Cloudflare davetleri).
+      Instagram kullanıcı adını bana yaz: sitenin altbilgisine ve arama motorları için `sameAs` alanına eklerim.
 
 - [ ] **P1 · GitHub gizli anahtarı (2 dk)**: github.com/Uygara/atlas-visa-globe → Settings → Secrets and variables →
       Actions → New repository secret → ad `FIREBASE_SERVICE_ACCOUNT`, değer: `.secrets/firebase-admin.json`

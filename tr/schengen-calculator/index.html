@@ -105,6 +105,24 @@
 
   <div id="hero" aria-live="polite" class="hero" data-no-i18n=""><!-- filled by JS --></div>
 
+  <div id="shared-note" class="msg warn" hidden="" data-no-i18n=""></div>
+
+  <div class="card" id="plan-card">
+    <h3>Ne zaman tekrar gidebilirim?</h3>
+    <div class="ref-row">
+      <label for="plan-start">Giriş tarihim</label>
+      <input type="date" id="plan-start">
+    </div>
+    <div id="plan-max" aria-live="polite" style="margin:10px 0 16px;" data-no-i18n=""></div>
+    <div class="ref-row">
+      <label for="plan-len">Şu uzunlukta bir seyahat için en erken tarih:</label>
+      <input type="number" id="plan-len" min="1" max="90" value="30" style="width:80px">
+      <span>gün</span>
+    </div>
+    <div id="plan-next" aria-live="polite" style="margin-top:10px;" data-no-i18n=""></div>
+    <p class="fine" style="margin:14px 0 0">İki cevap da aşağıdaki seyahatlere göre yeni kalışın her gününü 180 günlük pencereyle karşılaştırır.</p>
+  </div>
+
   <div class="card">
     <h3>Seyahat ekle</h3>
     <form id="trip-form" class="trip-form">
@@ -119,6 +137,11 @@
     <h3>Seyahatlerin</h3>
     <ul id="trips" class="trips" data-no-i18n=""></ul>
     <div id="timeline" data-no-i18n=""></div>
+    <div style="margin-top:14px; display:flex; flex-wrap:wrap; gap:10px; align-items:center;">
+      <button type="button" id="share-link">Bu seyahatlerin bağlantısını kopyala</button>
+      <span id="share-status" class="fine" aria-live="polite" data-no-i18n=""></span>
+    </div>
+    <p class="fine" style="margin:8px 0 0">Tarihler bağlantının kendisine (# işaretinden sonra) yazılır; gönderdiğin kişi aynı hesabı görür. Bizim tarafımızda hiçbir şey saklanmaz.</p>
   </div>
 
   <div class="card">
@@ -175,11 +198,18 @@
   </details>
 
   <details>
+    <summary>AB Giriş/Çıkış Sistemi (EES) ve bu hesaplayıcı</summary>
+    <p>EES, AB dışı ülke vatandaşlarının kısa süreli kalışlarda, sistemi kullanan bir ülkenin dış sınırından her geçişini otomatik olarak kaydeden AB sistemidir. Vizeye ihtiyacın olsa da olmasa da uygulanır ve pasaport damgalarının yerini zamanla alacak. Kıbrıs ve İrlanda pasaportları hâlâ elle damgalıyor.</p>
+    <p>AB'nin pasaport numaranı isteyen kendi <a href="https://travel-europe.europa.eu/ees/check-how-long-you-can-stay" rel="noopener">kalış süresi denetleyicisi</a> var. O sayfaya göre, gösterdiği kalan gün sayısı 10 Nisan 2026'dan önce başlamış kalışları içermiyor. Bir seyahatten önceki 180 gün içinde Schengen'deysen ve o kalışın bir kısmı bu tarihten önce başladıysa, onu burada da say.</p>
+    <p>Vizesiz seyahat edenler için ayrı bir seyahat izni olan ETIAS'ın kendi sayfası var: <a href="/tr/etias/">ETIAS açıklaması</a>.</p>
+  </details>
+
+  <details>
     <summary>İngiltere, İrlanda, AB oturma kartları ne olacak?</summary>
     <p data-i18n-html="schengen.uk_ie">İngiltere ve İrlanda Schengen'de <strong>değildir</strong>: orada geçirdiğin süre 90/180 limitine sayılmaz. Bir AB oturma kartına (örn. İspanya Non-Lucrative, Portekiz D7) sahip olmak, orada yasal olarak yaşadığın ve o ülke için kısa-kalış kuralına tabi olmadığın anlamına gelir, ama <em>diğer</em> Schengen ülkelerindeki günler yine sayılır.</p>
   </details>
 
-  <div class="footnote">Veriler yalnızca tarayıcında (localStorage) durur. Seyahat geçmişini hiçbir yere göndermiyoruz. Bu araç yalnızca planlama içindir: sınırda önemli olan, görevlinin saydığı damga sayısıdır.</div>
+  <div class="footnote">Veriler yalnızca tarayıcında (localStorage) durur. Seyahat geçmişini hiçbir yere göndermiyoruz. Bu araç yalnızca planlama içindir: sınırda geçerli olan resmi kayıttır (EES ya da pasaport damgaları).</div>
 </div>
 
 <script>
@@ -221,6 +251,14 @@
       "cascade.sourceLabel": "Source:",
       "cascade.sourceTitle": "EU Visa Code, Article 24",
       "form.entryBeforeExit": "Entry date must be before exit date.",
+      "plan.max_one": "You can stay 1 day: leave by {date}.",
+      "plan.max_other": "You can stay up to {n} days: leave by {date}.",
+      "plan.none": "Entering on {date} would break the rule.",
+      "plan.next_one": "A 1-day trip is possible from {date}.",
+      "plan.next_other": "A {n}-day trip is possible from {date}.",
+      "share.loaded": "These trips come from a shared link. Your own saved trips are unchanged until you edit this list.",
+      "share.copied": "Link copied.",
+      "share.empty": "Add a trip first.",
     },
     tr: {
       "hero.ofDays": "{max} günden",
@@ -250,6 +288,14 @@
       "cascade.sourceLabel": "Kaynak:",
       "cascade.sourceTitle": "AB Vize Kodu, Madde 24",
       "form.entryBeforeExit": "Giriş tarihi çıkış tarihinden önce olmalı.",
+      "plan.max_one": "1 gün kalabilirsin: en geç {date} tarihinde çıkmalısın.",
+      "plan.max_other": "En fazla {n} gün kalabilirsin: en geç {date} tarihinde çıkmalısın.",
+      "plan.none": "{date} tarihinde girersen kuralı aşarsın.",
+      "plan.next_one": "1 günlük bir seyahat {date} tarihinden itibaren mümkün.",
+      "plan.next_other": "{n} günlük bir seyahat {date} tarihinden itibaren mümkün.",
+      "share.loaded": "Bu seyahatler paylaşılan bir bağlantıdan geldi. Listeyi değiştirene kadar kendi kayıtlı seyahatlerine dokunulmaz.",
+      "share.copied": "Bağlantı kopyalandı.",
+      "share.empty": "Önce bir seyahat ekle.",
     },
     es: {
       "hero.ofDays": "de {max} días",
@@ -429,27 +475,88 @@
     return total;
   }
 
-  // Earliest day on which a future trip of length N becomes possible (one shot, no clip).
+  // A stay of `length` days starting on `start` is legal only if the 90-day cap holds on
+  // every day of that stay, not just the last one: older days drop out of the window as
+  // the stay goes on, so a check on the exit day alone can miss a breach in the middle.
+  function stayOk(trips, start, length) {
+    const all = [...trips, { entry: fmt(start), exit: fmt(new Date(start.getTime() + (length - 1) * MS_PER_DAY)) }];
+    for (let d = 0; d < length; d++) {
+      if (daysUsedAt(fmt(new Date(start.getTime() + d * MS_PER_DAY)), all) > MAX_DAYS) return false;
+    }
+    return true;
+  }
+
+  // Longest stay (0..90) that can start on `start`.
+  function maxStayFrom(trips, start) {
+    let n = 0;
+    while (n < MAX_DAYS && stayOk(trips, start, n + 1)) n++;
+    return n;
+  }
+
+  // Earliest day on which a stay of `length` days can start.
   function nextAvailableDate(trips, length, fromDate = new Date()) {
     if (length <= 0) return fromDate;
-    // We walk day-by-day forward up to ~1 year. Limit horizon to keep it cheap.
+    // The window is 180 days, so any start this far ahead is clear of past trips.
     for (let i = 0; i < 400; i++) {
       const probe = new Date(fromDate.getTime() + i * MS_PER_DAY);
-      const probeEnd = new Date(probe.getTime() + (length - 1) * MS_PER_DAY);
-      // Compute days used at probeEnd including a hypothetical trip [probe, probeEnd]
-      const refStr = fmt(probeEnd);
-      const used = daysUsedAt(refStr, [...trips, { entry: fmt(probe), exit: fmt(probeEnd) }]);
-      if (used <= MAX_DAYS) return probe;
+      if (stayOk(trips, probe, length)) return probe;
     }
     return null;
+  }
+
+  // ── Shareable link: #trips=2026-01-03_2026-01-20,2026-03-01_2026-03-10 ──────
+  function tripsFromHash() {
+    const m = /(?:^#|&)trips=([0-9_,-]+)/.exec(location.hash || "");
+    if (!m) return null;
+    const out = m[1].split(",").map((p) => p.split("_")).filter((p) => p.length === 2)
+      .filter(([a, b]) => parseDate(a) && parseDate(b) && a <= b)
+      .map(([entry, exit]) => ({ entry, exit }));
+    return out.length ? out.slice(0, 60) : null;
+  }
+  function shareUrl(list) {
+    const enc = list.slice().sort((a, b) => a.entry.localeCompare(b.entry)).map((t) => t.entry + "_" + t.exit).join(",");
+    return location.origin + location.pathname + (enc ? "#trips=" + enc : "");
   }
 
   // ── State ─────────────────────────────────────────────────────────────
   let trips = [];
   try { trips = JSON.parse(localStorage.getItem(LS_KEY) || "[]"); } catch (e) { trips = []; }
   let refDate = todayISO();
+  // Trips from a shared link are shown without touching the visitor's own saved list,
+  // until they edit the list (then it becomes theirs and is saved).
+  let fromLink = false;
+  const linked = tripsFromHash();
+  if (linked) { trips = linked; fromLink = true; }
 
-  function save() { try { localStorage.setItem(LS_KEY, JSON.stringify(trips)); } catch (e) {} }
+  function save() {
+    fromLink = false;
+    try { localStorage.setItem(LS_KEY, JSON.stringify(trips)); } catch (e) {}
+    try { history.replaceState(null, "", location.pathname + location.search); } catch (e) {}
+  }
+
+  function renderSharedNote() {
+    const el = document.getElementById("shared-note");
+    el.hidden = !fromLink;
+    if (fromLink) el.textContent = L("share.loaded");
+  }
+
+  function renderPlan() {
+    const startIn = document.getElementById("plan-start");
+    const start = parseDate(startIn.value) || parseDate(todayISO());
+    const max = maxStayFrom(trips, start);
+    const maxEl = document.getElementById("plan-max");
+    if (max === 0) {
+      const next = nextAvailableDate(trips, 1, start);
+      maxEl.innerHTML = `<div class="msg err">${L("plan.none", { date: fmtPretty(start) })}${next ? " " + L("ref.earliestReentry", { date: "<strong>" + fmtPretty(next) + "</strong>" }) : ""}</div>`;
+    } else {
+      const last = new Date(start.getTime() + (max - 1) * MS_PER_DAY);
+      maxEl.innerHTML = `<div class="msg ${max === MAX_DAYS ? "ok" : "warn"}">${Lp("plan.max", max, { date: "<strong>" + fmtPretty(last) + "</strong>" })}</div>`;
+    }
+    const len = Math.min(MAX_DAYS, Math.max(1, parseInt(document.getElementById("plan-len").value, 10) || 1));
+    const next = nextAvailableDate(trips, len, parseDate(todayISO()));
+    document.getElementById("plan-next").innerHTML = next
+      ? `<div class="msg ok">${Lp("plan.next", len, { date: "<strong>" + fmtPretty(next) + "</strong>" })}</div>` : "";
+  }
 
   // ── Render ────────────────────────────────────────────────────────────
   function renderHero() {
@@ -562,6 +669,8 @@
 
   function rerender() {
     renderHero();
+    renderSharedNote();
+    renderPlan();
     renderTrips();
     renderRefResult();
   }
@@ -597,8 +706,21 @@
     rerender();
   });
 
+  document.getElementById("plan-start").addEventListener("change", renderPlan);
+  document.getElementById("plan-len").addEventListener("input", renderPlan);
+  document.getElementById("share-link").addEventListener("click", () => {
+    const status = document.getElementById("share-status");
+    if (!trips.length) { status.textContent = L("share.empty"); return; }
+    const url = shareUrl(trips);
+    const done = () => { status.textContent = L("share.copied"); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(done, () => { status.textContent = url; });
+    else status.textContent = url;
+    if (window.gtag) try { gtag("event", "schengen_share", { trips: trips.length }); } catch (e) {}
+  });
+
   // Initial paint
   document.getElementById("ref").value = refDate;
+  document.getElementById("plan-start").value = todayISO();
   rerender();
 
   // ── Cascade calculator ───────────────────────────────────────────────
