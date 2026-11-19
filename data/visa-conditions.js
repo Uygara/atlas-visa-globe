@@ -79,7 +79,7 @@ window.VISA_CONDITIONS = {
     SG: [{
       ifHolds: ["US", "GB", "AU", "CA", "JP", "KR", "DE", "CH", "SCHENGEN"],
       then: "vf",
-      days: 96,
+      days: 4, // 96 hours (ICA Visa-Free Transit Facility)
       note: "Geçerli ABD/BK/Avustralya/Kanada/Japonya/Schengen/İsviçre vizesi ve onaylı dönüş bileti ile transit vizesi olmadan 96 saate kadar kalabilir.",
       noteEn: "Up to 96-hour visa-free transit for holders of a valid US, UK, Australian, Canadian, Japanese, Korean, German, Swiss or Schengen visa with confirmed onward ticket.",
       source: "https://www.ica.gov.sg/enter-transit-depart/entering-singapore/visa_requirements",
