@@ -17,6 +17,8 @@ Newest run first. Each entry 10 lines or fewer. Playbook: `docs/AUTOPILOT.md`.
 - The walk's 'appendChild' js-err is AdSense (adsbygoogle.js) on pages translated in place after a /tr/ visit;
   user-walk now lists it as 3p-err. Not ours to fix.
 - Next: D3 Schengen 'when can I return', D6 embeddable checker, D8 remaining per-passport checks, R1 once Resend.
+- 2026-11-19 light run: clean (48 visits, 0 errors). Warn only: phone /visa/<cc>/ and /tr/passport/ show ~207
+  small-taps (country link lists); weekly run may enlarge them. Worktree walk needs NODE_PATH=../../../tools/node_modules.
 
 ### 2026-11-17 · weekly run 1 (no code shipped)
 - Numbers unchanged from the setup entry below (same day): GA users 154, engaged 12%, SC 47 clicks / 17.4k impr.
