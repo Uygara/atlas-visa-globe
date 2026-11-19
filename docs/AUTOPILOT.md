@@ -17,6 +17,8 @@ visitors who stay (engaged sessions, pages per session), and a site with no brok
   (no phone, no ID, no card). Otherwise it goes to `TODO.md` with the exact steps.
 - No posting on social networks, forums or Reddit, no emails, no messages to people. Those look like spam and
   can get the domain flagged. Write a ready-to-paste draft in `.autopilot/drafts/` and list it in the run note instead.
+  One exception, Instagram: the agent may add posts to `social/queue/` with `scripts/social-queue.js`. They start
+  unapproved; only a person approves a post (`post.json` "approved": true). Never set it yourself.
 - Writing style and Turkish rules in `CLAUDE.md` apply to every word. Run `node tools/lint-copy.js` on new copy.
 - Legal pages: if data handling changes, update `/privacy/` and `/tr/privacy/` in the same commit.
 - Do not touch `.secrets/`, `firestore.rules`, payment or account code unless the task is a bug fix there with a test.
@@ -86,6 +88,14 @@ the metric each should move.
   `main`. Cloudflare deploys in about 30 seconds.
 - After the push, run `node tools/user-walk.js --sample 0` against the live site and check the changed pages.
   If the live site broke, revert that commit and push the revert at once.
+
+### 5b. Instagram queue (every weekly run, 2 min)
+- `node scripts/social-queue.js <next Monday> week` (skips itself when there were no changes).
+- First run of a month: `node scripts/social-queue.js <next Wednesday> month` (last complete month).
+- Push the queue so the images are live, and list the new folders in the run note: "waiting for approval".
+- Once a month, if `.secrets/instagram-token.txt` exists: `node scripts/ig-publish.js --refresh`, save the printed
+  token to that file and run `gh secret set IG_TOKEN < .secrets/instagram-token.txt`. A token not refreshed for
+  60 days dies. `node scripts/ig-publish.js --check` shows followers for the metrics line.
 
 ### 6. Notes for next time
 - Add a run entry at the top of `docs/autopilot-log.md` (10 lines or fewer): numbers vs last run, what shipped

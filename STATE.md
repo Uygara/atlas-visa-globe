@@ -81,6 +81,8 @@ EN in those four (engine ready — just add dict entries).
   sourced from travel-europe.europa.eu. nextAvailableDate now checks every day of the stay, not only the exit day.
   Gotcha: travel-europe.europa.eu is JS-rendered; WebFetch gets an empty page, read it in Chrome.
   Instagram link in every footer + Organization JSON-LD (sameAs) on both homepages; stamps 20261119c.
+  Instagram pipeline: social-queue.js fills social/queue/ (JPEG, TR images, TR+EN caption, unapproved);
+  ig-publish.js + .github/workflows/instagram.yml post approved, due items daily 10:00 Istanbul once IG_TOKEN exists.
 - **Round 16 (2026-11-17 to 19: autopilot, roadmap, search intent fix):**
   - Weekly autopilot (`docs/AUTOPILOT.md`, scheduled tasks Mon + Thu, worktree `.claude/worktrees/autopilot`).
     Feature inventory + owner's product principles in `docs/ROADMAP.md`; editor onboarding `docs/ONBOARDING.md`.

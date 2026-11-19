@@ -1,0 +1,37 @@
+name: Instagram publish
+
+# Publishes posts from social/queue/ that a person has approved ("approved": true in post.json)
+# and whose publish_on date has come. Does nothing until the IG_TOKEN secret exists.
+on:
+  schedule:
+    - cron: "0 7 * * *"   # 10:00 Istanbul
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: instagram-publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Publish due posts
+        env:
+          IG_TOKEN: ${{ secrets.IG_TOKEN }}
+        run: |
+          if [ -z "$IG_TOKEN" ]; then node scripts/ig-publish.js --dry-run; echo "IG_TOKEN not set; dry run only"; exit 0; fi
+          node scripts/ig-publish.js
+      - name: Record what was published
+        if: always()
+        run: |
+          git config user.name "travelnow-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add social/queue
+          git diff --cached --quiet || (git commit -m "Instagram: record published posts" && git pull --rebase && git push)

@@ -21,6 +21,18 @@
 - [ ] **P1 · E-posta bildirimleri için Resend (ücretsiz plan)**: resend.com → kayıt → Domains → travelnow.info ekle →
       verdiği DNS kayıtlarını Cloudflare → DNS'e gir → API Keys → Create (Sending access) → GitHub → Settings →
       Secrets → Actions → `RESEND_API_KEY`. Pasaport bazlı uyarılar (ROADMAP R1) bunu bekliyor.
+- [ ] **P1 · Instagram'ı siteye bağla (15 dk, ücretsiz)**: böylece onayladığın gönderiler kendiliğinden paylaşılır.
+      1) Instagram uygulaması → Ayarlar → Hesap türü → Profesyonel hesaba geç → "Creator" ya da "Business".
+      2) developers.facebook.com → My Apps → Create app → "Other" → "Business" türü → ad: travelnow-publisher.
+      3) Uygulamada Instagram ürününü ekle → "API setup with Instagram login" → "Generate access tokens" → "Add
+         account" ile @travelnow.info'yu ekle (izinler: instagram_business_basic, instagram_business_content_publish,
+         instagram_business_manage_comments) → "Generate token". Uygulamayı yayına almak ya da App Review gerekmez.
+      4) Çıkan uzun anahtarı iki yere koy: GitHub → Settings → Secrets → Actions → `IG_TOKEN`, ve bilgisayarda
+         `.secrets/instagram-token.txt`. Sonra bana "Instagram bağlandı" yaz; `node scripts/ig-publish.js --check`
+         ile denerim. Şifre paylaşmana gerek yok.
+- [ ] **P1 · Kuyruktaki 4 Instagram gönderisini onayla**: `social/queue/` (24, 26, 28 Kasım, 5 Aralık).
+      Görselleri ve metni kontrol et, "hepsini onayla" ya da tek tek söyle. Bağlantı kurulmadan önce onaylarsan
+      bağlantı kurulduğu gün tarihi geçmiş olanlar o gün paylaşılır; istemezsen tarihleri kaydırırım.
 - [ ] **P2 · İkinci editör**: `docs/ONBOARDING.md` bölüm 1 (GitHub, GA, Search Console, Cloudflare davetleri).
 
 - [ ] **P1 · GitHub gizli anahtarı (2 dk)**: github.com/Uygara/atlas-visa-globe → Settings → Secrets and variables →

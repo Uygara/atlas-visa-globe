@@ -3,6 +3,9 @@
 //
 //   node scripts/social-cards.js month [YYYY-MM] [--lang en|tr]   monthly passport power carousel
 //   node scripts/social-cards.js passport <iso> [--lang en|tr]    one slide for a single passport
+//   node scripts/social-cards.js week [YYYY-MM-DD] [--lang en|tr] changes in the 7 days ending on that date
+//   node scripts/social-cards.js text <spec.json>                 slides from a hand-written spec (see textSlides)
+//   Any kind: --out <dir> writes the files straight into <dir> instead of social/out/<kind>-<key>-<lang>/.
 //
 // Without --lang both languages are rendered.
 // Output: social/out/<kind>-<key>-<lang>/01.png ... and caption.txt (folder is git-ignored).
@@ -16,6 +19,12 @@ const puppeteer = require(path.join(ROOT, "tools", "node_modules", "puppeteer-co
 const { BRAND_MARK } = require("./partials");
 const { analyse } = require("./generate-reports");
 const { DATA, LOC, computeRanks, passportName } = require("./generate-seo");
+const CHANGELOG = (() => {
+  const ctx = {};
+  ctx.window = ctx;
+  require("vm").runInNewContext(fs.readFileSync(path.join(ROOT, "data", "changelog.js"), "utf8"), ctx);
+  return ctx.CHANGELOG;
+})();
 
 const OUT = path.join(ROOT, "social", "out");
 const SITE = "travelnow.info";
@@ -101,6 +110,15 @@ html,body{margin:0;width:${W}px;height:${H}px;overflow:hidden;background:var(--p
 .note{position:absolute;left:76px;right:76px;bottom:96px;font:500 26px/1.35 var(--font-sans);color:var(--ink-3)}
 .big{font:850 300px/.8 var(--font-display);color:var(--ink);letter-spacing:-.01em}
 .cap{font:500 48px/1.15 var(--font-sans);color:var(--ink-2)}
+.row2{display:flex;align-items:center;gap:26px;height:112px;border-bottom:2px solid var(--rule)}
+.row2 .fl{font-size:64px;line-height:1;flex:none;width:96px;text-align:center}
+.row2 .tx{flex:1;min-width:0}
+.row2 .nm{font:700 46px/1.05 var(--font-display);color:var(--ink);white-space:nowrap;overflow:hidden}
+.row2 .st{font:500 28px/1.2 var(--font-mono);color:var(--ink-3);margin-top:6px;white-space:nowrap;overflow:hidden}
+.row2 .st b{font-weight:500;color:var(--vf)}
+.txt{position:absolute;left:76px;right:76px;top:236px;bottom:190px;display:flex;flex-direction:column;justify-content:center;gap:48px}
+.txt .ttl{flex:none;max-height:520px;overflow:hidden;font:850 112px/.98 var(--font-display);color:var(--ink);overflow-wrap:anywhere}
+.txt .bd{flex:none;max-height:520px;overflow:hidden;font:500 48px/1.32 var(--font-sans);color:var(--ink-2);white-space:pre-line}
 .bar{position:absolute;left:44px;right:44px;bottom:44px;height:24px;display:flex;gap:3px}
 .bar i{display:block;border-radius:2px;flex:1 0 0}
 `;
@@ -232,6 +250,111 @@ function passportCaption(p, lang) {
   return lines.filter(Boolean).join("\n") + "\n\n" + tags + "\n";
 }
 
+// ── Week carousel ────────────────────────────────────────────────────────────
+const addDays = (iso, n) => new Date(new Date(iso + "T00:00:00Z").getTime() + n * 864e5).toISOString().slice(0, 10);
+const rangeLabel = (a, b, lang) => {
+  const f = (iso, o) => new Intl.DateTimeFormat(INTL[lang], { ...o, timeZone: "UTC" }).format(new Date(iso + "T00:00:00Z"));
+  const full = { day: "numeric", month: "long", year: "numeric" };
+  const from = f(a, a.slice(0, 4) === b.slice(0, 4) ? { day: "numeric", month: "long" } : full);
+  return lang === "tr" ? `${from} ile ${f(b, full)} arası` : `${from} to ${f(b, full)}`;
+};
+
+function weekData(end, lang) {
+  const start = addDays(end, -6);
+  const entries = CHANGELOG.filter((e) => e.date >= start && e.date <= end).sort((a, b) => a.date.localeCompare(b.date));
+  // Net each (passport, dest) pair: first from, last to, drop if equal (same as analyse()).
+  const pairs = new Map();
+  for (const e of entries) for (const p of e.affects.passports) {
+    const k = p + ">" + e.affects.dest, cur = pairs.get(k);
+    if (!cur) pairs.set(k, { passport: p, dest: e.affects.dest, from: e.statusFrom, to: e.statusTo });
+    else cur.to = e.statusTo;
+  }
+  const net = [...pairs.values()].filter((x) => x.from !== x.to);
+  const coll = new Intl.Collator(INTL[lang]);
+  const byDest = new Map();
+  for (const x of net) { if (!byDest.has(x.dest)) byDest.set(x.dest, []); byDest.get(x.dest).push(x); }
+  const dests = [...byDest.entries()].map(([iso, list]) => ({
+    iso, flag: FLAG[iso], name: cn(iso, lang) || iso,
+    list: list.map((x) => ({ ...x, pname: cn(x.passport, lang) || x.passport, flag: FLAG[x.passport] })).sort((a, b) => coll.compare(a.pname, b.pname)),
+  })).sort((a, b) => b.list.length - a.list.length || coll.compare(a.name, b.name));
+  return { start, end, net, dests, passports: new Set(net.map((x) => x.passport)).size };
+}
+
+const TW = {
+  en: { eyebrow: "THIS WEEK", title: "This week in visa rules", changes: (n) => (n === 1 ? "visa rule change" : "visa rule changes"),
+    passports: (n) => (n === 1 ? "passport affected" : "passports affected"), more: (n) => `+${n} more`,
+    close: "Check your passport", path: "", partial: "Net change over the week, from our daily snapshot." },
+  tr: { eyebrow: "BU HAFTA", title: "Bu hafta vize kuralları", changes: () => "vize kuralı değişti",
+    passports: () => "pasaport etkilendi", more: (n) => `+${n} tane daha`,
+    close: "Pasaportunu kontrol et", path: "tr/", partial: "Haftalık net değişim, günlük verimizden." },
+};
+
+function weekSlides(w, lang, tokens) {
+  const t = TW[lang], st = LOC[lang].status, link = SITE + "/" + t.path;
+  const shown = w.dests.slice(0, 4);
+  const total = 2 + shown.length;
+  let i = 0;
+  const pg = () => `${++i} / ${total}`;
+  const slides = [];
+  slides.push(shell(tokens, lang, `
+<div class="eyebrow">${esc(t.eyebrow)}</div>
+<div class="title" style="font-size:118px">${esc(t.title)}</div>
+<div class="cap" style="position:absolute;left:76px;top:560px;font-family:var(--font-mono);font-size:34px;color:var(--ink-3)">${esc(rangeLabel(w.start, w.end, lang))}</div>
+<div style="position:absolute;left:76px;top:680px"><div class="big" style="font-size:260px">${w.net.length}</div><div class="cap" style="margin-top:16px">${esc(t.changes(w.net.length))}</div></div>
+<div style="position:absolute;left:76px;top:1020px"><div class="big" style="font-size:170px">${w.passports}</div><div class="cap" style="margin-top:12px">${esc(t.passports(w.passports))}</div></div>`, pg()));
+  for (const d of shown) {
+    const rows = d.list.slice(0, d.list.length > 6 ? 5 : 6);
+    const rest = d.list.length - rows.length;
+    const rh = rows.map((r) => `<div class="row2"><span class="fl">${r.flag || ""}</span><div class="tx"><div class="nm">${esc(r.pname)}</div><div class="st">${esc(st[r.from] || r.from)} → <b>${esc(st[r.to] || r.to)}</b></div></div></div>`).join("")
+      + (rest > 0 ? `<div class="row2"><span class="fl"></span><div class="tx"><div class="nm" style="color:var(--ink-3)">${esc(t.more(rest))}</div></div></div>` : "");
+    const size = d.name.length <= 12 ? 100 : d.name.length <= 20 ? 80 : 64;
+    slides.push(shell(tokens, lang, `
+<div class="eyebrow">${esc(t.eyebrow)}</div>
+<div class="title" style="font-size:${size}px;display:flex;align-items:center;gap:28px"><span style="line-height:1">${d.flag || ""}</span><span>${esc(d.name)}</span></div>
+<div class="rows" style="top:400px;gap:10px">${rh}</div>`, pg()));
+  }
+  slides.push(shell(tokens, lang, `
+<div class="eyebrow">${esc(t.eyebrow)}</div>
+<div class="title" style="font-size:96px;top:260px">${esc(t.close)}</div>
+<div style="position:absolute;left:76px;right:76px;top:560px;font:700 58px/1.15 var(--font-mono);color:var(--ink);word-break:break-all">${esc(link)}</div>
+<div class="note">${esc(t.partial)}</div>`, pg()));
+  return { slides, link };
+}
+
+function weekCaption(w, lang, link, date0) {
+  const n = w.net.length, rng = rangeLabel(w.start, w.end, lang), date = dateLabel(date0, lang);
+  const names = w.dests.slice(0, 4).map((d) => d.name).join(", ");
+  let lines;
+  if (lang === "en") lines = [
+    `Visa rule changes, ${rng}: ${n} ${n === 1 ? "change" : "changes"} affecting ${w.passports} ${w.passports === 1 ? "passport" : "passports"} across ${w.dests.length} ${w.dests.length === 1 ? "destination" : "destinations"}.`,
+    `Destinations with the most changes: ${names}.`,
+    `Check the rules for your passport: ${link}`,
+    `Source: ${SITE} (data as of ${date})`];
+  else lines = [
+    `Vize kuralı değişiklikleri, ${rng}: ${w.passports} pasaportu ve ${w.dests.length} varış ülkesini etkileyen ${n} değişiklik.`,
+    `En çok değişiklik olan ülkeler: ${names}.`,
+    `Pasaportun için kurallara bak: ${link}`,
+    `Kaynak: ${SITE} (veri ${date} tarihi itibarıyla)`];
+  const tags = lang === "en" ? "#visa #passport #travel #visafree #traveltips" : "#vize #pasaport #seyahat #vizesiz #seyahatipuçları";
+  return lines.join("\n") + "\n\n" + tags + "\n";
+}
+
+// ── Text slides from a hand-written spec ─────────────────────────────────────
+// spec: { slug, lang: "en"|"tr", slides: [{ eyebrow?, title, body?, footer? }], caption }
+function textSlides(spec, tokens) {
+  const lang = spec.lang;
+  if (!T[lang]) throw new Error("spec.lang must be en or tr");
+  if (!Array.isArray(spec.slides) || !spec.slides.length) throw new Error("spec.slides must be a non-empty array");
+  const total = spec.slides.length;
+  return spec.slides.map((sl, i) => {
+    if (!sl.title) throw new Error(`slide ${i + 1} has no title`);
+    return shell(tokens, lang, `
+${sl.eyebrow ? `<div class="eyebrow">${esc(sl.eyebrow)}</div>` : ""}
+<div class="txt"><div class="ttl fit">${esc(sl.title)}</div>${sl.body ? `<div class="bd fit">${esc(sl.body)}</div>` : ""}</div>
+${sl.footer ? `<div class="note" style="bottom:100px">${esc(sl.footer)}</div>` : ""}`, total > 1 ? `${i + 1} / ${total}` : "");
+  });
+}
+
 // ── Main ─────────────────────────────────────────────────────────────────────
 async function main() {
   const args = process.argv.slice(2);
@@ -240,6 +363,9 @@ async function main() {
   if (li >= 0) args.splice(li, 2);
   const langs = langArg ? [langArg] : ["en", "tr"];
   if (langs.some((l) => !T[l])) throw new Error("--lang must be en or tr");
+  const oi = args.indexOf("--out");
+  const outArg = oi >= 0 ? args[oi + 1] : null;
+  if (oi >= 0) { if (!outArg) throw new Error("--out needs a directory"); args.splice(oi, 2); }
   const kind = args[0], key = args[1];
   const tokens = fs.readFileSync(path.join(ROOT, "assets", "tokens.css"), "utf8").replace(/@import[^;]+;/g, "");
 
@@ -262,17 +388,33 @@ async function main() {
       const p = passportSlide(iso, lang, tokens, ranks);
       jobs.push({ dir: `passport-${iso.toLowerCase()}-${lang}`, htmls: [p.html], caption: passportCaption(p, lang), lang });
     }
+  } else if (kind === "week") {
+    const latest = CHANGELOG.reduce((m, e) => (e.date > m ? e.date : m), "");
+    const end = key || latest;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(end)) throw new Error("Usage: social-cards.js week [YYYY-MM-DD]");
+    for (const lang of langs) {
+      const w = weekData(end, lang);
+      if (!w.net.length) { console.log("no changes"); process.exit(0); }
+      const r = weekSlides(w, lang, tokens);
+      jobs.push({ dir: `week-${end}-${lang}`, htmls: r.slides, caption: weekCaption(w, lang, r.link, latest < end ? latest : end), lang });
+    }
+  } else if (kind === "text") {
+    if (!key) throw new Error("Usage: social-cards.js text <spec.json>");
+    const spec = JSON.parse(fs.readFileSync(path.resolve(key), "utf8"));
+    if (!spec.slug) throw new Error("spec.slug is required");
+    jobs.push({ dir: `text-${spec.slug}-${spec.lang}`, htmls: textSlides(spec, tokens), caption: String(spec.caption || ""), lang: spec.lang });
   } else {
-    console.log("Usage:\n  node scripts/social-cards.js month [YYYY-MM] [--lang en|tr]\n  node scripts/social-cards.js passport <iso> [--lang en|tr]");
+    console.log("Usage:\n  node scripts/social-cards.js month [YYYY-MM] [--lang en|tr]\n  node scripts/social-cards.js passport <iso> [--lang en|tr]\n  node scripts/social-cards.js week [YYYY-MM-DD] [--lang en|tr]\n  node scripts/social-cards.js text <spec.json>\n  (any kind) --out <dir>");
     process.exit(1);
   }
 
+  if (outArg && jobs.length > 1) throw new Error("--out with several languages would overwrite files: add --lang en or --lang tr");
   const browser = await puppeteer.launch({ executablePath: chromePath(), headless: "new", args: ["--disable-gpu", "--no-first-run", "--hide-scrollbars"] });
   try {
     const page = await browser.newPage();
     await page.setViewport({ width: W, height: H, deviceScaleFactor: 1 });
     for (const job of jobs) {
-      const dir = path.join(OUT, job.dir);
+      const dir = outArg ? path.resolve(outArg) : path.join(OUT, job.dir);
       fs.mkdirSync(dir, { recursive: true });
       for (const [i, html] of job.htmls.entries()) {
         await page.setContent(html, { waitUntil: "load", timeout: 60000 });
@@ -282,6 +424,14 @@ async function main() {
           for (const n of document.querySelectorAll(".row .nm")) {
             let size = parseFloat(getComputedStyle(n).fontSize);
             while (n.scrollWidth > n.clientWidth && size > 28) { size -= 2; n.style.fontSize = size + "px"; }
+          }
+        });
+        // Shrink fixed-size text blocks (text slides) until they fit their box.
+        await page.evaluate(() => {
+          for (const n of document.querySelectorAll(".fit")) {
+            let size = parseFloat(getComputedStyle(n).fontSize);
+            const lim = parseFloat(getComputedStyle(n).maxHeight) || n.clientHeight;
+            while (n.scrollHeight > lim + 1 && size > 24) { size -= 2; n.style.fontSize = size + "px"; }
           }
         });
         await new Promise((r) => setTimeout(r, 120));

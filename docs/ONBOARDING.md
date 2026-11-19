@@ -65,5 +65,10 @@ ve Cloudflare yaklaşık 30 saniyede canlıya alır.
   Çıktı `social/out/<ad>/` klasöründe: `01.png`, `02.png`... ve `caption.txt`. Klasör git'e girmez; telefona
   aktarıp paylaşırsın. Rakamların hepsi sitenin kendi verisinden gelir, elle sayı yazma.
 - Aylık rapor her ayın ilk günlerinde `/reports/` altında çıkar; carousel'i o zaman üret.
+- **Paylaşım sırası (`social/queue/`):** her klasör bir gönderi (`01.jpg`... , `caption.txt`, `post.json`).
+  Otopilot her pazartesi haftanın değişikliklerini, ayın başında aylık raporu buraya ekler. Gönderiye bakıp
+  Claude'a "24 Kasım gönderisini onayla" demen yeter (`node scripts/social-queue.js approve 2026-11-24`).
+  Onaylanan gönderi tarihi gelince saat 10:00'da (İstanbul) kendiliğinden paylaşılır. Onaylanmayan hiçbir şey
+  paylaşılmaz. Bu, Instagram bağlantısı kurulunca çalışır (`TODO.md`).
 - Paylaşımda veri gösteriyorsan tarih ve "kaynak: travelnow.info" ekle. Sitenin sesi sade ve doğrudur; abartılı
   slogan ve ünlem kullanılmaz (`CLAUDE.md` yazım kuralları).

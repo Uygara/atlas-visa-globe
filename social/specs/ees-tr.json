@@ -1,0 +1,12 @@
+{
+  "slug": "ees",
+  "lang": "tr",
+  "slides": [
+    { "eyebrow": "AB GİRİŞ/ÇIKIŞ SİSTEMİ", "title": "Schengen sınırında damganın yerini EES alıyor", "body": "Kısa süreli kalış için Avrupa'ya gidiyorsan bilmen gerekenler." },
+    { "eyebrow": "NEDİR", "title": "Her sınır geçişin dijital olarak kaydediliyor", "body": "EES, AB dışı ülke vatandaşlarının kısa süreli kalışlarda dış sınırdan her giriş ve çıkışını otomatik kaydeder. Vizen olsa da olmasa da uygulanır." },
+    { "eyebrow": "NE KAYDEDİLİYOR", "title": "Parmak izi ve yüz görüntüsü", "body": "Pasaport damgalarının yerini zamanla bu kayıt alacak. Kıbrıs ve İrlanda pasaportları hâlâ elle damgalıyor." },
+    { "eyebrow": "DİKKAT", "title": "Resmi kalan gün aracının bir sınırı var", "body": "AB'nin çevrim içi aracı, 10 Nisan 2026'dan önce başlamış kalışları hesaba katmıyor. Son 180 gün içinde böyle bir kalışın varsa kendin say." },
+    { "eyebrow": "HESAPLA", "title": "Tüm kalışlarını birlikte say", "body": "travelnow.info hesaplayıcısı girdiğin her seyahati sayar, tarihi ne olursa olsun.", "footer": "travelnow.info/tr/schengen-calculator/" }
+  ],
+  "caption": "AB Giriş/Çıkış Sistemi (EES), AB dışı ülke vatandaşlarının kısa süreli kalışlarda Schengen dış sınırındaki her giriş ve çıkışını dijital olarak kaydediyor. Vizen olsa da olmasa da uygulanıyor ve pasaport damgalarının yerini zamanla alacak.\n\nBilmen gereken bir ayrıntı: AB'nin resmi kalan gün aracı, 10 Nisan 2026'dan önce başlamış kalışları hesaba katmıyor. Son 180 gün içinde böyle bir kalışın varsa onu da say.\n\nHesaplayıcı: travelnow.info/tr/schengen-calculator/ (bağlantı profilde)\nKaynak: travel-europe.europa.eu\n\n#schengen #EES #vize #seyahat #avrupa"
+}
