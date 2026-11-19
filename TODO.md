@@ -22,7 +22,6 @@
       verdiği DNS kayıtlarını Cloudflare → DNS'e gir → API Keys → Create (Sending access) → GitHub → Settings →
       Secrets → Actions → `RESEND_API_KEY`. Pasaport bazlı uyarılar (ROADMAP R1) bunu bekliyor.
 - [ ] **P2 · İkinci editör**: `docs/ONBOARDING.md` bölüm 1 (GitHub, GA, Search Console, Cloudflare davetleri).
-      Instagram kullanıcı adını bana yaz: sitenin altbilgisine ve arama motorları için `sameAs` alanına eklerim.
 
 - [ ] **P1 · GitHub gizli anahtarı (2 dk)**: github.com/Uygara/atlas-visa-globe → Settings → Secrets and variables →
       Actions → New repository secret → ad `FIREBASE_SERVICE_ACCOUNT`, değer: `.secrets/firebase-admin.json`

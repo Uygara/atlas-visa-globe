@@ -2718,6 +2718,10 @@ function PanelFooter() {
   }, window.t("footer.privacy")), React.createElement("a", {
     href: "/passport/"
   }, window.t("footer.all_passports")), React.createElement("a", {
+    href: "https://www.instagram.com/travelnow.info/",
+    target: "_blank",
+    rel: "noopener"
+  }, "Instagram"), React.createElement("a", {
     href: "https://github.com/Uygara/atlas-visa-globe",
     target: "_blank",
     rel: "noopener"

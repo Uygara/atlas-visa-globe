@@ -1816,6 +1816,7 @@ function PanelFooter() {
         <a href="/about/">{window.t("footer.about")}</a>
         <a href="/privacy/">{window.t("footer.privacy")}</a>
         <a href="/passport/">{window.t("footer.all_passports")}</a>
+        <a href="https://www.instagram.com/travelnow.info/" target="_blank" rel="noopener">Instagram</a>
         <a href="https://github.com/Uygara/atlas-visa-globe" target="_blank" rel="noopener">{window.t("footer.source")}</a>
       </nav>
       <div className="byline" dir="ltr" style={{ textAlign: "start" }}>© {new Date().getFullYear()} travelnow.info · Uygar Atalay</div>

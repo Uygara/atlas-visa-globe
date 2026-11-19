@@ -12,7 +12,7 @@
 const { NAV, SUPPORT, isCurrent } = require("../assets/site-nav.js");
 const { makeT, hasTr, toTr, hreflang } = require("./locales");
 
-const ASSET_VERSION = "20261119b";
+const ASSET_VERSION = "20261119c";
 
 function esc(s) {
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -119,7 +119,7 @@ ${items.map(([h, label]) => `        <li><a href="${href(h)}">${esc(t(label))}</
     </div>
 ${col("Tools", [["/", "Visa map"], ["/transit-map/", "Transit map"], ["/itinerary/", "Travel planner"], ["/schengen-calculator/", "Schengen calc"], ["/etias/", "ETIAS 2026"], ["/passport-validity/", "Passport validity"], ["/alerts/", "Alerts"]])}
 ${col("Read", [["/guides/", "Guides"], ["/passport/", "All passports"], ["/visa-shortcuts/", "Visa shortcuts"], ["/digital-nomad-visa/", "Nomad visas"], ["/citizenship-by-investment/", "Second passport"], ["/open-data/", "Open data"]])}
-${col("The project", [["/about/", "About"], ["/contact/", "Contact"], ["/privacy/", "Privacy"], ["/terms/", "Terms"], ["https://github.com/Uygara/atlas-visa-globe", "Source on GitHub"]])}
+${col("The project", [["/about/", "About"], ["/contact/", "Contact"], ["/privacy/", "Privacy"], ["/terms/", "Terms"], ["https://www.instagram.com/travelnow.info/", "Instagram"], ["https://github.com/Uygara/atlas-visa-globe", "Source on GitHub"]])}
     <p class="site-foot-note">${esc(t("Visa rules change often. Always confirm with the destination's embassy or consulate before you book. Data is rebuilt every 24 hours from public visa-policy sources."))}</p>
   </div>
 </footer>`;
