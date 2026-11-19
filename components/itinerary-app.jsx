@@ -205,7 +205,7 @@ function CountryPicker({ value, placeholder, exclude, onPick, isPassport }) {
     <div ref={ref} style={{ position: "relative" }}>
       {isPassport ? (
         <button type="button" className="pp-card" style={{ paddingBottom: 2 }} onClick={() => setOpen(o => !o)} aria-expanded={open}>
-          <span className="pp-doc" aria-hidden="true">Passport · Pasaport · Passeport<IconCaret /></span>
+          <span className="pp-doc" aria-hidden="true">Passport / Pasaport / Passeport<IconCaret /></span>
           {c ? (
             <span className="pp-main">
               <span className="flag pp-flag" aria-hidden="true">{c.flag}</span>
@@ -267,7 +267,7 @@ function StopsList({ passport, stops, onRemove }) {
             <span className="flag" style={{ fontSize: 20 }}>{window.byIso2[iso]?.flag}</span>
             <span style={{ flex: 1, minWidth: 0 }}>
               <span className="stop-name">{window.countryName(iso)}</span>
-              <span className="stop-meta">{statusLabel(r.status)}{feeText ? " · " + feeText : ""}{proc ? " · " + proc : ""}</span>
+              <span className="stop-meta">{statusLabel(r.status)}{feeText ? ", " + feeText : ""}{proc ? ", " + proc : ""}</span>
             </span>
             <button type="button" className="icon-btn" onClick={() => onRemove(iso)} title={window.t("itin.remove")} aria-label={window.t("itin.remove")}><IconClose /></button>
           </li>
@@ -362,7 +362,7 @@ function Summary({ passport, stops }) {
             return (
               <li key={s.iso}>
                 <strong><span className="flag">{window.byIso2[s.iso]?.flag}</span> {window.countryName(s.iso)}</strong>
-                <span> · {statusLabel(s.status)}{fee && fee.processingDays ? " · " + itinFeeLabel(fee.processingDays) : ""}</span>
+                <span>: {statusLabel(s.status)}{fee && fee.processingDays ? ", " + itinFeeLabel(fee.processingDays) : ""}</span>
               </li>
             );
           })}

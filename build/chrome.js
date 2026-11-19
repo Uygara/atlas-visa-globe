@@ -315,7 +315,7 @@ function LangSelect(_ref8) {
     return React.createElement("option", {
       key: l.code,
       value: l.code
-    }, l.code.toUpperCase(), " \xB7 ", l["native"], l.beta ? " (beta)" : "");
+    }, l["native"], l.beta ? " (beta)" : "");
   }));
 }
 function Masthead(_ref9) {
@@ -729,14 +729,11 @@ function MobileSheetHandle() {
   }));
 }
 function Caption(_ref0) {
-  var n = _ref0.n,
-    children = _ref0.children,
+  var children = _ref0.children,
     aside = _ref0.aside;
   return React.createElement("span", {
     className: "p-cap"
-  }, n != null && React.createElement("span", {
-    className: "p-cap-n"
-  }, String(n).padStart(2, "0")), React.createElement("span", null, children), aside && React.createElement("span", {
+  }, React.createElement("span", null, children), aside && React.createElement("span", {
     className: "p-cap-aside"
   }, aside));
 }

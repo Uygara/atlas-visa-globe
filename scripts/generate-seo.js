@@ -80,12 +80,11 @@ const LOC = {
     cont: { EU: "Europe", AS: "Asia", AF: "Africa", NA: "the Americas (North & Central)", SA: "South America", OC: "Oceania", AN: "Antarctica" },
     join: (a) => a.length <= 1 ? (a[0] || "") : a.length === 2 ? `${a[0]} and ${a[1]}` : `${a.slice(0, -1).join(", ")}, and ${a[a.length - 1]}`,
     upTo: (n) => `up to ${n} days`,
-    docBand: "PASSPORT · PASAPORT · PASSEPORT",
     crumbs: (name) => ({ home: "travelnow.info", passports: "Passports", here: name }),
     title: (name, mob) => `${name} passport visa-free countries 2026: ${mob} destinations without a visa`,
     description: (name, c, rank) => `Where can a ${name} passport take you? ${c.vf} visa-free, ${c.voa} visa on arrival, ${c.ev} eVisa, ${c.vr} visa required. Global rank #${rank}. Updated daily.`,
     h1: (name) => `${name} passport: visa-free countries and visa requirements`,
-    subtitle: (n, rank, date) => `${n} destinations${rank ? ` · Global rank #${rank}` : ""} · Updated ${date}`,
+    subtitle: (n, rank, date) => `${n} destinations${rank ? `, global rank #${rank}` : ""}. Updated ${date}.`,
     scoreLabel: "destinations without a visa application",
     ofTotal: (n) => `of ${n}`,
     withEvisa: (n) => `${n} counting eVisas (apply online, no embassy visit)`,
@@ -160,8 +159,8 @@ const LOC = {
     dirDesc: (n) => `Browse visa requirements and the global mobility ranking for ${n} passports. Updated daily from public visa-policy sources.`,
     dirH1: "Passport visa-requirement directory",
     dirIntro: `Every passport we track, ranked by ${strong("global mobility")}: the number of destinations you can enter without applying for a visa (visa-free, ID card, travel authorization or visa on arrival), ties broken by eVisa access. It is the same ranking the interactive map shows. Open any passport for a full country breakdown, regional analysis and FAQ. Figures are rebuilt every 24 hours. New here? Start with our <a href="%TYPES%">guide to visa types</a>.`,
-    dirMeta: (n, date) => `${n} passports · Data refreshed ${date}`,
-    dirItem: (mob, rank) => `${mob} without a visa · #${rank}`,
+    dirMeta: (n, date) => `${n} passports. Data refreshed ${date}.`,
+    dirItem: (mob, rank) => `${mob} without a visa, rank #${rank}`,
     // Passport page: pointer to the inbound-visa page of the same country.
     toVisa: (name) => `Planning to visit ${theEn(name.iso, name.label)}? See who needs a visa to enter`,
   },
@@ -175,12 +174,11 @@ const LOC = {
     cont: { EU: "Avrupa", AS: "Asya", AF: "Afrika", NA: "Kuzey ve Orta Amerika", SA: "Güney Amerika", OC: "Okyanusya", AN: "Antarktika" },
     join: (a) => a.length <= 1 ? (a[0] || "") : `${a.slice(0, -1).join(", ")} ve ${a[a.length - 1]}`,
     upTo: (n) => `${n} güne kadar`,
-    docBand: "PASSPORT · PASAPORT · PASSEPORT",
     crumbs: (name) => ({ home: "travelnow.info", passports: "Pasaportlar", here: name }),
     title: (name, mob) => `${name} pasaportu ile vizesiz gidilen ülkeler 2026: ${mob} ülke`,
     description: (name, c, rank) => `${name} pasaportuyla nereye gidebilirsin? ${c.vf} vizesiz, ${c.voa} varışta vize, ${c.ev} e-Vize, ${c.vr} vize gerekli. Dünya sıralaması ${rank}. Her gün güncellenir.`,
     h1: (name) => `${name} pasaportu ile vizesiz gidilen ülkeler`,
-    subtitle: (n, rank, date) => `${n} destinasyon${rank ? ` · Dünya sıralaması ${rank}.` : ""} · Güncelleme ${date}`,
+    subtitle: (n, rank, date) => `${n} destinasyon${rank ? `, dünya sıralaması ${rank}` : ""}. Güncelleme ${date}.`,
     scoreLabel: "vize başvurusu gerektirmeyen destinasyon",
     ofTotal: (n) => `/ ${n}`,
     withEvisa: (n) => `e-Vize dahil ${n} (çevrimiçi başvuru, konsolosluğa gitmeden)`,
@@ -257,8 +255,8 @@ const LOC = {
     dirDesc: (n) => `${n} pasaportun vize şartlarına ve küresel hareketlilik sıralamasına göz at. Her gün kamuya açık vize politikası kaynaklarından güncellenir.`,
     dirH1: "Pasaport vize şartları rehberi",
     dirIntro: `Takip ettiğimiz her pasaport, ${strong("küresel hareketlilik")}e göre sıralı: yani vize başvurusu yapmadan girilebilen destinasyon sayısı (vizesiz, kimlikle, seyahat iziniyle ya da varışta vizeyle); eşitlikte e-Vize erişimi belirleyici. Etkileşimli haritadaki sıralamayla aynıdır. Ülke dökümü, bölgesel analiz ve sık sorulan sorular için herhangi bir pasaportu aç. Rakamlar her 24 saatte bir yenilenir. Yeni misin? <a href="%TYPES%">Vize türleri rehberimizle</a> başla.`,
-    dirMeta: (n, date) => `${n} pasaport · Veri yenilenme tarihi ${date}`,
-    dirItem: (mob, rank) => `vizesiz ${mob} · ${rank}. sıra`,
+    dirMeta: (n, date) => `${n} pasaport. Veri yenilenme tarihi ${date}.`,
+    dirItem: (mob, rank) => `vizesiz ${mob}, ${rank}. sırada`,
     toVisa: (name) => `${name.label} ziyareti mi planlıyorsun? Hangi pasaportlara vize gerektiğini gör`,
   },
 };
@@ -390,7 +388,6 @@ function renderPage(passport, allPassports, ranks, lang, ads) {
   const total = rows.length;
   const titleText = L.title(name, mob);
   const description = L.description(name, counts, rank || "?");
-  const mrz = DATA.mrzLines(passport);
   // The passport's own social card (scripts/og-cards.js); the generic one until it exists.
   const ogCard = fs.existsSync(path.join(ROOT, "assets", "og", `${slug}-${lang}.png`));
   const ogImage = ogCard ? `${SITE_URL}/assets/og/${slug}-${lang}.png` : `${SITE_URL}/assets/og.png`;
@@ -491,7 +488,6 @@ ${masthead({ path: enPath, i18n: false, lang })}
   <p class="crumbs"><a href="${P("/")}">${crumbs.home}</a> › <a href="${P("/passport/")}">${escapeHtml(crumbs.passports)}</a> › ${escapeHtml(name)}</p>
 
   <header class="bio">
-    <div class="bio-doc">${L.docBand}</div>
     <div class="bio-main">
       <span class="hero-flag flag" aria-hidden="true">${country.flag}</span>
       <div>
@@ -499,7 +495,6 @@ ${masthead({ path: enPath, i18n: false, lang })}
         <p class="subtitle">${escapeHtml(L.subtitle(total, rank, fmtDate(today, lang)))}</p>
       </div>
     </div>
-    <div class="mrz" aria-hidden="true"><span>${escapeHtml(mrz[0])}</span><span>${escapeHtml(mrz[1])}</span></div>
   </header>
 
   <p class="visa-in"><a href="${P(`/visa/${slug}/`)}">${escapeHtml(L.toVisa({ iso: passport, label: name }))}</a></p>
@@ -552,7 +547,7 @@ const VLOC = {
     crumb: "Visa requirements",
     title: (name, month) => `${name} visa requirements by nationality (${month}) · travelnow.info`,
     h1: (name) => `${name} visa requirements`,
-    subtitle: (n, date) => `${n} passports compared · Updated ${date}`,
+    subtitle: (n, date) => `${n} passports compared. Updated ${date}.`,
     parts: {
       vf: (n) => `${n} visa-free`, idc: (n) => `${n} with a national ID card`,
       eta: (n) => `${n} with an online travel authorization`, ev: (n) => `${n} with an eVisa`,
@@ -614,14 +609,14 @@ const VLOC = {
     dirDesc: (n) => `Who needs a visa to enter ${n} countries and territories, by nationality. Updated daily from public visa-policy sources.`,
     dirH1: "Visa requirements by destination",
     dirIntro: "Pick the country you want to visit to see which passports can enter visa-free, with a visa on arrival, with an eVisa or only with a visa arranged in advance. Looking for the opposite view, where one passport can go? Use the <a href=\"%PASSPORTS%\">passport directory</a>.",
-    dirMeta: (n, date) => `${n} destinations · Data refreshed ${date}`,
+    dirMeta: (n, date) => `${n} destinations. Data refreshed ${date}.`,
   },
 
   tr: {
     crumb: "Vize şartları",
     title: (name, month) => `${name} vizesi: hangi pasaporta vize gerekir? (${month}) · travelnow.info`,
     h1: (name) => `${name} vize şartları`,
-    subtitle: (n, date) => `${n} pasaport karşılaştırıldı · Güncelleme ${date}`,
+    subtitle: (n, date) => `${n} pasaport karşılaştırıldı. Güncelleme ${date}.`,
     parts: {
       vf: (n) => `${n} vizesiz`, idc: (n) => `${n} kimlikle`,
       eta: (n) => `${n} seyahat iziniyle`, ev: (n) => `${n} e-Vize ile`,
@@ -683,7 +678,7 @@ const VLOC = {
     dirDesc: (n) => `${n} ülke ve bölgeye girmek için hangi uyruğa vize gerektiğini gör. Her gün kamuya açık vize politikası kaynaklarından güncellenir.`,
     dirH1: "Gidilecek ülkeye göre vize şartları",
     dirIntro: "Gitmek istediğin ülkeyi seç: hangi pasaportların vizesiz, varışta vizeyle, e-Vize ile ya da yalnızca önceden alınan vizeyle girebildiğini göreceksin. Tersini mi arıyorsun, yani bir pasaportla nereye gidilir? <a href=\"%PASSPORTS%\">Pasaport rehberine</a> bak.",
-    dirMeta: (n, date) => `${n} destinasyon · Veri yenilenme tarihi ${date}`,
+    dirMeta: (n, date) => `${n} destinasyon. Veri yenilenme tarihi ${date}.`,
   },
 };
 

@@ -125,7 +125,7 @@ function TransitPicker({ value, onChange }) {
   return (
     <div ref={ref} style={{ position: "relative" }}>
       <button type="button" className="pp-card" style={{ paddingBottom: 2 }} onClick={() => setOpen(o => !o)} aria-expanded={open}>
-        <span className="pp-doc" aria-hidden="true">Passport · Pasaport · Passeport<IconCaret /></span>
+        <span className="pp-doc" aria-hidden="true">Passport / Pasaport / Passeport<IconCaret /></span>
         {country ? (
           <span className="pp-main">
             <span className="flag pp-flag" aria-hidden="true">{country.flag}</span>

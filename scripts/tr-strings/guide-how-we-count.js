@@ -2,7 +2,6 @@
 module.exports = {
   "506df346": `<a href="/">travelnow.info</a> › <a href="/guides/">Rehberler</a> › Nasıl sayıyoruz`,
   "d5ffec5d": `Bir pasaportun vizesiz sayısı nasıl okunur`,
-  "78cbebb7": `Yazan: Uygar Atalay · Güncelleme: 24 Eylül 2026 · yaklaşık 5 dakikalık okuma`,
   "f5cbd61b": `Her pasaport sayfası ve haritanın yan paneli tek bir sayıyla açılır. Basit görünür, ama “87 destinasyon” gibi bir rakam bazı tercihleri gizler: e-Vize sayılır mı? Varışta vize? ESTA gibi seyahat öncesi bir kayıt? Bu rehber tam olarak neyi saydığımızı, pasaportların nasıl sıralandığını ve sayının yanıltılmadan nasıl kullanılacağını anlatır.`,
   "93e8b11e": `Ana sayı: önceden vize alınmadan gidilebilenler`,
   "e839ab3f": `Büyük sayı, <strong>önceden vize almadan girebildiğin</strong> destinasyonların sayısıdır. Harita anahtarındaki yedi giriş kategorisinden dördünü toplar:`,
@@ -38,4 +37,5 @@ module.exports = {
   // /guides/ index entry
   "1b1748c8": `Sayılar hakkında`,
   "9f87fc61": `Ana sayının neyi saydığı, e-Vizelerin neden ayrı gösterildiği, pasaportların nasıl sıralandığı ve iki sıralamanın neden ikisinin de doğru olabileceği.`,
+  "d7289bf2": `Güncelleme: 24 Eylül 2026. Yaklaşık 5 dakikalık okuma.`,
 };

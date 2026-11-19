@@ -74,6 +74,15 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 19 (2026-11-19 night: quiet redesign, "no AI look"):**
+  Owner: the site looked AI-made. Design now follows Apple HIG notes (dickwu/apple-design-skill, emilkowalski/skills).
+  Tokens: system font stack (SF Pro / Segoe UI Variable), `--font-mono` now aliases the sans face (`--font-code` for
+  code), neutral surfaces, no guilloche, radius 8/12, no letter-spaced capitals, nothing under 12px.
+  Removed: numbered captions (01 Yön), § counters, guide list numbers, MRZ lines and the trilingual passport label,
+  coloured side stripes (now tinted surfaces), footer disclaimer and author line, panel byline.
+  Copy sweep: no "·" separators in visible text (titles kept), dated source lines are full sentences.
+  Static masthead is translucent (blur 20px). Stamps 20261119d. Social/OG PNGs still carry the old style.
+
 - **Round 18 (2026-11-19 evening: iVisa live, IG approvals, two-editor rules):**
   iVisa accepted us. Partner link `https://www.ivisa.com/?utm_source=travelnow` (from the approval email) is in
   `data/affiliates.js`: SPA panel for ev/voa/vr destinations (labels now localised) and a sponsored box on every

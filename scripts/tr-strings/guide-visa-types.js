@@ -2,7 +2,6 @@
 module.exports = {
   "558c8a20": `<a href="/">travelnow.info</a> › <a href="/guides/">Rehberler</a> › Vize türleri açıklandı`,
   "254e04df": `Vizesiz, e-Vize, varışta vize: aradaki fark gerçekte ne demek`,
-  "fa0f28f4": `Yazan: Uygar Atalay · Güncelleme: 17 Haziran 2026 · yaklaşık 6 dakikalık okuma`,
   "94ab8a08": `travelnow.info'da bir pasaport seçtiğinde her ülke bir avuç renkten biriyle yanar. Bu renkler basit görünür, ama her biri farklı bir süreci, farklı bir maliyeti ve farklı bir tuzağı gizler. İşte her kategorinin pratikte gerçekte ne anlama geldiği, ve “vizesiz” bir seyahati kaçırılmış bir uçuşa çeviren küçük puntolar.`,
   "4f9cc0c4": `Haritadaki beş kategori`,
   "22e005f5": `Yalnızca pasaportunla uçağa binip giriş yapabilirsin. Form yok, harç yok, önceden onay yok, yine de sınır görevlisini ikna etmen gerekir (devam bileti, yeterli para kanıtı, yeterli geçerliliği kalmış bir pasaport). “Vizesiz” neredeyse her zaman azami bir kalış süresiyle gelir; genellikle 30, 90 veya 180 gün.`,
@@ -29,5 +28,7 @@ module.exports = {
   "37326cdc": `Kendi pasaportunu kontrol et`,
   "eb684680": `<a href="/">Etkileşimli küreyi aç</a> ve pasaportunu seçerek bunların hepsini ülke ülke boyalı gör.`,
   "7baa805f": `Eksiksiz vize gereklilikleri dökümü ve küresel sıralama için <a href="/passport/">tüm pasaportlara göz at</a>.`,
-  "2ceade91": `<a href="/esta-rules/">ESTA kontrolü</a> · <a href="/etias/">ETIAS kontrolü</a> · <a href="/visa-shortcuts/">Vize Kestirmeleri</a>`,
+  "e7cdae58": `<a href="/esta-rules/">ESTA kontrolü</a>`,
+  "12c6085e": `<a href="/etias/">ETIAS kontrolü</a>`,
+  "d18e1aa3": `<a href="/visa-shortcuts/">Vize Kestirmeleri</a>`,
 };

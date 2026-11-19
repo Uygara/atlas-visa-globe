@@ -1,7 +1,6 @@
 // Turkish text for /guides/schengen-90-180-rule/ — see scripts/tr-strings/index.js.
 module.exports = {
   "970ffa69": `<a href="/">travelnow.info</a> › <a href="/guides/">Rehberler</a> › Schengen 90/180 kuralı`,
-  "15d8037b": `Yazan: Uygar Atalay · Güncelleme: 17 Haziran 2026 · yaklaşık 7 dakikalık okuma`,
   "60c2ce0d": `Avrupa'yı vizesiz ziyaret ediyorsan, seyahatindeki en önemli sayı 90'dır. Schengen Bölgesi'nde <strong>herhangi bir 180 günlük dönemde en fazla 90 gün</strong> kalabilirsin, ve bu 180 günün nasıl sayıldığı, çoğu insanın yanıldığı yerdir. Bu rehber kayan pencereyi açıklıyor, gerçek örnekler üzerinden gidiyor ve doğru tarafta kalmanın yolunu gösteriyor.`,
   "90e100b5": `Kuralın gerçekte söylediği`,
   "24dca3c6": `Schengen Bölgesi, tek bir dış sınırı paylaşan ve iç sınırlarında pasaport kontrolü olmayan bir grup Avrupa ülkesidir. Vizesiz giriş yapabilen uyrukların çoğu (ve kısa süreli Schengen vizesi sahipleri) için hak aynıdır: herhangi bir kayan 180 günlük pencerede en fazla 90 gün bulunma. Bu, her bir ülkeye değil, <em>Bölge'nin bütününe</em> uygulanır. Fransa'da üç hafta, İtalya'da iki hafta ve İspanya'da bir hafta, hepsi aynı 90 günlük bütçeden düşer.`,
@@ -32,4 +31,5 @@ module.exports = {
   "15547d22": `<a href="/schengen-calculator/">Schengen 90/180 hesaplayıcıyı aç</a>: geçmiş seyahatlerini gir; sana tam olarak kaç gün hakkın kaldığını ve ne zamana kadar olduğunu söyler.`,
   "e9e28296": `<a href="/etias/">ETIAS kontrolü</a>: 2026 iznin pasaportuna uygulanıp uygulanmadığını öğren.`,
   "9a08b7ad": `<a href="/">Etkileşimli küre</a>: hangi Avrupa ülkelerinin senin için baştan vizesiz olduğunu gör.`,
+  "7f8342ea": `Güncelleme: 17 Haziran 2026. Yaklaşık 7 dakikalık okuma.`,
 };

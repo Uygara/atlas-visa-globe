@@ -279,7 +279,7 @@ function PassportTypeSelector({ passport, value, onChange }) {
         <p className="p-hint">
           {active.sub}
           {active.source && (
-            <> · <a className="link-quiet" href={active.source} target="_blank" rel="noopener nofollow">{window.t("cond.source")}</a></>
+            <><br /><a className="link-quiet" href={active.source} target="_blank" rel="noopener nofollow">{window.t("cond.source")}</a></>
           )}
         </p>
       )}
@@ -538,34 +538,26 @@ function GroupAddDropdown({ existing, onPick }) {
 function PassportPicker({ value, open, setOpen, onChange, isCompare, placeholder, allowClear }) {
   const current = value ? window.PASSPORTS[value] : null;
   const country = value ? window.byIso2[value] : null;
-  // The machine-readable zone comes from data/mrz.js, shared with the generated
-  // /passport/ pages. Call it through window: a top-level function named mrzLines
-  // here would replace it (all compiled JSX shares one global scope) and recurse.
-  const mrz = value && window.mrzLines ? window.mrzLines(value) : null;
+  const rank = value && window.passportRank(value);
   return (
     <div>
       <button type="button" className={"pp-card" + (isCompare ? " is-compare" : "")} onClick={() => setOpen(!open)} aria-expanded={open}
         aria-label={(isCompare ? window.t("panel.compare_with") : window.t("panel.your_passport")) + (country ? ": " + window.countryName(value) : "")}>
-        <span className="pp-doc" aria-hidden="true">
-          {isCompare ? window.t("panel.compare_with") : "Passport · Pasaport · Passeport"}
-          <IconCaret />
-        </span>
+        {isCompare && <span className="pp-doc" aria-hidden="true">{window.t("panel.compare_with")}</span>}
         {country ? (
           <span className="pp-main">
             <span className="flag pp-flag" aria-hidden="true">{country.flag}</span>
             <span style={{ minWidth: 0, flex: 1 }}>
               <span className="pp-name" style={{ display: "block" }}>{window.countryName(value)}</span>
-              <span className="pp-meta" style={{ display: "block" }}>
-                <bdi dir="ltr">{value}</bdi>
-                {window.passportRank(value) && <> · {window.t("pulse.rank")} <bdi dir="ltr">#{window.passportRank(value).rank}</bdi></>}
-              </span>
+              {rank && <span className="pp-meta" style={{ display: "block" }}>{window.t("pulse.rank")} {rank.rank}</span>}
             </span>
+            <IconCaret />
           </span>
         ) : (
-          <span className="pp-empty" style={{ display: "block" }}>{placeholder || window.t("picker.select_passport")}</span>
-        )}
-        {mrz && (
-          <span className="mrz" aria-hidden="true"><span>{mrz[0]}</span><span>{mrz[1]}</span></span>
+          <span className="pp-main">
+            <span className="pp-empty" style={{ flex: 1 }}>{placeholder || window.t("picker.select_passport")}</span>
+            <IconCaret />
+          </span>
         )}
       </button>
       {open && (
@@ -652,7 +644,7 @@ function Tally({ tally, filter, setFilter, groupActive, direction }) {
         <span className="score-n">{noVisa}</span>
         <span className="score-l">
           {scoreLabel}<br />
-          <span className="mono">{window.t("tally.of")} {total}{groupActive && " · " + window.t("tally.worst_case")}</span>
+          <span className="mono">{window.t("tally.of")} {total}{groupActive && ", " + window.t("tally.worst_case")}</span>
         </span>
       </div>
       {withEvisa > noVisa && (
@@ -1086,7 +1078,7 @@ function SchengenHelp({ passport, destIso2 }) {
       <span className="note-k">{tr("detail.schengen_title", "Schengen area: 90 days in any 180")}</span>
       <span className="note-s">
         <a href="/schengen-calculator/">{tr("detail.schengen_calc", "Count your days")}</a>
-        {help.checklist && <> · <a href={help.checklist}>{tr("detail.schengen_checklist", "Visa document checklist")}</a></>}
+        {help.checklist && <><br /><a href={help.checklist}>{tr("detail.schengen_checklist", "Visa document checklist")}</a></>}
       </span>
     </div>
   );
@@ -1308,7 +1300,6 @@ function NewsItem({ item, compact }) {
     <Wrapper {...wrapperProps} className="feed-item" style={{ "--tone": tone }}>
       <div className="feed-meta">
         <time dateTime={item.date}>{fmtDay(item.date, true)}</time>
-        <span>·</span>
         <span>{NEWS_SOURCE_LABEL[item.source] || item.source}</span>
       </div>
       <div className="feed-title">{item.title}</div>
@@ -1567,7 +1558,7 @@ function PassportPulse({ passport }) {
       {hasMovement && (
         <p className="p-hint">
           {pulse.gains > 0 && window.t("pulse.gains_msg", { n: pulse.gains })}
-          {pulse.gains > 0 && pulse.losses > 0 && " · "}
+          {pulse.gains > 0 && pulse.losses > 0 && " "}
           {pulse.losses > 0 && window.t("pulse.losses_msg", { n: pulse.losses })}
         </p>
       )}
@@ -1660,7 +1651,7 @@ function RecentChangeRow({ it, destIso2 }) {
     <div className="feed-item" style={{ padding: "6px 0" }}>
       <div className="feed-meta">
         <time dateTime={it.date}>{fmtDay(it.date, true)}</time>
-        {it.mine && <><span>·</span><strong>{tr("recent.yours", "Your passport")}</strong></>}
+        {it.mine && <><strong>{tr("recent.yours", "Your passport")}</strong></>}
       </div>
       <div className="feed-title" style={{ fontWeight: 500 }}>{text}</div>
       {it.kind !== "adv" && <div className="p-fine">{tr("recent.source", "Source: Wikipedia visa requirement articles, daily snapshot")}</div>}
@@ -1689,7 +1680,7 @@ function RecentChanges({ passport, destIso2 }) {
       </div>
       <div className="p-fine" style={{ marginTop: 4 }}>
         <a href={`${lang}/visa/${cc}/`}>{tr("recent.all", "See all changes for {name}", { name: window.countryName(destIso2) })}</a>
-        {" · "}
+        <br />
         <a href={`${lang}/reports/`}>{tr("recent.report", "Monthly report")}</a>
       </div>
     </div>
@@ -1786,7 +1777,6 @@ function ChangelogItem({ entry }) {
     <div className="feed-item" style={{ "--tone": `var(--${entry.statusTo}, var(--rule-strong))` }}>
       <div className="feed-meta">
         <time dateTime={entry.date}>{fmtDay(entry.date)}</time>
-        <span>·</span>
         {passport && <><span className="flag">{passport.flag}</span><span>{window.countryName(passportIso)}</span></>}
         <span className="cta-go">→</span>
         {dest && <><span className="flag">{dest.flag}</span><span>{window.countryName(entry.affects.dest)}</span></>}
@@ -1802,7 +1792,6 @@ function ChangelogItem({ entry }) {
 function PanelFooter() {
   return (
     <footer className="panel-foot">
-      <div>{window.t("footer.refresh")}</div>
       <nav aria-label="Footer">
         <a href="/alerts/">{window.t("footer.alerts")}</a>
         <a href="/schengen-calculator/">{window.t("footer.schengen")}</a>
@@ -1820,7 +1809,6 @@ function PanelFooter() {
         <a href="https://www.instagram.com/travelnow.info/" target="_blank" rel="noopener">Instagram</a>
         <a href="https://github.com/Uygara/atlas-visa-globe" target="_blank" rel="noopener">{window.t("footer.source")}</a>
       </nav>
-      <div className="byline" dir="ltr" style={{ textAlign: "start" }}>© {new Date().getFullYear()} travelnow.info · Uygar Atalay</div>
     </footer>
   );
 }

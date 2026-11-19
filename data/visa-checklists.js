@@ -16,8 +16,8 @@
 
 window.VISA_CHECKLISTS = {
   "TR-SCHENGEN": {
-    title: "Schengen Tourist Visa · Turkish citizens",
-    titleTr: "Schengen Turist Vizesi · Türkiye Cumhuriyeti vatandaşları",
+    title: "Schengen Tourist Visa for Turkish citizens",
+    titleTr: "Türkiye Cumhuriyeti vatandaşları için Schengen Turist Vizesi",
     intro: "Schengen short-stay (Type C) visa, tourist purpose, valid for any of the 29 Schengen Area states. Apply at the consulate of the country where you'll spend the most days. This list reflects the documentation a Turkish citizen typically needs in 2026.",
     introTr: "Schengen kısa süreli (Tip C) turist vizesi, 29 Schengen üyesi ülkesinin herhangi birinde geçerlidir. Başvuru, en çok zaman geçireceğin ülkenin konsolosluğuna yapılır. Aşağıdaki liste 2026'da Türk vatandaşlarının tipik olarak ihtiyaç duyduğu belgeleri yansıtır.",
     sections: [

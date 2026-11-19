@@ -27,7 +27,8 @@ ${passports.map(([iso, name]) => `        <li><a href="/tr/passport/${iso}/">${n
         <li><a href="/tr/passport-validity/">Pasaport Geçerlilik Kontrolü</a>: 6 ay kuralı, varış noktasına göre</li>
         <li><a href="/itinerary/">Seyahat Planlayıcı</a>: çok duraklı bir gezi için vizeler, maliyetler ve süreler</li>
         <li><a href="/tr/visa-shortcuts/">Vize Kestirmeleri</a>: elindeki vizelerle daha kolay giriş</li>
-        <li><a href="/tr/digital-nomad-visa/">Dijital Göçebe Vizeleri</a> · <a href="/tr/citizenship-by-investment/">Yatırımla Vatandaşlık</a></li>
+        <li><a href="/tr/digital-nomad-visa/">Dijital Göçebe Vizeleri</a></li>
+        <li><a href="/tr/citizenship-by-investment/">Yatırımla Vatandaşlık</a></li>
       </ul>
 
       <h2>Seyahat rehberleri</h2>
@@ -36,7 +37,8 @@ ${passports.map(([iso, name]) => `        <li><a href="/tr/passport/${iso}/">${n
         <li><a href="/tr/guides/schengen-90-180-rule/">Schengen 90/180 gün kuralı gerçekte nasıl işler</a></li>
         <li><a href="/tr/guides/etias-2026-explained/">2026'da ETIAS: kimler için gerekli ve vizeden farkı ne</a></li>
         <li><a href="/tr/guides/transit-visa-guide/">Transit vizeler: aktarma ne zaman evrak gerektirir</a></li>
-        <li><a href="/tr/guides/passport-validity-six-month-rule/">Altı aylık pasaport geçerlilik kuralı</a> · <a href="/tr/guides/">tüm rehberler →</a></li>
+        <li><a href="/tr/guides/passport-validity-six-month-rule/">Altı aylık pasaport geçerlilik kuralı</a></li>
+        <li><a href="/tr/guides/">Tüm rehberler →</a></li>
       </ul>
 
       <h2>Veriler nasıl oluşturuluyor</h2>

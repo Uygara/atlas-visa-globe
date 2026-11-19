@@ -132,7 +132,7 @@ function renderDigestEmail({ subscriber, changes, unsubscribeUrl, siteUrl }) {
         </td></tr>
         <tr><td style="padding:18px 28px;border-top:1px solid #eef2f8;font-size:12px;color:#6b7591;">
           <a href="${siteUrl}/" style="color:#60a5fa;text-decoration:none;">View on travelnow.info →</a><br>
-          <a href="${unsubscribeUrl}" style="color:#6b7591;">Unsubscribe</a> · subscriber: ${subscriber.email}
+          <a href="${unsubscribeUrl}" style="color:#6b7591;">Unsubscribe</a>. Sent to ${subscriber.email}.
         </td></tr>
       </table>
     </td></tr>

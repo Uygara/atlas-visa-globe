@@ -69,7 +69,7 @@ function renderReminderEmail({ subscriber, items, siteUrl, unsubscribeUrl }) {
             ${urgencyLabel(daysOut)}
           </div>
           <div style="font-size:14px;font-weight:600;color:#1a2236;margin-top:4px;">
-            ${item.destIso} · ${(item.label || "Visa application").replace(/[<>]/g, "")}
+            ${item.destIso}: ${(item.label || "Visa application").replace(/[<>]/g, "")}
           </div>
           <div style="font-size:12px;color:#3a4256;margin-top:2px;">
             Apply by ${item.applyBy}
@@ -94,7 +94,7 @@ function renderReminderEmail({ subscriber, items, siteUrl, unsubscribeUrl }) {
         </td></tr>
         <tr><td style="padding:18px 28px;border-top:1px solid #eef2f8;font-size:12px;color:#6b7591;">
           <a href="${siteUrl}/itinerary/" style="color:#60a5fa;text-decoration:none;">Open your itinerary →</a><br>
-          <a href="${unsubscribeUrl}" style="color:#6b7591;">Unsubscribe</a> · Pro subscriber: ${subscriber.email}
+          <a href="${unsubscribeUrl}" style="color:#6b7591;">Unsubscribe</a>. Sent to Pro subscriber ${subscriber.email}.
         </td></tr>
       </table>
     </td></tr>

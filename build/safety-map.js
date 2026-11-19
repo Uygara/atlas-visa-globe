@@ -360,7 +360,7 @@ function LevelLedger(_ref5) {
       "aria-hidden": "true"
     }), React.createElement("span", {
       className: "lg-label"
-    }, r.n, " \xB7 ", levelLabel(r.n)), React.createElement("span", {
+    }, r.n, ": ", levelLabel(r.n)), React.createElement("span", {
       className: "lg-dots"
     }), React.createElement("span", {
       className: "lg-n"
@@ -422,7 +422,7 @@ function RecentlyUpdated(_ref6) {
       className: "feed-meta"
     }, React.createElement("time", {
       dateTime: r.date
-    }, fmtDate(r.date)), React.createElement("span", null, "\xB7"), React.createElement("span", {
+    }, fmtDate(r.date)), React.createElement("span", {
       className: "flag"
     }, (_window$byIso2$r$iso = window.byIso2[r.iso2]) === null || _window$byIso2$r$iso === void 0 ? void 0 : _window$byIso2$r$iso.flag), React.createElement("span", null, window.countryName(r.iso2))), React.createElement("div", {
       className: "feed-sum",
@@ -484,7 +484,7 @@ function SafetyHover(_ref7) {
     style: {
       "--sw": LEVEL_COLOR[level]
     }
-  }), React.createElement("span", null, level ? "".concat(level, " \xB7 ").concat(levelLabel(level)) : levelLabel(0))), a && a.regions && a.regions.length > 0 && React.createElement("div", {
+  }), React.createElement("span", null, level ? "".concat(level, ": ").concat(levelLabel(level)) : levelLabel(0))), a && a.regions && a.regions.length > 0 && React.createElement("div", {
     className: "hovercard-row hovercard-cap"
   }, tr("safety.has_regions", "Some regions are worse. Tap to see them")));
 }
@@ -695,7 +695,7 @@ function SafetyDetail(_ref9) {
       className: "note-s"
     }, tr("safety.event_since", "since {date}", {
       date: fmtDate(e.from)
-    }), " \xB7 GDACS"), React.createElement("span", {
+    }), " (GDACS)"), React.createElement("span", {
       className: "note-go",
       "aria-hidden": "true"
     }, "\u2192"));
@@ -723,7 +723,7 @@ function SafetyDetail(_ref9) {
       className: "feed-meta"
     }, React.createElement("time", {
       dateTime: u.date
-    }, fmtDate(u.date)), React.createElement("span", null, "\xB7"), React.createElement("span", null, "UK FCDO")), React.createElement("div", {
+    }, fmtDate(u.date)), React.createElement("span", null, "UK FCDO")), React.createElement("div", {
       className: "feed-sum",
       dir: "auto"
     }, u.note));
@@ -841,7 +841,7 @@ function SourceRow(_ref0) {
     }
   }, React.createElement("span", {
     className: "p-fine" + (stale ? " is-stale" : "")
-  }, ago(src.updated), stale ? " · " + tr("safety.stale", "not revised recently") : ""), React.createElement("a", {
+  }, ago(src.updated), stale ? ", " + tr("safety.stale", "not revised recently") : ""), React.createElement("a", {
     className: "link-quiet",
     href: src.url,
     target: "_blank",

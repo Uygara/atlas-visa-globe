@@ -292,7 +292,8 @@ function renderMonth(m, all, lang) {
   <p>${esc(L.method)} ${esc(L.methodNet)}</p>
 
   <div class="rep-nav">${navLinks}</div>
-  <p><a href="${href("/reports/")}">${L.allReports}</a> · <a href="${href("/passport/")}">${L.passportsAll}</a></p>
+  <p><a href="${href("/reports/")}">${L.allReports}</a></p>
+  <p><a href="${href("/passport/")}">${L.passportsAll}</a></p>
 </div>`;
 
   const jsonld = {

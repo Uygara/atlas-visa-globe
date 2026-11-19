@@ -303,7 +303,7 @@ function PassportTypeSelector(_ref3) {
     }, o.label);
   })), (active.sub || active.source) && React.createElement("p", {
     className: "p-hint"
-  }, active.sub, active.source && React.createElement(React.Fragment, null, " \xB7 ", React.createElement("a", {
+  }, active.sub, active.source && React.createElement(React.Fragment, null, React.createElement("br", null), React.createElement("a", {
     className: "link-quiet",
     href: active.source,
     target: "_blank",
@@ -740,7 +740,7 @@ function PassportPicker(_ref1) {
     allowClear = _ref1.allowClear;
   var current = value ? window.PASSPORTS[value] : null;
   var country = value ? window.byIso2[value] : null;
-  var mrz = value && window.mrzLines ? window.mrzLines(value) : null;
+  var rank = value && window.passportRank(value);
   return React.createElement("div", null, React.createElement("button", {
     type: "button",
     className: "pp-card" + (isCompare ? " is-compare" : ""),
@@ -749,10 +749,10 @@ function PassportPicker(_ref1) {
     },
     "aria-expanded": open,
     "aria-label": (isCompare ? window.t("panel.compare_with") : window.t("panel.your_passport")) + (country ? ": " + window.countryName(value) : "")
-  }, React.createElement("span", {
+  }, isCompare && React.createElement("span", {
     className: "pp-doc",
     "aria-hidden": "true"
-  }, isCompare ? window.t("panel.compare_with") : "Passport · Pasaport · Passeport", React.createElement(IconCaret, null)), country ? React.createElement("span", {
+  }, window.t("panel.compare_with")), country ? React.createElement("span", {
     className: "pp-main"
   }, React.createElement("span", {
     className: "flag pp-flag",
@@ -767,24 +767,19 @@ function PassportPicker(_ref1) {
     style: {
       display: "block"
     }
-  }, window.countryName(value)), React.createElement("span", {
+  }, window.countryName(value)), rank && React.createElement("span", {
     className: "pp-meta",
     style: {
       display: "block"
     }
-  }, React.createElement("bdi", {
-    dir: "ltr"
-  }, value), window.passportRank(value) && React.createElement(React.Fragment, null, " \xB7 ", window.t("pulse.rank"), " ", React.createElement("bdi", {
-    dir: "ltr"
-  }, "#", window.passportRank(value).rank))))) : React.createElement("span", {
+  }, window.t("pulse.rank"), " ", rank.rank)), React.createElement(IconCaret, null)) : React.createElement("span", {
+    className: "pp-main"
+  }, React.createElement("span", {
     className: "pp-empty",
     style: {
-      display: "block"
+      flex: 1
     }
-  }, placeholder || window.t("picker.select_passport")), mrz && React.createElement("span", {
-    className: "mrz",
-    "aria-hidden": "true"
-  }, React.createElement("span", null, mrz[0]), React.createElement("span", null, mrz[1]))), open && React.createElement(PassportDropdown, {
+  }, placeholder || window.t("picker.select_passport")), React.createElement(IconCaret, null))), open && React.createElement(PassportDropdown, {
     value: value,
     onChange: onChange,
     allowClear: allowClear,
@@ -909,7 +904,7 @@ function Tally(_ref11) {
     className: "score-l"
   }, scoreLabel, React.createElement("br", null), React.createElement("span", {
     className: "mono"
-  }, window.t("tally.of"), " ", total, groupActive && " · " + window.t("tally.worst_case")))), withEvisa > noVisa && React.createElement("p", {
+  }, window.t("tally.of"), " ", total, groupActive && ", " + window.t("tally.worst_case")))), withEvisa > noVisa && React.createElement("p", {
     className: "score-sub"
   }, window.t("tally.with_evisa", {
     n: withEvisa
@@ -1565,7 +1560,7 @@ function SchengenHelp(_ref19) {
     className: "note-s"
   }, React.createElement("a", {
     href: "/schengen-calculator/"
-  }, tr("detail.schengen_calc", "Count your days")), help.checklist && React.createElement(React.Fragment, null, " \xB7 ", React.createElement("a", {
+  }, tr("detail.schengen_calc", "Count your days")), help.checklist && React.createElement(React.Fragment, null, React.createElement("br", null), React.createElement("a", {
     href: help.checklist
   }, tr("detail.schengen_checklist", "Visa document checklist")))));
 }
@@ -1873,7 +1868,7 @@ function NewsItem(_ref29) {
     className: "feed-meta"
   }, React.createElement("time", {
     dateTime: item.date
-  }, fmtDay(item.date, true)), React.createElement("span", null, "\xB7"), React.createElement("span", null, NEWS_SOURCE_LABEL[item.source] || item.source)), React.createElement("div", {
+  }, fmtDay(item.date, true)), React.createElement("span", null, NEWS_SOURCE_LABEL[item.source] || item.source)), React.createElement("div", {
     className: "feed-title"
   }, item.title), !compact && item.summary && React.createElement("div", {
     className: "feed-sum"
@@ -2306,7 +2301,7 @@ function PassportPulse(_ref33) {
     className: "p-hint"
   }, pulse.gains > 0 && window.t("pulse.gains_msg", {
     n: pulse.gains
-  }), pulse.gains > 0 && pulse.losses > 0 && " · ", pulse.losses > 0 && window.t("pulse.losses_msg", {
+  }), pulse.gains > 0 && pulse.losses > 0 && " ", pulse.losses > 0 && window.t("pulse.losses_msg", {
     n: pulse.losses
   })));
 }
@@ -2485,7 +2480,7 @@ function RecentChangeRow(_ref35) {
     className: "feed-meta"
   }, React.createElement("time", {
     dateTime: it.date
-  }, fmtDay(it.date, true)), it.mine && React.createElement(React.Fragment, null, React.createElement("span", null, "\xB7"), React.createElement("strong", null, tr("recent.yours", "Your passport")))), React.createElement("div", {
+  }, fmtDay(it.date, true)), it.mine && React.createElement(React.Fragment, null, React.createElement("strong", null, tr("recent.yours", "Your passport")))), React.createElement("div", {
     className: "feed-title",
     style: {
       fontWeight: 500
@@ -2547,7 +2542,7 @@ function RecentChanges(_ref36) {
     href: "".concat(lang, "/visa/").concat(cc, "/")
   }, tr("recent.all", "See all changes for {name}", {
     name: window.countryName(destIso2)
-  })), " · ", React.createElement("a", {
+  })), React.createElement("br", null), React.createElement("a", {
     href: "".concat(lang, "/reports/")
   }, tr("recent.report", "Monthly report"))));
 }
@@ -2670,7 +2665,7 @@ function ChangelogItem(_ref39) {
     className: "feed-meta"
   }, React.createElement("time", {
     dateTime: entry.date
-  }, fmtDay(entry.date)), React.createElement("span", null, "\xB7"), passport && React.createElement(React.Fragment, null, React.createElement("span", {
+  }, fmtDay(entry.date)), passport && React.createElement(React.Fragment, null, React.createElement("span", {
     className: "flag"
   }, passport.flag), React.createElement("span", null, window.countryName(passportIso))), React.createElement("span", {
     className: "cta-go"
@@ -2697,7 +2692,7 @@ function ChangelogItem(_ref39) {
 function PanelFooter() {
   return React.createElement("footer", {
     className: "panel-foot"
-  }, React.createElement("div", null, window.t("footer.refresh")), React.createElement("nav", {
+  }, React.createElement("nav", {
     "aria-label": "Footer"
   }, React.createElement("a", {
     href: "/alerts/"
@@ -2733,13 +2728,7 @@ function PanelFooter() {
     href: "https://github.com/Uygara/atlas-visa-globe",
     target: "_blank",
     rel: "noopener"
-  }, window.t("footer.source"))), React.createElement("div", {
-    className: "byline",
-    dir: "ltr",
-    style: {
-      textAlign: "start"
-    }
-  }, "\xA9 ", new Date().getFullYear(), " travelnow.info \xB7 Uygar Atalay"));
+  }, window.t("footer.source"))));
 }
 Object.assign(window, {
   Panel: Panel

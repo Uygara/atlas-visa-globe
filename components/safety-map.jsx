@@ -223,7 +223,7 @@ function LevelLedger({ filter, setFilter }) {
         <li key={r.n}>
           <button type="button" className="lg-row" aria-pressed={filter === r.n} onClick={() => setFilter(filter === r.n ? 0 : r.n)}>
             <span className="sw" style={{ "--sw": LEVEL_COLOR[r.n] }} aria-hidden="true" />
-            <span className="lg-label">{r.n} · {levelLabel(r.n)}</span>
+            <span className="lg-label">{r.n}: {levelLabel(r.n)}</span>
             <span className="lg-dots" />
             <span className="lg-n">{r.count}</span>
           </button>
@@ -257,7 +257,6 @@ function RecentlyUpdated({ onOpen }) {
           <button key={r.iso2} type="button" className="feed-item" style={{ "--tone": LEVEL_COLOR[r.level], textAlign: "start", width: "100%", cursor: "pointer" }} onClick={() => onOpen(r.iso2)}>
             <div className="feed-meta">
               <time dateTime={r.date}>{fmtDate(r.date)}</time>
-              <span>·</span>
               <span className="flag">{window.byIso2[r.iso2]?.flag}</span>
               <span>{window.countryName(r.iso2)}</span>
             </div>
@@ -302,7 +301,7 @@ function SafetyHover({ hover }) {
       <div className="hovercard-title"><span className="flag">{dest.flag}</span><span>{window.countryName(hover.iso2)}</span></div>
       <div className="hovercard-row">
         <span className="dot" style={{ "--sw": LEVEL_COLOR[level] }} />
-        <span>{level ? `${level} · ${levelLabel(level)}` : levelLabel(0)}</span>
+        <span>{level ? `${level}: ${levelLabel(level)}` : levelLabel(0)}</span>
       </div>
       {a && a.regions && a.regions.length > 0 && (
         <div className="hovercard-row hovercard-cap">{tr("safety.has_regions", "Some regions are worse. Tap to see them")}</div>
@@ -427,7 +426,7 @@ function SafetyDetail({ iso2, names, onClose }) {
           {events.map((e, i) => (
             <a key={i} className={"note " + (e.level === "red" ? "note-risk" : "note-warn")} href={e.url} target="_blank" rel="noopener noreferrer">
               <span className="note-k">{tr(EVENT_LABEL[e.type] || "safety.event.other", e.type)}{e.name ? ": " + e.name : ""}</span>
-              <span className="note-s">{tr("safety.event_since", "since {date}", { date: fmtDate(e.from) })} · GDACS</span>
+              <span className="note-s">{tr("safety.event_since", "since {date}", { date: fmtDate(e.from) })} (GDACS)</span>
               <span className="note-go" aria-hidden="true">→</span>
             </a>
           ))}
@@ -440,7 +439,7 @@ function SafetyDetail({ iso2, names, onClose }) {
           <div className="feed">
             {updates.slice(0, 4).map((u, i) => (
               <div key={i} className="feed-item" style={{ "--tone": "var(--rule-strong)" }}>
-                <div className="feed-meta"><time dateTime={u.date}>{fmtDate(u.date)}</time><span>·</span><span>UK FCDO</span></div>
+                <div className="feed-meta"><time dateTime={u.date}>{fmtDate(u.date)}</time><span>UK FCDO</span></div>
                 <div className="feed-sum" dir="auto">{u.note}</div>
               </div>
             ))}
@@ -493,7 +492,7 @@ function SourceRow({ k, src }) {
           {k === "ca" && src.change && <div className="p-hint" style={{ margin: "6px 0 0" }}>{src.change}</div>}
           <div style={{ display: "flex", justifyContent: "space-between", gap: 8, marginTop: 8, alignItems: "baseline" }}>
             <span className={"p-fine" + (stale ? " is-stale" : "")}>
-              {ago(src.updated)}{stale ? " · " + tr("safety.stale", "not revised recently") : ""}
+              {ago(src.updated)}{stale ? ", " + tr("safety.stale", "not revised recently") : ""}
             </span>
             <a className="link-quiet" href={src.url} target="_blank" rel="noopener noreferrer">{tr("safety.read_full", "Full advisory")} ↗</a>
           </div>

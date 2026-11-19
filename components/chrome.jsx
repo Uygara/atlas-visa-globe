@@ -164,7 +164,7 @@ function LangSelect({ className }) {
     <select className={"lang-select" + (className ? " " + className : "")} value={cur}
       aria-label={tr("nav.language", "Language")}
       onChange={(e) => window.setLang && window.setLang(e.target.value)}>
-      {(window.LANGS || []).map(l => <option key={l.code} value={l.code}>{l.code.toUpperCase()} · {l.native}{l.beta ? " (beta)" : ""}</option>)}
+      {(window.LANGS || []).map(l => <option key={l.code} value={l.code}>{l.native}{l.beta ? " (beta)" : ""}</option>)}
     </select>
   );
 }
@@ -448,10 +448,10 @@ function MobileSheetHandle() {
 
 // Form-style section caption: "01  YOUR PASSPORT".
 // A <span> (display:flex) so it's also valid inside the collapse <button>.
-function Caption({ n, children, aside }) {
+// `n` is accepted for old call sites but not shown: numbered section labels read as template filler.
+function Caption({ children, aside }) {
   return (
     <span className="p-cap">
-      {n != null && <span className="p-cap-n">{String(n).padStart(2, "0")}</span>}
       <span>{children}</span>
       {aside && <span className="p-cap-aside">{aside}</span>}
     </span>

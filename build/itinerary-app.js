@@ -348,7 +348,7 @@ function CountryPicker(_ref) {
   }, React.createElement("span", {
     className: "pp-doc",
     "aria-hidden": "true"
-  }, "Passport \xB7 Pasaport \xB7 Passeport", React.createElement(IconCaret, null)), c ? React.createElement("span", {
+  }, "Passport / Pasaport / Passeport", React.createElement(IconCaret, null)), c ? React.createElement("span", {
     className: "pp-main"
   }, React.createElement("span", {
     className: "flag pp-flag",
@@ -481,7 +481,7 @@ function StopsList(_ref3) {
       className: "stop-name"
     }, window.countryName(iso)), React.createElement("span", {
       className: "stop-meta"
-    }, statusLabel(r.status), feeText ? " · " + feeText : "", proc ? " · " + proc : "")), React.createElement("button", {
+    }, statusLabel(r.status), feeText ? ", " + feeText : "", proc ? ", " + proc : "")), React.createElement("button", {
       type: "button",
       className: "icon-btn",
       onClick: function onClick() {
@@ -664,7 +664,7 @@ function Summary(_ref5) {
       key: s.iso
     }, React.createElement("strong", null, React.createElement("span", {
       className: "flag"
-    }, (_window$byIso2$s$iso = window.byIso2[s.iso]) === null || _window$byIso2$s$iso === void 0 ? void 0 : _window$byIso2$s$iso.flag), " ", window.countryName(s.iso)), React.createElement("span", null, " \xB7 ", statusLabel(s.status), fee && fee.processingDays ? " · " + itinFeeLabel(fee.processingDays) : ""));
+    }, (_window$byIso2$s$iso = window.byIso2[s.iso]) === null || _window$byIso2$s$iso === void 0 ? void 0 : _window$byIso2$s$iso.flag), " ", window.countryName(s.iso)), React.createElement("span", null, ": ", statusLabel(s.status), fee && fee.processingDays ? ", " + itinFeeLabel(fee.processingDays) : ""));
   })), unknown > 0 && React.createElement("p", {
     className: "p-fine",
     style: {

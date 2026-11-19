@@ -202,7 +202,7 @@ function TransitPicker(_ref) {
   }, React.createElement("span", {
     className: "pp-doc",
     "aria-hidden": "true"
-  }, "Passport \xB7 Pasaport \xB7 Passeport", React.createElement(IconCaret, null)), country ? React.createElement("span", {
+  }, "Passport / Pasaport / Passeport", React.createElement(IconCaret, null)), country ? React.createElement("span", {
     className: "pp-main"
   }, React.createElement("span", {
     className: "flag pp-flag",

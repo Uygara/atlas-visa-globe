@@ -2,7 +2,6 @@
 module.exports = {
   "96d57131": `<a href="/">travelnow.info</a> › <a href="/guides/">Rehberler</a> › ETIAS 2026`,
   "f12c71a1": `2026'da ETIAS: kimler için gerekli ve vizeden farkı ne`,
-  "34e4f7f9": `Yazan: Uygar Atalay · Güncelleme: 17 Haziran 2026 · yaklaşık 5 dakikalık okuma`,
   "c4ff2a15": `ETIAS, Avrupa Seyahat Bilgi ve İzin Sistemi'dir (European Travel Information and Authorisation System): birçok vizesiz ziyaretçinin Avrupa'nın büyük bölümüne girmeden önce yapması gereken yeni bir çevrimiçi kayıttır. Yıllardır konuşuluyor ve defalarca ertelendi; bu rehber onun ne olduğunu, kimleri etkilediğini ve önemli bir gerçeği açıklıyor: bir vize <strong>değildir</strong>.`,
   "07d5e243": `ETIAS nedir`,
   "3b5b85f2": `ETIAS, Schengen Bölgesi'ne zaten vizesiz girebilen kişiler için bir seyahat öncesi izindir. Bir büyükelçiliğe başvurmak yerine pasaport bilgilerin, geçmişe dair sorular ve seyahat planlarınla kısa bir çevrimiçi form doldurursun. Sistem otomatik güvenlik kontrolleri yapar ve vakaların büyük çoğunluğunda dakikalar içinde bir onay verir. Bu onay elektronik olarak pasaportuna bağlanır. Yazdırılacak ya da pasaportuna yapıştırılacak bir şey yoktur.`,
@@ -29,4 +28,5 @@ module.exports = {
   "0ee459ad": `<a href="/etias/">ETIAS kontrolü</a>: 2026 izni uyruğun için gerekli mi?`,
   "c3eea2fd": `<a href="/schengen-calculator/">Schengen 90/180 hesaplayıcı</a>: izin verilen günlerini takip et.`,
   "8b62c32a": `<a href="/">Etkileşimli küre</a>: her Avrupa ülkesi için vize durumunu gör.`,
+  "4b2c8c63": `Güncelleme: 17 Haziran 2026. Yaklaşık 5 dakikalık okuma.`,
 };

@@ -1,7 +1,6 @@
 // Turkish text for /open-data/ — see scripts/tr-strings/index.js for the format.
 module.exports = {
   "fb099a39": `Açık vize gereklilikleri veri seti`,
-  "ea7d75e2": `Ücretsiz · CC BY-SA 4.0 · Her gün yenilenir`,
   "d3d8ab0c": `Bu, travelnow.info haritasının arkasındaki veridir; düz dosyalar olarak yayımlıyoruz. Takip ettiğimiz her pasaport ve varış noktası çifti için vize gerekliliğini (200 pasaport, 205 varış noktası, yaklaşık 41.000 çift), pasaport sıralamasını ve tespit ettiğimiz politika değişikliklerinin kaydını içerir. Araştırma, haber, ders ve kendi projelerinde kullanabilirsin. Üyelik gerekmez.`,
   "7cc56faf": `İndirmeler`,
   "6849ef74": `Dosya`,
@@ -56,4 +55,5 @@ module.exports = {
   "27a973e4": `Veri, <a href="https://creativecommons.org/licenses/by-sa/4.0/" rel="license noopener">CC BY-SA 4.0</a> ile lisanslı Vikipedi vize gereklilikleri maddelerinden türetilmiştir. Veri setini aynı lisansla yayımlıyoruz. Vikipedi katkıcılarını ve travelnow.info'yu anar, lisansa bağlantı verir, değişiklik yaptıysan bunu belirtir ve kendi sürümünü aynı lisansla paylaşırsan, veriyi ticari amaçlar dahil paylaşabilir ve uyarlayabilirsin.`,
   "05c749cf": `Nasıl atıf yapılır`,
   "8f9bf86e": `travelnow.info vize gereklilikleri veri seti, erişim tarihi &lt;tarih&gt;, https://travelnow.info/open-data/. Vikipedi katkıcılarının verilerini içerir, CC BY-SA 4.0.`,
+  "64cd00e7": `Veri, CC BY-SA 4.0 lisansıyla ücretsiz kullanılabilir ve her gün yenilenir.`,
 };

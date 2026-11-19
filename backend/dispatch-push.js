@@ -124,7 +124,7 @@ function compose(changes, lang, W) {
   if (visa.length === 1 || changes.length === 1) {
     return { title: `${name(first.dest)}: ${st(first.from)} → ${st(first.to)}`, body: fmt(t.rule_body, { d: dateText(first.date) }), path: "/", keys: [first.key] };
   }
-  const list = visa.slice(0, 3).map((c) => `${name(c.dest)}: ${st(c.from)} → ${st(c.to)}`).join(" · ");
+  const list = visa.slice(0, 3).map((c) => `${name(c.dest)}: ${st(c.from)} → ${st(c.to)}`).join("; ");
   return { title: fmt(t.many_title, { n: visa.length }), body: fmt(t.many_body, { list }), path: "/", keys: visa.map((c) => c.key) };
 }
 

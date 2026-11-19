@@ -86,7 +86,7 @@ t("several changes collapse into one notification, listing the top three", () =>
   const cs = ["JP", "TH", "DE", "FR"].map((d, i) => ({ kind: "visa", key: "k" + i, dest: d, from: "vr", to: "vf", date: "2026-09-23" }));
   const m = p.compose(cs, "en", W);
   assert.strictEqual(m.title, "4 visa rules changed for your passport");
-  assert.strictEqual(m.body.split(" · ").length, 3);
+  assert.strictEqual(m.body.split("; ").length, 3);
   assert.strictEqual(m.keys.length, 4);
 });
 t("a safety change opens the safety map", () => {

@@ -31,4 +31,5 @@ module.exports = {
   "26569c35": `<a href="/transit-map/">Transit haritasını aç</a>: tüm dünya, uyruğun için airside transitin açık mı yoksa transit vizesinin gerekli mi olduğuna göre renklendirilmiş.`,
   "70d0e3e3": `<a href="/esta-rules/">ESTA kontrolü</a>: Amerika Birleşik Devletleri üzerinden aktarma yapmak için bile gerekli.`,
   "a0987505": `<a href="/">Etkileşimli küre</a>: her ülke için tam vize durumu.`,
+  "5194c1bf": `Güncelleme: 17 Haziran 2026. Yaklaşık 6 dakikalık okuma.`,
 };

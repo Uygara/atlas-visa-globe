@@ -24,25 +24,25 @@
 
 :root {
   /* ── Paper & ink ─────────────────────────────────────────────────────── */
-  --paper:        #EFF0E8;
-  --paper-raised: #F8F8F3;
-  --paper-sunk:   #E4E6DC;
-  --paper-deep:   #D8DBCF;
-  --ink:          #16202A;
-  --ink-2:        #3B4650;
-  --ink-3:        #56616A;   /* >= 4.5:1 on every paper tone */
-  --ink-4:        #8A928D;
-  --rule:         #D2D6CA;
-  --rule-strong:  #AEB5A8;
+  /* Neutral surfaces: the map and the status colours carry the identity, the chrome stays quiet. */
+  --paper:        #F5F5F7;
+  --paper-raised: #FFFFFF;
+  --paper-sunk:   #EDEDF0;
+  --paper-deep:   #E2E2E7;
+  --ink:          #1D1D1F;
+  --ink-2:        #424245;
+  --ink-3:        #636366;   /* 5.6:1 on --paper, 6.0:1 on white */
+  --ink-4:        #8E8E93;   /* decoration only */
+  --rule:         #E3E3E8;
+  --rule-strong:  #C9C9CF;
 
-  /* UI accent: passport navy on paper; flips to gold foil on the cover. */
   --accent:       #1E3A5F;
-  --on-accent:    #F4F2E8;
-  --foil:         #9A7732;
-  --foil-ink:     #755A1E;   /* foil as TEXT: 5.6:1 on paper (the plain foil is 3.6:1 — decoration only) */
-  --link:         #1D4C85;
-  --shadow:       0 1px 0 rgba(22, 32, 42, 0.04), 0 8px 24px -12px rgba(22, 32, 42, 0.28);
-  --shadow-lift:  0 18px 48px -18px rgba(22, 32, 42, 0.45);
+  --on-accent:    #FFFFFF;
+  --foil:         #8E8E93;
+  --foil-ink:     #636366;
+  --link:         #0B5CAD;
+  --shadow:       0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.06);
+  --shadow-lift:  0 2px 6px rgba(0, 0, 0, 0.06), 0 20px 48px rgba(0, 0, 0, 0.12);
 
   /* ── Status inks ─────────────────────────────────────────────────────── */
   --idc:  #3F79A8;   /* ID card / freedom of movement */
@@ -72,37 +72,39 @@
   --globe-edge:  #9EACAD;
 
   /* ── Type ────────────────────────────────────────────────────────────── */
-  --font-sans:    "Twemoji Country Flags", "Sofia Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-display: "Twemoji Country Flags", "Sofia Sans Extra Condensed", "Sofia Sans Condensed", "Arial Narrow", sans-serif;
-  --font-mono:    "DM Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  /* System type: SF Pro on Apple devices, Segoe UI Variable on Windows, Roboto on Android. */
+  --font-sans:    "Twemoji Country Flags", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI Variable Text", "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Twemoji Country Flags", -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* Former label face. Labels now use the text face with tabular figures; real code uses --font-code. */
+  --font-mono:    var(--font-sans);
+  --font-code:    ui-monospace, "SFMono-Regular", "Cascadia Mono", Menlo, Consolas, monospace;
 
   /* ── Type scale ───────────────────────────────────────────
      One ladder for every font-size in site.css, app-shell.css and chrome.css
      (there used to be ~33 different pixel sizes and 10 letter-spacings). Pick the
      step by ROLE, not by eye; the two neighbours 14/15 are UI text vs. running text. */
-  --fs-2xs:  11px;    /* mono captions, source tags, fine print */
-  --fs-xs:   12.5px;  /* meta lines, badges, secondary text */
+  --fs-2xs:  12px;    /* fine print: nothing on the site is smaller */
+  --fs-xs:   13px;    /* secondary text, badges */
   --fs-sm:   14px;    /* dense UI: tables, chips, form controls */
   --fs-base: 15px;    /* running text in cards and panels */
   --fs-md:   17px;    /* long-form body, small headings */
   --fs-lg:   20px;    /* lead paragraphs, card titles */
-  --fs-xl:   26px;    /* h2 */
-  --fs-2xl:  32px;
-  --fs-3xl:  40px;    /* stat numerals */
-  --fs-4xl:  56px;
-  --fs-5xl:  72px;    /* the headline number */
-  /* Tracking: uppercase labels open up, display type tightens, body stays at 0. */
-  --ls-tight: -0.01em;
-  --ls-caps:   0.06em;
-  --ls-label:  0.1em;
-  --ls-wide:   0.14em;
+  --fs-xl:   24px;    /* h2 */
+  --fs-2xl:  28px;
+  --fs-3xl:  36px;    /* stat numerals */
+  --fs-4xl:  44px;
+  --fs-5xl:  60px;    /* the headline number */
+  /* Tracking: large type tightens, text stays at 0. No spaced-out capitals anywhere. */
+  --ls-tight: -0.02em;
+  --ls-caps:   0;
+  --ls-label:  0;
+  --ls-wide:   0;
   --measure:   66ch;  /* longest comfortable line of running text */
 
-  --radius:    4px;   /* documents have tight corners */
-  --radius-lg: 6px;
+  --radius:    8px;
+  --radius-lg: 12px;
 
-  /* Guilloche braid — the fine interlaced line pattern printed on passports. */
-  --guilloche: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='28' viewBox='0 0 120 28'%3E%3Cg fill='none' stroke='%231E3A5F' stroke-width='.55' opacity='.22'%3E%3Cpath d='M0 14C20 2 40 2 60 14S100 26 120 14'/%3E%3Cpath d='M0 14C20 26 40 26 60 14S100 2 120 14'/%3E%3Cpath d='M0 14C20 7 40 7 60 14S100 21 120 14'/%3E%3Cpath d='M0 14C20 21 40 21 60 14S100 7 120 14'/%3E%3Cpath d='M-30 14C-10 2 10 2 30 14S70 26 90 14S130 2 150 14'/%3E%3Cpath d='M-30 14C-10 26 10 26 30 14S70 2 90 14S130 26 150 14'/%3E%3C/g%3E%3C/svg%3E");
+  --guilloche: none;
 
   /* ── Legacy aliases (older inline styles + static pages still read these) */
   --bg:   var(--paper);
@@ -127,22 +129,22 @@
 
 html.theme-dark,
 body.theme-dark {
-  --paper:        #0E1928;
-  --paper-raised: #132033;
-  --paper-sunk:   #0A1320;
-  --paper-deep:   #1B2B41;
-  --ink:          #ECE8DB;
-  --ink-2:        #C4C1B5;
-  --ink-3:        #9A9D9A;
-  --ink-4:        #627080;
-  --rule:         #213149;
-  --rule-strong:  #34475F;
+  --paper:        #0B0B0D;
+  --paper-raised: #1C1C1E;
+  --paper-sunk:   #050506;
+  --paper-deep:   #2C2C2E;
+  --ink:          #F5F5F7;
+  --ink-2:        #D1D1D6;
+  --ink-3:        #A1A1A6;
+  --ink-4:        #6E6E73;
+  --rule:         #2C2C2E;
+  --rule-strong:  #3A3A3C;
 
-  --accent:       #D3B36C;
-  --on-accent:    #0E1928;
-  --foil:         #D3B36C;
-  --foil-ink:     #D3B36C;
-  --link:         #DDC084;
+  --accent:       #E8E8ED;
+  --on-accent:    #1D1D1F;
+  --foil:         #8E8E93;
+  --foil-ink:     #A1A1A6;
+  --link:         #5AA9FF;
   --shadow:       0 1px 0 rgba(0, 0, 0, 0.2), 0 10px 28px -14px rgba(0, 0, 0, 0.7);
   --shadow-lift:  0 22px 56px -20px rgba(0, 0, 0, 0.85);
 
@@ -168,7 +170,6 @@ body.theme-dark {
   --graticule:   rgba(236, 232, 219, 0.06);
   --globe-edge:  #34475F;
 
-  --guilloche: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='28' viewBox='0 0 120 28'%3E%3Cg fill='none' stroke='%23D3B36C' stroke-width='.55' opacity='.2'%3E%3Cpath d='M0 14C20 2 40 2 60 14S100 26 120 14'/%3E%3Cpath d='M0 14C20 26 40 26 60 14S100 2 120 14'/%3E%3Cpath d='M0 14C20 7 40 7 60 14S100 21 120 14'/%3E%3Cpath d='M0 14C20 21 40 21 60 14S100 7 120 14'/%3E%3Cpath d='M-30 14C-10 2 10 2 30 14S70 26 90 14S130 2 150 14'/%3E%3Cpath d='M-30 14C-10 26 10 26 30 14S70 2 90 14S130 26 150 14'/%3E%3C/g%3E%3C/svg%3E");
 
   color-scheme: dark;
 }
@@ -200,6 +201,9 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 /* Tabular figures wherever numbers are compared. */
 .num, table, .ledger, .mono { font-variant-numeric: tabular-nums; }
+code, pre, kbd, samp { font-family: var(--font-code); font-size: 0.92em; }
+h1, h2, h3 { letter-spacing: var(--ls-tight); }
+button:active, .primary:active, a.btn:active { transform: scale(0.97); transition: transform 100ms ease-out; }
 
 .flag {
   font-family: "Twemoji Country Flags", "Apple Color Emoji", "Segoe UI Emoji", "Noto Color Emoji", sans-serif;
@@ -210,10 +214,9 @@ button, input, select, textarea { font: inherit; color: inherit; }
 /* Arabic (and any joined script): tracking pulls the letterforms apart. */
 html[lang="ar"] {
   --ls-tight: 0; --ls-caps: 0; --ls-label: 0; --ls-wide: 0;
-  /* Latin stays in Sofia Sans; Arabic letters come from Plex (the system fallback
-     differs per OS and is thin next to the condensed display face). */
-  --font-sans:    "Twemoji Country Flags", "Sofia Sans", "IBM Plex Sans Arabic", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-  --font-display: "Twemoji Country Flags", "Sofia Sans Extra Condensed", "IBM Plex Sans Arabic", "Arial Narrow", sans-serif;
+  /* Arabic letters come from Plex where the system face has none. */
+  --font-sans:    "Twemoji Country Flags", -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", "IBM Plex Sans Arabic", system-ui, Roboto, sans-serif;
+  --font-display: "Twemoji Country Flags", -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", "IBM Plex Sans Arabic", system-ui, Roboto, sans-serif;
 }
 
 ::-webkit-scrollbar { width: 10px; height: 10px; }

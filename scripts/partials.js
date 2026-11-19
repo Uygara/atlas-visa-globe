@@ -12,7 +12,7 @@
 const { NAV, SUPPORT, isCurrent } = require("../assets/site-nav.js");
 const { makeT, hasTr, toTr, hreflang } = require("./locales");
 
-const ASSET_VERSION = "20261119c";
+const ASSET_VERSION = "20261119d";
 
 function esc(s) {
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -74,7 +74,7 @@ function masthead({ path = "/", i18n = true, lang = "en" } = {}) {
   const sheet = NAV.map((it, i) => `    <a class="mh-sheet-link${start(i)}" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a>`).join("\n");
   const langs = i18n ? LANGS : (hasTr(path) ? LANGS.filter(([c]) => c === "en" || c === "tr") : []);
   const langSelect = langs.length
-    ? `<select class="lang-select" data-lang-select data-no-i18n aria-label="${u("lang", "Language")}">${langs.map(([c, n, beta]) => `<option value="${c}"${c === lang ? " selected" : ""}>${c.toUpperCase()} · ${n}${beta ? " (beta)" : ""}</option>`).join("")}</select>`
+    ? `<select class="lang-select" data-lang-select data-no-i18n aria-label="${u("lang", "Language")}">${langs.map(([c, n, beta]) => `<option value="${c}"${c === lang ? " selected" : ""}>${n}${beta ? " (beta)" : ""}</option>`).join("")}</select>`
     : "";
   return `<header class="masthead">
   <a class="brand" href="${href("/")}" aria-label="${u("home", "travelnow.info home")}">${BRAND_MARK}<span class="brand-word">travelnow<span class="brand-tld">.info</span></span></a>
@@ -115,12 +115,11 @@ ${items.map(([h, label]) => `        <li><a href="${href(h)}">${esc(t(label))}</
   <div class="site-foot-inner">
     <div>
       <a class="brand" href="${href("/")}" aria-label="travelnow.info">${BRAND_MARK}<span class="brand-word">travelnow<span class="brand-tld">.info</span></span></a>
-      <p class="site-foot-about">${esc(t("An independent visa atlas, built and maintained by Uygar Atalay. Corrections and questions:"))} <a href="mailto:hello@travelnow.info">hello@travelnow.info</a></p>
+      <p class="site-foot-about"><a href="mailto:hello@travelnow.info">hello@travelnow.info</a></p>
     </div>
 ${col("Tools", [["/", "Visa map"], ["/transit-map/", "Transit map"], ["/itinerary/", "Travel planner"], ["/schengen-calculator/", "Schengen calc"], ["/etias/", "ETIAS 2026"], ["/passport-validity/", "Passport validity"], ["/alerts/", "Alerts"]])}
 ${col("Read", [["/guides/", "Guides"], ["/passport/", "All passports"], ["/visa-shortcuts/", "Visa shortcuts"], ["/digital-nomad-visa/", "Nomad visas"], ["/citizenship-by-investment/", "Second passport"], ["/open-data/", "Open data"]])}
 ${col("The project", [["/about/", "About"], ["/contact/", "Contact"], ["/privacy/", "Privacy"], ["/terms/", "Terms"], ["https://www.instagram.com/travelnow.info/", "Instagram"], ["https://github.com/Uygara/atlas-visa-globe", "Source on GitHub"]])}
-    <p class="site-foot-note">${esc(t("Visa rules change often. Always confirm with the destination's embassy or consulate before you book. Data is rebuilt every 24 hours from public visa-policy sources."))}</p>
   </div>
 </footer>`;
 }

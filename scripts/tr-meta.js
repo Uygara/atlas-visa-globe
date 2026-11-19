@@ -108,9 +108,9 @@ module.exports = {
     ogDescription: "Uçağa alınmama riskine karşı her ülkenin pasaport geçerlilik kuralını kontrol et ve pasaportunun uygun olup olmadığını gör.",
   },
   "/schengen-calculator/": {
-    title: "Schengen 90/180 Gün Hesaplayıcı: ücretsiz, anında · travelnow.info",
+    title: "Schengen 90/180 hesaplayıcı: ücretsiz, anında · travelnow.info",
     description: "Ücretsiz Schengen kısa kalış hesaplayıcı. Geçmiş seyahatlerini ekle, son 180 günde 90 günün kaçını kullandığını tam olarak gör ve kuralın içinde kalacak şekilde gelecek seyahatleri planla.",
-    ogTitle: "Schengen 90/180 Gün Hesaplayıcı",
+    ogTitle: "Schengen 90/180 hesaplayıcı",
     ogDescription: "Schengen kısa kalış günlerini takip et, kuralı çiğnemeden gelecek seyahatleri planla.",
   },
   "/visa-checklist/tr-schengen/": {

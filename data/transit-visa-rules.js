@@ -171,7 +171,7 @@ window.TRANSIT_RULES = {
 
   // ─── Qatar (Doha) ───────────────────────────────────────────────────
   QA: {
-    label: "Qatar · Doha airside transit",
+    label: "Qatar (Doha airside transit)",
     requiredFor: [],
     exemptions: [],
     twovHours: null,
@@ -182,7 +182,7 @@ window.TRANSIT_RULES = {
 
   // ─── Turkey (Istanbul) ──────────────────────────────────────────────
   TR: {
-    label: "Türkiye · Istanbul airside transit",
+    label: "Türkiye (Istanbul airside transit)",
     requiredFor: [],
     exemptions: [],
     twovHours: null,
