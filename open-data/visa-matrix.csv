@@ -93,7 +93,7 @@ AD,Andorra,KW,Kuwait,ev,90
 AD,Andorra,KG,Kyrgyzstan,vf,60
 AD,Andorra,LA,Laos,ev,30
 AD,Andorra,LV,Latvia,vf,90
-AD,Andorra,LB,Lebanon,ev,30
+AD,Andorra,LB,Lebanon,voa,30
 AD,Andorra,LS,Lesotho,ev,
 AD,Andorra,LR,Liberia,vr,
 AD,Andorra,LY,Libya,ev,
@@ -130,7 +130,7 @@ AD,Andorra,MK,North Macedonia,vf,90
 AD,Andorra,NO,Norway,vf,90
 AD,Andorra,OM,Oman,ev,30
 AD,Andorra,PK,Pakistan,ev,90
-AD,Andorra,PW,Palau,ev,30
+AD,Andorra,PW,Palau,voa,30
 AD,Andorra,PS,Palestine,vf,90
 AD,Andorra,PA,Panama,vf,180
 AD,Andorra,PG,Papua New Guinea,ev,30
@@ -336,7 +336,7 @@ AE,United Arab Emirates,MK,North Macedonia,vf,90
 AE,United Arab Emirates,NO,Norway,vf,90
 AE,United Arab Emirates,OM,Oman,idc,90
 AE,United Arab Emirates,PK,Pakistan,vf,90
-AE,United Arab Emirates,PW,Palau,ev,30
+AE,United Arab Emirates,PW,Palau,voa,30
 AE,United Arab Emirates,PS,Palestine,vf,90
 AE,United Arab Emirates,PA,Panama,vf,90
 AE,United Arab Emirates,PG,Papua New Guinea,ev,60
@@ -950,7 +950,7 @@ AL,Albania,MK,North Macedonia,idc,90
 AL,Albania,NO,Norway,vf,90
 AL,Albania,OM,Oman,vf,14
 AL,Albania,PK,Pakistan,ev,90
-AL,Albania,PW,Palau,ev,30
+AL,Albania,PW,Palau,voa,30
 AL,Albania,PS,Palestine,vf,90
 AL,Albania,PA,Panama,vr,
 AL,Albania,PG,Papua New Guinea,ev,60
@@ -1118,7 +1118,7 @@ AM,Armenia,KW,Kuwait,vr,
 AM,Armenia,KG,Kyrgyzstan,vf,90
 AM,Armenia,LA,Laos,ev,30
 AM,Armenia,LV,Latvia,vr,
-AM,Armenia,LB,Lebanon,ev,30
+AM,Armenia,LB,Lebanon,voa,30
 AM,Armenia,LS,Lesotho,vr,
 AM,Armenia,LR,Liberia,voa,90
 AM,Armenia,LY,Libya,ev,
@@ -1155,7 +1155,7 @@ AM,Armenia,MK,North Macedonia,vr,
 AM,Armenia,NO,Norway,vr,
 AM,Armenia,OM,Oman,ev,14
 AM,Armenia,PK,Pakistan,vr,
-AM,Armenia,PW,Palau,ev,30
+AM,Armenia,PW,Palau,voa,30
 AM,Armenia,PS,Palestine,vf,
 AM,Armenia,PA,Panama,vf,90
 AM,Armenia,PG,Papua New Guinea,ev,60
@@ -1528,7 +1528,7 @@ AR,Argentina,KW,Kuwait,vr,
 AR,Argentina,KG,Kyrgyzstan,vf,30
 AR,Argentina,LA,Laos,ev,30
 AR,Argentina,LV,Latvia,vf,90
-AR,Argentina,LB,Lebanon,ev,30
+AR,Argentina,LB,Lebanon,voa,30
 AR,Argentina,LS,Lesotho,vr,
 AR,Argentina,LR,Liberia,voa,90
 AR,Argentina,LY,Libya,ev,
@@ -1565,7 +1565,7 @@ AR,Argentina,MK,North Macedonia,vf,90
 AR,Argentina,NO,Norway,vf,90
 AR,Argentina,OM,Oman,ev,14
 AR,Argentina,PK,Pakistan,ev,90
-AR,Argentina,PW,Palau,ev,30
+AR,Argentina,PW,Palau,voa,30
 AR,Argentina,PS,Palestine,vf,90
 AR,Argentina,PA,Panama,vf,90
 AR,Argentina,PG,Papua New Guinea,ev,60
@@ -1733,7 +1733,7 @@ AT,Austria,KW,Kuwait,ev,90
 AT,Austria,KG,Kyrgyzstan,vf,60
 AT,Austria,LA,Laos,ev,30
 AT,Austria,LV,Latvia,idc,
-AT,Austria,LB,Lebanon,ev,30
+AT,Austria,LB,Lebanon,voa,30
 AT,Austria,LS,Lesotho,vf,14
 AT,Austria,LR,Liberia,ev,90
 AT,Austria,LY,Libya,ev,30
@@ -1938,7 +1938,7 @@ AU,Australia,KW,Kuwait,ev,90
 AU,Australia,KG,Kyrgyzstan,vf,60
 AU,Australia,LA,Laos,ev,30
 AU,Australia,LV,Latvia,vf,90
-AU,Australia,LB,Lebanon,ev,30
+AU,Australia,LB,Lebanon,voa,30
 AU,Australia,LS,Lesotho,vf,14
 AU,Australia,LR,Liberia,voa,90
 AU,Australia,LY,Libya,ev,
@@ -1975,7 +1975,7 @@ AU,Australia,MK,North Macedonia,vf,90
 AU,Australia,NO,Norway,vf,90
 AU,Australia,OM,Oman,ev,14
 AU,Australia,PK,Pakistan,ev,90
-AU,Australia,PW,Palau,ev,30
+AU,Australia,PW,Palau,voa,30
 AU,Australia,PS,Palestine,vf,90
 AU,Australia,PA,Panama,vf,90
 AU,Australia,PG,Papua New Guinea,ev,30
@@ -2021,7 +2021,7 @@ AU,Australia,TZ,Tanzania,ev,90
 AU,Australia,TH,Thailand,vf,60
 AU,Australia,TL,Timor-Leste,voa,30
 AU,Australia,TG,Togo,ev,15
-AU,Australia,TO,Tonga,ev,31
+AU,Australia,TO,Tonga,voa,31
 AU,Australia,TT,Trinidad and Tobago,ev,90
 AU,Australia,TN,Tunisia,vf,90
 AU,Australia,TR,Turkey,vf,90
@@ -2143,7 +2143,7 @@ AZ,Azerbaijan,KW,Kuwait,vr,
 AZ,Azerbaijan,KG,Kyrgyzstan,vf,
 AZ,Azerbaijan,LA,Laos,ev,30
 AZ,Azerbaijan,LV,Latvia,vr,
-AZ,Azerbaijan,LB,Lebanon,ev,30
+AZ,Azerbaijan,LB,Lebanon,voa,30
 AZ,Azerbaijan,LS,Lesotho,vr,
 AZ,Azerbaijan,LR,Liberia,voa,90
 AZ,Azerbaijan,LY,Libya,ev,
@@ -2180,7 +2180,7 @@ AZ,Azerbaijan,MK,North Macedonia,vr,
 AZ,Azerbaijan,NO,Norway,vr,
 AZ,Azerbaijan,OM,Oman,vr,
 AZ,Azerbaijan,PK,Pakistan,ev,90
-AZ,Azerbaijan,PW,Palau,ev,30
+AZ,Azerbaijan,PW,Palau,voa,30
 AZ,Azerbaijan,PS,Palestine,vf,
 AZ,Azerbaijan,PA,Panama,vr,
 AZ,Azerbaijan,PG,Papua New Guinea,ev,60
@@ -2385,7 +2385,7 @@ BA,Bosnia and Herzegovina,MK,North Macedonia,idc,90
 BA,Bosnia and Herzegovina,NO,Norway,vf,90
 BA,Bosnia and Herzegovina,OM,Oman,vr,
 BA,Bosnia and Herzegovina,PK,Pakistan,ev,90
-BA,Bosnia and Herzegovina,PW,Palau,ev,30
+BA,Bosnia and Herzegovina,PW,Palau,voa,30
 BA,Bosnia and Herzegovina,PS,Palestine,vf,90
 BA,Bosnia and Herzegovina,PA,Panama,vf,90
 BA,Bosnia and Herzegovina,PG,Papua New Guinea,ev,
@@ -2963,7 +2963,7 @@ BE,Belgium,KW,Kuwait,ev,90
 BE,Belgium,KG,Kyrgyzstan,vf,60
 BE,Belgium,LA,Laos,vf,15
 BE,Belgium,LV,Latvia,idc,
-BE,Belgium,LB,Lebanon,ev,30
+BE,Belgium,LB,Lebanon,voa,30
 BE,Belgium,LS,Lesotho,vf,14
 BE,Belgium,LR,Liberia,vr,
 BE,Belgium,LY,Libya,ev,
@@ -3615,7 +3615,7 @@ BH,Bahrain,MK,North Macedonia,vr,
 BH,Bahrain,NO,Norway,vr,
 BH,Bahrain,OM,Oman,idc,
 BH,Bahrain,PK,Pakistan,vf,90
-BH,Bahrain,PW,Palau,ev,30
+BH,Bahrain,PW,Palau,voa,30
 BH,Bahrain,PS,Palestine,vr,
 BH,Bahrain,PA,Panama,vr,
 BH,Bahrain,PG,Papua New Guinea,ev,
@@ -3820,7 +3820,7 @@ BI,Burundi,MK,North Macedonia,vr,
 BI,Burundi,NO,Norway,vr,
 BI,Burundi,OM,Oman,ev,
 BI,Burundi,PK,Pakistan,ev,
-BI,Burundi,PW,Palau,ev,30
+BI,Burundi,PW,Palau,voa,30
 BI,Burundi,PS,Palestine,vf,
 BI,Burundi,PA,Panama,vr,
 BI,Burundi,PG,Papua New Guinea,ev,
@@ -4025,7 +4025,7 @@ BJ,Benin,MK,North Macedonia,vr,
 BJ,Benin,NO,Norway,vr,
 BJ,Benin,OM,Oman,ev,
 BJ,Benin,PK,Pakistan,ev,
-BJ,Benin,PW,Palau,ev,30
+BJ,Benin,PW,Palau,voa,30
 BJ,Benin,PS,Palestine,vf,
 BJ,Benin,PA,Panama,vr,
 BJ,Benin,PG,Papua New Guinea,ev,60
@@ -4076,7 +4076,7 @@ BJ,Benin,TT,Trinidad and Tobago,vr,
 BJ,Benin,TN,Tunisia,vf,
 BJ,Benin,TR,Turkey,vr,
 BJ,Benin,TM,Turkmenistan,ev,
-BJ,Benin,TV,Tuvalu,ev,30
+BJ,Benin,TV,Tuvalu,voa,30
 BJ,Benin,UG,Uganda,voa,
 BJ,Benin,UA,Ukraine,vr,
 BJ,Benin,AE,United Arab Emirates,ev,
@@ -4230,7 +4230,7 @@ BN,Brunei,MK,North Macedonia,vf,90
 BN,Brunei,NO,Norway,vf,90
 BN,Brunei,OM,Oman,ev,14
 BN,Brunei,PK,Pakistan,ev,30
-BN,Brunei,PW,Palau,ev,30
+BN,Brunei,PW,Palau,voa,30
 BN,Brunei,PS,Palestine,vf,90
 BN,Brunei,PA,Panama,vf,90
 BN,Brunei,PG,Papua New Guinea,ev,60
@@ -4276,7 +4276,7 @@ BN,Brunei,TZ,Tanzania,vf,90
 BN,Brunei,TH,Thailand,vf,60
 BN,Brunei,TL,Timor-Leste,voa,30
 BN,Brunei,TG,Togo,ev,15
-BN,Brunei,TO,Tonga,ev,31
+BN,Brunei,TO,Tonga,voa,31
 BN,Brunei,TT,Trinidad and Tobago,vf,90
 BN,Brunei,TN,Tunisia,vf,90
 BN,Brunei,TR,Turkey,vf,30
@@ -4435,7 +4435,7 @@ BO,Bolivia,MK,North Macedonia,vr,
 BO,Bolivia,NO,Norway,vr,
 BO,Bolivia,OM,Oman,ev,14
 BO,Bolivia,PK,Pakistan,ev,90
-BO,Bolivia,PW,Palau,ev,30
+BO,Bolivia,PW,Palau,voa,30
 BO,Bolivia,PS,Palestine,vr,
 BO,Bolivia,PA,Panama,vf,90
 BO,Bolivia,PG,Papua New Guinea,ev,60
@@ -4603,7 +4603,7 @@ BR,Brazil,KW,Kuwait,vr,
 BR,Brazil,KG,Kyrgyzstan,vf,30
 BR,Brazil,LA,Laos,ev,30
 BR,Brazil,LV,Latvia,vf,90
-BR,Brazil,LB,Lebanon,ev,30
+BR,Brazil,LB,Lebanon,voa,30
 BR,Brazil,LS,Lesotho,ev,
 BR,Brazil,LR,Liberia,voa,90
 BR,Brazil,LY,Libya,ev,
@@ -4640,7 +4640,7 @@ BR,Brazil,MK,North Macedonia,vf,90
 BR,Brazil,NO,Norway,vf,90
 BR,Brazil,OM,Oman,ev,14
 BR,Brazil,PK,Pakistan,ev,90
-BR,Brazil,PW,Palau,ev,30
+BR,Brazil,PW,Palau,voa,30
 BR,Brazil,PS,Palestine,vf,90
 BR,Brazil,PA,Panama,vf,90
 BR,Brazil,PG,Papua New Guinea,ev,60
@@ -4845,7 +4845,7 @@ BS,Bahamas,MK,North Macedonia,vf,90
 BS,Bahamas,NO,Norway,vf,90
 BS,Bahamas,OM,Oman,vr,
 BS,Bahamas,PK,Pakistan,ev,
-BS,Bahamas,PW,Palau,ev,30
+BS,Bahamas,PW,Palau,voa,30
 BS,Bahamas,PS,Palestine,vf,90
 BS,Bahamas,PA,Panama,vf,180
 BS,Bahamas,PG,Papua New Guinea,vr,
@@ -4891,7 +4891,7 @@ BS,Bahamas,TZ,Tanzania,vf,90
 BS,Bahamas,TH,Thailand,vr,
 BS,Bahamas,TL,Timor-Leste,voa,30
 BS,Bahamas,TG,Togo,ev,15
-BS,Bahamas,TO,Tonga,ev,31
+BS,Bahamas,TO,Tonga,voa,31
 BS,Bahamas,TT,Trinidad and Tobago,vf,90
 BS,Bahamas,TN,Tunisia,vr,
 BS,Bahamas,TR,Turkey,ev,90
@@ -5050,7 +5050,7 @@ BT,Bhutan,MK,North Macedonia,vr,
 BT,Bhutan,NO,Norway,vr,
 BT,Bhutan,OM,Oman,vr,
 BT,Bhutan,PK,Pakistan,ev,
-BT,Bhutan,PW,Palau,ev,30
+BT,Bhutan,PW,Palau,voa,30
 BT,Bhutan,PS,Palestine,vr,
 BT,Bhutan,PA,Panama,vf,90
 BT,Bhutan,PG,Papua New Guinea,ev,60
@@ -5423,7 +5423,7 @@ BY,Belarus,KW,Kuwait,vr,
 BY,Belarus,KG,Kyrgyzstan,vf,
 BY,Belarus,LA,Laos,vf,30
 BY,Belarus,LV,Latvia,vr,
-BY,Belarus,LB,Lebanon,ev,30
+BY,Belarus,LB,Lebanon,voa,30
 BY,Belarus,LS,Lesotho,vr,
 BY,Belarus,LR,Liberia,voa,90
 BY,Belarus,LY,Libya,ev,30
@@ -5460,7 +5460,7 @@ BY,Belarus,MK,North Macedonia,vr,
 BY,Belarus,NO,Norway,vr,
 BY,Belarus,OM,Oman,vf,14
 BY,Belarus,PK,Pakistan,ev,90
-BY,Belarus,PW,Palau,ev,30
+BY,Belarus,PW,Palau,voa,30
 BY,Belarus,PS,Palestine,vr,
 BY,Belarus,PA,Panama,vf,90
 BY,Belarus,PG,Papua New Guinea,ev,60
@@ -5665,7 +5665,7 @@ BZ,Belize,MK,North Macedonia,vr,
 BZ,Belize,NO,Norway,vr,
 BZ,Belize,OM,Oman,ev,
 BZ,Belize,PK,Pakistan,ev,
-BZ,Belize,PW,Palau,ev,30
+BZ,Belize,PW,Palau,voa,30
 BZ,Belize,PS,Palestine,vr,
 BZ,Belize,PA,Panama,vf,
 BZ,Belize,PG,Papua New Guinea,ev,30
@@ -5716,7 +5716,7 @@ BZ,Belize,TT,Trinidad and Tobago,vf,180
 BZ,Belize,TN,Tunisia,vr,
 BZ,Belize,TR,Turkey,vf,
 BZ,Belize,TM,Turkmenistan,vr,
-BZ,Belize,TV,Tuvalu,ev,30
+BZ,Belize,TV,Tuvalu,voa,30
 BZ,Belize,UG,Uganda,vf,
 BZ,Belize,UA,Ukraine,ev,
 BZ,Belize,AE,United Arab Emirates,ev,
@@ -5833,7 +5833,7 @@ CA,Canada,KW,Kuwait,ev,90
 CA,Canada,KG,Kyrgyzstan,vf,30
 CA,Canada,LA,Laos,ev,30
 CA,Canada,LV,Latvia,vf,90
-CA,Canada,LB,Lebanon,ev,30
+CA,Canada,LB,Lebanon,voa,30
 CA,Canada,LS,Lesotho,vf,30
 CA,Canada,LR,Liberia,voa,90
 CA,Canada,LY,Libya,ev,30
@@ -5870,7 +5870,7 @@ CA,Canada,MK,North Macedonia,vf,90
 CA,Canada,NO,Norway,vf,90
 CA,Canada,OM,Oman,ev,14
 CA,Canada,PK,Pakistan,ev,90
-CA,Canada,PW,Palau,ev,30
+CA,Canada,PW,Palau,voa,30
 CA,Canada,PS,Palestine,vf,90
 CA,Canada,PA,Panama,vf,180
 CA,Canada,PG,Papua New Guinea,ev,60
@@ -5916,7 +5916,7 @@ CA,Canada,TZ,Tanzania,ev,90
 CA,Canada,TH,Thailand,vf,30
 CA,Canada,TL,Timor-Leste,voa,30
 CA,Canada,TG,Togo,ev,15
-CA,Canada,TO,Tonga,ev,30
+CA,Canada,TO,Tonga,voa,30
 CA,Canada,TT,Trinidad and Tobago,vf,90
 CA,Canada,TN,Tunisia,vf,120
 CA,Canada,TR,Turkey,vf,90
@@ -6075,7 +6075,7 @@ CD,Democratic Republic of the Congo,MK,North Macedonia,vr,
 CD,Democratic Republic of the Congo,NO,Norway,vr,
 CD,Democratic Republic of the Congo,OM,Oman,vr,
 CD,Democratic Republic of the Congo,PK,Pakistan,ev,90
-CD,Democratic Republic of the Congo,PW,Palau,ev,30
+CD,Democratic Republic of the Congo,PW,Palau,voa,30
 CD,Democratic Republic of the Congo,PS,Palestine,vr,
 CD,Democratic Republic of the Congo,PA,Panama,vr,
 CD,Democratic Republic of the Congo,PG,Papua New Guinea,ev,60
@@ -6280,7 +6280,7 @@ CF,Central African Republic,MK,North Macedonia,vr,
 CF,Central African Republic,NO,Norway,vr,
 CF,Central African Republic,OM,Oman,ev,
 CF,Central African Republic,PK,Pakistan,ev,
-CF,Central African Republic,PW,Palau,ev,30
+CF,Central African Republic,PW,Palau,voa,30
 CF,Central African Republic,PS,Palestine,vf,
 CF,Central African Republic,PA,Panama,vr,
 CF,Central African Republic,PG,Papua New Guinea,ev,60
@@ -6485,7 +6485,7 @@ CG,Republic of the Congo,MK,North Macedonia,vr,
 CG,Republic of the Congo,NO,Norway,vr,
 CG,Republic of the Congo,OM,Oman,vr,
 CG,Republic of the Congo,PK,Pakistan,ev,
-CG,Republic of the Congo,PW,Palau,ev,30
+CG,Republic of the Congo,PW,Palau,voa,30
 CG,Republic of the Congo,PS,Palestine,vf,
 CG,Republic of the Congo,PA,Panama,vr,
 CG,Republic of the Congo,PG,Papua New Guinea,vr,
@@ -6654,7 +6654,7 @@ CH,Switzerland,KW,Kuwait,ev,90
 CH,Switzerland,KG,Kyrgyzstan,vf,30
 CH,Switzerland,LA,Laos,ev,15
 CH,Switzerland,LV,Latvia,idc,
-CH,Switzerland,LB,Lebanon,ev,30
+CH,Switzerland,LB,Lebanon,voa,30
 CH,Switzerland,LS,Lesotho,vf,14
 CH,Switzerland,LR,Liberia,voa,90
 CH,Switzerland,LY,Libya,ev,30
@@ -6691,7 +6691,7 @@ CH,Switzerland,MK,North Macedonia,vf,90
 CH,Switzerland,NO,Norway,idc,
 CH,Switzerland,OM,Oman,ev,14
 CH,Switzerland,PK,Pakistan,ev,90
-CH,Switzerland,PW,Palau,ev,90
+CH,Switzerland,PW,Palau,voa,90
 CH,Switzerland,PS,Palestine,vf,90
 CH,Switzerland,PA,Panama,vf,90
 CH,Switzerland,PG,Papua New Guinea,ev,60
@@ -6895,7 +6895,7 @@ CI,Côte d'Ivoire,MK,North Macedonia,vr,
 CI,Côte d'Ivoire,NO,Norway,vr,
 CI,Côte d'Ivoire,OM,Oman,ev,
 CI,Côte d'Ivoire,PK,Pakistan,ev,
-CI,Côte d'Ivoire,PW,Palau,ev,30
+CI,Côte d'Ivoire,PW,Palau,voa,30
 CI,Côte d'Ivoire,PS,Palestine,vf,
 CI,Côte d'Ivoire,PA,Panama,vr,
 CI,Côte d'Ivoire,PG,Papua New Guinea,ev,
@@ -7063,7 +7063,7 @@ CL,Chile,KW,Kuwait,vr,
 CL,Chile,KG,Kyrgyzstan,vf,30
 CL,Chile,LA,Laos,ev,30
 CL,Chile,LV,Latvia,vf,90
-CL,Chile,LB,Lebanon,ev,30
+CL,Chile,LB,Lebanon,voa,30
 CL,Chile,LS,Lesotho,vr,
 CL,Chile,LR,Liberia,voa,90
 CL,Chile,LY,Libya,ev,
@@ -7100,7 +7100,7 @@ CL,Chile,MK,North Macedonia,vf,90
 CL,Chile,NO,Norway,vf,90
 CL,Chile,OM,Oman,ev,14
 CL,Chile,PK,Pakistan,ev,90
-CL,Chile,PW,Palau,ev,30
+CL,Chile,PW,Palau,voa,30
 CL,Chile,PS,Palestine,vf,90
 CL,Chile,PA,Panama,vf,90
 CL,Chile,PG,Papua New Guinea,ev,60
@@ -7473,7 +7473,7 @@ CN,China,KW,Kuwait,vr,
 CN,China,KG,Kyrgyzstan,ev,21
 CN,China,LA,Laos,ev,30
 CN,China,LV,Latvia,vr,
-CN,China,LB,Lebanon,ev,30
+CN,China,LB,Lebanon,voa,30
 CN,China,LS,Lesotho,ev,
 CN,China,LR,Liberia,vr,
 CN,China,LY,Libya,ev,
@@ -7510,7 +7510,7 @@ CN,China,MK,North Macedonia,vr,
 CN,China,NO,Norway,vr,
 CN,China,OM,Oman,ev,14
 CN,China,PK,Pakistan,ev,90
-CN,China,PW,Palau,ev,30
+CN,China,PW,Palau,voa,30
 CN,China,PS,Palestine,vf,
 CN,China,PA,Panama,vr,
 CN,China,PG,Papua New Guinea,ev,30
@@ -7715,7 +7715,7 @@ CO,Colombia,MK,North Macedonia,vf,90
 CO,Colombia,NO,Norway,vf,90
 CO,Colombia,OM,Oman,ev,14
 CO,Colombia,PK,Pakistan,ev,90
-CO,Colombia,PW,Palau,ev,30
+CO,Colombia,PW,Palau,voa,30
 CO,Colombia,PS,Palestine,vf,90
 CO,Colombia,PA,Panama,vf,90
 CO,Colombia,PG,Papua New Guinea,ev,60
@@ -7883,7 +7883,7 @@ CR,Costa Rica,KW,Kuwait,vr,
 CR,Costa Rica,KG,Kyrgyzstan,ev,30
 CR,Costa Rica,LA,Laos,ev,30
 CR,Costa Rica,LV,Latvia,vf,90
-CR,Costa Rica,LB,Lebanon,ev,30
+CR,Costa Rica,LB,Lebanon,voa,30
 CR,Costa Rica,LS,Lesotho,ev,
 CR,Costa Rica,LR,Liberia,ev,
 CR,Costa Rica,LY,Libya,ev,
@@ -7920,7 +7920,7 @@ CR,Costa Rica,MK,North Macedonia,vf,90
 CR,Costa Rica,NO,Norway,vf,90
 CR,Costa Rica,OM,Oman,vr,
 CR,Costa Rica,PK,Pakistan,ev,
-CR,Costa Rica,PW,Palau,ev,30
+CR,Costa Rica,PW,Palau,voa,30
 CR,Costa Rica,PS,Palestine,vf,90
 CR,Costa Rica,PA,Panama,vf,180
 CR,Costa Rica,PG,Papua New Guinea,ev,60
@@ -8125,7 +8125,7 @@ CU,Cuba,MK,North Macedonia,vr,
 CU,Cuba,NO,Norway,vr,
 CU,Cuba,OM,Oman,vr,
 CU,Cuba,PK,Pakistan,ev,90
-CU,Cuba,PW,Palau,ev,30
+CU,Cuba,PW,Palau,voa,30
 CU,Cuba,PS,Palestine,vr,
 CU,Cuba,PA,Panama,vr,
 CU,Cuba,PG,Papua New Guinea,ev,60
@@ -8488,7 +8488,7 @@ CY,Cyprus,IL,Israel,ev,90
 CY,Cyprus,IT,Italy,idc,
 CY,Cyprus,JM,Jamaica,vf,90
 CY,Cyprus,JP,Japan,vf,90
-CY,Cyprus,JO,Jordan,ev,
+CY,Cyprus,JO,Jordan,voa,
 CY,Cyprus,KZ,Kazakhstan,vf,30
 CY,Cyprus,KE,Kenya,vf,90
 CY,Cyprus,KI,Kiribati,vf,90
@@ -8498,7 +8498,7 @@ CY,Cyprus,KW,Kuwait,ev,90
 CY,Cyprus,KG,Kyrgyzstan,vf,60
 CY,Cyprus,LA,Laos,ev,30
 CY,Cyprus,LV,Latvia,idc,
-CY,Cyprus,LB,Lebanon,ev,30
+CY,Cyprus,LB,Lebanon,voa,30
 CY,Cyprus,LS,Lesotho,vf,90
 CY,Cyprus,LR,Liberia,ev,90
 CY,Cyprus,LY,Libya,ev,30
@@ -8703,7 +8703,7 @@ CZ,Czech Republic,KW,Kuwait,ev,90
 CZ,Czech Republic,KG,Kyrgyzstan,vf,30
 CZ,Czech Republic,LA,Laos,ev,30
 CZ,Czech Republic,LV,Latvia,idc,
-CZ,Czech Republic,LB,Lebanon,ev,30
+CZ,Czech Republic,LB,Lebanon,voa,30
 CZ,Czech Republic,LS,Lesotho,vf,14
 CZ,Czech Republic,LR,Liberia,voa,
 CZ,Czech Republic,LY,Libya,ev,
@@ -8908,7 +8908,7 @@ DE,Germany,KW,Kuwait,ev,90
 DE,Germany,KG,Kyrgyzstan,vf,30
 DE,Germany,LA,Laos,ev,30
 DE,Germany,LV,Latvia,idc,
-DE,Germany,LB,Lebanon,ev,30
+DE,Germany,LB,Lebanon,voa,30
 DE,Germany,LS,Lesotho,vf,14
 DE,Germany,LR,Liberia,vr,
 DE,Germany,LY,Libya,ev,30
@@ -9318,7 +9318,7 @@ DK,Denmark,KW,Kuwait,ev,90
 DK,Denmark,KG,Kyrgyzstan,vf,60
 DK,Denmark,LA,Laos,ev,30
 DK,Denmark,LV,Latvia,idc,
-DK,Denmark,LB,Lebanon,ev,30
+DK,Denmark,LB,Lebanon,voa,30
 DK,Denmark,LS,Lesotho,vf,14
 DK,Denmark,LR,Liberia,ev,
 DK,Denmark,LY,Libya,ev,
@@ -9589,7 +9589,7 @@ DM,Dominica,SL,Sierra Leone,ev,
 DM,Dominica,SG,Singapore,vf,30
 DM,Dominica,SK,Slovakia,vf,90
 DM,Dominica,SI,Slovenia,vf,90
-DM,Dominica,SB,Solomon Islands,ev,90
+DM,Dominica,SB,Solomon Islands,voa,90
 DM,Dominica,SO,Somalia,ev,30
 DM,Dominica,ZA,South Africa,vr,
 DM,Dominica,SS,South Sudan,ev,
@@ -9728,7 +9728,7 @@ DO,Dominican Republic,KW,Kuwait,vr,
 DO,Dominican Republic,KG,Kyrgyzstan,ev,
 DO,Dominican Republic,LA,Laos,ev,30
 DO,Dominican Republic,LV,Latvia,vr,
-DO,Dominican Republic,LB,Lebanon,ev,30
+DO,Dominican Republic,LB,Lebanon,voa,30
 DO,Dominican Republic,LS,Lesotho,ev,14
 DO,Dominican Republic,LR,Liberia,ev,30
 DO,Dominican Republic,LY,Libya,ev,30
@@ -9765,7 +9765,7 @@ DO,Dominican Republic,MK,North Macedonia,vr,
 DO,Dominican Republic,NO,Norway,vr,
 DO,Dominican Republic,OM,Oman,vr,
 DO,Dominican Republic,PK,Pakistan,ev,
-DO,Dominican Republic,PW,Palau,ev,30
+DO,Dominican Republic,PW,Palau,voa,30
 DO,Dominican Republic,PS,Palestine,vr,
 DO,Dominican Republic,PA,Panama,vf,90
 DO,Dominican Republic,PG,Papua New Guinea,ev,60
@@ -10175,7 +10175,7 @@ EC,Ecuador,MK,North Macedonia,vr,
 EC,Ecuador,NO,Norway,vr,
 EC,Ecuador,OM,Oman,ev,14
 EC,Ecuador,PK,Pakistan,ev,90
-EC,Ecuador,PW,Palau,ev,30
+EC,Ecuador,PW,Palau,voa,30
 EC,Ecuador,PS,Palestine,vr,
 EC,Ecuador,PA,Panama,vf,90
 EC,Ecuador,PG,Papua New Guinea,ev,60
@@ -10518,7 +10518,7 @@ EG,Egypt,GA,Gabon,ev,90
 EG,Egypt,GM,Gambia,vf,90
 EG,Egypt,GE,Georgia,ev,30
 EG,Egypt,DE,Germany,vr,
-EG,Egypt,GH,Ghana,ev,60
+EG,Egypt,GH,Ghana,voa,60
 EG,Egypt,GR,Greece,vr,
 EG,Egypt,GD,Grenada,vr,
 EG,Egypt,GT,Guatemala,vr,
@@ -10585,7 +10585,7 @@ EG,Egypt,MK,North Macedonia,vr,
 EG,Egypt,NO,Norway,vr,
 EG,Egypt,OM,Oman,vr,
 EG,Egypt,PK,Pakistan,ev,90
-EG,Egypt,PW,Palau,ev,30
+EG,Egypt,PW,Palau,voa,30
 EG,Egypt,PS,Palestine,vf,
 EG,Egypt,PA,Panama,vr,
 EG,Egypt,PG,Papua New Guinea,ev,60
@@ -11200,7 +11200,7 @@ ET,Ethiopia,MK,North Macedonia,vr,
 ET,Ethiopia,NO,Norway,vr,
 ET,Ethiopia,OM,Oman,ev,
 ET,Ethiopia,PK,Pakistan,ev,
-ET,Ethiopia,PW,Palau,ev,30
+ET,Ethiopia,PW,Palau,voa,30
 ET,Ethiopia,PS,Palestine,vf,
 ET,Ethiopia,PA,Panama,vr,
 ET,Ethiopia,PG,Papua New Guinea,ev,60
@@ -11368,7 +11368,7 @@ FI,Finland,KW,Kuwait,ev,90
 FI,Finland,KG,Kyrgyzstan,vf,60
 FI,Finland,LA,Laos,vf,15
 FI,Finland,LV,Latvia,idc,
-FI,Finland,LB,Lebanon,ev,30
+FI,Finland,LB,Lebanon,voa,30
 FI,Finland,LS,Lesotho,vf,14
 FI,Finland,LR,Liberia,vr,
 FI,Finland,LY,Libya,ev,
@@ -11844,7 +11844,7 @@ FM,Micronesia,SL,Sierra Leone,ev,30
 FM,Micronesia,SG,Singapore,vf,30
 FM,Micronesia,SK,Slovakia,vf,90
 FM,Micronesia,SI,Slovenia,vf,90
-FM,Micronesia,SB,Solomon Islands,ev,90
+FM,Micronesia,SB,Solomon Islands,voa,90
 FM,Micronesia,SO,Somalia,ev,30
 FM,Micronesia,ZA,South Africa,ev,
 FM,Micronesia,SS,South Sudan,ev,
@@ -11983,7 +11983,7 @@ FR,France,KW,Kuwait,ev,90
 FR,France,KG,Kyrgyzstan,vf,60
 FR,France,LA,Laos,ev,30
 FR,France,LV,Latvia,idc,
-FR,France,LB,Lebanon,ev,30
+FR,France,LB,Lebanon,voa,30
 FR,France,LS,Lesotho,vf,14
 FR,France,LR,Liberia,vr,
 FR,France,LY,Libya,ev,
@@ -12225,7 +12225,7 @@ GA,Gabon,MK,North Macedonia,vr,
 GA,Gabon,NO,Norway,vr,
 GA,Gabon,OM,Oman,vr,
 GA,Gabon,PK,Pakistan,ev,90
-GA,Gabon,PW,Palau,ev,30
+GA,Gabon,PW,Palau,voa,30
 GA,Gabon,PS,Palestine,vf,
 GA,Gabon,PA,Panama,vf,90
 GA,Gabon,PG,Papua New Guinea,ev,60
@@ -12394,7 +12394,7 @@ GB,United Kingdom,KW,Kuwait,ev,90
 GB,United Kingdom,KG,Kyrgyzstan,vf,30
 GB,United Kingdom,LA,Laos,ev,30
 GB,United Kingdom,LV,Latvia,vf,90
-GB,United Kingdom,LB,Lebanon,ev,30
+GB,United Kingdom,LB,Lebanon,voa,30
 GB,United Kingdom,LS,Lesotho,vf,14
 GB,United Kingdom,LR,Liberia,ev,
 GB,United Kingdom,LY,Libya,ev,90
@@ -12431,7 +12431,7 @@ GB,United Kingdom,MK,North Macedonia,vf,90
 GB,United Kingdom,NO,Norway,vf,90
 GB,United Kingdom,OM,Oman,ev,14
 GB,United Kingdom,PK,Pakistan,ev,90
-GB,United Kingdom,PW,Palau,ev,30
+GB,United Kingdom,PW,Palau,voa,30
 GB,United Kingdom,PS,Palestine,vf,90
 GB,United Kingdom,PA,Panama,vf,90
 GB,United Kingdom,PG,Papua New Guinea,ev,60
@@ -12477,12 +12477,12 @@ GB,United Kingdom,TZ,Tanzania,ev,90
 GB,United Kingdom,TH,Thailand,vf,30
 GB,United Kingdom,TL,Timor-Leste,voa,30
 GB,United Kingdom,TG,Togo,ev,15
-GB,United Kingdom,TO,Tonga,ev,31
+GB,United Kingdom,TO,Tonga,voa,31
 GB,United Kingdom,TT,Trinidad and Tobago,vf,90
 GB,United Kingdom,TN,Tunisia,vf,90
 GB,United Kingdom,TR,Turkey,vf,90
 GB,United Kingdom,TM,Turkmenistan,vr,
-GB,United Kingdom,TV,Tuvalu,ev,30
+GB,United Kingdom,TV,Tuvalu,voa,30
 GB,United Kingdom,UG,Uganda,ev,90
 GB,United Kingdom,UA,Ukraine,vf,90
 GB,United Kingdom,AE,United Arab Emirates,vf,90
@@ -12803,7 +12803,7 @@ GE,Georgia,KW,Kuwait,ev,90
 GE,Georgia,KG,Kyrgyzstan,vf,90
 GE,Georgia,LA,Laos,ev,30
 GE,Georgia,LV,Latvia,vf,90
-GE,Georgia,LB,Lebanon,ev,30
+GE,Georgia,LB,Lebanon,voa,30
 GE,Georgia,LS,Lesotho,ev,
 GE,Georgia,LR,Liberia,vr,
 GE,Georgia,LY,Libya,ev,
@@ -12840,7 +12840,7 @@ GE,Georgia,MK,North Macedonia,vf,90
 GE,Georgia,NO,Norway,vf,90
 GE,Georgia,OM,Oman,vf,14
 GE,Georgia,PK,Pakistan,ev,90
-GE,Georgia,PW,Palau,ev,30
+GE,Georgia,PW,Palau,voa,30
 GE,Georgia,PS,Palestine,vf,90
 GE,Georgia,PA,Panama,vf,90
 GE,Georgia,PG,Papua New Guinea,ev,60
@@ -13045,7 +13045,7 @@ GH,Ghana,MK,North Macedonia,vr,
 GH,Ghana,NO,Norway,vr,
 GH,Ghana,OM,Oman,ev,
 GH,Ghana,PK,Pakistan,ev,
-GH,Ghana,PW,Palau,ev,30
+GH,Ghana,PW,Palau,voa,30
 GH,Ghana,PS,Palestine,vf,
 GH,Ghana,PA,Panama,vr,
 GH,Ghana,PG,Papua New Guinea,ev,
@@ -13250,7 +13250,7 @@ GM,Gambia,MK,North Macedonia,vr,
 GM,Gambia,NO,Norway,vr,
 GM,Gambia,OM,Oman,vr,
 GM,Gambia,PK,Pakistan,ev,
-GM,Gambia,PW,Palau,ev,30
+GM,Gambia,PW,Palau,voa,30
 GM,Gambia,PS,Palestine,vf,
 GM,Gambia,PA,Panama,vr,
 GM,Gambia,PG,Papua New Guinea,vr,
@@ -13301,7 +13301,7 @@ GM,Gambia,TT,Trinidad and Tobago,vf,
 GM,Gambia,TN,Tunisia,vf,90
 GM,Gambia,TR,Turkey,vr,
 GM,Gambia,TM,Turkmenistan,vr,
-GM,Gambia,TV,Tuvalu,ev,30
+GM,Gambia,TV,Tuvalu,voa,30
 GM,Gambia,UG,Uganda,vf,90
 GM,Gambia,UA,Ukraine,vr,
 GM,Gambia,AE,United Arab Emirates,vr,
@@ -13455,7 +13455,7 @@ GN,Guinea,MK,North Macedonia,vr,
 GN,Guinea,NO,Norway,vr,
 GN,Guinea,OM,Oman,vr,
 GN,Guinea,PK,Pakistan,ev,
-GN,Guinea,PW,Palau,ev,30
+GN,Guinea,PW,Palau,voa,30
 GN,Guinea,PS,Palestine,vf,
 GN,Guinea,PA,Panama,vr,
 GN,Guinea,PG,Papua New Guinea,ev,
@@ -14070,7 +14070,7 @@ GT,Guatemala,MK,North Macedonia,vf,90
 GT,Guatemala,NO,Norway,vf,90
 GT,Guatemala,OM,Oman,vr,
 GT,Guatemala,PK,Pakistan,ev,
-GT,Guatemala,PW,Palau,ev,30
+GT,Guatemala,PW,Palau,voa,30
 GT,Guatemala,PS,Palestine,vf,90
 GT,Guatemala,PA,Panama,vf,180
 GT,Guatemala,PG,Papua New Guinea,vr,
@@ -14480,7 +14480,7 @@ GY,Guyana,MK,North Macedonia,vr,
 GY,Guyana,NO,Norway,vr,
 GY,Guyana,OM,Oman,vr,
 GY,Guyana,PK,Pakistan,ev,90
-GY,Guyana,PW,Palau,ev,30
+GY,Guyana,PW,Palau,voa,30
 GY,Guyana,PS,Palestine,vr,
 GY,Guyana,PA,Panama,vf,90
 GY,Guyana,PG,Papua New Guinea,ev,30
@@ -14649,7 +14649,7 @@ HK,Hong Kong,KW,Kuwait,ev,90
 HK,Hong Kong,KG,Kyrgyzstan,vf,30
 HK,Hong Kong,LA,Laos,vf,14
 HK,Hong Kong,LV,Latvia,vf,90
-HK,Hong Kong,LB,Lebanon,ev,30
+HK,Hong Kong,LB,Lebanon,voa,30
 HK,Hong Kong,LS,Lesotho,vf,90
 HK,Hong Kong,LR,Liberia,ev,
 HK,Hong Kong,LY,Libya,ev,
@@ -14686,7 +14686,7 @@ HK,Hong Kong,MK,North Macedonia,vf,90
 HK,Hong Kong,NO,Norway,vf,90
 HK,Hong Kong,OM,Oman,vf,14
 HK,Hong Kong,PK,Pakistan,ev,
-HK,Hong Kong,PW,Palau,ev,30
+HK,Hong Kong,PW,Palau,voa,30
 HK,Hong Kong,PS,Palestine,vf,90
 HK,Hong Kong,PA,Panama,vf,30
 HK,Hong Kong,PG,Papua New Guinea,ev,60
@@ -14732,12 +14732,12 @@ HK,Hong Kong,TZ,Tanzania,vf,90
 HK,Hong Kong,TH,Thailand,vf,60
 HK,Hong Kong,TL,Timor-Leste,voa,30
 HK,Hong Kong,TG,Togo,ev,30
-HK,Hong Kong,TO,Tonga,ev,31
+HK,Hong Kong,TO,Tonga,voa,31
 HK,Hong Kong,TT,Trinidad and Tobago,vf,90
 HK,Hong Kong,TN,Tunisia,vf,90
 HK,Hong Kong,TR,Turkey,vf,90
 HK,Hong Kong,TM,Turkmenistan,ev,
-HK,Hong Kong,TV,Tuvalu,ev,30
+HK,Hong Kong,TV,Tuvalu,voa,30
 HK,Hong Kong,UG,Uganda,vf,90
 HK,Hong Kong,UA,Ukraine,vf,14
 HK,Hong Kong,AE,United Arab Emirates,vf,30
@@ -14890,7 +14890,7 @@ HN,Honduras,MK,North Macedonia,vf,90
 HN,Honduras,NO,Norway,vf,90
 HN,Honduras,OM,Oman,vf,14
 HN,Honduras,PK,Pakistan,ev,
-HN,Honduras,PW,Palau,ev,30
+HN,Honduras,PW,Palau,voa,30
 HN,Honduras,PS,Palestine,vf,90
 HN,Honduras,PA,Panama,vf,180
 HN,Honduras,PG,Papua New Guinea,vr,
@@ -15300,7 +15300,7 @@ HT,Haiti,MK,North Macedonia,vr,
 HT,Haiti,NO,Norway,vr,
 HT,Haiti,OM,Oman,ev,
 HT,Haiti,PK,Pakistan,ev,
-HT,Haiti,PW,Palau,ev,30
+HT,Haiti,PW,Palau,voa,30
 HT,Haiti,PS,Palestine,vr,
 HT,Haiti,PA,Panama,vr,
 HT,Haiti,PG,Papua New Guinea,ev,60
@@ -15710,7 +15710,7 @@ ID,Indonesia,MK,North Macedonia,vr,
 ID,Indonesia,NO,Norway,vr,
 ID,Indonesia,OM,Oman,ev,14
 ID,Indonesia,PK,Pakistan,ev,90
-ID,Indonesia,PW,Palau,ev,30
+ID,Indonesia,PW,Palau,voa,30
 ID,Indonesia,PS,Palestine,vr,
 ID,Indonesia,PA,Panama,vr,
 ID,Indonesia,PG,Papua New Guinea,ev,60
@@ -15744,7 +15744,7 @@ ID,Indonesia,SO,Somalia,ev,30
 ID,Indonesia,ZA,South Africa,ev,90
 ID,Indonesia,SS,South Sudan,ev,
 ID,Indonesia,ES,Spain,vr,
-ID,Indonesia,LK,Sri Lanka,ev,30
+ID,Indonesia,LK,Sri Lanka,voa,30
 ID,Indonesia,SD,Sudan,vr,
 ID,Indonesia,SR,Suriname,vf,90
 ID,Indonesia,SE,Sweden,vr,
@@ -15878,7 +15878,7 @@ IE,Ireland,KW,Kuwait,ev,90
 IE,Ireland,KG,Kyrgyzstan,vf,60
 IE,Ireland,LA,Laos,ev,30
 IE,Ireland,LV,Latvia,idc,
-IE,Ireland,LB,Lebanon,ev,30
+IE,Ireland,LB,Lebanon,voa,30
 IE,Ireland,LS,Lesotho,vf,90
 IE,Ireland,LR,Liberia,vr,
 IE,Ireland,LY,Libya,ev,
@@ -15915,7 +15915,7 @@ IE,Ireland,MK,North Macedonia,vf,90
 IE,Ireland,NO,Norway,idc,
 IE,Ireland,OM,Oman,ev,14
 IE,Ireland,PK,Pakistan,ev,90
-IE,Ireland,PW,Palau,ev,30
+IE,Ireland,PW,Palau,voa,30
 IE,Ireland,PS,Palestine,vf,90
 IE,Ireland,PA,Panama,vf,90
 IE,Ireland,PG,Papua New Guinea,ev,60
@@ -15961,7 +15961,7 @@ IE,Ireland,TZ,Tanzania,ev,90
 IE,Ireland,TH,Thailand,vf,60
 IE,Ireland,TL,Timor-Leste,voa,30
 IE,Ireland,TG,Togo,ev,15
-IE,Ireland,TO,Tonga,ev,31
+IE,Ireland,TO,Tonga,voa,31
 IE,Ireland,TT,Trinidad and Tobago,vf,90
 IE,Ireland,TN,Tunisia,vf,90
 IE,Ireland,TR,Turkey,vf,90
@@ -16109,7 +16109,7 @@ IL,Israel,MA,Morocco,ev,30
 IL,Israel,MZ,Mozambique,ev,30
 IL,Israel,MM,Myanmar,ev,28
 IL,Israel,NA,Namibia,ev,90
-IL,Israel,NR,Nauru,ev,
+IL,Israel,NR,Nauru,voa,
 IL,Israel,NP,Nepal,ev,90
 IL,Israel,NL,Netherlands,vf,90
 IL,Israel,NZ,New Zealand,eta,90
@@ -16325,7 +16325,7 @@ IN,India,MK,North Macedonia,vr,
 IN,India,NO,Norway,vr,
 IN,India,OM,Oman,vr,
 IN,India,PK,Pakistan,vr,
-IN,India,PW,Palau,ev,30
+IN,India,PW,Palau,voa,30
 IN,India,PS,Palestine,vf,
 IN,India,PA,Panama,vr,
 IN,India,PG,Papua New Guinea,ev,30
@@ -16493,7 +16493,7 @@ IQ,Iraq,KW,Kuwait,vr,
 IQ,Iraq,KG,Kyrgyzstan,ev,
 IQ,Iraq,LA,Laos,vr,
 IQ,Iraq,LV,Latvia,vr,
-IQ,Iraq,LB,Lebanon,ev,30
+IQ,Iraq,LB,Lebanon,voa,30
 IQ,Iraq,LS,Lesotho,ev,
 IQ,Iraq,LR,Liberia,vr,
 IQ,Iraq,LY,Libya,vr,
@@ -16530,7 +16530,7 @@ IQ,Iraq,MK,North Macedonia,vr,
 IQ,Iraq,NO,Norway,vr,
 IQ,Iraq,OM,Oman,vr,
 IQ,Iraq,PK,Pakistan,ev,30
-IQ,Iraq,PW,Palau,ev,30
+IQ,Iraq,PW,Palau,voa,30
 IQ,Iraq,PS,Palestine,vr,
 IQ,Iraq,PA,Panama,vr,
 IQ,Iraq,PG,Papua New Guinea,ev,60
@@ -16632,7 +16632,7 @@ IR,Iran,BN,Brunei,vr,
 IR,Iran,BG,Bulgaria,vr,
 IR,Iran,BF,Burkina Faso,ev,30
 IR,Iran,BI,Burundi,ev,30
-IR,Iran,CV,Cabo Verde,vr,
+IR,Iran,CV,Cabo Verde,ev,90
 IR,Iran,KH,Cambodia,ev,30
 IR,Iran,CM,Cameroon,ev,30
 IR,Iran,CA,Canada,vr,
@@ -16735,7 +16735,7 @@ IR,Iran,MK,North Macedonia,vr,
 IR,Iran,NO,Norway,vr,
 IR,Iran,OM,Oman,ev,14
 IR,Iran,PK,Pakistan,ev,90
-IR,Iran,PW,Palau,ev,30
+IR,Iran,PW,Palau,voa,30
 IR,Iran,PS,Palestine,vr,
 IR,Iran,PA,Panama,vr,
 IR,Iran,PG,Papua New Guinea,ev,60
@@ -16903,7 +16903,7 @@ IS,Iceland,KW,Kuwait,ev,90
 IS,Iceland,KG,Kyrgyzstan,vf,60
 IS,Iceland,LA,Laos,ev,30
 IS,Iceland,LV,Latvia,idc,
-IS,Iceland,LB,Lebanon,ev,30
+IS,Iceland,LB,Lebanon,voa,30
 IS,Iceland,LS,Lesotho,vf,14
 IS,Iceland,LR,Liberia,vr,
 IS,Iceland,LY,Libya,ev,
@@ -17555,7 +17555,7 @@ JO,Jordan,MK,North Macedonia,vr,
 JO,Jordan,NO,Norway,vr,
 JO,Jordan,OM,Oman,vf,14
 JO,Jordan,PK,Pakistan,ev,90
-JO,Jordan,PW,Palau,ev,30
+JO,Jordan,PW,Palau,voa,30
 JO,Jordan,PS,Palestine,vr,
 JO,Jordan,PA,Panama,vr,
 JO,Jordan,PG,Papua New Guinea,ev,60
@@ -17723,7 +17723,7 @@ JP,Japan,KW,Kuwait,ev,90
 JP,Japan,KG,Kyrgyzstan,vf,30
 JP,Japan,LA,Laos,vf,30
 JP,Japan,LV,Latvia,vf,90
-JP,Japan,LB,Lebanon,ev,30
+JP,Japan,LB,Lebanon,voa,30
 JP,Japan,LS,Lesotho,vf,90
 JP,Japan,LR,Liberia,vr,
 JP,Japan,LY,Libya,ev,
@@ -17760,7 +17760,7 @@ JP,Japan,MK,North Macedonia,vf,90
 JP,Japan,NO,Norway,vf,90
 JP,Japan,OM,Oman,ev,14
 JP,Japan,PK,Pakistan,ev,90
-JP,Japan,PW,Palau,ev,30
+JP,Japan,PW,Palau,voa,30
 JP,Japan,PS,Palestine,vf,90
 JP,Japan,PA,Panama,vf,90
 JP,Japan,PG,Papua New Guinea,ev,60
@@ -17806,7 +17806,7 @@ JP,Japan,TZ,Tanzania,ev,90
 JP,Japan,TH,Thailand,vf,60
 JP,Japan,TL,Timor-Leste,voa,30
 JP,Japan,TG,Togo,ev,15
-JP,Japan,TO,Tonga,ev,31
+JP,Japan,TO,Tonga,voa,31
 JP,Japan,TT,Trinidad and Tobago,vf,90
 JP,Japan,TN,Tunisia,vf,90
 JP,Japan,TR,Turkey,vf,90
@@ -18133,7 +18133,7 @@ KG,Kyrgyzstan,KR,South Korea,vr,
 KG,Kyrgyzstan,KW,Kuwait,vr,
 KG,Kyrgyzstan,LA,Laos,ev,30
 KG,Kyrgyzstan,LV,Latvia,vr,
-KG,Kyrgyzstan,LB,Lebanon,ev,30
+KG,Kyrgyzstan,LB,Lebanon,voa,30
 KG,Kyrgyzstan,LS,Lesotho,ev,
 KG,Kyrgyzstan,LR,Liberia,ev,
 KG,Kyrgyzstan,LY,Libya,ev,
@@ -18170,7 +18170,7 @@ KG,Kyrgyzstan,MK,North Macedonia,vr,
 KG,Kyrgyzstan,NO,Norway,vr,
 KG,Kyrgyzstan,OM,Oman,vr,
 KG,Kyrgyzstan,PK,Pakistan,ev,
-KG,Kyrgyzstan,PW,Palau,ev,30
+KG,Kyrgyzstan,PW,Palau,voa,30
 KG,Kyrgyzstan,PS,Palestine,vr,
 KG,Kyrgyzstan,PA,Panama,vr,
 KG,Kyrgyzstan,PG,Papua New Guinea,ev,60
@@ -18375,7 +18375,7 @@ KH,Cambodia,MK,North Macedonia,vr,
 KH,Cambodia,NO,Norway,vr,
 KH,Cambodia,OM,Oman,ev,
 KH,Cambodia,PK,Pakistan,ev,30
-KH,Cambodia,PW,Palau,ev,30
+KH,Cambodia,PW,Palau,voa,30
 KH,Cambodia,PS,Palestine,vr,
 KH,Cambodia,PA,Panama,vf,90
 KH,Cambodia,PG,Papua New Guinea,ev,60
@@ -18785,7 +18785,7 @@ KM,Comoros,MK,North Macedonia,vr,
 KM,Comoros,NO,Norway,vr,
 KM,Comoros,OM,Oman,ev,
 KM,Comoros,PK,Pakistan,ev,
-KM,Comoros,PW,Palau,ev,30
+KM,Comoros,PW,Palau,voa,30
 KM,Comoros,PS,Palestine,vf,
 KM,Comoros,PA,Panama,vf,90
 KM,Comoros,PG,Papua New Guinea,ev,60
@@ -19195,7 +19195,7 @@ KP,North Korea,MK,North Macedonia,vr,
 KP,North Korea,NO,Norway,vr,
 KP,North Korea,OM,Oman,ev,
 KP,North Korea,PK,Pakistan,ev,90
-KP,North Korea,PW,Palau,ev,30
+KP,North Korea,PW,Palau,voa,30
 KP,North Korea,PS,Palestine,vr,
 KP,North Korea,PA,Panama,vr,
 KP,North Korea,PG,Papua New Guinea,ev,60
@@ -19363,7 +19363,7 @@ KR,South Korea,KW,Kuwait,ev,90
 KR,South Korea,KG,Kyrgyzstan,vf,30
 KR,South Korea,LA,Laos,vf,30
 KR,South Korea,LV,Latvia,vf,90
-KR,South Korea,LB,Lebanon,ev,30
+KR,South Korea,LB,Lebanon,voa,30
 KR,South Korea,LS,Lesotho,vf,60
 KR,South Korea,LR,Liberia,voa,90
 KR,South Korea,LY,Libya,ev,
@@ -19400,7 +19400,7 @@ KR,South Korea,MK,North Macedonia,vf,90
 KR,South Korea,NO,Norway,vf,90
 KR,South Korea,OM,Oman,ev,14
 KR,South Korea,PK,Pakistan,ev,90
-KR,South Korea,PW,Palau,ev,30
+KR,South Korea,PW,Palau,voa,30
 KR,South Korea,PS,Palestine,vf,90
 KR,South Korea,PA,Panama,vf,90
 KR,South Korea,PG,Papua New Guinea,ev,60
@@ -19446,12 +19446,12 @@ KR,South Korea,TZ,Tanzania,ev,90
 KR,South Korea,TH,Thailand,vf,90
 KR,South Korea,TL,Timor-Leste,voa,30
 KR,South Korea,TG,Togo,ev,15
-KR,South Korea,TO,Tonga,ev,31
+KR,South Korea,TO,Tonga,voa,31
 KR,South Korea,TT,Trinidad and Tobago,vf,90
 KR,South Korea,TN,Tunisia,vf,90
 KR,South Korea,TR,Turkey,vf,90
 KR,South Korea,TM,Turkmenistan,ev,
-KR,South Korea,TV,Tuvalu,ev,30
+KR,South Korea,TV,Tuvalu,voa,30
 KR,South Korea,UG,Uganda,ev,90
 KR,South Korea,UA,Ukraine,vf,90
 KR,South Korea,AE,United Arab Emirates,vf,90
@@ -19605,7 +19605,7 @@ KW,Kuwait,MK,North Macedonia,vr,
 KW,Kuwait,NO,Norway,vr,
 KW,Kuwait,OM,Oman,idc,
 KW,Kuwait,PK,Pakistan,vf,90
-KW,Kuwait,PW,Palau,ev,30
+KW,Kuwait,PW,Palau,voa,30
 KW,Kuwait,PS,Palestine,vr,
 KW,Kuwait,PA,Panama,vf,90
 KW,Kuwait,PG,Papua New Guinea,ev,
@@ -19773,7 +19773,7 @@ KZ,Kazakhstan,KW,Kuwait,vr,
 KZ,Kazakhstan,KG,Kyrgyzstan,vf,90
 KZ,Kazakhstan,LA,Laos,ev,30
 KZ,Kazakhstan,LV,Latvia,vr,
-KZ,Kazakhstan,LB,Lebanon,ev,30
+KZ,Kazakhstan,LB,Lebanon,voa,30
 KZ,Kazakhstan,LS,Lesotho,vr,
 KZ,Kazakhstan,LR,Liberia,voa,90
 KZ,Kazakhstan,LY,Libya,ev,
@@ -19810,7 +19810,7 @@ KZ,Kazakhstan,MK,North Macedonia,vr,
 KZ,Kazakhstan,NO,Norway,vr,
 KZ,Kazakhstan,OM,Oman,vf,30
 KZ,Kazakhstan,PK,Pakistan,ev,90
-KZ,Kazakhstan,PW,Palau,ev,30
+KZ,Kazakhstan,PW,Palau,voa,30
 KZ,Kazakhstan,PS,Palestine,vr,
 KZ,Kazakhstan,PA,Panama,vr,
 KZ,Kazakhstan,PG,Papua New Guinea,ev,60
@@ -20015,7 +20015,7 @@ LA,Laos,MK,North Macedonia,vr,
 LA,Laos,NO,Norway,vr,
 LA,Laos,OM,Oman,vr,
 LA,Laos,PK,Pakistan,ev,90
-LA,Laos,PW,Palau,ev,30
+LA,Laos,PW,Palau,voa,30
 LA,Laos,PS,Palestine,vr,
 LA,Laos,PA,Panama,vr,
 LA,Laos,PG,Papua New Guinea,ev,60
@@ -20220,7 +20220,7 @@ LB,Lebanon,MK,North Macedonia,vr,
 LB,Lebanon,NO,Norway,vr,
 LB,Lebanon,OM,Oman,ev,14
 LB,Lebanon,PK,Pakistan,ev,90
-LB,Lebanon,PW,Palau,ev,30
+LB,Lebanon,PW,Palau,voa,30
 LB,Lebanon,PS,Palestine,vr,
 LB,Lebanon,PA,Panama,vr,
 LB,Lebanon,PG,Papua New Guinea,ev,60
@@ -20836,7 +20836,7 @@ LK,Sri Lanka,MK,North Macedonia,vr,
 LK,Sri Lanka,NO,Norway,vr,
 LK,Sri Lanka,OM,Oman,vr,
 LK,Sri Lanka,PK,Pakistan,ev,90
-LK,Sri Lanka,PW,Palau,ev,30
+LK,Sri Lanka,PW,Palau,voa,30
 LK,Sri Lanka,PS,Palestine,vr,
 LK,Sri Lanka,PA,Panama,vr,
 LK,Sri Lanka,PG,Papua New Guinea,ev,60
@@ -21245,7 +21245,7 @@ LS,Lesotho,MK,North Macedonia,vr,
 LS,Lesotho,NO,Norway,vr,
 LS,Lesotho,OM,Oman,ev,
 LS,Lesotho,PK,Pakistan,ev,
-LS,Lesotho,PW,Palau,ev,30
+LS,Lesotho,PW,Palau,voa,30
 LS,Lesotho,PS,Palestine,vf,
 LS,Lesotho,PA,Panama,vr,
 LS,Lesotho,PG,Papua New Guinea,ev,30
@@ -21296,7 +21296,7 @@ LS,Lesotho,TT,Trinidad and Tobago,vf,
 LS,Lesotho,TN,Tunisia,vr,
 LS,Lesotho,TR,Turkey,vr,
 LS,Lesotho,TM,Turkmenistan,vr,
-LS,Lesotho,TV,Tuvalu,ev,30
+LS,Lesotho,TV,Tuvalu,voa,30
 LS,Lesotho,UG,Uganda,vf,90
 LS,Lesotho,UA,Ukraine,vr,
 LS,Lesotho,AE,United Arab Emirates,ev,30
@@ -21619,7 +21619,7 @@ LU,Luxembourg,KW,Kuwait,ev,90
 LU,Luxembourg,KG,Kyrgyzstan,vf,60
 LU,Luxembourg,LA,Laos,vf,15
 LU,Luxembourg,LV,Latvia,idc,
-LU,Luxembourg,LB,Lebanon,ev,30
+LU,Luxembourg,LB,Lebanon,voa,30
 LU,Luxembourg,LS,Lesotho,vf,14
 LU,Luxembourg,LR,Liberia,voa,
 LU,Luxembourg,LY,Libya,ev,
@@ -22065,7 +22065,7 @@ LY,Libya,MK,North Macedonia,vr,
 LY,Libya,NO,Norway,vr,
 LY,Libya,OM,Oman,vr,
 LY,Libya,PK,Pakistan,ev,90
-LY,Libya,PW,Palau,ev,30
+LY,Libya,PW,Palau,voa,30
 LY,Libya,PS,Palestine,vf,
 LY,Libya,PA,Panama,vr,
 LY,Libya,PG,Papua New Guinea,ev,60
@@ -22270,7 +22270,7 @@ MA,Morocco,MK,North Macedonia,vr,
 MA,Morocco,NO,Norway,vr,
 MA,Morocco,OM,Oman,vr,
 MA,Morocco,PK,Pakistan,ev,90
-MA,Morocco,PW,Palau,ev,30
+MA,Morocco,PW,Palau,voa,30
 MA,Morocco,PS,Palestine,vf,
 MA,Morocco,PA,Panama,vr,
 MA,Morocco,PG,Papua New Guinea,ev,60
@@ -22521,7 +22521,7 @@ MC,Monaco,TZ,Tanzania,ev,90
 MC,Monaco,TH,Thailand,vf,60
 MC,Monaco,TL,Timor-Leste,voa,30
 MC,Monaco,TG,Togo,ev,15
-MC,Monaco,TO,Tonga,ev,31
+MC,Monaco,TO,Tonga,voa,31
 MC,Monaco,TT,Trinidad and Tobago,ev,
 MC,Monaco,TN,Tunisia,vf,90
 MC,Monaco,TR,Turkey,vf,90
@@ -22644,7 +22644,7 @@ MD,Moldova,KW,Kuwait,vr,
 MD,Moldova,KG,Kyrgyzstan,vf,60
 MD,Moldova,LA,Laos,ev,30
 MD,Moldova,LV,Latvia,vf,90
-MD,Moldova,LB,Lebanon,ev,30
+MD,Moldova,LB,Lebanon,voa,30
 MD,Moldova,LS,Lesotho,vr,
 MD,Moldova,LR,Liberia,voa,
 MD,Moldova,LY,Libya,ev,
@@ -22849,7 +22849,7 @@ ME,Montenegro,KW,Kuwait,vr,
 ME,Montenegro,KG,Kyrgyzstan,vf,60
 ME,Montenegro,LA,Laos,ev,30
 ME,Montenegro,LV,Latvia,vf,90
-ME,Montenegro,LB,Lebanon,ev,30
+ME,Montenegro,LB,Lebanon,voa,30
 ME,Montenegro,LS,Lesotho,ev,44
 ME,Montenegro,LR,Liberia,ev,
 ME,Montenegro,LY,Libya,ev,
@@ -22885,7 +22885,7 @@ ME,Montenegro,MK,North Macedonia,idc,90
 ME,Montenegro,NO,Norway,vf,90
 ME,Montenegro,OM,Oman,vr,
 ME,Montenegro,PK,Pakistan,ev,90
-ME,Montenegro,PW,Palau,ev,30
+ME,Montenegro,PW,Palau,voa,30
 ME,Montenegro,PS,Palestine,vf,90
 ME,Montenegro,PA,Panama,vf,90
 ME,Montenegro,PG,Papua New Guinea,ev,60
@@ -23090,7 +23090,7 @@ MG,Madagascar,MK,North Macedonia,vr,
 MG,Madagascar,NO,Norway,vr,
 MG,Madagascar,OM,Oman,vr,
 MG,Madagascar,PK,Pakistan,ev,90
-MG,Madagascar,PW,Palau,ev,30
+MG,Madagascar,PW,Palau,voa,30
 MG,Madagascar,PS,Palestine,vf,
 MG,Madagascar,PA,Panama,vf,90
 MG,Madagascar,PG,Papua New Guinea,ev,60
@@ -23284,7 +23284,7 @@ MH,Marshall Islands,MA,Morocco,vr,
 MH,Marshall Islands,MZ,Mozambique,ev,30
 MH,Marshall Islands,MM,Myanmar,ev,28
 MH,Marshall Islands,NA,Namibia,ev,
-MH,Marshall Islands,NR,Nauru,ev,
+MH,Marshall Islands,NR,Nauru,voa,
 MH,Marshall Islands,NP,Nepal,ev,90
 MH,Marshall Islands,NL,Netherlands,vf,90
 MH,Marshall Islands,NZ,New Zealand,vr,
@@ -23324,7 +23324,7 @@ MH,Marshall Islands,SL,Sierra Leone,ev,
 MH,Marshall Islands,SG,Singapore,vf,30
 MH,Marshall Islands,SK,Slovakia,vf,90
 MH,Marshall Islands,SI,Slovenia,vf,90
-MH,Marshall Islands,SB,Solomon Islands,ev,90
+MH,Marshall Islands,SB,Solomon Islands,voa,90
 MH,Marshall Islands,SO,Somalia,ev,30
 MH,Marshall Islands,ZA,South Africa,vr,
 MH,Marshall Islands,SS,South Sudan,ev,
@@ -23464,7 +23464,7 @@ MK,North Macedonia,KW,Kuwait,vr,
 MK,North Macedonia,KG,Kyrgyzstan,vf,60
 MK,North Macedonia,LA,Laos,ev,30
 MK,North Macedonia,LV,Latvia,vf,90
-MK,North Macedonia,LB,Lebanon,ev,30
+MK,North Macedonia,LB,Lebanon,voa,30
 MK,North Macedonia,LS,Lesotho,ev,
 MK,North Macedonia,LR,Liberia,ev,
 MK,North Macedonia,LY,Libya,ev,
@@ -23500,7 +23500,7 @@ MK,North Macedonia,NG,Nigeria,ev,90
 MK,North Macedonia,NO,Norway,vf,90
 MK,North Macedonia,OM,Oman,ev,14
 MK,North Macedonia,PK,Pakistan,ev,90
-MK,North Macedonia,PW,Palau,ev,30
+MK,North Macedonia,PW,Palau,voa,30
 MK,North Macedonia,PS,Palestine,vf,90
 MK,North Macedonia,PA,Panama,vf,90
 MK,North Macedonia,PG,Papua New Guinea,ev,60
@@ -23705,7 +23705,7 @@ ML,Mali,MK,North Macedonia,vr,
 ML,Mali,NO,Norway,vr,
 ML,Mali,OM,Oman,vr,
 ML,Mali,PK,Pakistan,ev,
-ML,Mali,PW,Palau,ev,30
+ML,Mali,PW,Palau,voa,30
 ML,Mali,PS,Palestine,vf,
 ML,Mali,PA,Panama,vr,
 ML,Mali,PG,Papua New Guinea,ev,60
@@ -24115,7 +24115,7 @@ MN,Mongolia,MK,North Macedonia,vr,
 MN,Mongolia,NO,Norway,vr,
 MN,Mongolia,OM,Oman,vr,
 MN,Mongolia,PK,Pakistan,ev,90
-MN,Mongolia,PW,Palau,ev,30
+MN,Mongolia,PW,Palau,voa,30
 MN,Mongolia,PS,Palestine,vr,
 MN,Mongolia,PA,Panama,vf,90
 MN,Mongolia,PG,Papua New Guinea,ev,60
@@ -24284,7 +24284,7 @@ MO,Macao,KW,Kuwait,vr,
 MO,Macao,KG,Kyrgyzstan,vf,30
 MO,Macao,LA,Laos,ev,30
 MO,Macao,LV,Latvia,vf,90
-MO,Macao,LB,Lebanon,ev,30
+MO,Macao,LB,Lebanon,voa,30
 MO,Macao,LS,Lesotho,ev,
 MO,Macao,LR,Liberia,vr,
 MO,Macao,LY,Libya,ev,
@@ -24321,7 +24321,7 @@ MO,Macao,MK,North Macedonia,vf,90
 MO,Macao,NO,Norway,vf,90
 MO,Macao,OM,Oman,vf,14
 MO,Macao,PK,Pakistan,vr,
-MO,Macao,PW,Palau,ev,30
+MO,Macao,PW,Palau,voa,30
 MO,Macao,PS,Palestine,vf,90
 MO,Macao,PA,Panama,vr,
 MO,Macao,PG,Papua New Guinea,ev,60
@@ -24367,7 +24367,7 @@ MO,Macao,TZ,Tanzania,vf,90
 MO,Macao,TH,Thailand,vf,60
 MO,Macao,TL,Timor-Leste,voa,30
 MO,Macao,TG,Togo,ev,15
-MO,Macao,TO,Tonga,ev,31
+MO,Macao,TO,Tonga,voa,31
 MO,Macao,TT,Trinidad and Tobago,vr,
 MO,Macao,TN,Tunisia,vr,
 MO,Macao,TR,Turkey,vf,30
@@ -24525,7 +24525,7 @@ MR,Mauritania,MK,North Macedonia,vr,
 MR,Mauritania,NO,Norway,vr,
 MR,Mauritania,OM,Oman,vr,
 MR,Mauritania,PK,Pakistan,ev,
-MR,Mauritania,PW,Palau,ev,30
+MR,Mauritania,PW,Palau,voa,30
 MR,Mauritania,PS,Palestine,vf,
 MR,Mauritania,PA,Panama,vr,
 MR,Mauritania,PG,Papua New Guinea,ev,
@@ -24935,7 +24935,7 @@ MU,Mauritius,MK,North Macedonia,vf,90
 MU,Mauritius,NO,Norway,vf,90
 MU,Mauritius,OM,Oman,vr,
 MU,Mauritius,PK,Pakistan,ev,
-MU,Mauritius,PW,Palau,ev,30
+MU,Mauritius,PW,Palau,voa,30
 MU,Mauritius,PS,Palestine,vf,90
 MU,Mauritius,PA,Panama,vf,180
 MU,Mauritius,PG,Papua New Guinea,ev,30
@@ -25140,7 +25140,7 @@ MV,Maldives,MK,North Macedonia,vr,
 MV,Maldives,NO,Norway,vr,
 MV,Maldives,OM,Oman,vr,
 MV,Maldives,PK,Pakistan,vf,90
-MV,Maldives,PW,Palau,ev,30
+MV,Maldives,PW,Palau,voa,30
 MV,Maldives,PS,Palestine,vf,
 MV,Maldives,PA,Panama,vf,180
 MV,Maldives,PG,Papua New Guinea,ev,60
@@ -25345,7 +25345,7 @@ MW,Malawi,MK,North Macedonia,vr,
 MW,Malawi,NO,Norway,vr,
 MW,Malawi,OM,Oman,vr,
 MW,Malawi,PK,Pakistan,ev,
-MW,Malawi,PW,Palau,ev,30
+MW,Malawi,PW,Palau,voa,30
 MW,Malawi,PS,Palestine,vf,
 MW,Malawi,PA,Panama,vr,
 MW,Malawi,PG,Papua New Guinea,ev,
@@ -25396,7 +25396,7 @@ MW,Malawi,TT,Trinidad and Tobago,vf,
 MW,Malawi,TN,Tunisia,vr,
 MW,Malawi,TR,Turkey,vr,
 MW,Malawi,TM,Turkmenistan,vr,
-MW,Malawi,TV,Tuvalu,ev,30
+MW,Malawi,TV,Tuvalu,voa,30
 MW,Malawi,UG,Uganda,vf,90
 MW,Malawi,UA,Ukraine,vr,
 MW,Malawi,AE,United Arab Emirates,ev,30
@@ -25514,7 +25514,7 @@ MX,Mexico,KW,Kuwait,vr,
 MX,Mexico,KG,Kyrgyzstan,vf,30
 MX,Mexico,LA,Laos,ev,30
 MX,Mexico,LV,Latvia,vf,90
-MX,Mexico,LB,Lebanon,ev,30
+MX,Mexico,LB,Lebanon,voa,30
 MX,Mexico,LS,Lesotho,ev,
 MX,Mexico,LR,Liberia,voa,90
 MX,Mexico,LY,Libya,ev,
@@ -25550,7 +25550,7 @@ MX,Mexico,MK,North Macedonia,vf,90
 MX,Mexico,NO,Norway,vf,90
 MX,Mexico,OM,Oman,vr,
 MX,Mexico,PK,Pakistan,ev,90
-MX,Mexico,PW,Palau,ev,30
+MX,Mexico,PW,Palau,voa,30
 MX,Mexico,PS,Palestine,vf,90
 MX,Mexico,PA,Panama,vf,90
 MX,Mexico,PG,Papua New Guinea,ev,60
@@ -25719,7 +25719,7 @@ MY,Malaysia,KW,Kuwait,ev,90
 MY,Malaysia,KG,Kyrgyzstan,vf,30
 MY,Malaysia,LA,Laos,vf,30
 MY,Malaysia,LV,Latvia,vf,90
-MY,Malaysia,LB,Lebanon,ev,30
+MY,Malaysia,LB,Lebanon,voa,30
 MY,Malaysia,LS,Lesotho,vf,90
 MY,Malaysia,LR,Liberia,voa,90
 MY,Malaysia,LY,Libya,vf,30
@@ -25755,7 +25755,7 @@ MY,Malaysia,MK,North Macedonia,vf,30
 MY,Malaysia,NO,Norway,vf,90
 MY,Malaysia,OM,Oman,ev,14
 MY,Malaysia,PK,Pakistan,ev,90
-MY,Malaysia,PW,Palau,ev,30
+MY,Malaysia,PW,Palau,voa,30
 MY,Malaysia,PS,Palestine,vf,90
 MY,Malaysia,PA,Panama,vf,90
 MY,Malaysia,PG,Papua New Guinea,ev,60
@@ -25780,7 +25780,7 @@ MY,Malaysia,RS,Serbia,ev,90
 MY,Malaysia,XK,Kosovo,vf,90
 MY,Malaysia,XN,Northern Cyprus,vf,90
 MY,Malaysia,SC,Seychelles,ev,90
-MY,Malaysia,SL,Sierra Leone,ev,30
+MY,Malaysia,SL,Sierra Leone,voa,30
 MY,Malaysia,SG,Singapore,vf,30
 MY,Malaysia,SK,Slovakia,vf,90
 MY,Malaysia,SI,Slovenia,vf,90
@@ -25801,12 +25801,12 @@ MY,Malaysia,TZ,Tanzania,vf,90
 MY,Malaysia,TH,Thailand,vf,30
 MY,Malaysia,TL,Timor-Leste,vf,30
 MY,Malaysia,TG,Togo,ev,15
-MY,Malaysia,TO,Tonga,ev,31
+MY,Malaysia,TO,Tonga,voa,31
 MY,Malaysia,TT,Trinidad and Tobago,vf,90
 MY,Malaysia,TN,Tunisia,vf,90
 MY,Malaysia,TR,Turkey,vf,90
 MY,Malaysia,TM,Turkmenistan,vr,
-MY,Malaysia,TV,Tuvalu,ev,30
+MY,Malaysia,TV,Tuvalu,voa,30
 MY,Malaysia,UG,Uganda,vf,90
 MY,Malaysia,UA,Ukraine,ev,30
 MY,Malaysia,AE,United Arab Emirates,vf,30
@@ -25960,7 +25960,7 @@ MZ,Mozambique,MK,North Macedonia,vr,
 MZ,Mozambique,NO,Norway,vr,
 MZ,Mozambique,OM,Oman,vr,
 MZ,Mozambique,PK,Pakistan,ev,90
-MZ,Mozambique,PW,Palau,ev,30
+MZ,Mozambique,PW,Palau,voa,30
 MZ,Mozambique,PS,Palestine,vr,
 MZ,Mozambique,PA,Panama,vr,
 MZ,Mozambique,PG,Papua New Guinea,ev,60
@@ -26165,7 +26165,7 @@ NA,Namibia,MK,North Macedonia,vr,
 NA,Namibia,NO,Norway,vr,
 NA,Namibia,OM,Oman,vr,
 NA,Namibia,PK,Pakistan,ev,90
-NA,Namibia,PW,Palau,ev,30
+NA,Namibia,PW,Palau,voa,30
 NA,Namibia,PS,Palestine,vf,
 NA,Namibia,PA,Panama,vf,90
 NA,Namibia,PG,Papua New Guinea,ev,30
@@ -26370,7 +26370,7 @@ NE,Niger,MK,North Macedonia,vr,
 NE,Niger,NO,Norway,vr,
 NE,Niger,OM,Oman,ev,
 NE,Niger,PK,Pakistan,ev,
-NE,Niger,PW,Palau,ev,30
+NE,Niger,PW,Palau,voa,30
 NE,Niger,PS,Palestine,vf,
 NE,Niger,PA,Panama,vr,
 NE,Niger,PG,Papua New Guinea,ev,
@@ -26575,7 +26575,7 @@ NG,Nigeria,MK,North Macedonia,vr,
 NG,Nigeria,NO,Norway,vr,
 NG,Nigeria,OM,Oman,vr,
 NG,Nigeria,PK,Pakistan,ev,
-NG,Nigeria,PW,Palau,ev,30
+NG,Nigeria,PW,Palau,voa,30
 NG,Nigeria,PS,Palestine,vf,
 NG,Nigeria,PA,Panama,vr,
 NG,Nigeria,PG,Papua New Guinea,vr,
@@ -26949,7 +26949,7 @@ NL,Netherlands,KW,Kuwait,ev,90
 NL,Netherlands,KG,Kyrgyzstan,vf,60
 NL,Netherlands,LA,Laos,ev,30
 NL,Netherlands,LV,Latvia,idc,
-NL,Netherlands,LB,Lebanon,ev,30
+NL,Netherlands,LB,Lebanon,voa,30
 NL,Netherlands,LS,Lesotho,vf,14
 NL,Netherlands,LR,Liberia,ev,90
 NL,Netherlands,LY,Libya,ev,
@@ -27154,7 +27154,7 @@ NO,Norway,KW,Kuwait,ev,90
 NO,Norway,KG,Kyrgyzstan,vf,60
 NO,Norway,LA,Laos,vf,15
 NO,Norway,LV,Latvia,idc,
-NO,Norway,LB,Lebanon,ev,30
+NO,Norway,LB,Lebanon,voa,30
 NO,Norway,LS,Lesotho,vf,14
 NO,Norway,LR,Liberia,ev,
 NO,Norway,LY,Libya,ev,
@@ -27395,7 +27395,7 @@ NP,Nepal,MK,North Macedonia,vr,
 NP,Nepal,NO,Norway,vr,
 NP,Nepal,OM,Oman,vr,
 NP,Nepal,PK,Pakistan,vf,30
-NP,Nepal,PW,Palau,ev,30
+NP,Nepal,PW,Palau,voa,30
 NP,Nepal,PS,Palestine,vr,
 NP,Nepal,PA,Panama,vr,
 NP,Nepal,PG,Papua New Guinea,ev,60
@@ -27600,7 +27600,7 @@ NR,Nauru,MK,North Macedonia,vr,
 NR,Nauru,NO,Norway,vr,
 NR,Nauru,OM,Oman,ev,
 NR,Nauru,PK,Pakistan,ev,
-NR,Nauru,PW,Palau,ev,30
+NR,Nauru,PW,Palau,voa,30
 NR,Nauru,PS,Palestine,vf,
 NR,Nauru,PA,Panama,vf,180
 NR,Nauru,PG,Papua New Guinea,ev,60
@@ -27769,7 +27769,7 @@ NZ,New Zealand,KW,Kuwait,ev,90
 NZ,New Zealand,KG,Kyrgyzstan,vf,30
 NZ,New Zealand,LA,Laos,ev,30
 NZ,New Zealand,LV,Latvia,vf,90
-NZ,New Zealand,LB,Lebanon,ev,30
+NZ,New Zealand,LB,Lebanon,voa,30
 NZ,New Zealand,LS,Lesotho,vf,14
 NZ,New Zealand,LR,Liberia,voa,90
 NZ,New Zealand,LY,Libya,ev,
@@ -27805,7 +27805,7 @@ NZ,New Zealand,MK,North Macedonia,vf,90
 NZ,New Zealand,NO,Norway,vf,90
 NZ,New Zealand,OM,Oman,ev,14
 NZ,New Zealand,PK,Pakistan,ev,90
-NZ,New Zealand,PW,Palau,ev,30
+NZ,New Zealand,PW,Palau,voa,30
 NZ,New Zealand,PS,Palestine,vf,90
 NZ,New Zealand,PA,Panama,vf,90
 NZ,New Zealand,PG,Papua New Guinea,ev,60
@@ -27851,7 +27851,7 @@ NZ,New Zealand,TZ,Tanzania,ev,90
 NZ,New Zealand,TH,Thailand,vf,60
 NZ,New Zealand,TL,Timor-Leste,voa,30
 NZ,New Zealand,TG,Togo,ev,15
-NZ,New Zealand,TO,Tonga,ev,31
+NZ,New Zealand,TO,Tonga,voa,31
 NZ,New Zealand,TT,Trinidad and Tobago,ev,90
 NZ,New Zealand,TN,Tunisia,vf,90
 NZ,New Zealand,TR,Turkey,vf,90
@@ -28010,7 +28010,7 @@ OM,Oman,NG,Nigeria,ev,30
 OM,Oman,MK,North Macedonia,vr,
 OM,Oman,NO,Norway,vr,
 OM,Oman,PK,Pakistan,vf,90
-OM,Oman,PW,Palau,ev,30
+OM,Oman,PW,Palau,voa,30
 OM,Oman,PS,Palestine,vr,
 OM,Oman,PA,Panama,vr,
 OM,Oman,PG,Papua New Guinea,ev,60
@@ -28384,7 +28384,7 @@ PE,Peru,KW,Kuwait,vr,
 PE,Peru,KG,Kyrgyzstan,ev,60
 PE,Peru,LA,Laos,ev,30
 PE,Peru,LV,Latvia,vf,90
-PE,Peru,LB,Lebanon,ev,30
+PE,Peru,LB,Lebanon,voa,30
 PE,Peru,LS,Lesotho,vr,
 PE,Peru,LR,Liberia,voa,90
 PE,Peru,LY,Libya,ev,30
@@ -28421,7 +28421,7 @@ PE,Peru,MK,North Macedonia,vf,90
 PE,Peru,NO,Norway,vf,90
 PE,Peru,OM,Oman,vr,
 PE,Peru,PK,Pakistan,ev,90
-PE,Peru,PW,Palau,ev,30
+PE,Peru,PW,Palau,voa,30
 PE,Peru,PS,Palestine,vf,90
 PE,Peru,PA,Panama,vf,90
 PE,Peru,PG,Papua New Guinea,ev,60
@@ -28626,7 +28626,7 @@ PG,Papua New Guinea,MK,North Macedonia,vr,
 PG,Papua New Guinea,NO,Norway,vr,
 PG,Papua New Guinea,OM,Oman,vr,
 PG,Papua New Guinea,PK,Pakistan,ev,90
-PG,Papua New Guinea,PW,Palau,ev,30
+PG,Papua New Guinea,PW,Palau,voa,30
 PG,Papua New Guinea,PS,Palestine,vf,
 PG,Papua New Guinea,PA,Panama,vf,90
 PG,Papua New Guinea,PY,Paraguay,vr,
@@ -28671,7 +28671,7 @@ PG,Papua New Guinea,TZ,Tanzania,vf,90
 PG,Papua New Guinea,TH,Thailand,vf,60
 PG,Papua New Guinea,TL,Timor-Leste,voa,30
 PG,Papua New Guinea,TG,Togo,ev,15
-PG,Papua New Guinea,TO,Tonga,ev,31
+PG,Papua New Guinea,TO,Tonga,voa,31
 PG,Papua New Guinea,TT,Trinidad and Tobago,vr,
 PG,Papua New Guinea,TN,Tunisia,vr,
 PG,Papua New Guinea,TR,Turkey,vr,
@@ -28831,7 +28831,7 @@ PH,Philippines,MK,North Macedonia,vr,
 PH,Philippines,NO,Norway,vr,
 PH,Philippines,OM,Oman,ev,14
 PH,Philippines,PK,Pakistan,ev,90
-PH,Philippines,PW,Palau,ev,30
+PH,Philippines,PW,Palau,voa,30
 PH,Philippines,PS,Palestine,vr,
 PH,Philippines,PA,Panama,vr,
 PH,Philippines,PG,Papua New Guinea,ev,60
@@ -29035,7 +29035,7 @@ PK,Pakistan,NG,Nigeria,ev,30
 PK,Pakistan,MK,North Macedonia,vr,
 PK,Pakistan,NO,Norway,vr,
 PK,Pakistan,OM,Oman,vr,
-PK,Pakistan,PW,Palau,ev,30
+PK,Pakistan,PW,Palau,voa,30
 PK,Pakistan,PS,Palestine,vr,
 PK,Pakistan,PA,Panama,vr,
 PK,Pakistan,PG,Papua New Guinea,ev,60
@@ -29204,7 +29204,7 @@ PL,Poland,KW,Kuwait,ev,90
 PL,Poland,KG,Kyrgyzstan,vf,60
 PL,Poland,LA,Laos,ev,30
 PL,Poland,LV,Latvia,idc,
-PL,Poland,LB,Lebanon,ev,30
+PL,Poland,LB,Lebanon,voa,30
 PL,Poland,LS,Lesotho,vf,14
 PL,Poland,LR,Liberia,voa,
 PL,Poland,LY,Libya,ev,
@@ -29446,7 +29446,7 @@ PS,Palestine,MK,North Macedonia,vr,
 PS,Palestine,NO,Norway,vr,
 PS,Palestine,OM,Oman,ev,10
 PS,Palestine,PK,Pakistan,ev,90
-PS,Palestine,PW,Palau,ev,30
+PS,Palestine,PW,Palau,voa,30
 PS,Palestine,PA,Panama,vr,
 PS,Palestine,PG,Papua New Guinea,ev,60
 PS,Palestine,PY,Paraguay,ev,
@@ -29614,7 +29614,7 @@ PT,Portugal,KW,Kuwait,ev,90
 PT,Portugal,KG,Kyrgyzstan,vf,60
 PT,Portugal,LA,Laos,ev,30
 PT,Portugal,LV,Latvia,idc,
-PT,Portugal,LB,Lebanon,ev,30
+PT,Portugal,LB,Lebanon,voa,30
 PT,Portugal,LS,Lesotho,vf,14
 PT,Portugal,LR,Liberia,ev,90
 PT,Portugal,LY,Libya,ev,
@@ -29901,12 +29901,12 @@ PW,Palau,TZ,Tanzania,ev,90
 PW,Palau,TH,Thailand,ev,60
 PW,Palau,TL,Timor-Leste,voa,30
 PW,Palau,TG,Togo,ev,15
-PW,Palau,TO,Tonga,ev,31
+PW,Palau,TO,Tonga,voa,31
 PW,Palau,TT,Trinidad and Tobago,vr,
 PW,Palau,TN,Tunisia,vr,
 PW,Palau,TR,Turkey,vr,
 PW,Palau,TM,Turkmenistan,vr,
-PW,Palau,TV,Tuvalu,ev,30
+PW,Palau,TV,Tuvalu,voa,30
 PW,Palau,UG,Uganda,ev,90
 PW,Palau,UA,Ukraine,ev,
 PW,Palau,AE,United Arab Emirates,vr,
@@ -30024,7 +30024,7 @@ PY,Paraguay,KW,Kuwait,vr,
 PY,Paraguay,KG,Kyrgyzstan,ev,60
 PY,Paraguay,LA,Laos,ev,30
 PY,Paraguay,LV,Latvia,vf,90
-PY,Paraguay,LB,Lebanon,ev,30
+PY,Paraguay,LB,Lebanon,voa,30
 PY,Paraguay,LS,Lesotho,ev,14
 PY,Paraguay,LR,Liberia,ev,
 PY,Paraguay,LY,Libya,ev,
@@ -30061,7 +30061,7 @@ PY,Paraguay,MK,North Macedonia,vf,90
 PY,Paraguay,NO,Norway,vf,90
 PY,Paraguay,OM,Oman,ev,14
 PY,Paraguay,PK,Pakistan,ev,90
-PY,Paraguay,PW,Palau,ev,30
+PY,Paraguay,PW,Palau,voa,30
 PY,Paraguay,PS,Palestine,vf,90
 PY,Paraguay,PA,Panama,vf,180
 PY,Paraguay,PG,Papua New Guinea,ev,60
@@ -30266,7 +30266,7 @@ QA,Qatar,MK,North Macedonia,vr,
 QA,Qatar,NO,Norway,vr,
 QA,Qatar,OM,Oman,idc,90
 QA,Qatar,PK,Pakistan,vf,90
-QA,Qatar,PW,Palau,ev,30
+QA,Qatar,PW,Palau,voa,30
 QA,Qatar,PS,Palestine,vf,90
 QA,Qatar,PA,Panama,vf,90
 QA,Qatar,PG,Papua New Guinea,ev,60
@@ -30639,7 +30639,7 @@ RS,Serbia,KW,Kuwait,ev,90
 RS,Serbia,KG,Kyrgyzstan,vf,90
 RS,Serbia,LA,Laos,ev,30
 RS,Serbia,LV,Latvia,vf,90
-RS,Serbia,LB,Lebanon,ev,30
+RS,Serbia,LB,Lebanon,voa,30
 RS,Serbia,LS,Lesotho,vr,
 RS,Serbia,LR,Liberia,voa,90
 RS,Serbia,LY,Libya,ev,30
@@ -30676,7 +30676,7 @@ RS,Serbia,MK,North Macedonia,idc,90
 RS,Serbia,NO,Norway,vf,90
 RS,Serbia,OM,Oman,ev,14
 RS,Serbia,PK,Pakistan,ev,90
-RS,Serbia,PW,Palau,ev,30
+RS,Serbia,PW,Palau,voa,30
 RS,Serbia,PS,Palestine,vf,90
 RS,Serbia,PA,Panama,vf,90
 RS,Serbia,PG,Papua New Guinea,ev,60
@@ -30844,7 +30844,7 @@ RU,Russia,KW,Kuwait,vr,
 RU,Russia,KG,Kyrgyzstan,vf,90
 RU,Russia,LA,Laos,vf,30
 RU,Russia,LV,Latvia,ban,
-RU,Russia,LB,Lebanon,ev,30
+RU,Russia,LB,Lebanon,voa,30
 RU,Russia,LS,Lesotho,vr,
 RU,Russia,LR,Liberia,voa,90
 RU,Russia,LY,Libya,ev,
@@ -30926,7 +30926,7 @@ RU,Russia,TZ,Tanzania,ev,90
 RU,Russia,TH,Thailand,vf,30
 RU,Russia,TL,Timor-Leste,voa,30
 RU,Russia,TG,Togo,ev,15
-RU,Russia,TO,Tonga,ev,31
+RU,Russia,TO,Tonga,voa,31
 RU,Russia,TT,Trinidad and Tobago,vf,90
 RU,Russia,TN,Tunisia,vf,90
 RU,Russia,TR,Turkey,vf,60
@@ -31291,7 +31291,7 @@ SA,Saudi Arabia,MK,North Macedonia,vr,
 SA,Saudi Arabia,NO,Norway,vr,
 SA,Saudi Arabia,OM,Oman,idc,
 SA,Saudi Arabia,PK,Pakistan,vf,90
-SA,Saudi Arabia,PW,Palau,ev,30
+SA,Saudi Arabia,PW,Palau,voa,30
 SA,Saudi Arabia,PS,Palestine,vf,
 SA,Saudi Arabia,PA,Panama,vf,90
 SA,Saudi Arabia,PG,Papua New Guinea,ev,60
@@ -31701,7 +31701,7 @@ SC,Seychelles,MK,North Macedonia,vf,90
 SC,Seychelles,NO,Norway,vf,90
 SC,Seychelles,OM,Oman,ev,30
 SC,Seychelles,PK,Pakistan,ev,
-SC,Seychelles,PW,Palau,ev,30
+SC,Seychelles,PW,Palau,voa,30
 SC,Seychelles,PS,Palestine,vf,90
 SC,Seychelles,PA,Panama,vf,180
 SC,Seychelles,PG,Papua New Guinea,ev,30
@@ -31746,7 +31746,7 @@ SC,Seychelles,TZ,Tanzania,vf,90
 SC,Seychelles,TH,Thailand,voa,15
 SC,Seychelles,TL,Timor-Leste,voa,30
 SC,Seychelles,TG,Togo,voa,7
-SC,Seychelles,TO,Tonga,ev,31
+SC,Seychelles,TO,Tonga,voa,31
 SC,Seychelles,TT,Trinidad and Tobago,vf,90
 SC,Seychelles,TN,Tunisia,vf,90
 SC,Seychelles,TR,Turkey,vf,90
@@ -31906,7 +31906,7 @@ SD,Sudan,MK,North Macedonia,vr,
 SD,Sudan,NO,Norway,vr,
 SD,Sudan,OM,Oman,ev,10
 SD,Sudan,PK,Pakistan,ev,
-SD,Sudan,PW,Palau,ev,30
+SD,Sudan,PW,Palau,voa,30
 SD,Sudan,PS,Palestine,vr,
 SD,Sudan,PA,Panama,vr,
 SD,Sudan,PG,Papua New Guinea,ev,60
@@ -32074,7 +32074,7 @@ SE,Sweden,KW,Kuwait,ev,90
 SE,Sweden,KG,Kyrgyzstan,vf,60
 SE,Sweden,LA,Laos,ev,15
 SE,Sweden,LV,Latvia,idc,
-SE,Sweden,LB,Lebanon,ev,30
+SE,Sweden,LB,Lebanon,voa,30
 SE,Sweden,LS,Lesotho,vf,14
 SE,Sweden,LR,Liberia,ev,90
 SE,Sweden,LY,Libya,ev,
@@ -32279,7 +32279,7 @@ SG,Singapore,KW,Kuwait,ev,90
 SG,Singapore,KG,Kyrgyzstan,vf,30
 SG,Singapore,LA,Laos,vf,30
 SG,Singapore,LV,Latvia,vf,90
-SG,Singapore,LB,Lebanon,ev,30
+SG,Singapore,LB,Lebanon,voa,30
 SG,Singapore,LS,Lesotho,vf,30
 SG,Singapore,LR,Liberia,voa,90
 SG,Singapore,LY,Libya,ev,
@@ -32316,7 +32316,7 @@ SG,Singapore,MK,North Macedonia,vf,90
 SG,Singapore,NO,Norway,vf,90
 SG,Singapore,OM,Oman,ev,14
 SG,Singapore,PK,Pakistan,ev,90
-SG,Singapore,PW,Palau,ev,30
+SG,Singapore,PW,Palau,voa,30
 SG,Singapore,PS,Palestine,vf,90
 SG,Singapore,PA,Panama,vf,90
 SG,Singapore,PG,Papua New Guinea,ev,60
@@ -32341,7 +32341,7 @@ SG,Singapore,RS,Serbia,vf,90
 SG,Singapore,XK,Kosovo,vf,90
 SG,Singapore,XN,Northern Cyprus,vf,90
 SG,Singapore,SC,Seychelles,ev,90
-SG,Singapore,SL,Sierra Leone,ev,30
+SG,Singapore,SL,Sierra Leone,voa,30
 SG,Singapore,SK,Slovakia,vf,90
 SG,Singapore,SI,Slovenia,vf,90
 SG,Singapore,SB,Solomon Islands,voa,90
@@ -32361,7 +32361,7 @@ SG,Singapore,TZ,Tanzania,vf,90
 SG,Singapore,TH,Thailand,vf,30
 SG,Singapore,TL,Timor-Leste,vf,30
 SG,Singapore,TG,Togo,ev,15
-SG,Singapore,TO,Tonga,ev,31
+SG,Singapore,TO,Tonga,voa,31
 SG,Singapore,TT,Trinidad and Tobago,vf,90
 SG,Singapore,TN,Tunisia,vf,90
 SG,Singapore,TR,Turkey,vf,90
@@ -32931,7 +32931,7 @@ SL,Sierra Leone,MK,North Macedonia,vr,
 SL,Sierra Leone,NO,Norway,vr,
 SL,Sierra Leone,OM,Oman,ev,
 SL,Sierra Leone,PK,Pakistan,ev,
-SL,Sierra Leone,PW,Palau,ev,30
+SL,Sierra Leone,PW,Palau,voa,30
 SL,Sierra Leone,PS,Palestine,vf,
 SL,Sierra Leone,PA,Panama,vr,
 SL,Sierra Leone,PG,Papua New Guinea,ev,60
@@ -33136,7 +33136,7 @@ SM,San Marino,MK,North Macedonia,vf,90
 SM,San Marino,NO,Norway,vf,90
 SM,San Marino,OM,Oman,ev,14
 SM,San Marino,PK,Pakistan,ev,90
-SM,San Marino,PW,Palau,ev,30
+SM,San Marino,PW,Palau,voa,30
 SM,San Marino,PS,Palestine,vf,90
 SM,San Marino,PA,Panama,vf,180
 SM,San Marino,PG,Papua New Guinea,ev,60
@@ -33341,7 +33341,7 @@ SN,Senegal,MK,North Macedonia,vr,
 SN,Senegal,NO,Norway,vr,
 SN,Senegal,OM,Oman,ev,
 SN,Senegal,PK,Pakistan,ev,
-SN,Senegal,PW,Palau,ev,30
+SN,Senegal,PW,Palau,voa,30
 SN,Senegal,PS,Palestine,vf,
 SN,Senegal,PA,Panama,vr,
 SN,Senegal,PG,Papua New Guinea,ev,60
@@ -33546,7 +33546,7 @@ SO,Somalia,MK,North Macedonia,vr,
 SO,Somalia,NO,Norway,vr,
 SO,Somalia,OM,Oman,ev,
 SO,Somalia,PK,Pakistan,vr,
-SO,Somalia,PW,Palau,ev,30
+SO,Somalia,PW,Palau,voa,30
 SO,Somalia,PS,Palestine,vf,
 SO,Somalia,PA,Panama,vr,
 SO,Somalia,PG,Papua New Guinea,ev,60
@@ -33751,7 +33751,7 @@ SR,Suriname,MK,North Macedonia,vr,
 SR,Suriname,NO,Norway,vr,
 SR,Suriname,OM,Oman,vf,14
 SR,Suriname,PK,Pakistan,ev,90
-SR,Suriname,PW,Palau,ev,30
+SR,Suriname,PW,Palau,voa,30
 SR,Suriname,PS,Palestine,vr,
 SR,Suriname,PA,Panama,vr,
 SR,Suriname,PG,Papua New Guinea,ev,60
@@ -33956,7 +33956,7 @@ SS,South Sudan,MK,North Macedonia,vr,
 SS,South Sudan,NO,Norway,vr,
 SS,South Sudan,OM,Oman,vr,
 SS,South Sudan,PK,Pakistan,ev,30
-SS,South Sudan,PW,Palau,ev,30
+SS,South Sudan,PW,Palau,voa,30
 SS,South Sudan,PS,Palestine,vf,
 SS,South Sudan,PA,Panama,vr,
 SS,South Sudan,PG,Papua New Guinea,ev,60
@@ -34161,7 +34161,7 @@ ST,São Tomé and Príncipe,MK,North Macedonia,vr,
 ST,São Tomé and Príncipe,NO,Norway,vr,
 ST,São Tomé and Príncipe,OM,Oman,ev,
 ST,São Tomé and Príncipe,PK,Pakistan,ev,
-ST,São Tomé and Príncipe,PW,Palau,ev,30
+ST,São Tomé and Príncipe,PW,Palau,voa,30
 ST,São Tomé and Príncipe,PS,Palestine,vf,
 ST,São Tomé and Príncipe,PA,Panama,vf,90
 ST,São Tomé and Príncipe,PG,Papua New Guinea,ev,
@@ -34365,7 +34365,7 @@ SV,El Salvador,MK,North Macedonia,vf,90
 SV,El Salvador,NO,Norway,vf,90
 SV,El Salvador,OM,Oman,ev,
 SV,El Salvador,PK,Pakistan,ev,90
-SV,El Salvador,PW,Palau,ev,30
+SV,El Salvador,PW,Palau,voa,30
 SV,El Salvador,PS,Palestine,vf,90
 SV,El Salvador,PA,Panama,vf,90
 SV,El Salvador,PG,Papua New Guinea,ev,60
@@ -34571,7 +34571,7 @@ SY,Syria,MK,North Macedonia,vr,
 SY,Syria,NO,Norway,vr,
 SY,Syria,OM,Oman,vr,
 SY,Syria,PK,Pakistan,ev,90
-SY,Syria,PW,Palau,ev,30
+SY,Syria,PW,Palau,voa,30
 SY,Syria,PS,Palestine,vr,
 SY,Syria,PA,Panama,vr,
 SY,Syria,PG,Papua New Guinea,ev,60
@@ -34775,7 +34775,7 @@ SZ,Eswatini,MK,North Macedonia,vr,
 SZ,Eswatini,NO,Norway,vr,
 SZ,Eswatini,OM,Oman,ev,
 SZ,Eswatini,PK,Pakistan,ev,
-SZ,Eswatini,PW,Palau,ev,30
+SZ,Eswatini,PW,Palau,voa,30
 SZ,Eswatini,PS,Palestine,vf,
 SZ,Eswatini,PA,Panama,vr,
 SZ,Eswatini,PG,Papua New Guinea,ev,60
@@ -34980,7 +34980,7 @@ TD,Chad,MK,North Macedonia,vr,
 TD,Chad,NO,Norway,vr,
 TD,Chad,OM,Oman,ev,
 TD,Chad,PK,Pakistan,ev,
-TD,Chad,PW,Palau,ev,30
+TD,Chad,PW,Palau,voa,30
 TD,Chad,PS,Palestine,vf,
 TD,Chad,PA,Panama,vr,
 TD,Chad,PG,Papua New Guinea,ev,60
@@ -35186,7 +35186,7 @@ TG,Togo,MK,North Macedonia,vr,
 TG,Togo,NO,Norway,vr,
 TG,Togo,OM,Oman,ev,
 TG,Togo,PK,Pakistan,ev,
-TG,Togo,PW,Palau,ev,30
+TG,Togo,PW,Palau,voa,30
 TG,Togo,PS,Palestine,vf,
 TG,Togo,PA,Panama,vr,
 TG,Togo,PG,Papua New Guinea,ev,60
@@ -35391,7 +35391,7 @@ TH,Thailand,MK,North Macedonia,vr,
 TH,Thailand,NO,Norway,vr,
 TH,Thailand,OM,Oman,ev,14
 TH,Thailand,PK,Pakistan,ev,90
-TH,Thailand,PW,Palau,ev,30
+TH,Thailand,PW,Palau,voa,30
 TH,Thailand,PS,Palestine,vr,
 TH,Thailand,PA,Panama,vf,90
 TH,Thailand,PG,Papua New Guinea,ev,60
@@ -35559,7 +35559,7 @@ TJ,Tajikistan,KW,Kuwait,vr,
 TJ,Tajikistan,KG,Kyrgyzstan,vf,
 TJ,Tajikistan,LA,Laos,ev,30
 TJ,Tajikistan,LV,Latvia,vr,
-TJ,Tajikistan,LB,Lebanon,ev,30
+TJ,Tajikistan,LB,Lebanon,voa,30
 TJ,Tajikistan,LS,Lesotho,ev,
 TJ,Tajikistan,LR,Liberia,ev,
 TJ,Tajikistan,LY,Libya,ev,
@@ -35596,7 +35596,7 @@ TJ,Tajikistan,MK,North Macedonia,vr,
 TJ,Tajikistan,NO,Norway,vr,
 TJ,Tajikistan,OM,Oman,ev,
 TJ,Tajikistan,PK,Pakistan,ev,90
-TJ,Tajikistan,PW,Palau,ev,30
+TJ,Tajikistan,PW,Palau,voa,30
 TJ,Tajikistan,PS,Palestine,vr,
 TJ,Tajikistan,PA,Panama,vr,
 TJ,Tajikistan,PG,Papua New Guinea,ev,
@@ -35801,7 +35801,7 @@ TL,Timor-Leste,MK,North Macedonia,vr,
 TL,Timor-Leste,NO,Norway,vf,90
 TL,Timor-Leste,OM,Oman,vr,
 TL,Timor-Leste,PK,Pakistan,ev,
-TL,Timor-Leste,PW,Palau,ev,
+TL,Timor-Leste,PW,Palau,voa,30
 TL,Timor-Leste,PS,Palestine,ev,
 TL,Timor-Leste,PA,Panama,vr,
 TL,Timor-Leste,PG,Papua New Guinea,ev,
@@ -35969,7 +35969,7 @@ TM,Turkmenistan,KW,Kuwait,vr,
 TM,Turkmenistan,KG,Kyrgyzstan,ev,
 TM,Turkmenistan,LA,Laos,ev,30
 TM,Turkmenistan,LV,Latvia,vr,
-TM,Turkmenistan,LB,Lebanon,ev,30
+TM,Turkmenistan,LB,Lebanon,voa,30
 TM,Turkmenistan,LS,Lesotho,ev,
 TM,Turkmenistan,LR,Liberia,ev,
 TM,Turkmenistan,LY,Libya,ev,30
@@ -36006,7 +36006,7 @@ TM,Turkmenistan,MK,North Macedonia,vr,
 TM,Turkmenistan,NO,Norway,vr,
 TM,Turkmenistan,OM,Oman,vr,
 TM,Turkmenistan,PK,Pakistan,ev,90
-TM,Turkmenistan,PW,Palau,ev,30
+TM,Turkmenistan,PW,Palau,voa,30
 TM,Turkmenistan,PS,Palestine,vr,
 TM,Turkmenistan,PA,Panama,vr,
 TM,Turkmenistan,PG,Papua New Guinea,ev,
@@ -36211,7 +36211,7 @@ TN,Tunisia,MK,North Macedonia,vr,
 TN,Tunisia,NO,Norway,vr,
 TN,Tunisia,OM,Oman,vr,
 TN,Tunisia,PK,Pakistan,ev,90
-TN,Tunisia,PW,Palau,ev,30
+TN,Tunisia,PW,Palau,voa,30
 TN,Tunisia,PS,Palestine,vr,
 TN,Tunisia,PA,Panama,vr,
 TN,Tunisia,PG,Papua New Guinea,ev,60
@@ -36584,7 +36584,7 @@ TR,Turkey,KW,Kuwait,ev,90
 TR,Turkey,KG,Kyrgyzstan,vf,90
 TR,Turkey,LA,Laos,ev,30
 TR,Turkey,LV,Latvia,vr,
-TR,Turkey,LB,Lebanon,ev,30
+TR,Turkey,LB,Lebanon,voa,30
 TR,Turkey,LS,Lesotho,vr,
 TR,Turkey,LR,Liberia,voa,90
 TR,Turkey,LY,Libya,ev,
@@ -36621,7 +36621,7 @@ TR,Turkey,MK,North Macedonia,vf,90
 TR,Turkey,NO,Norway,vr,
 TR,Turkey,OM,Oman,vf,30
 TR,Turkey,PK,Pakistan,ev,90
-TR,Turkey,PW,Palau,ev,30
+TR,Turkey,PW,Palau,voa,30
 TR,Turkey,PS,Palestine,vf,90
 TR,Turkey,PA,Panama,vf,90
 TR,Turkey,PG,Papua New Guinea,ev,60
@@ -36851,7 +36851,7 @@ TT,Trinidad and Tobago,RS,Serbia,vf,90
 TT,Trinidad and Tobago,XK,Kosovo,vf,90
 TT,Trinidad and Tobago,XN,Northern Cyprus,vf,90
 TT,Trinidad and Tobago,SC,Seychelles,ev,90
-TT,Trinidad and Tobago,SL,Sierra Leone,ev,30
+TT,Trinidad and Tobago,SL,Sierra Leone,voa,30
 TT,Trinidad and Tobago,SG,Singapore,vf,30
 TT,Trinidad and Tobago,SK,Slovakia,vf,90
 TT,Trinidad and Tobago,SI,Slovenia,vf,90
@@ -37031,7 +37031,7 @@ TV,Tuvalu,MK,North Macedonia,vr,
 TV,Tuvalu,NO,Norway,vf,90
 TV,Tuvalu,OM,Oman,vr,
 TV,Tuvalu,PK,Pakistan,ev,
-TV,Tuvalu,PW,Palau,ev,30
+TV,Tuvalu,PW,Palau,voa,30
 TV,Tuvalu,PS,Palestine,vf,90
 TV,Tuvalu,PA,Panama,vf,180
 TV,Tuvalu,PG,Papua New Guinea,ev,60
@@ -37491,7 +37491,7 @@ TZ,Tanzania,TT,Trinidad and Tobago,vr,
 TZ,Tanzania,TN,Tunisia,vr,
 TZ,Tanzania,TR,Turkey,vr,
 TZ,Tanzania,TM,Turkmenistan,vr,
-TZ,Tanzania,TV,Tuvalu,ev,30
+TZ,Tanzania,TV,Tuvalu,voa,30
 TZ,Tanzania,UG,Uganda,vf,90
 TZ,Tanzania,UA,Ukraine,vr,
 TZ,Tanzania,AE,United Arab Emirates,ev,
@@ -37609,7 +37609,7 @@ UA,Ukraine,KW,Kuwait,ev,90
 UA,Ukraine,KG,Kyrgyzstan,vf,90
 UA,Ukraine,LA,Laos,ev,30
 UA,Ukraine,LV,Latvia,vf,90
-UA,Ukraine,LB,Lebanon,ev,30
+UA,Ukraine,LB,Lebanon,voa,30
 UA,Ukraine,LS,Lesotho,vr,
 UA,Ukraine,LR,Liberia,voa,
 UA,Ukraine,LY,Libya,ev,30
@@ -37622,7 +37622,7 @@ UA,Ukraine,MY,Malaysia,vf,30
 UA,Ukraine,MV,Maldives,voa,30
 UA,Ukraine,ML,Mali,vr,
 UA,Ukraine,MT,Malta,vf,90
-UA,Ukraine,MH,Marshall Islands,ev,90
+UA,Ukraine,MH,Marshall Islands,voa,90
 UA,Ukraine,MR,Mauritania,ev,30
 UA,Ukraine,MU,Mauritius,vf,180
 UA,Ukraine,MX,Mexico,ev,180
@@ -37669,7 +37669,7 @@ UA,Ukraine,SA,Saudi Arabia,ev,90
 UA,Ukraine,SN,Senegal,voa,30
 UA,Ukraine,RS,Serbia,vf,90
 UA,Ukraine,XK,Kosovo,vf,90
-UA,Ukraine,XN,Northern Cyprus,ev,
+UA,Ukraine,XN,Northern Cyprus,voa,
 UA,Ukraine,SC,Seychelles,ev,90
 UA,Ukraine,SL,Sierra Leone,ev,90
 UA,Ukraine,SG,Singapore,ev,
@@ -37692,7 +37692,7 @@ UA,Ukraine,TZ,Tanzania,ev,90
 UA,Ukraine,TH,Thailand,vf,30
 UA,Ukraine,TL,Timor-Leste,voa,30
 UA,Ukraine,TG,Togo,ev,15
-UA,Ukraine,TO,Tonga,ev,31
+UA,Ukraine,TO,Tonga,voa,31
 UA,Ukraine,TT,Trinidad and Tobago,ev,
 UA,Ukraine,TN,Tunisia,vr,
 UA,Ukraine,TR,Turkey,idc,90
@@ -38019,7 +38019,7 @@ US,United States,KW,Kuwait,ev,90
 US,United States,KG,Kyrgyzstan,vf,30
 US,United States,LA,Laos,ev,30
 US,United States,LV,Latvia,vf,90
-US,United States,LB,Lebanon,ev,30
+US,United States,LB,Lebanon,voa,30
 US,United States,LS,Lesotho,vf,14
 US,United States,LR,Liberia,vr,
 US,United States,LY,Libya,ev,30
@@ -38102,7 +38102,7 @@ US,United States,TZ,Tanzania,ev,90
 US,United States,TH,Thailand,vf,30
 US,United States,TL,Timor-Leste,voa,30
 US,United States,TG,Togo,ev,15
-US,United States,TO,Tonga,ev,31
+US,United States,TO,Tonga,voa,31
 US,United States,TT,Trinidad and Tobago,vf,90
 US,United States,TN,Tunisia,vf,90
 US,United States,TR,Turkey,vf,90
@@ -38224,7 +38224,7 @@ UY,Uruguay,KW,Kuwait,vr,
 UY,Uruguay,KG,Kyrgyzstan,ev,60
 UY,Uruguay,LA,Laos,ev,30
 UY,Uruguay,LV,Latvia,vf,90
-UY,Uruguay,LB,Lebanon,ev,30
+UY,Uruguay,LB,Lebanon,voa,30
 UY,Uruguay,LS,Lesotho,ev,44
 UY,Uruguay,LR,Liberia,vr,
 UY,Uruguay,LY,Libya,ev,30
@@ -38261,7 +38261,7 @@ UY,Uruguay,MK,North Macedonia,vf,90
 UY,Uruguay,NO,Norway,vf,90
 UY,Uruguay,OM,Oman,ev,14
 UY,Uruguay,PK,Pakistan,ev,90
-UY,Uruguay,PW,Palau,ev,30
+UY,Uruguay,PW,Palau,voa,30
 UY,Uruguay,PS,Palestine,vf,90
 UY,Uruguay,PA,Panama,vf,90
 UY,Uruguay,PG,Papua New Guinea,ev,60
@@ -38429,7 +38429,7 @@ UZ,Uzbekistan,KW,Kuwait,vr,
 UZ,Uzbekistan,KG,Kyrgyzstan,vf,60
 UZ,Uzbekistan,LA,Laos,voa,30
 UZ,Uzbekistan,LV,Latvia,vr,
-UZ,Uzbekistan,LB,Lebanon,ev,30
+UZ,Uzbekistan,LB,Lebanon,voa,30
 UZ,Uzbekistan,LS,Lesotho,ev,
 UZ,Uzbekistan,LR,Liberia,vr,
 UZ,Uzbekistan,LY,Libya,ev,
@@ -38466,7 +38466,7 @@ UZ,Uzbekistan,MK,North Macedonia,vr,
 UZ,Uzbekistan,NO,Norway,vr,
 UZ,Uzbekistan,OM,Oman,vf,14
 UZ,Uzbekistan,PK,Pakistan,ev,
-UZ,Uzbekistan,PW,Palau,ev,30
+UZ,Uzbekistan,PW,Palau,voa,30
 UZ,Uzbekistan,PS,Palestine,vr,
 UZ,Uzbekistan,PA,Panama,vr,
 UZ,Uzbekistan,PG,Papua New Guinea,ev,
@@ -38671,7 +38671,7 @@ VA,Vatican City,MK,North Macedonia,vf,90
 VA,Vatican City,NO,Norway,vf,90
 VA,Vatican City,OM,Oman,ev,30
 VA,Vatican City,PK,Pakistan,ev,
-VA,Vatican City,PW,Palau,ev,30
+VA,Vatican City,PW,Palau,voa,30
 VA,Vatican City,PS,Palestine,vf,90
 VA,Vatican City,PA,Panama,vf,180
 VA,Vatican City,PG,Papua New Guinea,ev,60
@@ -38926,7 +38926,7 @@ VC,Saint Vincent and the Grenadines,TT,Trinidad and Tobago,vf,180
 VC,Saint Vincent and the Grenadines,TN,Tunisia,vr,
 VC,Saint Vincent and the Grenadines,TR,Turkey,ev,90
 VC,Saint Vincent and the Grenadines,TM,Turkmenistan,vr,
-VC,Saint Vincent and the Grenadines,TV,Tuvalu,ev,30
+VC,Saint Vincent and the Grenadines,TV,Tuvalu,voa,30
 VC,Saint Vincent and the Grenadines,UG,Uganda,vf,90
 VC,Saint Vincent and the Grenadines,UA,Ukraine,vf,90
 VC,Saint Vincent and the Grenadines,AE,United Arab Emirates,vf,90
@@ -39044,7 +39044,7 @@ VE,Venezuela,KW,Kuwait,vr,
 VE,Venezuela,KG,Kyrgyzstan,ev,30
 VE,Venezuela,LA,Laos,ev,30
 VE,Venezuela,LV,Latvia,vf,90
-VE,Venezuela,LB,Lebanon,ev,30
+VE,Venezuela,LB,Lebanon,voa,30
 VE,Venezuela,LS,Lesotho,ev,
 VE,Venezuela,LR,Liberia,ev,
 VE,Venezuela,LY,Libya,ev,
@@ -39081,7 +39081,7 @@ VE,Venezuela,MK,North Macedonia,vf,90
 VE,Venezuela,NO,Norway,vf,90
 VE,Venezuela,OM,Oman,ev,14
 VE,Venezuela,PK,Pakistan,ev,90
-VE,Venezuela,PW,Palau,ev,30
+VE,Venezuela,PW,Palau,voa,30
 VE,Venezuela,PS,Palestine,vr,
 VE,Venezuela,PA,Panama,vr,
 VE,Venezuela,PG,Papua New Guinea,ev,60
@@ -39286,7 +39286,7 @@ VN,Vietnam,MK,North Macedonia,vr,
 VN,Vietnam,NO,Norway,vr,
 VN,Vietnam,OM,Oman,vr,
 VN,Vietnam,PK,Pakistan,ev,90
-VN,Vietnam,PW,Palau,ev,30
+VN,Vietnam,PW,Palau,voa,30
 VN,Vietnam,PS,Palestine,vr,
 VN,Vietnam,PA,Panama,vf,90
 VN,Vietnam,PG,Papua New Guinea,ev,30
@@ -39696,7 +39696,7 @@ WS,Samoa,MK,North Macedonia,vr,
 WS,Samoa,NO,Norway,vf,90
 WS,Samoa,OM,Oman,ev,
 WS,Samoa,PK,Pakistan,vf,30
-WS,Samoa,PW,Palau,ev,30
+WS,Samoa,PW,Palau,voa,30
 WS,Samoa,PS,Palestine,vf,90
 WS,Samoa,PA,Panama,vf,180
 WS,Samoa,PG,Papua New Guinea,ev,60
@@ -39741,12 +39741,12 @@ WS,Samoa,TZ,Tanzania,ev,90
 WS,Samoa,TH,Thailand,ev,
 WS,Samoa,TL,Timor-Leste,voa,30
 WS,Samoa,TG,Togo,ev,15
-WS,Samoa,TO,Tonga,ev,
+WS,Samoa,TO,Tonga,voa,
 WS,Samoa,TT,Trinidad and Tobago,vf,90
 WS,Samoa,TN,Tunisia,vr,
 WS,Samoa,TR,Turkey,vr,
 WS,Samoa,TM,Turkmenistan,vr,
-WS,Samoa,TV,Tuvalu,ev,30
+WS,Samoa,TV,Tuvalu,voa,30
 WS,Samoa,UG,Uganda,ev,90
 WS,Samoa,UA,Ukraine,ev,30
 WS,Samoa,AE,United Arab Emirates,ev,30
@@ -39901,7 +39901,7 @@ XK,Kosovo,MK,North Macedonia,idc,90
 XK,Kosovo,NO,Norway,vf,90
 XK,Kosovo,OM,Oman,vr,
 XK,Kosovo,PK,Pakistan,ev,90
-XK,Kosovo,PW,Palau,ev,30
+XK,Kosovo,PW,Palau,voa,30
 XK,Kosovo,PS,Palestine,vr,
 XK,Kosovo,PA,Panama,vr,
 XK,Kosovo,PG,Papua New Guinea,ev,60
@@ -40516,7 +40516,7 @@ ZA,South Africa,MK,North Macedonia,vr,
 ZA,South Africa,NO,Norway,vr,
 ZA,South Africa,OM,Oman,ev,14
 ZA,South Africa,PK,Pakistan,ev,90
-ZA,South Africa,PW,Palau,ev,30
+ZA,South Africa,PW,Palau,voa,30
 ZA,South Africa,PS,Palestine,vf,
 ZA,South Africa,PA,Panama,vf,90
 ZA,South Africa,PG,Papua New Guinea,ev,30
@@ -40721,7 +40721,7 @@ ZM,Zambia,MK,North Macedonia,vr,
 ZM,Zambia,NO,Norway,vr,
 ZM,Zambia,OM,Oman,vr,
 ZM,Zambia,PK,Pakistan,ev,90
-ZM,Zambia,PW,Palau,ev,30
+ZM,Zambia,PW,Palau,voa,30
 ZM,Zambia,PS,Palestine,vf,
 ZM,Zambia,PA,Panama,vr,
 ZM,Zambia,PG,Papua New Guinea,ev,30
@@ -40926,7 +40926,7 @@ ZW,Zimbabwe,MK,North Macedonia,vr,
 ZW,Zimbabwe,NO,Norway,vr,
 ZW,Zimbabwe,OM,Oman,ev,
 ZW,Zimbabwe,PK,Pakistan,ev,90
-ZW,Zimbabwe,PW,Palau,ev,30
+ZW,Zimbabwe,PW,Palau,voa,30
 ZW,Zimbabwe,PS,Palestine,vf,
 ZW,Zimbabwe,PA,Panama,vr,
 ZW,Zimbabwe,PG,Papua New Guinea,ev,60
