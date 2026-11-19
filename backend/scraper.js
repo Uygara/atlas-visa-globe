@@ -345,7 +345,8 @@ function classifyVisaText(text) {
   // "Online Visa required" (Australia ETA, Canada eTA) would otherwise be miscategorised as vr.
   // Also covers brand-named electronic authorisations: ESTA / Visa Waiver Program
   // (US), eVisitor (Australia), NZeTA (New Zealand), K-ETA (South Korea).
-  if (t.includes("evisa") || t.includes("e-visa") || t.includes("e visa") ||
+  // "e visa" needs a word start: "Free visa on arrival" contains "e visa" and was read as eVisa (Palau, Ghana, Tonga...).
+  if (t.includes("evisa") || t.includes("e-visa") || /(^|[^a-z])e visa/.test(t) ||
       t.includes("electronic visa") || t.includes("electronic travel authorization") ||
       t.includes("electronic travel authorisation") || // British spelling (e.g. Australia ETA)
       t.includes("electronic travel authority") ||
@@ -542,6 +543,15 @@ function buildPassportEntry(scrape) {
 
 // ───────────────────────────────────────────────────────────────────────────
 // Compute the changelog by diffing against the previous snapshot
+// Our own classifier fixes change statuses without any policy change; the changelog feeds the news
+// panel, monthly reports and alerts, so transitions caused by a fix are skipped for one week after it.
+const CLASSIFIER_FIXES = [
+  // "Free visa on arrival" matched "e visa" and was read as eVisa (Palau, Ghana, Lebanon, Tonga, UAE).
+  { from: "ev", to: "voa", until: "2026-11-27" },
+];
+function isClassifierFix(from, to, date) {
+  return CLASSIFIER_FIXES.some(f => f.from === from && f.to === to && date <= f.until);
+}
 function computeChangelog(prevData, newData) {
   const changes = [];
   for (const [iso2, np] of Object.entries(newData)) {
@@ -560,7 +570,8 @@ function computeChangelog(prevData, newData) {
     const newMap = flatten(np);
     for (const dest of new Set([...Object.keys(oldMap), ...Object.keys(newMap)])) {
       // A destination that newly appears as "vr" (missing ⇒ "vr") isn't a change.
-      if ((oldMap[dest] || "vr") !== (newMap[dest] || "vr")) {
+      if ((oldMap[dest] || "vr") !== (newMap[dest] || "vr") &&
+          !isClassifierFix(oldMap[dest] || "vr", newMap[dest] || "vr", new Date().toISOString().slice(0, 10))) {
         changes.push({
           date: new Date().toISOString().slice(0, 10),
           passport: iso2,
