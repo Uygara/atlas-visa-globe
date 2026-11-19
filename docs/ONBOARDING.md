@@ -47,7 +47,13 @@ ve Cloudflare yaklaşık 30 saniyede canlıya alır.
   Owner-only adımlar (hesap, ödeme) `TODO.md`de.
 - Claude her işi test edip `main` dalına gönderir. Haftalık otopilot da aynı dala gönderdiği için Claude
   göndermeden önce `git pull --rebase` yapar; çakışma olursa sana sorar.
-- Aynı anda iki kişi aynı dosyada çalışmasın. Büyük bir işe başlarken site sahibine haber ver.
+- **Aynı anda çalışmak:** herkes kendi bilgisayarında, kendi kopyasında ve kendi Claude hesabıyla çalışır. Ortak
+  dosya GitHub'daki depodur; e-postayla gönderilen `.md` dosyaları yalnızca okumak içindir ve hemen eskir.
+  Claude her oturumun başında `git pull` ile diğer kişinin işini alır, göndermeden önce yine çeker.
+- **İş kapma:** büyük bir işe başlarken Claude'a "ROADMAP'te D6'yı üzerime al" de. Claude maddenin sonuna
+  `[üzerinde: Adın, 2026-11-20]` yazar ve hemen gönderir. Diğer kişi ve otopilot bu maddeye dokunmaz. İş bitince
+  etiket kalkar. 7 günden eski etiket sahipsiz sayılır.
+- Küçük işler (bir yazım düzeltmesi, bir Instagram gönderisi) için etiket gerekmez.
 - **Asla**: `.secrets/` içeriğini commit etme ya da bir yere yapıştırma; kaynağı olmayan vize bilgisi yazma
   (ücret, süre, kural). Claude bunları zaten reddeder, ama bilmekte fayda var.
 
