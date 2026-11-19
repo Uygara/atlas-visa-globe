@@ -9,6 +9,15 @@ Newest run first. Each entry 10 lines or fewer. Playbook: `docs/AUTOPILOT.md`.
 
 ## Runs
 
+### 2026-11-19 · manual growth session (not an autopilot run)
+- Shipped: /visa/<cc>/ (2e353afe1), passport titles (8ce7a3ffe), /reports/, /open-data/, country-card recent
+  changes (493be8162), advisory snapshots (3081d892d), Maldives fix (bc897c2c9), scraper eVisa fix (5d853b274).
+- Measure on 2026-12-17 with `node tools/gsc-deep.js`: clicks for '<country> visa requirements' (was 0 on 13k
+  impr/90d) and CTR of /passport/ pages. Add rows to the Tried table.
+- The walk's 'appendChild' js-err is AdSense (adsbygoogle.js) on pages translated in place after a /tr/ visit;
+  user-walk now lists it as 3p-err. Not ours to fix.
+- Next: D3 Schengen 'when can I return', D6 embeddable checker, D8 remaining per-passport checks, R1 once Resend.
+
 ### 2026-11-17 · weekly run 1 (no code shipped)
 - Numbers unchanged from the setup entry below (same day): GA users 154, engaged 12%, SC 47 clicks / 17.4k impr.
   `.autopilot/metrics.tsv` did not exist; not created in the worktree (local history lives in the main checkout).

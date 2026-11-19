@@ -32,21 +32,25 @@ Durum: `açık` · `sürüyor` · `bekliyor: <neyi>` · `bitti <hash>`
   onaydan önce geciktirmek başvuruyu riske atar. Onaydan sonra ilk kaydırmada yükle.
 - **D5 · Aylık pasaport gücü raporu** · bitti 2e353afe1 (kart görselleri A4'te) · `/reports/<yyyy-mm>/`, changelog'dan otomatik, EN + TR, Instagram
   ve Reddit için kart görselleri. Geri dönme sebebi ve bağlantı kazanma aracı.
-- **D4 · Açık veri seti** · sürüyor · `/open-data/` + günlük CSV/JSON, CC BY-SA 4.0 (Wikipedia'dan türediği için).
+- **D4 · Açık veri seti** · bitti 493be8162 · `/open-data/` + günlük CSV/JSON, CC BY-SA 4.0 (Wikipedia'dan türediği için).
 - **D3 · Schengen hesaplayıcı: "ne zaman tekrar girebilirim"** · açık · Tek tık cevap, paylaşılabilir bağlantı,
   EES ve ETIAS açıklaması (resmi kaynaklı).
 - **D6 · Gömülebilir vize denetleyicisi** · açık · `<iframe>` veya küçük betik, altında bağlantı.
-- **D8 · Veri kalitesi: varış formu eVisa sanılıyor** · sürüyor · Maldivler'de ücretsiz IMUGA beyanı eVisa
+- **D8 · Veri kalitesi: varış formu eVisa sanılıyor** · kısmen bitti 5d853b274 · Maldivler'de ücretsiz IMUGA beyanı eVisa
   sayılıyordu; 140 pasaport yanlış görünüyordu (bc897c2c9 ile düzeldi). Aynı kalıp Tayland (TDAC), Kolombiya
   (Check-MIG) ve başkalarında olabilir; kaynaklı denetim `visa-data-auditor` ile. Kalıcı çözüm: scraper'da
-  "arrival card / declaration" notunu eVisa saymamak.
+  "arrival card / declaration" notunu eVisa saymamak. Kök neden bulundu: "Free visa on arrival" içindeki "e visa"
+  (Palau, Gana, Lübnan, Tonga, BAE); scraper düzeltildi. Kalan, resmi kaynakla doğrulanacak pasaport listeleri
+  (yalnızca Wikipedia'ya dayanıyor): Zambiya varışta vize 28 pasaport, Ermenistan 19, Moğolistan IN/KW,
+  Kırgızistan ID/PH/ZA/VE, Ruanda herkese varışta vize, Lesotho e-vize portalı kapalı olabilir. Ayrıntı ve
+  kaynaklar: otopilot `visa-data-auditor` ile yeniden üretir. Tayland, Kolombiya, Arnavutluk doğru (gerçek eVisa).
 
 ### Aşama 1: sahibinden bir şey gerektirmeyenler
 
 - **R3 · Güvenlik uyarısı geçmişi** · bitti 3081d892d · `backend/fetch-advisories.js` her gün tarihli özet
   kaydeder (`data/advisory-history/`), böylece haftalık fark çıkarılabilir. Zamana duyarlı: geçmiş ne kadar erken
   birikmeye başlarsa R4 o kadar erken çalışır.
-- **R2 · Yan panelde ülke haber akışı** · sürüyor · Ülke kartında "Son değişiklikler": bu ülkenin pasaportunu ve bu
+- **R2 · Yan panelde ülke haber akışı** · bitti 493be8162 (uyarı değişiklikleri ikinci günlük kayıtla dolmaya başlar) · Ülke kartında "Son değişiklikler": bu ülkenin pasaportunu ve bu
   ülkeye girişi etkileyen vize değişiklikleri (`data/changelog.js`), bu ülke hakkında yayımlanan güvenlik uyarısı
   değişiklikleri (R3) ve haberler (`data/visa-news.js`, şu an yalnızca 3 madde; kaynakları genişlet).
   Her maddede tarih ve kaynak bağlantısı. Seçili pasaporta göre süzülür.

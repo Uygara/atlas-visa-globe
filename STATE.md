@@ -74,6 +74,19 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 16 (2026-11-17 to 19: autopilot, roadmap, search intent fix):**
+  - Weekly autopilot (`docs/AUTOPILOT.md`, scheduled tasks Mon + Thu, worktree `.claude/worktrees/autopilot`).
+    Feature inventory + owner's product principles in `docs/ROADMAP.md`; editor onboarding `docs/ONBOARDING.md`.
+  - Search Console: 13k impr/90d for "<country> visa requirements" hit outbound passport pages, 0 clicks.
+    Added `/visa/<cc>/` destination pages (EN+TR), retitled passport pages to "visa-free countries",
+    monthly `/reports/`, `/open-data/` (CC BY-SA 4.0), country-card "Recent changes", advisory snapshots.
+    Analysis: `docs/GROWTH-ANALYSIS.md`; rerun `node tools/gsc-deep.js` from the autopilot worktree.
+  - Data: Maldives showed eVisa for 140 passports (IMUGA form); scraper read "Free visa on arrival" as eVisa.
+    Fixed in `backend/scraper.js` (changelog skips ev→voa until 2026-11-27) + `DECLARATION_NOT_EVISA`.
+  - Gotchas: `tr()` must fill placeholders in fallbacks (stale cached i18n.js showed "{who}"); bump `?v=` for
+    every changed data file. Subagents stopping their own server can kill the preview server on 8000.
+    The walk's "appendChild" error is AdSense's script on in-place translated pages, not ours.
+
 - **Round 15 (2026-10-06: pre-launch hardening from two owner checklists):**
   - Google Fonts self-hosted: `assets/fonts.css` + `assets/fonts/*.woff2` (latin, latin-ext, arabic; regenerate with
     `node tools/selfhost-fonts.js`). No page contacts fonts.googleapis.com any more (GDPR IP-transfer risk). The app

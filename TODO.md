@@ -6,6 +6,9 @@
 
 ## ▶ Yeni oturumda buradan başla
 
+0. **Özellik işleri `docs/ROADMAP.md`den** (Aşama 0 → 3). Sıradaki: D3 Schengen "ne zaman tekrar girebilirim",
+   D6 gömülebilir denetleyici, D8 kalan veri kontrolleri. 17 Aralık'ta `/visa/` sayfalarının etkisini ölç
+   (`docs/autopilot-log.md` en üst kayıt).
 1. **Android test APK'sını telefonda dene**: GitHub → Actions → "Android build" → son çalışma → `travelnow-debug-apk`.
    Telefonda "bilinmeyen kaynaklardan yükleme"ye izin verip kur. Hata/izlenim varsa yaz, düzeltirim.
 2. **Google Play hesabı** açıldıysa: yükleme anahtarını üretip imzalı AAB'yi CI'dan alırım, kapalı test kanalını kurarız.
