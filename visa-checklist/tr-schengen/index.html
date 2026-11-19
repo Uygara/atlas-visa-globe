@@ -132,6 +132,8 @@
   // page — other languages fall back to en here (they get their own
   // string-by-string translation via static-i18n's DICT).
   function initialLang() {
+    // The Turkish twin (/tr/visa-checklist/tr-schengen/) pins <html data-page-lang="tr">.
+    if (document.documentElement.getAttribute("data-page-lang") === "tr") return "tr";
     try {
       const stored = localStorage.getItem("atlas.lang");
       return stored === "tr" ? "tr" : "en";
@@ -161,7 +163,9 @@
         .map((item, ii) => {
           const id = `${si}-${ii}-${item.label.slice(0,30).replace(/\\W/g,"_")}`;
           const checked = ticked[id] ? "checked" : "";
-          const condBadge = item.conditional ? `<span class="badge">${item.conditional}</span>` : "";
+          // The badge reuses the matching filter chip's text, which the page already has in both languages.
+          const chip = item.conditional && document.querySelector(`.chip[data-cond="${item.conditional}"]`);
+          const condBadge = item.conditional ? `<span class="badge">${chip ? chip.textContent.trim() : item.conditional}</span>` : "";
           const desc = L(item, "desc");
           return `<label class="item">
             <input type="checkbox" data-id="${id}" ${checked}>
@@ -180,8 +184,8 @@
     document.getElementById("sections").innerHTML = sections;
 
     document.getElementById("sources").innerHTML = `
-      <h3>Sources</h3>
-      <ul>${data.sources.map(s => `<li><a href="${s.url}" target="_blank" rel="noopener nofollow">${s.label}</a></li>`).join("")}</ul>`;
+      <h3>${lang === "tr" ? "Kaynaklar" : "Sources"}</h3>
+      <ul>${data.sources.map(s => `<li><a href="${s.url}" target="_blank" rel="noopener nofollow">${L(s, "label")}</a></li>`).join("")}</ul>`;
   }
 
   document.getElementById("sections").addEventListener("change", (e) => {

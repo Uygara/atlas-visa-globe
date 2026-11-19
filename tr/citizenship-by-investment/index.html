@@ -47,6 +47,8 @@
 <!-- /chrome:head -->
 <style>.wrap{max-width:1180px}</style>
 <script src="/data/citizenship-by-investment.js"></script>
+<script src="/data/citizenship-by-investment-tr.js"></script>
+<script src="/data/country-names.js"></script>
   <script src="/assets/analytics.js"></script>
 </head>
 <body>
@@ -156,7 +158,18 @@
 
 <script>
 (function () {
-  const data = (window.CBI_PROGRAMS || []).slice();
+  // The Turkish twin (/tr/citizenship-by-investment/) pins <html data-page-lang="tr">.
+  const TR = document.documentElement.getAttribute("data-page-lang") === "tr";
+  const TXT = TR ? (window.CBI_PROGRAMS_TR || {}) : {};
+  const t = (s) => (s && TXT[s]) || s;
+  const STATUS_TR = { open: "Açık", closed: "Kapalı", paused: "Askıda" };
+  // Country names in the page language; Turkish values for the free-text columns.
+  const data = (window.CBI_PROGRAMS || []).map(d => Object.assign({}, d, {
+    name: TR && window.countryName ? window.countryName(d.iso2) : d.name,
+    program: t(d.program),
+    routes: t(d.routes),
+    notes: t(d.notes),
+  }));
   let sortKey = "minInvest";
   let sortDir = 1;
   let filter = { q: "", type: "", status: "open", family: "" };
@@ -168,17 +181,22 @@
   const familyEl = document.getElementById("family");
   const summary  = document.getElementById("summary");
 
+  const NA = '<span class="nope">N/A</span>'; // the footer note explains "N/A" in both languages
   function fmtMoney(n) {
-    if (!n) return '<span class="nope">N/A</span>';
+    if (!n) return NA;
+    if (TR) {
+      if (n >= 1000000) return `<span class="invest">${(n / 1000000).toFixed(n % 1000000 === 0 ? 0 : 1).replace(".", ",")} milyon $</span>`;
+      return `<span class="invest">${(n / 1000).toFixed(0)} bin $</span>`;
+    }
     if (n >= 1000000) return `<span class="invest">$${(n / 1000000).toFixed(n % 1000000 === 0 ? 0 : 1)}M</span>`;
     return `<span class="invest">$${(n / 1000).toFixed(0)}K</span>`;
   }
   function fmtTimeline(m) {
-    if (!m) return '<span class="nope">N/A</span>';
-    return `~${m} mo`;
+    if (!m) return NA;
+    return TR ? `~${m} ay` : `~${m} mo`;
   }
   function fmtVisaFree(v) {
-    if (v === "N/A" || v == null) return '<span class="nope">N/A</span>';
+    if (v === "N/A" || v == null) return NA;
     return `<strong>${v}</strong>`;
   }
   function escapeHtml(s) { return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c])); }
@@ -216,20 +234,21 @@
           ${escapeHtml(d.program)}
           <div class="routes">${escapeHtml(d.routes)}</div>
           <div class="notes">${escapeHtml(d.notes)}</div>
-          <div class="src-link"><a href="${d.source}" target="_blank" rel="noopener nofollow">Official source ↗</a></div>
+          <div class="src-link"><a href="${d.source}" target="_blank" rel="noopener nofollow">${TR ? "Resmî kaynak" : "Official source"} ↗</a></div>
         </td>
         <td><span class="badge ${d.type.toLowerCase()}">${d.type}</span></td>
         <td style="text-align:right;">${fmtMoney(d.minInvest)}</td>
         <td style="text-align:right;">${fmtTimeline(d.timelineMonths)}</td>
         <td style="text-align:right;">${fmtVisaFree(d.visaFreeCount)}</td>
-        <td><span class="badge ${d.familyOK ? "open" : "closed"}">${d.familyOK ? "OK" : "Solo"}</span></td>
-        <td><span class="badge ${d.status}">${d.status.toUpperCase()}</span></td>
-        <td><a href="/passport/${d.iso2.toLowerCase()}/">Visa-free for ${d.iso2}</a></td>
+        <td><span class="badge ${d.familyOK ? "open" : "closed"}">${d.familyOK ? "OK" : (TR ? "Tek kişi" : "Solo")}</span></td>
+        <td><span class="badge ${d.status}">${TR ? (STATUS_TR[d.status] || d.status) : d.status.toUpperCase()}</span></td>
+        <td>${TR ? `<a href="/tr/passport/${d.iso2.toLowerCase()}/">${escapeHtml(d.name)} pasaportuyla vizesiz</a>`
+                 : `<a href="/passport/${d.iso2.toLowerCase()}/">Visa-free for ${d.iso2}</a>`}</td>
       </tr>
     `).join("");
 
     const open = data.filter(d => d.status === "open").length;
-    summary.textContent = `${filtered.length} shown, ${open} active programmes`;
+    summary.textContent = TR ? `${filtered.length} program gösteriliyor, ${open} program açık` : `${filtered.length} shown, ${open} active programmes`;
   }
 
   search.addEventListener("input", () => { filter.q = search.value; render(); });

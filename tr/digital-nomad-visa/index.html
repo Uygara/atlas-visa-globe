@@ -48,6 +48,8 @@
 <!-- /chrome:head -->
 <style>.wrap{max-width:1100px}</style>
 <script src="/data/digital-nomad-visas.js"></script>
+<script src="/data/digital-nomad-visas-tr.js"></script>
+<script src="/data/country-names.js"></script>
   <script src="/assets/analytics.js"></script>
 </head>
 <body>
@@ -157,9 +159,20 @@
     AE:"AF",MU:"AF",ZA:"AF",NA:"AF",CV:"AF",KE:"AF",SC:"AF",
     JP:"AS",KR:"AS",TW:"AS",TH:"AS",MY:"AS",ID:"AS",PH:"AS",
   };
-  const REGION_LABEL = { EU: "Europe", AS: "Asia / Oceania", AM: "Americas", AF: "ME / Africa" };
+  // The Turkish twin (/tr/digital-nomad-visa/) pins <html data-page-lang="tr">.
+  const TR = document.documentElement.getAttribute("data-page-lang") === "tr";
+  const TXT = TR ? (window.DIGITAL_NOMAD_VISAS_TR || {}) : {};
+  const t = (s) => (s && TXT[s]) || s;
+  const REGION_LABEL = TR
+    ? { EU: "Avrupa", AS: "Asya / Okyanusya", AM: "Amerika kıtaları", AF: "Orta Doğu / Afrika" }
+    : { EU: "Europe", AS: "Asia / Oceania", AM: "Americas", AF: "ME / Africa" };
 
-  const data = (window.DIGITAL_NOMAD_VISAS || []).slice();
+  // Country names in the page language; Turkish values for the free-text columns.
+  const data = (window.DIGITAL_NOMAD_VISAS || []).map(d => Object.assign({}, d, {
+    name: TR && window.countryName ? window.countryName(d.iso2) : d.name,
+    duration: t(d.duration),
+    taxBreak: t(d.taxBreak),
+  }));
   let sortKey = "name";
   let sortDir = 1;
   let filter = { q: "", region: "", family: "" };
@@ -175,11 +188,11 @@
     return String(v);
   }
   function formatIncome(n) {
-    if (!n) return '<span class="nope">none stated</span>';
+    if (!n) return `<span class="nope">${TR ? "belirtilmemiş" : "none stated"}</span>`;
     return `<span class="income">$${n.toLocaleString("en-US")}</span>`;
   }
   function formatFee(s) {
-    if (!s) return '<span class="nope">free</span>';
+    if (!s) return `<span class="nope">${TR ? "ücretsiz" : "free"}</span>`;
     return `$${s}`;
   }
 
@@ -205,20 +218,25 @@
         <td><span class="flag">${flagFor(d.iso2)}</span> <strong>${d.name}</strong>
             <div style="font-size:var(--fs-xs);color:var(--fg-mute);">${REGION_LABEL[REGION_BY_ISO[d.iso2]] || ""}</div></td>
         <td>${escapeHtml(d.program)}<div class="src-link">
-            <a href="${d.source}" target="_blank" rel="noopener nofollow">Official source ↗</a></div></td>
+            <a href="${d.source}" target="_blank" rel="noopener nofollow">${TR ? "Resmî kaynak" : "Official source"} ↗</a></div></td>
         <td style="text-align:right;">${formatIncome(d.income)}</td>
         <td style="text-align:right;">${formatFee(d.fee)}</td>
         <td>${escapeHtml(d.duration)}</td>
         <td>${escapeHtml(d.taxBreak)}</td>
-        <td><span class="badge ${d.familyOK ? "yes" : "no"}">${d.familyOK ? "OK" : "Solo"}</span></td>
-        <td><a href="/passport/${d.iso2.toLowerCase()}/">Visa-free for ${d.iso2}</a></td>
+        <td><span class="badge ${d.familyOK ? "yes" : "no"}">${d.familyOK ? "OK" : (TR ? "Tek kişi" : "Solo")}</span></td>
+        <td>${passportLink(d)}</td>
       </tr>
     `).join("");
 
-    summary.textContent = `${filtered.length} of ${data.length} programmes`;
+    summary.textContent = TR ? `${data.length} programdan ${filtered.length} tanesi gösteriliyor` : `${filtered.length} of ${data.length} programmes`;
   }
 
   function escapeHtml(s) { return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c])); }
+  function passportLink(d) {
+    const iso = d.iso2.toLowerCase();
+    return TR ? `<a href="/tr/passport/${iso}/">${d.name} pasaportuyla vizesiz</a>`
+              : `<a href="/passport/${iso}/">Visa-free for ${d.iso2}</a>`;
+  }
   function flagFor(iso) {
     if (window.byIso2 && window.byIso2[iso]) return window.byIso2[iso].flag;
     // Fallback: derive emoji from ISO2

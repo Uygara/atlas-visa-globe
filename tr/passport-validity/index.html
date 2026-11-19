@@ -137,7 +137,12 @@
   const vEl      = document.getElementById("verdict");
   const tbody    = document.querySelector("#rules-table tbody");
 
-  const countries = (window.COUNTRIES || []).slice().sort((a, b) => a.name.localeCompare(b.name));
+  // The Turkish twin (/tr/passport-validity/) pins <html data-page-lang="tr">.
+  const TR = document.documentElement.getAttribute("data-page-lang") === "tr";
+  const nameOf = (c) => window.countryName ? window.countryName(c.iso2) : c.name;
+  const RULE_TR = { 6: "kalış bitiminden sonra en az 6 ay geçerli", 3: "kalış bitiminden sonra en az 3 ay geçerli", 0: "yalnızca kalış süresince geçerli" };
+  const ruleText = (res) => TR ? (RULE_TR[res.rule] || `kalış bitiminden sonra en az ${res.rule} ay geçerli`) : res.ruleLabel;
+  const countries = (window.COUNTRIES || []).slice().sort((a, b) => nameOf(a).localeCompare(nameOf(b), TR ? "tr" : "en"));
   countries.forEach(c => {
     if (window.PASSPORT_VALIDITY[c.iso2] == null) return;
     const o = document.createElement("option");
@@ -154,6 +159,23 @@
     const res = window.passportValidityCheck(dest, { expiry, exit });
     if (!res) { vEl.innerHTML = ""; return; }
     const destName = window.countryName ? window.countryName(dest) : dest;
+    if (TR) {
+      const rule = ruleText(res);
+      const v = res.ok === true
+        ? ["ok", "Uygun", `${destName}: pasaportun kuralı karşılıyor`,
+           `${destName}, pasaportun ${rule} olmasını istiyor. Çıkış tarihinde pasaportunun bitmesine ${res.monthsLeftOnExit} ay kalıyor: ${res.marginDays} gün payın var.`]
+        : res.ok === false
+        ? ["bad", "Uçağa alınmazsın", `${destName}: pasaportunun süresi yetmiyor`,
+           `${destName}, pasaportun ${rule} olmasını istiyor. Çıkış tarihinde pasaportunun bitmesine yalnızca ${res.monthsLeftOnExit} ay kalıyor: ${Math.abs(res.marginDays)} gün eksik. Uçak biletini almadan önce pasaportunu yenile.`]
+        : ["info", "Kural", `${destName}: pasaport ${rule} olmalı`,
+           "Uygun olup olmadığını görmek için yukarıya pasaportunun bitiş tarihini gir."];
+      vEl.innerHTML = `<div class="verdict ${v[0]}">
+        <div class="badge">${v[1]}</div>
+        <div class="title">${v[2]}</div>
+        <div class="body"><p>${v[3]}</p></div>
+      </div>`;
+      return;
+    }
     if (res.ok === true) {
       vEl.innerHTML = `<div class="verdict ok">
         <div class="badge">Cleared</div>
@@ -183,11 +205,12 @@
   for (const c of countries) {
     const months = window.PASSPORT_VALIDITY[c.iso2];
     if (months == null) continue;
-    rows.push({ iso2: c.iso2, name: window.countryName ? window.countryName(c.iso2) : c.name, flag: c.flag, months });
+    rows.push({ iso2: c.iso2, name: nameOf(c), flag: c.flag, months });
   }
-  rows.sort((a, b) => a.name.localeCompare(b.name));
+  rows.sort((a, b) => a.name.localeCompare(b.name, TR ? "tr" : "en"));
   tbody.innerHTML = rows.map(r => {
-    const label = r.months === 0 ? "Stay duration only"
+    const label = TR ? (r.months === 0 ? "Yalnızca kalış süresince" : `Kalıştan sonra ${r.months} ay`)
+                : r.months === 0 ? "Stay duration only"
                 : r.months === 3 ? "3 months past stay"
                 : r.months === 6 ? "6 months past stay"
                 : `${r.months} months past stay`;

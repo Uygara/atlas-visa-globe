@@ -144,7 +144,9 @@
 
   window.countryName = function (iso2) {
     if (!iso2) return "";
-    const lang = window.ATLAS_LANG || "en";
+    // Static pages don't load i18n.js; a Turkish twin (/tr/…) pins its language
+    // on <html data-page-lang>.
+    const lang = window.ATLAS_LANG || document.documentElement.getAttribute("data-page-lang") || "en";
     const dict = NAMES[lang];
     if (dict && dict[iso2]) return dict[iso2];
     // Tail countries the tables above don't cover: the browser's own CLDR names

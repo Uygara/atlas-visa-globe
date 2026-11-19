@@ -132,6 +132,8 @@
   const groupsEl  = document.getElementById("groups");
   const summaryEl = document.getElementById("summary");
 
+  // The Turkish twin (/tr/visa-shortcuts/) pins <html data-page-lang="tr">.
+  const TR = (document.documentElement.getAttribute("data-page-lang") || window.ATLAS_LANG) === "tr";
   const COND = window.VISA_CONDITIONS || {};
   const passports = Object.keys(COND).sort((a, b) =>
     (window.countryName ? window.countryName(a) : a).localeCompare(
@@ -170,20 +172,20 @@
       const destName = window.countryName ? window.countryName(dest) : dest;
       const destFlag = window.byIso2 && window.byIso2[dest] ? window.byIso2[dest].flag : "";
       return rows.map(row => {
-        const lang = window.ATLAS_LANG || "en";
-        const note = lang === "en" ? (row.noteEn || row.note) : (row.note || row.noteEn);
+        // `note` is Turkish, `noteEn` English.
+        const note = TR ? (row.note || row.noteEn) : (row.noteEn || row.note);
         const labels = holdsLabel(row.ifHolds);
-        const badge = row.then === "vf" ? "Visa-free"
-                    : row.then === "ev" ? "eVisa"
-                    : row.then === "voa" ? "Visa on arrival"
+        const badge = row.then === "vf" ? (TR ? "Vizesiz" : "Visa-free")
+                    : row.then === "ev" ? (TR ? "e-Vize" : "eVisa")
+                    : row.then === "voa" ? (TR ? "Varışta vize" : "Visa on arrival")
                     : row.then;
-        const days = row.days ? `, up to ${row.days} days` : "";
+        const days = row.days ? (TR ? `, ${row.days} güne kadar` : `, up to ${row.days} days`) : "";
         return `<div class="pair">
           <div class="dest"><span>${destFlag}</span> <span>${destName}</span></div>
           <div class="holds">${labels.map(l => `<span class="chip">${l}</span>`).join("")}</div>
-          <div class="then">→ becomes <span class="badge ${row.then}">${badge}</span>${days}</div>
+          <div class="then">→ ${TR ? "sonuç:" : "becomes"} <span class="badge ${row.then}">${badge}</span>${days}</div>
           ${note ? `<div class="note">${note}</div>` : ""}
-          ${row.source ? `<div class="src"><a href="${row.source}" target="_blank" rel="noopener nofollow">Official source ↗</a></div>` : ""}
+          ${row.source ? `<div class="src"><a href="${row.source}" target="_blank" rel="noopener nofollow">${TR ? "Resmî kaynak" : "Official source"} ↗</a></div>` : ""}
         </div>`;
       }).join("");
     }).join("");
@@ -203,7 +205,8 @@
       const t = COND[p] || {};
       Object.values(t).forEach(rows => total += (rows.length || 0));
     });
-    summaryEl.textContent = `${total} shortcut${total === 1 ? "" : "s"} across ${list.length} passport${list.length === 1 ? "" : "s"}`;
+    summaryEl.textContent = TR ? `${list.length} pasaport için ${total} kısayol`
+      : `${total} shortcut${total === 1 ? "" : "s"} across ${list.length} passport${list.length === 1 ? "" : "s"}`;
   }
   sel.addEventListener("change", render);
   render();
