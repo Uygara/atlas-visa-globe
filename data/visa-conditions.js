@@ -77,12 +77,12 @@ window.VISA_CONDITIONS = {
       source: "https://en.wikipedia.org/wiki/Visa_policy_of_Georgia",
     }],
     SG: [{
-      ifHolds: ["US", "GB", "AU", "CA", "JP", "KR", "DE", "CH", "SCHENGEN"],
+      ifHolds: ["US", "GB", "AU", "CA", "JP", "NZ", "DE", "CH"],
       then: "vf",
       days: 4, // 96 hours (ICA Visa-Free Transit Facility)
-      note: "Geçerli ABD/BK/Avustralya/Kanada/Japonya/Schengen/İsviçre vizesi ve onaylı dönüş bileti ile transit vizesi olmadan 96 saate kadar kalabilir.",
-      noteEn: "Up to 96-hour visa-free transit for holders of a valid US, UK, Australian, Canadian, Japanese, Korean, German, Swiss or Schengen visa with confirmed onward ticket.",
-      source: "https://www.ica.gov.sg/enter-transit-depart/entering-singapore/visa_requirements",
+      note: "ABD, BK, Avustralya, Kanada, Japonya, Yeni Zelanda, Almanya veya İsviçre'nin verdiği, girişte en az 1 ay geçerli bir vize ya da uzun süreli izin ve 96 saat içinde Singapur'dan çıkan uçak, feribot veya kruvaziyer biletiyle vizesiz transit: en fazla 96 saat, uzatılamaz.",
+      noteEn: "Visa-free transit of up to 96 hours with a visa or long-term pass issued by, or valid for, the US, UK, Australia, Canada, Japan, New Zealand, Germany or Switzerland, valid for at least 1 month on entry, and an onward air, ferry or cruise ticket leaving Singapore within 96 hours. It cannot be extended.",
+      source: "https://www.ica.gov.sg/information-and-e-services/entry-and-departure/entering-singapore/entry-requirements/visa-free-transit-facility",
     }],
     OM: [{
       ifHolds: ["US", "GB", "JP", "AU", "CA", "SCHENGEN"],
