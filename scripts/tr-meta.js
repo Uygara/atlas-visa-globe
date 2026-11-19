@@ -16,6 +16,11 @@ module.exports = {
     title: "Gizlilik Politikası · travelnow.info",
     description: "travelnow.info ve uygulamasının hangi kişisel verileri, neden ve ne kadar süre işlediği; verilerine nasıl erişip silebileceğin.",
   },
+  "/open-data/": {
+    title: "Açık vize gereklilikleri veri seti (CSV ve JSON)",
+    description: "200 pasaport ve 205 varış noktası için her gün yenilenen ücretsiz vize gereklilikleri veri seti. CSV ve JSON olarak CC BY-SA 4.0 lisansıyla indirilebilir.",
+    ogDescription: "Her pasaport ve varış noktası çifti için vize gereklilikleri. Her gün yenilenir, CC BY-SA 4.0 lisansıyla serbestçe kullanılabilir.",
+  },
   "/about/": {
     title: "travelnow.info hakkında",
     description: "travelnow.info, dünya genelinde 200'den fazla pasaportu kapsayan, her gün yenilenen ücretsiz bir vize gereklilikleri aracıdır.",

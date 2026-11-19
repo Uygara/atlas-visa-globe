@@ -8,9 +8,11 @@ const { useState: useStateC, useEffect: useEffectC, useRef: useRefC, useLayoutEf
 
 // i18n lookup that falls back to a literal when the key isn't translated.
 function tr(key, fallback, vars) {
-  if (!window.t) return fallback;
+  // Fill {placeholders} in the fallback too: a cached i18n.js without the key must not show "{who}".
+  const fill = (s) => vars ? Object.keys(vars).reduce((acc, k) => acc.split("{" + k + "}").join(String(vars[k])), s) : s;
+  if (!window.t) return fill(fallback);
   const v = window.t(key, vars);
-  return v === key ? fallback : v;
+  return v === key ? fill(fallback) : v;
 }
 
 // Re-render the caller whenever the language changes.

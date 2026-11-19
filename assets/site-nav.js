@@ -36,7 +36,7 @@
     "/guides/schengen-90-180-rule/", "/guides/transit-visa-guide/",
     "/guides/visa-types-explained/", "/passport-validity/",
     "/schengen-calculator/", "/visa-checklist/tr-schengen/",
-    "/visa-shortcuts/", "/passport/", "/visa/", "/reports/"
+    "/visa-shortcuts/", "/passport/", "/visa/", "/reports/", "/open-data/"
   ];
   function isTrPath(p) { return /^\/tr(\/|$)/.test(p); }
   function fromTr(p) { return isTrPath(p) ? (p.replace(/^\/tr(?=\/)/, "") || "/") : p; }

@@ -35,6 +35,7 @@
     "Guides": { tr:"Rehberler", es:"Guías", de:"Ratgeber", fr:"Guides", ar:"الأدلة" },
     "Nomad visas": { tr:"Dijital göçebe vizeleri", es:"Visas nómada", de:"Nomadenvisa", fr:"Visas nomades", ar:"تأشيرات الرحالة" },
     "Second passport": { tr:"İkinci pasaport", es:"Segundo pasaporte", de:"Zweitpass", fr:"Second passeport", ar:"جواز سفر ثانٍ" },
+    "Open data": { tr:"Açık veri", es:"Datos abiertos", de:"Offene Daten", fr:"Données ouvertes", ar:"بيانات مفتوحة" },
     "Alerts": { tr:"Uyarılar", es:"Alertas", de:"Benachrichtigungen", fr:"Alertes", ar:"التنبيهات" },
     "About": { tr:"Hakkında", es:"Acerca de", de:"Über uns", fr:"À propos", ar:"حول" },
     "More": { tr:"Daha fazla", es:"Más", de:"Mehr", fr:"Plus", ar:"المزيد" },

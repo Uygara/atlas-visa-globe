@@ -1009,7 +1009,7 @@ function renderSitemap(allPassports, destinations) {
     ...allPassports.map(iso => [`/passport/${iso.toLowerCase()}/`, 0.6]),
     ["/visa/", 0.8],
     ...destinations.map(c => [`/visa/${c.iso2.toLowerCase()}/`, 0.7]),
-    ["/reports/", 0.7],
+    ["/reports/", 0.7], ["/open-data/", 0.7],
     ...require("./generate-reports").reportUrls()
       .filter(u => !u.includes("/tr/") && /\/reports\/\d{4}-\d{2}\/$/.test(u))
       .map(u => [u.replace(SITE_URL, "").replace("https://travelnow.info", ""), 0.6]),

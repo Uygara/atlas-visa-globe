@@ -1248,6 +1248,9 @@ function DetailCard(_ref14) {
   }), !groupActive && React.createElement(NewsBox, {
     passport: passport,
     destIso2: iso2
+  }), !groupActive && React.createElement(RecentChanges, {
+    passport: passport,
+    destIso2: iso2
   }), React.createElement(AffiliatePartners, {
     status: r.status,
     iso2: iso2
@@ -2373,9 +2376,176 @@ function PassportNewsFeed(_ref34) {
     n: list.length - 3
   })));
 }
-function NewsBox(_ref35) {
-  var passport = _ref35.passport,
+var RC_DAYS = 90;
+var RC_MAX = 6;
+var RC_ISSUERS = {
+  uk: "UK",
+  us: "US",
+  ca: "Canada"
+};
+function recentChangesFor(passport, destIso2) {
+  var cutoff = Date.now() - RC_DAYS * 86400000;
+  var recent = function recent(d) {
+    return new Date(d + "T00:00:00").getTime() >= cutoff;
+  };
+  var out = [];
+  var _iterator6 = _createForOfIteratorHelper(window.CHANGELOG || []),
+    _step6;
+  try {
+    for (_iterator6.s(); !(_step6 = _iterator6.n()).done;) {
+      var c = _step6.value;
+      if (!recent(c.date) || !c.affects) continue;
+      var ps = c.affects.passports || [];
+      if (c.affects.dest === destIso2) {
+        out.push({
+          kind: "into",
+          date: c.date,
+          c: c,
+          mine: !!passport && ps.includes(passport)
+        });
+      } else if (ps.includes(destIso2)) {
+        out.push({
+          kind: "from",
+          date: c.date,
+          c: c,
+          mine: false
+        });
+      }
+    }
+  } catch (err) {
+    _iterator6.e(err);
+  } finally {
+    _iterator6.f();
+  }
+  var _iterator7 = _createForOfIteratorHelper(window.ADVISORY_CHANGES || []),
+    _step7;
+  try {
+    for (_iterator7.s(); !(_step7 = _iterator7.n()).done;) {
+      var a = _step7.value;
+      if (a.dest === destIso2 && a.from != null && a.to != null && recent(a.date)) out.push({
+        kind: "adv",
+        date: a.date,
+        a: a,
+        mine: false
+      });
+    }
+  } catch (err) {
+    _iterator7.e(err);
+  } finally {
+    _iterator7.f();
+  }
+  out.sort(function (x, y) {
+    return y.mine - x.mine || y.date.localeCompare(x.date);
+  });
+  return out.slice(0, RC_MAX);
+}
+function RecentChangeRow(_ref35) {
+  var it = _ref35.it,
     destIso2 = _ref35.destIso2;
+  var text;
+  if (it.kind === "adv") {
+    text = tr("recent.advisory", "{issuer} advisory level {from} → {to}", {
+      issuer: RC_ISSUERS[it.a.issuer] || it.a.issuer,
+      from: it.a.from,
+      to: it.a.to
+    });
+  } else {
+    var c = it.c;
+    var arrow = "".concat(statusLabel(c.statusFrom), " \u2192 ").concat(statusLabel(c.statusTo));
+    if (it.kind === "into") {
+      var who = (c.affects.passports || []).map(function (p) {
+        return window.countryName(p);
+      }).join(", ");
+      text = tr("recent.into", "{who} citizens: {change}", {
+        who: who,
+        change: arrow
+      });
+    } else {
+      text = tr("recent.from", "{who} citizens: {dest} {change}", {
+        who: window.countryName(destIso2),
+        dest: window.countryName(c.affects.dest),
+        change: arrow
+      });
+    }
+  }
+  return React.createElement("div", {
+    className: "feed-item",
+    style: {
+      padding: "6px 0"
+    }
+  }, React.createElement("div", {
+    className: "feed-meta"
+  }, React.createElement("time", {
+    dateTime: it.date
+  }, fmtDay(it.date, true)), it.mine && React.createElement(React.Fragment, null, React.createElement("span", null, "\xB7"), React.createElement("strong", null, tr("recent.yours", "Your passport")))), React.createElement("div", {
+    className: "feed-title",
+    style: {
+      fontWeight: 500
+    }
+  }, text), it.kind !== "adv" && React.createElement("div", {
+    className: "p-fine"
+  }, tr("recent.source", "Source: Wikipedia visa requirement articles, daily snapshot")));
+}
+function RecentChanges(_ref36) {
+  var passport = _ref36.passport,
+    destIso2 = _ref36.destIso2;
+  useLangTick();
+  var list = useMemo(function () {
+    return recentChangesFor(passport, destIso2);
+  }, [passport, destIso2]);
+  if (list.length === 0) return null;
+  var head = list.slice(0, 3),
+    rest = list.slice(3);
+  var lang = window.ATLAS_LANG === "tr" ? "/tr" : "";
+  var cc = String(destIso2).toLowerCase();
+  return React.createElement("div", {
+    style: {
+      marginBottom: 10
+    }
+  }, React.createElement("div", {
+    className: "p-hint",
+    style: {
+      margin: "0 0 6px",
+      fontWeight: 600,
+      color: "var(--ink-2)"
+    }
+  }, tr("recent.title", "Recent changes")), React.createElement("div", {
+    className: "feed"
+  }, head.map(function (it, i) {
+    return React.createElement(RecentChangeRow, {
+      key: i,
+      it: it,
+      destIso2: destIso2
+    });
+  }), rest.length > 0 && React.createElement("details", null, React.createElement("summary", {
+    className: "p-fine",
+    style: {
+      cursor: "pointer"
+    }
+  }, tr("changelog.more", "+ {n} more changes", {
+    n: rest.length
+  })), rest.map(function (it, i) {
+    return React.createElement(RecentChangeRow, {
+      key: i,
+      it: it,
+      destIso2: destIso2
+    });
+  }))), React.createElement("div", {
+    className: "p-fine",
+    style: {
+      marginTop: 4
+    }
+  }, React.createElement("a", {
+    href: "".concat(lang, "/visa/").concat(cc, "/")
+  }, tr("recent.all", "See all changes for {name}", {
+    name: window.countryName(destIso2)
+  })), " · ", React.createElement("a", {
+    href: "".concat(lang, "/reports/")
+  }, tr("recent.report", "Monthly report"))));
+}
+function NewsBox(_ref37) {
+  var passport = _ref37.passport,
+    destIso2 = _ref37.destIso2;
   var list = useMemo(function () {
     if (!window.VISA_NEWS) return [];
     return window.VISA_NEWS.filter(function (it) {
@@ -2435,8 +2605,8 @@ function ChangelogFloater() {
     embedded: true
   })));
 }
-function Changelog(_ref36) {
-  var embedded = _ref36.embedded;
+function Changelog(_ref38) {
+  var embedded = _ref38.embedded;
   var _useState25 = useState(false),
     _useState26 = _slicedToArray(_useState25, 2),
     expanded = _useState26[0],
@@ -2477,9 +2647,9 @@ function describeStatusChange(from, to) {
   if (specific && specific !== key) return specific;
   return window.t("change.now_".concat(to)) || window.t("change.rules_updated");
 }
-function ChangelogItem(_ref37) {
+function ChangelogItem(_ref39) {
   var _entry$affects$passpo;
-  var entry = _ref37.entry;
+  var entry = _ref39.entry;
   var passportIso = (_entry$affects$passpo = entry.affects.passports) === null || _entry$affects$passpo === void 0 ? void 0 : _entry$affects$passpo[0];
   var passport = passportIso ? window.byIso2[passportIso] : null;
   var dest = window.byIso2[entry.affects.dest];

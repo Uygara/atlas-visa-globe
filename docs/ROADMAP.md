@@ -24,29 +24,33 @@ Durum: `açık` · `sürüyor` · `bekliyor: <neyi>` · `bitti <hash>`
 
 ### Aşama 0: arama trafiği (gerekçe: `docs/GROWTH-ANALYSIS.md`)
 
-- **D1 · Hedef ülke sayfaları `/visa/<kod>/`** · sürüyor · "<Ülke> visa requirements" aramalarında 13 bin
+- **D1 · Hedef ülke sayfaları `/visa/<kod>/`** · bitti 2e353afe1 · "<Ülke> visa requirements" aramalarında 13 bin
   gösterim, 0 tık. Pasaport seçme denetleyicisi, durum listeleri, "gitmeden önce" bloğu, SSS, EN + TR.
-- **D2 · Pasaport sayfası başlıkları** · D1'den sonra · "<Ülke> passport: N countries without a visa (2026)",
+- **D2 · Pasaport sayfası başlıkları** · bitti 8ce7a3ffe · "<Ülke> passport: N countries without a visa (2026)",
   TR "<ülke> pasaportu ile vizesiz gidilen ülkeler". 4 hafta sonra Search Console'da karşılaştır.
-- **D7 · AdSense betiğini geciktir** · açık · İlk kaydırma veya boşta yüklenir; sayfa ağırlığı 1,1 MB'tan düşer.
-- **D5 · Aylık pasaport gücü raporu** · açık · `/reports/<yyyy-mm>/`, changelog'dan otomatik, EN + TR, Instagram
+- **D7 · AdSense betiğini geciktir** · bekliyor: AdSense onayı · İnceleme sırasında Google kodu `<head>`de arıyor;
+  onaydan önce geciktirmek başvuruyu riske atar. Onaydan sonra ilk kaydırmada yükle.
+- **D5 · Aylık pasaport gücü raporu** · bitti 2e353afe1 (kart görselleri A4'te) · `/reports/<yyyy-mm>/`, changelog'dan otomatik, EN + TR, Instagram
   ve Reddit için kart görselleri. Geri dönme sebebi ve bağlantı kazanma aracı.
-- **D4 · Açık veri seti** · açık · `/data/` sayfası + günlük CSV/JSON + GitHub'da README, CC BY 4.0
-  (kaynak verinin lisansına uyduğunu kontrol et: Wikipedia CC BY-SA ise o lisans).
+- **D4 · Açık veri seti** · sürüyor · `/open-data/` + günlük CSV/JSON, CC BY-SA 4.0 (Wikipedia'dan türediği için).
 - **D3 · Schengen hesaplayıcı: "ne zaman tekrar girebilirim"** · açık · Tek tık cevap, paylaşılabilir bağlantı,
   EES ve ETIAS açıklaması (resmi kaynaklı).
 - **D6 · Gömülebilir vize denetleyicisi** · açık · `<iframe>` veya küçük betik, altında bağlantı.
+- **D8 · Veri kalitesi: varış formu eVisa sanılıyor** · sürüyor · Maldivler'de ücretsiz IMUGA beyanı eVisa
+  sayılıyordu; 140 pasaport yanlış görünüyordu (bc897c2c9 ile düzeldi). Aynı kalıp Tayland (TDAC), Kolombiya
+  (Check-MIG) ve başkalarında olabilir; kaynaklı denetim `visa-data-auditor` ile. Kalıcı çözüm: scraper'da
+  "arrival card / declaration" notunu eVisa saymamak.
 
 ### Aşama 1: sahibinden bir şey gerektirmeyenler
 
-- **R3 · Güvenlik uyarısı geçmişi** · bitti (bkz. log) · `backend/fetch-advisories.js` her gün tarihli özet
+- **R3 · Güvenlik uyarısı geçmişi** · bitti 3081d892d · `backend/fetch-advisories.js` her gün tarihli özet
   kaydeder (`data/advisory-history/`), böylece haftalık fark çıkarılabilir. Zamana duyarlı: geçmiş ne kadar erken
   birikmeye başlarsa R4 o kadar erken çalışır.
-- **R2 · Yan panelde ülke haber akışı** · açık · Ülke kartında "Son değişiklikler": bu ülkenin pasaportunu ve bu
+- **R2 · Yan panelde ülke haber akışı** · sürüyor · Ülke kartında "Son değişiklikler": bu ülkenin pasaportunu ve bu
   ülkeye girişi etkileyen vize değişiklikleri (`data/changelog.js`), bu ülke hakkında yayımlanan güvenlik uyarısı
   değişiklikleri (R3) ve haberler (`data/visa-news.js`, şu an yalnızca 3 madde; kaynakları genişlet).
   Her maddede tarih ve kaynak bağlantısı. Seçili pasaporta göre süzülür.
-- **A2 · Ortaklık metni** · bitti (bkz. log) · iVisa kutusundaki "devlet onaylı, 5–30 $" ifadesi kaynaksızdı; kaldırıldı.
+- **A2 · Ortaklık metni** · bitti ec6d36259 · iVisa kutusundaki "devlet onaylı, 5–30 $" ifadesi kaynaksızdı; kaldırıldı.
   Ortak bağlantılar "partner link" olarak etiketlenir.
 
 ### Aşama 2: takip ve bildirim (sahibinden bir adım bekler)

@@ -904,6 +904,7 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
       {!groupActive && <TripNotesGroup passport={passport} destIso2={iso2} />}
       {!groupActive && <VisaFeeBox passport={passport} destIso2={iso2} status={r.status} />}
       {!groupActive && <NewsBox passport={passport} destIso2={iso2} />}
+      {!groupActive && <RecentChanges passport={passport} destIso2={iso2} />}
 
       <AffiliatePartners status={r.status} iso2={iso2} />
       <AlertsCTA iso2={iso2} destName={window.countryName(iso2)} />
@@ -1611,6 +1612,89 @@ function PassportNewsFeed({ passport }) {
     </div>
   );
 }
+
+// "Recent changes" in the destination card: dataset visa changes into this
+// country (the chosen passport first), changes this country's own citizens got
+// elsewhere, and advisory level changes. Everything comes from the daily
+// snapshots (CHANGELOG, ADVISORY_CHANGES); nothing is written by hand.
+const RC_DAYS = 90;
+const RC_MAX = 6;
+const RC_ISSUERS = { uk: "UK", us: "US", ca: "Canada" };
+
+function recentChangesFor(passport, destIso2) {
+  const cutoff = Date.now() - RC_DAYS * 86400_000;
+  const recent = (d) => new Date(d + "T00:00:00").getTime() >= cutoff;
+  const out = [];
+  for (const c of (window.CHANGELOG || [])) {
+    if (!recent(c.date) || !c.affects) continue;
+    const ps = c.affects.passports || [];
+    if (c.affects.dest === destIso2) {
+      out.push({ kind: "into", date: c.date, c, mine: !!passport && ps.includes(passport) });
+    } else if (ps.includes(destIso2)) {
+      out.push({ kind: "from", date: c.date, c, mine: false });
+    }
+  }
+  for (const a of (window.ADVISORY_CHANGES || [])) {
+    if (a.dest === destIso2 && a.from != null && a.to != null && recent(a.date)) out.push({ kind: "adv", date: a.date, a, mine: false });
+  }
+  out.sort((x, y) => (y.mine - x.mine) || y.date.localeCompare(x.date));
+  return out.slice(0, RC_MAX);
+}
+
+function RecentChangeRow({ it, destIso2 }) {
+  let text;
+  if (it.kind === "adv") {
+    text = tr("recent.advisory", "{issuer} advisory level {from} → {to}", { issuer: RC_ISSUERS[it.a.issuer] || it.a.issuer, from: it.a.from, to: it.a.to });
+  } else {
+    const c = it.c;
+    const arrow = `${statusLabel(c.statusFrom)} → ${statusLabel(c.statusTo)}`;
+    if (it.kind === "into") {
+      const who = (c.affects.passports || []).map(p => window.countryName(p)).join(", ");
+      text = tr("recent.into", "{who} citizens: {change}", { who, change: arrow });
+    } else {
+      text = tr("recent.from", "{who} citizens: {dest} {change}", { who: window.countryName(destIso2), dest: window.countryName(c.affects.dest), change: arrow });
+    }
+  }
+  return (
+    <div className="feed-item" style={{ padding: "6px 0" }}>
+      <div className="feed-meta">
+        <time dateTime={it.date}>{fmtDay(it.date, true)}</time>
+        {it.mine && <><span>·</span><strong>{tr("recent.yours", "Your passport")}</strong></>}
+      </div>
+      <div className="feed-title" style={{ fontWeight: 500 }}>{text}</div>
+      {it.kind !== "adv" && <div className="p-fine">{tr("recent.source", "Source: Wikipedia visa requirement articles, daily snapshot")}</div>}
+    </div>
+  );
+}
+
+function RecentChanges({ passport, destIso2 }) {
+  useLangTick();
+  const list = useMemo(() => recentChangesFor(passport, destIso2), [passport, destIso2]);
+  if (list.length === 0) return null;
+  const head = list.slice(0, 3), rest = list.slice(3);
+  const lang = window.ATLAS_LANG === "tr" ? "/tr" : "";
+  const cc = String(destIso2).toLowerCase();
+  return (
+    <div style={{ marginBottom: 10 }}>
+      <div className="p-hint" style={{ margin: "0 0 6px", fontWeight: 600, color: "var(--ink-2)" }}>{tr("recent.title", "Recent changes")}</div>
+      <div className="feed">
+        {head.map((it, i) => <RecentChangeRow key={i} it={it} destIso2={destIso2} />)}
+        {rest.length > 0 && (
+          <details>
+            <summary className="p-fine" style={{ cursor: "pointer" }}>{tr("changelog.more", "+ {n} more changes", { n: rest.length })}</summary>
+            {rest.map((it, i) => <RecentChangeRow key={i} it={it} destIso2={destIso2} />)}
+          </details>
+        )}
+      </div>
+      <div className="p-fine" style={{ marginTop: 4 }}>
+        <a href={`${lang}/visa/${cc}/`}>{tr("recent.all", "See all changes for {name}", { name: window.countryName(destIso2) })}</a>
+        {" · "}
+        <a href={`${lang}/reports/`}>{tr("recent.report", "Monthly report")}</a>
+      </div>
+    </div>
+  );
+}
+
 
 function NewsBox({ passport, destIso2 }) {
   const list = useMemo(() => {

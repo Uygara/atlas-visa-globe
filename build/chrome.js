@@ -18,9 +18,14 @@ var _React = React,
   useLayoutEffectC = _React.useLayoutEffect,
   useCallbackC = _React.useCallback;
 function tr(key, fallback, vars) {
-  if (!window.t) return fallback;
+  var fill = function fill(s) {
+    return vars ? Object.keys(vars).reduce(function (acc, k) {
+      return acc.split("{" + k + "}").join(String(vars[k]));
+    }, s) : s;
+  };
+  if (!window.t) return fill(fallback);
   var v = window.t(key, vars);
-  return v === key ? fallback : v;
+  return v === key ? fill(fallback) : v;
 }
 function useLangTick() {
   var _useStateC = useStateC(0),

@@ -422,6 +422,14 @@ const T = {
     // Changelog
     "changelog.show_less":       "Show less",
     "changelog.more":            "+ {n} more changes",
+    "recent.title": "Recent changes",
+    "recent.yours": "Your passport",
+    "recent.into": "{who} citizens: {change}",
+    "recent.from": "{who} citizens: {dest} {change}",
+    "recent.advisory": "{issuer} advisory level {from} → {to}",
+    "recent.source": "Source: Wikipedia visa requirement articles, daily snapshot",
+    "recent.all": "See all changes for {name}",
+    "recent.report": "Monthly report",
 
     // Zoom controls
     "zoom.in":                   "Zoom in",
@@ -842,6 +850,14 @@ const T = {
 
     "changelog.show_less":       "Daha az göster",
     "changelog.more":            "+ {n} değişiklik daha",
+    "recent.title": "Son değişiklikler",
+    "recent.yours": "Senin pasaportun",
+    "recent.into": "{who} vatandaşları: {change}",
+    "recent.from": "{who} vatandaşları: {dest} {change}",
+    "recent.advisory": "{issuer} seyahat uyarısı seviye {from} → {to}",
+    "recent.source": "Kaynak: Wikipedia vize koşulları sayfaları, günlük kayıt",
+    "recent.all": "{name} için tüm değişiklikler",
+    "recent.report": "Aylık rapor",
 
     "zoom.in":                   "Yakınlaştır",
     "zoom.out":                  "Uzaklaştır",

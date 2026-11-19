@@ -47,6 +47,11 @@ jobs:
         continue-on-error: true
         run: node fetch-advisories.js
 
+      - name: Advisory level changes for the news panel (last 30 days of snapshots)
+        working-directory: backend
+        continue-on-error: true
+        run: node advisory-changes.js
+
       - name: Refresh diplomatic / official-passport maps (Wikipedia, ~400 pages)
         # Reads the "Non-ordinary passports" sections of every visa-policy and
         # visa-requirements page. Only what a page names explicitly is emitted, so
@@ -76,6 +81,9 @@ jobs:
         run: node scripts/generate-reports.js
         env:
           SITE_URL: ${{ vars.SITE_URL }}
+
+      - name: Export open dataset
+        run: node scripts/export-data.js
 
       - name: Regenerate SEO pages
         run: node scripts/generate-seo.js
@@ -123,7 +131,7 @@ jobs:
         run: |
           git config user.name "atlas-bot"
           git config user.email "bot@users.noreply.github.com"
-          git add data/passports.js data/passports-snapshot.json data/changelog.js data/visa-news.js data/transit-visa-data.js data/passport-variants-data.js data/passport-variants-gb.js data/travel-advisories.js data/advisory-history/ data/airports.js passport/ tr/passport/ visa/ tr/visa/ reports/ tr/reports/ sitemap.xml robots.txt
+          git add data/passports.js data/passports-snapshot.json data/changelog.js data/visa-news.js data/transit-visa-data.js data/passport-variants-data.js data/passport-variants-gb.js data/travel-advisories.js data/advisory-history/ data/advisory-changes.js data/airports.js passport/ tr/passport/ visa/ tr/visa/ reports/ tr/reports/ open-data/ sitemap.xml robots.txt
           if git diff --staged --quiet; then
             echo "No changes."
           else
