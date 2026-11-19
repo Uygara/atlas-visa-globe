@@ -336,19 +336,13 @@ function CountryPicker(_ref) {
   }, isPassport ? React.createElement("button", {
     type: "button",
     className: "pp-card",
-    style: {
-      paddingBottom: 2
-    },
     onClick: function onClick() {
       return setOpen(function (o) {
         return !o;
       });
     },
     "aria-expanded": open
-  }, React.createElement("span", {
-    className: "pp-doc",
-    "aria-hidden": "true"
-  }, "Passport / Pasaport / Passeport", React.createElement(IconCaret, null)), c ? React.createElement("span", {
+  }, c ? React.createElement("span", {
     className: "pp-main"
   }, React.createElement("span", {
     className: "flag pp-flag",
@@ -363,17 +357,14 @@ function CountryPicker(_ref) {
     style: {
       display: "block"
     }
-  }, window.countryName(value)), React.createElement("span", {
-    className: "pp-meta",
-    style: {
-      display: "block"
-    }
-  }, value))) : React.createElement("span", {
+  }, window.countryName(value))), React.createElement(IconCaret, null)) : React.createElement("span", {
+    className: "pp-main"
+  }, React.createElement("span", {
     className: "pp-empty",
     style: {
-      display: "block"
+      flex: 1
     }
-  }, placeholder)) : React.createElement("button", {
+  }, placeholder), React.createElement(IconCaret, null))) : React.createElement("button", {
     type: "button",
     className: "row-btn",
     onClick: function onClick() {

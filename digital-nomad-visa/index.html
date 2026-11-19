@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Digital Nomad Visas: 38 countries compared (2026) · travelnow.info</title>
+<title>Digital nomad visas: 38 countries compared (2026) · travelnow.info</title>
 <meta name="description" content="Every digital nomad visa in 2026: income requirements, fees, duration, tax breaks, and family eligibility. Sortable, daily-refreshed.">
 <link rel="canonical" href="https://travelnow.info/digital-nomad-visa/">
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
 <link rel="icon" type="image/png" href="/assets/favicon.png">
-<meta property="og:title" content="Digital Nomad Visas: 38 countries compared (2026)">
+<meta property="og:title" content="Digital nomad visas: 38 countries compared (2026)">
 <meta property="og:description" content="Income requirements, fees, duration, tax breaks. The full picture in one table.">
 <meta property="og:image" content="https://travelnow.info/assets/og.png">
 <meta property="og:url" content="https://travelnow.info/digital-nomad-visa/">
@@ -19,7 +19,7 @@
 {
   "@context": "https://schema.org",
   "@type": "Article",
-  "headline": "Digital Nomad Visas: 38 countries compared (2026)",
+  "headline": "Digital nomad visas: 38 countries compared (2026)",
   "description": "Income requirements, fees, duration, tax breaks for every active digital nomad visa programme.",
   "datePublished": "2026-05-22",
   "dateModified": "2026-05-22",
@@ -95,7 +95,7 @@
 <div class="doc-band" aria-hidden="true"></div>
 <!-- /chrome:masthead -->
 <div class="wrap">
-  <h1>Digital Nomad Visas: 38 countries compared</h1>
+  <h1>Digital nomad visas: 38 countries compared</h1>
   <p class="sub">Every active digital-nomad / remote-worker visa programme in 2026, with the numbers that actually matter: monthly income floor, application fee, first-grant duration, tax break, and whether you can bring family.</p>
   <div class="meta">Reviewed on 22 May 2026. Sources are linked in each row.</div>
 
@@ -205,7 +205,7 @@
     tbody.innerHTML = filtered.map(d => `
       <tr>
         <td><span class="flag">${flagFor(d.iso2)}</span> <strong>${d.name}</strong>
-            <div style="font-size:11px;color:var(--fg-mute);font-family:ui-monospace,monospace;">${REGION_LABEL[REGION_BY_ISO[d.iso2]] || ""}</div></td>
+            <div style="font-size:var(--fs-xs);color:var(--fg-mute);">${REGION_LABEL[REGION_BY_ISO[d.iso2]] || ""}</div></td>
         <td>${escapeHtml(d.program)}<div class="src-link">
             <a href="${d.source}" target="_blank" rel="noopener nofollow">Official source ↗</a></div></td>
         <td style="text-align:right;">${formatIncome(d.income)}</td>

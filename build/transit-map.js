@@ -190,19 +190,13 @@ function TransitPicker(_ref) {
   }, React.createElement("button", {
     type: "button",
     className: "pp-card",
-    style: {
-      paddingBottom: 2
-    },
     onClick: function onClick() {
       return setOpen(function (o) {
         return !o;
       });
     },
     "aria-expanded": open
-  }, React.createElement("span", {
-    className: "pp-doc",
-    "aria-hidden": "true"
-  }, "Passport / Pasaport / Passeport", React.createElement(IconCaret, null)), country ? React.createElement("span", {
+  }, country ? React.createElement("span", {
     className: "pp-main"
   }, React.createElement("span", {
     className: "flag pp-flag",
@@ -217,17 +211,14 @@ function TransitPicker(_ref) {
     style: {
       display: "block"
     }
-  }, window.countryName(value)), React.createElement("span", {
-    className: "pp-meta",
-    style: {
-      display: "block"
-    }
-  }, value))) : React.createElement("span", {
+  }, window.countryName(value))), React.createElement(IconCaret, null)) : React.createElement("span", {
+    className: "pp-main"
+  }, React.createElement("span", {
     className: "pp-empty",
     style: {
-      display: "block"
+      flex: 1
     }
-  }, window.t("picker.select_passport"))), open && React.createElement("div", {
+  }, window.t("picker.select_passport")), React.createElement(IconCaret, null))), open && React.createElement("div", {
     className: "dd",
     style: {
       position: "absolute",
@@ -606,7 +597,7 @@ function TransitHubList(_ref5) {
     }), React.createElement("span", {
       className: "lg-n",
       style: {
-        fontSize: 11.5,
+        fontSize: 12,
         color: "var(--ink-2)",
         textAlign: "end"
       }

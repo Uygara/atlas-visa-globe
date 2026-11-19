@@ -867,7 +867,7 @@ ${ads.loader}
 <script type="application/ld+json">${JSON.stringify(crumbSchema)}</script>
 <script type="application/ld+json">${JSON.stringify(faqSchema)}</script>
 ${headAssets({ enPath, lang })}
-<style>.wrap{max-width:820px}.chk label{display:block;font-weight:650;margin-bottom:8px}.chk select{width:100%;max-width:420px}.chk-out{margin:12px 0 0;font-size:var(--fs-lg)}.chk-map{margin:14px 0 0}details.vl{margin:0 0 10px}details.vl .n{margin-inline-start:8px;font-family:var(--font-mono);font-size:var(--fs-xs);font-weight:500;color:var(--ink-3)}.before ul{padding-inline-start:20px}.before li{margin:0 0 10px;max-width:var(--measure)}.before .fees{columns:2 220px;margin:6px 0 0}.before .fees li{margin:0 0 4px}.aff p{max-width:var(--measure)}.aff .ad-label{margin:8px 0 0;font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--ink-3)}</style>
+<style>.wrap{max-width:820px}.checker{padding:20px 22px}.checker label{display:block;font-weight:650;margin-bottom:10px}.checker select{width:100%;max-width:420px}.chk-out{margin:12px 0 0;font-size:var(--fs-lg)}.chk-map{margin:14px 0 0}details.vl{margin:0 0 10px}details.vl .n{margin-inline-start:8px;font-family:var(--font-mono);font-size:var(--fs-xs);font-weight:500;color:var(--ink-3)}.before ul{padding-inline-start:20px}.before li{margin:0 0 10px;max-width:var(--measure)}.before .fees{columns:2 220px;margin:6px 0 0}.before .fees li{margin:0 0 4px}.aff p{max-width:var(--measure)}.aff .ad-label{margin:8px 0 0;font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--ink-3)}</style>
 </head>
 <body>
 ${masthead({ path: enPath, i18n: false, lang })}
@@ -877,7 +877,7 @@ ${masthead({ path: enPath, i18n: false, lang })}
   <h1><span class="flag" aria-hidden="true">${destCountry.flag}</span> ${escapeHtml(V.h1(label))}</h1>
   <p class="subtitle">${escapeHtml(V.subtitle(n, fmtDate(snap, lang)))}</p>
 
-  <section class="card chk" aria-label="${escapeHtml(V.checkHead)}">
+  <section class="card checker" aria-label="${escapeHtml(V.checkHead)}">
     <label for="chk-sel">${escapeHtml(V.checkHead)}</label>
     <select id="chk-sel"><option value="">${escapeHtml(V.choose)}</option>${options}</select>
     <p class="chk-out" id="chk-out" aria-live="polite" hidden></p>

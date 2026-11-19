@@ -179,7 +179,7 @@ const T = {
     "detail.israel_relaxed":       "Israel-stamp warning: historical refusal, verify before flying",
     "detail.israel_normalized":    "Note: Israel stamps no longer block entry to this country",
 
-    "detail.loi_required":         "Letter of Invitation (LOI) required",
+    "detail.loi_required":         "Letter of invitation (LOI) required",
     "detail.loi_cost":             "Typical cost: {cost}",
     "detail.trip_notes":           "Important notes for this trip",
 
@@ -267,7 +267,7 @@ const T = {
     "digest.this_week_with_yours": "{total} visa policy update(s) this week: {mine} affect your passport.",
     "digest.this_week_total":      "{total} visa policy update(s) this week worldwide.",
 
-    "tmap.title":                "Transit Map",
+    "tmap.title":                "Transit map",
     "tmap.subtitle":             "Where can you connect through without a transit visa?",
     "tmap.pick":                 "Your passport",
     "tmap.pick_prompt":          "Pick your passport to colour the map",
@@ -301,7 +301,7 @@ const T = {
     "tmap.leg_exempt": "A valid {country} visa would exempt you here. Your trip touches {country}.",
     "tmap.leg_open": "Open {country} on the map",
 
-    "safety.title":              "Travel Safety Map",
+    "safety.title":              "Travel safety map",
     "safety.subtitle":           "Official travel advisories (war, crime, terrorism, unrest), country by country and region by region.",
     "safety.draft":              "Beta",
     "safety.legend":             "Advisory level",
@@ -613,7 +613,7 @@ const T = {
     "detail.israel_relaxed":       "İsrail damga uyarısı: geçmişte ret, uçmadan önce doğrula",
     "detail.israel_normalized":    "Not: İsrail damgası artık bu ülkeye girişi engellemiyor",
 
-    "detail.loi_required":         "Davet Mektubu (LOI) zorunlu",
+    "detail.loi_required":         "Davet mektubu (LOI) zorunlu",
     "detail.loi_cost":             "Tipik maliyet: {cost}",
     "detail.trip_notes":           "Bu yolculuk için önemli notlar",
 
@@ -700,7 +700,7 @@ const T = {
     "digest.this_week_with_yours": "Bu hafta {total} vize politikası değişti: {mine} tanesi pasaportunu etkiliyor.",
     "digest.this_week_total":      "Bu hafta dünya genelinde {total} vize politikası değişti.",
 
-    "tmap.title":                "Transit Haritası",
+    "tmap.title":                "Transit haritası",
     "tmap.subtitle":             "Hangi ülkelerden transit vizesiz aktarma yapabilirsin?",
     "tmap.pick":                 "Pasaportun",
     "tmap.pick_prompt":          "Haritayı boyamak için pasaportunu seç",
@@ -734,7 +734,7 @@ const T = {
     "tmap.leg_exempt": "Geçerli bir {country} vizesi seni burada muaf tutar. Seyahatin {country} ülkesine değiyor.",
     "tmap.leg_open": "{country} ülkesini haritada aç",
 
-    "safety.title":              "Seyahat Güvenliği Haritası",
+    "safety.title":              "Seyahat güvenliği haritası",
     "safety.subtitle":           "Resmî seyahat uyarıları (savaş, suç, terör, huzursuzluk), ülke ülke ve bölge bölge.",
     "safety.draft":              "Beta",
     "safety.legend":             "Uyarı seviyesi",

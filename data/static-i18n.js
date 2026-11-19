@@ -58,7 +58,7 @@
 
     // Schengen calculator
     "Schengen 90/180 calculator":          { tr:"Schengen 90/180 hesaplayıcı", es:"Calculadora Schengen 90/180", de:"Schengen 90/180-Rechner", fr:"Calculateur Schengen 90/180", ar:"حاسبة شنغن 90/180" },
-    "Schengen 90/180 Calculator":          { tr:"Schengen 90/180 Hesaplayıcı", es:"Calculadora Schengen 90/180", de:"Schengen 90/180-Rechner", fr:"Calculateur Schengen 90/180", ar:"حاسبة شنغن 90/180" },
+    "Schengen 90/180 calculator":          { tr:"Schengen 90/180 hesaplayıcı", es:"Calculadora Schengen 90/180", de:"Schengen 90/180-Rechner", fr:"Calculateur Schengen 90/180", ar:"حاسبة شنغن 90/180" },
     "Add a trip":                          { tr:"Seyahat ekle", es:"Añadir un viaje", de:"Reise hinzufügen", fr:"Ajouter un voyage", ar:"إضافة رحلة" },
     "+ Add trip":                          { tr:"+ Seyahat ekle", es:"+ Añadir viaje", de:"+ Reise hinzufügen", fr:"+ Ajouter un voyage", ar:"+ إضافة رحلة" },
     "Entry date":                          { tr:"Giriş tarihi", es:"Fecha de entrada", de:"Einreisedatum", fr:"Date d'entrée", ar:"تاريخ الدخول" },
@@ -104,9 +104,9 @@
     "Most consulates issue a single-entry or short MEV (6 months) for first-time applicants. Use it within the validity, exit on time, and you'll be in the cascade for your next application.": { tr:"Çoğu konsolosluk ilk kez başvuranlara tek girişli veya kısa MEV (6 ay) verir. Geçerlilik içinde kullan, zamanında çık; bir sonraki başvurunda kademeye girmiş olursun.", es:"La mayoría de los consulados emiten un visado de entrada única o un MEV corto (6 meses) a los solicitantes primerizos. Úsalo dentro de la validez, sal a tiempo y entrarás en la cascada para tu próxima solicitud.", de:"Die meisten Konsulate stellen Erstantragstellern ein Einzeleinreise- oder kurzes MEV (6 Monate) aus. Nutze es innerhalb der Gültigkeit, reise pünktlich aus, und du bist bei deinem nächsten Antrag in der Kaskade.", fr:"La plupart des consulats délivrent aux primo-demandeurs un visa à entrée unique ou un MEV court (6 mois). Utilise-le pendant sa validité, sors à temps, et tu seras dans la cascade pour ta prochaine demande.", ar:"تُصدر معظم القنصليات للمتقدّمين لأول مرة تأشيرة دخول واحد أو MEV قصير (6 أشهر). استخدمها ضمن صلاحيتها، وغادر في الوقت المحدد، وستدخل التدرّج لطلبك التالي." },
 
     // ── Tool-page page titles ──
-    "Digital Nomad Visas: 38 countries compared": { tr:"Dijital Göçebe Vizeleri: 38 ülke karşılaştırması", es:"Visados de nómada digital: 38 países comparados", de:"Digital-Nomad-Visa: 38 Länder im Vergleich", fr:"Visas nomades numériques: 38 pays comparés", ar:"تأشيرات الرحّل الرقميين: مقارنة 38 دولة" },
-    "Citizenship by Investment (2026)": { tr:"Yatırımla Vatandaşlık (2026)", es:"Ciudadanía por inversión (2026)", de:"Staatsbürgerschaft durch Investition (2026)", fr:"Citoyenneté par investissement (2026)", ar:"الجنسية عن طريق الاستثمار (2026)" },
-    "ESTA Disqualifier Checker": { tr:"ESTA Engel Kontrolü", es:"Verificador de descalificación ESTA", de:"ESTA-Ausschluss-Prüfer", fr:"Vérificateur d'inéligibilité ESTA", ar:"فاحص موانع ESTA" },
+    "Digital nomad visas: 38 countries compared": { tr:"Dijital göçebe vizeleri: 38 ülke karşılaştırması", es:"Visados de nómada digital: 38 países comparados", de:"Digital-Nomad-Visa: 38 Länder im Vergleich", fr:"Visas nomades numériques: 38 pays comparés", ar:"تأشيرات الرحّل الرقميين: مقارنة 38 دولة" },
+    "Citizenship by investment (2026)": { tr:"Yatırımla vatandaşlık (2026)", es:"Ciudadanía por inversión (2026)", de:"Staatsbürgerschaft durch Investition (2026)", fr:"Citoyenneté par investissement (2026)", ar:"الجنسية عن طريق الاستثمار (2026)" },
+    "ESTA disqualifier checker": { tr:"ESTA engel kontrolü", es:"Verificador de descalificación ESTA", de:"ESTA-Ausschluss-Prüfer", fr:"Vérificateur d'inéligibilité ESTA", ar:"فاحص موانع ESTA" },
     "Check your ESTA eligibility": { tr:"ESTA uygunluğunu kontrol et", es:"Comprueba tu elegibilidad para ESTA", de:"Prüfe deine ESTA-Berechtigung", fr:"Vérifie ton éligibilité ESTA", ar:"تحقق من أهليتك لـ ESTA" },
     "The 41 VWP countries": { tr:"41 VWP ülkesi", es:"Los 41 países del VWP", de:"Die 41 VWP-Länder", fr:"Les 41 pays du VWP", ar:"دول برنامج الإعفاء الـ41" },
     "What if I'm disqualified?": { tr:"Engellenirsem ne olur?", es:"¿Y si quedo descalificado?", de:"Was, wenn ich ausgeschlossen bin?", fr:"Et si je suis inéligible ?", ar:"ماذا لو كنت غير مؤهل؟" },
@@ -117,11 +117,11 @@
     "What's NOT covered by ETIAS": { tr:"ETIAS'ın KAPSAMADIĞI durumlar", es:"Lo que ETIAS NO cubre", de:"Was ETIAS NICHT abdeckt", fr:"Ce que l'ETIAS NE couvre PAS", ar:"ما لا يغطيه ETIAS" },
     "How to apply (when launched)": { tr:"Nasıl başvurulur (başladığında)", es:"Cómo solicitar (cuando se lance)", de:"Wie man sich bewirbt (nach Start)", fr:"Comment postuler (au lancement)", ar:"كيفية التقديم (عند الإطلاق)" },
     "Common questions": { tr:"Sık sorulan sorular", es:"Preguntas frecuentes", de:"Häufige Fragen", fr:"Questions fréquentes", ar:"أسئلة شائعة" },
-    "Passport Validity Checker": { tr:"Pasaport Geçerlilik Kontrolü", es:"Verificador de validez del pasaporte", de:"Reisepass-Gültigkeitsprüfer", fr:"Vérificateur de validité du passeport", ar:"فاحص صلاحية جواز السفر" },
+    "Passport validity checker": { tr:"Pasaport geçerlilik kontrolü", es:"Verificador de validez del pasaporte", de:"Reisepass-Gültigkeitsprüfer", fr:"Vérificateur de validité du passeport", ar:"فاحص صلاحية جواز السفر" },
     "Check your passport against a destination": { tr:"Pasaportunu bir destinasyona göre kontrol et", es:"Comprueba tu pasaporte para un destino", de:"Prüfe deinen Pass für ein Reiseziel", fr:"Vérifie ton passeport pour une destination", ar:"تحقق من جوازك مقابل وجهة" },
     "The three rule tiers": { tr:"Üç kural kademesi", es:"Los tres niveles de reglas", de:"Die drei Regelstufen", fr:"Les trois niveaux de règles", ar:"المستويات الثلاثة للقواعد" },
     "Full list by destination": { tr:"Destinasyona göre tam liste", es:"Lista completa por destino", de:"Vollständige Liste nach Reiseziel", fr:"Liste complète par destination", ar:"القائمة الكاملة حسب الوجهة" },
-    "Visa Shortcuts: easier entry with the visas you already hold": { tr:"Vize Kısayolları: elindeki vizelerle daha kolay giriş", es:"Atajos de visado: entrada más fácil con los visados que ya tienes", de:"Visa-Abkürzungen: leichtere Einreise mit vorhandenen Visa", fr:"Raccourcis de visa: entrée plus facile avec vos visas actuels", ar:"اختصارات التأشيرة: دخول أسهل بتأشيراتك الحالية" },
+    "Visa shortcuts: easier entry with the visas you already hold": { tr:"Vize kısayolları: elindeki vizelerle daha kolay giriş", es:"Atajos de visado: entrada más fácil con los visados que ya tienes", de:"Visa-Abkürzungen: leichtere Einreise mit vorhandenen Visa", fr:"Raccourcis de visa: entrée plus facile avec vos visas actuels", ar:"اختصارات التأشيرة: دخول أسهل بتأشيراتك الحالية" },
 
     // ── Tool-page lead paragraphs ──
     "Every active digital-nomad / remote-worker visa programme in 2026, with the numbers that actually matter: monthly income floor, application fee, first-grant duration, tax break, and whether you can bring family.": { tr:"2026'daki tüm aktif dijital-göçebe / uzaktan-çalışan vize programları, gerçekten önemli rakamlarla: aylık asgari gelir, başvuru ücreti, ilk verilen süre, vergi avantajı ve aile getirebilme durumu.", es:"Todos los programas activos de visado de nómada digital / trabajo remoto en 2026, con las cifras que importan: ingreso mensual mínimo, tasa de solicitud, duración de la primera concesión, ventaja fiscal y si puedes traer a la familia.", de:"Alle aktiven Digital-Nomad-/Remote-Work-Visa-Programme 2026, mit den Zahlen, die zählen: monatliches Mindesteinkommen, Antragsgebühr, Erstbewilligungsdauer, Steuervorteil und ob die Familie mitkommen kann.", fr:"Tous les programmes de visa nomade numérique / télétravail actifs en 2026, avec les chiffres qui comptent : revenu mensuel minimum, frais de dossier, durée du premier octroi, avantage fiscal et possibilité d'amener la famille.", ar:"كل برامج تأشيرات الرحّل الرقميين / العمل عن بُعد الفعّالة في 2026، مع الأرقام المهمة: الحد الأدنى للدخل الشهري، رسوم الطلب، مدة المنح الأولى، الميزة الضريبية، وإمكانية اصطحاب العائلة." },
@@ -333,7 +333,7 @@
     "What travelnow.info is not":                   { tr:"travelnow.info ne değildir", es:"Lo que travelnow.info no es", de:"Was travelnow.info nicht ist", fr:"Ce qu'travelnow.info n'est pas", ar:"ما ليس عليه أطلس" },
     "Why it's free":                       { tr:"Neden ücretsiz", es:"Por qué es gratis", de:"Warum es kostenlos ist", fr:"Pourquoi c'est gratuit", ar:"لماذا هو مجاني" },
     "Legal":                               { tr:"Yasal", es:"Legal", de:"Rechtliches", fr:"Mentions légales", ar:"قانوني" },
-    "Privacy Policy":                      { tr:"Gizlilik Politikası", es:"Política de privacidad", de:"Datenschutzerklärung", fr:"Politique de confidentialité", ar:"سياسة الخصوصية" },
+    "Privacy policy":                      { tr:"Gizlilik politikası", es:"Política de privacidad", de:"Datenschutzerklärung", fr:"Politique de confidentialité", ar:"سياسة الخصوصية" },
 
     // Privacy headings
     "What this site is":                   { tr:"Bu site nedir", es:"Qué es este sitio", de:"Was diese Seite ist", fr:"Qu'est-ce que ce site", ar:"ما هذا الموقع" },
@@ -366,8 +366,8 @@
     "Application reminders":               { tr:"Başvuru hatırlatmaları", es:"Recordatorios de solicitud", de:"Antrags-Erinnerungen", fr:"Rappels de demande", ar:"تذكيرات التقديم" },
 
     // Digital nomad
-    "Digital Nomad Visas: 38 countries compared":
-      { tr:"Dijital Göçebe Vizeleri: 38 ülke karşılaştırması", es:"Visas para nómadas digitales: 38 países comparados", de:"Digital-Nomad-Visa: 38 Länder im Vergleich", fr:"Visas nomades numériques: 38 pays comparés", ar:"تأشيرات الرحّالة الرقميين: مقارنة 38 دولة" },
+    "Digital nomad visas: 38 countries compared":
+      { tr:"Dijital göçebe vizeleri: 38 ülke karşılaştırması", es:"Visas para nómadas digitales: 38 países comparados", de:"Digital-Nomad-Visa: 38 Länder im Vergleich", fr:"Visas nomades numériques: 38 pays comparés", ar:"تأشيرات الرحّالة الرقميين: مقارنة 38 دولة" },
     "Region":                              { tr:"Bölge", es:"Región", de:"Region", fr:"Région", ar:"المنطقة" },
     "travelnow.info link":                          { tr:"travelnow.info bağlantısı", es:"Enlace travelnow.info", de:"travelnow.info-Link", fr:"Lien travelnow.info", ar:"رابط أطلس" },
     "Track how many of your 90 short-stay days you've used in the last 180. Add past trips below, plan a future one to see if it fits.":
@@ -508,7 +508,7 @@
         ar:"رأيت رقمًا قديمًا أو برنامجًا مفقودًا؟ افتح issue على:" },
 
     // ─── Transit Visa page ───────────────────────────────────────────────
-    "Airport Transit Visa Checker": { tr:"Havalimanı Transit Vize Kontrolü", es:"Comprobador de visa de tránsito aeroportuario", de:"Flughafen-Transit-Visa-Checker", fr:"Vérificateur de visa de transit aéroportuaire", ar:"فاحص تأشيرة العبور بالمطار" },
+    "Airport transit visa checker": { tr:"Havalimanı transit vize kontrolü", es:"Comprobador de visa de tránsito aeroportuario", de:"Flughafen-Transit-Visa-Checker", fr:"Vérificateur de visa de transit aéroportuaire", ar:"فاحص تأشيرة العبور بالمطار" },
     "Your trip": { tr:"Yolculuğunuz", es:"Tu viaje", de:"Deine Reise", fr:"Ton voyage", ar:"رحلتك" },
     "Transit through": { tr:"Aktarma yapılan yer", es:"Tránsito por", de:"Transit durch", fr:"Transit via", ar:"العبور عبر" },
     "Do you also hold any of these? (visa or residence permit)": { tr:"Aşağıdakilerden birine sahip misin? (vize veya oturum izni)", es:"¿También tienes alguno de estos? (visa o residencia)", de:"Hast du auch eines davon? (Visum oder Aufenthaltstitel)", fr:"Détiens-tu aussi l'un de ces visas / titres ?", ar:"هل لديك أي من هذه أيضًا؟ (تأشيرة أو إقامة)" },
@@ -539,7 +539,7 @@
     "Exempt: EU / EEA / Swiss citizen": { tr:"Muaf: AB / EEA / İsviçre vatandaşı", es:"Exento: ciudadano UE / EEE / suizo", de:"Befreit: EU / EWR / Schweizer Bürger", fr:"Exempté: citoyen UE / EEE / suisse", ar:"معفى: مواطن الاتحاد الأوروبي / EEA / السويسري" },
 
     // ─── Passport Validity page ──────────────────────────────────────────
-    "Passport Validity Checker": { tr:"Pasaport Geçerlilik Kontrolü", es:"Comprobador de validez del pasaporte", de:"Pass-Gültigkeitsprüfer", fr:"Vérificateur de validité du passeport", ar:"فاحص صلاحية جواز السفر" },
+    "Passport validity checker": { tr:"Pasaport geçerlilik kontrolü", es:"Comprobador de validez del pasaporte", de:"Pass-Gültigkeitsprüfer", fr:"Vérificateur de validité du passeport", ar:"فاحص صلاحية جواز السفر" },
     "Check your passport against a destination": { tr:"Pasaportunu bir destinasyona karşı kontrol et", es:"Comprueba tu pasaporte contra un destino", de:"Pass gegen ein Ziel prüfen", fr:"Vérifie ton passeport contre une destination", ar:"تحقق من جواز سفرك مقابل وجهة" },
     "Destination": { tr:"Destinasyon", es:"Destino", de:"Ziel", fr:"Destination", ar:"الوجهة" },
     "Your passport expiry date": { tr:"Pasaport son kullanma tarihi", es:"Fecha de caducidad del pasaporte", de:"Pass-Ablaufdatum", fr:"Date d'expiration du passeport", ar:"تاريخ انتهاء جواز السفر" },
@@ -552,13 +552,13 @@
     "Rule": { tr:"Kural", es:"Regla", de:"Regel", fr:"Règle", ar:"قاعدة" },
 
     // ─── Visa Shortcuts page ─────────────────────────────────────────────
-    "Visa Shortcuts: easier entry with the visas you already hold": { tr:"Vize Kestirmeleri: elindeki vizelerle daha kolay giriş", es:"Atajos de visa: entrada más fácil con visas que ya tienes", de:"Visa-Abkürzungen: leichtere Einreise mit bereits vorhandenen Visa", fr:"Raccourcis visa: entrée facilitée avec les visas que tu détiens", ar:"اختصارات التأشيرة: دخول أسهل بتأشيراتك الحالية" },
+    "Visa shortcuts: easier entry with the visas you already hold": { tr:"Vize kestirmeleri: elindeki vizelerle daha kolay giriş", es:"Atajos de visa: entrada más fácil con visas que ya tienes", de:"Visa-Abkürzungen: leichtere Einreise mit bereits vorhandenen Visa", fr:"Raccourcis visa: entrée facilitée avec les visas que tu détiens", ar:"اختصارات التأشيرة: دخول أسهل بتأشيراتك الحالية" },
     "Show shortcuts for": { tr:"Kestirmeleri göster", es:"Mostrar atajos para", de:"Abkürzungen zeigen für", fr:"Afficher les raccourcis pour", ar:"إظهار اختصارات لـ" },
     "All passports": { tr:"Tüm pasaportlar", es:"Todos los pasaportes", de:"Alle Pässe", fr:"Tous les passeports", ar:"جميع الجوازات" },
     "→ becomes": { tr:"→ olur", es:"→ se vuelve", de:"→ wird zu", fr:"→ devient", ar:"→ يصبح" },
 
     // ─── ESTA page ───────────────────────────────────────────────────────
-    "ESTA Disqualifier Checker": { tr:"ESTA Diskalifiye Kontrolü", es:"Verificador de descalificadores ESTA", de:"ESTA-Disqualifikations-Checker", fr:"Vérificateur de disqualifications ESTA", ar:"فاحص موانع أهلية ESTA" },
+    "ESTA disqualifier checker": { tr:"ESTA diskalifiye kontrolü", es:"Verificador de descalificadores ESTA", de:"ESTA-Disqualifikations-Checker", fr:"Vérificateur de disqualifications ESTA", ar:"فاحص موانع أهلية ESTA" },
     "Check your ESTA eligibility": { tr:"ESTA uygunluğunu kontrol et", es:"Comprueba tu elegibilidad ESTA", de:"ESTA-Berechtigung prüfen", fr:"Vérifie ton éligibilité ESTA", ar:"تحقق من أهليتك لـ ESTA" },
     "Tick anything that applies to you": { tr:"Sana uyan her şeyi işaretle", es:"Marca todo lo que se aplique a ti", de:"Markiere alles, was auf dich zutrifft", fr:"Coche tout ce qui te concerne", ar:"حدّد كل ما ينطبق عليك" },
     "The 41 VWP countries": { tr:"41 VWP ülkesi", es:"Los 41 países VWP", de:"Die 41 VWP-Länder", fr:"Les 41 pays VWP", ar:"41 دولة VWP" },

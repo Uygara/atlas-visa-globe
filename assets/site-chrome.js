@@ -113,7 +113,12 @@
       var moreW = more.getBoundingClientRect().width;
       more.hidden = true;
       var avail = nav.clientWidth;
-      var widths = items.map(function (li) { return li.getBoundingClientRect().width; });
+      // Each link also takes the list's gap (and its margins), or the last ones overlap "More".
+      var gap = parseFloat(getComputedStyle(list).columnGap) || 0;
+      var widths = items.map(function (li) {
+        var cs = getComputedStyle(li);
+        return li.getBoundingClientRect().width + gap + (parseFloat(cs.marginLeft) || 0) + (parseFloat(cs.marginRight) || 0);
+      });
       var total = widths.reduce(function (a, b) { return a + b; }, 0);
       var n = items.length;
       if (total > avail) {

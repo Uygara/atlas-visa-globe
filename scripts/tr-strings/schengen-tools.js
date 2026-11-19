@@ -21,7 +21,7 @@ module.exports = {
 
   // /visa-checklist/tr-schengen/
   "76010bd1": true, // the language button reads "English" in every language
-  "9bd0fb2f": `Schengen Turist Vizesi: Türk Vatandaşları`,
+  "d374c849": `Schengen turist vizesi: Türk vatandaşları`,
   "99e86bf6": `<strong>Hangi konsolosluğa başvurulmalı?</strong> En çok gün geçireceğin Schengen ülkesinin konsolosluğuna başvur. Günler eşitse, ilk gireceğin ülkenin konsolosluğuna başvur. Bazı ülkelerde (Almanya, Fransa) yoğunluk daha yüksek ama işlem daha hızlıdır; diğerlerinde (İtalya, İspanya) randevu için bile haftalarca bekleme süresi olabilir.`,
   "929d1db9": `<strong>Kademe (cascade) kuralı</strong>, sicili temiz başvuru sahiplerinin genellikle önce 1 yıllık, sonra 2 yıllık, ardından 5 yıllık çok girişli vize aldığı anlamına gelir. Talep etmen gereken kademe için <a href="/schengen-calculator/">Schengen hesaplayıcı</a> sayfasına bak.`,
   "0f133931": `Güncelliğini yitirmiş bir şey mi gördün? <a href="https://github.com/Uygara/atlas-visa-globe/issues" rel="noopener">github.com/Uygara/atlas-visa-globe</a> adresinde bir konu (issue) aç.`,

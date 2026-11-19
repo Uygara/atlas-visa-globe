@@ -243,11 +243,11 @@
       "ref.available_one": "{n} day available on {date}.",
       "ref.available_other": "{n} days available on {date}.",
       "cascade.badgeTier": "Tier",
-      "cascade.badge5y": "5-YEAR MEV",
-      "cascade.badge2y": "2-YEAR MEV",
-      "cascade.badge1y": "1-YEAR MEV",
-      "cascade.badgeFirst": "FIRST APPLICATION",
-      "cascade.badgeReset": "CASCADE RESET",
+      "cascade.badge5y": "5-year MEV",
+      "cascade.badge2y": "2-year MEV",
+      "cascade.badge1y": "1-year MEV",
+      "cascade.badgeFirst": "First application",
+      "cascade.badgeReset": "Cascade reset",
       "cascade.sourceLabel": "Source:",
       "cascade.sourceTitle": "EU Visa Code, Article 24",
       "form.entryBeforeExit": "Entry date must be before exit date.",
@@ -280,11 +280,11 @@
       "ref.available_one": "{date} tarihinde {n} gün kullanılabilir.",
       "ref.available_other": "{date} tarihinde {n} gün kullanılabilir.",
       "cascade.badgeTier": "Kademe",
-      "cascade.badge5y": "5 Yıllık MEV",
-      "cascade.badge2y": "2 Yıllık MEV",
-      "cascade.badge1y": "1 Yıllık MEV",
-      "cascade.badgeFirst": "İlk Başvuru",
-      "cascade.badgeReset": "Kademe Sıfırlandı",
+      "cascade.badge5y": "5 yıllık MEV",
+      "cascade.badge2y": "2 yıllık MEV",
+      "cascade.badge1y": "1 yıllık MEV",
+      "cascade.badgeFirst": "İlk başvuru",
+      "cascade.badgeReset": "Kademe sıfırlandı",
       "cascade.sourceLabel": "Kaynak:",
       "cascade.sourceTitle": "AB Vize Kodu, Madde 24",
       "form.entryBeforeExit": "Giriş tarihi çıkış tarihinden önce olmalı.",
@@ -776,10 +776,10 @@
     // being translated by that dictionary's MutationObserver. Only the badge
     // and source line (built via L(), not in that dictionary) get data-no-i18n.
     cascadeOut.innerHTML = `<div style="background:${bg}; border:1px solid ${bd}; border-radius:10px; padding:14px;">
-      <div data-no-i18n style="font-size:11px; font-family:ui-monospace,monospace; color:var(--fg-mute); text-transform:uppercase; letter-spacing:0.06em; font-weight:600; margin-bottom:6px;">${badge}</div>
+      <div data-no-i18n style="font-size:var(--fs-xs); color:var(--fg-mute); font-weight:600; margin-bottom:6px;">${badge}</div>
       <div style="font-size:15px; font-weight:600; color:var(--fg); margin-bottom:6px;">${r.label}</div>
       <div style="font-size:13px; color:var(--fg-dim); line-height:1.55;">${r.note}</div>
-      <div data-no-i18n style="font-size:11px; color:var(--fg-mute); margin-top:8px; font-family:ui-monospace,monospace;">
+      <div data-no-i18n style="font-size:var(--fs-xs); color:var(--fg-mute); margin-top:8px;">
         ${L("cascade.sourceLabel")} <a href="https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32009R0810" target="_blank" rel="noopener" style="color:var(--fg-mute);">${L("cascade.sourceTitle")}</a>
       </div>
     </div>`;

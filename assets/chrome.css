@@ -99,7 +99,7 @@
 }
 .seg button {
   display: inline-flex; align-items: center; justify-content: center; gap: 5px;
-  min-width: 30px; padding: 3px 8px; border: 0; border-radius: 2px;
+  min-width: 30px; padding: 3px 8px; border: 0; border-radius: var(--radius);
   background: transparent; color: var(--ink-3); cursor: pointer;
   font-size: var(--fs-xs); font-weight: 650; letter-spacing: 0; line-height: 1.4;
 }

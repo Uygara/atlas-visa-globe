@@ -124,18 +124,17 @@ function TransitPicker({ value, onChange }) {
   }, [q]);
   return (
     <div ref={ref} style={{ position: "relative" }}>
-      <button type="button" className="pp-card" style={{ paddingBottom: 2 }} onClick={() => setOpen(o => !o)} aria-expanded={open}>
-        <span className="pp-doc" aria-hidden="true">Passport / Pasaport / Passeport<IconCaret /></span>
+      <button type="button" className="pp-card" onClick={() => setOpen(o => !o)} aria-expanded={open}>
         {country ? (
           <span className="pp-main">
             <span className="flag pp-flag" aria-hidden="true">{country.flag}</span>
             <span style={{ minWidth: 0, flex: 1 }}>
               <span className="pp-name" style={{ display: "block" }}>{window.countryName(value)}</span>
-              <span className="pp-meta" style={{ display: "block" }}>{value}</span>
             </span>
+            <IconCaret />
           </span>
         ) : (
-          <span className="pp-empty" style={{ display: "block" }}>{window.t("picker.select_passport")}</span>
+          <span className="pp-main"><span className="pp-empty" style={{ flex: 1 }}>{window.t("picker.select_passport")}</span><IconCaret /></span>
         )}
       </button>
       {open && (
@@ -318,7 +317,7 @@ function TransitHubList({ passport, onOpen }) {
               {r.line ? <Swatch s={r.line.s} /> : <span className="sw sw-all" aria-hidden="true" />}
               <span className="lg-label" style={{ whiteSpace: "normal" }}>{r.hubLabel}</span>
               <span className="lg-dots" />
-              <span className="lg-n" style={{ fontSize: 11.5, color: "var(--ink-2)", textAlign: "end" }}>{r.line ? r.line.label : "-"}</span>
+              <span className="lg-n" style={{ fontSize: 12, color: "var(--ink-2)", textAlign: "end" }}>{r.line ? r.line.label : "-"}</span>
             </button>
           </li>
         ))}

@@ -30,5 +30,4 @@ module.exports = {
   "7baa805f": `Eksiksiz vize gereklilikleri dökümü ve küresel sıralama için <a href="/passport/">tüm pasaportlara göz at</a>.`,
   "e7cdae58": `<a href="/esta-rules/">ESTA kontrolü</a>`,
   "12c6085e": `<a href="/etias/">ETIAS kontrolü</a>`,
-  "d18e1aa3": `<a href="/visa-shortcuts/">Vize Kestirmeleri</a>`,
 };

@@ -38,5 +38,5 @@ module.exports = {
   "aa78eede": `Tüm bağlantılar HTTPS kullanır, her hesap kaydını yalnızca sahibi okuyup değiştirebilir ve yalnızca hizmetin ihtiyaç duyduğu verileri toplarız. Hiçbir sistem tamamen güvenli değildir; bu nedenle mutlak güvenlik garanti edemeyiz.`,
   "a72a0c21": `12. Değişiklikler`,
   "50138e9e": `Hizmet veya mevzuat değiştiğinde bu politikayı güncelleriz; sayfanın başındaki tarih geçerli sürümü gösterir. Bir değişiklik daha önce verdiğiniz verileri etkiliyorsa bunu sitede ve uygulamada belirtiriz.`,
-  "e7ff55ec": `<a href="/terms/">Kullanım Koşulları</a> sayfasına da bakabilirsiniz.`,
+  "c0787655": `<a href="/terms/">Kullanım koşulları</a> sayfasına da bakabilirsiniz.`,
 };

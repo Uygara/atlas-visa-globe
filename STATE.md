@@ -84,6 +84,10 @@ EN in those four (engine ready — just add dict entries).
   Static masthead is translucent (blur 20px). Stamps 20261119d. OG cards (TEMPLATE 5, HOME 3, all 400 re-rendered)
   and Instagram cards follow the same style: no frame, MRZ, stamp, page counter or colour stripe. The 4 queued posts
   were re-rendered, so they are unapproved again until the owner looks at the new images.
+  Subpage pass: status stamps are flat pills, no dotted leaders, stat cards use a tone dot, pill buttons, 404 badge flat,
+  transit/itinerary pickers lost the trilingual label, alerts step numbers hidden, sentence case everywhere (EN+TR),
+  /visa/ checker card no longer inherits `.chk` chip styles, nav "More" fit now counts the list gap.
+  Audit script idea: puppeteer pass that flags uppercase, tracking, <12px, mono, side stripes, rotation, "·".
 
 - **Round 18 (2026-11-19 evening: iVisa live, IG approvals, two-editor rules):**
   iVisa accepted us. Partner link `https://www.ivisa.com/?utm_source=travelnow` (from the approval email) is in

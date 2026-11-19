@@ -151,7 +151,7 @@ function SafetyMapApp() {
         <MobileSheetHandle />
         <header className="p-head" style={{ display: "block" }}>
           <div className="p-head-title">
-            {tr("safety.title", "Travel Safety Map")}{" "}
+            {tr("safety.title", "Travel safety map")}{" "}
             <span className="stamp is-small" style={{ "--st": "var(--foil)", verticalAlign: "middle", marginInlineStart: 6 }}>
               <span className="stamp-k" style={{ fontSize: 12 }}>{tr("safety.draft", "Beta")}</span>
             </span>
@@ -404,7 +404,7 @@ function SafetyDetail({ iso2, names, onClose }) {
                     <span className="sw" style={{ "--sw": LEVEL_COLOR[r.level] }} aria-hidden="true" />
                     <span className="lg-label" style={{ whiteSpace: "normal" }}>{regionName(r.id)}</span>
                     <span className="lg-dots" />
-                    <span className="lg-n" style={{ fontSize: 11.5, color: "var(--ink-2)", textAlign: "end" }}>{levelLabel(r.level)}</span>
+                    <span className="lg-n" style={{ fontSize: 12, color: "var(--ink-2)", textAlign: "end" }}>{levelLabel(r.level)}</span>
                   </div>
                 </li>
               ))}

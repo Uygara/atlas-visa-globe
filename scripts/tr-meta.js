@@ -13,7 +13,7 @@ module.exports = {
     ogDescription: "200'den fazla pasaportun vize gerekliliklerini etkileşimli bir küre üzerinde gör. Ücretsiz, her gün Vikipedi'den yenilenir.",
   },
   "/privacy/": {
-    title: "Gizlilik Politikası · travelnow.info",
+    title: "Gizlilik politikası · travelnow.info",
     description: "travelnow.info ve uygulamasının hangi kişisel verileri, neden ve ne kadar süre işlediği; verilerine nasıl erişip silebileceğin.",
   },
   "/open-data/": {
@@ -31,9 +31,9 @@ module.exports = {
     ogDescription: "İlgilendiğin ülkenin vize politikası değiştiğinde e-posta al.",
   },
   "/citizenship-by-investment/": {
-    title: "Yatırımla Vatandaşlık 2026: tüm aktif programlar karşılaştırmalı · travelnow.info",
+    title: "Yatırımla vatandaşlık 2026: tüm aktif programlar karşılaştırmalı · travelnow.info",
     description: "2026'da yürürlükte olan tüm yatırımla vatandaşlık ve altın vize programları: asgari yatırım, uygun yollar, süre, vizesiz skoru, aile kapsamı. Sıralanabilir, her gün gözden geçirilir.",
-    ogTitle: "Yatırımla Vatandaşlık 2026: tüm aktif programlar",
+    ogTitle: "Yatırımla vatandaşlık 2026: tüm aktif programlar",
     ogDescription: "Asgari yatırım, uygun yollar, süre, vizesiz skoru, aile kapsamı. Tüm tablo tek yerde.",
   },
   "/contact/": {
@@ -42,15 +42,15 @@ module.exports = {
     ogDescription: "Düzeltme, geri bildirim veya iş birliği için travelnow.info'nun yürütücüsüne ulaş.",
   },
   "/digital-nomad-visa/": {
-    title: "Dijital Göçebe Vizeleri: 38 ülke karşılaştırması (2026) · travelnow.info",
+    title: "Dijital göçebe vizeleri: 38 ülke karşılaştırması (2026) · travelnow.info",
     description: "2026'daki tüm dijital göçebe vizeleri: gelir şartları, harçlar, süre, vergi avantajları ve aile uygunluğu. Sıralanabilir, her gün yenilenir.",
-    ogTitle: "Dijital Göçebe Vizeleri: 38 ülke karşılaştırması (2026)",
+    ogTitle: "Dijital göçebe vizeleri: 38 ülke karşılaştırması (2026)",
     ogDescription: "Gelir şartları, harçlar, süre, vergi avantajları. Tüm tablo tek yerde.",
   },
   "/esta-rules/": {
-    title: "ESTA Diskalifiye Kontrolü: Vize Muafiyeti Programı'ndan gerçekten yararlanabilir misin? · travelnow.info",
+    title: "ESTA diskalifiye kontrolü: Vize Muafiyeti Programı'ndan gerçekten yararlanabilir misin? · travelnow.info",
     description: "Ücretsiz ESTA uygunluk ve diskalifiye kontrolü. 2011 sonrası İran/Irak/Suriye/Libya/Sudan/Somali/Yemen/Küba/Kuzey Kore seyahatleri, çifte vatandaşlık, önceki tutuklamalar. VWP'ye uygun pasaport sahiplerini programın dışına iten tüm kurallar.",
-    ogTitle: "ESTA Diskalifiye Kontrolü: Vize Muafiyeti Programı kuralları",
+    ogTitle: "ESTA diskalifiye kontrolü: Vize Muafiyeti Programı kuralları",
     ogDescription: "VWP'ye uygun olmak, gerçekten hak kazandığın anlamına gelmez. ESTA için ödeme yapmadan önce diskalifiye nedenlerini kontrol et.",
   },
   "/etias/": {
@@ -102,9 +102,9 @@ module.exports = {
     ogDescription: "Beş giriş kategorisi, her birinin gerçekte ne gerektirdiği ve yolcuların geri çevrilmesine yol açan hatalar.",
   },
   "/passport-validity/": {
-    title: "Pasaport Geçerlilik Kontrolü: 6 ay kuralı, ülkeye göre · travelnow.info",
+    title: "Pasaport geçerlilik kontrolü: 6 ay kuralı, ülkeye göre · travelnow.info",
     description: "Pasaportun kabul edilecek mi? Varış ülkesine göre pasaport geçerlilik kuralları (Schengen'de 3 ay, Asya, Orta Doğu ve Afrika'nın çoğunda 6 ay). Pasaportunun bitiş tarihini gir, her ülke için net bir ✓ ya da ✗ gör.",
-    ogTitle: "Pasaport Geçerlilik Kontrolü: ülkeye göre 6 ay kuralı",
+    ogTitle: "Pasaport geçerlilik kontrolü: ülkeye göre 6 ay kuralı",
     ogDescription: "Uçağa alınmama riskine karşı her ülkenin pasaport geçerlilik kuralını kontrol et ve pasaportunun uygun olup olmadığını gör.",
   },
   "/schengen-calculator/": {
@@ -114,15 +114,15 @@ module.exports = {
     ogDescription: "Schengen kısa kalış günlerini takip et, kuralı çiğnemeden gelecek seyahatleri planla.",
   },
   "/visa-checklist/tr-schengen/": {
-    title: "Türk Vatandaşları için Schengen Vize Kontrol Listesi (2026) · travelnow.info",
+    title: "Türk vatandaşları için Schengen vize kontrol listesi (2026) · travelnow.info",
     description: "2026'da Türk pasaportu sahipleri için eksiksiz Schengen Tip C turist vizesi belge listesi. Sigorta, mali belgeler, çalışma yazıları, biyometrik randevu, her kalem resmî kaynaklarıyla.",
-    ogTitle: "Schengen Vize Kontrol Listesi: Türk Vatandaşları 2026",
+    ogTitle: "Schengen vize kontrol listesi: Türk vatandaşları 2026",
     ogDescription: "Türkiye'den Schengen turist vizesi için gereken tüm belgeler; çalışan, serbest çalışan, öğrenci, emekli ve reşit olmayanlar için koşullu kurallarla.",
   },
   "/visa-shortcuts/": {
-    title: "Vize Kestirmeleri: elindeki vizelerle daha kolay vize yolları · travelnow.info",
+    title: "Vize kestirmeleri: elindeki vizelerle daha kolay vize yolları · travelnow.info",
     description: "ABD, Birleşik Krallık, İrlanda veya Schengen vizesi taşımak, normalde tam vize gerektirecek ülkelere vizesiz ya da e-Vize ile girişe çoğu zaman imkân verir. Her kestirmenin pasaporta göre gezilebilir dizini.",
-    ogTitle: "Vize Kestirmeleri: elindeki vizelerle daha kolay giriş",
+    ogTitle: "Vize kestirmeleri: elindeki vizelerle daha kolay giriş",
     ogDescription: "Hindistan pasaportu + ABD vizesi = Türkiye e-Vizesi. Çin pasaportu + Schengen vizesi = Meksika vizesiz. Her kestirme, pasaporta göre.",
   },
 };

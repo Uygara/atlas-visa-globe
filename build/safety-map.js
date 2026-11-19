@@ -229,7 +229,7 @@ function SafetyMapApp() {
     }
   }, React.createElement("div", {
     className: "p-head-title"
-  }, tr("safety.title", "Travel Safety Map"), " ", React.createElement("span", {
+  }, tr("safety.title", "Travel safety map"), " ", React.createElement("span", {
     className: "stamp is-small",
     style: {
       "--st": "var(--foil)",
@@ -649,7 +649,7 @@ function SafetyDetail(_ref9) {
     }), React.createElement("span", {
       className: "lg-n",
       style: {
-        fontSize: 11.5,
+        fontSize: 12,
         color: "var(--ink-2)",
         textAlign: "end"
       }

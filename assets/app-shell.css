@@ -84,10 +84,9 @@ html.theme-dark .country:hover, body.theme-dark .country:hover { filter: brightn
 /* ── Passport data page (picker trigger) ─────────────────────────────── */
 .pp-card {
   position: relative; display: block; width: 100%; text-align: start; cursor: pointer;
-  padding: 10px 12px 0; overflow: hidden;
+  padding: 12px 14px 0; overflow: hidden;
   color: var(--ink); background: var(--paper-raised);
-  background-image: var(--guilloche); background-size: 120px 28px;
-  border: 1px solid var(--rule-strong); border-radius: var(--radius-lg);
+  border: 1px solid var(--rule); border-radius: var(--radius-lg); box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 .pp-card:hover { border-color: var(--ink-3); }
 .pp-card[aria-expanded="true"] { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
@@ -135,7 +134,7 @@ html.theme-dark .country:hover, body.theme-dark .country:hover { filter: brightn
 .dd-item .flag { font-size: var(--fs-md); }
 .dd-item .dd-grow { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .dd-item .dd-code { font-family: var(--font-mono); font-size: var(--fs-2xs); color: var(--ink-3); }
-.dd-item .dd-tag { font-family: var(--font-mono); font-size: var(--fs-2xs); color: var(--on-accent); background: var(--accent); padding: 1px 5px; border-radius: 2px; }
+.dd-item .dd-tag { font-family: var(--font-mono); font-size: var(--fs-2xs); color: var(--on-accent); background: var(--accent); padding: 1px 5px; border-radius: var(--radius); }
 .dd-empty { padding: 14px; text-align: center; color: var(--ink-3); font-size: var(--fs-xs); }
 
 /* ── Tabs (direction etc.) ───────────────────────────────────────────── */
@@ -164,12 +163,12 @@ html.theme-dark .country:hover, body.theme-dark .country:hover { filter: brightn
   display: flex; align-items: center; gap: 9px; width: 100%;
   padding: 5px 6px; margin: 0 -6px; width: calc(100% + 12px);
   border: 0; background: transparent; cursor: pointer; text-align: start;
-  color: var(--ink-2); font-size: var(--fs-sm); border-radius: 2px;
+  color: var(--ink-2); font-size: var(--fs-sm); border-radius: var(--radius);
 }
 .lg-row:hover { background: var(--paper-sunk); color: var(--ink); }
 .lg-row[aria-pressed="true"] { background: var(--paper-sunk); color: var(--ink); font-weight: 650; }
 .lg-label { white-space: nowrap; }
-.lg-dots { flex: 1; min-width: 12px; align-self: flex-end; margin-bottom: 5px; border-bottom: 1px dotted var(--rule-strong); }
+.lg-dots { flex: 1; min-width: 12px; }
 .lg-n { font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--ink); font-variant-numeric: tabular-nums; }
 .sw { flex: none; display: inline-block; width: 11px; height: 11px; border-radius: 1px; background: var(--sw, var(--na)); }
 .sw-ban, .sw[data-s="ban"] { background: repeating-linear-gradient(135deg, var(--ban) 0 2.5px, transparent 2.5px 4.5px), var(--paper-raised); box-shadow: inset 0 0 0 1px var(--ban); }
@@ -187,7 +186,7 @@ html.theme-dark .country:hover, body.theme-dark .country:hover { filter: brightn
 .btn[aria-pressed="true"] { border-color: var(--accent); box-shadow: inset 0 0 0 1px var(--accent); }
 .mode-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
 .mode-mark {
-  display: inline-grid; place-items: center; width: 16px; height: 16px; border-radius: 2px;
+  display: inline-grid; place-items: center; width: 16px; height: 16px; border-radius: var(--radius);
   font-family: var(--font-mono); font-size: var(--fs-xs); line-height: 1;
   color: var(--m); box-shadow: inset 0 0 0 1.5px var(--m);
 }
@@ -204,7 +203,7 @@ html.theme-dark .country:hover, body.theme-dark .country:hover { filter: brightn
 .row-btn svg { width: 11px; height: 11px; color: var(--ink-3); transition: transform 180ms ease; }
 .row-btn svg.is-flipped { transform: rotate(180deg); }
 .check-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 6px; }
-.check { display: flex; align-items: center; gap: 7px; padding: 5px 4px; font-size: var(--fs-xs); color: var(--ink-2); cursor: pointer; border-radius: 2px; }
+.check { display: flex; align-items: center; gap: 7px; padding: 5px 4px; font-size: var(--fs-xs); color: var(--ink-2); cursor: pointer; border-radius: var(--radius); }
 .check:hover { background: var(--paper-sunk); }
 .check.is-on { color: var(--ink); font-weight: 600; }
 .check input { accent-color: var(--accent); margin: 0; }
@@ -283,32 +282,23 @@ a.note:hover { background: color-mix(in oklab, var(--tone) 14%, transparent); }
 .route { display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--ink-3); }
 .route .flag { font-size: var(--fs-md); }
 
-/* The status stamp — the one deliberately tilted element on the page. */
+/* Status pill: a tinted label in the status colour, flat and upright. */
 .stamp {
   --st: var(--ink-3);
-  --st-ink: color-mix(in oklab, var(--st), var(--ink) 28%);
-  display: inline-flex; flex-direction: column; align-items: center; justify-content: center;
-  padding: 5px 12px 4px; min-width: 120px;
-  border: 2px solid var(--st-ink); border-radius: 3px;
-  outline: 1px solid var(--st-ink); outline-offset: 2px;
-  color: var(--st-ink);
-  transform: rotate(-2.5deg);
-  font-family: var(--font-display); text-align: center;
+  --st-ink: color-mix(in oklab, var(--st), var(--ink) 35%);
+  display: inline-flex; flex-direction: column; align-items: flex-start; justify-content: center;
+  padding: 6px 12px; border-radius: 10px;
+  background: color-mix(in oklab, var(--st) 14%, transparent);
+  color: var(--st-ink); text-align: start;
 }
-/* The verdict is pressed onto the page: lands large, dips, settles. Remounted per
-   country (key in panel.jsx), so every new card gets its own stamp. */
-@keyframes stamp-press {
-  0%   { transform: rotate(-2.5deg) scale(1.45); opacity: 0; }
-  55%  { transform: rotate(-2.5deg) scale(0.93); opacity: 1; }
-  100% { transform: rotate(-2.5deg) scale(1); opacity: 1; }
-}
-.entry-verdict .stamp:not(.is-small) { animation: stamp-press 280ms cubic-bezier(0.2, 0.9, 0.3, 1.15) both; }
+.entry-verdict .stamp:not(.is-small) { animation: stamp-in 200ms ease-out both; }
+@keyframes stamp-in { from { opacity: 0; } to { opacity: 1; } }
 @media (prefers-reduced-motion: reduce) { .entry-verdict .stamp:not(.is-small) { animation: none; } }
-.stamp-k { font-size: var(--fs-lg); font-weight: 700; letter-spacing: var(--ls-caps); line-height: 1.05; }
-.stamp-s { font-family: var(--font-mono); font-size: var(--fs-2xs); letter-spacing: var(--ls-caps); text-transform: none; margin-top: 1px; }
-.stamp.is-small { min-width: 0; padding: 2px 7px 1px; border-width: 1.5px; outline: none; transform: rotate(-1.5deg); }
-.stamp.is-small .stamp-k { font-size: var(--fs-sm); }
-html.theme-dark .stamp, body.theme-dark .stamp { --st-ink: color-mix(in oklab, var(--st), var(--ink) 18%); }
+.stamp-k { font-size: var(--fs-md); font-weight: 650; line-height: 1.2; }
+.stamp-s { font-size: var(--fs-xs); margin-top: 1px; opacity: 0.85; }
+.stamp.is-small { padding: 2px 9px; border-radius: 999px; }
+.stamp.is-small .stamp-k { font-size: var(--fs-xs); font-weight: 600; }
+html.theme-dark .stamp, body.theme-dark .stamp { --st-ink: color-mix(in oklab, var(--st), white 35%); }
 
 .entry-note { margin: 0 0 12px; font-size: var(--fs-sm); line-height: 1.5; color: var(--ink-2); }
 .entry-recommend {

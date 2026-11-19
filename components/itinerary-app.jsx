@@ -204,17 +204,16 @@ function CountryPicker({ value, placeholder, exclude, onPick, isPassport }) {
   return (
     <div ref={ref} style={{ position: "relative" }}>
       {isPassport ? (
-        <button type="button" className="pp-card" style={{ paddingBottom: 2 }} onClick={() => setOpen(o => !o)} aria-expanded={open}>
-          <span className="pp-doc" aria-hidden="true">Passport / Pasaport / Passeport<IconCaret /></span>
+        <button type="button" className="pp-card" onClick={() => setOpen(o => !o)} aria-expanded={open}>
           {c ? (
             <span className="pp-main">
               <span className="flag pp-flag" aria-hidden="true">{c.flag}</span>
               <span style={{ minWidth: 0, flex: 1 }}>
                 <span className="pp-name" style={{ display: "block" }}>{window.countryName(value)}</span>
-                <span className="pp-meta" style={{ display: "block" }}>{value}</span>
               </span>
+              <IconCaret />
             </span>
-          ) : <span className="pp-empty" style={{ display: "block" }}>{placeholder}</span>}
+          ) : <span className="pp-main"><span className="pp-empty" style={{ flex: 1 }}>{placeholder}</span><IconCaret /></span>}
         </button>
       ) : (
         <button type="button" className="row-btn" onClick={() => setOpen(o => !o)} aria-expanded={open}>

@@ -936,7 +936,7 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
                 {isBest && <span className="best-tag">{window.t("detail.best_passport")}</span>}
                 <Dot s={rr.status} />
                 <span style={{ color: "var(--ink-2)" }}>{statusLabel(rr.status)}</span>
-                {rr.days && <span className="mono" style={{ fontSize: 11, color: "var(--ink-3)" }}>{rr.days}d</span>}
+                {rr.days && <span className="mono" style={{ fontSize: 12, color: "var(--ink-3)" }}>{rr.days}d</span>}
               </div>
             );
           })}
@@ -979,7 +979,7 @@ function ConditionsBox({ passport, destIso2, baseStatus }) {
               <span style={{ color: "var(--ink-3)" }}>→ {window.t("cond.becomes")}</span>
               <Dot s={row.then} />
               <strong style={{ fontWeight: 650 }}>{statusLabel(row.then)}</strong>
-              {row.days && <span className="mono" style={{ marginInlineStart: "auto", color: "var(--ink-3)", fontSize: 11.5 }}>{window.t("detail.up_to_days", { n: row.days })}</span>}
+              {row.days && <span className="mono" style={{ marginInlineStart: "auto", color: "var(--ink-3)", fontSize: 12 }}>{window.t("detail.up_to_days", { n: row.days })}</span>}
             </div>
             {note && <div className="note-s" style={{ marginTop: 5 }}>{note}</div>}
             {row.source && (
@@ -1194,7 +1194,7 @@ function VisaFeeBox({ passport, destIso2, status }) {
           {window.t("detail.official_source")}
         </a>
       )}
-      <div className="p-fine mono" style={{ marginTop: 4, fontSize: 10.5 }}>{window.t("detail.reviewed", { date: data.lastReviewed })}</div>
+      <div className="p-fine mono" style={{ marginTop: 4, fontSize: 12 }}>{window.t("detail.reviewed", { date: data.lastReviewed })}</div>
     </div>
   );
 }
@@ -1530,7 +1530,7 @@ function PassportPulse({ passport }) {
         <div className="p-hint" style={{ margin: 0, fontWeight: 600, color: "var(--ink-2)" }}>{window.t("pulse.heading")}</div>
         <div className="seg" role="group">
           {[30, 90].map(d => (
-            <button key={d} type="button" aria-pressed={days === d} onClick={() => setDays(d)} style={{ fontSize: 11.5, padding: "1px 7px" }}>{d}d</button>
+            <button key={d} type="button" aria-pressed={days === d} onClick={() => setDays(d)} style={{ fontSize: 12, padding: "1px 7px" }}>{d}d</button>
           ))}
         </div>
       </div>

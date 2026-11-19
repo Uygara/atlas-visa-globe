@@ -1342,7 +1342,7 @@ function DetailCard(_ref14) {
     }, statusLabel(rr.status)), rr.days && React.createElement("span", {
       className: "mono",
       style: {
-        fontSize: 11,
+        fontSize: 12,
         color: "var(--ink-3)"
       }
     }, rr.days, "d"));
@@ -1431,7 +1431,7 @@ function ConditionsBox(_ref16) {
       style: {
         marginInlineStart: "auto",
         color: "var(--ink-3)",
-        fontSize: 11.5
+        fontSize: 12
       }
     }, window.t("detail.up_to_days", {
       n: row.days
@@ -1715,7 +1715,7 @@ function VisaFeeBox(_ref25) {
     className: "p-fine mono",
     style: {
       marginTop: 4,
-      fontSize: 10.5
+      fontSize: 12
     }
   }, window.t("detail.reviewed", {
     date: data.lastReviewed
@@ -2264,7 +2264,7 @@ function PassportPulse(_ref33) {
         return setDays(d);
       },
       style: {
-        fontSize: 11.5,
+        fontSize: 12,
         padding: "1px 7px"
       }
     }, d, "d");

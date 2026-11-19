@@ -11,5 +11,5 @@ module.exports = {
   "d147c6d0": `Yanıt süresi`,
   "650b48c6": `Genellikle birkaç gün içinde yanıt veriyorum. travelnow.info tek kişi tarafından yürütülüyor, sabrın için teşekkürler. Bir veri hatasının en hızlı şekilde düzeltilmesi için lütfen kaynak bağlantısını ekle.`,
   "9982051d": `Doğruluk üzerine bir not`,
-  "4b0dda22": `travelnow.info bir bilgilendirme aracıdır; resmî bir makam ya da vize başvuru hizmeti değildir. Bağlayıcı yanıtlar için her zaman varış ülkesinin büyükelçiliği veya konsolosluğuyla teyit et. <a href="/terms/">Kullanım Koşulları</a> ve <a href="/privacy/">Gizlilik Politikası</a> sayfalarımıza bak.`,
+  "e2115d74": `travelnow.info bir bilgilendirme aracıdır; resmî bir makam ya da vize başvuru hizmeti değildir. Bağlayıcı yanıtlar için her zaman varış ülkesinin büyükelçiliği veya konsolosluğuyla teyit et. <a href="/terms/">Kullanım koşulları</a> ve <a href="/privacy/">Gizlilik politikası</a> sayfalarımıza bak.`,
 };
