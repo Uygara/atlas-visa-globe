@@ -48,7 +48,7 @@ function cn(iso, lang) {
 // Copy. Numbers are passed in; nothing here states a figure by itself.
 const T = {
   en: {
-    cover: { eyebrow: "PASSPORT POWER", changes: (n) => (n === 1 ? "visa rule change" : "visa rule changes"),
+    cover: { eyebrow: "Passport power", changes: (n) => (n === 1 ? "visa rule change" : "visa rule changes"),
       passports: (n) => (n === 1 ? "passport affected" : "passports affected"), swipe: "Swipe for the details" },
     gains: { eyebrow: "BIGGEST GAINS", title: "Passports that gained the most", unit: (n) => (n === 1 ? "destination" : "destinations"),
       note: "Net change in destinations with easy access: visa-free, ID card travel, travel authorization or visa on arrival." },
@@ -61,7 +61,7 @@ const T = {
     path: (ym) => `/reports/${ym}/`, passportPath: (iso) => `/passport/${iso.toLowerCase()}/`,
   },
   tr: {
-    cover: { eyebrow: "PASAPORT GÜCÜ", changes: () => "vize kuralı değişti",
+    cover: { eyebrow: "Pasaport gücü", changes: () => "vize kuralı değişti",
       passports: () => "pasaport etkilendi", swipe: "Ayrıntılar için kaydır" },
     gains: { eyebrow: "EN ÇOK KAZANANLAR", title: "En çok kazanan pasaportlar", unit: () => "ülke",
       note: "Kolay erişimli ülke sayısındaki net değişim: vizesiz, kimlikle giriş, seyahat izni veya varışta vize." },
@@ -91,43 +91,37 @@ function chromePath() {
 const CSS = (tokens) => `${tokens}
 html,body{margin:0;width:${W}px;height:${H}px;overflow:hidden;background:var(--paper)}
 .card{position:relative;width:${W}px;height:${H}px;box-sizing:border-box;background:var(--paper);color:var(--ink);font-family:var(--font-sans)}
-.edge{position:absolute;inset:22px;border:2px solid var(--rule-strong)}
-.edge::after{content:"";position:absolute;inset:7px;border:1px solid var(--rule)}
-.top{position:absolute;left:72px;right:72px;top:64px;display:flex;justify-content:space-between;align-items:center}
-.brand{display:flex;align-items:center;gap:14px;font:800 44px/1 var(--font-display);color:var(--ink)}
-.brand svg{width:44px;height:44px}
-.brand .tld{font:500 26px var(--font-mono);color:var(--ink-3)}
-.pg{font:500 20px var(--font-mono);letter-spacing:.16em;color:var(--ink-4)}
-.eyebrow{position:absolute;left:76px;top:190px;font:500 26px var(--font-mono);letter-spacing:.2em;color:var(--ink-3)}
-.title{position:absolute;left:76px;right:76px;top:236px;font:850 92px/.95 var(--font-display);letter-spacing:-.005em;color:var(--ink)}
-.rows{position:absolute;left:76px;right:76px;top:470px;display:flex;flex-direction:column;gap:14px}
-.row{display:flex;align-items:center;gap:26px;height:100px;border-bottom:2px solid var(--rule);padding-bottom:8px}
-.row .fl{font-size:72px;line-height:1;flex:none;width:96px;text-align:center}
-.row .nm{flex:1;min-width:0;font:700 52px/1 var(--font-display);color:var(--ink);white-space:nowrap;overflow:hidden}
-.row .v{flex:none;text-align:right;font:850 66px/1 var(--font-display);color:var(--ink)}
-.row .v small{display:block;font:500 20px var(--font-mono);letter-spacing:.04em;color:var(--ink-3);margin-top:4px}
-.row .v.up{color:var(--vf)}.row .v.down{color:var(--accent)}
-.note{position:absolute;left:76px;right:76px;bottom:96px;font:500 26px/1.35 var(--font-sans);color:var(--ink-3)}
-.big{font:850 300px/.8 var(--font-display);color:var(--ink);letter-spacing:-.01em}
-.cap{font:500 48px/1.15 var(--font-sans);color:var(--ink-2)}
-.row2{display:flex;align-items:center;gap:26px;height:112px;border-bottom:2px solid var(--rule)}
-.row2 .fl{font-size:64px;line-height:1;flex:none;width:96px;text-align:center}
+.top{position:absolute;left:84px;right:84px;top:76px;display:flex;justify-content:space-between;align-items:center}
+.brand{display:flex;align-items:center;gap:14px;font:650 40px/1 var(--font-display);letter-spacing:-.01em;color:var(--ink)}
+.brand svg{width:40px;height:40px}
+.brand .tld{font-weight:500;color:var(--ink-3)}
+.eyebrow{position:absolute;left:84px;top:196px;font:600 32px/1.2 var(--font-sans);color:var(--ink-3)}
+.title{position:absolute;left:84px;right:84px;top:246px;font:700 88px/1.02 var(--font-display);letter-spacing:-.03em;color:var(--ink)}
+.rows{position:absolute;left:84px;right:84px;top:480px;display:flex;flex-direction:column;gap:14px}
+.row{display:flex;align-items:center;gap:26px;height:100px;border-bottom:1px solid var(--rule-strong);padding-bottom:8px}
+.row .fl{font-size:68px;line-height:1;flex:none;width:92px;text-align:center}
+.row .nm{flex:1;min-width:0;font:600 48px/1.05 var(--font-display);letter-spacing:-.015em;color:var(--ink);white-space:nowrap;overflow:hidden}
+.row .v{flex:none;text-align:right;font:700 64px/1 var(--font-display);letter-spacing:-.02em;color:var(--ink)}
+.row .v small{display:block;font:500 24px var(--font-sans);letter-spacing:0;color:var(--ink-3);margin-top:6px}
+.row .v.up{color:var(--vf)}.row .v.down{color:var(--vr)}
+.note{position:absolute;left:84px;right:84px;bottom:96px;font:500 30px/1.35 var(--font-sans);color:var(--ink-3)}
+.big{font:700 280px/.85 var(--font-display);color:var(--ink);letter-spacing:-.045em}
+.cap{font:500 46px/1.2 var(--font-sans);color:var(--ink-2)}
+.row2{display:flex;align-items:center;gap:26px;height:112px;border-bottom:1px solid var(--rule-strong)}
+.row2 .fl{font-size:60px;line-height:1;flex:none;width:92px;text-align:center}
 .row2 .tx{flex:1;min-width:0}
-.row2 .nm{font:700 46px/1.05 var(--font-display);color:var(--ink);white-space:nowrap;overflow:hidden}
-.row2 .st{font:500 28px/1.2 var(--font-mono);color:var(--ink-3);margin-top:6px;white-space:nowrap;overflow:hidden}
-.row2 .st b{font-weight:500;color:var(--vf)}
-.txt{position:absolute;left:76px;right:76px;top:236px;bottom:190px;display:flex;flex-direction:column;justify-content:center;gap:48px}
-.txt .ttl{flex:none;max-height:520px;overflow:hidden;font:850 112px/.98 var(--font-display);color:var(--ink);overflow-wrap:anywhere}
-.txt .bd{flex:none;max-height:520px;overflow:hidden;font:500 48px/1.32 var(--font-sans);color:var(--ink-2);white-space:pre-line}
-.bar{position:absolute;left:44px;right:44px;bottom:44px;height:24px;display:flex;gap:3px}
-.bar i{display:block;border-radius:2px;flex:1 0 0}
+.row2 .nm{font:600 44px/1.1 var(--font-display);letter-spacing:-.015em;color:var(--ink);white-space:nowrap;overflow:hidden}
+.row2 .st{font:500 30px/1.2 var(--font-sans);color:var(--ink-3);margin-top:6px;white-space:nowrap;overflow:hidden}
+.row2 .st b{font-weight:600;color:var(--vf)}
+.txt{position:absolute;left:84px;right:84px;top:246px;bottom:190px;display:flex;flex-direction:column;justify-content:center;gap:48px}
+.txt .ttl{flex:none;max-height:540px;overflow:hidden;padding-bottom:.12em;font:700 104px/1.06 var(--font-display);letter-spacing:-.03em;color:var(--ink);overflow-wrap:anywhere}
+.txt .bd{flex:none;max-height:520px;overflow:hidden;font:500 46px/1.35 var(--font-sans);color:var(--ink-2);white-space:pre-line}
+.link{position:absolute;left:84px;right:84px;top:560px;font:600 56px/1.2 var(--font-sans);letter-spacing:-.01em;color:var(--link);word-break:break-all}
 `;
-const BAR = ["vf", "eta", "ev", "voa", "vr"].map((s) => `<i style="background:var(--${s})"></i>`).join("");
 const shell = (tokens, lang, body, pg) => `<!doctype html><html lang="${lang}"><head><meta charset="utf-8">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@400..700&family=Sofia+Sans+Extra+Condensed:wght@600..850&family=DM+Mono:wght@400;500&display=swap">
-<style>${CSS(tokens)}</style></head><body><div class="card"><div class="edge"></div>
-<div class="top"><div class="brand">${BRAND_MARK}<span>travelnow<span class="tld">.info</span></span></div><div class="pg">${esc(pg || "")}</div></div>
-${body}<div class="bar">${BAR}</div></div></body></html>`;
+<style>${CSS(tokens)}</style></head><body><div class="card">
+<div class="top"><div class="brand">${BRAND_MARK}<span>travelnow<span class="tld">.info</span></span></div></div>
+${body}</div></body></html>`;
 
 const rowsHtml = (rows) => `<div class="rows">${rows.map((r) =>
   `<div class="row"><span class="fl">${r.flag || ""}</span><span class="nm">${esc(r.name)}</span><span class="v ${r.cls || ""}">${esc(r.value)}<small>${esc(r.unit)}</small></span></div>`).join("")}</div>`;
@@ -154,12 +148,11 @@ function monthSlides(m, lang, tokens) {
   slides.push(shell(tokens, lang, `
 <div class="eyebrow">${esc(t.cover.eyebrow)}</div>
 <div class="title" style="font-size:130px;top:240px">${esc(label)}</div>
-<div style="position:absolute;left:76px;top:560px"><div class="big">${s.changes}</div><div class="cap" style="margin-top:18px">${esc(t.cover.changes(s.changes))}</div></div>
-<div style="position:absolute;left:76px;top:900px"><div class="big" style="font-size:200px">${s.passports}</div><div class="cap" style="margin-top:14px">${esc(t.cover.passports(s.passports))}</div></div>
+<div style="position:absolute;left:84px;top:560px"><div class="big">${s.changes}</div><div class="cap" style="margin-top:18px">${esc(t.cover.changes(s.changes))}</div></div>
+<div style="position:absolute;left:84px;top:900px"><div class="big" style="font-size:200px">${s.passports}</div><div class="cap" style="margin-top:14px">${esc(t.cover.passports(s.passports))}</div></div>
 <div class="note" style="bottom:100px">${esc(t.cover.swipe)}</div>`, pg()));
 
   const listSlide = (k, rows) => shell(tokens, lang, `
-<div class="eyebrow">${esc(t[k].eyebrow)}</div>
 <div class="title">${esc(t[k].title)}</div>
 ${rowsHtml(rows)}
 <div class="note">${esc(t[k].note)}</div>`, pg());
@@ -169,10 +162,9 @@ ${rowsHtml(rows)}
   slides.push(listSlide("dests", d.dests.map((x) => ({ ...x, value: String(x.n), unit: t.dests.unit(x.n) }))));
 
   slides.push(shell(tokens, lang, `
-<div class="eyebrow">${esc(t.close.eyebrow)}</div>
 <div class="title" style="font-size:84px;top:260px">${esc(t.close.lead)}</div>
-<div style="position:absolute;left:76px;right:76px;top:520px;font:700 58px/1.15 var(--font-mono);color:var(--ink);word-break:break-all">${esc(link)}</div>
-<div class="cap" style="position:absolute;left:76px;right:76px;top:780px;font-size:36px;color:var(--ink-3)">${esc(t.close.data(dateLabel(m.lastDate, lang)))}</div>
+<div class="link">${esc(link)}</div>
+<div class="cap" style="position:absolute;left:84px;right:84px;top:780px;font-size:36px;color:var(--ink-3)">${esc(t.close.data(dateLabel(m.lastDate, lang)))}</div>
 ${m.partial ? `<div class="note">${esc(t.close.partial)}</div>` : ""}`, pg()));
 
   return { slides, d, link, label };
@@ -218,13 +210,12 @@ function passportSlide(iso, lang, tokens, ranks) {
   const link = SITE + t.passportPath(iso);
   const date = String(DATA.SNAPSHOT_DATE || "").slice(0, 10);
   const html = shell(tokens, lang, `
-<div class="eyebrow">${esc(t.passport.eyebrow)} · ${iso}</div>
-<div style="position:absolute;left:76px;right:76px;top:250px"><div style="font-size:190px;line-height:1">${c.flag}</div>
+<div style="position:absolute;left:84px;right:84px;top:220px"><div style="font-size:190px;line-height:1">${c.flag}</div>
 <div class="title" style="position:static;margin-top:30px;font-size:${size}px">${esc(name)}</div></div>
-<div style="position:absolute;left:76px;top:700px"><div class="big" style="font-size:340px">${mob}</div>
+<div style="position:absolute;left:84px;top:690px"><div class="big" style="font-size:320px">${mob}</div>
 <div class="cap" style="margin-top:22px;max-width:900px">${esc(t.passport.label)}</div></div>
-${r ? `<div style="position:absolute;left:76px;top:1150px;font:600 34px var(--font-mono);letter-spacing:.04em;color:var(--ink-2)">${esc(t.passport.rankLine(r.rank, ranks.size))}</div>` : ""}
-<div class="note" style="bottom:100px;font-family:var(--font-mono)">${esc(link)}</div>`, "");
+${r ? `<div style="position:absolute;left:84px;top:1130px;font:500 36px var(--font-sans);color:var(--ink-2)">${esc(t.passport.rankLine(r.rank, ranks.size))}</div>` : ""}
+<div class="note" style="bottom:96px">${esc(link)}</div>`, "");
   return { html, link, name, mob, rank: r ? r.rank : null, total: ranks.size, date };
 }
 
@@ -297,11 +288,10 @@ function weekSlides(w, lang, tokens) {
   const pg = () => `${++i} / ${total}`;
   const slides = [];
   slides.push(shell(tokens, lang, `
-<div class="eyebrow">${esc(t.eyebrow)}</div>
 <div class="title" style="font-size:118px">${esc(t.title)}</div>
-<div class="cap" style="position:absolute;left:76px;top:560px;font-family:var(--font-mono);font-size:34px;color:var(--ink-3)">${esc(rangeLabel(w.start, w.end, lang))}</div>
-<div style="position:absolute;left:76px;top:680px"><div class="big" style="font-size:260px">${w.net.length}</div><div class="cap" style="margin-top:16px">${esc(t.changes(w.net.length))}</div></div>
-<div style="position:absolute;left:76px;top:1020px"><div class="big" style="font-size:170px">${w.passports}</div><div class="cap" style="margin-top:12px">${esc(t.passports(w.passports))}</div></div>`, pg()));
+<div class="cap" style="position:absolute;left:84px;top:560px;font-size:36px;color:var(--ink-3)">${esc(rangeLabel(w.start, w.end, lang))}</div>
+<div style="position:absolute;left:84px;top:680px"><div class="big" style="font-size:260px">${w.net.length}</div><div class="cap" style="margin-top:16px">${esc(t.changes(w.net.length))}</div></div>
+<div style="position:absolute;left:84px;top:1020px"><div class="big" style="font-size:170px">${w.passports}</div><div class="cap" style="margin-top:12px">${esc(t.passports(w.passports))}</div></div>`, pg()));
   for (const d of shown) {
     const rows = d.list.slice(0, d.list.length > 6 ? 5 : 6);
     const rest = d.list.length - rows.length;
@@ -309,14 +299,12 @@ function weekSlides(w, lang, tokens) {
       + (rest > 0 ? `<div class="row2"><span class="fl"></span><div class="tx"><div class="nm" style="color:var(--ink-3)">${esc(t.more(rest))}</div></div></div>` : "");
     const size = d.name.length <= 12 ? 100 : d.name.length <= 20 ? 80 : 64;
     slides.push(shell(tokens, lang, `
-<div class="eyebrow">${esc(t.eyebrow)}</div>
 <div class="title" style="font-size:${size}px;display:flex;align-items:center;gap:28px"><span style="line-height:1">${d.flag || ""}</span><span>${esc(d.name)}</span></div>
 <div class="rows" style="top:400px;gap:10px">${rh}</div>`, pg()));
   }
   slides.push(shell(tokens, lang, `
-<div class="eyebrow">${esc(t.eyebrow)}</div>
 <div class="title" style="font-size:96px;top:260px">${esc(t.close)}</div>
-<div style="position:absolute;left:76px;right:76px;top:560px;font:700 58px/1.15 var(--font-mono);color:var(--ink);word-break:break-all">${esc(link)}</div>
+<div class="link">${esc(link)}</div>
 <div class="note">${esc(t.partial)}</div>`, pg()));
   return { slides, link };
 }
@@ -351,7 +339,7 @@ function textSlides(spec, tokens) {
     return shell(tokens, lang, `
 ${sl.eyebrow ? `<div class="eyebrow">${esc(sl.eyebrow)}</div>` : ""}
 <div class="txt"><div class="ttl fit">${esc(sl.title)}</div>${sl.body ? `<div class="bd fit">${esc(sl.body)}</div>` : ""}</div>
-${sl.footer ? `<div class="note" style="bottom:100px">${esc(sl.footer)}</div>` : ""}`, total > 1 ? `${i + 1} / ${total}` : "");
+${sl.footer ? `<div class="note" style="bottom:96px">${esc(sl.footer)}</div>` : ""}`, "");
   });
 }
 

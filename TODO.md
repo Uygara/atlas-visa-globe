@@ -32,6 +32,7 @@
       4) Çıkan uzun anahtarı iki yere koy: GitHub → Settings → Secrets → Actions → `IG_TOKEN`, ve bilgisayarda
          `.secrets/instagram-token.txt`. Sonra bana "Instagram bağlandı" yaz; `node scripts/ig-publish.js --check`
          ile denerim. Şifre paylaşmana gerek yok.
+- [ ] **P1 · Yeni stildeki 4 Instagram gönderisini onayla**: `social/queue/` (24, 26, 28 Kasım, 5 Aralık); görseller yenilendiği için onay sıfırlandı.
 - [ ] **P2 · İkinci editör**: `docs/ONBOARDING.md` bölüm 1 (GitHub, GA, Search Console, Cloudflare davetleri).
 
 - [ ] **P1 · GitHub gizli anahtarı (2 dk)**: github.com/Uygara/atlas-visa-globe → Settings → Secrets and variables →

@@ -31,8 +31,8 @@ const { DATA, SNAPSHOT, LOC, computeRanks, passportName } = require("./generate-
 
 const OUT = path.join(ROOT, "assets", "og");
 const MANIFEST = path.join(OUT, "manifest.json");
-const TEMPLATE_VERSION = 4;   // passport cards
-const HOME_VERSION = 2;       // home cards
+const TEMPLATE_VERSION = 5;   // passport cards
+const HOME_VERSION = 3;       // home cards
 const FORCE = process.argv.includes("--force");
 const ONLY = process.argv.slice(2).filter((a) => /^[a-z]{2}$/i.test(a)).map((a) => a.toUpperCase());
 
@@ -41,8 +41,8 @@ const MONTHS = {
   tr: ["Oca", "Şub", "Mar", "Nis", "May", "Haz", "Tem", "Ağu", "Eyl", "Eki", "Kas", "Ara"],
 };
 const TXT = {
-  en: { eyebrow: "PASSPORT", rank: "GLOBAL RANK", evisa: (n) => `${n} counting eVisas`, updated: (m) => `Data · ${m}` },
-  tr: { eyebrow: "PASAPORT", rank: "DÜNYA SIRALAMASI", evisa: (n) => `e-Vize dahil ${n}`, updated: (m) => `Veri · ${m}` },
+  en: { rank: "Global rank", evisa: (n) => `${n} counting eVisas`, updated: (m) => `Data for ${m}` },
+  tr: { rank: "Dünya sıralaması", evisa: (n) => `e-Vize dahil ${n}`, updated: (m) => `${m} verisi` },
 };
 const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 
@@ -69,54 +69,44 @@ function facts(iso, lang, ranks) {
   return {
     iso, lang, flag: c.flag, name: passportName(iso, lang),
     mob: DATA.mobilityScore(t), acc: DATA.accessScore(t), rank: r ? r.rank : null,
-    counts: DATA.tally(iso), mrz: DATA.mrzLines(iso),
+    counts: DATA.tally(iso),
     month: m ? `${MONTHS[lang][Number(m) - 1]} ${y}` : "",
   };
 }
 
 const STATUS_ORDER = ["idc", "vf", "eta", "ev", "voa", "vr", "ban"];
-const nameSize = (s) => (s.length <= 9 ? 150 : s.length <= 14 ? 124 : s.length <= 22 ? 96 : 74);
+const nameSize = (s) => (s.length <= 9 ? 124 : s.length <= 14 ? 104 : s.length <= 22 ? 84 : 66);
 
 function cardHtml(f, tokensCss) {
   const L = TXT[f.lang], S = LOC[f.lang];
   const bar = STATUS_ORDER.filter((s) => f.counts[s] > 0)
     .map((s) => `<i style="flex:${f.counts[s]} 0 0;background:var(--${s})"></i>`).join("");
   return `<!doctype html><html lang="${f.lang}"><head><meta charset="utf-8">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@400..700&family=Sofia+Sans+Extra+Condensed:wght@600..850&family=DM+Mono:wght@400;500&display=swap">
 <style>${tokensCss}
 html,body{margin:0;width:1200px;height:630px;overflow:hidden;background:var(--paper)}
 .card{position:relative;width:1200px;height:630px;box-sizing:border-box;background:var(--paper);color:var(--ink);font-family:var(--font-sans)}
-.edge{position:absolute;inset:16px;border:2px solid var(--rule-strong)}
-.edge::after{content:"";position:absolute;inset:6px;border:1px solid var(--rule)}
-.top{position:absolute;left:52px;right:52px;top:44px;display:flex;justify-content:space-between;align-items:center}
-.brand{display:flex;align-items:center;gap:12px;font:800 38px/1 var(--font-display);letter-spacing:.005em;color:var(--ink)}
-.brand svg{width:38px;height:38px}
-.brand .tld{font:500 22px var(--font-mono);color:var(--ink-3);letter-spacing:0}
-.band{font:500 15px var(--font-mono);letter-spacing:.2em;color:var(--ink-4)}
-.eyebrow{position:absolute;left:56px;top:116px;font:500 21px var(--font-mono);letter-spacing:.2em;color:var(--ink-3)}
-.idrow{position:absolute;left:56px;top:142px;width:770px;display:flex;align-items:center;gap:26px}
-.flag{font-size:118px;line-height:1;flex:none}
-.name{font:850 ${nameSize(f.name)}px/.9 var(--font-display);letter-spacing:-.005em;color:var(--ink)}
-.score{position:absolute;left:56px;top:318px;display:flex;align-items:center;gap:30px}
-.n{font:850 236px/.78 var(--font-display);color:var(--ink);letter-spacing:-.01em}
-.cap{font:500 33px/1.2 var(--font-sans);color:var(--ink-2);max-width:470px}
-.sub{display:block;margin-top:12px;font:500 24px var(--font-mono);color:var(--ink-3);letter-spacing:.02em}
-.stamp{position:absolute;right:66px;top:150px;transform:rotate(-4deg);padding:16px 30px 12px;text-align:center;
-  border:5px solid var(--accent);outline:2px solid var(--accent);outline-offset:5px;border-radius:6px;color:var(--accent)}
-.stamp b{display:block;font:850 118px/.95 var(--font-display);letter-spacing:.01em}
-.stamp span{display:block;font:600 17px var(--font-mono);letter-spacing:.18em;margin-bottom:4px}
-.mrz{position:absolute;left:56px;bottom:82px;font:500 22px/1.3 var(--font-mono);letter-spacing:.09em;color:var(--ink-4);white-space:pre}
-.month{position:absolute;right:56px;bottom:88px;font:500 19px var(--font-mono);letter-spacing:.1em;color:var(--ink-3)}
-.bar{position:absolute;left:34px;right:34px;bottom:34px;height:22px;display:flex;gap:3px}
-.bar i{display:block;border-radius:2px}
+.top{position:absolute;left:64px;right:64px;top:52px;display:flex;align-items:center}
+.brand{display:flex;align-items:center;gap:12px;font:650 34px/1 var(--font-display);letter-spacing:-.01em;color:var(--ink)}
+.brand svg{width:34px;height:34px}
+.brand .tld{font-weight:500;color:var(--ink-3)}
+.idrow{position:absolute;left:64px;top:132px;width:760px;display:flex;align-items:center;gap:24px}
+.flag{font-size:100px;line-height:1;flex:none}
+.name{font:700 ${nameSize(f.name)}px/1 var(--font-display);letter-spacing:-.025em;color:var(--ink)}
+.score{position:absolute;left:64px;top:318px;display:flex;align-items:center;gap:28px}
+.n{font:700 180px/.85 var(--font-display);letter-spacing:-.04em;color:var(--ink)}
+.cap{font:500 30px/1.25 var(--font-sans);color:var(--ink-2);max-width:460px}
+.sub{display:block;margin-top:10px;font:500 24px/1.2 var(--font-sans);color:var(--ink-3)}
+.rank{position:absolute;right:64px;top:140px;text-align:right}
+.rank span{display:block;font:500 24px/1.2 var(--font-sans);color:var(--ink-3)}
+.rank b{display:block;margin-top:6px;font:700 104px/1 var(--font-display);letter-spacing:-.03em;color:var(--ink)}
+.month{position:absolute;right:64px;bottom:96px;font:500 22px var(--font-sans);color:var(--ink-3)}
+.bar{position:absolute;left:64px;right:64px;bottom:56px;height:14px;display:flex;border-radius:7px;overflow:hidden}
+.bar i{display:block}
 </style></head><body><div class="card">
-<div class="edge"></div>
-<div class="top"><div class="brand">${BRAND_MARK}<span>travelnow<span class="tld">.info</span></span></div><div class="band">${esc(S.docBand)}</div></div>
-<div class="eyebrow">${esc(L.eyebrow)} · ${f.iso}</div>
+<div class="top"><div class="brand">${BRAND_MARK}<span>travelnow<span class="tld">.info</span></span></div></div>
 <div class="idrow"><span class="flag">${f.flag}</span><span class="name">${esc(f.name)}</span></div>
 <div class="score"><span class="n">${f.mob}</span><div class="cap">${esc(S.scoreLabel)}${f.acc > f.mob ? `<span class="sub">${esc(L.evisa(f.acc))}</span>` : ""}</div></div>
-${f.rank ? `<div class="stamp"><span>${esc(L.rank)}</span><b>#${f.rank}</b></div>` : ""}
-<div class="mrz">${esc(f.mrz[0])}\n${esc(f.mrz[1])}</div>
+${f.rank ? `<div class="rank"><span>${esc(L.rank)}</span><b>${f.rank}.</b></div>` : ""}
 <div class="month">${esc(L.updated(f.month))}</div>
 <div class="bar">${bar}</div>
 </div></body></html>`;
@@ -125,14 +115,12 @@ ${f.rank ? `<div class="stamp"><span>${esc(L.rank)}</span><b>#${f.rank}</b></div
 // The home card: the site's pitch in the passport-page language of the other 400.
 const HOME = {
   en: {
-    eyebrow: "VISA REQUIREMENTS · 200+ PASSPORTS",
     head: "Where can your passport take you?",
-    sub: "Every country coloured by what you need to enter today. Free, no signup, refreshed daily from public sources.",
+    sub: "Every country coloured by what you need to enter today, for more than 200 passports.",
   },
   tr: {
-    eyebrow: "VİZE GEREKLİLİKLERİ · 200+ PASAPORT",
     head: "Pasaportun seni nereye götürebilir?",
-    sub: "Her ülke, bugün girmek için ihtiyacın olana göre renkli. Ücretsiz, üyelik yok, kamuya açık kaynaklardan her gün yenilenir.",
+    sub: "200'den fazla pasaport için her ülke, bugün girmek için neye ihtiyacın olduğuna göre renklendirildi.",
   },
 };
 const HOME_STATUSES = ["vf", "eta", "ev", "voa", "vr"];
@@ -140,35 +128,23 @@ const HOME_STATUSES = ["vf", "eta", "ev", "voa", "vr"];
 function homeHtml(lang, tokensCss) {
   const H = HOME[lang], S = LOC[lang];
   const chips = HOME_STATUSES.map((s) => `<span class="chip"><i style="background:var(--${s})"></i>${esc(S.status[s])}</span>`).join("");
-  const bar = HOME_STATUSES.map((s) => `<i style="flex:1 0 0;background:var(--${s})"></i>`).join("");
   return `<!doctype html><html lang="${lang}"><head><meta charset="utf-8">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sofia+Sans:wght@400..700&family=Sofia+Sans+Extra+Condensed:wght@600..850&family=DM+Mono:wght@400;500&display=swap">
 <style>${tokensCss}
 html,body{margin:0;width:1200px;height:630px;overflow:hidden;background:var(--paper)}
-.card{position:relative;width:1200px;height:630px;background:var(--paper);color:var(--ink);font-family:var(--font-sans)}
-.edge{position:absolute;inset:16px;border:2px solid var(--rule-strong)}
-.edge::after{content:"";position:absolute;inset:6px;border:1px solid var(--rule)}
-.top{position:absolute;left:52px;right:52px;top:44px;display:flex;justify-content:space-between;align-items:center}
-.brand{display:flex;align-items:center;gap:14px;font:800 46px/1 var(--font-display);color:var(--ink)}
-.brand svg{width:46px;height:46px}
-.brand .tld{font:500 26px var(--font-mono);color:var(--ink-3)}
-.band{font:500 15px var(--font-mono);letter-spacing:.2em;color:var(--ink-4)}
-.eyebrow{position:absolute;left:56px;top:150px;font:500 22px var(--font-mono);letter-spacing:.2em;color:var(--ink-3)}
-.head{position:absolute;left:56px;top:182px;width:1000px;font:850 108px/.92 var(--font-display);letter-spacing:-.005em;color:var(--ink)}
-.sub{position:absolute;left:56px;top:396px;width:900px;font:500 28px/1.3 var(--font-sans);color:var(--ink-2)}
-.chips{position:absolute;left:56px;bottom:100px;display:flex;gap:26px;font:600 20px var(--font-mono);letter-spacing:.02em;color:var(--ink-2)}
-.chip{display:flex;align-items:center;gap:9px}.chip i{width:20px;height:20px;border-radius:3px;display:block}
-.mrz{position:absolute;right:56px;top:178px;text-align:right}
-.bar{position:absolute;left:34px;right:34px;bottom:34px;height:22px;display:flex;gap:3px}
-.bar i{display:block;border-radius:2px}
+.card{position:relative;width:1200px;height:630px;box-sizing:border-box;background:var(--paper);color:var(--ink);font-family:var(--font-sans)}
+.top{position:absolute;left:64px;right:64px;top:52px;display:flex;align-items:center}
+.brand{display:flex;align-items:center;gap:12px;font:650 34px/1 var(--font-display);letter-spacing:-.01em;color:var(--ink)}
+.brand svg{width:34px;height:34px}
+.brand .tld{font-weight:500;color:var(--ink-3)}
+.head{position:absolute;left:64px;top:150px;width:1000px;font:700 92px/1.02 var(--font-display);letter-spacing:-.03em;color:var(--ink)}
+.sub{position:absolute;left:64px;top:372px;width:900px;font:500 30px/1.35 var(--font-sans);color:var(--ink-2)}
+.chips{position:absolute;left:64px;bottom:64px;display:flex;gap:28px;font:500 22px var(--font-sans);color:var(--ink-2)}
+.chip{display:flex;align-items:center;gap:10px}.chip i{width:18px;height:18px;border-radius:5px;display:block}
 </style></head><body><div class="card">
-<div class="edge"></div>
-<div class="top"><div class="brand">${BRAND_MARK}<span>travelnow<span class="tld">.info</span></span></div><div class="band">${esc(S.docBand)}</div></div>
-<div class="eyebrow">${esc(H.eyebrow)}</div>
+<div class="top"><div class="brand">${BRAND_MARK}<span>travelnow<span class="tld">.info</span></span></div></div>
 <div class="head">${esc(H.head)}</div>
 <div class="sub">${esc(H.sub)}</div>
 <div class="chips">${chips}</div>
-<div class="bar">${bar}</div>
 </div></body></html>`;
 }
 
@@ -195,7 +171,7 @@ async function main() {
   for (const lang of ["en", "tr"]) {
     if (ONLY.length) break;
     const file = `home-${lang}.png`;
-    const sig = crypto.createHash("sha1").update(JSON.stringify([HOME_VERSION, "home", HOME[lang], LOC[lang].status, LOC[lang].docBand])).digest("hex").slice(0, 12);
+    const sig = crypto.createHash("sha1").update(JSON.stringify([HOME_VERSION, "home", HOME[lang], LOC[lang].status])).digest("hex").slice(0, 12);
     if (!FORCE && manifest[file] === sig && fs.existsSync(path.join(OUT, file))) continue;
     todo.push({ home: lang, file, sig });
   }
