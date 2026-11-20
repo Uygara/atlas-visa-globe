@@ -93,7 +93,7 @@ Durum: `açık` · `sürüyor` · `bekliyor: <neyi>` · `bitti <hash>`
 - **A3 · Paylaşılabilir sonuç kartları** · açık · Pasaport → ülke sonucu için görsel kart ve kısa bağlantı.
 - **A4 · Instagram içerik hattı** · kısmen bitti (`scripts/social-cards.js`, aylık carousel + pasaport kartı) · Her hafta `changelog`dan otomatik gönderi taslakları (görsel + metin,
   EN + TR) `content/instagram/<tarih>/` klasörüne. Paylaşımı insan yapar.
-- **A5 · Pasaport başına değişiklik akışı (RSS/JSON)** · açık · `/passport/<kod>/feed.xml`.
+- **A5 · Pasaport başına değişiklik akışı (RSS/JSON)** · açık · `/passport/<kod>/feed.xml`. [üzerinde: Uygar, 2026-11-21]
 
 ## Değerlendirilecek
 
