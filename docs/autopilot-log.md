@@ -14,7 +14,9 @@ Newest run first. Each entry 10 lines or fewer. Playbook: `docs/AUTOPILOT.md`.
 - Walk: 56 visits, 0 errors. audit-pages 0 errors / 10 warnings (og:image, unchanged).
 - Shipped: 3ed2eecf8 phone tap targets on country lists (/visa/<cc>/ 204 → 4, /passport/ 200 → 0;
   site.css + stamp 20261120a) → metric: phone engaged %. D6 step 1 `/embed/` + `/open-data/` snippet (next commit)
-  → referral sessions with `utm_source=embed`.
+  → referral sessions with `utm_source=embed` (9fa94d0c9). ec883fb57: Workers Builds had failed since 20defbb87
+  ("Asset too large", .git pack read as an asset); `.assetsignore` now skips .git/node_modules. Live again, walk clean.
+  After each push, check the "Workers Builds" check run, not only the site.
 - Found, left: on macOS the walk's `--lang en-US` is ignored (system locale wins), so EN pages rendered Turkish; set
   `navigator.language` + Accept-Language in `tools/user-walk.js`. ux-walker doubts to verify with `visa-data-auditor`:
   CY→TR eVisa, IN→MV 90 days visa-free. Three UX ideas added to ROADMAP "Değerlendirilecek".
