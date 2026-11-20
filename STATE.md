@@ -83,6 +83,9 @@ EN in those four (engine ready — just add dict entries).
   Reg. 2018/1806; notice 2023/C 340/09). `tools/team-log.js` at session start summarises the other editor's commits.
   A5 done: `/passport/<cc>/feed.xml` (EN + TR) from changelog, only entries the map still shows (D9 opened).
   Gotcha: the app resets `atlas.variant` to ordinary on load, so UI tests must press the passport-type button.
+  D9 done: computeChangelog uses the passport default for unlisted destinations; `reconcile()` drops broken chains
+  after every scrape (322 → 310). UK visa nationals (official list) floored to vr for GB: IN/UA/MD/AL/LK/BD read ETA.
+  Gotcha: `apply-chrome.js` once hung for 8 min inside a long `&&` chain; alone it takes 20 s. Run steps one by one.
 
 - **Round 20 (2026-11-19/20: Turkish data tables, Singapore transit fix):**
   /tr/ nomad, CBI, shortcuts, passport-validity and tr-schengen checklist pages now render their tables in Turkish.
