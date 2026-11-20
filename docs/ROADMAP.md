@@ -96,10 +96,12 @@ Durum: `açık` · `sürüyor` · `bekliyor: <neyi>` · `bitti <hash>`
 - **A5 · Pasaport başına değişiklik akışı (RSS/JSON)** · bitti (2026-11-21) · `/passport/<kod>/feed.xml` ve
   `/tr/passport/<kod>/feed.xml`, `generate-seo.js` her gün yeniden yazar; pasaport sayfasında bağlantı ve
   `<link rel="alternate">`. Yalnızca haritanın hâlâ gösterdiği değişiklikler girer.
-- **D9 · Changelog'da geri dönmüş kayıtlar** · açık · 322 kaydın 21'i bugünkü durumla uyuşmuyor (örnek: ABD → Letonya
-  9 Ekim'de "vize gerekli" kaydı, bugün vizesiz). Sebep: varsayılan duruma geri dönüş günlüğe yazılmıyor, ETA ve
-  elle düzeltmeler ham veriden farklı. Ülke kartındaki "Son değişiklikler" bunları hâlâ gösteriyor. Düzeltme
-  `backend/scraper.js` computeChangelog içinde.
+- **D9 · Changelog'da geri dönmüş kayıtlar** · bitti (2026-11-21) · `computeChangelog` listede olmayan ülkeyi "vr"
+  sayıyordu, oysa pasaportun varsayılanı (ABD: vizesiz) geçerli; ABD → Letonya gibi olmayan değişiklikler yazıldı.
+  Artık varsayılan kullanılıyor; her çalıştırmada `reconcile()` en yeni kaydı veriyle ve haritanın gösterdiğiyle
+  uyuşmayan çiftleri siliyor (322 → 310). Test: `node backend/test-changelog.js`. Bu sırada bulunan veri hatası:
+  Hindistan, Ukrayna, Moldova, Arnavutluk, Sri Lanka ve Bangladeş Birleşik Krallık için "ETA" görünüyordu; resmî
+  vize vatandaşı listesine göre vize gerekli (`UK_VISA_NATIONALS`, `data/visa-overrides.js`).
 
 ## Değerlendirilecek
 

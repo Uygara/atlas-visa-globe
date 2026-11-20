@@ -183,9 +183,26 @@ window.entryCaveat = function (destIso2, status) {
 // pure DISPLAY relabel keyed on the destination — no re-scrape, no invented data:
 // the scraper already determined WHICH passports get the electronic option.
 window.ETA_DESTS = { US: 1, CA: 1, AU: 1, NZ: 1, GB: 1 };
-window.applyEtaDisplay = function (r, destIso2) {
+// UK visa nationals need entry clearance (a visa) before any visit, so they cannot
+// use the UK ETA. Wikipedia now writes "eVisa" for them (UK visas are issued as digital
+// eVisas), which the relabel above turned into ETA: India, Ukraine, Moldova, Albania,
+// Sri Lanka and Bangladesh read "ETA" until 2026-11-21. Source: Immigration Rules
+// Appendix Visitor: Visa National List, VN 1.1(a), updated 29 October 2026,
+// https://www.gov.uk/guidance/immigration-rules/immigration-rules-appendix-visitor-visa-national-list
+// Left out on purpose (VN 2.2 exceptions): Taiwan (passport with ID number), Nicaragua and
+// St Lucia (exception with an ETA). Hong Kong and Macao are separate codes.
+window.UK_VISA_NATIONALS = new Set([
+  "AF","AL","AM","AO","AZ","BA","BD","BF","BI","BJ","BO","BT","BW","BY","CD","CF","CG","CI","CM","CN",
+  "CO","CU","CV","DJ","DM","DO","DZ","EC","EG","ER","ET","FJ","GA","GE","GH","GM","GN","GQ","GW","HN",
+  "HT","ID","IN","IQ","IR","JM","JO","KE","KG","KH","KM","KP","KZ","LA","LB","LK","LR","LS","LY","MA",
+  "MD","ME","MG","MK","ML","MM","MN","MR","MW","MZ","NA","NE","NG","NP","NR","PH","PK","PS","RS","RU",
+  "RW","SD","SL","SN","SO","SR","SS","ST","SV","SY","SZ","TD","TG","TH","TJ","TL","TM","TN","TR","TT",
+  "TZ","UA","UG","UZ","VE","VN","VU","XK","YE","ZA","ZM","ZW",
+]);
+window.applyEtaDisplay = function (r, destIso2, passportIso2) {
   if (!r || r.status !== "ev") return r;
   const d = (window.TERRITORY_ALIAS && window.TERRITORY_ALIAS[destIso2]) || destIso2;
+  if (d === "GB" && passportIso2 && window.UK_VISA_NATIONALS.has(passportIso2)) return { ...r, status: "vr", days: null };
   if (window.ETA_DESTS[d] || window.ETA_DESTS[destIso2]) return { ...r, status: "eta" };
   return r;
 };

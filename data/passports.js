@@ -72425,7 +72425,7 @@ window._resolveStatusBase = function(passportIso2, destIso2) {
 // go through here, so they inherit the relabel.
 window.resolveStatus = function(passportIso2, destIso2) {
   let r = window._resolveStatusBase(passportIso2, destIso2);
-  if (window.applyEtaDisplay) r = window.applyEtaDisplay(r, destIso2);
+  if (window.applyEtaDisplay) r = window.applyEtaDisplay(r, destIso2, passportIso2);
   // ID-card travel (EEA / GCC / Mercosur / Western Balkans / TR bilaterals) — a
   // visa-free result becomes `idc` so "go on your ID card" gets its own colour.
   if (window.applyIdcDisplay) r = window.applyIdcDisplay(r, passportIso2, destIso2);

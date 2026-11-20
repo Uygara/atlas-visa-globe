@@ -65,7 +65,7 @@ rank,passport_iso2,passport_name,no_advance_visa_count,easy_access_count,idc_cou
 64,MU,Mauritius,115,162,0,98,3,47,14,43,0
 65,VA,Vatican City,114,170,0,99,4,56,11,35,0
 66,DM,Dominica,114,167,0,98,0,53,16,38,0
-67,UA,Ukraine,112,178,1,89,4,66,18,27,0
+67,UA,Ukraine,110,176,1,89,2,66,18,29,0
 68,GT,Guatemala,110,151,0,85,2,41,23,54,0
 69,LC,Saint Lucia,109,160,0,93,0,51,16,45,0
 70,RS,Serbia,108,169,5,86,1,61,16,36,0
@@ -77,12 +77,12 @@ rank,passport_iso2,passport_name,no_advance_visa_count,easy_access_count,idc_cou
 76,TV,Tuvalu,104,162,0,85,3,58,16,43,0
 77,HN,Honduras,104,148,0,84,0,44,20,57,0
 78,CO,Colombia,102,164,8,82,0,62,12,41,0
-79,MD,Moldova,101,163,0,81,4,62,16,42,0
 79,SV,El Salvador,101,163,0,86,0,62,15,42,0
-81,KI,Kiribati,101,158,0,82,2,57,17,47,0
-81,TO,Tonga,101,158,0,84,2,57,15,47,0
-83,AL,Albania,100,166,5,78,5,66,12,39,0
-84,MH,Marshall Islands,99,160,0,80,2,61,17,45,0
+80,KI,Kiribati,101,158,0,82,2,57,17,47,0
+80,TO,Tonga,101,158,0,84,2,57,15,47,0
+82,MD,Moldova,99,161,0,81,2,62,16,44,0
+83,MH,Marshall Islands,99,160,0,80,2,61,17,45,0
+84,AL,Albania,98,164,5,78,3,66,12,41,0
 85,ME,Montenegro,97,165,5,79,1,68,12,40,0
 86,MK,North Macedonia,96,162,5,76,1,66,14,43,0
 87,RU,Russia,95,145,0,81,2,50,12,53,7
@@ -152,13 +152,13 @@ rank,passport_iso2,passport_name,no_advance_visa_count,easy_access_count,idc_cou
 151,TD,Chad,43,97,0,27,1,54,15,106,2
 152,GN,Guinea,42,100,0,29,0,58,13,105,0
 152,MG,Madagascar,42,100,0,28,0,58,14,105,0
-154,IN,India,41,112,0,27,3,71,11,93,0
-155,GW,Guinea-Bissau,41,96,0,29,0,55,12,109,0
-155,MR,Mauritania,41,96,0,27,0,55,14,109,0
-157,KG,Kyrgyzstan,40,100,0,26,0,60,14,105,0
-158,AO,Angola,40,98,0,28,0,58,12,107,0
-159,ML,Mali,40,96,0,30,1,56,9,109,0
-160,CM,Cameroon,40,95,0,23,1,55,16,110,0
+154,GW,Guinea-Bissau,41,96,0,29,0,55,12,109,0
+154,MR,Mauritania,41,96,0,27,0,55,14,109,0
+156,KG,Kyrgyzstan,40,100,0,26,0,60,14,105,0
+157,AO,Angola,40,98,0,28,0,58,12,107,0
+158,ML,Mali,40,96,0,30,1,56,9,109,0
+159,CM,Cameroon,40,95,0,23,1,55,16,110,0
+160,IN,India,39,110,0,27,1,71,11,95,0
 161,JO,Jordan,39,102,0,25,1,63,13,103,0
 161,TJ,Tajikistan,39,102,0,22,1,63,16,103,0
 163,DZ,Algeria,39,100,0,25,0,61,14,105,0
@@ -181,12 +181,12 @@ rank,passport_iso2,passport_name,no_advance_visa_count,easy_access_count,idc_cou
 180,CD,Democratic Republic of the Congo,31,86,0,19,1,55,11,119,0
 181,LA,Laos,30,86,0,21,0,56,9,119,0
 182,LB,Lebanon,28,97,0,17,1,69,10,108,0
-183,LK,Sri Lanka,28,91,0,17,3,63,8,114,0
-184,MM,Myanmar,28,89,0,17,0,61,11,116,0
-185,BD,Bangladesh,28,84,0,16,4,56,8,119,2
-186,TM,Turkmenistan,27,97,0,13,0,70,14,108,0
-187,LY,Libya,27,94,0,15,1,67,11,111,0
-188,ER,Eritrea,27,82,0,13,0,55,14,121,2
+183,MM,Myanmar,28,89,0,17,0,61,11,116,0
+184,TM,Turkmenistan,27,97,0,13,0,70,14,108,0
+185,LY,Libya,27,94,0,15,1,67,11,111,0
+186,ER,Eritrea,27,82,0,13,0,55,14,121,2
+187,LK,Sri Lanka,26,89,0,17,1,63,8,116,0
+188,BD,Bangladesh,26,82,0,16,2,56,8,121,2
 189,HT,Haiti,25,95,0,12,0,70,13,110,0
 190,SO,Somalia,25,81,0,12,0,56,13,123,1
 191,PS,Palestine,24,100,0,11,1,76,12,104,1

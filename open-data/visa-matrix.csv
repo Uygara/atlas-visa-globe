@@ -1005,7 +1005,7 @@ AL,Albania,TV,Tuvalu,voa,30
 AL,Albania,UG,Uganda,ev,90
 AL,Albania,UA,Ukraine,vf,90
 AL,Albania,AE,United Arab Emirates,vf,180
-AL,Albania,GB,United Kingdom,eta,
+AL,Albania,GB,United Kingdom,vr,
 AL,Albania,US,United States,vr,
 AL,Albania,UY,Uruguay,vr,
 AL,Albania,UZ,Uzbekistan,ev,30
@@ -1022,7 +1022,7 @@ AL,Albania,EH,Western Sahara,vf,90
 AL,Albania,GL,Greenland,vf,90
 AL,Albania,NC,New Caledonia,vf,90
 AL,Albania,PF,French Polynesia,vf,90
-AL,Albania,FK,Falkland Islands,eta,
+AL,Albania,FK,Falkland Islands,vr,
 AL,Albania,PR,Puerto Rico,vr,
 AM,Armenia,AF,Afghanistan,ev,30
 AM,Armenia,AL,Albania,vf,90
@@ -2850,7 +2850,7 @@ BD,Bangladesh,TV,Tuvalu,voa,30
 BD,Bangladesh,UG,Uganda,ev,90
 BD,Bangladesh,UA,Ukraine,vr,
 BD,Bangladesh,AE,United Arab Emirates,vr,
-BD,Bangladesh,GB,United Kingdom,eta,
+BD,Bangladesh,GB,United Kingdom,vr,
 BD,Bangladesh,US,United States,vr,
 BD,Bangladesh,UY,Uruguay,vr,
 BD,Bangladesh,UZ,Uzbekistan,vr,
@@ -2867,7 +2867,7 @@ BD,Bangladesh,EH,Western Sahara,vr,
 BD,Bangladesh,GL,Greenland,vr,
 BD,Bangladesh,NC,New Caledonia,vr,
 BD,Bangladesh,PF,French Polynesia,vr,
-BD,Bangladesh,FK,Falkland Islands,eta,
+BD,Bangladesh,FK,Falkland Islands,vr,
 BD,Bangladesh,PR,Puerto Rico,vr,
 BE,Belgium,AF,Afghanistan,ev,30
 BE,Belgium,AL,Albania,vf,90
@@ -16380,7 +16380,7 @@ IN,India,TV,Tuvalu,voa,30
 IN,India,UG,Uganda,ev,90
 IN,India,UA,Ukraine,ev,30
 IN,India,AE,United Arab Emirates,vr,
-IN,India,GB,United Kingdom,eta,
+IN,India,GB,United Kingdom,vr,
 IN,India,US,United States,vr,
 IN,India,UY,Uruguay,vr,
 IN,India,UZ,Uzbekistan,ev,30
@@ -16397,7 +16397,7 @@ IN,India,EH,Western Sahara,ev,30
 IN,India,GL,Greenland,vr,
 IN,India,NC,New Caledonia,vr,
 IN,India,PF,French Polynesia,vr,
-IN,India,FK,Falkland Islands,eta,
+IN,India,FK,Falkland Islands,vr,
 IN,India,PR,Puerto Rico,vr,
 IQ,Iraq,AF,Afghanistan,ev,
 IQ,Iraq,AL,Albania,ev,
@@ -20890,7 +20890,7 @@ LK,Sri Lanka,TV,Tuvalu,voa,30
 LK,Sri Lanka,UG,Uganda,ev,90
 LK,Sri Lanka,UA,Ukraine,vr,
 LK,Sri Lanka,AE,United Arab Emirates,vr,
-LK,Sri Lanka,GB,United Kingdom,eta,
+LK,Sri Lanka,GB,United Kingdom,vr,
 LK,Sri Lanka,US,United States,vr,
 LK,Sri Lanka,UY,Uruguay,vr,
 LK,Sri Lanka,UZ,Uzbekistan,ev,30
@@ -20907,7 +20907,7 @@ LK,Sri Lanka,EH,Western Sahara,vr,
 LK,Sri Lanka,GL,Greenland,vr,
 LK,Sri Lanka,NC,New Caledonia,vr,
 LK,Sri Lanka,PF,French Polynesia,vr,
-LK,Sri Lanka,FK,Falkland Islands,eta,
+LK,Sri Lanka,FK,Falkland Islands,vr,
 LK,Sri Lanka,PR,Puerto Rico,vr,
 LR,Liberia,AF,Afghanistan,ev,30
 LR,Liberia,AL,Albania,ev,
@@ -22735,7 +22735,7 @@ MD,Moldova,TV,Tuvalu,voa,30
 MD,Moldova,UG,Uganda,ev,90
 MD,Moldova,UA,Ukraine,vf,90
 MD,Moldova,AE,United Arab Emirates,vf,90
-MD,Moldova,GB,United Kingdom,eta,
+MD,Moldova,GB,United Kingdom,vr,
 MD,Moldova,US,United States,vr,
 MD,Moldova,UY,Uruguay,vr,
 MD,Moldova,UZ,Uzbekistan,vf,90
@@ -22752,7 +22752,7 @@ MD,Moldova,EH,Western Sahara,vr,
 MD,Moldova,GL,Greenland,vf,90
 MD,Moldova,NC,New Caledonia,vf,90
 MD,Moldova,PF,French Polynesia,vf,90
-MD,Moldova,FK,Falkland Islands,eta,
+MD,Moldova,FK,Falkland Islands,vr,
 MD,Moldova,PR,Puerto Rico,vr,
 ME,Montenegro,AF,Afghanistan,ev,30
 ME,Montenegro,AL,Albania,idc,90
@@ -37700,7 +37700,7 @@ UA,Ukraine,TM,Turkmenistan,vr,
 UA,Ukraine,TV,Tuvalu,voa,30
 UA,Ukraine,UG,Uganda,ev,90
 UA,Ukraine,AE,United Arab Emirates,vf,30
-UA,Ukraine,GB,United Kingdom,eta,
+UA,Ukraine,GB,United Kingdom,vr,
 UA,Ukraine,US,United States,vr,
 UA,Ukraine,UY,Uruguay,vf,90
 UA,Ukraine,UZ,Uzbekistan,vf,90
@@ -37717,7 +37717,7 @@ UA,Ukraine,EH,Western Sahara,vr,
 UA,Ukraine,GL,Greenland,vf,90
 UA,Ukraine,NC,New Caledonia,vf,90
 UA,Ukraine,PF,French Polynesia,vf,90
-UA,Ukraine,FK,Falkland Islands,eta,
+UA,Ukraine,FK,Falkland Islands,vr,
 UA,Ukraine,PR,Puerto Rico,vr,
 UG,Uganda,AF,Afghanistan,ev,30
 UG,Uganda,AL,Albania,ev,

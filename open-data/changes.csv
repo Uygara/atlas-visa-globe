@@ -32,7 +32,6 @@ date,passport_iso2,destination_iso2,from,to
 2026-10-29,BW,ID,vr,ev
 2026-10-29,BW,GW,vr,voa
 2026-10-28,LV,KR,vr,ev
-2026-10-28,KW,KN,ev,vr
 2026-10-26,CN,KH,vf,ev
 2026-10-24,IR,PH,vr,ev
 2026-10-24,SI,GW,ev,voa
@@ -53,7 +52,6 @@ date,passport_iso2,destination_iso2,from,to
 2026-10-19,LY,NI,vr,ev
 2026-10-19,LY,PG,vr,ev
 2026-10-19,LY,PH,vr,ev
-2026-10-18,IN,GB,vr,ev
 2026-10-17,GE,TM,vr,ev
 2026-10-17,AM,TH,ev,vr
 2026-10-17,PA,TM,vr,ev
@@ -76,18 +74,15 @@ date,passport_iso2,destination_iso2,from,to
 2026-10-12,YE,TM,vr,ev
 2026-10-12,SD,TM,vr,ev
 2026-10-12,NI,TM,vr,ev
-2026-10-09,US,LV,vf,vr
 2026-10-09,ME,SB,vr,ev
 2026-10-09,PA,TH,vf,vr
 2026-10-05,AE,GH,voa,ev
 2026-10-05,DK,TM,vr,ev
-2026-10-05,HR,NI,ev,vr
 2026-10-05,CN,TM,vr,ev
 2026-10-05,IR,TM,vr,ev
 2026-10-04,KZ,ME,vf,vr
 2026-10-04,KZ,EG,ev,vr
 2026-10-03,CA,TM,vr,ev
-2026-10-03,MD,PE,vf,vr
 2026-10-03,MD,BO,ev,vr
 2026-10-03,MD,CG,ev,vr
 2026-10-03,MD,LS,ev,vr
@@ -105,7 +100,6 @@ date,passport_iso2,destination_iso2,from,to
 2026-10-03,MD,SB,vr,ev
 2026-10-03,MD,ZA,vr,ev
 2026-10-03,MD,TT,vr,ev
-2026-10-03,MD,GB,vr,ev
 2026-10-03,MD,AM,vr,vf
 2026-10-03,MD,KG,vr,vf
 2026-10-03,MD,QA,vr,ev
@@ -156,13 +150,11 @@ date,passport_iso2,destination_iso2,from,to
 2026-09-06,MY,LY,ev,vf
 2026-09-05,UA,BO,ev,vr
 2026-09-05,UA,AO,vr,ev
-2026-09-02,IL,CO,ev,vr
 2026-09-02,MV,BR,vf,vr
 2026-09-01,AL,IE,vr,ev
 2026-09-01,MA,SG,vr,ev
 2026-09-01,CO,IL,vr,ev
 2026-08-31,TW,KI,vr,ban
-2026-08-31,TW,KE,ban,vr
 2026-08-31,TW,VE,vr,ban
 2026-08-30,CA,CR,vr,vf
 2026-08-30,CA,GM,vr,vf
@@ -181,8 +173,6 @@ date,passport_iso2,destination_iso2,from,to
 2026-08-05,ET,IQ,ev,vr
 2026-08-05,ET,LY,ev,vr
 2026-08-05,ET,SY,ev,vr
-2026-08-05,ET,CU,vr,ev
-2026-07-31,UA,GB,vr,ev
 2026-07-28,BD,KN,vf,ev
 2026-07-28,BD,CV,voa,vr
 2026-07-27,IL,OM,vr,ban
@@ -217,7 +207,6 @@ date,passport_iso2,destination_iso2,from,to
 2026-07-02,KR,AZ,ev,vf
 2026-07-02,KR,GH,vr,ev
 2026-07-02,DO,PA,vr,vf
-2026-07-01,TW,KE,vr,ban
 2026-06-30,US,PW,vr,vf
 2026-06-30,DZ,MA,vr,vf
 2026-06-25,BD,MD,vr,ev
@@ -318,6 +307,5 @@ date,passport_iso2,destination_iso2,from,to
 2026-05-27,HK,SL,ev,voa
 2026-05-27,HK,GH,vr,ev
 2026-05-26,BR,GH,vr,ev
-2026-05-26,UA,BS,ev,vr
 2026-05-25,HK,SN,vr,voa
 2026-05-25,UA,GH,vr,ev

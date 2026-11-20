@@ -568,16 +568,20 @@ function computeChangelog(prevData, newData) {
     };
     const oldMap = flatten(op);
     const newMap = flatten(np);
+    // An unlisted destination has the passport's own default status (US: vf), not "vr".
+    // Treating it as "vr" logged US → LV as "vf → vr" on 2026-10-09 when LV only left the list.
+    const oldDefault = op.default || "vr";
+    const newDefault = np.default || "vr";
     for (const dest of new Set([...Object.keys(oldMap), ...Object.keys(newMap)])) {
-      // A destination that newly appears as "vr" (missing ⇒ "vr") isn't a change.
-      if ((oldMap[dest] || "vr") !== (newMap[dest] || "vr") &&
-          !isClassifierFix(oldMap[dest] || "vr", newMap[dest] || "vr", new Date().toISOString().slice(0, 10))) {
+      const from = oldMap[dest] || oldDefault;
+      const to = newMap[dest] || newDefault;
+      if (from !== to && !isClassifierFix(from, to, new Date().toISOString().slice(0, 10))) {
         changes.push({
           date: new Date().toISOString().slice(0, 10),
           passport: iso2,
           dest,
-          from: oldMap[dest] || "vr",
-          to: newMap[dest] || "vr",
+          from,
+          to,
         });
       }
     }
@@ -675,7 +679,7 @@ async function main() {
     // Prepend today's entries, then fold edit-war flip-flops (a cell changed and
     // changed back within days) into their net change so they never reach the
     // "latest for your passport" feed or alert emails.
-    const { readChangelog, collapseFlipFlops, writeChangelog } = require("./changelog.js");
+    const { readChangelog, collapseFlipFlops, reconcile, loadResolver, writeChangelog } = require("./changelog.js");
     const { header, entries } = readChangelog(path.join(SOURCE_DIR, "changelog.js"));
     const fresh = changelog.slice(0, 50).map(c => ({
       date: c.date,
@@ -683,7 +687,7 @@ async function main() {
       affects: { dest: c.dest, passports: [c.passport] },
       statusFrom: c.from, statusTo: c.to,
     }));
-    writeChangelog(header, collapseFlipFlops([...fresh, ...entries]), path.join(SOURCE_DIR, "changelog.js"));
+    writeChangelog(header, reconcile(collapseFlipFlops([...fresh, ...entries]), collected, loadResolver(SOURCE_DIR)), path.join(SOURCE_DIR, "changelog.js"));
   }
 
   console.log(`\n✓ Wrote ${Object.keys(collected).length} passports + ${changelog.length} changelog entries.`);
