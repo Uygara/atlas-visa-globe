@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Visa checker by travelnow.info</title>
+<meta name="description" content="Embeddable visa requirement checker by travelnow.info.">
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://travelnow.info/visa/">
+<link rel="icon" href="data:,">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:#fff;color:#16202a;font:15px/1.4 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;padding:12px}
+h1{font-size:17px;line-height:1.25;margin:0 0 10px}
+label{display:block;font-size:13px;color:#4a5864;margin:0 0 4px}
+select{display:block;width:100%;height:44px;margin:0 0 10px;padding:0 10px;font:inherit;color:inherit;background:#fff;border:1px solid #9aa7b2;border-radius:6px}
+select:focus-visible,a:focus-visible{outline:2px solid #1a5fb4;outline-offset:2px}
+.res{min-height:44px;margin:2px 0 8px;padding:10px 12px;background:#f1f5f9;border-radius:6px;font-weight:600}
+.res.muted{font-weight:400;color:#4a5864}
+.more{display:block;margin:0 0 12px}
+a{color:#1a5fb4}
+.src{font-size:12px;color:#4a5864;margin:0}
+[hidden]{display:none}
+</style>
+</head>
+<body>
+<h1 id="h">Visa checker</h1>
+<div id="fp"><label for="p" id="lp">Your passport</label><select id="p"></select></div>
+<div id="fd" hidden><label for="d" id="ld">Destination</label><select id="d"></select></div>
+<div class="res muted" id="r" aria-live="polite"></div>
+<a class="more" id="m" target="_blank" rel="noopener" hidden></a>
+<p class="src"><a id="s" target="_blank" rel="noopener"></a></p>
+<script>
+(function () {
+  var q = new URLSearchParams(location.search);
+  var lang = q.get("lang") === "tr" ? "tr" : "en";
+  var tr = lang === "tr";
+  var up = function (v) { return /^[A-Za-z]{2}$/.test(v || "") ? v.toUpperCase() : ""; };
+  var to = up(q.get("to")), from = up(q.get("from"));
+  var T = tr ? {
+    h: "Vize kontrolü", hTo: function (n) { return n + " için vize"; }, pp: "Pasaportun", dd: "Gidilecek ülke",
+    pick: "Seç", sel: "Pasaportunu seç.", sel2: "Pasaportunu ve ülkeyi seç.", none: "Bu çift için veri yok.", load: "Veri yüklenemedi.",
+    days: function (n) { return n + " güne kadar"; }, more: function (n) { return n + " pasaportu için tüm kurallar"; },
+    src: function (d) { return "Veri: travelnow.info, güncelleme " + d; },
+    st: { idc: "Kimlikle giriş", vf: "Vizesiz", eta: "Seyahat izni", ev: "e-Vize", voa: "Varışta vize", vr: "Vize gerekli", ban: "Girişe kapalı" }
+  } : {
+    h: "Visa checker", hTo: function (n) { return "Visa for " + n; }, pp: "Your passport", dd: "Destination",
+    pick: "Select", sel: "Select your passport.", sel2: "Select your passport and a destination.", none: "No data for this pair.", load: "Could not load the data.",
+    days: function (n) { return "up to " + n + " days"; }, more: function (n) { return "Full rules for " + n + " passport"; },
+    src: function (d) { return "Data: travelnow.info, updated " + d; },
+    st: null
+  };
+  document.documentElement.lang = lang;
+  document.title = tr ? "travelnow.info vize kontrolü" : document.title;
+  var $ = function (id) { return document.getElementById(id); };
+  var p = $("p"), d = $("d"), r = $("r"), m = $("m"), s = $("s"), h = $("h");
+  $("lp").textContent = T.pp; $("ld").textContent = T.dd;
+  var base = "https://travelnow.info" + (tr ? "/tr" : "");
+  var utm = "?utm_source=embed&utm_medium=iframe";
+  var dn;
+  try { dn = new Intl.DisplayNames([lang], { type: "region" }); } catch (e) { dn = null; }
+  var name = function (c) { try { return (dn && dn.of(c)) || c; } catch (e) { return c; } };
+  var collator = new Intl.Collator(lang);
+
+  function fill(sel, codes) {
+    var cur = sel.value;
+    sel.textContent = "";
+    var o0 = document.createElement("option"); o0.value = ""; o0.textContent = T.pick; sel.appendChild(o0);
+    codes.map(function (c) { return [c, name(c)]; }).sort(function (a, b) { return collator.compare(a[1], b[1]); })
+      .forEach(function (x) { var o = document.createElement("option"); o.value = x[0]; o.textContent = x[1]; sel.appendChild(o); });
+    sel.value = cur;
+  }
+  function link() { s.href = base + (to ? "/visa/" + to.toLowerCase() + "/" : "/") + utm; }
+
+  function setUrl() {
+    try {
+      var u = new URL(location.href);
+      if (p.value) u.searchParams.set("from", p.value); else u.searchParams.delete("from");
+      history.replaceState(null, "", u);
+    } catch (e) {}
+  }
+
+  fetch("/open-data/visa-matrix.json").then(function (x) { if (!x.ok) throw 0; return x.json(); }).then(function (j) {
+    var labels = T.st || j.statuses;
+    var pp = Object.keys(j.passports);
+    var dests = {};
+    pp.forEach(function (c) { Object.keys(j.passports[c]).forEach(function (k) { dests[k] = 1; }); });
+    fill(p, pp);
+    if (to) { h.textContent = T.hTo(name(to)); } else { $("fd").hidden = false; fill(d, Object.keys(dests)); }
+    if (from && j.passports[from]) p.value = from;
+    s.textContent = T.src(j.generated);
+    link();
+    function show() {
+      var f = p.value, t = to || d.value;
+      setUrl();
+      r.className = "res muted"; m.hidden = true;
+      if (!f || !t) { r.textContent = to ? T.sel : T.sel2; return; }
+      var row = j.passports[f] && j.passports[f][t];
+      if (!row) { r.textContent = T.none; return; }
+      var txt = labels[row[0]] || row[0];
+      if (row[1]) txt += ", " + T.days(row[1]);
+      r.className = "res"; r.textContent = txt;
+      m.hidden = false; m.textContent = T.more(name(f));
+      m.href = base + "/passport/" + f.toLowerCase() + "/" + utm;
+    }
+    p.onchange = d.onchange = show;
+    show();
+  }).catch(function () { r.textContent = T.load; s.textContent = "travelnow.info"; link(); });
+})();
+</script>
+</body>
+</html>

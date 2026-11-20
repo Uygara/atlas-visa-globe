@@ -56,4 +56,8 @@ module.exports = {
   "05c749cf": `Nasıl atıf yapılır`,
   "8f9bf86e": `travelnow.info vize gereklilikleri veri seti, erişim tarihi &lt;tarih&gt;, https://travelnow.info/open-data/. Vikipedi katkıcılarının verilerini içerir, CC BY-SA 4.0.`,
   "64cd00e7": `Veri, CC BY-SA 4.0 lisansıyla ücretsiz kullanılabilir ve her gün yenilenir.`,
+  "206d617f": `Denetleyiciyi sayfana göm`,
+  "692cfbbd": `Tek satır HTML ile blog yazına veya sayfana vize denetleyicisi ekleyebilirsin. <code>to</code> değerine varış ülkesinin kodunu (örneğin <code>jp</code>), istersen <code>from</code> değerine pasaport kodunu yaz. Türkçe için <code>lang=tr</code> ekle.`,
+  "a51ca9b3": true,
+  "5f419049": `Ziyaretçi bir pasaport seçer ve o ülke için giriş durumunu ile izin verilen kalış süresini görür. Bilgiler bu sayfadaki veriden okunur ve tam kurallara bağlantı verilir.`,
 };

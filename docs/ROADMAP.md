@@ -36,7 +36,9 @@ Durum: `açık` · `sürüyor` · `bekliyor: <neyi>` · `bitti <hash>`
 - **D3 · Schengen hesaplayıcı: "ne zaman tekrar girebilirim"** · bitti (2026-11-19) · Tek tık cevap, paylaşılabilir bağlantı,
   EES ve ETIAS açıklaması (resmi kaynaklı). Yapıldı: "ne zaman tekrar gidebilirim" kartı, #trips= paylaşım bağlantısı,
   EES bölümü (travel-europe.europa.eu). Ölç: GA `schengen_share` olayı.
-- **D6 · Gömülebilir vize denetleyicisi** · açık · `<iframe>` veya küçük betik, altında bağlantı.
+- **D6 · Gömülebilir vize denetleyicisi** · sürüyor · `<iframe>` veya küçük betik, altında bağlantı.
+  Adım 1 (2026-11-20): `/embed/?to=&from=&lang=` sayfası, `_headers` ile çerçeveye izin, `/open-data/` üzerinde kod
+  parçası. Sıradaki: `/visa/<kod>/` sayfalarına "bu kutuyu sitene ekle" bloğu; GA4'te `utm_source=embed` ölçümü.
 - **D8 · Veri kalitesi: varış formu eVisa sanılıyor** · kısmen bitti 5d853b274 · Maldivler'de ücretsiz IMUGA beyanı eVisa
   sayılıyordu; 140 pasaport yanlış görünüyordu (bc897c2c9 ile düzeldi). Aynı kalıp Tayland (TDAC), Kolombiya
   (Check-MIG) ve başkalarında olabilir; kaynaklı denetim `visa-data-auditor` ile. Kalıcı çözüm: scraper'da
@@ -95,3 +97,6 @@ Durum: `açık` · `sürüyor` · `bekliyor: <neyi>` · `bitti <hash>`
 
 - Uygulamada veri tazeliği (mağaza güncellemesi olmadan JSON indirme), `TODO.md`de de var.
 - Başvuru son tarihi hatırlatması (`backend/dispatch-reminders.js` var, girişli hesaplara bağlanmalı).
+- Pasaport + ülke çifti sayfaları (`/visa/mv/in/`): "<ülke> visa for <uyruk>" aramaları için. Şu an 404. (ux-walker 2026-11-20)
+- `/visa/<kod>/` telefonda: cevap ilk ekranda değil; pasaport seçilince sonuç kartı en üste. (ux-walker 2026-11-20)
+- Schengen hesaplayıcı telefonda boş "0/90" kartıyla açılıyor, "seyahat ekle" formu ekranın altında. (ux-walker 2026-11-20)

@@ -10,3 +10,7 @@
   Permissions-Policy: geolocation=(self), camera=(), microphone=(), payment=(), usb=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains
   X-XSS-Protection: 0
+
+/embed/*
+  ! X-Frame-Options
+  Content-Security-Policy: frame-ancestors *

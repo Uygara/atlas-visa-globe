@@ -9,6 +9,17 @@ Newest run first. Each entry 10 lines or fewer. Playbook: `docs/AUTOPILOT.md`.
 
 ## Runs
 
+### 2026-11-20 · weekly run 2 (new Mac checkout, no `.secrets/`, no push access)
+- Numbers: skipped (no `.secrets/` on this machine); `.autopilot/metrics.tsv` not started.
+- Walk: 56 visits, 0 errors. audit-pages 0 errors / 10 warnings (og:image, unchanged).
+- Shipped: 3ed2eecf8 phone tap targets on country lists (/visa/<cc>/ 204 → 4, /passport/ 200 → 0;
+  site.css + stamp 20261120a) → metric: phone engaged %. D6 step 1 `/embed/` + `/open-data/` snippet (next commit)
+  → referral sessions with `utm_source=embed`.
+- Found, left: on macOS the walk's `--lang en-US` is ignored (system locale wins), so EN pages rendered Turkish; set
+  `navigator.language` + Accept-Language in `tools/user-walk.js`. ux-walker doubts to verify with `visa-data-auditor`:
+  CY→TR eVisa, IN→MV 90 days visa-free. Three UX ideas added to ROADMAP "Değerlendirilecek".
+- Owner: copy `.secrets/` to this Mac; set git name/email (`docs/ONBOARDING.md`); push the local commits.
+
 ### 2026-11-19 · manual growth session (not an autopilot run)
 - Shipped: /visa/<cc>/ (2e353afe1), passport titles (8ce7a3ffe), /reports/, /open-data/, country-card recent
   changes (493be8162), advisory snapshots (3081d892d), Maldives fix (bc897c2c9), scraper eVisa fix (5d853b274).

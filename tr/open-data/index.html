@@ -76,15 +76,15 @@
 <link rel="alternate" hreflang="tr" href="https://travelnow.info/tr/open-data/">
 <link rel="alternate" hreflang="x-default" href="https://travelnow.info/open-data/">
 <script>try{localStorage.setItem("atlas.lang","tr")}catch(e){}</script>
-<link rel="stylesheet" href="/assets/fonts.css?v=20261119d">
-<link rel="stylesheet" href="/assets/tokens.css?v=20261119d">
-<link rel="stylesheet" href="/assets/chrome.css?v=20261119d">
-<link rel="stylesheet" href="/assets/site.css?v=20261119d">
+<link rel="stylesheet" href="/assets/fonts.css?v=20261120a">
+<link rel="stylesheet" href="/assets/tokens.css?v=20261120a">
+<link rel="stylesheet" href="/assets/chrome.css?v=20261120a">
+<link rel="stylesheet" href="/assets/site.css?v=20261120a">
 <script>try{if((JSON.parse(localStorage.getItem("atlas.tweaks")||"{}")).background==="dark")document.documentElement.classList.add("theme-dark")}catch(e){}</script>
-<script src="/assets/account-config.js?v=20261119d"></script>
-<script src="/assets/account-sync.js?v=20261119d"></script>
-<script src="/assets/account.js?v=20261119d"></script>
-<script src="/assets/site-chrome.js?v=20261119d" defer=""></script>
+<script src="/assets/account-config.js?v=20261120a"></script>
+<script src="/assets/account-sync.js?v=20261120a"></script>
+<script src="/assets/account.js?v=20261120a"></script>
+<script src="/assets/site-chrome.js?v=20261120a" defer=""></script>
 <!-- /chrome:head -->
   <script src="/assets/analytics.js"></script>
 </head>
@@ -180,6 +180,11 @@
       <tr><td><code>ban</code></td><td>Girişe izin verilmiyor</td><td>No</td></tr>
     </tbody>
   </table></div>
+
+  <h2>Denetleyiciyi sayfana göm</h2>
+  <p>Tek satır HTML ile blog yazına veya sayfana vize denetleyicisi ekleyebilirsin. <code>to</code> değerine varış ülkesinin kodunu (örneğin <code>jp</code>), istersen <code>from</code> değerine pasaport kodunu yaz. Türkçe için <code>lang=tr</code> ekle.</p>
+  <pre><code>&lt;iframe src="https://travelnow.info/embed/?to=jp" width="100%" height="260" style="border:0;max-width:480px" title="Visa checker by travelnow.info" loading="lazy"&gt;&lt;/iframe&gt;</code></pre>
+  <p>Ziyaretçi bir pasaport seçer ve o ülke için giriş durumunu ile izin verilen kalış süresini görür. Bilgiler bu sayfadaki veriden okunur ve tam kurallara bağlantı verilir.</p>
 
   <h2>Güncelleme takvimi</h2>
   <p>Dosyalar her gün, siteyi yenileyen işle birlikte yeniden oluşturulur; bu yüzden harita ile aynıdır. JSON dosyasındaki <code>generated</code> alanı, altta yatan veri görüntüsünün tarihini verir.</p>
