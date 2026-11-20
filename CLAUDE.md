@@ -30,7 +30,8 @@ feature idea by them and add it there. Two people edit the site with Claude (see
 weekly autopilot (`docs/AUTOPILOT.md`): always `git pull --rebase` before pushing.
 **Start:** read `TODO.md` only (its first block says where to begin), then run
 `node tools/analytics-report.js` (GA4 + Search Console + Cloudflare in ~40 lines; the owner wants traffic
-followed) and mention anything notable in one line. `STATE.md` is short on purpose; older history is in
+followed) and mention anything notable in one line. Then run `node tools/team-log.js` (the other editor's commits since
+your last one) and tell the owner in 3-5 plain lines what changed on the site and anything that needs their eye. `STATE.md` is short on purpose; older history is in
 `docs/STATE-archive.md`: grep it, never read it whole. `HANDOFF.md` and `ACCOUNT-SETUP.md` are archives.
 **During (token budget):**
 - Read files by range (offset/limit) or Grep; never `cat` big files or `grep -r` the repo from Bash.

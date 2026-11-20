@@ -50,6 +50,9 @@ ve Cloudflare yaklaşık 30 saniyede canlıya alır.
 - **Aynı anda çalışmak:** herkes kendi bilgisayarında, kendi kopyasında ve kendi Claude hesabıyla çalışır. Ortak
   dosya GitHub'daki depodur; e-postayla gönderilen `.md` dosyaları yalnızca okumak içindir ve hemen eskir.
   Claude her oturumun başında `git pull` ile diğer kişinin işini alır, göndermeden önce yine çeker.
+- **Birbirinden haberdar olmak:** Claude oturum başında `node tools/team-log.js` çalıştırır ve senin son
+  gönderinden beri diğer kişinin yaptıklarını 3-5 satırda anlatır. Daha geriye bakmak için
+  `node tools/team-log.js --days 7`. Commit mesajları bu yüzden ne yapıldığını ve nedenini açıkça yazar.
 - **İş kapma:** büyük bir işe başlarken Claude'a "ROADMAP'te D6'yı üzerime al" de. Claude maddenin sonuna
   `[üzerinde: Adın, 2026-11-20]` yazar ve hemen gönderir. Diğer kişi ve otopilot bu maddeye dokunmaz. İş bitince
   etiket kalkar. 7 günden eski etiket sahipsiz sayılır.
