@@ -484,6 +484,7 @@ const T = {
     "nav.alerts":        "Uyarılar",
     "nav.about":         "Hakkında",
     "nav.support":       "Destek ol",
+    "nav.instagram":     "Instagram'da travelnow.info",
     "nav.settings":      "Ayarlar",
     "nav.help":          "Bu site ne işe yarıyor?",
     "nav.mode":          "Küre görünümü",

@@ -9,10 +9,10 @@
 // HTML (crawlable without JS); assets/site-chrome.js only adds behaviour
 // (overflow "More" menu, mobile sheet, theme + language controls).
 
-const { NAV, SUPPORT, isCurrent } = require("../assets/site-nav.js");
+const { NAV, SUPPORT, INSTAGRAM, isCurrent } = require("../assets/site-nav.js");
 const { makeT, hasTr, toTr, hreflang } = require("./locales");
 
-const ASSET_VERSION = "20261120a";
+const ASSET_VERSION = "20261120b";
 
 function esc(s) {
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -24,7 +24,8 @@ const CARET = `<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5
 const SUN = `<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3" fill="currentColor"/><g stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M8 1.2v1.7M8 13.1v1.7M1.2 8h1.7M13.1 8h1.7M3.2 3.2l1.2 1.2M11.6 11.6l1.2 1.2M12.8 3.2l-1.2 1.2M4.4 11.6l-1.2 1.2"/></g></svg>`;
 const MOON = `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13.2 9.6A5.6 5.6 0 0 1 6.4 2.8a5.6 5.6 0 1 0 6.8 6.8z" fill="currentColor"/></svg>`;
 const USER = `<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><circle cx="8" cy="5.6" r="2.9" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M2.6 14.2c.7-2.8 2.8-4.3 5.4-4.3s4.7 1.5 5.4 4.3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>`;
-const MENU = `<svg viewBox="0 0 18 18" width="18" height="18" aria-hidden="true"><path d="M3 5.5h12M3 9h12M3 12.5h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`;
+const IG = `<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><rect x="2" y="2" width="12" height="12" rx="3.6" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="2.8" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="11.5" cy="4.5" r=".9" fill="currentColor"/></svg>`;
+const MENU =`<svg viewBox="0 0 18 18" width="18" height="18" aria-hidden="true"><path d="M3 5.5h12M3 9h12M3 12.5h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`;
 
 // The last flag marks languages that are not fully translated yet (shown as "beta").
 const LANGS = [["en", "English"], ["tr", "Türkçe"], ["es", "Español", 1], ["de", "Deutsch", 1], ["fr", "Français", 1], ["ar", "العربية", 1]];
@@ -62,7 +63,7 @@ function headAssets({ enPath = null, lang = "en" } = {}) {
 // (only pages that load data/static-i18n.js); pages with a Turkish twin get an
 // EN/TR select that navigates between the twins. `lang: "tr"` renders the
 // Turkish page: labels from the site dictionary, links to Turkish twins.
-const UI_TR = { menu: "Menü", theme: "Tema", light: "Açık", dark: "Koyu", lang: "Dil", account: "Hesap", main: "Ana menü", home: "travelnow.info ana sayfa" };
+const UI_TR = { menu: "Menü", theme: "Tema", light: "Açık", dark: "Koyu", lang: "Dil", account: "Hesap", main: "Ana menü", home: "travelnow.info ana sayfa", instagram: "Instagram'da travelnow.info" };
 function masthead({ path = "/", i18n = true, lang = "en" } = {}) {
   const t = makeT(lang);
   const u = (k, en) => (lang === "tr" ? UI_TR[k] : en);
@@ -88,6 +89,7 @@ ${links}
     </div>
   </nav>
   <div class="mh-tools">
+    <a class="mh-ig" href="${INSTAGRAM.href}" target="_blank" rel="noopener" data-no-i18n aria-label="${u("instagram", INSTAGRAM.en)}" title="Instagram">${IG}</a>
     <a class="mh-account" href="/account/" data-account-link hidden aria-label="${u("account", "Account")}" title="${u("account", "Account")}">${USER}<span data-account-initial></span></a>
     <div class="seg" role="group" aria-label="${u("theme", "Theme")}"><button type="button" data-theme-set="light" aria-pressed="true" aria-label="${u("light", "Light")}" title="${u("light", "Light")}">${SUN}</button><button type="button" data-theme-set="dark" aria-pressed="false" aria-label="${u("dark", "Dark")}" title="${u("dark", "Dark")}">${MOON}</button></div>
     ${langSelect}

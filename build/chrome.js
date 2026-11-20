@@ -490,7 +490,40 @@ function Masthead(_ref9) {
     className: "mh-link mh-more-btn"
   }, moreLabel, React.createElement(IconCaret, null))))), React.createElement("div", {
     className: "mh-tools"
-  }, React.createElement(AccountLink, null), onView && React.createElement(ViewToggle, {
+  }, nav.INSTAGRAM && React.createElement("a", {
+    className: "mh-ig",
+    href: nav.INSTAGRAM.href,
+    target: "_blank",
+    rel: "noopener",
+    "aria-label": tr(nav.INSTAGRAM.key, nav.INSTAGRAM.en),
+    title: "Instagram"
+  }, React.createElement("svg", {
+    viewBox: "0 0 16 16",
+    width: "16",
+    height: "16",
+    "aria-hidden": "true"
+  }, React.createElement("rect", {
+    x: "2",
+    y: "2",
+    width: "12",
+    height: "12",
+    rx: "3.6",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "1.4"
+  }), React.createElement("circle", {
+    cx: "8",
+    cy: "8",
+    r: "2.8",
+    fill: "none",
+    stroke: "currentColor",
+    strokeWidth: "1.4"
+  }), React.createElement("circle", {
+    cx: "11.5",
+    cy: "4.5",
+    r: ".9",
+    fill: "currentColor"
+  }))), React.createElement(AccountLink, null), onView && React.createElement(ViewToggle, {
     value: view,
     onChange: onView
   }), onTheme && React.createElement(ThemeToggle, {

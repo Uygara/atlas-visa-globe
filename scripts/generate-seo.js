@@ -467,7 +467,7 @@ ${ads.loader}
   "datePublished": today,
   "dateModified": today,
   "author": { "@type": "Person", "name": "Uygar Atalay" },
-  "publisher": { "@type": "Organization", "name": "travelnow.info", "url": SITE_URL },
+  "publisher": { "@type": "Organization", "name": "travelnow.info", "url": SITE_URL, "sameAs": ["https://www.instagram.com/travelnow.info/"] },
   "about": { "@type": "Country", "name": name },
   "breadcrumb": {
     "@type": "BreadcrumbList",

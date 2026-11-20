@@ -306,7 +306,7 @@ function renderMonth(m, all, lang) {
     datePublished: m.lastDate,
     dateModified: m.lastDate,
     author: { "@type": "Person", name: "Uygar Atalay" },
-    publisher: { "@type": "Organization", name: "travelnow.info", url: SITE_URL },
+    publisher: { "@type": "Organization", name: "travelnow.info", url: SITE_URL, sameAs: ["https://www.instagram.com/travelnow.info/"] },
     mainEntityOfPage: SITE_URL + L.prefix + enPath,
     breadcrumb: {
       "@type": "BreadcrumbList",

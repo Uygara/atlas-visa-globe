@@ -24,6 +24,8 @@
     { href: "/about/",                    key: "nav.about",       en: "About",           g: 3 }
   ];
   var SUPPORT = { href: "https://buymeacoffee.com/travelnowinfo", key: "nav.support", en: "Support" };
+  // The site's Instagram profile: an icon in the masthead on every page (static pages and the SPA shells).
+  var INSTAGRAM = { href: "https://www.instagram.com/travelnow.info/", key: "nav.instagram", en: "travelnow.info on Instagram" };
 
   // Pages that have a Turkish twin at /tr/<path> (scripts/build-tr.js writes the
   // hand-written ones, scripts/generate-seo.js the passport pages). English stays
@@ -61,7 +63,7 @@
   }
 
   var api = {
-    NAV: NAV, SUPPORT: SUPPORT, isCurrent: isCurrent,
+    NAV: NAV, SUPPORT: SUPPORT, INSTAGRAM: INSTAGRAM, isCurrent: isCurrent,
     TR_PAGES: TR_PAGES, hasTr: hasTr, toTr: toTr, fromTr: fromTr, isTrPath: isTrPath, localHref: localHref
   };
   if (typeof module !== "undefined" && module.exports) module.exports = api;

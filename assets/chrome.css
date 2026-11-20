@@ -78,6 +78,11 @@
   width: 32px; height: 32px; border: 1px solid var(--rule-strong); border-radius: 50%;
   background: var(--paper); color: var(--ink-3); text-decoration: none;
 }
+.mh-ig {
+  display: inline-flex; align-items: center; justify-content: center; flex: none;
+  width: 32px; height: 32px; border-radius: 50%; color: var(--ink-3); text-decoration: none;
+}
+.mh-ig:hover { color: var(--ink); background: var(--paper); }
 .mh-account[hidden] { display: none; }
 .mh-account:hover { color: var(--ink); border-color: var(--ink-3); }
 .mh-account span:empty { display: none; }
@@ -164,8 +169,8 @@
   .seg button { min-width: 36px; min-height: 32px; }
   /* 44px targets (WCAG 2.5.5, Apple HIG): header controls keep their look and
      grow their hit area; the brand and footer links simply get taller. */
-  .mh-burger, .seg button, .mh-account, .mh-help, .icon-btn { position: relative; }
-  .mh-burger::after, .seg button::after, .mh-account::after, .mh-help::after, .icon-btn::after {
+  .mh-burger, .seg button, .mh-account, .mh-ig, .mh-help, .icon-btn { position: relative; }
+  .mh-burger::after, .seg button::after, .mh-account::after, .mh-ig::after, .mh-help::after, .icon-btn::after {
     content: ""; position: absolute; inset: -6px 0;
   }
   .brand { min-height: 44px; }
