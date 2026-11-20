@@ -272,7 +272,7 @@ function plLoad(src, done) {
   s.onerror = () => { delete plLoading[src]; };
   document.head.appendChild(s);
 }
-const PL_STAMP = "?v=20261120c";
+const PL_STAMP = "?v=20261120d";
 const plLoadAirports = (cb) => { if (window.AIRPORTS) cb(); else plLoad("/data/airports.js" + PL_STAMP, cb); };
 const plLoadAdvisories = (cb) => { if (window.TRAVEL_ADVISORIES) cb(); else plLoad("/data/travel-advisories.js" + PL_STAMP, cb); };
 

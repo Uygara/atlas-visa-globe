@@ -40,6 +40,12 @@
     "Changes": "Değişiklikler",
     "New": "Yeni",
     "No changes in the last 90 days for your passports and countries.": "Son 90 günde pasaportların ve ülkelerin için değişiklik olmadı.",
+    "Your trips": "Seyahatlerin",
+    "Plan a trip with dates, visa rules and a checklist.": "Tarihleri, vize kuralları ve kontrol listesiyle bir seyahat planla.",
+    "Open the travel planner": "Seyahat planlayıcıyı aç",
+    "New trip": "Yeni seyahat",
+    "{n} stops": "{n} durak",
+    "Untitled trip": "Adsız seyahat",
     "Notifications": "Bildirimler",
     "Get a notification when one of these changes": "Bunlardan biri değiştiğinde bildirim al",
     "ID card travel": "Kimlikle giriş", "Visa-free": "Vizesiz", "Travel authorization": "Seyahat izni",
@@ -333,6 +339,34 @@
     return section(t("Changes"), body);
   }
 
+  // Trips saved in the travel planner (atlas.trips, see assets/trips-core.js). Opening one makes it the
+  // planner's active trip; nothing else in the stored value changes.
+  function readTrips() {
+    try { var d = JSON.parse(localStorage.getItem("atlas.trips") || "null"); return d && Array.isArray(d.trips) ? d : null; } catch (e) { return null; }
+  }
+  function openTrip(id) {
+    var d = readTrips();
+    if (d) { d.active = id; try { localStorage.setItem("atlas.trips", JSON.stringify(d)); } catch (e) {} }
+    location.href = "/itinerary/";
+  }
+  function tripsSection() {
+    var d = readTrips(), list = d ? d.trips.slice(0, 10) : [];
+    if (!list.length) {
+      return section(t("Your trips"), [
+        h("p", { class: "pn-empty", text: t("Plan a trip with dates, visa rules and a checklist.") }),
+        h("a", { class: "pn-link", href: "/itinerary/", text: t("Open the travel planner") }),
+      ]);
+    }
+    var items = list.map(function (tr) {
+      var stops = Array.isArray(tr.stops) ? tr.stops : [];
+      var dates = stops.map(function (s) { return s && s.arrive; }).filter(Boolean).sort();
+      var label = (tr.name || t("Untitled trip")) + " · " + t("{n} stops", { n: stops.length }) + (dates[0] ? " · " + dates[0] : "");
+      var flags = stops.slice(0, 6).map(function (s) { return flag(s && s.iso); }).join(" ");
+      return h("li", {}, [h("a", { class: "pn-link", href: "/itinerary/", "data-no-i18n": true, on: { click: function (ev) { ev.preventDefault(); openTrip(tr.id); } } }, [flags + " " + label])]);
+    });
+    return section(t("Your trips"), [h("ul", { class: "pn-trips" }, items), h("a", { class: "pn-link", href: "/itinerary/", text: t("Open the travel planner") })]);
+  }
+
   function notifySection() {
     return section(t("Notifications"), [h("a", { class: "pn-link", href: prefix() + "/alerts/", text: t("Get a notification when one of these changes") })]);
   }
@@ -340,14 +374,14 @@
   function render() {
     var plist = passports(), wlist = watchlist();
     root.innerHTML = "";
-    [signinNote(), passportSection(), watchSection(), statusSection(plist, wlist), changesSection(plist, wlist), notifySection()]
+    [signinNote(), passportSection(), watchSection(), statusSection(plist, wlist), changesSection(plist, wlist), tripsSection(), notifySection()]
       .forEach(function (n) { if (n) root.appendChild(n); });
   }
 
   if (acct.onChange) acct.onChange(function () { render(); });
   window.addEventListener("atlas:lang", render);
   window.addEventListener("storage", function (e) {
-    if (!e.key || /^atlas\.(passport|passports|watchlist)$/.test(e.key)) render();
+    if (!e.key || /^atlas\.(passport|passports|watchlist|trips)$/.test(e.key)) render();
   });
   render();
   loadMatrix();
