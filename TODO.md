@@ -16,6 +16,15 @@
 
 ## Senin yapacakların (hesap, ödeme, onay; benim yapamadıklarım)
 
+- [ ] **P2 · E-posta adresleri herkese açık depoda (İpek ile birlikte, 2 dk)**: depo herkese açık ve her commit'te
+      yazanın e-postası görünüyor. GitHub → Settings → Emails → "Keep my email addresses private" işaretle, sonra
+      kendi bilgisayarında: `git config --global user.email "<GitHub'ın verdiği ...@users.noreply.github.com adresi>"`.
+      Eski commit'lerdeki adres kalır. Depoyu gizliye almak da bir seçenek (Settings → General → Danger Zone);
+      Cloudflare ve GitHub Actions çalışmaya devam eder, ama Actions ücretsiz dakikası ayda 2000'e iner.
+- [ ] **P2 · Türkiye için çerez onayı**: Türkiye'den gelenlere artık yalnızca kişiselleştirilmemiş reklam gidiyor
+      (04211e5e7), ama Google bunlarda da çerez kullanabiliyor. Tam çözüm bir onay penceresi; e-posta listesi
+      açılmadan önce KVKK, VERBİS ve aydınlatma metnini bir hukukçuya bir kez kontrol ettir.
+
 - [ ] **P1 · iVisa ödeme bilgisi (5 dk)**: ivisa.com/affiliates → giriş → Account → ödeme yöntemi (PayPal) ve bilgiler.
       Ödeme ayın 15'inde, en az 50 $ birikince yapılır. Komisyon oranını aynı sayfadaki şartlardan bana yaz.
       İsteğe bağlı: Assets → "Generate Custom Deep link" ile en çok ziyaret alan 5 ülke sayfası (ABD, Schengen,
