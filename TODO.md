@@ -6,7 +6,8 @@
 
 ## ▶ Yeni oturumda buradan başla
 
-0. **Özellik işleri `docs/ROADMAP.md`den** (Aşama 0 → 3). Sıradaki: D6 gömülebilir denetleyici, D8 kalan veri kontrolleri. iVisa canlı (19 Kasım): GA4'te
+0. **Özellik işleri `docs/ROADMAP.md`den** (Aşama 0 → 3). Sıradaki: D9 changelog'daki geri dönmüş kayıtlar (scraper), D8 kalan veri kontrolleri,
+   A3 paylaşılabilir sonuç kartları. D6 İpek'te. iVisa canlı (19 Kasım): GA4'te
    `affiliate_click` olayını izle, 19 Aralık'ta tıklama ve sipariş sayısını yaz. 17 Aralık'ta `/visa/` sayfalarının etkisini ölç
    (`docs/autopilot-log.md` en üst kayıt).
 1. **Android test APK'sını telefonda dene**: GitHub → Actions → "Android build" → son çalışma → `travelnow-debug-apk`.

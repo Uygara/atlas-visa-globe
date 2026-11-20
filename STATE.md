@@ -74,6 +74,16 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 21 (2026-11-21: privacy hardening, national waivers, RSS feeds):**
+  AdSense: inline snippet before every loader asks for non-personalised ads when the device time zone is Istanbul or
+  the page is Turkish (Google's consent message covers only EU/EEA, UK, CH). Privacy EN + TR updated.
+  `.assetsignore` now keeps backend/, scripts/, tools/, components/, .github/, firebase/firestore/wrangler files off
+  the site. Dead `functions/` (Pages Functions + Stripe) removed: on Workers static assets every /api/* was 404.
+  Detail card: diplomatic/service visa-free in a Schengen state notes it is a national derogation (Art. 6,
+  Reg. 2018/1806; notice 2023/C 340/09). `tools/team-log.js` at session start summarises the other editor's commits.
+  A5 done: `/passport/<cc>/feed.xml` (EN + TR) from changelog, only entries the map still shows (D9 opened).
+  Gotcha: the app resets `atlas.variant` to ordinary on load, so UI tests must press the passport-type button.
+
 - **Round 20 (2026-11-19/20: Turkish data tables, Singapore transit fix):**
   /tr/ nomad, CBI, shortcuts, passport-validity and tr-schengen checklist pages now render their tables in Turkish.
   Inline scripts read `<html data-page-lang="tr">` (build-tr skips script content); `window.countryName` falls back
