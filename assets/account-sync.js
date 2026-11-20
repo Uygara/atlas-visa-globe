@@ -18,10 +18,12 @@
     "atlas.schengen.trips",  // Schengen 90/180 calculator entries
     "atlas.lang",            // interface language
     "atlas.tweaks",          // theme + globe view
+    "atlas.passports",       // extra passports for dual citizens (travel panel, /panel/); atlas.passport stays the main one
+    "atlas.panel.seen",      // ms timestamp: when the travel panel's change list was last viewed
   ];
   // JSON arrays that are merged item-by-item the first time a device that
   // already had data joins an account, so nothing saved before signing in is lost.
-  var LIST_KEYS = { "atlas.watchlist": true };
+  var LIST_KEYS = { "atlas.watchlist": true, "atlas.passports": true };
 
   function parseList(raw) {
     try { var a = JSON.parse(raw); return Array.isArray(a) ? a : null; } catch (e) { return null; }

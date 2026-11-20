@@ -60,4 +60,18 @@ test("keys outside the sync list are ignored", () => {
   assert.strictEqual(r.toCloud, false);
 });
 
+test("travel panel keys travel with the account", () => {
+  const r = merge({}, { "atlas.passports": e('["DE"]', 100), "atlas.panel.seen": e("1763600000000", 100) });
+  assert.deepStrictEqual(r.toLocal.sort(), ["atlas.panel.seen", "atlas.passports"]);
+});
+
+test("pre-account extra passports are unioned with the cloud list", () => {
+  const r = merge({ "atlas.passports": e('["DE"]', 0) }, { "atlas.passports": e('["GB"]', 500) });
+  assert.strictEqual(r.merged["atlas.passports"].v, '["GB","DE"]');
+});
+
+test("the cloud document stays within the rules' 20-key limit", () => {
+  assert.ok(require("../assets/account-sync.js").SYNC_KEYS.length <= 20);
+});
+
 console.log(`${n} passed`);
