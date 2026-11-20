@@ -58,4 +58,11 @@ t("UK visa nationals are vr for GB, ETA countries stay eta", () => {
   for (const p of ["US", "TW", "JP"]) assert.strictEqual(resolve(p, "GB").status, "eta", p);
 });
 
+t("ETA only for the official lists of US, CA, AU and NZ", () => {
+  const resolve = loadResolver();
+  const cases = [["US", "AU", "eta"], ["TL", "US", "vr"], ["AL", "CA", "vr"], ["MX", "CA", "vr"], ["DE", "NZ", "eta"],
+    ["CN", "NZ", "ev"], ["IN", "AU", "ev"], ["KP", "AU", "ev"], ["MY", "AU", "eta"], ["JP", "US", "eta"]];
+  for (const [p, d, want] of cases) assert.strictEqual(resolve(p, d).status, want, `${p} → ${d}`);
+});
+
 console.log(`${passed} passed`);

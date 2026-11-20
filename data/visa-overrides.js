@@ -199,10 +199,34 @@ window.UK_VISA_NATIONALS = new Set([
   "RW","SD","SL","SN","SO","SR","SS","ST","SV","SY","SZ","TD","TG","TH","TJ","TL","TM","TN","TR","TT",
   "TZ","UA","UG","UZ","VE","VN","VU","XK","YE","ZA","ZM","ZW",
 ]);
+// Who can actually use the ETA of the US, Canada, Australia and New Zealand: the official
+// lists, read 2026-11-21. Wikipedia writes "eVisa" for online visitor-visa applications too,
+// so the relabel above showed ETA for e.g. North Korea → Australia (62 passports for AU,
+// 9 for NZ, 1 each for US and CA). Anyone else keeps a visa: for AU and NZ the visitor visa
+// is applied for online (eVisa stays), for the US and Canada it needs a consulate (vr).
+//   US: DHS Visa Waiver Program countries, updated 10/28/2026, https://www.dhs.gov/visa-waiver-program
+//   CA: IRCC entry requirements by country (eTA list), modified 2026-07-31,
+//       https://www.canada.ca/en/immigration-refugees-citizenship/services/visit-canada/entry-requirements-country.html
+//       The conditional-eTA countries (AG AR BR CR ID MY MX MA PA PH KN LC VC SC TH TT UY) qualify only
+//       with a past Canadian visa or a valid US visa, so they stay "visa required" here.
+//   AU: ETA subclass 601 + eVisitor subclass 651 eligible passports,
+//       https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/electronic-travel-authority-601
+//   NZ: visa waiver countries and territories (Kuwait suspended),
+//       https://www.immigration.govt.nz/visit/what-you-need-to-visit-new-zealand/visa-waiver-countries-and-territories/
+window.ETA_ELIGIBLE = {
+  US: new Set("AD AU AT BE BN CL HR CZ DK EE FI FR DE GR HU IS IE IL IT JP KR LV LI LT LU MT MC NL NZ NO PL PT QA SM SG SK SI ES SE CH TW GB".split(" ")),
+  CA: new Set("AD AU AT BS BB BE GB BN BG CL HR CY CZ DK EE FI FR DE GR HK HU IS IE IL IT JP LV LI LT LU MT MC NL NZ NO PG PL PT QA KR RO WS SM SG SK SI SB ES SE CH TW AE VA".split(" ")),
+  AU: new Set("AD AT BE BN CA DK FI FR DE GR HK IS IE IT JP LI LU MY MT MC NO PT SM SG KR ES SE CH TW NL GB US VA BG HR CY CZ EE HU LV LT PL RO SK SI".split(" ")),
+  NZ: new Set("AD AR AT BH BE BR BN BG CA CL HR CY CZ DK EE FI FR DE GR HK HU IS IE IL IT JP KR LV LI LT LU MO MY MT MU MX MC NL NO OM PL PT QA RO SM SA SC SG SK SI ES SE CH TW AE GB US UY VA".split(" ")),
+};
+const _ETA_FALLBACK = { US: "vr", CA: "vr", AU: "ev", NZ: "ev" };
 window.applyEtaDisplay = function (r, destIso2, passportIso2) {
   if (!r || r.status !== "ev") return r;
   const d = (window.TERRITORY_ALIAS && window.TERRITORY_ALIAS[destIso2]) || destIso2;
   if (d === "GB" && passportIso2 && window.UK_VISA_NATIONALS.has(passportIso2)) return { ...r, status: "vr", days: null };
+  if (passportIso2 && window.ETA_ELIGIBLE[d] && !window.ETA_ELIGIBLE[d].has(passportIso2)) {
+    return _ETA_FALLBACK[d] === "vr" ? { ...r, status: "vr", days: null } : r;
+  }
   if (window.ETA_DESTS[d] || window.ETA_DESTS[destIso2]) return { ...r, status: "eta" };
   return r;
 };

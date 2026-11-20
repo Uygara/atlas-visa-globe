@@ -6,8 +6,8 @@
 
 ## ▶ Yeni oturumda buradan başla
 
-0. **Özellik işleri `docs/ROADMAP.md`den** (Aşama 0 → 3). Sıradaki: D8 kalan veri kontrolleri (ETA hedefleri ABD/Kanada/Avustralya/Yeni Zelanda için de
-   UK'deki gibi "eVisa = ETA" varsayımını resmî listelerle doğrula),
+0. **Özellik işleri `docs/ROADMAP.md`den** (Aşama 0 → 3). Sıradaki: D8 kalan veri kontrolleri (ETA listeleri 21 Kasım'da resmî kaynaklardan okundu;
+   yılda bir yeniden kontrol: `data/visa-overrides.js` ETA_ELIGIBLE), Kanada koşullu eTA notu,
    A3 paylaşılabilir sonuç kartları. D6 İpek'te. iVisa canlı (19 Kasım): GA4'te
    `affiliate_click` olayını izle, 19 Aralık'ta tıklama ve sipariş sayısını yaz. 17 Aralık'ta `/visa/` sayfalarının etkisini ölç
    (`docs/autopilot-log.md` en üst kayıt).

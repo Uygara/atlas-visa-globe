@@ -85,6 +85,9 @@ EN in those four (engine ready — just add dict entries).
   Gotcha: the app resets `atlas.variant` to ordinary on load, so UI tests must press the passport-type button.
   D9 done: computeChangelog uses the passport default for unlisted destinations; `reconcile()` drops broken chains
   after every scrape (322 → 310). UK visa nationals (official list) floored to vr for GB: IN/UA/MD/AL/LK/BD read ETA.
+  Same bug for the other ETA destinations: `ETA_ELIGIBLE` holds the official US (DHS VWP), CA (IRCC eTA), AU (ETA 601 +
+  eVisitor 651) and NZ (visa waiver) lists; others fall back to vr (US, CA) or ev (AU, NZ online visitor visa).
+  Fixed 62 AU, 9 NZ, TL→US, AL→CA. Home Affairs and INZ pages block curl: read them in the browser pane.
   Gotcha: `apply-chrome.js` once hung for 8 min inside a long `&&` chain; alone it takes 20 s. Run steps one by one.
 
 - **Round 20 (2026-11-19/20: Turkish data tables, Singapore transit fix):**

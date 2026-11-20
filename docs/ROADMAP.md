@@ -47,6 +47,9 @@ Durum: `açık` · `sürüyor` · `bekliyor: <neyi>` · `bitti <hash>`
   (yalnızca Wikipedia'ya dayanıyor): Zambiya varışta vize 28 pasaport, Ermenistan 19, Moğolistan IN/KW,
   Kırgızistan ID/PH/ZA/VE, Ruanda herkese varışta vize, Lesotho e-vize portalı kapalı olabilir. Ayrıntı ve
   kaynaklar: otopilot `visa-data-auditor` ile yeniden üretir. Tayland, Kolombiya, Arnavutluk doğru (gerçek eVisa).
+  ETA (2026-11-21): ABD, Kanada, Avustralya, Yeni Zelanda ve Birleşik Krallık için "eVisa → ETA" etiketi artık
+  yalnızca resmî listelerdeki pasaportlara uygulanıyor (`ETA_ELIGIBLE`, `UK_VISA_NATIONALS`); 79 pasaport-ülke
+  çifti düzeldi. Açık: Kanada'nın koşullu eTA ülkeleri (ABD vizesi varsa eTA) için ülke kartında not.
 
 ### Aşama 1: sahibinden bir şey gerektirmeyenler
 

@@ -212,7 +212,7 @@ AE,United Arab Emirates,AO,Angola,vf,30
 AE,United Arab Emirates,AG,Antigua and Barbuda,vf,30
 AE,United Arab Emirates,AR,Argentina,vf,90
 AE,United Arab Emirates,AM,Armenia,vf,180
-AE,United Arab Emirates,AU,Australia,eta,
+AE,United Arab Emirates,AU,Australia,ev,
 AE,United Arab Emirates,AT,Austria,vf,90
 AE,United Arab Emirates,AZ,Azerbaijan,vf,90
 AE,United Arab Emirates,BS,Bahamas,vf,90
@@ -826,7 +826,7 @@ AL,Albania,AO,Angola,ev,30
 AL,Albania,AG,Antigua and Barbuda,vf,180
 AL,Albania,AR,Argentina,vr,
 AL,Albania,AM,Armenia,vf,180
-AL,Albania,AU,Australia,eta,
+AL,Albania,AU,Australia,ev,
 AL,Albania,AT,Austria,vf,90
 AL,Albania,AZ,Azerbaijan,vf,90
 AL,Albania,BS,Bahamas,ev,90
@@ -849,7 +849,7 @@ AL,Albania,BI,Burundi,ev,30
 AL,Albania,CV,Cabo Verde,voa,30
 AL,Albania,KH,Cambodia,ev,30
 AL,Albania,CM,Cameroon,ev,
-AL,Albania,CA,Canada,eta,
+AL,Albania,CA,Canada,vr,
 AL,Albania,CF,Central African Republic,vr,
 AL,Albania,TD,Chad,ev,
 AL,Albania,CL,Chile,vf,90
@@ -942,7 +942,7 @@ AL,Albania,NA,Namibia,ev,90
 AL,Albania,NR,Nauru,vr,
 AL,Albania,NP,Nepal,ev,90
 AL,Albania,NL,Netherlands,vf,90
-AL,Albania,NZ,New Zealand,eta,
+AL,Albania,NZ,New Zealand,ev,
 AL,Albania,NI,Nicaragua,vf,90
 AL,Albania,NE,Niger,vr,
 AL,Albania,NG,Nigeria,ev,30
@@ -1441,7 +1441,7 @@ AR,Argentina,AD,Andorra,vf,90
 AR,Argentina,AO,Angola,vf,30
 AR,Argentina,AG,Antigua and Barbuda,vf,30
 AR,Argentina,AM,Armenia,vf,180
-AR,Argentina,AU,Australia,eta,
+AR,Argentina,AU,Australia,ev,
 AR,Argentina,AT,Austria,vf,90
 AR,Argentina,AZ,Azerbaijan,ev,30
 AR,Argentina,BS,Bahamas,vf,90
@@ -2057,7 +2057,7 @@ AZ,Azerbaijan,AO,Angola,ev,30
 AZ,Azerbaijan,AG,Antigua and Barbuda,vf,180
 AZ,Azerbaijan,AR,Argentina,vr,
 AZ,Azerbaijan,AM,Armenia,vr,
-AZ,Azerbaijan,AU,Australia,eta,
+AZ,Azerbaijan,AU,Australia,ev,
 AZ,Azerbaijan,AT,Austria,vr,
 AZ,Azerbaijan,BS,Bahamas,vf,90
 AZ,Azerbaijan,BH,Bahrain,ev,14
@@ -2262,7 +2262,7 @@ BA,Bosnia and Herzegovina,AO,Angola,vr,
 BA,Bosnia and Herzegovina,AG,Antigua and Barbuda,ev,
 BA,Bosnia and Herzegovina,AR,Argentina,vf,90
 BA,Bosnia and Herzegovina,AM,Armenia,ev,120
-BA,Bosnia and Herzegovina,AU,Australia,eta,
+BA,Bosnia and Herzegovina,AU,Australia,ev,
 BA,Bosnia and Herzegovina,AT,Austria,vf,90
 BA,Bosnia and Herzegovina,AZ,Azerbaijan,ev,90
 BA,Bosnia and Herzegovina,BS,Bahamas,ev,90
@@ -2467,7 +2467,7 @@ BB,Barbados,AO,Angola,vf,30
 BB,Barbados,AG,Antigua and Barbuda,vf,180
 BB,Barbados,AR,Argentina,vf,90
 BB,Barbados,AM,Armenia,ev,120
-BB,Barbados,AU,Australia,eta,
+BB,Barbados,AU,Australia,ev,
 BB,Barbados,AT,Austria,vf,90
 BB,Barbados,AZ,Azerbaijan,ev,30
 BB,Barbados,BS,Bahamas,vf,90
@@ -2672,7 +2672,7 @@ BD,Bangladesh,AO,Angola,ev,
 BD,Bangladesh,AG,Antigua and Barbuda,ev,30
 BD,Bangladesh,AR,Argentina,vr,
 BD,Bangladesh,AM,Armenia,vr,
-BD,Bangladesh,AU,Australia,eta,
+BD,Bangladesh,AU,Australia,ev,
 BD,Bangladesh,AT,Austria,vr,
 BD,Bangladesh,AZ,Azerbaijan,vr,
 BD,Bangladesh,BS,Bahamas,vf,
@@ -2787,7 +2787,7 @@ BD,Bangladesh,NA,Namibia,vr,
 BD,Bangladesh,NR,Nauru,vr,
 BD,Bangladesh,NP,Nepal,ev,90
 BD,Bangladesh,NL,Netherlands,vr,
-BD,Bangladesh,NZ,New Zealand,eta,
+BD,Bangladesh,NZ,New Zealand,ev,
 BD,Bangladesh,NI,Nicaragua,vr,
 BD,Bangladesh,NE,Niger,vr,
 BD,Bangladesh,NG,Nigeria,ev,90
@@ -3697,7 +3697,7 @@ BI,Burundi,AO,Angola,vr,
 BI,Burundi,AG,Antigua and Barbuda,ev,
 BI,Burundi,AR,Argentina,vr,
 BI,Burundi,AM,Armenia,vr,
-BI,Burundi,AU,Australia,eta,
+BI,Burundi,AU,Australia,ev,
 BI,Burundi,AT,Austria,vr,
 BI,Burundi,AZ,Azerbaijan,vr,
 BI,Burundi,BS,Bahamas,ev,
@@ -3902,7 +3902,7 @@ BJ,Benin,AO,Angola,vr,
 BJ,Benin,AG,Antigua and Barbuda,ev,
 BJ,Benin,AR,Argentina,vr,
 BJ,Benin,AM,Armenia,vr,
-BJ,Benin,AU,Australia,eta,
+BJ,Benin,AU,Australia,ev,
 BJ,Benin,AT,Austria,vr,
 BJ,Benin,AZ,Azerbaijan,vr,
 BJ,Benin,BS,Bahamas,vf,90
@@ -4312,7 +4312,7 @@ BO,Bolivia,AO,Angola,ev,30
 BO,Bolivia,AG,Antigua and Barbuda,ev,
 BO,Bolivia,AR,Argentina,idc,90
 BO,Bolivia,AM,Armenia,ev,120
-BO,Bolivia,AU,Australia,eta,
+BO,Bolivia,AU,Australia,ev,
 BO,Bolivia,AT,Austria,vr,
 BO,Bolivia,AZ,Azerbaijan,ev,30
 BO,Bolivia,BS,Bahamas,vf,90
@@ -4517,7 +4517,7 @@ BR,Brazil,AO,Angola,vf,30
 BR,Brazil,AG,Antigua and Barbuda,vf,180
 BR,Brazil,AR,Argentina,idc,90
 BR,Brazil,AM,Armenia,vf,180
-BR,Brazil,AU,Australia,eta,
+BR,Brazil,AU,Australia,ev,
 BR,Brazil,AT,Austria,vf,90
 BR,Brazil,AZ,Azerbaijan,ev,30
 BR,Brazil,BS,Bahamas,vf,90
@@ -4722,7 +4722,7 @@ BS,Bahamas,AO,Angola,vf,90
 BS,Bahamas,AG,Antigua and Barbuda,vf,30
 BS,Bahamas,AR,Argentina,vr,90
 BS,Bahamas,AM,Armenia,ev,120
-BS,Bahamas,AU,Australia,eta,
+BS,Bahamas,AU,Australia,ev,
 BS,Bahamas,AT,Austria,vf,90
 BS,Bahamas,AZ,Azerbaijan,ev,30
 BS,Bahamas,BH,Bahrain,ev,14
@@ -4927,7 +4927,7 @@ BT,Bhutan,AO,Angola,ev,
 BT,Bhutan,AG,Antigua and Barbuda,ev,
 BT,Bhutan,AR,Argentina,vr,
 BT,Bhutan,AM,Armenia,ev,120
-BT,Bhutan,AU,Australia,eta,
+BT,Bhutan,AU,Australia,ev,
 BT,Bhutan,AT,Austria,vr,
 BT,Bhutan,AZ,Azerbaijan,vr,
 BT,Bhutan,BS,Bahamas,ev,90
@@ -5952,7 +5952,7 @@ CD,Democratic Republic of the Congo,AO,Angola,vr,
 CD,Democratic Republic of the Congo,AG,Antigua and Barbuda,ev,
 CD,Democratic Republic of the Congo,AR,Argentina,vr,
 CD,Democratic Republic of the Congo,AM,Armenia,vr,
-CD,Democratic Republic of the Congo,AU,Australia,eta,
+CD,Democratic Republic of the Congo,AU,Australia,ev,
 CD,Democratic Republic of the Congo,AT,Austria,vr,
 CD,Democratic Republic of the Congo,AZ,Azerbaijan,vr,
 CD,Democratic Republic of the Congo,BS,Bahamas,ev,90
@@ -6157,7 +6157,7 @@ CF,Central African Republic,AO,Angola,vr,
 CF,Central African Republic,AG,Antigua and Barbuda,ev,
 CF,Central African Republic,AR,Argentina,vr,
 CF,Central African Republic,AM,Armenia,vr,
-CF,Central African Republic,AU,Australia,eta,
+CF,Central African Republic,AU,Australia,ev,
 CF,Central African Republic,AT,Austria,vr,
 CF,Central African Republic,AZ,Azerbaijan,vr,
 CF,Central African Republic,BS,Bahamas,ev,
@@ -6772,7 +6772,7 @@ CI,Côte d'Ivoire,AO,Angola,vr,
 CI,Côte d'Ivoire,AG,Antigua and Barbuda,ev,
 CI,Côte d'Ivoire,AR,Argentina,vr,
 CI,Côte d'Ivoire,AM,Armenia,vr,
-CI,Côte d'Ivoire,AU,Australia,eta,
+CI,Côte d'Ivoire,AU,Australia,ev,
 CI,Côte d'Ivoire,AT,Austria,vr,
 CI,Côte d'Ivoire,AZ,Azerbaijan,vr,
 CI,Côte d'Ivoire,BS,Bahamas,ev,
@@ -7182,7 +7182,7 @@ CM,Cameroon,AO,Angola,vr,
 CM,Cameroon,AG,Antigua and Barbuda,ev,
 CM,Cameroon,AR,Argentina,vr,
 CM,Cameroon,AM,Armenia,vr,
-CM,Cameroon,AU,Australia,eta,
+CM,Cameroon,AU,Australia,ev,
 CM,Cameroon,AT,Austria,vr,
 CM,Cameroon,AZ,Azerbaijan,vr,
 CM,Cameroon,BS,Bahamas,ev,
@@ -7387,7 +7387,7 @@ CN,China,AO,Angola,vf,30
 CN,China,AG,Antigua and Barbuda,vf,30
 CN,China,AR,Argentina,vr,
 CN,China,AM,Armenia,vf,90
-CN,China,AU,Australia,eta,
+CN,China,AU,Australia,ev,
 CN,China,AT,Austria,vr,
 CN,China,AZ,Azerbaijan,vf,30
 CN,China,BS,Bahamas,vf,90
@@ -7502,7 +7502,7 @@ CN,China,NA,Namibia,ev,90
 CN,China,NR,Nauru,voa,90
 CN,China,NP,Nepal,ev,90
 CN,China,NL,Netherlands,vr,
-CN,China,NZ,New Zealand,eta,
+CN,China,NZ,New Zealand,ev,
 CN,China,NI,Nicaragua,ev,
 CN,China,NE,Niger,vr,
 CN,China,NG,Nigeria,ev,90
@@ -10462,7 +10462,7 @@ EG,Egypt,AO,Angola,ev,
 EG,Egypt,AG,Antigua and Barbuda,ev,
 EG,Egypt,AR,Argentina,vr,
 EG,Egypt,AM,Armenia,ev,120
-EG,Egypt,AU,Australia,eta,
+EG,Egypt,AU,Australia,ev,
 EG,Egypt,AT,Austria,vr,
 EG,Egypt,AZ,Azerbaijan,vr,
 EG,Egypt,BS,Bahamas,ev,
@@ -11077,7 +11077,7 @@ ET,Ethiopia,AO,Angola,vr,
 ET,Ethiopia,AG,Antigua and Barbuda,ev,
 ET,Ethiopia,AR,Argentina,vr,
 ET,Ethiopia,AM,Armenia,vr,
-ET,Ethiopia,AU,Australia,eta,
+ET,Ethiopia,AU,Australia,ev,
 ET,Ethiopia,AT,Austria,vr,
 ET,Ethiopia,AZ,Azerbaijan,vr,
 ET,Ethiopia,BS,Bahamas,ev,90
@@ -12717,7 +12717,7 @@ GE,Georgia,AO,Angola,vr,
 GE,Georgia,AG,Antigua and Barbuda,vf,180
 GE,Georgia,AR,Argentina,vf,90
 GE,Georgia,AM,Armenia,vf,180
-GE,Georgia,AU,Australia,eta,
+GE,Georgia,AU,Australia,ev,
 GE,Georgia,AT,Austria,vf,90
 GE,Georgia,AZ,Azerbaijan,vf,90
 GE,Georgia,BS,Bahamas,vf,90
@@ -15997,7 +15997,7 @@ IL,Israel,AO,Angola,vf,30
 IL,Israel,AG,Antigua and Barbuda,ev,180
 IL,Israel,AR,Argentina,vf,90
 IL,Israel,AM,Armenia,ev,120
-IL,Israel,AU,Australia,eta,
+IL,Israel,AU,Australia,ev,
 IL,Israel,AT,Austria,vf,90
 IL,Israel,AZ,Azerbaijan,ev,30
 IL,Israel,BS,Bahamas,vf,90
@@ -16202,7 +16202,7 @@ IN,India,AO,Angola,vf,30
 IN,India,AG,Antigua and Barbuda,ev,
 IN,India,AR,Argentina,vr,
 IN,India,AM,Armenia,ev,90
-IN,India,AU,Australia,eta,
+IN,India,AU,Australia,ev,
 IN,India,AT,Austria,vr,
 IN,India,AZ,Azerbaijan,ev,30
 IN,India,BS,Bahamas,ev,90
@@ -17432,7 +17432,7 @@ JO,Jordan,AO,Angola,vr,
 JO,Jordan,AG,Antigua and Barbuda,ev,
 JO,Jordan,AR,Argentina,vr,
 JO,Jordan,AM,Armenia,ev,120
-JO,Jordan,AU,Australia,eta,
+JO,Jordan,AU,Australia,ev,
 JO,Jordan,AT,Austria,vr,
 JO,Jordan,AZ,Azerbaijan,ev,30
 JO,Jordan,BS,Bahamas,ev,
@@ -18662,7 +18662,7 @@ KM,Comoros,AO,Angola,vr,
 KM,Comoros,AG,Antigua and Barbuda,ev,
 KM,Comoros,AR,Argentina,vr,
 KM,Comoros,AM,Armenia,vr,
-KM,Comoros,AU,Australia,eta,
+KM,Comoros,AU,Australia,ev,
 KM,Comoros,AT,Austria,vr,
 KM,Comoros,AZ,Azerbaijan,vr,
 KM,Comoros,BS,Bahamas,ev,90
@@ -19072,7 +19072,7 @@ KP,North Korea,AO,Angola,vr,
 KP,North Korea,AG,Antigua and Barbuda,ev,
 KP,North Korea,AR,Argentina,vr,
 KP,North Korea,AM,Armenia,ev,120
-KP,North Korea,AU,Australia,eta,
+KP,North Korea,AU,Australia,ev,
 KP,North Korea,AT,Austria,vr,
 KP,North Korea,AZ,Azerbaijan,vr,
 KP,North Korea,BS,Bahamas,ev,
@@ -19482,7 +19482,7 @@ KW,Kuwait,AO,Angola,ev,
 KW,Kuwait,AG,Antigua and Barbuda,vf,30
 KW,Kuwait,AR,Argentina,vr,
 KW,Kuwait,AM,Armenia,vf,180
-KW,Kuwait,AU,Australia,eta,
+KW,Kuwait,AU,Australia,ev,
 KW,Kuwait,AT,Austria,vr,
 KW,Kuwait,AZ,Azerbaijan,vf,30
 KW,Kuwait,BS,Bahamas,vf,90
@@ -19597,7 +19597,7 @@ KW,Kuwait,NA,Namibia,ev,
 KW,Kuwait,NR,Nauru,vr,
 KW,Kuwait,NP,Nepal,ev,90
 KW,Kuwait,NL,Netherlands,vr,
-KW,Kuwait,NZ,New Zealand,eta,90
+KW,Kuwait,NZ,New Zealand,ev,90
 KW,Kuwait,NI,Nicaragua,vf,90
 KW,Kuwait,NE,Niger,vr,
 KW,Kuwait,NG,Nigeria,ev,
@@ -19687,7 +19687,7 @@ KZ,Kazakhstan,AO,Angola,ev,30
 KZ,Kazakhstan,AG,Antigua and Barbuda,vf,180
 KZ,Kazakhstan,AR,Argentina,vf,30
 KZ,Kazakhstan,AM,Armenia,vf,180
-KZ,Kazakhstan,AU,Australia,eta,
+KZ,Kazakhstan,AU,Australia,ev,
 KZ,Kazakhstan,AT,Austria,vr,
 KZ,Kazakhstan,AZ,Azerbaijan,vf,90
 KZ,Kazakhstan,BS,Bahamas,ev,90
@@ -20097,7 +20097,7 @@ LB,Lebanon,AO,Angola,ev,30
 LB,Lebanon,AG,Antigua and Barbuda,ev,
 LB,Lebanon,AR,Argentina,vr,
 LB,Lebanon,AM,Armenia,ev,120
-LB,Lebanon,AU,Australia,eta,
+LB,Lebanon,AU,Australia,ev,
 LB,Lebanon,AT,Austria,vr,
 LB,Lebanon,AZ,Azerbaijan,vr,
 LB,Lebanon,BS,Bahamas,ev,90
@@ -20712,7 +20712,7 @@ LK,Sri Lanka,AO,Angola,vr,
 LK,Sri Lanka,AG,Antigua and Barbuda,ev,
 LK,Sri Lanka,AR,Argentina,vr,
 LK,Sri Lanka,AM,Armenia,vr,
-LK,Sri Lanka,AU,Australia,eta,
+LK,Sri Lanka,AU,Australia,ev,
 LK,Sri Lanka,AT,Austria,vr,
 LK,Sri Lanka,AZ,Azerbaijan,ev,30
 LK,Sri Lanka,BS,Bahamas,vf,90
@@ -21942,7 +21942,7 @@ LY,Libya,AO,Angola,ev,
 LY,Libya,AG,Antigua and Barbuda,ev,
 LY,Libya,AR,Argentina,vr,
 LY,Libya,AM,Armenia,vr,
-LY,Libya,AU,Australia,eta,
+LY,Libya,AU,Australia,ev,
 LY,Libya,AT,Austria,vr,
 LY,Libya,AZ,Azerbaijan,vr,
 LY,Libya,BS,Bahamas,ev,
@@ -22147,7 +22147,7 @@ MA,Morocco,AO,Angola,vf,30
 MA,Morocco,AG,Antigua and Barbuda,ev,
 MA,Morocco,AR,Argentina,vr,
 MA,Morocco,AM,Armenia,ev,120
-MA,Morocco,AU,Australia,eta,
+MA,Morocco,AU,Australia,ev,
 MA,Morocco,AT,Austria,vr,
 MA,Morocco,AZ,Azerbaijan,vf,90
 MA,Morocco,BS,Bahamas,ev,90
@@ -22557,7 +22557,7 @@ MD,Moldova,AO,Angola,ev,
 MD,Moldova,AG,Antigua and Barbuda,vf,180
 MD,Moldova,AR,Argentina,vr,
 MD,Moldova,AM,Armenia,vf,180
-MD,Moldova,AU,Australia,eta,
+MD,Moldova,AU,Australia,ev,
 MD,Moldova,AT,Austria,vf,90
 MD,Moldova,AZ,Azerbaijan,vf,90
 MD,Moldova,BS,Bahamas,vf,90
@@ -22672,7 +22672,7 @@ MD,Moldova,NA,Namibia,ev,90
 MD,Moldova,NR,Nauru,vr,
 MD,Moldova,NP,Nepal,ev,90
 MD,Moldova,NL,Netherlands,vf,90
-MD,Moldova,NZ,New Zealand,eta,
+MD,Moldova,NZ,New Zealand,ev,
 MD,Moldova,NI,Nicaragua,vf,90
 MD,Moldova,NE,Niger,vr,
 MD,Moldova,NG,Nigeria,ev,30
@@ -22762,7 +22762,7 @@ ME,Montenegro,AO,Angola,vr,
 ME,Montenegro,AG,Antigua and Barbuda,ev,
 ME,Montenegro,AR,Argentina,vf,90
 ME,Montenegro,AM,Armenia,vf,180
-ME,Montenegro,AU,Australia,eta,
+ME,Montenegro,AU,Australia,ev,
 ME,Montenegro,AT,Austria,vf,90
 ME,Montenegro,AZ,Azerbaijan,vf,90
 ME,Montenegro,BS,Bahamas,ev,
@@ -23377,7 +23377,7 @@ MK,North Macedonia,AO,Angola,vr,
 MK,North Macedonia,AG,Antigua and Barbuda,ev,
 MK,North Macedonia,AR,Argentina,vf,90
 MK,North Macedonia,AM,Armenia,ev,120
-MK,North Macedonia,AU,Australia,eta,
+MK,North Macedonia,AU,Australia,ev,
 MK,North Macedonia,AT,Austria,vf,90
 MK,North Macedonia,AZ,Azerbaijan,ev,30
 MK,North Macedonia,BS,Bahamas,vf,90
@@ -23582,7 +23582,7 @@ ML,Mali,AO,Angola,vr,
 ML,Mali,AG,Antigua and Barbuda,ev,
 ML,Mali,AR,Argentina,vr,
 ML,Mali,AM,Armenia,vr,
-ML,Mali,AU,Australia,eta,
+ML,Mali,AU,Australia,ev,
 ML,Mali,AT,Austria,vr,
 ML,Mali,AZ,Azerbaijan,vr,
 ML,Mali,BS,Bahamas,vf,90
@@ -25427,7 +25427,7 @@ MX,Mexico,AO,Angola,vf,30
 MX,Mexico,AG,Antigua and Barbuda,vf,180
 MX,Mexico,AR,Argentina,vf,90
 MX,Mexico,AM,Armenia,ev,120
-MX,Mexico,AU,Australia,eta,
+MX,Mexico,AU,Australia,ev,
 MX,Mexico,AT,Austria,vf,90
 MX,Mexico,AZ,Azerbaijan,ev,30
 MX,Mexico,BS,Bahamas,vf,90
@@ -26247,7 +26247,7 @@ NE,Niger,AO,Angola,ev,
 NE,Niger,AG,Antigua and Barbuda,ev,
 NE,Niger,AR,Argentina,vr,
 NE,Niger,AM,Armenia,vr,
-NE,Niger,AU,Australia,eta,
+NE,Niger,AU,Australia,ev,
 NE,Niger,AT,Austria,vr,
 NE,Niger,AZ,Azerbaijan,vr,
 NE,Niger,BS,Bahamas,ev,
@@ -27272,7 +27272,7 @@ NP,Nepal,AO,Angola,ev,30
 NP,Nepal,AG,Antigua and Barbuda,ev,
 NP,Nepal,AR,Argentina,vr,
 NP,Nepal,AM,Armenia,vr,
-NP,Nepal,AU,Australia,eta,
+NP,Nepal,AU,Australia,ev,
 NP,Nepal,AT,Austria,vr,
 NP,Nepal,AZ,Azerbaijan,ev,30
 NP,Nepal,BS,Bahamas,ev,90
@@ -27477,7 +27477,7 @@ NR,Nauru,AO,Angola,vf,30
 NR,Nauru,AG,Antigua and Barbuda,vf,30
 NR,Nauru,AR,Argentina,vr,
 NR,Nauru,AM,Armenia,ev,120
-NR,Nauru,AU,Australia,eta,
+NR,Nauru,AU,Australia,ev,
 NR,Nauru,AT,Austria,vr,
 NR,Nauru,AZ,Azerbaijan,vr,
 NR,Nauru,BS,Bahamas,vf,90
@@ -28092,7 +28092,7 @@ PA,Panama,AO,Angola,vf,30
 PA,Panama,AG,Antigua and Barbuda,vf,180
 PA,Panama,AR,Argentina,vf,90
 PA,Panama,AM,Armenia,ev,120
-PA,Panama,AU,Australia,eta,
+PA,Panama,AU,Australia,ev,
 PA,Panama,AT,Austria,vf,90
 PA,Panama,AZ,Azerbaijan,ev,30
 PA,Panama,BS,Bahamas,vf,90
@@ -29322,7 +29322,7 @@ PS,Palestine,AO,Angola,ev,
 PS,Palestine,AG,Antigua and Barbuda,ev,
 PS,Palestine,AR,Argentina,vr,
 PS,Palestine,AM,Armenia,vr,
-PS,Palestine,AU,Australia,eta,
+PS,Palestine,AU,Australia,ev,
 PS,Palestine,AT,Austria,vr,
 PS,Palestine,AZ,Azerbaijan,vr,
 PS,Palestine,BS,Bahamas,ev,90
@@ -30142,7 +30142,7 @@ QA,Qatar,AO,Angola,vf,30
 QA,Qatar,AG,Antigua and Barbuda,ev,
 QA,Qatar,AR,Argentina,vf,90
 QA,Qatar,AM,Armenia,vf,180
-QA,Qatar,AU,Australia,eta,
+QA,Qatar,AU,Australia,ev,
 QA,Qatar,AT,Austria,vr,
 QA,Qatar,AZ,Azerbaijan,vf,30
 QA,Qatar,BS,Bahamas,vf,90
@@ -30552,7 +30552,7 @@ RS,Serbia,AO,Angola,ev,30
 RS,Serbia,AG,Antigua and Barbuda,vf,180
 RS,Serbia,AR,Argentina,vf,90
 RS,Serbia,AM,Armenia,vf,180
-RS,Serbia,AU,Australia,eta,
+RS,Serbia,AU,Australia,ev,
 RS,Serbia,AT,Austria,vf,90
 RS,Serbia,AZ,Azerbaijan,vf,90
 RS,Serbia,BS,Bahamas,ev,90
@@ -30757,7 +30757,7 @@ RU,Russia,AO,Angola,vf,30
 RU,Russia,AG,Antigua and Barbuda,vf,180
 RU,Russia,AR,Argentina,vf,90
 RU,Russia,AM,Armenia,vf,180
-RU,Russia,AU,Australia,eta,
+RU,Russia,AU,Australia,ev,
 RU,Russia,AT,Austria,vr,
 RU,Russia,AZ,Azerbaijan,vf,90
 RU,Russia,BS,Bahamas,vf,90
@@ -30873,7 +30873,7 @@ RU,Russia,NA,Namibia,vf,90
 RU,Russia,NR,Nauru,vf,14
 RU,Russia,NP,Nepal,ev,90
 RU,Russia,NL,Netherlands,vr,
-RU,Russia,NZ,New Zealand,eta,
+RU,Russia,NZ,New Zealand,ev,
 RU,Russia,NI,Nicaragua,vf,90
 RU,Russia,NE,Niger,vr,
 RU,Russia,NG,Nigeria,ev,30
@@ -31167,7 +31167,7 @@ SA,Saudi Arabia,AO,Angola,vf,30
 SA,Saudi Arabia,AG,Antigua and Barbuda,ev,
 SA,Saudi Arabia,AR,Argentina,vr,
 SA,Saudi Arabia,AM,Armenia,vf,180
-SA,Saudi Arabia,AU,Australia,eta,
+SA,Saudi Arabia,AU,Australia,ev,
 SA,Saudi Arabia,AT,Austria,vr,
 SA,Saudi Arabia,AZ,Azerbaijan,vf,30
 SA,Saudi Arabia,BS,Bahamas,ev,
@@ -31782,7 +31782,7 @@ SD,Sudan,AO,Angola,ev,
 SD,Sudan,AG,Antigua and Barbuda,ev,
 SD,Sudan,AR,Argentina,vr,
 SD,Sudan,AM,Armenia,vr,
-SD,Sudan,AU,Australia,eta,
+SD,Sudan,AU,Australia,ev,
 SD,Sudan,AT,Austria,vr,
 SD,Sudan,AZ,Azerbaijan,vr,
 SD,Sudan,BS,Bahamas,ev,90
@@ -33217,7 +33217,7 @@ SN,Senegal,AO,Angola,vr,
 SN,Senegal,AG,Antigua and Barbuda,ev,
 SN,Senegal,AR,Argentina,vr,
 SN,Senegal,AM,Armenia,vr,
-SN,Senegal,AU,Australia,eta,
+SN,Senegal,AU,Australia,ev,
 SN,Senegal,AT,Austria,vr,
 SN,Senegal,AZ,Azerbaijan,vr,
 SN,Senegal,BS,Bahamas,ev,30
@@ -33832,7 +33832,7 @@ SS,South Sudan,AO,Angola,vr,
 SS,South Sudan,AG,Antigua and Barbuda,ev,
 SS,South Sudan,AR,Argentina,vr,
 SS,South Sudan,AM,Armenia,vr,
-SS,South Sudan,AU,Australia,eta,
+SS,South Sudan,AU,Australia,ev,
 SS,South Sudan,AT,Austria,vr,
 SS,South Sudan,AZ,Azerbaijan,vr,
 SS,South Sudan,BS,Bahamas,ev,
@@ -34447,7 +34447,7 @@ SY,Syria,AO,Angola,vr,
 SY,Syria,AG,Antigua and Barbuda,ev,
 SY,Syria,AR,Argentina,vr,
 SY,Syria,AM,Armenia,vr,
-SY,Syria,AU,Australia,eta,
+SY,Syria,AU,Australia,ev,
 SY,Syria,AT,Austria,vr,
 SY,Syria,AZ,Azerbaijan,vr,
 SY,Syria,BS,Bahamas,ev,
@@ -34857,7 +34857,7 @@ TD,Chad,AO,Angola,ev,
 TD,Chad,AG,Antigua and Barbuda,ev,
 TD,Chad,AR,Argentina,vr,
 TD,Chad,AM,Armenia,vr,
-TD,Chad,AU,Australia,eta,
+TD,Chad,AU,Australia,ev,
 TD,Chad,AT,Austria,vr,
 TD,Chad,AZ,Azerbaijan,vr,
 TD,Chad,BS,Bahamas,ev,
@@ -35472,7 +35472,7 @@ TJ,Tajikistan,AO,Angola,ev,
 TJ,Tajikistan,AG,Antigua and Barbuda,vf,180
 TJ,Tajikistan,AR,Argentina,vr,
 TJ,Tajikistan,AM,Armenia,vf,180
-TJ,Tajikistan,AU,Australia,eta,
+TJ,Tajikistan,AU,Australia,ev,
 TJ,Tajikistan,AT,Austria,vr,
 TJ,Tajikistan,AZ,Azerbaijan,vf,90
 TJ,Tajikistan,BS,Bahamas,ev,90
@@ -35793,7 +35793,7 @@ TL,Timor-Leste,NA,Namibia,ev,
 TL,Timor-Leste,NR,Nauru,vr,
 TL,Timor-Leste,NP,Nepal,ev,
 TL,Timor-Leste,NL,Netherlands,vf,90
-TL,Timor-Leste,NZ,New Zealand,eta,
+TL,Timor-Leste,NZ,New Zealand,ev,
 TL,Timor-Leste,NI,Nicaragua,vr,
 TL,Timor-Leste,NE,Niger,vr,
 TL,Timor-Leste,NG,Nigeria,ev,
@@ -35856,7 +35856,7 @@ TL,Timor-Leste,UG,Uganda,ev,
 TL,Timor-Leste,UA,Ukraine,ev,
 TL,Timor-Leste,AE,United Arab Emirates,ev,
 TL,Timor-Leste,GB,United Kingdom,vr,
-TL,Timor-Leste,US,United States,eta,
+TL,Timor-Leste,US,United States,vr,
 TL,Timor-Leste,UY,Uruguay,vr,
 TL,Timor-Leste,UZ,Uzbekistan,vr,
 TL,Timor-Leste,VU,Vanuatu,vr,
@@ -35873,7 +35873,7 @@ TL,Timor-Leste,GL,Greenland,vf,90
 TL,Timor-Leste,NC,New Caledonia,vf,90
 TL,Timor-Leste,PF,French Polynesia,vf,90
 TL,Timor-Leste,FK,Falkland Islands,vr,
-TL,Timor-Leste,PR,Puerto Rico,eta,
+TL,Timor-Leste,PR,Puerto Rico,vr,
 TM,Turkmenistan,AF,Afghanistan,vr,
 TM,Turkmenistan,AL,Albania,ev,
 TM,Turkmenistan,DZ,Algeria,vr,
@@ -36702,7 +36702,7 @@ TT,Trinidad and Tobago,AO,Angola,vf,30
 TT,Trinidad and Tobago,AG,Antigua and Barbuda,vf,180
 TT,Trinidad and Tobago,AR,Argentina,vf,90
 TT,Trinidad and Tobago,AM,Armenia,ev,120
-TT,Trinidad and Tobago,AU,Australia,eta,
+TT,Trinidad and Tobago,AU,Australia,ev,
 TT,Trinidad and Tobago,AT,Austria,vf,90
 TT,Trinidad and Tobago,AZ,Azerbaijan,ev,30
 TT,Trinidad and Tobago,BS,Bahamas,vf,90
@@ -36907,7 +36907,7 @@ TV,Tuvalu,AO,Angola,vf,30
 TV,Tuvalu,AG,Antigua and Barbuda,vf,180
 TV,Tuvalu,AR,Argentina,vr,
 TV,Tuvalu,AM,Armenia,ev,120
-TV,Tuvalu,AU,Australia,eta,
+TV,Tuvalu,AU,Australia,ev,
 TV,Tuvalu,AT,Austria,vf,90
 TV,Tuvalu,AZ,Azerbaijan,vr,
 TV,Tuvalu,BS,Bahamas,vf,90
@@ -37522,7 +37522,7 @@ UA,Ukraine,AO,Angola,ev,
 UA,Ukraine,AG,Antigua and Barbuda,vf,180
 UA,Ukraine,AR,Argentina,vf,90
 UA,Ukraine,AM,Armenia,vf,180
-UA,Ukraine,AU,Australia,eta,
+UA,Ukraine,AU,Australia,ev,
 UA,Ukraine,AT,Austria,vf,90
 UA,Ukraine,AZ,Azerbaijan,vf,90
 UA,Ukraine,BS,Bahamas,ev,90
@@ -37638,7 +37638,7 @@ UA,Ukraine,NA,Namibia,ev,90
 UA,Ukraine,NR,Nauru,vr,
 UA,Ukraine,NP,Nepal,ev,90
 UA,Ukraine,NL,Netherlands,vf,90
-UA,Ukraine,NZ,New Zealand,eta,
+UA,Ukraine,NZ,New Zealand,ev,
 UA,Ukraine,NI,Nicaragua,ev,
 UA,Ukraine,NE,Niger,vr,
 UA,Ukraine,NG,Nigeria,ev,30
@@ -38137,7 +38137,7 @@ UY,Uruguay,AO,Angola,vf,30
 UY,Uruguay,AG,Antigua and Barbuda,ev,
 UY,Uruguay,AR,Argentina,idc,90
 UY,Uruguay,AM,Armenia,vf,90
-UY,Uruguay,AU,Australia,eta,
+UY,Uruguay,AU,Australia,ev,
 UY,Uruguay,AT,Austria,vf,90
 UY,Uruguay,AZ,Azerbaijan,vr,
 UY,Uruguay,BS,Bahamas,vf,90
@@ -38342,7 +38342,7 @@ UZ,Uzbekistan,AO,Angola,vr,
 UZ,Uzbekistan,AG,Antigua and Barbuda,vf,30
 UZ,Uzbekistan,AR,Argentina,vr,
 UZ,Uzbekistan,AM,Armenia,vf,180
-UZ,Uzbekistan,AU,Australia,eta,
+UZ,Uzbekistan,AU,Australia,ev,
 UZ,Uzbekistan,AT,Austria,vr,
 UZ,Uzbekistan,AZ,Azerbaijan,vf,90
 UZ,Uzbekistan,BS,Bahamas,ev,
@@ -38957,7 +38957,7 @@ VE,Venezuela,AO,Angola,ev,30
 VE,Venezuela,AG,Antigua and Barbuda,vf,180
 VE,Venezuela,AR,Argentina,vf,90
 VE,Venezuela,AM,Armenia,ev,120
-VE,Venezuela,AU,Australia,eta,90
+VE,Venezuela,AU,Australia,ev,90
 VE,Venezuela,AT,Austria,vf,90
 VE,Venezuela,AZ,Azerbaijan,vr,
 VE,Venezuela,BS,Bahamas,vf,90
@@ -39162,7 +39162,7 @@ VN,Vietnam,AO,Angola,ev,30
 VN,Vietnam,AG,Antigua and Barbuda,ev,
 VN,Vietnam,AR,Argentina,vr,
 VN,Vietnam,AM,Armenia,ev,120
-VN,Vietnam,AU,Australia,eta,
+VN,Vietnam,AU,Australia,ev,
 VN,Vietnam,AT,Austria,vr,
 VN,Vietnam,AZ,Azerbaijan,ev,30
 VN,Vietnam,BS,Bahamas,ev,
@@ -39777,7 +39777,7 @@ XK,Kosovo,AO,Angola,ev,
 XK,Kosovo,AG,Antigua and Barbuda,vf,90
 XK,Kosovo,AR,Argentina,vr,
 XK,Kosovo,AM,Armenia,vr,
-XK,Kosovo,AU,Australia,eta,
+XK,Kosovo,AU,Australia,ev,
 XK,Kosovo,AT,Austria,vf,90
 XK,Kosovo,AZ,Azerbaijan,vr,
 XK,Kosovo,BS,Bahamas,vf,90
@@ -40187,7 +40187,7 @@ YE,Yemen,AO,Angola,vr,
 YE,Yemen,AG,Antigua and Barbuda,ev,
 YE,Yemen,AR,Argentina,vr,
 YE,Yemen,AM,Armenia,vr,
-YE,Yemen,AU,Australia,eta,360
+YE,Yemen,AU,Australia,ev,360
 YE,Yemen,AT,Austria,vr,
 YE,Yemen,AZ,Azerbaijan,vr,
 YE,Yemen,BS,Bahamas,ev,
@@ -40303,7 +40303,7 @@ YE,Yemen,NA,Namibia,ev,
 YE,Yemen,NR,Nauru,vr,
 YE,Yemen,NP,Nepal,ev,90
 YE,Yemen,NL,Netherlands,vr,
-YE,Yemen,NZ,New Zealand,eta,180
+YE,Yemen,NZ,New Zealand,ev,180
 YE,Yemen,NI,Nicaragua,vr,
 YE,Yemen,NE,Niger,vr,
 YE,Yemen,NG,Nigeria,ev,90
@@ -40802,7 +40802,7 @@ ZW,Zimbabwe,AO,Angola,vf,30
 ZW,Zimbabwe,AG,Antigua and Barbuda,ev,
 ZW,Zimbabwe,AR,Argentina,vr,
 ZW,Zimbabwe,AM,Armenia,vr,
-ZW,Zimbabwe,AU,Australia,eta,
+ZW,Zimbabwe,AU,Australia,ev,
 ZW,Zimbabwe,AT,Austria,vr,
 ZW,Zimbabwe,AZ,Azerbaijan,vr,
 ZW,Zimbabwe,BS,Bahamas,vf,90
