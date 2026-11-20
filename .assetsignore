@@ -6,3 +6,8 @@ docs/
 .claude/
 .secrets/
 store/
+# Repo history and local tooling: never part of the site, and the git pack can pass the 25 MiB asset limit.
+.git/
+node_modules/
+.wrangler/
+.autopilot/
