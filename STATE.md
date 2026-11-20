@@ -74,6 +74,15 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 20 (2026-11-19/20: Turkish data tables, Singapore transit fix):**
+  /tr/ nomad, CBI, shortcuts, passport-validity and tr-schengen checklist pages now render their tables in Turkish.
+  Inline scripts read `<html data-page-lang="tr">` (build-tr skips script content); `window.countryName` falls back
+  to it. Free text in `data/digital-nomad-visas-tr.js` and `data/citizenship-by-investment-tr.js`, keyed by the
+  exact English value, so a changed English fact shows English, never a stale Turkish one. Programme names stay English.
+  Singapore VFTF row (Indian passports): `days` was 96 (hours read as days), now 4; visa list matched to ICA's VFTF
+  page (US, GB, AU, CA, JP, NZ, DE, CH; Korea and Schengen dropped). /transit-visa/ is a 301 to /transit-map/.
+  Gotcha: these commits only went live after Ipek's deploy fix (ec883fb57), Workers Builds failed from 20defbb87 on.
+
 - **Round 19 (2026-11-19 night: quiet redesign, "no AI look"):**
   Owner: the site looked AI-made. Design now follows Apple HIG notes (dickwu/apple-design-skill, emilkowalski/skills).
   Tokens: system font stack (SF Pro / Segoe UI Variable), `--font-mono` now aliases the sans face (`--font-code` for
