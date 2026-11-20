@@ -152,15 +152,21 @@ window.ENTRY_CAVEATS = {
   RU: { whenStatus: ["vf", "ev"],
         note: "Bazı vizesiz / e-vize girişleri yalnızca belirli havalimanlarıyla sınırlıdır.",
         noteEn: "Some visa-free / e-visa entries are limited to specific airports only." },
-  CA: { whenStatus: ["ev"],
+  CA: { whenStatus: ["eta", "ev"],
         note: "eTA yalnızca hava yoluyla girişte gerekir; ABD'den kara/deniz yoluyla girişte gerekmez.",
         noteEn: "The eTA is needed for air arrivals only; entering by land/sea from the US doesn't require it." },
   ZA: { whenStatus: ["ev"],
         note: "Güney Afrika e-Vizesi yalnızca havalimanından girişte geçerlidir.",
         noteEn: "South Africa's e-Visa is valid for entry via airports only." },
   CN: { whenStatus: ["vf"],
-        note: "Vizesiz giriş geçici bir uygulamadır: şu an 31 Aralık 2026'ya kadar yürürlükte.",
-        noteEn: "Visa-free entry is a temporary scheme, currently in effect through 31 Dec 2026." },
+        note: "Birçok pasaport için vizesiz giriş geçici bir uygulamadır (şu an 31 Aralık 2026'ya kadar); bazı ülkelerin ise Çin'le kalıcı karşılıklı muafiyet anlaşması var.",
+        noteEn: "For many passports visa-free entry is a temporary scheme (currently through 31 Dec 2026); some countries have a permanent mutual exemption agreement with China." },
+  // Thailand replaced its 60-day visa exemption (93 countries) with a 30-day exemption for a
+  // shorter list on 15 September 2026 (Royal Gazette, 31 August 2026; reported by Fragomen and
+  // Newland Chase). The official per-country list was not readable here, so the card says so.
+  TH: { whenStatus: ["vf"],
+        note: "Tayland 15 Eylül 2026'da vizesiz kalışı 60 günden 30 güne indirdi ve ülke listesini kısalttı. Pasaportunun hâlâ listede olduğunu yola çıkmadan önce resmî Tayland e-vize sitesinde (thaievisa.go.th) kontrol et.",
+        noteEn: "Thailand cut visa-free stays from 60 to 30 days on 15 September 2026 and shortened its list of countries. Check that your passport is still on it on the official Thai e-visa site (thaievisa.go.th) before you travel." },
 };
 
 // Return the caveat note for a (destination, status) pair, or null. Language-aware.
@@ -268,6 +274,9 @@ window.applyDestFloor = function (r, destIso2) {
   }
   const decl = window.DECLARATION_NOT_EVISA[destIso2];
   if (decl && r.status === "ev") return { ...r, status: decl.status, days: decl.days };
+  // Thailand: no 60-day visa exemption since 15 September 2026 (see ENTRY_CAVEATS.TH). The
+  // bilateral 90-day agreements (KR, AR, CL, BR, PE) are separate and keep their 90 days.
+  if (destIso2 === "TH" && r.status === "vf" && r.days === 60) return { ...r, days: 30 };
   return r;
 };
 
@@ -301,6 +310,27 @@ const _SCHENGEN_AREA = new Set([
   "IS","LI","NO","CH",                                // EFTA Schengen members
 ]);
 window.SCHENGEN_AREA = _SCHENGEN_AREA;
+
+// The Schengen states share one visa list for short stays: Regulation (EU) 2018/1806.
+// Annex II nationals are visa-free for 90 days in any 180 in all 29 states; everyone else
+// (Annex I) needs a Schengen visa. Wikipedia tables sometimes disagree for one state
+// (audit 2026-11-21: Kuwait → Liechtenstein read visa-free, Solomon Islands → Romania
+// read visa required). Consolidated text 30 December 2025:
+// https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02018R1806-20251230
+// Nauru is listed with footnote 11 (exempt only once an EU agreement is in force); not
+// confirmed, so Nauru keeps what the data says. Vanuatu was removed from Annex II.
+// Diplomatic/service passports are handled by resolveVariantStatus, not here.
+window.SCHENGEN_ANNEX_II = new Set(("MK AD AE AG AL AR AU BA BB BN BR BS CA CL CO CR DM FM GD GE GT HN IL JP KI KN KR LC " +
+  "MC MD ME MH MU MX MY NI NZ PA PE PW PY RS SB SC SG SM SV TL TO TT TV UA GB US UY VA VC VE WS HK MO TW XK").split(" "));
+const _EU_EEA_CH = new Set(["AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR","HU","IE","IT","LV","LT","LU",
+  "MT","NL","PL","PT","RO","SK","SI","ES","SE","IS","LI","NO","CH"]);
+window.applySchengenCommonList = function (r, passportIso2, destIso2) {
+  if (!r || !_SCHENGEN_AREA.has(destIso2) || !passportIso2 || _EU_EEA_CH.has(passportIso2)) return r;
+  if (passportIso2 === "NR" || r.status === "ban" || r.status === "self") return r;
+  const free = r.status === "vf" || r.status === "idc";
+  if (window.SCHENGEN_ANNEX_II.has(passportIso2)) return free ? r : { ...r, status: "vf", days: 90 };
+  return free || r.status === "ev" || r.status === "voa" || r.status === "eta" ? { ...r, status: "vr", days: null } : r;
+};
 // European microstates de-facto inside the Schengen travel zone: not formal
 // members, but they have no border controls of their own — Andorra is only
 // reachable through France/Spain (and re-entering Schengen needs the very

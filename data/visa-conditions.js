@@ -238,18 +238,27 @@ window.VISA_CONDITIONS = {
     }],
   },
 
-  // ─── Russia ────────────────────────────────────────────────────────────
-  RU: {
-    GE: [{
-      ifHolds: ["US", "GB", "IE", "SCHENGEN"],
-      then: "vf",
-      days: 90,
-      note: "Belirli ülkelerin geçerli vizesini taşıyan Rus vatandaşları da vizesiz girebilir (Gürcistan tek taraflı uygulama).",
-      noteEn: "Russian citizens benefit from Georgia's broad visa-free entry; valid US, UK, Irish or Schengen visa holders qualify.",
-      source: "https://en.wikipedia.org/wiki/Visa_policy_of_Georgia",
-    }],
-  },
+  // Russia → Georgia removed 2026-11-21: Russian citizens enter Georgia visa-free without
+  // any other visa, so the "if you hold a US/UK/Schengen visa" row described nothing.
 };
+
+// Canada's eTA for "select visa-required countries": an eTA instead of a visa for people who
+// held a Canadian visitor visa in the past 10 years or hold a valid US nonimmigrant visa, only
+// when flying to or through a Canadian airport. Source: IRCC, page details 2026-10-30.
+// The "held a Canadian visa" path can't be expressed as ifHolds, so the note states it.
+(function () {
+  const row = {
+    ifHolds: ["US"],
+    then: "eta",
+    note: "Son 10 yılda Kanada ziyaretçi vizesi aldıysan ya da geçerli bir ABD vizen (göçmen olmayan) varsa vize yerine eTA alabilirsin. Bu yalnızca Kanada'ya uçakla gelirken veya bir Kanada havalimanında aktarma yaparken geçerli; kara ya da deniz yoluyla gelirken ziyaretçi vizesi gerekir.",
+    noteEn: "If you held a Canadian visitor visa in the past 10 years or hold a valid US nonimmigrant visa, you can get an eTA instead of a visa. This applies only when flying to or through a Canadian airport; arriving by land or sea still needs a visitor visa.",
+    source: "https://www.canada.ca/en/immigration-refugees-citizenship/services/visit-canada/eta/eligibility/eta-x.html",
+  };
+  ["AG", "AR", "BR", "CR", "MX", "MA", "PA", "PH", "KN", "LC", "VC", "SC", "TH", "TT", "UY"].forEach(function (p) {
+    const t = window.VISA_CONDITIONS[p] = window.VISA_CONDITIONS[p] || {};
+    (t.CA = t.CA || []).push(Object.assign({}, row));
+  });
+})();
 
 // ── Helpers ────────────────────────────────────────────────────────────────
 // Returns the array of conditional rows for a given (passport, destination)
@@ -265,20 +274,15 @@ window.visaCondition = function (passportIso2, destIso2) {
   const aliased = (window.TERRITORY_ALIAS && window.TERRITORY_ALIAS[destIso2]) || destIso2;
   const manualTable = window.VISA_CONDITIONS[passportIso2] || {};
   const manual = manualTable[aliased] || manualTable[destIso2] || null;
-  const passport = window.PASSPORTS && window.PASSPORTS[passportIso2];
-  const scraped = passport && passport.cond
-    ? (passport.cond[aliased] || passport.cond[destIso2] || null)
-    : null;
-  if (!manual && !scraped) return null;
-  if (manual && !scraped) return manual;
-  if (scraped && !manual) return scraped;
-  // De-dup by (then + sorted ifHolds). Manual entries kept; scraped rows added
-  // only when their signature isn't already in the manual set.
-  const sig = (row) => row.then + ":" + [...row.ifHolds].sort().join(",");
-  const seen = new Set(manual.map(sig));
-  const merged = [...manual];
-  scraped.forEach(row => { if (!seen.has(sig(row))) merged.push(row); });
-  return merged;
+  // Scraped rows (PASSPORTS[p].cond, parsed from Wikipedia notes) are NOT shown: an audit on
+  // 2026-11-21 found claims such as Morocco → Canada "visa-free for 3650 days with a US visa"
+  // (really an eTA) and raw wiki CSS in notes. Only hand-checked, sourced rows reach the card.
+  if (!manual) return null;
+  // A row is only worth showing when it improves on what the map already shows.
+  const R = { idc: 0, vf: 1, eta: 2, ev: 3, voa: 4, vr: 5, ban: 6 };
+  const base = window.resolveStatus ? (window.resolveStatus(passportIso2, destIso2) || {}).status : null;
+  const rows = manual.filter((row) => !base || (R[row.then] ?? 9) < (R[base] ?? 9));
+  return rows.length ? rows : null;
 };
 
 // Human-readable list of the `ifHolds` codes for the active language.

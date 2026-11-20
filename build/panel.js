@@ -1648,7 +1648,7 @@ function EtiasHint(_ref24) {
     href: "/etias/"
   }, React.createElement("span", {
     className: "note-k"
-  }, days != null && days > 0 ? window.t("detail.etias_pre", {
+  }, days == null ? window.t("detail.etias_planned") : days > 0 ? window.t("detail.etias_pre", {
     days: days
   }) : window.t("detail.etias_live")), React.createElement("span", {
     className: "note-s"

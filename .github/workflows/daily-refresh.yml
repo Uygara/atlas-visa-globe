@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      issues: write
     env:
       # Job-level so the push step's `if` can see whether the secret exists.
       FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
@@ -89,6 +90,29 @@ jobs:
         run: node scripts/generate-seo.js
         env:
           SITE_URL: ${{ vars.SITE_URL }}
+
+      # Accuracy audit (tools/audit-data.js): official-list invariants, expiring rules, stale lists.
+      # A failure never blocks the data refresh; it opens (or comments on) a "data-audit" issue,
+      # which emails the repository owner.
+      - name: Data accuracy audit
+        id: audit
+        continue-on-error: true
+        run: node tools/audit-data.js | tee audit.txt
+
+      - name: Report audit problems
+        if: steps.audit.outcome == 'failure' || hashFiles('audit.txt') != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if ! grep -qE '^(FAIL|WARN)' audit.txt; then exit 0; fi
+          body="$(grep -E '^(FAIL|WARN)' audit.txt)"
+          num="$(gh issue list --label data-audit --state open --json number --jq '.[0].number' || true)"
+          if [ -n "$num" ]; then
+            gh issue comment "$num" --body "$(date -u +%F)"$'\n\n'"$body"
+          else
+            gh label create data-audit --color B60205 --description "Daily data accuracy audit" 2>/dev/null || true
+            gh issue create --title "Data accuracy audit: action needed" --label data-audit --body "From the daily refresh ($(date -u +%F)). Full log in the workflow run."$'\n\n'"$body"
+          fi
 
       - name: Dispatch alert emails (if subscribers exist)
         # Soft-fails if Cloudflare/Resend secrets aren't configured yet —

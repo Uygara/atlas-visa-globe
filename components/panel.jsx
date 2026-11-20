@@ -1164,7 +1164,8 @@ function EtiasHint({ passport, destIso2 }) {
   const days = window.etiasDaysUntilLaunch ? window.etiasDaysUntilLaunch() : null;
   return (
     <a className="note note-info" href="/etias/">
-      <span className="note-k">{days != null && days > 0 ? window.t("detail.etias_pre", { days }) : window.t("detail.etias_live")}</span>
+      {/* days is null while the EU has not announced a start date (data/etias-rules.js). */}
+      <span className="note-k">{days == null ? window.t("detail.etias_planned") : days > 0 ? window.t("detail.etias_pre", { days }) : window.t("detail.etias_live")}</span>
       <span className="note-s">{window.t("detail.etias_sub")}</span>
       <span className="note-go" aria-hidden="true">→</span>
     </a>

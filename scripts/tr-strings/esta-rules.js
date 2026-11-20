@@ -10,9 +10,9 @@ module.exports = {
   "4f2f8891": `ESTA için e-pasaport (biyometrik çip) gerekir; 2007'den sonra düzenlenen pasaportların çoğu e-pasaporttur.`,
   "365e2688": `Pasaportun şu ülkelerden birine aitse ESTA'ya <em>başvurmaya</em> uygunsun (yukarıdaki diskalifiye nedenleri saklı kalmak üzere):`,
   "2e703531": `ABD konsolosluğundan bir <strong>B1/B2 turist vizesi</strong> gerekir. Önceden planla: bazı temsilciliklerde ilk mülakat için bekleme süreleri 6-18 ay olabilir. Ne kadar erken başvurursan o kadar iyi. travelnow.info'nun <a href="/">vize harçları veritabanı</a>, başlıca uyruklar için güncel konsolosluk bekleme sürelerini ve harçları listeler.`,
-  "a9aeee49": `<strong>Her zaman resmî portalı kullan.</strong> esta.cbp.dhs.gov tek meşru ESTA başvuru sitesidir. Üçüncü taraf siteler, doğrudan 21 $ tutan işlem için 50-100 € alır ve hiçbir şeyi hızlandırmaz.`,
   "1d676cdf": `<strong>Uçuştan 72 saat önce başvur.</strong> Onay genellikle anlıktır ancak 96 saate kadar sürebilir. Havayolları ESTA'yı check-in sırasında doğrular.`,
   "95244e91": `Yanlış ya da güncelliğini yitirmiş bir şey mi gördün? <a href="https://github.com/Uygara/atlas-visa-globe/issues" rel="noopener">github.com/Uygara/atlas-visa-globe</a> adresinde bir konu (issue) aç.`,
   "604518f7": `<a href="https://esta.cbp.dhs.gov/" target="_blank" rel="noopener">esta.cbp.dhs.gov</a> sitesiyle 24 Mayıs 2026'da karşılaştırıldı.`,
   "79b63a6b": `Andorra, Avustralya, Avusturya, Belçika, Brunei, Şili, Hırvatistan, Çekya, Danimarka, Estonya, Finlandiya, Fransa, Almanya, Yunanistan, Macaristan, İzlanda, İrlanda, İsrail, İtalya, Japonya, Letonya, Lihtenştayn, Litvanya, Lüksemburg, Malta, Monako, Hollanda, Yeni Zelanda, Norveç, Polonya, Portekiz, Katar, Romanya, San Marino, Singapur, Slovakya, Slovenya, Güney Kore, İspanya, İsveç, İsviçre, Tayvan, Birleşik Krallık.`,
+  "88300f8d": `<strong>Her zaman resmî portalı kullan.</strong> esta.cbp.dhs.gov tek meşru ESTA başvuru sitesidir. Üçüncü taraf siteler, doğrudan 40,62 $ tutan işlem için 50-100 € alır ve hiçbir şeyi hızlandırmaz.`,
 };

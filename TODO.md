@@ -6,9 +6,10 @@
 
 ## ▶ Yeni oturumda buradan başla
 
-0. **Özellik işleri `docs/ROADMAP.md`den** (Aşama 0 → 3). Sıradaki: D8 kalan veri kontrolleri (ETA listeleri 21 Kasım'da resmî kaynaklardan okundu;
-   yılda bir yeniden kontrol: `data/visa-overrides.js` ETA_ELIGIBLE), Kanada koşullu eTA notu,
-   A3 paylaşılabilir sonuç kartları. D6 İpek'te. iVisa canlı (19 Kasım): GA4'te
+0. **Özellik işleri `docs/ROADMAP.md`den** (Aşama 0 → 3). Sıradaki: **D10 doğruluk denetimi devamı** (ROADMAP): Tayland'ın yeni
+   30 günlük listesi (resmî kaynaktan), BAE, Güney Kore ve Çin listeleri, ücretlerin resmî sayfalardan yeniden girilmesi
+   (`verified` alanı), Nauru. Günlük denetim `node tools/audit-data.js`; sorun çıkarsa GitHub'da "data-audit" issue açılır.
+   31 Aralık 2026: Kore K-ETA muafiyeti ve Çin vizesiz uygulaması bitiyor, uzatılmış mı bak. A3 paylaşılabilir kartlar. D6 İpek'te. iVisa canlı (19 Kasım): GA4'te
    `affiliate_click` olayını izle, 19 Aralık'ta tıklama ve sipariş sayısını yaz. 17 Aralık'ta `/visa/` sayfalarının etkisini ölç
    (`docs/autopilot-log.md` en üst kayıt).
 1. **Android test APK'sını telefonda dene**: GitHub → Actions → "Android build" → son çalışma → `travelnow-debug-apk`.

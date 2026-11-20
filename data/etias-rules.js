@@ -1,10 +1,12 @@
 // ETIAS — European Travel Information and Authorization System.
 //
-// From late 2026 (per the latest EU timeline), every traveller from a
-// Schengen-visa-exempt country will need an online ETIAS authorization
-// before flying. €7 (free for under-18 / over-70), valid 3 years, tied
-// to a single passport. Applications take minutes online; most are
-// approved within 96 hours.
+// Not in operation yet (official site, read 2026-11-21): "ETIAS is currently not in
+// operation ... The European Union will inform about the specific date for the start of
+// ETIAS several months prior to its launch." When it starts: EUR 20 (free under 18 and
+// over 70), valid 3 years or until the passport expires, for visa-exempt travellers to
+// 30 European countries (the 29 Schengen states and Cyprus). Most applications are
+// processed within minutes; otherwise a decision within 4 days (up to 14 or 30 days if
+// more information or an interview is requested).
 //
 // EU citizens, EEA citizens (Iceland, Liechtenstein, Norway), Swiss
 // citizens, and travellers who already need a Schengen visa (TR, IN,
@@ -13,13 +15,12 @@
 // Source: https://travel-europe.europa.eu/etias_en
 
 window.ETIAS = {
-  // Tentative launch date — has been pushed back several times. Last
-  // officially-announced window: October 2026 (with a 6-month
-  // transitional period during which non-compliance won't be a refusal
-  // reason; full enforcement Q2 2027).
-  launchDate: "2026-10-01",
-  transitionEnds: "2027-04-01",
-  fee: "€7",
+  // null until the EU announces a start date. Pages say "no start date announced".
+  // The old value "2026-10-01" made /etias/ claim ETIAS had launched; it has not.
+  launchDate: null,
+  transitionEnds: null,
+  checked: "2026-11-21",
+  fee: "€20",
   feeWaivedUnder: 18,
   feeWaivedOver: 70,
   validityYears: 3,
@@ -30,19 +31,24 @@ window.ETIAS = {
   // citizens can currently enter Schengen visa-free for short stays
   // but are NOT EU/EEA/Swiss).
   // Source: Commission Implementing Regulation (EU) 2018/1806 Annex II.
+  // Annex II of Regulation (EU) 2018/1806 (consolidated 2025-12-30), the same list as
+  // window.SCHENGEN_ANNEX_II in data/visa-overrides.js. Nauru (footnote 11, agreement not
+  // confirmed in force) and Vanuatu (removed from Annex II) are not on it. Audit 2026-11-21:
+  // the old list missed UA, PW, WS, TO and VE and still had VU.
   affectedNationalities: [
-    "AL","AD","AG","AR","AU","BS","BB","BA","BR","BN","CA","CL","CO","CR",
-    "DM","SV","GE","GD","GT","HN","HK","IL","JP","KI","XK","MO","MY","MH",
-    "MU","MX","FM","MD","MC","ME","NZ","NI","MK","PA","PY","PE","KN","LC",
-    "VC","SM","RS","SC","SG","SB","KR","TW","TL","TT","TV","AE","GB","US",
-    "UY","VU","VA",
+    "AD","AE","AG","AL","AR","AU","BA","BB","BN","BR","BS","CA","CL","CO",
+    "CR","DM","FM","GB","GD","GE","GT","HK","HN","IL","JP","KI","KN","KR",
+    "LC","MC","MD","ME","MH","MK","MO","MU","MX","MY","NI","NZ","PA","PE",
+    "PW","PY","RS","SB","SC","SG","SM","SV","TL","TO","TT","TV","TW","UA",
+    "US","UY","VA","VC","VE","WS","XK",
   ],
 
-  // Schengen Area member states (where ETIAS authorization is checked
-  // at entry). Updated 2024 to include Bulgaria + Romania.
+  // The 30 countries that will require ETIAS: the 29 Schengen states and Cyprus
+  // (official site: "30 European countries"; a stay in Cyprus is counted separately
+  // from the 90/180 days in the others).
   schengenStates: [
     "AT","BE","BG","HR","CZ","DK","EE","FI","FR","DE","GR","HU","IS","IT",
-    "LV","LI","LT","LU","MT","NL","NO","PL","PT","RO","SK","SI","ES","SE","CH",
+    "LV","LI","LT","LU","MT","NL","NO","PL","PT","RO","SK","SI","ES","SE","CH","CY",
   ],
 
   // Countries explicitly EXEMPT from ETIAS (EU/EEA/Swiss citizens have
@@ -81,6 +87,7 @@ window.etiasStatus = function (passportIso, destIso) {
 
 // Days until launch (used for the countdown banner).
 window.etiasDaysUntilLaunch = function (now = new Date()) {
+  if (!window.ETIAS.launchDate) return null;
   const launch = new Date(window.ETIAS.launchDate + "T00:00:00Z");
   const diff = launch.getTime() - now.getTime();
   return Math.round(diff / 86400000);

@@ -59,10 +59,10 @@ module.exports = {
     ogDescription: "VWP'ye uygun olmak, gerçekten hak kazandığın anlamına gelmez. ESTA için ödeme yapmadan önce diskalifiye nedenlerini kontrol et.",
   },
   "/etias/": {
-    title: "ETIAS 2026: Kimler için gerekli, ne zaman başlıyor, ne kadar tutuyor · travelnow.info",
-    description: "ETIAS 2026'nın sonlarında başlıyor. 7 €, 3 yıl geçerli. ABD, Birleşik Krallık, Kanada, Avustralya, Japonya, Brezilya ve 60'tan fazla başka uyruğun Schengen'e girmek için ETIAS izni alması gerekecek. Ücretsiz kontrol aracı.",
-    ogTitle: "ETIAS 2026: Kim için gerekli, ne zaman",
-    ogDescription: "Schengen'e vizesiz giriş için gereken 7 € tutarında çevrimiçi izin. Canlı geri sayım + uyruğa göre kontrol.",
+    title: "ETIAS: kimler için gerekecek, ne kadar tutacak, ne zaman başlayacak · travelnow.info",
+    description: "ETIAS henüz uygulanmıyor ve AB bir başlangıç tarihi açıklamadı. Başladığında ücreti 20 €, geçerliliği 3 yıl olacak. Pasaportunun ETIAS'a ihtiyacı olacak mı, kontrol et.",
+    ogTitle: "ETIAS: kim için gerekecek, ne zaman",
+    ogDescription: "Henüz başlamadı, başlangıç tarihi açıklanmadı. Başladığında 20 €, 3 yıl geçerli. Pasaportunu kontrol et.",
     h1: "ETIAS: Avrupa'nın yeni seyahat otorizasyonu",
   },
   "/guides/": {

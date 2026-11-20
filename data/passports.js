@@ -72425,6 +72425,8 @@ window._resolveStatusBase = function(passportIso2, destIso2) {
 // go through here, so they inherit the relabel.
 window.resolveStatus = function(passportIso2, destIso2) {
   let r = window._resolveStatusBase(passportIso2, destIso2);
+  // One EU visa list for all 29 Schengen states (data/visa-overrides.js, Reg. 2018/1806).
+  if (window.applySchengenCommonList) r = window.applySchengenCommonList(r, passportIso2, destIso2);
   if (window.applyEtaDisplay) r = window.applyEtaDisplay(r, destIso2, passportIso2);
   // ID-card travel (EEA / GCC / Mercosur / Western Balkans / TR bilaterals) — a
   // visa-free result becomes `idc` so "go on your ID card" gets its own colour.

@@ -13,11 +13,19 @@ module.exports = {
   "5a867ec1": `Güncelliğini yitirmiş bir rakam ya da eksik bir program mı gördün? <a href="https://github.com/Uygara/atlas-visa-globe/issues" rel="noopener">github.com/Uygara/atlas-visa-globe</a> adresinde bir konu (issue) aç.`,
 
   // /etias/
-  "4c95a673": `2026'nın sonlarından itibaren, Schengen Bölgesi'ne vizesiz giren her AB dışı ziyaretçinin bir <strong>ETIAS</strong> (Avrupa Seyahat Bilgi ve İzin Sistemi, European Travel Information &amp; Authorization System) onayına ihtiyacı olacak. ABD, Birleşik Krallık, Kanada, Avustralya, Japonya, Kore, Brezilya ve 60'tan fazla başka ülkenin pasaport sahibi bundan etkileniyor. 7 €, 3 yıl geçerli, dakikalar içinde çevrimiçi başvuru.`,
   "c2db187a": `3 yıl`,
   "7d52c08f": `Resmî ETIAS portalını aç: <a href="https://travel-europe.europa.eu/etias_en" target="_blank" rel="noopener">travel-europe.europa.eu/etias_en</a>. Dolandırıcı sitelere dikkat: yalnızca .europa.eu alan adını kullan.`,
   "afb718e2": `Yanlış bir şey mi gördün? <a href="https://github.com/Uygara/atlas-visa-globe/issues" rel="noopener">github.com/Uygara/atlas-visa-globe</a> adresinde bir konu (issue) aç.`,
   "94e400bc": `23 Mayıs 2026'da gözden geçirildi. Kaynaklar her satırda bağlantılı.`,
   "5eea8021": `22 Mayıs 2026'da gözden geçirildi. Kaynaklar her satırda bağlantılı.`,
-  "cb198671": `<a href="https://travel-europe.europa.eu/etias_en" target="_blank" rel="noopener">Avrupa Komisyonu</a> sitesiyle 24 Mayıs 2026'da karşılaştırıldı.`,
+  "c7da83e0": `<strong>ETIAS</strong> (Avrupa Seyahat Bilgi ve İzin Sistemi), vizeden muaf yolcuların 30 Avrupa ülkesinde (29 Schengen ülkesi ve Kıbrıs Cumhuriyeti) kısa kalışlar için alması gereken çevrimiçi bir seyahat izni olacak. Henüz uygulanmıyor ve AB bir başlangıç tarihi açıklamadı; tarihi birkaç ay önceden duyuracağını söylüyor. Başladığında ücreti 20 € olacak ve izin üç yıl ya da pasaportun bitimine kadar geçerli olacak.`,
+  "e0b6fa0d": `<a href="https://travel-europe.europa.eu/etias_en" target="_blank" rel="noopener">Resmî AB ETIAS sitesiyle</a> 21 Kasım 2026'da karşılaştırıldı.`,
+  "0b3e8912": `4 gün`,
+  "74785e1d": `Olağan en uzun bekleme`,
+  "f5046cf2": `Kapsanan ülke`,
+  "0cd7d52f": `<strong>İrlanda</strong>: 30 ETIAS ülkesinden biri değil; İrlanda için ETIAS gerekmez.`,
+  "84a0820d": `20 € ücreti bir ödeme kartıyla öde. 18 yaş altı ve 70 yaş üstü ödemez.`,
+  "c87f2453": `Başvuruların çoğu dakikalar içinde sonuçlanır. Sonuçlanmazsa dört gün içinde karar verilir; ek bilgi ya da görüşme istenirse bu süre 14 veya 30 güne kadar uzayabilir.`,
+  "164dc3ea": `<strong>Sınırda ne olur?</strong> ETIAS başladığında sınır görevlisi varışta pasaportunu ve belgelerini kontrol eder. ETIAS girişi garanti etmez.`,
+  "bbf570f2": `ETIAS'ın başlangıcı birkaç kez ertelendi. AB, tarihi başlangıçtan birkaç ay önce açıklayacağını söylüyor; açıkladığında bu sayfayı güncelleriz. Bu sayfayı kaydet ya da güncellemeler için <a href="/tr/alerts/">uyarıları aç</a>.`,
 };

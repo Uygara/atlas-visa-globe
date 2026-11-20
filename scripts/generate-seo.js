@@ -593,7 +593,7 @@ const VLOC = {
     advisoryMore: (date) => `Levels as of ${date}.`,
     safetyLink: "Open the safety map",
     feesHead: "Visa fees we have on record for some nationalities (from the official pages linked):",
-    etias: (the, e, since, until) => `ETIAS: many visa-exempt travellers need an ETIAS authorization for Schengen countries such as ${the} (fee ${e.fee}, valid ${e.validityYears} years). The schedule in our ETIAS tool: starts ${since}, transition period until ${until}.`,
+    etias: (the, e, since) => `ETIAS: once it starts, visa-exempt travellers will need an ETIAS authorization for countries such as ${the} (fee ${e.fee}, valid ${e.validityYears} years). ${since ? `The EU has set the start for ${since}.` : "It is not in operation yet and the EU has not announced a start date."}`,
     etiasLink: "ETIAS checker",
     esta: (e) => `ESTA: travellers entering under the Visa Waiver Program need an approved ESTA (fee ${e.applicationFee}, valid ${e.validityYears} years).`,
     estaLink: "ESTA rules",
@@ -662,7 +662,7 @@ const VLOC = {
     advisoryMore: (date) => `Seviyeler ${date} tarihli.`,
     safetyLink: "Güvenlik haritasını aç",
     feesHead: "Bazı uyruklar için kayıtlı vize ücretleri (bağlantılar resmî sayfalara gider):",
-    etias: (name, e, since, until) => `ETIAS: vizeden muaf birçok yolcu, ${name} gibi Schengen ülkeleri için ETIAS izni almalı (ücret ${e.fee}, ${e.validityYears} yıl geçerli). ETIAS aracımızdaki takvim: başlangıç ${since}, geçiş dönemi ${until} tarihine kadar.`,
+    etias: (name, e, since) => `ETIAS: başladığında, vizeden muaf yolcular ${name} gibi ülkeler için ETIAS izni almak zorunda olacak (ücret ${e.fee}, ${e.validityYears} yıl geçerli). ${since ? `AB başlangıç tarihini ${since} olarak açıkladı.` : "Henüz uygulanmıyor ve AB bir başlangıç tarihi açıklamadı."}`,
     etiasLink: "ETIAS denetleyicisi",
     esta: (e) => `ESTA: Vize Muafiyeti Programı ile giren yolcuların onaylı bir ESTA'sı olmalı (ücret ${e.applicationFee}, ${e.validityYears} yıl geçerli).`,
     estaLink: "ESTA kuralları",
@@ -779,7 +779,7 @@ function renderDestPage(destCountry, allPassports, lang, ads) {
   }
   const fees = [];
   Object.keys(DATA.VISA_FEES || {}).forEach(pp => {
-    const e = DATA.VISA_FEES[pp] && DATA.VISA_FEES[pp][dest];
+    const e = DATA.visaFee(pp, dest); // verified entries only (data/visa-fees.js)
     if (e && e.fee && SNAPSHOT[pp]) fees.push({ pp, fee: e.fee, source: e.source, name: pName(pp) });
   });
   if (fees.length) {
@@ -789,7 +789,7 @@ function renderDestPage(destCountry, allPassports, lang, ads) {
   }
   const ETIAS = DATA.ETIAS;
   if (ETIAS && ETIAS.schengenStates.includes(dest)) {
-    before.push(`${escapeHtml(V.etias(lang === "tr" ? label : the, ETIAS, fmtDate(ETIAS.launchDate, lang), fmtDate(ETIAS.transitionEnds, lang)))} <a href="${P("/etias/")}">${escapeHtml(V.etiasLink)}</a>.`);
+    before.push(`${escapeHtml(V.etias(lang === "tr" ? label : the, ETIAS, ETIAS.launchDate ? fmtDate(ETIAS.launchDate, lang) : null))} <a href="${P("/etias/")}">${escapeHtml(V.etiasLink)}</a>.`);
   }
   if (dest === "US" && DATA.ESTA) {
     before.push(`${escapeHtml(V.esta(DATA.ESTA))} <a href="${P("/esta-rules/")}">${escapeHtml(V.estaLink)}</a>.`);

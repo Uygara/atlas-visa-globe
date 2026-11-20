@@ -74,6 +74,16 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 22 (2026-11-21: accuracy audit against official sources):**
+  ETIAS was shown as launched (launchDate 2026-10-01, map card "ETIAS now required", €7): official site says not in
+  operation, no date, €20, 30 countries incl. Cyprus. launchDate is now null; pages, card (6 languages), dest pages fixed.
+  ETIAS nationality list = Schengen Annex II (was missing UA PW WS TO VE, had VU). `applySchengenCommonList` enforces
+  Annex II for all 29 states (KW→LI, SB→RO fixed; NR left: footnote 11). ESTA fee $40.62. Scraped Wikipedia
+  conditions (358 rows, e.g. MA→CA "vf 3650 days") no longer shown; manual rows only when they beat the map status.
+  Fees hidden unless `verified` (several were wrong). Thailand: 60-day scheme ended 15 Sep 2026, days capped at 30 +
+  card note; per-country list still to verify (the thaievisa.go.th API call was refused by the permission system).
+  Turkey (MFA) and Japan (MOFA) checked: no errors. `tools/audit-data.js` runs daily, opens a "data-audit" issue.
+
 - **Round 21 (2026-11-21: privacy hardening, national waivers, RSS feeds):**
   AdSense: inline snippet before every loader asks for non-personalised ads when the device time zone is Istanbul or
   the page is Turkish (Google's consent message covers only EU/EEA, UK, CH). Privacy EN + TR updated.

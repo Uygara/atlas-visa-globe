@@ -25,8 +25,8 @@ module.exports = {
   "6c3210af": `ETIAS ile ne kadar kalabilirim?`,
   "1a679141": `Hakkını değiştirmez: herhangi bir 180 günlük dönemde 90 gün kuralı aynen geçerlidir. <a href="/guides/schengen-90-180-rule/">90/180 rehberine</a> bak.`,
   "47f168d9": `Kendi pasaportun için kontrol et`,
-  "0ee459ad": `<a href="/etias/">ETIAS kontrolü</a>: 2026 izni uyruğun için gerekli mi?`,
   "c3eea2fd": `<a href="/schengen-calculator/">Schengen 90/180 hesaplayıcı</a>: izin verilen günlerini takip et.`,
   "8b62c32a": `<a href="/">Etkileşimli küre</a>: her Avrupa ülkesi için vize durumunu gör.`,
   "4b2c8c63": `Güncelleme: 17 Haziran 2026. Yaklaşık 5 dakikalık okuma.`,
+  "9145b482": `<a href="/tr/etias/">ETIAS kontrol aracı</a>: ETIAS başladığında senin uyruğun için gerekecek mi?`,
 };

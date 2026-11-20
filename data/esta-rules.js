@@ -26,7 +26,7 @@ window.ESTA = {
   ],
   disqualifierCountries: ["IR","IQ","SY","LY","SD","SO","YE","CU","KP"],
   source: "https://esta.cbp.dhs.gov/",
-  applicationFee: "$21 USD",
+  applicationFee: "$40.62 USD", // $10.62 to apply + $30 if approved; CBP ESTA FAQ, modified 2026-11-19
   validityYears: 2,
 };
 

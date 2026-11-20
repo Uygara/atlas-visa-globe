@@ -470,5 +470,14 @@ window.visaFee = function (passportIso, destIso) {
   if (!passportIso || !destIso) return null;
   const p = (passportIso || "").toUpperCase();
   const d = (destIso || "").toUpperCase();
-  return window.VISA_FEES?.[p]?.[d] || null;
+  const e = window.VISA_FEES?.[p]?.[d] || null;
+  // Shown only once re-checked against the official fee page and marked `verified: "<date>"`.
+  // Audit 2026-11-21: entries last reviewed in May had a stale UK fee (GBP 115), ETA/eVisitor
+  // for passports that cannot use them (TR, AE to Australia) and fees for pairs that became
+  // visa-free (JP, KR, BR to China). Unverified entries stay in the file but never reach a page.
+  if (!e || !e.verified) return null;
+  // No fee box when the map says no visa is needed.
+  const st = window.resolveStatus ? (window.resolveStatus(p, d) || {}).status : null;
+  if (st === "vf" || st === "idc" || st === "self") return null;
+  return e;
 };
