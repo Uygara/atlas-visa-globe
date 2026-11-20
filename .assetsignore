@@ -11,3 +11,17 @@ store/
 node_modules/
 .wrangler/
 .autopilot/
+# Build, data-job and test code: the browser loads build/, assets/ and data/ only.
+# Keep social/ public: scripts/ig-publish.js hands Instagram the image URLs under /social/queue/.
+backend/
+scripts/
+tools/
+components/
+app.jsx
+.github/
+firebase.json
+.firebaserc
+firestore.rules
+wrangler.jsonc
+.gitignore
+.assetsignore

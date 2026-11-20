@@ -63,7 +63,9 @@ Durum: `açık` · `sürüyor` · `bekliyor: <neyi>` · `bitti <hash>`
 ### Aşama 2: takip ve bildirim (sahibinden bir adım bekler)
 
 - **R1 · Pasaporta göre takip** · bekliyor: e-posta servisi · Pasaport + istenen ülkeler seçilir; o pasaport için
-  bir ülkenin kuralı değişince e-posta ve uygulama bildirimi gider. Altyapı var ama canlı değil:
+  bir ülkenin kuralı değişince e-posta ve uygulama bildirimi gider. Eski `functions/api/` abonelik ve Stripe kodu
+  2026-11-21'de silindi: site Workers'ta yalnızca statik dosya olarak yayında, o kod hiç çalışmıyordu (git geçmişinde
+  duruyor). Abonelik uç noktası yeniden yazılacak. Altyapı var ama canlı değil:
   `backend/dispatch-alerts.js` (Resend + Cloudflare KV, ülke bazlı), `backend/dispatch-push.js` (FCM). Yapılacak:
   Firebase hesabındaki pasaport + izleme listesini tek abonelik kaynağı yapmak, değişiklikleri pasaporta göre
   süzmek, girişsiz e-posta aboneliği (çift onaylı), her e-postada tek tık abonelikten çıkma. Tercih: aboneleri
