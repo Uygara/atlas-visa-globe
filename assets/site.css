@@ -469,6 +469,10 @@ ul.dir { columns: 2; margin-top: 22px; }
   .pp-hero .hero-flag { font-size: var(--fs-3xl); }
   .score-n { font-size: var(--fs-4xl); }
   .cols { columns: 2 140px; column-gap: 18px; }
+  /* Country link lists: give each link a finger-sized target (>= 32px) on phones. */
+  .cols li { padding: 0; }
+  .cols li a, ul.dir li > a, .other-passports li a { display: inline-block; min-width: 44px; padding: 7px 0; }
+  ul.dir li, .other-passports li { margin-bottom: 0; }
   .map-cta span { display: none; }
 }
 
