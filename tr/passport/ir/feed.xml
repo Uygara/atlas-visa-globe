@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>İran pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/ir/</link>
+  <description>İran pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Thu, 19 Nov 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/ir/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Cabo Verde: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/cv/</link>
+    <guid isPermaLink="false">travelnow-IR-CV-2026-11-19-ev</guid>
+    <pubDate>Thu, 19 Nov 2026 00:00:00 GMT</pubDate>
+    <description>İran pasaportu için Cabo Verde: önce vize gerekli, şimdi e-Vize. 19 Kasım 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Filipinler: e-Vize → Vize gerekli</title>
+    <link>https://travelnow.info/tr/visa/ph/</link>
+    <guid isPermaLink="false">travelnow-IR-PH-2026-11-09-vr</guid>
+    <pubDate>Mon, 09 Nov 2026 00:00:00 GMT</pubDate>
+    <description>İran pasaportu için Filipinler: önce e-Vize, şimdi vize gerekli. 9 Kasım 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Türkmenistan: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/tm/</link>
+    <guid isPermaLink="false">travelnow-IR-TM-2026-10-05-ev</guid>
+    <pubDate>Mon, 05 Oct 2026 00:00:00 GMT</pubDate>
+    <description>İran pasaportu için Türkmenistan: önce vize gerekli, şimdi e-Vize. 5 Ekim 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Seyşeller: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/sc/</link>
+    <guid isPermaLink="false">travelnow-IR-SC-2026-06-05-ev</guid>
+    <pubDate>Fri, 05 Jun 2026 00:00:00 GMT</pubDate>
+    <description>İran pasaportu için Seyşeller: önce vize gerekli, şimdi e-Vize. 5 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Gana: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/gh/</link>
+    <guid isPermaLink="false">travelnow-IR-GH-2026-06-02-ev</guid>
+    <pubDate>Tue, 02 Jun 2026 00:00:00 GMT</pubDate>
+    <description>İran pasaportu için Gana: önce vize gerekli, şimdi e-Vize. 2 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

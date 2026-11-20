@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Laos pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/la/</link>
+  <description>Laos pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Wed, 30 Sep 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/la/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Belarus: Vize gerekli → Vizesiz</title>
+    <link>https://travelnow.info/tr/visa/by/</link>
+    <guid isPermaLink="false">travelnow-LA-BY-2026-09-30-vf</guid>
+    <pubDate>Wed, 30 Sep 2026 00:00:00 GMT</pubDate>
+    <description>Laos pasaportu için Belarus: önce vize gerekli, şimdi vizesiz. 30 Eylül 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

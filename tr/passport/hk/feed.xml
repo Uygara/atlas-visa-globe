@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Hong Kong pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/hk/</link>
+  <description>Hong Kong pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Thu, 29 Oct 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/hk/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Türkmenistan: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/tm/</link>
+    <guid isPermaLink="false">travelnow-HK-TM-2026-10-29-ev</guid>
+    <pubDate>Thu, 29 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Hong Kong pasaportu için Türkmenistan: önce vize gerekli, şimdi e-Vize. 29 Ekim 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Kamboçya: e-Vize → Vizesiz</title>
+    <link>https://travelnow.info/tr/visa/kh/</link>
+    <guid isPermaLink="false">travelnow-HK-KH-2026-08-08-vf</guid>
+    <pubDate>Sat, 08 Aug 2026 00:00:00 GMT</pubDate>
+    <description>Hong Kong pasaportu için Kamboçya: önce e-Vize, şimdi vizesiz. 8 Ağustos 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Sierra Leone: e-Vize → Varışta vize</title>
+    <link>https://travelnow.info/tr/visa/sl/</link>
+    <guid isPermaLink="false">travelnow-HK-SL-2026-05-27-voa</guid>
+    <pubDate>Wed, 27 May 2026 00:00:00 GMT</pubDate>
+    <description>Hong Kong pasaportu için Sierra Leone: önce e-Vize, şimdi varışta vize. 27 Mayıs 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Gana: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/gh/</link>
+    <guid isPermaLink="false">travelnow-HK-GH-2026-05-27-ev</guid>
+    <pubDate>Wed, 27 May 2026 00:00:00 GMT</pubDate>
+    <description>Hong Kong pasaportu için Gana: önce vize gerekli, şimdi e-Vize. 27 Mayıs 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Senegal: Vize gerekli → Varışta vize</title>
+    <link>https://travelnow.info/tr/visa/sn/</link>
+    <guid isPermaLink="false">travelnow-HK-SN-2026-05-25-voa</guid>
+    <pubDate>Mon, 25 May 2026 00:00:00 GMT</pubDate>
+    <description>Hong Kong pasaportu için Senegal: önce vize gerekli, şimdi varışta vize. 25 Mayıs 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

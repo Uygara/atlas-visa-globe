@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Lihtenştayn pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/li/</link>
+  <description>Lihtenştayn pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Fri, 16 Oct 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/li/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Türkmenistan: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/tm/</link>
+    <guid isPermaLink="false">travelnow-LI-TM-2026-10-16-ev</guid>
+    <pubDate>Fri, 16 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Lihtenştayn pasaportu için Türkmenistan: önce vize gerekli, şimdi e-Vize. 16 Ekim 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Samoa: Vize gerekli → Varışta vize</title>
+    <link>https://travelnow.info/tr/visa/ws/</link>
+    <guid isPermaLink="false">travelnow-LI-WS-2026-06-11-voa</guid>
+    <pubDate>Thu, 11 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Lihtenştayn pasaportu için Samoa: önce vize gerekli, şimdi varışta vize. 11 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Solomon Adaları: Vize gerekli → Varışta vize</title>
+    <link>https://travelnow.info/tr/visa/sb/</link>
+    <guid isPermaLink="false">travelnow-LI-SB-2026-06-11-voa</guid>
+    <pubDate>Thu, 11 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Lihtenştayn pasaportu için Solomon Adaları: önce vize gerekli, şimdi varışta vize. 11 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Lübnan pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/lb/</link>
+  <description>Lübnan pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Sat, 26 Sep 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/lb/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Güney Afrika: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/za/</link>
+    <guid isPermaLink="false">travelnow-LB-ZA-2026-09-26-ev</guid>
+    <pubDate>Sat, 26 Sep 2026 00:00:00 GMT</pubDate>
+    <description>Lübnan pasaportu için Güney Afrika: önce vize gerekli, şimdi e-Vize. 26 Eylül 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Umman: Vizesiz → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/om/</link>
+    <guid isPermaLink="false">travelnow-LB-OM-2026-06-01-ev</guid>
+    <pubDate>Mon, 01 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Lübnan pasaportu için Umman: önce vizesiz, şimdi e-Vize. 1 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>El Salvador: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/sv/</link>
+    <guid isPermaLink="false">travelnow-LB-SV-2026-06-01-ev</guid>
+    <pubDate>Mon, 01 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Lübnan pasaportu için El Salvador: önce vize gerekli, şimdi e-Vize. 1 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Nikaragua: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/ni/</link>
+    <guid isPermaLink="false">travelnow-LB-NI-2026-06-01-ev</guid>
+    <pubDate>Mon, 01 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Lübnan pasaportu için Nikaragua: önce vize gerekli, şimdi e-Vize. 1 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Singapur: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/sg/</link>
+    <guid isPermaLink="false">travelnow-LB-SG-2026-06-01-ev</guid>
+    <pubDate>Mon, 01 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Lübnan pasaportu için Singapur: önce vize gerekli, şimdi e-Vize. 1 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Birleşik Arap Emirlikleri: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/ae/</link>
+    <guid isPermaLink="false">travelnow-LB-AE-2026-06-01-ev</guid>
+    <pubDate>Mon, 01 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Lübnan pasaportu için Birleşik Arap Emirlikleri: önce vize gerekli, şimdi e-Vize. 1 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Gana: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/gh/</link>
+    <guid isPermaLink="false">travelnow-LB-GH-2026-05-30-ev</guid>
+    <pubDate>Sat, 30 May 2026 00:00:00 GMT</pubDate>
+    <description>Lübnan pasaportu için Gana: önce vize gerekli, şimdi e-Vize. 30 Mayıs 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

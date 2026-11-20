@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Tayland pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/th/</link>
+  <description>Tayland pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Thu, 23 Jul 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/th/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Irak: e-Vize → Vize gerekli</title>
+    <link>https://travelnow.info/tr/visa/iq/</link>
+    <guid isPermaLink="false">travelnow-TH-IQ-2026-07-23-vr</guid>
+    <pubDate>Thu, 23 Jul 2026 00:00:00 GMT</pubDate>
+    <description>Tayland pasaportu için Irak: önce e-Vize, şimdi vize gerekli. 23 Temmuz 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

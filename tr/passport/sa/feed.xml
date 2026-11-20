@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Suudi Arabistan pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/sa/</link>
+  <description>Suudi Arabistan pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Thu, 12 Nov 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/sa/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Makao: Varışta vize → Vizesiz</title>
+    <link>https://travelnow.info/tr/visa/mo/</link>
+    <guid isPermaLink="false">travelnow-SA-MO-2026-11-12-vf</guid>
+    <pubDate>Thu, 12 Nov 2026 00:00:00 GMT</pubDate>
+    <description>Suudi Arabistan pasaportu için Makao: önce varışta vize, şimdi vizesiz. 12 Kasım 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Karadağ: Vizesiz → Vize gerekli</title>
+    <link>https://travelnow.info/tr/visa/me/</link>
+    <guid isPermaLink="false">travelnow-SA-ME-2026-11-01-vr</guid>
+    <pubDate>Sun, 01 Nov 2026 00:00:00 GMT</pubDate>
+    <description>Suudi Arabistan pasaportu için Karadağ: önce vizesiz, şimdi vize gerekli. 1 Kasım 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Trinidad ve Tobago: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/tt/</link>
+    <guid isPermaLink="false">travelnow-SA-TT-2026-09-13-ev</guid>
+    <pubDate>Sun, 13 Sep 2026 00:00:00 GMT</pubDate>
+    <description>Suudi Arabistan pasaportu için Trinidad ve Tobago: önce vize gerekli, şimdi e-Vize. 13 Eylül 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

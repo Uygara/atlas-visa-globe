@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Irak pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/iq/</link>
+  <description>Irak pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Sun, 08 Nov 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/iq/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Ürdün: Vize gerekli → Varışta vize</title>
+    <link>https://travelnow.info/tr/visa/jo/</link>
+    <guid isPermaLink="false">travelnow-IQ-JO-2026-11-08-voa</guid>
+    <pubDate>Sun, 08 Nov 2026 00:00:00 GMT</pubDate>
+    <description>Irak pasaportu için Ürdün: önce vize gerekli, şimdi varışta vize. 8 Kasım 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

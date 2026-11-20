@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Australia passport: visa rule changes</title>
+  <link>https://travelnow.info/passport/au/</link>
+  <description>Destinations whose entry rule changed for Australia passport holders, found by the daily comparison of public visa-policy sources (mainly Wikipedia). Check the official source before you travel.</description>
+  <language>en</language>
+  <lastBuildDate>Tue, 20 Oct 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/passport/au/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Turkmenistan: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/tm/</link>
+    <guid isPermaLink="false">travelnow-AU-TM-2026-10-20-ev</guid>
+    <pubDate>Tue, 20 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Turkmenistan: visa required before, eVisa now, for Australia passport holders. Seen in the daily data check on 20 October 2026.</description>
+  </item>
+  <item>
+    <title>Ghana: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/gh/</link>
+    <guid isPermaLink="false">travelnow-AU-GH-2026-07-26-ev</guid>
+    <pubDate>Sun, 26 Jul 2026 00:00:00 GMT</pubDate>
+    <description>Ghana: visa required before, eVisa now, for Australia passport holders. Seen in the daily data check on 26 July 2026.</description>
+  </item>
+</channel>
+</rss>

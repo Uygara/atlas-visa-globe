@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Özbekistan pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/uz/</link>
+  <description>Özbekistan pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Mon, 28 Sep 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/uz/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Tayland: Vizesiz → Vize gerekli</title>
+    <link>https://travelnow.info/tr/visa/th/</link>
+    <guid isPermaLink="false">travelnow-UZ-TH-2026-09-28-vr</guid>
+    <pubDate>Mon, 28 Sep 2026 00:00:00 GMT</pubDate>
+    <description>Özbekistan pasaportu için Tayland: önce vizesiz, şimdi vize gerekli. 28 Eylül 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Güney Afrika: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/za/</link>
+    <guid isPermaLink="false">travelnow-UZ-ZA-2026-09-25-ev</guid>
+    <pubDate>Fri, 25 Sep 2026 00:00:00 GMT</pubDate>
+    <description>Özbekistan pasaportu için Güney Afrika: önce vize gerekli, şimdi e-Vize. 25 Eylül 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Hong Kong: Vizesiz → Vize gerekli</title>
+    <link>https://travelnow.info/tr/visa/hk/</link>
+    <guid isPermaLink="false">travelnow-UZ-HK-2026-07-03-vr</guid>
+    <pubDate>Fri, 03 Jul 2026 00:00:00 GMT</pubDate>
+    <description>Özbekistan pasaportu için Hong Kong: önce vizesiz, şimdi vize gerekli. 3 Temmuz 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Makao: Vize gerekli → Varışta vize</title>
+    <link>https://travelnow.info/tr/visa/mo/</link>
+    <guid isPermaLink="false">travelnow-UZ-MO-2026-06-05-voa</guid>
+    <pubDate>Fri, 05 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Özbekistan pasaportu için Makao: önce vize gerekli, şimdi varışta vize. 5 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

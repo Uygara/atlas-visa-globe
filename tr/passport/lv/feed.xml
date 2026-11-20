@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Letonya pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/lv/</link>
+  <description>Letonya pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Wed, 28 Oct 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/lv/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Güney Kore: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/kr/</link>
+    <guid isPermaLink="false">travelnow-LV-KR-2026-10-28-ev</guid>
+    <pubDate>Wed, 28 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Letonya pasaportu için Güney Kore: önce vize gerekli, şimdi e-Vize. 28 Ekim 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

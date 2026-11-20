@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Malaysia passport: visa rule changes</title>
+  <link>https://travelnow.info/passport/my/</link>
+  <description>Destinations whose entry rule changed for Malaysia passport holders, found by the daily comparison of public visa-policy sources (mainly Wikipedia). Check the official source before you travel.</description>
+  <language>en</language>
+  <lastBuildDate>Wed, 21 Oct 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/passport/my/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>El Salvador: Visa required → Visa-free</title>
+    <link>https://travelnow.info/visa/sv/</link>
+    <guid isPermaLink="false">travelnow-MY-SV-2026-10-21-vf</guid>
+    <pubDate>Wed, 21 Oct 2026 00:00:00 GMT</pubDate>
+    <description>El Salvador: visa required before, visa-free now, for Malaysia passport holders. Seen in the daily data check on 21 October 2026.</description>
+  </item>
+  <item>
+    <title>Libya: eVisa → Visa-free</title>
+    <link>https://travelnow.info/visa/ly/</link>
+    <guid isPermaLink="false">travelnow-MY-LY-2026-09-06-vf</guid>
+    <pubDate>Sun, 06 Sep 2026 00:00:00 GMT</pubDate>
+    <description>Libya: eVisa before, visa-free now, for Malaysia passport holders. Seen in the daily data check on 6 September 2026.</description>
+  </item>
+  <item>
+    <title>Ghana: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/gh/</link>
+    <guid isPermaLink="false">travelnow-MY-GH-2026-06-14-ev</guid>
+    <pubDate>Sun, 14 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Ghana: visa required before, eVisa now, for Malaysia passport holders. Seen in the daily data check on 14 June 2026.</description>
+  </item>
+  <item>
+    <title>Chad: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/td/</link>
+    <guid isPermaLink="false">travelnow-MY-TD-2026-06-14-ev</guid>
+    <pubDate>Sun, 14 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Chad: visa required before, eVisa now, for Malaysia passport holders. Seen in the daily data check on 14 June 2026.</description>
+  </item>
+  <item>
+    <title>Gabon: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/ga/</link>
+    <guid isPermaLink="false">travelnow-MY-GA-2026-06-14-ev</guid>
+    <pubDate>Sun, 14 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Gabon: visa required before, eVisa now, for Malaysia passport holders. Seen in the daily data check on 14 June 2026.</description>
+  </item>
+  <item>
+    <title>Seychelles: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/sc/</link>
+    <guid isPermaLink="false">travelnow-MY-SC-2026-06-11-ev</guid>
+    <pubDate>Thu, 11 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Seychelles: visa required before, eVisa now, for Malaysia passport holders. Seen in the daily data check on 11 June 2026.</description>
+  </item>
+  <item>
+    <title>Samoa: Visa required → Visa on arrival</title>
+    <link>https://travelnow.info/visa/ws/</link>
+    <guid isPermaLink="false">travelnow-MY-WS-2026-06-11-voa</guid>
+    <pubDate>Thu, 11 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Samoa: visa required before, visa on arrival now, for Malaysia passport holders. Seen in the daily data check on 11 June 2026.</description>
+  </item>
+  <item>
+    <title>Solomon Islands: Visa required → Visa on arrival</title>
+    <link>https://travelnow.info/visa/sb/</link>
+    <guid isPermaLink="false">travelnow-MY-SB-2026-06-11-voa</guid>
+    <pubDate>Thu, 11 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Solomon Islands: visa required before, visa on arrival now, for Malaysia passport holders. Seen in the daily data check on 11 June 2026.</description>
+  </item>
+</channel>
+</rss>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Saint Lucia pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/lc/</link>
+  <description>Saint Lucia pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Thu, 25 Jun 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/lc/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Bangladeş: Varışta vize → Vize gerekli</title>
+    <link>https://travelnow.info/tr/visa/bd/</link>
+    <guid isPermaLink="false">travelnow-LC-BD-2026-06-25-vr</guid>
+    <pubDate>Thu, 25 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Saint Lucia pasaportu için Bangladeş: önce varışta vize, şimdi vize gerekli. 25 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

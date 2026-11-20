@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Etiyopya pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/et/</link>
+  <description>Etiyopya pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Wed, 05 Aug 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/et/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Cibuti: Vizesiz → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/dj/</link>
+    <guid isPermaLink="false">travelnow-ET-DJ-2026-08-05-ev</guid>
+    <pubDate>Wed, 05 Aug 2026 00:00:00 GMT</pubDate>
+    <description>Etiyopya pasaportu için Cibuti: önce vizesiz, şimdi e-Vize. 5 Ağustos 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Irak: e-Vize → Vize gerekli</title>
+    <link>https://travelnow.info/tr/visa/iq/</link>
+    <guid isPermaLink="false">travelnow-ET-IQ-2026-08-05-vr</guid>
+    <pubDate>Wed, 05 Aug 2026 00:00:00 GMT</pubDate>
+    <description>Etiyopya pasaportu için Irak: önce e-Vize, şimdi vize gerekli. 5 Ağustos 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Libya: e-Vize → Vize gerekli</title>
+    <link>https://travelnow.info/tr/visa/ly/</link>
+    <guid isPermaLink="false">travelnow-ET-LY-2026-08-05-vr</guid>
+    <pubDate>Wed, 05 Aug 2026 00:00:00 GMT</pubDate>
+    <description>Etiyopya pasaportu için Libya: önce e-Vize, şimdi vize gerekli. 5 Ağustos 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Suriye: e-Vize → Vize gerekli</title>
+    <link>https://travelnow.info/tr/visa/sy/</link>
+    <guid isPermaLink="false">travelnow-ET-SY-2026-08-05-vr</guid>
+    <pubDate>Wed, 05 Aug 2026 00:00:00 GMT</pubDate>
+    <description>Etiyopya pasaportu için Suriye: önce e-Vize, şimdi vize gerekli. 5 Ağustos 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

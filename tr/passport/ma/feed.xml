@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Fas pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/ma/</link>
+  <description>Fas pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Wed, 16 Sep 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/ma/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Tayland: Vizesiz → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/th/</link>
+    <guid isPermaLink="false">travelnow-MA-TH-2026-09-16-ev</guid>
+    <pubDate>Wed, 16 Sep 2026 00:00:00 GMT</pubDate>
+    <description>Fas pasaportu için Tayland: önce vizesiz, şimdi e-Vize. 16 Eylül 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Solomon Adaları: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/sb/</link>
+    <guid isPermaLink="false">travelnow-MA-SB-2026-09-09-ev</guid>
+    <pubDate>Wed, 09 Sep 2026 00:00:00 GMT</pubDate>
+    <description>Fas pasaportu için Solomon Adaları: önce vize gerekli, şimdi e-Vize. 9 Eylül 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Singapur: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/sg/</link>
+    <guid isPermaLink="false">travelnow-MA-SG-2026-09-01-ev</guid>
+    <pubDate>Tue, 01 Sep 2026 00:00:00 GMT</pubDate>
+    <description>Fas pasaportu için Singapur: önce vize gerekli, şimdi e-Vize. 1 Eylül 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Birleşik Krallık: e-Vize → Vize gerekli</title>
+    <link>https://travelnow.info/tr/visa/gb/</link>
+    <guid isPermaLink="false">travelnow-MA-GB-2026-08-21-vr</guid>
+    <pubDate>Fri, 21 Aug 2026 00:00:00 GMT</pubDate>
+    <description>Fas pasaportu için Birleşik Krallık: önce e-Vize, şimdi vize gerekli. 21 Ağustos 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Libya: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/ly/</link>
+    <guid isPermaLink="false">travelnow-MA-LY-2026-08-18-ev</guid>
+    <pubDate>Tue, 18 Aug 2026 00:00:00 GMT</pubDate>
+    <description>Fas pasaportu için Libya: önce vize gerekli, şimdi e-Vize. 18 Ağustos 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Maldivler: e-Vize → Vizesiz</title>
+    <link>https://travelnow.info/tr/visa/mv/</link>
+    <guid isPermaLink="false">travelnow-MA-MV-2026-06-13-vf</guid>
+    <pubDate>Sat, 13 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Fas pasaportu için Maldivler: önce e-Vize, şimdi vizesiz. 13 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

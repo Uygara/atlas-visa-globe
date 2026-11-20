@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Belarus pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/by/</link>
+  <description>Belarus pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Sun, 01 Nov 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/by/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Karadağ: Vizesiz → Vize gerekli</title>
+    <link>https://travelnow.info/tr/visa/me/</link>
+    <guid isPermaLink="false">travelnow-BY-ME-2026-11-01-vr</guid>
+    <pubDate>Sun, 01 Nov 2026 00:00:00 GMT</pubDate>
+    <description>Belarus pasaportu için Karadağ: önce vizesiz, şimdi vize gerekli. 1 Kasım 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Laos: e-Vize → Vizesiz</title>
+    <link>https://travelnow.info/tr/visa/la/</link>
+    <guid isPermaLink="false">travelnow-BY-LA-2026-09-30-vf</guid>
+    <pubDate>Wed, 30 Sep 2026 00:00:00 GMT</pubDate>
+    <description>Belarus pasaportu için Laos: önce e-Vize, şimdi vizesiz. 30 Eylül 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Myanmar: e-Vize → Vizesiz</title>
+    <link>https://travelnow.info/tr/visa/mm/</link>
+    <guid isPermaLink="false">travelnow-BY-MM-2026-09-30-vf</guid>
+    <pubDate>Wed, 30 Sep 2026 00:00:00 GMT</pubDate>
+    <description>Belarus pasaportu için Myanmar: önce e-Vize, şimdi vizesiz. 30 Eylül 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Kuzey Makedonya: Vizesiz → Vize gerekli</title>
+    <link>https://travelnow.info/tr/visa/mk/</link>
+    <guid isPermaLink="false">travelnow-BY-MK-2026-07-18-vr</guid>
+    <pubDate>Sat, 18 Jul 2026 00:00:00 GMT</pubDate>
+    <description>Belarus pasaportu için Kuzey Makedonya: önce vizesiz, şimdi vize gerekli. 18 Temmuz 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Avustralya: e-Vize → Vize gerekli</title>
+    <link>https://travelnow.info/tr/visa/au/</link>
+    <guid isPermaLink="false">travelnow-BY-AU-2026-07-18-vr</guid>
+    <pubDate>Sat, 18 Jul 2026 00:00:00 GMT</pubDate>
+    <description>Belarus pasaportu için Avustralya: önce e-Vize, şimdi vize gerekli. 18 Temmuz 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Endonezya: Varışta vize → Vizesiz</title>
+    <link>https://travelnow.info/tr/visa/id/</link>
+    <guid isPermaLink="false">travelnow-BY-ID-2026-07-14-vf</guid>
+    <pubDate>Tue, 14 Jul 2026 00:00:00 GMT</pubDate>
+    <description>Belarus pasaportu için Endonezya: önce varışta vize, şimdi vizesiz. 14 Temmuz 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

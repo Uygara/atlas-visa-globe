@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Uzbekistan passport: visa rule changes</title>
+  <link>https://travelnow.info/passport/uz/</link>
+  <description>Destinations whose entry rule changed for Uzbekistan passport holders, found by the daily comparison of public visa-policy sources (mainly Wikipedia). Check the official source before you travel.</description>
+  <language>en</language>
+  <lastBuildDate>Mon, 28 Sep 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/passport/uz/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Thailand: Visa-free → Visa required</title>
+    <link>https://travelnow.info/visa/th/</link>
+    <guid isPermaLink="false">travelnow-UZ-TH-2026-09-28-vr</guid>
+    <pubDate>Mon, 28 Sep 2026 00:00:00 GMT</pubDate>
+    <description>Thailand: visa-free before, visa required now, for Uzbekistan passport holders. Seen in the daily data check on 28 September 2026.</description>
+  </item>
+  <item>
+    <title>South Africa: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/za/</link>
+    <guid isPermaLink="false">travelnow-UZ-ZA-2026-09-25-ev</guid>
+    <pubDate>Fri, 25 Sep 2026 00:00:00 GMT</pubDate>
+    <description>South Africa: visa required before, eVisa now, for Uzbekistan passport holders. Seen in the daily data check on 25 September 2026.</description>
+  </item>
+  <item>
+    <title>Hong Kong: Visa-free → Visa required</title>
+    <link>https://travelnow.info/visa/hk/</link>
+    <guid isPermaLink="false">travelnow-UZ-HK-2026-07-03-vr</guid>
+    <pubDate>Fri, 03 Jul 2026 00:00:00 GMT</pubDate>
+    <description>Hong Kong: visa-free before, visa required now, for Uzbekistan passport holders. Seen in the daily data check on 3 July 2026.</description>
+  </item>
+  <item>
+    <title>Macao: Visa required → Visa on arrival</title>
+    <link>https://travelnow.info/visa/mo/</link>
+    <guid isPermaLink="false">travelnow-UZ-MO-2026-06-05-voa</guid>
+    <pubDate>Fri, 05 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Macao: visa required before, visa on arrival now, for Uzbekistan passport holders. Seen in the daily data check on 5 June 2026.</description>
+  </item>
+</channel>
+</rss>

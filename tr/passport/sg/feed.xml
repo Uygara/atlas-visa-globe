@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Singapur pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/sg/</link>
+  <description>Singapur pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Tue, 11 Aug 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/sg/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Azerbaycan: e-Vize → Vizesiz</title>
+    <link>https://travelnow.info/tr/visa/az/</link>
+    <guid isPermaLink="false">travelnow-SG-AZ-2026-08-11-vf</guid>
+    <pubDate>Tue, 11 Aug 2026 00:00:00 GMT</pubDate>
+    <description>Singapur pasaportu için Azerbaycan: önce e-Vize, şimdi vizesiz. 11 Ağustos 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Gabon: Vizesiz → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/ga/</link>
+    <guid isPermaLink="false">travelnow-SG-GA-2026-06-14-ev</guid>
+    <pubDate>Sun, 14 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Singapur pasaportu için Gabon: önce vizesiz, şimdi e-Vize. 14 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Çad: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/td/</link>
+    <guid isPermaLink="false">travelnow-SG-TD-2026-06-14-ev</guid>
+    <pubDate>Sun, 14 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Singapur pasaportu için Çad: önce vize gerekli, şimdi e-Vize. 14 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Seyşeller: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/sc/</link>
+    <guid isPermaLink="false">travelnow-SG-SC-2026-06-11-ev</guid>
+    <pubDate>Thu, 11 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Singapur pasaportu için Seyşeller: önce vize gerekli, şimdi e-Vize. 11 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Samoa: Vize gerekli → Varışta vize</title>
+    <link>https://travelnow.info/tr/visa/ws/</link>
+    <guid isPermaLink="false">travelnow-SG-WS-2026-06-11-voa</guid>
+    <pubDate>Thu, 11 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Singapur pasaportu için Samoa: önce vize gerekli, şimdi varışta vize. 11 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Solomon Adaları: Vize gerekli → Varışta vize</title>
+    <link>https://travelnow.info/tr/visa/sb/</link>
+    <guid isPermaLink="false">travelnow-SG-SB-2026-06-11-voa</guid>
+    <pubDate>Thu, 11 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Singapur pasaportu için Solomon Adaları: önce vize gerekli, şimdi varışta vize. 11 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

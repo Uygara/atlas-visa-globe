@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Armenia passport: visa rule changes</title>
+  <link>https://travelnow.info/passport/am/</link>
+  <description>Destinations whose entry rule changed for Armenia passport holders, found by the daily comparison of public visa-policy sources (mainly Wikipedia). Check the official source before you travel.</description>
+  <language>en</language>
+  <lastBuildDate>Sat, 17 Oct 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/passport/am/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Thailand: eVisa → Visa required</title>
+    <link>https://travelnow.info/visa/th/</link>
+    <guid isPermaLink="false">travelnow-AM-TH-2026-10-17-vr</guid>
+    <pubDate>Sat, 17 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Thailand: eVisa before, visa required now, for Armenia passport holders. Seen in the daily data check on 17 October 2026.</description>
+  </item>
+  <item>
+    <title>South Africa: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/za/</link>
+    <guid isPermaLink="false">travelnow-AM-ZA-2026-09-26-ev</guid>
+    <pubDate>Sat, 26 Sep 2026 00:00:00 GMT</pubDate>
+    <description>South Africa: visa required before, eVisa now, for Armenia passport holders. Seen in the daily data check on 26 September 2026.</description>
+  </item>
+</channel>
+</rss>

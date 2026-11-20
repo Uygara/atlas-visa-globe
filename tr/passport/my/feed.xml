@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Malezya pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/my/</link>
+  <description>Malezya pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Wed, 21 Oct 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/my/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>El Salvador: Vize gerekli → Vizesiz</title>
+    <link>https://travelnow.info/tr/visa/sv/</link>
+    <guid isPermaLink="false">travelnow-MY-SV-2026-10-21-vf</guid>
+    <pubDate>Wed, 21 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Malezya pasaportu için El Salvador: önce vize gerekli, şimdi vizesiz. 21 Ekim 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Libya: e-Vize → Vizesiz</title>
+    <link>https://travelnow.info/tr/visa/ly/</link>
+    <guid isPermaLink="false">travelnow-MY-LY-2026-09-06-vf</guid>
+    <pubDate>Sun, 06 Sep 2026 00:00:00 GMT</pubDate>
+    <description>Malezya pasaportu için Libya: önce e-Vize, şimdi vizesiz. 6 Eylül 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Gana: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/gh/</link>
+    <guid isPermaLink="false">travelnow-MY-GH-2026-06-14-ev</guid>
+    <pubDate>Sun, 14 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Malezya pasaportu için Gana: önce vize gerekli, şimdi e-Vize. 14 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Çad: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/td/</link>
+    <guid isPermaLink="false">travelnow-MY-TD-2026-06-14-ev</guid>
+    <pubDate>Sun, 14 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Malezya pasaportu için Çad: önce vize gerekli, şimdi e-Vize. 14 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Gabon: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/ga/</link>
+    <guid isPermaLink="false">travelnow-MY-GA-2026-06-14-ev</guid>
+    <pubDate>Sun, 14 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Malezya pasaportu için Gabon: önce vize gerekli, şimdi e-Vize. 14 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Seyşeller: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/sc/</link>
+    <guid isPermaLink="false">travelnow-MY-SC-2026-06-11-ev</guid>
+    <pubDate>Thu, 11 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Malezya pasaportu için Seyşeller: önce vize gerekli, şimdi e-Vize. 11 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Samoa: Vize gerekli → Varışta vize</title>
+    <link>https://travelnow.info/tr/visa/ws/</link>
+    <guid isPermaLink="false">travelnow-MY-WS-2026-06-11-voa</guid>
+    <pubDate>Thu, 11 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Malezya pasaportu için Samoa: önce vize gerekli, şimdi varışta vize. 11 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Solomon Adaları: Vize gerekli → Varışta vize</title>
+    <link>https://travelnow.info/tr/visa/sb/</link>
+    <guid isPermaLink="false">travelnow-MY-SB-2026-06-11-voa</guid>
+    <pubDate>Thu, 11 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Malezya pasaportu için Solomon Adaları: önce vize gerekli, şimdi varışta vize. 11 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

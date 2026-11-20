@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Arnavutluk pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/al/</link>
+  <description>Arnavutluk pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Sat, 31 Oct 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/al/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Gana: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/gh/</link>
+    <guid isPermaLink="false">travelnow-AL-GH-2026-10-31-ev</guid>
+    <pubDate>Sat, 31 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Arnavutluk pasaportu için Gana: önce vize gerekli, şimdi e-Vize. 31 Ekim 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>İrlanda: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/ie/</link>
+    <guid isPermaLink="false">travelnow-AL-IE-2026-09-01-ev</guid>
+    <pubDate>Tue, 01 Sep 2026 00:00:00 GMT</pubDate>
+    <description>Arnavutluk pasaportu için İrlanda: önce vize gerekli, şimdi e-Vize. 1 Eylül 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Bangladesh passport: visa rule changes</title>
+  <link>https://travelnow.info/passport/bd/</link>
+  <description>Destinations whose entry rule changed for Bangladesh passport holders, found by the daily comparison of public visa-policy sources (mainly Wikipedia). Check the official source before you travel.</description>
+  <language>en</language>
+  <lastBuildDate>Sun, 23 Aug 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/passport/bd/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Saudi Arabia: Visa-free → Visa required</title>
+    <link>https://travelnow.info/visa/sa/</link>
+    <guid isPermaLink="false">travelnow-BD-SA-2026-08-23-vr</guid>
+    <pubDate>Sun, 23 Aug 2026 00:00:00 GMT</pubDate>
+    <description>Saudi Arabia: visa-free before, visa required now, for Bangladesh passport holders. Seen in the daily data check on 23 August 2026.</description>
+  </item>
+  <item>
+    <title>Saint Kitts and Nevis: Visa-free → eVisa</title>
+    <link>https://travelnow.info/visa/kn/</link>
+    <guid isPermaLink="false">travelnow-BD-KN-2026-07-28-ev</guid>
+    <pubDate>Tue, 28 Jul 2026 00:00:00 GMT</pubDate>
+    <description>Saint Kitts and Nevis: visa-free before, eVisa now, for Bangladesh passport holders. Seen in the daily data check on 28 July 2026.</description>
+  </item>
+  <item>
+    <title>Cabo Verde: Visa on arrival → Visa required</title>
+    <link>https://travelnow.info/visa/cv/</link>
+    <guid isPermaLink="false">travelnow-BD-CV-2026-07-28-vr</guid>
+    <pubDate>Tue, 28 Jul 2026 00:00:00 GMT</pubDate>
+    <description>Cabo Verde: visa on arrival before, visa required now, for Bangladesh passport holders. Seen in the daily data check on 28 July 2026.</description>
+  </item>
+  <item>
+    <title>Moldova: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/md/</link>
+    <guid isPermaLink="false">travelnow-BD-MD-2026-06-25-ev</guid>
+    <pubDate>Thu, 25 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Moldova: visa required before, eVisa now, for Bangladesh passport holders. Seen in the daily data check on 25 June 2026.</description>
+  </item>
+</channel>
+</rss>

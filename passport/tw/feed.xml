@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Taiwan passport: visa rule changes</title>
+  <link>https://travelnow.info/passport/tw/</link>
+  <description>Destinations whose entry rule changed for Taiwan passport holders, found by the daily comparison of public visa-policy sources (mainly Wikipedia). Check the official source before you travel.</description>
+  <language>en</language>
+  <lastBuildDate>Thu, 19 Nov 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/passport/tw/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Maldives: Visa required → Visa on arrival</title>
+    <link>https://travelnow.info/visa/mv/</link>
+    <guid isPermaLink="false">travelnow-TW-MV-2026-11-19-voa</guid>
+    <pubDate>Thu, 19 Nov 2026 00:00:00 GMT</pubDate>
+    <description>Maldives: visa required before, visa on arrival now, for Taiwan passport holders. Seen in the daily data check on 19 November 2026.</description>
+  </item>
+  <item>
+    <title>Cabo Verde: Visa required → Visa on arrival</title>
+    <link>https://travelnow.info/visa/cv/</link>
+    <guid isPermaLink="false">travelnow-TW-CV-2026-11-15-voa</guid>
+    <pubDate>Sun, 15 Nov 2026 00:00:00 GMT</pubDate>
+    <description>Cabo Verde: visa required before, visa on arrival now, for Taiwan passport holders. Seen in the daily data check on 15 November 2026.</description>
+  </item>
+  <item>
+    <title>Kiribati: Visa required → No entry allowed</title>
+    <link>https://travelnow.info/visa/ki/</link>
+    <guid isPermaLink="false">travelnow-TW-KI-2026-08-31-ban</guid>
+    <pubDate>Mon, 31 Aug 2026 00:00:00 GMT</pubDate>
+    <description>Kiribati: visa required before, no entry allowed now, for Taiwan passport holders. Seen in the daily data check on 31 August 2026.</description>
+  </item>
+  <item>
+    <title>Venezuela: Visa required → No entry allowed</title>
+    <link>https://travelnow.info/visa/ve/</link>
+    <guid isPermaLink="false">travelnow-TW-VE-2026-08-31-ban</guid>
+    <pubDate>Mon, 31 Aug 2026 00:00:00 GMT</pubDate>
+    <description>Venezuela: visa required before, no entry allowed now, for Taiwan passport holders. Seen in the daily data check on 31 August 2026.</description>
+  </item>
+  <item>
+    <title>Nauru: Visa on arrival → Visa required</title>
+    <link>https://travelnow.info/visa/nr/</link>
+    <guid isPermaLink="false">travelnow-TW-NR-2026-08-27-vr</guid>
+    <pubDate>Thu, 27 Aug 2026 00:00:00 GMT</pubDate>
+    <description>Nauru: visa on arrival before, visa required now, for Taiwan passport holders. Seen in the daily data check on 27 August 2026.</description>
+  </item>
+  <item>
+    <title>Sri Lanka: Visa on arrival → Visa required</title>
+    <link>https://travelnow.info/visa/lk/</link>
+    <guid isPermaLink="false">travelnow-TW-LK-2026-08-21-vr</guid>
+    <pubDate>Fri, 21 Aug 2026 00:00:00 GMT</pubDate>
+    <description>Sri Lanka: visa on arrival before, visa required now, for Taiwan passport holders. Seen in the daily data check on 21 August 2026.</description>
+  </item>
+</channel>
+</rss>

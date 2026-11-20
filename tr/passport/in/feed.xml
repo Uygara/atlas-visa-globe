@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Hindistan pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/in/</link>
+  <description>Hindistan pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Mon, 21 Sep 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/in/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Belarus: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/by/</link>
+    <guid isPermaLink="false">travelnow-IN-BY-2026-09-21-ev</guid>
+    <pubDate>Mon, 21 Sep 2026 00:00:00 GMT</pubDate>
+    <description>Hindistan pasaportu için Belarus: önce vize gerekli, şimdi e-Vize. 21 Eylül 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Cabo Verde: Vize gerekli → Varışta vize</title>
+    <link>https://travelnow.info/tr/visa/cv/</link>
+    <guid isPermaLink="false">travelnow-IN-CV-2026-06-22-voa</guid>
+    <pubDate>Mon, 22 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Hindistan pasaportu için Cabo Verde: önce vize gerekli, şimdi varışta vize. 22 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Bolivya: e-Vize → Vize gerekli</title>
+    <link>https://travelnow.info/tr/visa/bo/</link>
+    <guid isPermaLink="false">travelnow-IN-BO-2026-06-09-vr</guid>
+    <pubDate>Tue, 09 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Hindistan pasaportu için Bolivya: önce e-Vize, şimdi vize gerekli. 9 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>El Salvador: Vizesiz → Vize gerekli</title>
+    <link>https://travelnow.info/tr/visa/sv/</link>
+    <guid isPermaLink="false">travelnow-IN-SV-2026-05-30-vr</guid>
+    <pubDate>Sat, 30 May 2026 00:00:00 GMT</pubDate>
+    <description>Hindistan pasaportu için El Salvador: önce vizesiz, şimdi vize gerekli. 30 Mayıs 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Umman: Vizesiz → Vize gerekli</title>
+    <link>https://travelnow.info/tr/visa/om/</link>
+    <guid isPermaLink="false">travelnow-IN-OM-2026-05-30-vr</guid>
+    <pubDate>Sat, 30 May 2026 00:00:00 GMT</pubDate>
+    <description>Hindistan pasaportu için Umman: önce vizesiz, şimdi vize gerekli. 30 Mayıs 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

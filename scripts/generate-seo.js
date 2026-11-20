@@ -41,7 +41,7 @@ const DATA = (() => {
   // The rule files below feed the "Before you go" block of the destination pages (/visa/<cc>/).
   for (const f of ["countries.js", "country-names.js", "passports.js", "visa-overrides.js", "mrz.js",
                    "passport-validity-rules.js", "travel-advisories.js", "visa-fees.js", "etias-rules.js",
-                   "esta-rules.js", "transit-visa-rules.js", "affiliates.js"]) {
+                   "esta-rules.js", "transit-visa-rules.js", "affiliates.js", "changelog.js"]) {
     vm.runInContext(fs.readFileSync(path.join(ROOT, "data", f), "utf8"), ctx, { filename: f });
   }
   return ctx;
@@ -85,6 +85,10 @@ const LOC = {
     description: (name, c, rank) => `Where can a ${name} passport take you? ${c.vf} visa-free, ${c.voa} visa on arrival, ${c.ev} eVisa, ${c.vr} visa required. Global rank #${rank}. Updated daily.`,
     h1: (name) => `${name} passport: visa-free countries and visa requirements`,
     subtitle: (n, rank, date) => `${n} destinations${rank ? `, global rank #${rank}` : ""}. Updated ${date}.`,
+    feedLink: "Follow rule changes for this passport (RSS feed)",
+    feedTitle: (name) => `${name} passport: visa rule changes`,
+    feedDesc: (name) => `Destinations whose entry rule changed for ${name} passport holders, found by the daily comparison of public visa-policy sources (mainly Wikipedia). Check the official source before you travel.`,
+    feedItem: (name, dest, from, to, date) => `${dest}: ${from} before, ${to} now, for ${name} passport holders. Seen in the daily data check on ${date}.`,
     scoreLabel: "destinations without a visa application",
     ofTotal: (n) => `of ${n}`,
     withEvisa: (n) => `${n} counting eVisas (apply online, no embassy visit)`,
@@ -179,6 +183,10 @@ const LOC = {
     description: (name, c, rank) => `${name} pasaportuyla nereye gidebilirsin? ${c.vf} vizesiz, ${c.voa} varışta vize, ${c.ev} e-Vize, ${c.vr} vize gerekli. Dünya sıralaması ${rank}. Her gün güncellenir.`,
     h1: (name) => `${name} pasaportu ile vizesiz gidilen ülkeler`,
     subtitle: (n, rank, date) => `${n} destinasyon${rank ? `, dünya sıralaması ${rank}` : ""}. Güncelleme ${date}.`,
+    feedLink: "Bu pasaportun kural değişikliklerini takip et (RSS akışı)",
+    feedTitle: (name) => `${name} pasaportu: vize kuralı değişiklikleri`,
+    feedDesc: (name) => `${name} pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.`,
+    feedItem: (name, dest, from, to, date) => `${name} pasaportu için ${dest}: önce ${from}, şimdi ${to}. ${date} tarihli günlük veri kontrolünde görüldü.`,
     scoreLabel: "vize başvurusu gerektirmeyen destinasyon",
     ofTotal: (n) => `/ ${n}`,
     withEvisa: (n) => `e-Vize dahil ${n} (çevrimiçi başvuru, konsolosluğa gitmeden)`,
@@ -438,6 +446,7 @@ function renderPage(passport, allPassports, ranks, lang, ads) {
 <title>${escapeHtml(titleText)}</title>
 <meta name="description" content="${escapeHtml(description)}">
 <link rel="canonical" href="${canonical}">
+<link rel="alternate" type="application/rss+xml" title="${escapeHtml(L.feedTitle(name))}" href="${SITE_URL}${pagePath}feed.xml">
 <meta name="author" content="Uygar Atalay">
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
 <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
@@ -498,6 +507,7 @@ ${masthead({ path: enPath, i18n: false, lang })}
   </header>
 
   <p class="visa-in"><a href="${P(`/visa/${slug}/`)}">${escapeHtml(L.toVisa({ iso: passport, label: name }))}</a></p>
+  <p class="visa-in"><a href="${L.prefix}/passport/${slug}/feed.xml" type="application/rss+xml">${escapeHtml(L.feedLink)}</a></p>
 
   ${tally}
 
@@ -1057,6 +1067,54 @@ function computeRanks(allPassports) {
   return ranks;
 }
 
+// RSS 2.0 feed of this passport's changelog entries (roadmap A5): /passport/<cc>/feed.xml, /tr/passport/<cc>/feed.xml.
+// Items come only from data/changelog.js (real day-over-day diffs); nothing is written by hand.
+function renderFeed(passport, lang) {
+  const L = LOC[lang];
+  const name = passportName(passport, lang);
+  const slug = passport.toLowerCase();
+  const pageUrl = `${SITE_URL}${L.prefix}/passport/${slug}/`;
+  const x = escapeHtml;
+  const items = (DATA.CHANGELOG || [])
+    .filter((e) => e.affects && (e.affects.passports || []).includes(passport) && L.status[e.statusFrom] && L.status[e.statusTo])
+    // Only changes the map still shows: a later flip back to the default status is not logged, and
+    // overrides (ETA, floors) can differ from the raw scrape. 21 of 322 entries failed this on 2026-11-21.
+    .filter((e) => resolveStatus(passport, e.affects.dest).status === e.statusTo)
+    .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0))
+    .slice(0, 50);
+  const rfc = (d) => new Date(d + "T00:00:00Z").toUTCString();
+  const body = items.map((e) => {
+    const dest = cn(e.affects.dest, lang);
+    const from = L.status[e.statusFrom], to = L.status[e.statusTo];
+    // Mid-sentence labels in lower case ("Visa required" -> "visa required"); "eVisa" / "e-Vize" stay as they are.
+    const lc = (t) => (/^[A-ZÇĞİÖŞÜ][a-zçğıöşü]/.test(t) ? t[0].toLocaleLowerCase(lang) + t.slice(1) : t);
+    const link = `${SITE_URL}${L.prefix}/visa/${e.affects.dest.toLowerCase()}/`;
+    return [
+      "  <item>",
+      `    <title>${x(`${dest}: ${from} → ${to}`)}</title>`,
+      `    <link>${link}</link>`,
+      `    <guid isPermaLink="false">travelnow-${passport}-${e.affects.dest}-${e.date}-${e.statusTo}</guid>`,
+      `    <pubDate>${rfc(e.date)}</pubDate>`,
+      `    <description>${x(L.feedItem(name, dest, lc(from), lc(to), fmtDate(e.date, lang)))}</description>`,
+      "  </item>",
+    ].join("\n");
+  }).join("\n");
+  const last = items.length ? rfc(items[0].date) : rfc("2026-05-21");
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>${x(L.feedTitle(name))}</title>
+  <link>${pageUrl}</link>
+  <description>${x(L.feedDesc(name))}</description>
+  <language>${lang}</language>
+  <lastBuildDate>${last}</lastBuildDate>
+  <atom:link href="${pageUrl}feed.xml" rel="self" type="application/rss+xml"/>
+${body}
+</channel>
+</rss>
+`;
+}
+
 function main() {
   const allPassports = Object.keys(SNAPSHOT).sort();
   const ranks = computeRanks(allPassports);
@@ -1074,6 +1132,7 @@ function main() {
       const dir = path.join(outDir, iso.toLowerCase());
       fs.mkdirSync(dir, { recursive: true });
       fs.writeFileSync(path.join(dir, "index.html"), html);
+      fs.writeFileSync(path.join(dir, "feed.xml"), renderFeed(iso, lang));
       written++;
     }
     fs.writeFileSync(path.join(outDir, "index.html"), renderIndex(allPassports, ranks, lang));

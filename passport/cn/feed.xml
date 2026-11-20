@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>China passport: visa rule changes</title>
+  <link>https://travelnow.info/passport/cn/</link>
+  <description>Destinations whose entry rule changed for China passport holders, found by the daily comparison of public visa-policy sources (mainly Wikipedia). Check the official source before you travel.</description>
+  <language>en</language>
+  <lastBuildDate>Fri, 06 Nov 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/passport/cn/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Senegal: Visa on arrival → Visa-free</title>
+    <link>https://travelnow.info/visa/sn/</link>
+    <guid isPermaLink="false">travelnow-CN-SN-2026-11-06-vf</guid>
+    <pubDate>Fri, 06 Nov 2026 00:00:00 GMT</pubDate>
+    <description>Senegal: visa on arrival before, visa-free now, for China passport holders. Seen in the daily data check on 6 November 2026.</description>
+  </item>
+  <item>
+    <title>Cambodia: Visa-free → eVisa</title>
+    <link>https://travelnow.info/visa/kh/</link>
+    <guid isPermaLink="false">travelnow-CN-KH-2026-10-26-ev</guid>
+    <pubDate>Mon, 26 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Cambodia: visa-free before, eVisa now, for China passport holders. Seen in the daily data check on 26 October 2026.</description>
+  </item>
+  <item>
+    <title>Turkmenistan: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/tm/</link>
+    <guid isPermaLink="false">travelnow-CN-TM-2026-10-05-ev</guid>
+    <pubDate>Mon, 05 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Turkmenistan: visa required before, eVisa now, for China passport holders. Seen in the daily data check on 5 October 2026.</description>
+  </item>
+  <item>
+    <title>Uruguay: Visa-free → Visa required</title>
+    <link>https://travelnow.info/visa/uy/</link>
+    <guid isPermaLink="false">travelnow-CN-UY-2026-08-20-vr</guid>
+    <pubDate>Thu, 20 Aug 2026 00:00:00 GMT</pubDate>
+    <description>Uruguay: visa-free before, visa required now, for China passport holders. Seen in the daily data check on 20 August 2026.</description>
+  </item>
+  <item>
+    <title>Sudan: Visa required → Visa on arrival</title>
+    <link>https://travelnow.info/visa/sd/</link>
+    <guid isPermaLink="false">travelnow-CN-SD-2026-07-16-voa</guid>
+    <pubDate>Thu, 16 Jul 2026 00:00:00 GMT</pubDate>
+    <description>Sudan: visa required before, visa on arrival now, for China passport holders. Seen in the daily data check on 16 July 2026.</description>
+  </item>
+  <item>
+    <title>Nicaragua: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/ni/</link>
+    <guid isPermaLink="false">travelnow-CN-NI-2026-06-06-ev</guid>
+    <pubDate>Sat, 06 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Nicaragua: visa required before, eVisa now, for China passport holders. Seen in the daily data check on 6 June 2026.</description>
+  </item>
+  <item>
+    <title>Ghana: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/gh/</link>
+    <guid isPermaLink="false">travelnow-CN-GH-2026-05-28-ev</guid>
+    <pubDate>Thu, 28 May 2026 00:00:00 GMT</pubDate>
+    <description>Ghana: visa required before, eVisa now, for China passport holders. Seen in the daily data check on 28 May 2026.</description>
+  </item>
+</channel>
+</rss>

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Mali passport: visa rule changes</title>
+  <link>https://travelnow.info/passport/ml/</link>
+  <description>Destinations whose entry rule changed for Mali passport holders, found by the daily comparison of public visa-policy sources (mainly Wikipedia). Check the official source before you travel.</description>
+  <language>en</language>
+  <lastBuildDate>Mon, 27 Jul 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/passport/ml/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Ukraine: No entry allowed → Visa required</title>
+    <link>https://travelnow.info/visa/ua/</link>
+    <guid isPermaLink="false">travelnow-ML-UA-2026-07-27-vr</guid>
+    <pubDate>Mon, 27 Jul 2026 00:00:00 GMT</pubDate>
+    <description>Ukraine: no entry allowed before, visa required now, for Mali passport holders. Seen in the daily data check on 27 July 2026.</description>
+  </item>
+  <item>
+    <title>United States: No entry allowed → Visa required</title>
+    <link>https://travelnow.info/visa/us/</link>
+    <guid isPermaLink="false">travelnow-ML-US-2026-07-27-vr</guid>
+    <pubDate>Mon, 27 Jul 2026 00:00:00 GMT</pubDate>
+    <description>United States: no entry allowed before, visa required now, for Mali passport holders. Seen in the daily data check on 27 July 2026.</description>
+  </item>
+</channel>
+</rss>

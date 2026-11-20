@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Maldives passport: visa rule changes</title>
+  <link>https://travelnow.info/passport/mv/</link>
+  <description>Destinations whose entry rule changed for Maldives passport holders, found by the daily comparison of public visa-policy sources (mainly Wikipedia). Check the official source before you travel.</description>
+  <language>en</language>
+  <lastBuildDate>Wed, 02 Sep 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/passport/mv/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Brazil: Visa-free → Visa required</title>
+    <link>https://travelnow.info/visa/br/</link>
+    <guid isPermaLink="false">travelnow-MV-BR-2026-09-02-vr</guid>
+    <pubDate>Wed, 02 Sep 2026 00:00:00 GMT</pubDate>
+    <description>Brazil: visa-free before, visa required now, for Maldives passport holders. Seen in the daily data check on 2 September 2026.</description>
+  </item>
+</channel>
+</rss>

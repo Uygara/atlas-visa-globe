@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>İsrail pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/il/</link>
+  <description>İsrail pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Mon, 27 Jul 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/il/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Umman: Vize gerekli → Girişe kapalı</title>
+    <link>https://travelnow.info/tr/visa/om/</link>
+    <guid isPermaLink="false">travelnow-IL-OM-2026-07-27-ban</guid>
+    <pubDate>Mon, 27 Jul 2026 00:00:00 GMT</pubDate>
+    <description>İsrail pasaportu için Umman: önce vize gerekli, şimdi girişe kapalı. 27 Temmuz 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

@@ -93,7 +93,13 @@ Durum: `açık` · `sürüyor` · `bekliyor: <neyi>` · `bitti <hash>`
 - **A3 · Paylaşılabilir sonuç kartları** · açık · Pasaport → ülke sonucu için görsel kart ve kısa bağlantı.
 - **A4 · Instagram içerik hattı** · kısmen bitti (`scripts/social-cards.js`, aylık carousel + pasaport kartı) · Her hafta `changelog`dan otomatik gönderi taslakları (görsel + metin,
   EN + TR) `content/instagram/<tarih>/` klasörüne. Paylaşımı insan yapar.
-- **A5 · Pasaport başına değişiklik akışı (RSS/JSON)** · açık · `/passport/<kod>/feed.xml`. [üzerinde: Uygar, 2026-11-21]
+- **A5 · Pasaport başına değişiklik akışı (RSS/JSON)** · bitti (2026-11-21) · `/passport/<kod>/feed.xml` ve
+  `/tr/passport/<kod>/feed.xml`, `generate-seo.js` her gün yeniden yazar; pasaport sayfasında bağlantı ve
+  `<link rel="alternate">`. Yalnızca haritanın hâlâ gösterdiği değişiklikler girer.
+- **D9 · Changelog'da geri dönmüş kayıtlar** · açık · 322 kaydın 21'i bugünkü durumla uyuşmuyor (örnek: ABD → Letonya
+  9 Ekim'de "vize gerekli" kaydı, bugün vizesiz). Sebep: varsayılan duruma geri dönüş günlüğe yazılmıyor, ETA ve
+  elle düzeltmeler ham veriden farklı. Ülke kartındaki "Son değişiklikler" bunları hâlâ gösteriyor. Düzeltme
+  `backend/scraper.js` computeChangelog içinde.
 
 ## Değerlendirilecek
 

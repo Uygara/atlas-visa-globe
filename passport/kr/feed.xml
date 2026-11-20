@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>South Korea passport: visa rule changes</title>
+  <link>https://travelnow.info/passport/kr/</link>
+  <description>Destinations whose entry rule changed for South Korea passport holders, found by the daily comparison of public visa-policy sources (mainly Wikipedia). Check the official source before you travel.</description>
+  <language>en</language>
+  <lastBuildDate>Thu, 22 Oct 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/passport/kr/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Turkmenistan: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/tm/</link>
+    <guid isPermaLink="false">travelnow-KR-TM-2026-10-22-ev</guid>
+    <pubDate>Thu, 22 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Turkmenistan: visa required before, eVisa now, for South Korea passport holders. Seen in the daily data check on 22 October 2026.</description>
+  </item>
+  <item>
+    <title>Azerbaijan: eVisa → Visa-free</title>
+    <link>https://travelnow.info/visa/az/</link>
+    <guid isPermaLink="false">travelnow-KR-AZ-2026-07-02-vf</guid>
+    <pubDate>Thu, 02 Jul 2026 00:00:00 GMT</pubDate>
+    <description>Azerbaijan: eVisa before, visa-free now, for South Korea passport holders. Seen in the daily data check on 2 July 2026.</description>
+  </item>
+  <item>
+    <title>Ghana: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/gh/</link>
+    <guid isPermaLink="false">travelnow-KR-GH-2026-07-02-ev</guid>
+    <pubDate>Thu, 02 Jul 2026 00:00:00 GMT</pubDate>
+    <description>Ghana: visa required before, eVisa now, for South Korea passport holders. Seen in the daily data check on 2 July 2026.</description>
+  </item>
+  <item>
+    <title>Seychelles: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/sc/</link>
+    <guid isPermaLink="false">travelnow-KR-SC-2026-06-11-ev</guid>
+    <pubDate>Thu, 11 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Seychelles: visa required before, eVisa now, for South Korea passport holders. Seen in the daily data check on 11 June 2026.</description>
+  </item>
+  <item>
+    <title>Samoa: Visa required → Visa on arrival</title>
+    <link>https://travelnow.info/visa/ws/</link>
+    <guid isPermaLink="false">travelnow-KR-WS-2026-06-11-voa</guid>
+    <pubDate>Thu, 11 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Samoa: visa required before, visa on arrival now, for South Korea passport holders. Seen in the daily data check on 11 June 2026.</description>
+  </item>
+  <item>
+    <title>Solomon Islands: Visa required → Visa on arrival</title>
+    <link>https://travelnow.info/visa/sb/</link>
+    <guid isPermaLink="false">travelnow-KR-SB-2026-06-11-voa</guid>
+    <pubDate>Thu, 11 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Solomon Islands: visa required before, visa on arrival now, for South Korea passport holders. Seen in the daily data check on 11 June 2026.</description>
+  </item>
+</channel>
+</rss>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Gine pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/gn/</link>
+  <description>Gine pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Sun, 26 Jul 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/gn/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Endonezya: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/id/</link>
+    <guid isPermaLink="false">travelnow-GN-ID-2026-07-26-ev</guid>
+    <pubDate>Sun, 26 Jul 2026 00:00:00 GMT</pubDate>
+    <description>Gine pasaportu için Endonezya: önce vize gerekli, şimdi e-Vize. 26 Temmuz 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

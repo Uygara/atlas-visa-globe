@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Doğu Timor pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/tl/</link>
+  <description>Doğu Timor pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Thu, 19 Nov 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/tl/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Maldivler: Vize gerekli → Varışta vize</title>
+    <link>https://travelnow.info/tr/visa/mv/</link>
+    <guid isPermaLink="false">travelnow-TL-MV-2026-11-19-voa</guid>
+    <pubDate>Thu, 19 Nov 2026 00:00:00 GMT</pubDate>
+    <description>Doğu Timor pasaportu için Maldivler: önce vize gerekli, şimdi varışta vize. 19 Kasım 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Palau: Vize gerekli → Varışta vize</title>
+    <link>https://travelnow.info/tr/visa/pw/</link>
+    <guid isPermaLink="false">travelnow-TL-PW-2026-11-19-voa</guid>
+    <pubDate>Thu, 19 Nov 2026 00:00:00 GMT</pubDate>
+    <description>Doğu Timor pasaportu için Palau: önce vize gerekli, şimdi varışta vize. 19 Kasım 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

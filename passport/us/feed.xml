@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>United States passport: visa rule changes</title>
+  <link>https://travelnow.info/passport/us/</link>
+  <description>Destinations whose entry rule changed for United States passport holders, found by the daily comparison of public visa-policy sources (mainly Wikipedia). Check the official source before you travel.</description>
+  <language>en</language>
+  <lastBuildDate>Tue, 30 Jun 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/passport/us/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Palau: Visa required → Visa-free</title>
+    <link>https://travelnow.info/visa/pw/</link>
+    <guid isPermaLink="false">travelnow-US-PW-2026-06-30-vf</guid>
+    <pubDate>Tue, 30 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Palau: visa required before, visa-free now, for United States passport holders. Seen in the daily data check on 30 June 2026.</description>
+  </item>
+  <item>
+    <title>North Korea: Visa required → No entry allowed</title>
+    <link>https://travelnow.info/visa/kp/</link>
+    <guid isPermaLink="false">travelnow-US-KP-2026-06-19-ban</guid>
+    <pubDate>Fri, 19 Jun 2026 00:00:00 GMT</pubDate>
+    <description>North Korea: visa required before, no entry allowed now, for United States passport holders. Seen in the daily data check on 19 June 2026.</description>
+  </item>
+</channel>
+</rss>

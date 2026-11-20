@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Ermenistan pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/am/</link>
+  <description>Ermenistan pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Sat, 17 Oct 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/am/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Tayland: e-Vize → Vize gerekli</title>
+    <link>https://travelnow.info/tr/visa/th/</link>
+    <guid isPermaLink="false">travelnow-AM-TH-2026-10-17-vr</guid>
+    <pubDate>Sat, 17 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Ermenistan pasaportu için Tayland: önce e-Vize, şimdi vize gerekli. 17 Ekim 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Güney Afrika: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/za/</link>
+    <guid isPermaLink="false">travelnow-AM-ZA-2026-09-26-ev</guid>
+    <pubDate>Sat, 26 Sep 2026 00:00:00 GMT</pubDate>
+    <description>Ermenistan pasaportu için Güney Afrika: önce vize gerekli, şimdi e-Vize. 26 Eylül 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

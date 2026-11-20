@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Almanya pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/de/</link>
+  <description>Almanya pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Thu, 11 Jun 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/de/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>İsrail: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/il/</link>
+    <guid isPermaLink="false">travelnow-DE-IL-2026-06-11-ev</guid>
+    <pubDate>Thu, 11 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Almanya pasaportu için İsrail: önce vize gerekli, şimdi e-Vize. 11 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Seyşeller: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/sc/</link>
+    <guid isPermaLink="false">travelnow-DE-SC-2026-06-11-ev</guid>
+    <pubDate>Thu, 11 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Almanya pasaportu için Seyşeller: önce vize gerekli, şimdi e-Vize. 11 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Suriye: Varışta vize → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/sy/</link>
+    <guid isPermaLink="false">travelnow-DE-SY-2026-05-30-ev</guid>
+    <pubDate>Sat, 30 May 2026 00:00:00 GMT</pubDate>
+    <description>Almanya pasaportu için Suriye: önce varışta vize, şimdi e-Vize. 30 Mayıs 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Gana: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/gh/</link>
+    <guid isPermaLink="false">travelnow-DE-GH-2026-05-30-ev</guid>
+    <pubDate>Sat, 30 May 2026 00:00:00 GMT</pubDate>
+    <description>Almanya pasaportu için Gana: önce vize gerekli, şimdi e-Vize. 30 Mayıs 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

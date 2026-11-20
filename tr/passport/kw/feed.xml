@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Kuveyt pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/kw/</link>
+  <description>Kuveyt pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Wed, 11 Nov 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/kw/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Güney Afrika: e-Vize → Vize gerekli</title>
+    <link>https://travelnow.info/tr/visa/za/</link>
+    <guid isPermaLink="false">travelnow-KW-ZA-2026-11-11-vr</guid>
+    <pubDate>Wed, 11 Nov 2026 00:00:00 GMT</pubDate>
+    <description>Kuveyt pasaportu için Güney Afrika: önce e-Vize, şimdi vize gerekli. 11 Kasım 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Sırbistan: Vize gerekli → Vizesiz</title>
+    <link>https://travelnow.info/tr/visa/rs/</link>
+    <guid isPermaLink="false">travelnow-KW-RS-2026-11-04-vf</guid>
+    <pubDate>Wed, 04 Nov 2026 00:00:00 GMT</pubDate>
+    <description>Kuveyt pasaportu için Sırbistan: önce vize gerekli, şimdi vizesiz. 4 Kasım 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Türkmenistan: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/tm/</link>
+    <guid isPermaLink="false">travelnow-KW-TM-2026-10-12-ev</guid>
+    <pubDate>Mon, 12 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Kuveyt pasaportu için Türkmenistan: önce vize gerekli, şimdi e-Vize. 12 Ekim 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>İrlanda: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/ie/</link>
+    <guid isPermaLink="false">travelnow-KW-IE-2026-06-14-ev</guid>
+    <pubDate>Sun, 14 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Kuveyt pasaportu için İrlanda: önce vize gerekli, şimdi e-Vize. 14 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Gana: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/gh/</link>
+    <guid isPermaLink="false">travelnow-KW-GH-2026-05-27-ev</guid>
+    <pubDate>Wed, 27 May 2026 00:00:00 GMT</pubDate>
+    <description>Kuveyt pasaportu için Gana: önce vize gerekli, şimdi e-Vize. 27 Mayıs 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Birleşik Krallık pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/gb/</link>
+  <description>Birleşik Krallık pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Thu, 11 Jun 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/gb/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Seyşeller: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/sc/</link>
+    <guid isPermaLink="false">travelnow-GB-SC-2026-06-11-ev</guid>
+    <pubDate>Thu, 11 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Birleşik Krallık pasaportu için Seyşeller: önce vize gerekli, şimdi e-Vize. 11 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Samoa: Vize gerekli → Varışta vize</title>
+    <link>https://travelnow.info/tr/visa/ws/</link>
+    <guid isPermaLink="false">travelnow-GB-WS-2026-06-11-voa</guid>
+    <pubDate>Thu, 11 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Birleşik Krallık pasaportu için Samoa: önce vize gerekli, şimdi varışta vize. 11 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Solomon Adaları: Vize gerekli → Varışta vize</title>
+    <link>https://travelnow.info/tr/visa/sb/</link>
+    <guid isPermaLink="false">travelnow-GB-SB-2026-06-11-voa</guid>
+    <pubDate>Thu, 11 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Birleşik Krallık pasaportu için Solomon Adaları: önce vize gerekli, şimdi varışta vize. 11 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Gana: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/gh/</link>
+    <guid isPermaLink="false">travelnow-GB-GH-2026-05-30-ev</guid>
+    <pubDate>Sat, 30 May 2026 00:00:00 GMT</pubDate>
+    <description>Birleşik Krallık pasaportu için Gana: önce vize gerekli, şimdi e-Vize. 30 Mayıs 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Liberya: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/lr/</link>
+    <guid isPermaLink="false">travelnow-GB-LR-2026-05-30-ev</guid>
+    <pubDate>Sat, 30 May 2026 00:00:00 GMT</pubDate>
+    <description>Birleşik Krallık pasaportu için Liberya: önce vize gerekli, şimdi e-Vize. 30 Mayıs 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

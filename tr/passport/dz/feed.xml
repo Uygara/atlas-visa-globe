@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Cezayir pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/dz/</link>
+  <description>Cezayir pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Tue, 30 Jun 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/dz/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Fas: Vize gerekli → Vizesiz</title>
+    <link>https://travelnow.info/tr/visa/ma/</link>
+    <guid isPermaLink="false">travelnow-DZ-MA-2026-06-30-vf</guid>
+    <pubDate>Tue, 30 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Cezayir pasaportu için Fas: önce vize gerekli, şimdi vizesiz. 30 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Türkiye: Vizesiz → Vize gerekli</title>
+    <link>https://travelnow.info/tr/visa/tr/</link>
+    <guid isPermaLink="false">travelnow-DZ-TR-2026-06-19-vr</guid>
+    <pubDate>Fri, 19 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Cezayir pasaportu için Türkiye: önce vizesiz, şimdi vize gerekli. 19 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

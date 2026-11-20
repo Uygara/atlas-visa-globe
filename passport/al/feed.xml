@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Albania passport: visa rule changes</title>
+  <link>https://travelnow.info/passport/al/</link>
+  <description>Destinations whose entry rule changed for Albania passport holders, found by the daily comparison of public visa-policy sources (mainly Wikipedia). Check the official source before you travel.</description>
+  <language>en</language>
+  <lastBuildDate>Sat, 31 Oct 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/passport/al/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Ghana: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/gh/</link>
+    <guid isPermaLink="false">travelnow-AL-GH-2026-10-31-ev</guid>
+    <pubDate>Sat, 31 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Ghana: visa required before, eVisa now, for Albania passport holders. Seen in the daily data check on 31 October 2026.</description>
+  </item>
+  <item>
+    <title>Ireland: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/ie/</link>
+    <guid isPermaLink="false">travelnow-AL-IE-2026-09-01-ev</guid>
+    <pubDate>Tue, 01 Sep 2026 00:00:00 GMT</pubDate>
+    <description>Ireland: visa required before, eVisa now, for Albania passport holders. Seen in the daily data check on 1 September 2026.</description>
+  </item>
+</channel>
+</rss>

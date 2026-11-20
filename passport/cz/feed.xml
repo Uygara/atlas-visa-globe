@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Czech Republic passport: visa rule changes</title>
+  <link>https://travelnow.info/passport/cz/</link>
+  <description>Destinations whose entry rule changed for Czech Republic passport holders, found by the daily comparison of public visa-policy sources (mainly Wikipedia). Check the official source before you travel.</description>
+  <language>en</language>
+  <lastBuildDate>Thu, 11 Jun 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/passport/cz/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Papua New Guinea: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/pg/</link>
+    <guid isPermaLink="false">travelnow-CZ-PG-2026-06-11-ev</guid>
+    <pubDate>Thu, 11 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Papua New Guinea: visa required before, eVisa now, for Czech Republic passport holders. Seen in the daily data check on 11 June 2026.</description>
+  </item>
+  <item>
+    <title>Sri Lanka: eVisa → Visa-free</title>
+    <link>https://travelnow.info/visa/lk/</link>
+    <guid isPermaLink="false">travelnow-CZ-LK-2026-06-08-vf</guid>
+    <pubDate>Mon, 08 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Sri Lanka: eVisa before, visa-free now, for Czech Republic passport holders. Seen in the daily data check on 8 June 2026.</description>
+  </item>
+</channel>
+</rss>

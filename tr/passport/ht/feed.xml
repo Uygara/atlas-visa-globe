@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Haiti pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/ht/</link>
+  <description>Haiti pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Fri, 16 Oct 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/ht/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Türkmenistan: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/tm/</link>
+    <guid isPermaLink="false">travelnow-HT-TM-2026-10-16-ev</guid>
+    <pubDate>Fri, 16 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Haiti pasaportu için Türkmenistan: önce vize gerekli, şimdi e-Vize. 16 Ekim 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Sırbistan: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/rs/</link>
+    <guid isPermaLink="false">travelnow-HT-RS-2026-09-25-ev</guid>
+    <pubDate>Fri, 25 Sep 2026 00:00:00 GMT</pubDate>
+    <description>Haiti pasaportu için Sırbistan: önce vize gerekli, şimdi e-Vize. 25 Eylül 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Güney Afrika: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/za/</link>
+    <guid isPermaLink="false">travelnow-HT-ZA-2026-09-25-ev</guid>
+    <pubDate>Fri, 25 Sep 2026 00:00:00 GMT</pubDate>
+    <description>Haiti pasaportu için Güney Afrika: önce vize gerekli, şimdi e-Vize. 25 Eylül 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

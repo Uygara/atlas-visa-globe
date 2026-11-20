@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Gana pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/gh/</link>
+  <description>Gana pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Sat, 17 Oct 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/gh/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Türkmenistan: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/tm/</link>
+    <guid isPermaLink="false">travelnow-GH-TM-2026-10-17-ev</guid>
+    <pubDate>Sat, 17 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Gana pasaportu için Türkmenistan: önce vize gerekli, şimdi e-Vize. 17 Ekim 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Botsvana: e-Vize → Vizesiz</title>
+    <link>https://travelnow.info/tr/visa/bw/</link>
+    <guid isPermaLink="false">travelnow-GH-BW-2026-06-19-vf</guid>
+    <pubDate>Fri, 19 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Gana pasaportu için Botsvana: önce e-Vize, şimdi vizesiz. 19 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Lebanon passport: visa rule changes</title>
+  <link>https://travelnow.info/passport/lb/</link>
+  <description>Destinations whose entry rule changed for Lebanon passport holders, found by the daily comparison of public visa-policy sources (mainly Wikipedia). Check the official source before you travel.</description>
+  <language>en</language>
+  <lastBuildDate>Sat, 26 Sep 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/passport/lb/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>South Africa: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/za/</link>
+    <guid isPermaLink="false">travelnow-LB-ZA-2026-09-26-ev</guid>
+    <pubDate>Sat, 26 Sep 2026 00:00:00 GMT</pubDate>
+    <description>South Africa: visa required before, eVisa now, for Lebanon passport holders. Seen in the daily data check on 26 September 2026.</description>
+  </item>
+  <item>
+    <title>Oman: Visa-free → eVisa</title>
+    <link>https://travelnow.info/visa/om/</link>
+    <guid isPermaLink="false">travelnow-LB-OM-2026-06-01-ev</guid>
+    <pubDate>Mon, 01 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Oman: visa-free before, eVisa now, for Lebanon passport holders. Seen in the daily data check on 1 June 2026.</description>
+  </item>
+  <item>
+    <title>El Salvador: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/sv/</link>
+    <guid isPermaLink="false">travelnow-LB-SV-2026-06-01-ev</guid>
+    <pubDate>Mon, 01 Jun 2026 00:00:00 GMT</pubDate>
+    <description>El Salvador: visa required before, eVisa now, for Lebanon passport holders. Seen in the daily data check on 1 June 2026.</description>
+  </item>
+  <item>
+    <title>Nicaragua: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/ni/</link>
+    <guid isPermaLink="false">travelnow-LB-NI-2026-06-01-ev</guid>
+    <pubDate>Mon, 01 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Nicaragua: visa required before, eVisa now, for Lebanon passport holders. Seen in the daily data check on 1 June 2026.</description>
+  </item>
+  <item>
+    <title>Singapore: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/sg/</link>
+    <guid isPermaLink="false">travelnow-LB-SG-2026-06-01-ev</guid>
+    <pubDate>Mon, 01 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Singapore: visa required before, eVisa now, for Lebanon passport holders. Seen in the daily data check on 1 June 2026.</description>
+  </item>
+  <item>
+    <title>United Arab Emirates: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/ae/</link>
+    <guid isPermaLink="false">travelnow-LB-AE-2026-06-01-ev</guid>
+    <pubDate>Mon, 01 Jun 2026 00:00:00 GMT</pubDate>
+    <description>United Arab Emirates: visa required before, eVisa now, for Lebanon passport holders. Seen in the daily data check on 1 June 2026.</description>
+  </item>
+  <item>
+    <title>Ghana: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/gh/</link>
+    <guid isPermaLink="false">travelnow-LB-GH-2026-05-30-ev</guid>
+    <pubDate>Sat, 30 May 2026 00:00:00 GMT</pubDate>
+    <description>Ghana: visa required before, eVisa now, for Lebanon passport holders. Seen in the daily data check on 30 May 2026.</description>
+  </item>
+</channel>
+</rss>

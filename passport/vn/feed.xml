@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Vietnam passport: visa rule changes</title>
+  <link>https://travelnow.info/passport/vn/</link>
+  <description>Destinations whose entry rule changed for Vietnam passport holders, found by the daily comparison of public visa-policy sources (mainly Wikipedia). Check the official source before you travel.</description>
+  <language>en</language>
+  <lastBuildDate>Wed, 21 Oct 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/passport/vn/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Timor-Leste: Visa on arrival → Visa-free</title>
+    <link>https://travelnow.info/visa/tl/</link>
+    <guid isPermaLink="false">travelnow-VN-TL-2026-10-21-vf</guid>
+    <pubDate>Wed, 21 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Timor-Leste: visa on arrival before, visa-free now, for Vietnam passport holders. Seen in the daily data check on 21 October 2026.</description>
+  </item>
+  <item>
+    <title>Russia: eVisa → Visa-free</title>
+    <link>https://travelnow.info/visa/ru/</link>
+    <guid isPermaLink="false">travelnow-VN-RU-2026-10-15-vf</guid>
+    <pubDate>Thu, 15 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Russia: eVisa before, visa-free now, for Vietnam passport holders. Seen in the daily data check on 15 October 2026.</description>
+  </item>
+  <item>
+    <title>South Africa: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/za/</link>
+    <guid isPermaLink="false">travelnow-VN-ZA-2026-10-15-ev</guid>
+    <pubDate>Thu, 15 Oct 2026 00:00:00 GMT</pubDate>
+    <description>South Africa: visa required before, eVisa now, for Vietnam passport holders. Seen in the daily data check on 15 October 2026.</description>
+  </item>
+  <item>
+    <title>Egypt: Visa required → Visa on arrival</title>
+    <link>https://travelnow.info/visa/eg/</link>
+    <guid isPermaLink="false">travelnow-VN-EG-2026-06-15-voa</guid>
+    <pubDate>Mon, 15 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Egypt: visa required before, visa on arrival now, for Vietnam passport holders. Seen in the daily data check on 15 June 2026.</description>
+  </item>
+</channel>
+</rss>

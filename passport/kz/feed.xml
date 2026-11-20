@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Kazakhstan passport: visa rule changes</title>
+  <link>https://travelnow.info/passport/kz/</link>
+  <description>Destinations whose entry rule changed for Kazakhstan passport holders, found by the daily comparison of public visa-policy sources (mainly Wikipedia). Check the official source before you travel.</description>
+  <language>en</language>
+  <lastBuildDate>Sun, 04 Oct 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/passport/kz/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Montenegro: Visa-free → Visa required</title>
+    <link>https://travelnow.info/visa/me/</link>
+    <guid isPermaLink="false">travelnow-KZ-ME-2026-10-04-vr</guid>
+    <pubDate>Sun, 04 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Montenegro: visa-free before, visa required now, for Kazakhstan passport holders. Seen in the daily data check on 4 October 2026.</description>
+  </item>
+  <item>
+    <title>Egypt: eVisa → Visa required</title>
+    <link>https://travelnow.info/visa/eg/</link>
+    <guid isPermaLink="false">travelnow-KZ-EG-2026-10-04-vr</guid>
+    <pubDate>Sun, 04 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Egypt: eVisa before, visa required now, for Kazakhstan passport holders. Seen in the daily data check on 4 October 2026.</description>
+  </item>
+  <item>
+    <title>Indonesia: Visa on arrival → Visa-free</title>
+    <link>https://travelnow.info/visa/id/</link>
+    <guid isPermaLink="false">travelnow-KZ-ID-2026-07-15-vf</guid>
+    <pubDate>Wed, 15 Jul 2026 00:00:00 GMT</pubDate>
+    <description>Indonesia: visa on arrival before, visa-free now, for Kazakhstan passport holders. Seen in the daily data check on 15 July 2026.</description>
+  </item>
+</channel>
+</rss>

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Ukraine passport: visa rule changes</title>
+  <link>https://travelnow.info/passport/ua/</link>
+  <description>Destinations whose entry rule changed for Ukraine passport holders, found by the daily comparison of public visa-policy sources (mainly Wikipedia). Check the official source before you travel.</description>
+  <language>en</language>
+  <lastBuildDate>Tue, 22 Sep 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/passport/ua/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Philippines: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/ph/</link>
+    <guid isPermaLink="false">travelnow-UA-PH-2026-09-22-ev</guid>
+    <pubDate>Tue, 22 Sep 2026 00:00:00 GMT</pubDate>
+    <description>Philippines: visa required before, eVisa now, for Ukraine passport holders. Seen in the daily data check on 22 September 2026.</description>
+  </item>
+  <item>
+    <title>South Africa: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/za/</link>
+    <guid isPermaLink="false">travelnow-UA-ZA-2026-09-22-ev</guid>
+    <pubDate>Tue, 22 Sep 2026 00:00:00 GMT</pubDate>
+    <description>South Africa: visa required before, eVisa now, for Ukraine passport holders. Seen in the daily data check on 22 September 2026.</description>
+  </item>
+  <item>
+    <title>Bolivia: eVisa → Visa required</title>
+    <link>https://travelnow.info/visa/bo/</link>
+    <guid isPermaLink="false">travelnow-UA-BO-2026-09-05-vr</guid>
+    <pubDate>Sat, 05 Sep 2026 00:00:00 GMT</pubDate>
+    <description>Bolivia: eVisa before, visa required now, for Ukraine passport holders. Seen in the daily data check on 5 September 2026.</description>
+  </item>
+  <item>
+    <title>Angola: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/ao/</link>
+    <guid isPermaLink="false">travelnow-UA-AO-2026-09-05-ev</guid>
+    <pubDate>Sat, 05 Sep 2026 00:00:00 GMT</pubDate>
+    <description>Angola: visa required before, eVisa now, for Ukraine passport holders. Seen in the daily data check on 5 September 2026.</description>
+  </item>
+  <item>
+    <title>Solomon Islands: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/sb/</link>
+    <guid isPermaLink="false">travelnow-UA-SB-2026-08-25-ev</guid>
+    <pubDate>Tue, 25 Aug 2026 00:00:00 GMT</pubDate>
+    <description>Solomon Islands: visa required before, eVisa now, for Ukraine passport holders. Seen in the daily data check on 25 August 2026.</description>
+  </item>
+  <item>
+    <title>Qatar: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/qa/</link>
+    <guid isPermaLink="false">travelnow-UA-QA-2026-08-23-ev</guid>
+    <pubDate>Sun, 23 Aug 2026 00:00:00 GMT</pubDate>
+    <description>Qatar: visa required before, eVisa now, for Ukraine passport holders. Seen in the daily data check on 23 August 2026.</description>
+  </item>
+  <item>
+    <title>Ghana: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/gh/</link>
+    <guid isPermaLink="false">travelnow-UA-GH-2026-05-25-ev</guid>
+    <pubDate>Mon, 25 May 2026 00:00:00 GMT</pubDate>
+    <description>Ghana: visa required before, eVisa now, for Ukraine passport holders. Seen in the daily data check on 25 May 2026.</description>
+  </item>
+</channel>
+</rss>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Hong Kong passport: visa rule changes</title>
+  <link>https://travelnow.info/passport/hk/</link>
+  <description>Destinations whose entry rule changed for Hong Kong passport holders, found by the daily comparison of public visa-policy sources (mainly Wikipedia). Check the official source before you travel.</description>
+  <language>en</language>
+  <lastBuildDate>Thu, 29 Oct 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/passport/hk/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Turkmenistan: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/tm/</link>
+    <guid isPermaLink="false">travelnow-HK-TM-2026-10-29-ev</guid>
+    <pubDate>Thu, 29 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Turkmenistan: visa required before, eVisa now, for Hong Kong passport holders. Seen in the daily data check on 29 October 2026.</description>
+  </item>
+  <item>
+    <title>Cambodia: eVisa → Visa-free</title>
+    <link>https://travelnow.info/visa/kh/</link>
+    <guid isPermaLink="false">travelnow-HK-KH-2026-08-08-vf</guid>
+    <pubDate>Sat, 08 Aug 2026 00:00:00 GMT</pubDate>
+    <description>Cambodia: eVisa before, visa-free now, for Hong Kong passport holders. Seen in the daily data check on 8 August 2026.</description>
+  </item>
+  <item>
+    <title>Sierra Leone: eVisa → Visa on arrival</title>
+    <link>https://travelnow.info/visa/sl/</link>
+    <guid isPermaLink="false">travelnow-HK-SL-2026-05-27-voa</guid>
+    <pubDate>Wed, 27 May 2026 00:00:00 GMT</pubDate>
+    <description>Sierra Leone: eVisa before, visa on arrival now, for Hong Kong passport holders. Seen in the daily data check on 27 May 2026.</description>
+  </item>
+  <item>
+    <title>Ghana: Visa required → eVisa</title>
+    <link>https://travelnow.info/visa/gh/</link>
+    <guid isPermaLink="false">travelnow-HK-GH-2026-05-27-ev</guid>
+    <pubDate>Wed, 27 May 2026 00:00:00 GMT</pubDate>
+    <description>Ghana: visa required before, eVisa now, for Hong Kong passport holders. Seen in the daily data check on 27 May 2026.</description>
+  </item>
+  <item>
+    <title>Senegal: Visa required → Visa on arrival</title>
+    <link>https://travelnow.info/visa/sn/</link>
+    <guid isPermaLink="false">travelnow-HK-SN-2026-05-25-voa</guid>
+    <pubDate>Mon, 25 May 2026 00:00:00 GMT</pubDate>
+    <description>Senegal: visa required before, visa on arrival now, for Hong Kong passport holders. Seen in the daily data check on 25 May 2026.</description>
+  </item>
+</channel>
+</rss>

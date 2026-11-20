@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Slovenya pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/si/</link>
+  <description>Slovenya pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Sat, 24 Oct 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/si/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Gine-Bissau: e-Vize → Varışta vize</title>
+    <link>https://travelnow.info/tr/visa/gw/</link>
+    <guid isPermaLink="false">travelnow-SI-GW-2026-10-24-voa</guid>
+    <pubDate>Sat, 24 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Slovenya pasaportu için Gine-Bissau: önce e-Vize, şimdi varışta vize. 24 Ekim 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Lesotho: e-Vize → Vizesiz</title>
+    <link>https://travelnow.info/tr/visa/ls/</link>
+    <guid isPermaLink="false">travelnow-SI-LS-2026-10-24-vf</guid>
+    <pubDate>Sat, 24 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Slovenya pasaportu için Lesotho: önce e-Vize, şimdi vizesiz. 24 Ekim 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Burundi: Varışta vize → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/bi/</link>
+    <guid isPermaLink="false">travelnow-SI-BI-2026-10-24-ev</guid>
+    <pubDate>Sat, 24 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Slovenya pasaportu için Burundi: önce varışta vize, şimdi e-Vize. 24 Ekim 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Namibya: Varışta vize → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/na/</link>
+    <guid isPermaLink="false">travelnow-SI-NA-2026-10-24-ev</guid>
+    <pubDate>Sat, 24 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Slovenya pasaportu için Namibya: önce varışta vize, şimdi e-Vize. 24 Ekim 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Çad: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/td/</link>
+    <guid isPermaLink="false">travelnow-SI-TD-2026-10-24-ev</guid>
+    <pubDate>Sat, 24 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Slovenya pasaportu için Çad: önce vize gerekli, şimdi e-Vize. 24 Ekim 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Gana: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/gh/</link>
+    <guid isPermaLink="false">travelnow-SI-GH-2026-10-24-ev</guid>
+    <pubDate>Sat, 24 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Slovenya pasaportu için Gana: önce vize gerekli, şimdi e-Vize. 24 Ekim 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Guyana: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/gy/</link>
+    <guid isPermaLink="false">travelnow-SI-GY-2026-10-24-ev</guid>
+    <pubDate>Sat, 24 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Slovenya pasaportu için Guyana: önce vize gerekli, şimdi e-Vize. 24 Ekim 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Liberya: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/lr/</link>
+    <guid isPermaLink="false">travelnow-SI-LR-2026-10-24-ev</guid>
+    <pubDate>Sat, 24 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Slovenya pasaportu için Liberya: önce vize gerekli, şimdi e-Vize. 24 Ekim 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Papua Yeni Gine: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/pg/</link>
+    <guid isPermaLink="false">travelnow-SI-PG-2026-06-11-ev</guid>
+    <pubDate>Thu, 11 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Slovenya pasaportu için Papua Yeni Gine: önce vize gerekli, şimdi e-Vize. 11 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

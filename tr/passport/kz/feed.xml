@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Kazakistan pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/kz/</link>
+  <description>Kazakistan pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Sun, 04 Oct 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/kz/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Karadağ: Vizesiz → Vize gerekli</title>
+    <link>https://travelnow.info/tr/visa/me/</link>
+    <guid isPermaLink="false">travelnow-KZ-ME-2026-10-04-vr</guid>
+    <pubDate>Sun, 04 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Kazakistan pasaportu için Karadağ: önce vizesiz, şimdi vize gerekli. 4 Ekim 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Mısır: e-Vize → Vize gerekli</title>
+    <link>https://travelnow.info/tr/visa/eg/</link>
+    <guid isPermaLink="false">travelnow-KZ-EG-2026-10-04-vr</guid>
+    <pubDate>Sun, 04 Oct 2026 00:00:00 GMT</pubDate>
+    <description>Kazakistan pasaportu için Mısır: önce e-Vize, şimdi vize gerekli. 4 Ekim 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Endonezya: Varışta vize → Vizesiz</title>
+    <link>https://travelnow.info/tr/visa/id/</link>
+    <guid isPermaLink="false">travelnow-KZ-ID-2026-07-15-vf</guid>
+    <pubDate>Wed, 15 Jul 2026 00:00:00 GMT</pubDate>
+    <description>Kazakistan pasaportu için Endonezya: önce varışta vize, şimdi vizesiz. 15 Temmuz 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

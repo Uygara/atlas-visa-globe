@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Çekya pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/cz/</link>
+  <description>Çekya pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Thu, 11 Jun 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/cz/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Papua Yeni Gine: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/pg/</link>
+    <guid isPermaLink="false">travelnow-CZ-PG-2026-06-11-ev</guid>
+    <pubDate>Thu, 11 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Çekya pasaportu için Papua Yeni Gine: önce vize gerekli, şimdi e-Vize. 11 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Sri Lanka: e-Vize → Vizesiz</title>
+    <link>https://travelnow.info/tr/visa/lk/</link>
+    <guid isPermaLink="false">travelnow-CZ-LK-2026-06-08-vf</guid>
+    <pubDate>Mon, 08 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Çekya pasaportu için Sri Lanka: önce e-Vize, şimdi vizesiz. 8 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>

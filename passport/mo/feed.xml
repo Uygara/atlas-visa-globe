@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Macao passport: visa rule changes</title>
+  <link>https://travelnow.info/passport/mo/</link>
+  <description>Destinations whose entry rule changed for Macao passport holders, found by the daily comparison of public visa-policy sources (mainly Wikipedia). Check the official source before you travel.</description>
+  <language>en</language>
+  <lastBuildDate>Mon, 21 Sep 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/passport/mo/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Angola: Visa required → Visa-free</title>
+    <link>https://travelnow.info/visa/ao/</link>
+    <guid isPermaLink="false">travelnow-MO-AO-2026-09-21-vf</guid>
+    <pubDate>Mon, 21 Sep 2026 00:00:00 GMT</pubDate>
+    <description>Angola: visa required before, visa-free now, for Macao passport holders. Seen in the daily data check on 21 September 2026.</description>
+  </item>
+  <item>
+    <title>Indonesia: Visa required → Visa-free</title>
+    <link>https://travelnow.info/visa/id/</link>
+    <guid isPermaLink="false">travelnow-MO-ID-2026-07-14-vf</guid>
+    <pubDate>Tue, 14 Jul 2026 00:00:00 GMT</pubDate>
+    <description>Indonesia: visa required before, visa-free now, for Macao passport holders. Seen in the daily data check on 14 July 2026.</description>
+  </item>
+</channel>
+</rss>

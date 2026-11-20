@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Bangladeş pasaportu: vize kuralı değişiklikleri</title>
+  <link>https://travelnow.info/tr/passport/bd/</link>
+  <description>Bangladeş pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
+  <language>tr</language>
+  <lastBuildDate>Sun, 23 Aug 2026 00:00:00 GMT</lastBuildDate>
+  <atom:link href="https://travelnow.info/tr/passport/bd/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Suudi Arabistan: Vizesiz → Vize gerekli</title>
+    <link>https://travelnow.info/tr/visa/sa/</link>
+    <guid isPermaLink="false">travelnow-BD-SA-2026-08-23-vr</guid>
+    <pubDate>Sun, 23 Aug 2026 00:00:00 GMT</pubDate>
+    <description>Bangladeş pasaportu için Suudi Arabistan: önce vizesiz, şimdi vize gerekli. 23 Ağustos 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Saint Kitts ve Nevis: Vizesiz → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/kn/</link>
+    <guid isPermaLink="false">travelnow-BD-KN-2026-07-28-ev</guid>
+    <pubDate>Tue, 28 Jul 2026 00:00:00 GMT</pubDate>
+    <description>Bangladeş pasaportu için Saint Kitts ve Nevis: önce vizesiz, şimdi e-Vize. 28 Temmuz 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Cabo Verde: Varışta vize → Vize gerekli</title>
+    <link>https://travelnow.info/tr/visa/cv/</link>
+    <guid isPermaLink="false">travelnow-BD-CV-2026-07-28-vr</guid>
+    <pubDate>Tue, 28 Jul 2026 00:00:00 GMT</pubDate>
+    <description>Bangladeş pasaportu için Cabo Verde: önce varışta vize, şimdi vize gerekli. 28 Temmuz 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+  <item>
+    <title>Moldova: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/md/</link>
+    <guid isPermaLink="false">travelnow-BD-MD-2026-06-25-ev</guid>
+    <pubDate>Thu, 25 Jun 2026 00:00:00 GMT</pubDate>
+    <description>Bangladeş pasaportu için Moldova: önce vize gerekli, şimdi e-Vize. 25 Haziran 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
+</channel>
+</rss>
