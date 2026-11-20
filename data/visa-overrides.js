@@ -259,6 +259,7 @@ const _SCHENGEN_AREA = new Set([
   "LU","MT","NL","PL","PT","RO","SK","SI","ES","SE", // EU members in Schengen
   "IS","LI","NO","CH",                                // EFTA Schengen members
 ]);
+window.SCHENGEN_AREA = _SCHENGEN_AREA;
 // European microstates de-facto inside the Schengen travel zone: not formal
 // members, but they have no border controls of their own — Andorra is only
 // reachable through France/Spain (and re-entering Schengen needs the very

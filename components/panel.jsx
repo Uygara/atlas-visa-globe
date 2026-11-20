@@ -835,7 +835,15 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
     ? (window.t("cont." + dest.continent) !== ("cont." + dest.continent) ? window.t("cont." + dest.continent) : dest.continent)
     : "-";
   const caveat = window.entryCaveat ? window.entryCaveat(iso2, r.status) : null;
-  const cautions = [r.note, caveat].filter(Boolean);
+  // Diplomatic / service passports: a Schengen state's waiver is a national derogation
+  // (Art. 6, Reg. (EU) 2018/1806; Commission notice 2023/C 340/09), not a Schengen-wide one.
+  const variantDef = variantActive && window.PASSPORT_VARIANTS[passport] && window.PASSPORT_VARIANTS[passport][variant];
+  const nationalWaiver = variantDef && variantDef.mode !== "full"
+    && window.SCHENGEN_AREA && window.SCHENGEN_AREA.has(iso2)
+    && r.status === "vf" && window.resolveStatus(passport, iso2).status !== "vf"
+    ? window.t("detail.variant_schengen", { country: window.countryName(iso2) })
+    : null;
+  const cautions = [r.note, caveat, nationalWaiver].filter(Boolean);
   const from = incoming ? dest.flag : (groupActive ? "" : myPp?.flag);
   const to = incoming ? myPp?.flag : dest.flag;
 

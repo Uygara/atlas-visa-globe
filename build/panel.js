@@ -1154,7 +1154,11 @@ function DetailCard(_ref14) {
   }
   var continent = dest.continent ? window.t("cont." + dest.continent) !== "cont." + dest.continent ? window.t("cont." + dest.continent) : dest.continent : "-";
   var caveat = window.entryCaveat ? window.entryCaveat(iso2, r.status) : null;
-  var cautions = [r.note, caveat].filter(Boolean);
+  var variantDef = variantActive && window.PASSPORT_VARIANTS[passport] && window.PASSPORT_VARIANTS[passport][variant];
+  var nationalWaiver = variantDef && variantDef.mode !== "full" && window.SCHENGEN_AREA && window.SCHENGEN_AREA.has(iso2) && r.status === "vf" && window.resolveStatus(passport, iso2).status !== "vf" ? window.t("detail.variant_schengen", {
+    country: window.countryName(iso2)
+  }) : null;
+  var cautions = [r.note, caveat, nationalWaiver].filter(Boolean);
   var from = incoming ? dest.flag : groupActive ? "" : myPp === null || myPp === void 0 ? void 0 : myPp.flag;
   var to = incoming ? myPp === null || myPp === void 0 ? void 0 : myPp.flag : dest.flag;
   return React.createElement("article", {
