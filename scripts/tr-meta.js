@@ -30,6 +30,11 @@ module.exports = {
     description: "İlgilendiğin ülkenin vize politikası değiştiğinde e-posta al. Bir ülke için ücretsiz, sınırsız takip ayda 2 $.",
     ogDescription: "İlgilendiğin ülkenin vize politikası değiştiğinde e-posta al.",
   },
+  "/panel/": {
+    title: "Seyahat panelin · travelnow.info",
+    description: "En fazla üç pasaport seç, ilgilendiğin ülkeleri takip et; vize kurallarını ve son değişiklikleri yan yana gör. Ücretsiz, hesap gerektirmez.",
+    ogDescription: "Pasaportların, takip ettiğin ülkeler, vize kuralları ve son değişiklikler tek yerde.",
+  },
   "/citizenship-by-investment/": {
     title: "Yatırımla vatandaşlık 2026: tüm aktif programlar karşılaştırmalı · travelnow.info",
     description: "2026'da yürürlükte olan tüm yatırımla vatandaşlık ve altın vize programları: asgari yatırım, uygun yollar, süre, vizesiz skoru, aile kapsamı. Sıralanabilir, her gün gözden geçirilir.",
