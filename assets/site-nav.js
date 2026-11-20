@@ -14,6 +14,7 @@
     { href: "/transit-map/",              key: "nav.transit_map", en: "Transit map",     g: 0 },
     { href: "/safety-map/",               key: "nav.safety_map",  en: "Safety map",      g: 0 },
     { href: "/itinerary/",                key: "nav.itinerary",   en: "Travel planner",  g: 0 },
+    { href: "/panel/",                    key: "nav.panel",       en: "My panel",        g: 0 },
     { href: "/passport/",                 key: "nav.passports",   en: "Passports",       g: 1 },
     { href: "/guides/",                   key: "nav.guides",      en: "Guides",          g: 1 },
     { href: "/schengen-calculator/",      key: "nav.schengen",    en: "Schengen calc",   g: 2 },

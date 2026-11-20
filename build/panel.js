@@ -2151,7 +2151,16 @@ function WatchlistCard(_ref31) {
       },
       "aria-hidden": "true"
     }));
-  })));
+  })), React.createElement("a", {
+    className: "p-hint",
+    style: {
+      display: "inline-flex",
+      alignItems: "center",
+      minHeight: 32,
+      marginTop: 4
+    },
+    href: window.ATLAS_LANG === "tr" ? "/tr/panel/" : "/panel/"
+  }, window.t("watchlist.open_panel")));
 }
 function WatchToggle(_ref32) {
   var iso2 = _ref32.iso2;

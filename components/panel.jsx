@@ -1468,6 +1468,8 @@ function WatchlistCard({ onOpen }) {
           );
         })}
       </div>
+      <a className="p-hint" style={{ display: "inline-flex", alignItems: "center", minHeight: 32, marginTop: 4 }}
+         href={window.ATLAS_LANG === "tr" ? "/tr/panel/" : "/panel/"}>{window.t("watchlist.open_panel")}</a>
     </div>
   );
 }

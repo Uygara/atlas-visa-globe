@@ -7,6 +7,7 @@
   var root = document.getElementById("account-root");
   if (!root) return;
   var acct = window.ATLAS_ACCOUNT || { enabled: false };
+  var NEXT = (function () { try { var n = new URLSearchParams(location.search).get("next"); return n === "/panel/" || n === "/tr/panel/" ? n : null; } catch (e) { return null; } })();
   var ui = { busy: false, message: null, messageTone: "info", linkSent: null, needEmailForLink: false, confirmDelete: false, phoneStep: 0, phoneNumber: "" };
   // The invisible reCAPTCHA that guards SMS sends lives outside the re-rendered
   // root, so it survives the render() that run() triggers.
@@ -132,8 +133,11 @@
       return;
     }
 
-    // Signed in
+    // Signed in. Coming from the travel panel (?next=/panel/): go back once the first sync has finished,
+    // so the panel opens with the account's data. Only the panel paths are accepted (no open redirect).
+    if (NEXT && !st.syncing && (st.lastSync || st.error)) { var to = NEXT; NEXT = null; location.replace(to); return; }
     root.appendChild(h("p", {}, ["Signed in as ", h("strong", { "data-no-i18n": true, text: st.user.email || st.user.phone || st.user.name || "" })]));
+    root.appendChild(h("p", {}, [h("a", { href: /^\/tr\//.test(location.pathname) || (window.ATLAS_LANG === "tr") ? "/tr/panel/" : "/panel/" }, ["Open your travel panel"])]));
     var status = st.syncing ? "Syncing…" : st.error ? "Couldn't sync. Will retry when you change something." : st.lastSync ? "Up to date on this device." : "";
     if (status) root.appendChild(h("p", { class: "fine", text: status }));
     root.appendChild(h("h2", { text: "Saved to your account" }));
