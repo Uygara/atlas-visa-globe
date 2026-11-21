@@ -5,8 +5,14 @@
   <link>https://travelnow.info/tr/passport/gy/</link>
   <description>Guyana pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
   <language>tr</language>
-  <lastBuildDate>Thu, 21 May 2026 00:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Sat, 21 Nov 2026 00:00:00 GMT</lastBuildDate>
   <atom:link href="https://travelnow.info/tr/passport/gy/feed.xml" rel="self" type="application/rss+xml"/>
-
+  <item>
+    <title>Suudi Arabistan: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/sa/</link>
+    <guid isPermaLink="false">travelnow-GY-SA-2026-11-21-ev</guid>
+    <pubDate>Sat, 21 Nov 2026 00:00:00 GMT</pubDate>
+    <description>Guyana pasaportu için Suudi Arabistan: önce vize gerekli, şimdi e-Vize. 21 Kasım 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
 </channel>
 </rss>

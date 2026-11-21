@@ -173,7 +173,7 @@ AD,Andorra,SY,Syria,ev,
 AD,Andorra,TW,Taiwan,vf,90
 AD,Andorra,TJ,Tajikistan,vf,30
 AD,Andorra,TZ,Tanzania,ev,90
-AD,Andorra,TH,Thailand,vf,30
+AD,Andorra,TH,Thailand,vr,
 AD,Andorra,TL,Timor-Leste,voa,30
 AD,Andorra,TG,Togo,ev,15
 AD,Andorra,TO,Tonga,vr,
@@ -993,7 +993,7 @@ AL,Albania,SY,Syria,ev,
 AL,Albania,TW,Taiwan,vf,90
 AL,Albania,TJ,Tajikistan,ev,14
 AL,Albania,TZ,Tanzania,ev,90
-AL,Albania,TH,Thailand,vf,30
+AL,Albania,TH,Thailand,vr,
 AL,Albania,TL,Timor-Leste,voa,30
 AL,Albania,TG,Togo,ev,15
 AL,Albania,TO,Tonga,vr,
@@ -2223,7 +2223,7 @@ AZ,Azerbaijan,SY,Syria,ev,
 AZ,Azerbaijan,TW,Taiwan,vr,
 AZ,Azerbaijan,TJ,Tajikistan,vf,90
 AZ,Azerbaijan,TZ,Tanzania,ev,90
-AZ,Azerbaijan,TH,Thailand,ev,60
+AZ,Azerbaijan,TH,Thailand,voa,
 AZ,Azerbaijan,TL,Timor-Leste,voa,30
 AZ,Azerbaijan,TG,Togo,ev,15
 AZ,Azerbaijan,TO,Tonga,vr,
@@ -5503,7 +5503,7 @@ BY,Belarus,SY,Syria,ev,
 BY,Belarus,TW,Taiwan,vr,
 BY,Belarus,TJ,Tajikistan,vf,
 BY,Belarus,TZ,Tanzania,ev,90
-BY,Belarus,TH,Thailand,voa,15
+BY,Belarus,TH,Thailand,voa,
 BY,Belarus,TL,Timor-Leste,voa,30
 BY,Belarus,TG,Togo,ev,15
 BY,Belarus,TO,Tonga,vr,
@@ -7758,7 +7758,7 @@ CO,Colombia,SY,Syria,ev,
 CO,Colombia,TW,Taiwan,vf,90
 CO,Colombia,TJ,Tajikistan,ev,60
 CO,Colombia,TZ,Tanzania,ev,90
-CO,Colombia,TH,Thailand,vf,30
+CO,Colombia,TH,Thailand,vr,
 CO,Colombia,TL,Timor-Leste,voa,30
 CO,Colombia,TG,Togo,ev,15
 CO,Colombia,TO,Tonga,vr,
@@ -8168,7 +8168,7 @@ CU,Cuba,SY,Syria,ev,
 CU,Cuba,TW,Taiwan,vr,
 CU,Cuba,TJ,Tajikistan,vf,30
 CU,Cuba,TZ,Tanzania,ev,90
-CU,Cuba,TH,Thailand,vf,30
+CU,Cuba,TH,Thailand,vr,
 CU,Cuba,TL,Timor-Leste,voa,30
 CU,Cuba,TG,Togo,ev,15
 CU,Cuba,TO,Tonga,vr,
@@ -9808,7 +9808,7 @@ DO,Dominican Republic,SY,Syria,ev,
 DO,Dominican Republic,TW,Taiwan,vr,
 DO,Dominican Republic,TJ,Tajikistan,vf,30
 DO,Dominican Republic,TZ,Tanzania,ev,90
-DO,Dominican Republic,TH,Thailand,vf,30
+DO,Dominican Republic,TH,Thailand,vr,
 DO,Dominican Republic,TL,Timor-Leste,voa,30
 DO,Dominican Republic,TG,Togo,ev,15
 DO,Dominican Republic,TO,Tonga,vr,
@@ -10218,7 +10218,7 @@ EC,Ecuador,SY,Syria,ev,
 EC,Ecuador,TW,Taiwan,vr,
 EC,Ecuador,TJ,Tajikistan,vf,30
 EC,Ecuador,TZ,Tanzania,ev,90
-EC,Ecuador,TH,Thailand,vf,30
+EC,Ecuador,TH,Thailand,vr,
 EC,Ecuador,TL,Timor-Leste,voa,30
 EC,Ecuador,TG,Togo,ev,15
 EC,Ecuador,TO,Tonga,vr,
@@ -14113,7 +14113,7 @@ GT,Guatemala,SY,Syria,vr,
 GT,Guatemala,TW,Taiwan,vf,90
 GT,Guatemala,TJ,Tajikistan,ev,30
 GT,Guatemala,TZ,Tanzania,ev,90
-GT,Guatemala,TH,Thailand,vf,30
+GT,Guatemala,TH,Thailand,vr,
 GT,Guatemala,TL,Timor-Leste,voa,30
 GT,Guatemala,TG,Togo,voa,7
 GT,Guatemala,TO,Tonga,vr,
@@ -14499,7 +14499,7 @@ GY,Guyana,VC,Saint Vincent and the Grenadines,vf,180
 GY,Guyana,WS,Samoa,vf,60
 GY,Guyana,SM,San Marino,vr,
 GY,Guyana,ST,São Tomé and Príncipe,ev,
-GY,Guyana,SA,Saudi Arabia,vr,
+GY,Guyana,SA,Saudi Arabia,ev,
 GY,Guyana,SN,Senegal,vr,
 GY,Guyana,RS,Serbia,vr,
 GY,Guyana,XK,Kosovo,vr,
@@ -17393,7 +17393,7 @@ JM,Jamaica,SY,Syria,ev,
 JM,Jamaica,TW,Taiwan,vr,
 JM,Jamaica,TJ,Tajikistan,vf,30
 JM,Jamaica,TZ,Tanzania,vf,90
-JM,Jamaica,TH,Thailand,vf,30
+JM,Jamaica,TH,Thailand,vr,
 JM,Jamaica,TL,Timor-Leste,voa,30
 JM,Jamaica,TG,Togo,ev,15
 JM,Jamaica,TO,Tonga,vr,
@@ -18213,7 +18213,7 @@ KG,Kyrgyzstan,SY,Syria,ev,15
 KG,Kyrgyzstan,TW,Taiwan,vr,
 KG,Kyrgyzstan,TJ,Tajikistan,vf,
 KG,Kyrgyzstan,TZ,Tanzania,ev,90
-KG,Kyrgyzstan,TH,Thailand,ev,15
+KG,Kyrgyzstan,TH,Thailand,vf,30
 KG,Kyrgyzstan,TL,Timor-Leste,voa,30
 KG,Kyrgyzstan,TG,Togo,ev,15
 KG,Kyrgyzstan,TO,Tonga,vr,
@@ -20878,7 +20878,7 @@ LK,Sri Lanka,SY,Syria,ev,
 LK,Sri Lanka,TW,Taiwan,vr,
 LK,Sri Lanka,TJ,Tajikistan,vf,30
 LK,Sri Lanka,TZ,Tanzania,ev,90
-LK,Sri Lanka,TH,Thailand,vf,30
+LK,Sri Lanka,TH,Thailand,vr,
 LK,Sri Lanka,TL,Timor-Leste,voa,30
 LK,Sri Lanka,TG,Togo,ev,15
 LK,Sri Lanka,TO,Tonga,vr,
@@ -22518,7 +22518,7 @@ MC,Monaco,SY,Syria,ev,
 MC,Monaco,TW,Taiwan,vf,90
 MC,Monaco,TJ,Tajikistan,ev,45
 MC,Monaco,TZ,Tanzania,ev,90
-MC,Monaco,TH,Thailand,vf,30
+MC,Monaco,TH,Thailand,vr,
 MC,Monaco,TL,Timor-Leste,voa,30
 MC,Monaco,TG,Togo,ev,15
 MC,Monaco,TO,Tonga,voa,31
@@ -24978,7 +24978,7 @@ MU,Mauritius,SY,Syria,ev,
 MU,Mauritius,TW,Taiwan,ev,
 MU,Mauritius,TJ,Tajikistan,ev,45
 MU,Mauritius,TZ,Tanzania,vf,90
-MU,Mauritius,TH,Thailand,vf,30
+MU,Mauritius,TH,Thailand,vf,15
 MU,Mauritius,TL,Timor-Leste,voa,30
 MU,Mauritius,TG,Togo,ev,15
 MU,Mauritius,TO,Tonga,vr,
@@ -25593,7 +25593,7 @@ MX,Mexico,SY,Syria,ev,
 MX,Mexico,TW,Taiwan,vr,
 MX,Mexico,TJ,Tajikistan,ev,30
 MX,Mexico,TZ,Tanzania,ev,90
-MX,Mexico,TH,Thailand,vf,30
+MX,Mexico,TH,Thailand,vr,
 MX,Mexico,TL,Timor-Leste,voa,30
 MX,Mexico,TG,Togo,ev,15
 MX,Mexico,TO,Tonga,vr,
@@ -28668,7 +28668,7 @@ PG,Papua New Guinea,SY,Syria,ev,
 PG,Papua New Guinea,TW,Taiwan,vr,
 PG,Papua New Guinea,TJ,Tajikistan,ev,60
 PG,Papua New Guinea,TZ,Tanzania,vf,90
-PG,Papua New Guinea,TH,Thailand,vf,30
+PG,Papua New Guinea,TH,Thailand,vr,
 PG,Papua New Guinea,TL,Timor-Leste,voa,30
 PG,Papua New Guinea,TG,Togo,ev,15
 PG,Papua New Guinea,TO,Tonga,voa,31
@@ -30718,7 +30718,7 @@ RS,Serbia,SY,Syria,ev,
 RS,Serbia,TW,Taiwan,vf,90
 RS,Serbia,TJ,Tajikistan,ev,30
 RS,Serbia,TZ,Tanzania,ev,90
-RS,Serbia,TH,Thailand,ev,60
+RS,Serbia,TH,Thailand,voa,
 RS,Serbia,TL,Timor-Leste,voa,30
 RS,Serbia,TG,Togo,ev,15
 RS,Serbia,TO,Tonga,vr,
@@ -31743,7 +31743,7 @@ SC,Seychelles,SY,Syria,vr,
 SC,Seychelles,TW,Taiwan,vr,
 SC,Seychelles,TJ,Tajikistan,ev,45
 SC,Seychelles,TZ,Tanzania,vf,90
-SC,Seychelles,TH,Thailand,voa,15
+SC,Seychelles,TH,Thailand,vf,15
 SC,Seychelles,TL,Timor-Leste,voa,30
 SC,Seychelles,TG,Togo,voa,7
 SC,Seychelles,TO,Tonga,voa,31
@@ -33178,7 +33178,7 @@ SM,San Marino,SY,Syria,ev,
 SM,San Marino,TW,Taiwan,vf,90
 SM,San Marino,TJ,Tajikistan,vf,30
 SM,San Marino,TZ,Tanzania,ev,90
-SM,San Marino,TH,Thailand,vf,30
+SM,San Marino,TH,Thailand,vr,
 SM,San Marino,TL,Timor-Leste,voa,30
 SM,San Marino,TG,Togo,ev,15
 SM,San Marino,TO,Tonga,vr,
@@ -36254,7 +36254,7 @@ TN,Tunisia,SY,Syria,vf,
 TN,Tunisia,TW,Taiwan,vr,
 TN,Tunisia,TJ,Tajikistan,ev,14
 TN,Tunisia,TZ,Tanzania,ev,90
-TN,Tunisia,TH,Thailand,voa,15
+TN,Tunisia,TH,Thailand,vr,
 TN,Tunisia,TL,Timor-Leste,voa,30
 TN,Tunisia,TG,Togo,ev,15
 TN,Tunisia,TO,Tonga,vr,
@@ -36459,7 +36459,7 @@ TO,Tonga,SY,Syria,ev,
 TO,Tonga,TW,Taiwan,vr,
 TO,Tonga,TJ,Tajikistan,vr,
 TO,Tonga,TZ,Tanzania,vf,90
-TO,Tonga,TH,Thailand,vf,30
+TO,Tonga,TH,Thailand,vr,
 TO,Tonga,TL,Timor-Leste,voa,30
 TO,Tonga,TG,Togo,ev,15
 TO,Tonga,TT,Trinidad and Tobago,vf,90
@@ -38304,7 +38304,7 @@ UY,Uruguay,SY,Syria,vr,15
 UY,Uruguay,TW,Taiwan,vf,90
 UY,Uruguay,TJ,Tajikistan,ev,60
 UY,Uruguay,TZ,Tanzania,ev,90
-UY,Uruguay,TH,Thailand,vf,30
+UY,Uruguay,TH,Thailand,vr,
 UY,Uruguay,TL,Timor-Leste,voa,30
 UY,Uruguay,TG,Togo,ev,15
 UY,Uruguay,TO,Tonga,vr,
