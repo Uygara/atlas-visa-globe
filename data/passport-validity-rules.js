@@ -15,12 +15,14 @@
 // Data verified against IATA Timatic summaries + each country's
 // immigration page where possible. Updated 2026-05-24.
 
+// NZ: 3 months beyond the date you leave (New Zealand Customs travel advisory, read 2026-11-21:
+// https://www.customs.govt.nz/media/cjlfsav2/major-events-travel-advisory-1.pdf).
 window.PASSPORT_VALIDITY = {
   // ─── 6 months past intended stay ─────────────────────────────────────
   // Vast majority of Asia, Africa, Middle East, Latin America.
   AF:6, BD:6, BT:6, BN:6, BI:6, KH:6, CN:6, CD:6, EG:6, ER:6, ET:6,
   FJ:6, GH:6, ID:6, IN:6, IQ:6, IR:6, JO:6, KE:6, KW:6, LA:6, LB:6,
-  MY:6, MV:6, MM:6, NA:6, NP:6, NZ:6, NG:6, KP:6, OM:6, PK:6, PG:6,
+  MY:6, MV:6, MM:6, NA:6, NP:6, NZ:3, NG:6, KP:6, OM:6, PK:6, PG:6,
   PH:6, QA:6, RW:6, SA:6, SG:6, SO:6, ZA:6, LK:6, SD:6, SY:6, TZ:6,
   TH:6, TR:6, UG:6, AE:6, VN:6, YE:6, ZW:6, BR:6, AR:6, CO:6, BO:6,
   GT:6, HN:6, NI:6, PA:6, PY:6, PE:6, EC:6, VE:6, GY:6, SR:6, BS:6,

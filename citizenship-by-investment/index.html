@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Citizenship by investment 2026: every active programme compared · travelnow.info</title>
-<meta name="description" content="Every active citizenship-by-investment and golden-visa programme in 2026: minimum investment, qualifying routes, timeline, visa-free score, family inclusion. Sortable, daily-reviewed.">
+<meta name="description" content="Every active citizenship-by-investment and golden-visa programme in 2026: minimum investment, qualifying routes, timeline, visa-free score, family inclusion. Sortable, reviewed November 2026.">
 <link rel="canonical" href="https://travelnow.info/citizenship-by-investment/">
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
 <meta property="og:title" content="Citizenship by investment 2026: every active programme">
@@ -21,7 +21,7 @@
   "headline": "Citizenship by investment 2026: every active programme compared",
   "description": "Minimum investment, qualifying routes, timeline, visa-free score, family inclusion for every active CBI and golden-visa programme.",
   "datePublished": "2026-05-23",
-  "dateModified": "2026-05-23",
+  "dateModified": "2026-11-21",
   "publisher": { "@type": "Organization", "name": "travelnow.info", "url": "https://travelnow.info" }
 }
 </script>
@@ -30,15 +30,15 @@
 <link rel="alternate" hreflang="tr" href="https://travelnow.info/tr/citizenship-by-investment/">
 <link rel="alternate" hreflang="x-default" href="https://travelnow.info/citizenship-by-investment/">
 <script>try{if(localStorage.getItem("atlas.lang")==="tr")location.replace("/tr"+location.pathname+location.search+location.hash)}catch(e){}</script>
-<link rel="stylesheet" href="/assets/fonts.css?v=20261121f">
-<link rel="stylesheet" href="/assets/tokens.css?v=20261121f">
-<link rel="stylesheet" href="/assets/chrome.css?v=20261121f">
-<link rel="stylesheet" href="/assets/site.css?v=20261121f">
+<link rel="stylesheet" href="/assets/fonts.css?v=20261121g">
+<link rel="stylesheet" href="/assets/tokens.css?v=20261121g">
+<link rel="stylesheet" href="/assets/chrome.css?v=20261121g">
+<link rel="stylesheet" href="/assets/site.css?v=20261121g">
 <script>try{if((JSON.parse(localStorage.getItem("atlas.tweaks")||"{}")).background==="dark")document.documentElement.classList.add("theme-dark")}catch(e){}</script>
-<script src="/assets/account-config.js?v=20261121f"></script>
-<script src="/assets/account-sync.js?v=20261121f"></script>
-<script src="/assets/account.js?v=20261121f"></script>
-<script src="/assets/site-chrome.js?v=20261121f" defer></script>
+<script src="/assets/account-config.js?v=20261121g"></script>
+<script src="/assets/account-sync.js?v=20261121g"></script>
+<script src="/assets/account.js?v=20261121g"></script>
+<script src="/assets/site-chrome.js?v=20261121g" defer></script>
 <!-- /chrome:head -->
 <style>.wrap{max-width:1180px}</style>
 <script src="/data/citizenship-by-investment.js"></script>
@@ -101,7 +101,7 @@
 <div class="wrap">
   <h1>Citizenship by investment (2026)</h1>
   <p class="sub">Every active citizenship-by-investment (CBI) and major residence-by-investment (RBI / Golden Visa) programme on a single page. Minimum investment, qualifying routes, realistic timeline, visa-free score of the resulting passport, and whether your spouse and children can be added.</p>
-  <div class="meta">Reviewed on 23 May 2026. Sources are linked in each row.</div>
+  <div class="meta">Reviewed on 21 November 2026. Sources are linked in each row; rows marked "Source (report)" are confirmed by news or legal reports, not yet by an official page.</div>
 
 
   <div class="controls">
@@ -152,13 +152,12 @@
     residency, depending on the jurisdiction).</p>
     <p><strong>Minimum investment</strong> on this page is the cheapest qualifying
     route, before government fees, due-diligence fees, legal fees, and (where
-    applicable) real-estate transaction costs. Realistic all-in for a Caribbean
-    family-of-4 CBI is $150K-220K including all fees; Malta/Türkiye is closer
-    to $700K-$1M.</p>
-    <p><strong>Visa-free score</strong> is the Henley-Passport-Index style count
-    of destinations accessible without a visa (or with eVisa / visa-on-arrival)
-    for the resulting passport. For RBI rows we show "N/A" because residence
-    permits don't change your existing passport's visa-free access.</p>
+    applicable) real-estate transaction costs.</p>
+    <p><strong>Visa-free score</strong> is the number of destinations the resulting
+    passport can enter without applying for a visa in advance (visa-free, ETA or
+    visa on arrival), counted from this site's own map data, which is updated daily.
+    For RBI rows we show "N/A" because residence permits don't change your existing
+    passport's visa-free access.</p>
     <p><strong>Tax planning.</strong> A passport changes your travel options.
     Your tax residence is a separate question. Most countries on this list
     tax residents on worldwide income, and a few apply territorial regimes.
@@ -183,6 +182,7 @@
     program: t(d.program),
     routes: t(d.routes),
     notes: t(d.notes),
+    visaFreeCount: "N/A", // filled from open-data/passport-ranking.csv below
   }));
   let sortKey = "minInvest";
   let sortDir = 1;
@@ -248,13 +248,13 @@
           ${escapeHtml(d.program)}
           <div class="routes">${escapeHtml(d.routes)}</div>
           <div class="notes">${escapeHtml(d.notes)}</div>
-          <div class="src-link"><a href="${d.source}" target="_blank" rel="noopener nofollow">${TR ? "Resmî kaynak" : "Official source"} ↗</a></div>
+          <div class="src-link"><a href="${d.source}" target="_blank" rel="noopener nofollow">${d.sourceType === "report" ? (TR ? "Kaynak (haber)" : "Source (report)") : (TR ? "Resmî kaynak" : "Official source")} ↗</a></div>
         </td>
         <td><span class="badge ${d.type.toLowerCase()}">${d.type}</span></td>
         <td style="text-align:right;">${fmtMoney(d.minInvest)}</td>
         <td style="text-align:right;">${fmtTimeline(d.timelineMonths)}</td>
         <td style="text-align:right;">${fmtVisaFree(d.visaFreeCount)}</td>
-        <td><span class="badge ${d.familyOK ? "open" : "closed"}">${d.familyOK ? "OK" : (TR ? "Tek kişi" : "Solo")}</span></td>
+        <td>${d.familyOK == null ? NA : `<span class="badge ${d.familyOK ? "open" : "closed"}">${d.familyOK ? "OK" : (TR ? "Tek kişi" : "Solo")}</span>`}</td>
         <td><span class="badge ${d.status}">${TR ? (STATUS_TR[d.status] || d.status) : d.status.toUpperCase()}</span></td>
         <td>${TR ? `<a href="/tr/passport/${d.iso2.toLowerCase()}/">${escapeHtml(d.name)} pasaportuyla vizesiz</a>`
                  : `<a href="/passport/${d.iso2.toLowerCase()}/">Visa-free for ${d.iso2}</a>`}</td>
@@ -278,9 +278,22 @@
   });
 
   render();
+
+  // Visa-free score of the resulting passport: this site's own daily count of destinations
+  // that need no visa in advance (open-data/passport-ranking.csv, no_advance_visa_count).
+  // The hand-typed Henley figures in the data file went stale, so they are not shown.
+  fetch("/open-data/passport-ranking.csv").then(r => r.ok ? r.text() : "").then(csv => {
+    const lines = csv.trim().split("\n"), head = (lines.shift() || "").split(",");
+    const iIso = head.indexOf("passport_iso2"), iN = head.indexOf("no_advance_visa_count");
+    if (iIso < 0 || iN < 0) return;
+    const n = {};
+    lines.forEach(l => { const c = l.split(","); n[c[iIso]] = +c[iN]; });
+    data.forEach(d => { if (d.type === "CBI" && typeof n[d.iso2] === "number") d.visaFreeCount = n[d.iso2]; });
+    render();
+  }).catch(() => {});
 })();
 </script>
-<script src="/data/static-i18n.js?v=20261121f" defer></script>
+<script src="/data/static-i18n.js?v=20261121g" defer></script>
 <!-- chrome:footer -->
 <footer class="site-foot">
   <div class="site-foot-inner">

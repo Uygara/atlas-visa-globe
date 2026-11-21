@@ -37,7 +37,7 @@ module.exports = {
   },
   "/citizenship-by-investment/": {
     title: "Yatırımla vatandaşlık 2026: tüm aktif programlar karşılaştırmalı · travelnow.info",
-    description: "2026'da yürürlükte olan tüm yatırımla vatandaşlık ve altın vize programları: asgari yatırım, uygun yollar, süre, vizesiz skoru, aile kapsamı. Sıralanabilir, her gün gözden geçirilir.",
+    description: "2026'da yürürlükte olan tüm yatırımla vatandaşlık ve altın vize programları: asgari yatırım, uygun yollar, süre, vizesiz skoru, aile kapsamı. Sıralanabilir, Kasım 2026'da gözden geçirildi.",
     ogTitle: "Yatırımla vatandaşlık 2026: tüm aktif programlar",
     ogDescription: "Asgari yatırım, uygun yollar, süre, vizesiz skoru, aile kapsamı. Tüm tablo tek yerde.",
   },
@@ -47,9 +47,9 @@ module.exports = {
     ogDescription: "Düzeltme, geri bildirim veya iş birliği için travelnow.info'nun yürütücüsüne ulaş.",
   },
   "/digital-nomad-visa/": {
-    title: "Dijital göçebe vizeleri: 38 ülke karşılaştırması (2026) · travelnow.info",
-    description: "2026'daki tüm dijital göçebe vizeleri: gelir şartları, harçlar, süre, vergi avantajları ve aile uygunluğu. Sıralanabilir, her gün yenilenir.",
-    ogTitle: "Dijital göçebe vizeleri: 38 ülke karşılaştırması (2026)",
+    title: "Dijital göçebe vizeleri: 37 ülke karşılaştırması (2026) · travelnow.info",
+    description: "2026'daki tüm dijital göçebe vizeleri: gelir şartları, harçlar, süre, vergi avantajları ve aile uygunluğu. Sıralanabilir, resmî kaynaklı.",
+    ogTitle: "Dijital göçebe vizeleri: 37 ülke karşılaştırması (2026)",
     ogDescription: "Gelir şartları, harçlar, süre, vergi avantajları. Tüm tablo tek yerde.",
   },
   "/esta-rules/": {

@@ -74,6 +74,12 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 25 (2026-11-21: stale data sweep):** CBI rewritten from official pages where readable (Caribbean $200K+ floors,
+  Malta closed after CJEU C-181/23, Spain BOE fix, Greece 2024 tiers, Cambodia, Nauru added); report-only rows carry
+  `sourceType: "report"` and show "Source (report)". CBI visa-free column now reads open-data/passport-ranking.csv.
+  China transit 240h/57 countries (NIA), Singapore VFTF list (ICA), NZ validity 3 months, nomad fixes (ID E33G, PH SRRV
+  removed, JP income per month, dead links). audit-data.js tracks review dates of hand-curated datasets (4 WARN now).
+  Gotcha: most immigration sites 403 bots; sub-agents could not read them, use the browser pane next time.
 - **Round 24 (2026-11-21: safety map provinces on the world view):** warned admin-1 regions are painted on the
   globe without a click. `tools/build-admin1-world.js` merges all `data/admin1/<ISO2>.json` into one coarse
   `data/admin1/world.json` (~180 KB gz, one object per country, dissolved by id); the page fetches it after first

@@ -79,7 +79,7 @@ window.TRANSIT_RULES = {
     label: "United States (no airside transit anywhere)",
     requiredFor: "*",
     exemptions: [
-      { holds: ["ESTA"], note: "Visa Waiver Program nationalities (39 countries) can use ESTA, but you still clear immigration" },
+      { holds: ["ESTA"], note: "Visa Waiver Program nationalities can use ESTA, but you still clear immigration" },
       { holds: ["US"],   note: "Valid US visa (any class): covers transit too" },
     ],
     twovHours: null, twovEligible: [],
@@ -113,35 +113,37 @@ window.TRANSIT_RULES = {
     source: "https://www.mofa.go.jp/j_info/visit/visa/short/landing.html",
   },
 
-  // ─── Singapore (Visa-Free Transit Facility — 96h) ───────────────────
+  // ─── Singapore (Visa-Free Transit Facility, 96h) ───────────────────
+  // ICA VFTF page, read 2026-11-21: who may use the facility and, for Indian nationals only,
+  // which third-country visas qualify. requiredFor (airside transit visa) not confirmed there.
   SG: {
     label: "Singapore (Visa-Free Transit Facility, 96h)",
     requiredFor: ["AF","BD","IN","MM","PK","CN","PS","SY","TM","UZ"],
     exemptions: [
-      { holds: ["US","GB","CA","AU","NZ","JP","KR","DE","CH","SCHENGEN"],
-        note: "VFTF 96h: holders of valid US/UK/CA/AU/NZ/JP/KR/DE/CH/Schengen visa or residence permit can transit visa-free for up to 96 hours" },
+      { holds: ["AU","CA","DE","JP","NZ","CH","GB","US"],
+        note: "Indian nationals only: a visa or long-term pass of Australia, Canada, Germany, Japan, New Zealand, Switzerland, the UK or the US, valid at least one month from entry" },
     ],
     twovHours: 96,
-    twovEligible: ["AF","BD","IN","MM","PK","CN","PS","SY","TM","UZ"],
-    notes: "Must hold a confirmed onward ticket within 96 hours and a valid visa/permit of one of the listed third countries.",
+    twovEligible: ["AM","AZ","BY","KZ","KG","MD","RU","TJ","UZ","GE","IN","TM","UA"],
+    notes: "The facility covers nationals of the CIS states, Georgia, India, Turkmenistan and Ukraine, plus holders of a PRC Travel Document, Hong Kong Document of Identity or Macau Travel Permit. You need a confirmed onward ticket leaving Singapore within 96 hours.",
     source: "https://www.ica.gov.sg/enter-transit-depart/entering-singapore/visa_requirements/visa-free-transit-facility",
   },
 
-  // ─── China (144-hour visa-free transit at select cities) ────────────
+  // ─── China (240-hour visa-free transit) ─────────────────────────────
+  // National Immigration Administration, page updated 2026-08-20, read 2026-11-21:
+  // 240 hours, ordinary passports of 57 countries, 65 designated ports in 24 provinces.
   CN: {
-    label: "China (144-hour visa-free transit at major airports)",
-    requiredFor: [], // depends on the city of transit
+    label: "China (240-hour visa-free transit at 65 designated ports)",
+    requiredFor: [], // depends on the port and the onward journey
     exemptions: [],
-    twovHours: 144,
+    twovHours: 240,
     twovEligible: [
-      // 54 nationalities eligible for 144h TWOV as of 2024
-      "AT","BE","CZ","DK","EE","FI","FR","DE","GR","HU","IS","IE","IT","LV","LT","LU","MT","NL","PL","PT","SK","SI","ES","SE","CH","BG","RO","HR","CY","NO","LI",
-      "RU","GB","US","CA","BR","MX","AR","CL","RS","ME","MK","BA","AL",
-      "JP","KR","SG","BN","AE","QA",
-      "AU","NZ",
+      "AL","AT","BY","BE","BA","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR","HU","IS","IE","IT","LV","LT","LU","MT","MC","ME",
+      "NL","MK","NO","PL","PT","RO","RU","RS","SK","SI","ES","SE","CH","UA","GB","US","CA","AR","BR","CL","MX","AU","NZ",
+      "BN","ID","JP","KG","QA","SG","KR","AE","VN",
     ],
-    notes: "144h TWOV is valid only when entering AND leaving via specific airports/ports (Beijing PEK, Shanghai PVG/SHA, Guangzhou CAN, etc.) AND continuing to a third country. Confirmed onward ticket required.",
-    source: "https://en.wikipedia.org/wiki/Transit_without_visa#China",
+    notes: "Up to 240 hours (10 days) without a visa for ordinary passports of 57 countries, with a confirmed onward ticket to a third country or region. Enter and leave through one of the 65 designated ports and stay within the permitted areas.",
+    source: "https://en.nia.gov.cn/n147418/n147463/c183412/content.html",
   },
 
   // ─── Hong Kong (visa-free transit, generous) ────────────────────────

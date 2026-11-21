@@ -1,105 +1,102 @@
 // Citizenship-by-investment (CBI) and Residence-by-investment (RBI) programmes.
-// Sources are linked per row — verify with the official agency before applying;
-// numbers move every few months as governments adjust thresholds, and several
-// historic CBI programmes have closed entirely (Cyprus, Bulgaria, Montenegro,
-// Spain) which we still surface so visitors don't waste research on dead routes.
+// Sources are linked per row; verify with the official agency before applying.
+// Numbers move every few months as governments adjust thresholds, and several
+// historic programmes have closed (Cyprus, Bulgaria, Montenegro, Spain, Malta),
+// which we still surface so visitors don't waste research on dead routes.
+//
+// Reviewed 2026-11-21. Rows whose figures were read on the official programme page carry
+// no sourceType; rows confirmed only by news or legal reports carry sourceType: "report"
+// and the page labels their link "Source (report)". Figures that could not be confirmed
+// anywhere were left as they were and the row says so in its notes.
+// tools/audit-data.js warns when `checked` is older than 180 days.
 //
 // Schema:
 //   iso2, name        — destination country
 //   program           — official programme name
 //   type              — 'CBI' (passport) or 'RBI' (residence permit / golden visa)
-//   minInvest         — minimum investment in USD (smallest qualifying route)
+//   minInvest         — minimum investment in USD (smallest qualifying route; EUR rows use the euro amount)
 //   routes            — comma-separated list of qualifying routes
-//   timelineMonths    — typical end-to-end timeline, lower bound
-//   visaFreeCount     — Henley-style visa-free destinations the resulting
-//                       passport unlocks (for CBI) or "—" for RBI
-//   familyOK          — true/false; can spouse + minor children be included
+//   timelineMonths    — typical end-to-end timeline, lower bound (null = not known)
+//   familyOK          — true/false; can spouse + minor children be included (null = not known)
 //   status            — 'open' | 'closed' | 'paused'
 //   notes             — short editorial summary
 //   source            — official agency or authoritative reference
+//   sourceType        — absent = official page; "report" = news or legal report
+//   checked           — date the row was last compared with its source
+// The visa-free score of each CBI passport is not stored here: the page reads it from
+// open-data/passport-ranking.csv, which is rebuilt daily from the map data.
 
+window.CBI_CHECKED = "2026-11-21";
 window.CBI_PROGRAMS = [
-  // ─── Caribbean (the heart of the CBI market) ───────────────────────────
+  // ─── Caribbean ─────────────────────────────────────────────────────────
   {
     iso2: "AG", name: "Antigua and Barbuda",
     program: "Citizenship by Investment Programme",
     type: "CBI",
-    minInvest: 100000,
-    routes: "NDF donation $100K, real estate $200K, business $1.5M, university fund $150K",
+    minInvest: 230000,
+    routes: "National Development Fund $230K, real estate $300K, University of the West Indies fund $260K, business $1.5M",
     timelineMonths: 4,
-    visaFreeCount: 150,
     familyOK: true,
     status: "open",
-    notes: "Family of 4 NDF route only $100K total, cheapest entry in the Caribbean.",
-    source: "https://cip.gov.ag/",
+    notes: "Government processing and due-diligence fees come on top.",
+    source: "https://cip.gov.ag/schedule-of-fees/",
+    checked: "2026-11-21",
   },
   {
     iso2: "DM", name: "Dominica",
     program: "Citizenship by Investment Programme",
     type: "CBI",
-    minInvest: 100000,
-    routes: "EDF donation $100K, real estate $200K",
+    minInvest: 200000,
+    routes: "Economic Diversification Fund $200K, real estate $200K (approved project, 3-year hold)",
     timelineMonths: 4,
-    visaFreeCount: 140,
     familyOK: true,
     status: "open",
-    notes: "Lowest-cost CBI passport. Recent fee revisions in 2024 raised joint thresholds.",
-    source: "https://cbiu.gov.dm/",
+    notes: "The fund amount is for a single applicant; dependants add to it.",
+    source: "https://cbiu.gov.dm/investment-options/",
+    checked: "2026-11-21",
   },
   {
     iso2: "GD", name: "Grenada",
     program: "Citizenship by Investment Programme",
     type: "CBI",
-    minInvest: 150000,
-    routes: "NTF donation $150K, real estate $220K",
+    minInvest: 235000,
+    routes: "National Transformation Fund $235K",
     timelineMonths: 5,
-    visaFreeCount: 145,
     familyOK: true,
     status: "open",
-    notes: "Unique among CBIs: grants eligibility for the US E-2 investor visa.",
-    source: "https://cbi.gov.gd/",
+    notes: "Grenada has an investor treaty with the US, so its citizens can apply for the US E-2 visa. Other routes not confirmed.",
+    source: "https://wicnews.com/caribbean/grenada-increases-minimum-cbi-investment-to-us-235000-410772586",
+    sourceType: "report",
+    checked: "2026-11-21",
   },
   {
     iso2: "KN", name: "Saint Kitts and Nevis",
     program: "Citizenship by Investment Programme",
     type: "CBI",
     minInvest: 250000,
-    routes: "SISC contribution $250K, real estate $400K, public benefit $250K",
+    routes: "Sustainable Island State Contribution $250K, real estate $325K (approved development)",
     timelineMonths: 4,
-    visaFreeCount: 156,
     familyOK: true,
     status: "open",
-    notes: "Original CBI (since 1984). Higher price tag, strongest brand recognition.",
-    source: "https://www.ciu.gov.kn/",
+    notes: "The oldest programme of its kind, running since 1984.",
+    source: "https://www.ciu.gov.kn/sustainable-island-state-contribution",
+    checked: "2026-11-21",
   },
   {
     iso2: "LC", name: "Saint Lucia",
     program: "Citizenship by Investment Programme",
     type: "CBI",
-    minInvest: 100000,
-    routes: "NEF donation $100K, real estate $200K, govt bonds $300K",
+    minInvest: 240000,
+    routes: "National Economic Fund $240K, enterprise project $250K, National Action Bond $300K, real estate $300K",
     timelineMonths: 4,
-    visaFreeCount: 145,
     familyOK: true,
     status: "open",
-    notes: "Newer CBI (2015). Comparable to Dominica / Antigua on price.",
-    source: "https://www.cipsaintlucia.com/",
+    notes: "The fund amount covers the applicant and up to three dependants.",
+    source: "https://www.cipsaintlucia.com/citizenship-by-investment",
+    checked: "2026-11-21",
   },
 
   // ─── Europe ────────────────────────────────────────────────────────────
-  {
-    iso2: "MT", name: "Malta",
-    program: "Citizenship by Naturalisation for Exceptional Services (MEIN)",
-    type: "CBI",
-    minInvest: 690000,
-    routes: "€600K-750K direct contribution + €700K real estate or €16K/yr rent + €10K donation",
-    timelineMonths: 12,
-    visaFreeCount: 188,
-    familyOK: true,
-    status: "open",
-    notes: "Only EU passport CBI still active. Requires 12-36 months of residency depending on contribution tier. Highest visa-free score on this list.",
-    source: "https://www.komunita.gov.mt/en/citizenship-by-naturalisation-for-exceptional-services/",
-  },
   {
     iso2: "PT", name: "Portugal",
     program: "Golden Visa (post-2023, fund/cultural routes)",
@@ -107,24 +104,26 @@ window.CBI_PROGRAMS = [
     minInvest: 250000,
     routes: "Cultural donation €250K, VC/PE fund €500K, research €500K",
     timelineMonths: 12,
-    visaFreeCount: "-",
     familyOK: true,
     status: "open",
-    notes: "Real-estate route closed October 2023. Investment fund route remains: 7 days/year residency for citizenship after 5 years.",
-    source: "https://imigrante.sef.pt/en/solicitar/investir/",
+    notes: "Real-estate route closed in October 2023. SEF was replaced by the agency AIMA; amounts not confirmed on an official page.",
+    source: "https://www.visaverge.com/visa/portugal-golden-visa-changes-in-2025-key-fund-choices-for-investors/",
+    sourceType: "report",
+    checked: "2026-11-21",
   },
   {
     iso2: "GR", name: "Greece",
     program: "Golden Visa",
     type: "RBI",
     minInvest: 250000,
-    routes: "Real estate €250K (mainland) - €800K (Athens / popular islands)",
+    routes: "Real estate €800K (Attica, Thessaloniki, Mykonos, Santorini, islands over 3,100 people), €400K elsewhere, €250K to convert a commercial building or restore a listed one",
     timelineMonths: 4,
-    visaFreeCount: "-",
     familyOK: true,
     status: "open",
-    notes: "Cheapest EU/Schengen residence-by-investment. Tiered pricing introduced August 2024; popular zones moved to €500K-800K.",
-    source: "https://www.enterprisegreece.gov.gr/en/greece-today/living-in-greece-the-golden-visa",
+    notes: "Thresholds raised in 2024 by Law 5100/2024.",
+    source: "https://www.ibanet.org/the-greek-golden-visa-after-2024-2026-overhaul",
+    sourceType: "report",
+    checked: "2026-11-21",
   },
   {
     iso2: "ES", name: "Spain",
@@ -133,11 +132,24 @@ window.CBI_PROGRAMS = [
     minInvest: 500000,
     routes: "Real estate €500K, bank deposit €1M, business €1M",
     timelineMonths: 0,
-    visaFreeCount: "-",
     familyOK: true,
     status: "closed",
-    notes: "Closed by law April 2025. No new applications accepted. Existing holders retain their permits.",
-    source: "https://www.boe.es/buscar/act.php?id=BOE-A-2013-12887",
+    notes: "Ended on 3 April 2025 by Organic Law 1/2025. No new applications are accepted.",
+    source: "https://www.boe.es/boe/dias/2025/01/03/pdfs/BOE-A-2025-76.pdf",
+    checked: "2026-11-21",
+  },
+  {
+    iso2: "MT", name: "Malta",
+    program: "Citizenship by Naturalisation for Exceptional Services by Direct Investment (CLOSED 2025)",
+    type: "CBI",
+    minInvest: 690000,
+    routes: "€600K-750K contribution plus property (former route)",
+    timelineMonths: 0,
+    familyOK: true,
+    status: "closed",
+    notes: "The EU Court of Justice ruled on 29 April 2025 that the scheme breaches EU law (case C-181/23). Malta ended the investment route in July 2025.",
+    source: "https://curia.europa.eu/juris/liste.jsf?num=C-181/23",
+    checked: "2026-11-21",
   },
 
   // ─── Middle East / North Africa ────────────────────────────────────────
@@ -148,11 +160,12 @@ window.CBI_PROGRAMS = [
     minInvest: 400000,
     routes: "Real estate $400K (3-year hold), bank deposit $500K, govt bonds $500K, business creating 50+ jobs",
     timelineMonths: 6,
-    visaFreeCount: 110,
     familyOK: true,
     status: "open",
-    notes: "Fast track (~6 months). Threshold raised from $250K → $400K in 2022. Real estate is the most popular route.",
-    source: "https://www.invest.gov.tr/en/whyturkey/turkish-citizenship-program/pages/turkish-citizenship-program.aspx",
+    notes: "Real estate is the most used route. Amounts not confirmed on an official page in the last review.",
+    source: "https://www.imidaily.com/opinion/what-turkiyes-2026-property-laws-actually-change-for-citizenship-buyers/",
+    sourceType: "report",
+    checked: "2026-11-21",
   },
   {
     iso2: "EG", name: "Egypt",
@@ -161,11 +174,12 @@ window.CBI_PROGRAMS = [
     minInvest: 250000,
     routes: "Direct donation $250K, real estate $300K (5-year hold), bank deposit $500K, business $350K",
     timelineMonths: 9,
-    visaFreeCount: 51,
     familyOK: true,
     status: "open",
-    notes: "Launched 2020. Weaker passport, useful mainly for regional mobility / Arab League access.",
-    source: "https://www.gafi.gov.eg/English/StartaBusiness/InvestmentZones/Pages/CitizenshipByInvestment.aspx",
+    notes: "Launched in 2020. Amounts not confirmed on an official page in the last review.",
+    source: "https://www.imidaily.com/africa/egyptian-cabinet-approves-cip-law-formalizes-requirements/",
+    sourceType: "report",
+    checked: "2026-11-21",
   },
   {
     iso2: "JO", name: "Jordan",
@@ -174,11 +188,12 @@ window.CBI_PROGRAMS = [
     minInvest: 750000,
     routes: "Treasury bonds $750K (3-year hold), SME investment $1M, productive project $1.5M",
     timelineMonths: 4,
-    visaFreeCount: 53,
     familyOK: true,
     status: "open",
-    notes: "Low public profile but procedurally one of the fastest in the Middle East.",
-    source: "https://www.jic.gov.jo/en/citizenship-by-investment/",
+    notes: "Jordan revised the scheme in July 2026 (Petra news agency). Check the current amounts with the Jordan Investment Commission.",
+    source: "https://petra.gov.jo/en/news/jordan-revamps-citizenship-by-investment-scheme-to-attract-higher-value-investments-minister-says",
+    sourceType: "report",
+    checked: "2026-11-21",
   },
   {
     iso2: "AE", name: "United Arab Emirates",
@@ -187,11 +202,11 @@ window.CBI_PROGRAMS = [
     minInvest: 545000,
     routes: "Real estate AED 2M ($545K), public investment fund AED 2M, specialist (STEM/medical/cultural) AED 0",
     timelineMonths: 2,
-    visaFreeCount: "-",
     familyOK: true,
     status: "open",
-    notes: "10-year renewable residence. No income tax. Multiple non-financial routes for high-talent applicants.",
+    notes: "Renewable long-term residence. Non-financial routes exist for specialists.",
     source: "https://u.ae/en/information-and-services/visa-and-emirates-id/residence-visas/golden-visa",
+    checked: "2026-11-21",
   },
 
   // ─── Asia / Pacific ────────────────────────────────────────────────────
@@ -202,24 +217,39 @@ window.CBI_PROGRAMS = [
     minInvest: 130000,
     routes: "Government donation $130K (single) / $180K (family)",
     timelineMonths: 2,
-    visaFreeCount: 96,
     familyOK: true,
     status: "open",
-    notes: "Fastest CBI in the world (~6-8 weeks). UK + EU revoked visa-free access in 2024-25. Verify Schengen / UK status before relying on it.",
-    source: "https://www.dsp.gov.vu/",
+    notes: "The EU ended visa-free Schengen travel for Vanuatu citizens in December 2024. Amounts not confirmed on an official page.",
+    source: "https://www.consilium.europa.eu/en/press/press-releases/2024/12/12/vanuatu-council-ends-visa-exemption/",
+    checked: "2026-11-21",
   },
   {
     iso2: "KH", name: "Cambodia",
     program: "Citizenship by Investment",
     type: "CBI",
-    minInvest: 245000,
-    routes: "Donation $245K, investment $305K (incl. govt fee)",
+    minInvest: 1000000,
+    routes: "Investment of 4 billion riel (about $1M) in a priority project, or a donation of 12 billion riel (about $3M)",
     timelineMonths: 12,
-    visaFreeCount: 54,
-    familyOK: true,
+    familyOK: null,
     status: "open",
-    notes: "Quiet programme, rare second passport in Asia. Long processing times in practice.",
-    source: "https://www.cambodiainvestment.gov.kh/",
+    notes: "New amounts set by a sub-decree of December 2025, as reported in January 2026.",
+    source: "https://asianews.network/cambodian-citizenship-available-to-3m-donors-1m-investors/",
+    sourceType: "report",
+    checked: "2026-11-21",
+  },
+  {
+    iso2: "NR", name: "Nauru",
+    program: "Economic and Climate Resilience Citizenship Programme",
+    type: "CBI",
+    minInvest: 105000,
+    routes: "Contribution from $105K (single applicant)",
+    timelineMonths: null,
+    familyOK: null,
+    status: "open",
+    notes: "Launched in November 2024; the first citizenship was granted in 2025.",
+    source: "https://www.rnz.co.nz/news/pacific/569146/nauru-grants-first-citizenship-through-investment-scheme",
+    sourceType: "report",
+    checked: "2026-11-21",
   },
 
   // ─── Closed / Historic (kept on the list so applicants know) ──────────
@@ -230,11 +260,11 @@ window.CBI_PROGRAMS = [
     minInvest: 2200000,
     routes: "Real estate + govt contribution €2.2M+",
     timelineMonths: 0,
-    visaFreeCount: 175,
     familyOK: true,
     status: "closed",
     notes: "EU passport route closed permanently after political scandal. Existing citizenships not revoked en masse but reviewed case by case.",
     source: "https://www.cyprusprofile.com/articles/cyprus-citizenship-by-investment-program-cyprus-passport",
+    sourceType: "report",
   },
   {
     iso2: "BG", name: "Bulgaria",
@@ -243,11 +273,11 @@ window.CBI_PROGRAMS = [
     minInvest: 1100000,
     routes: "Govt bonds BGN 1M, fast-track double for BGN 2M",
     timelineMonths: 0,
-    visaFreeCount: 180,
     familyOK: false,
     status: "closed",
     notes: "EU passport route closed April 2022. RBI (residence by investment) still possible via other paths.",
     source: "https://www.investbulgaria.com/CitizenshipByInvestment.php",
+    sourceType: "report",
   },
   {
     iso2: "ME", name: "Montenegro",
@@ -256,10 +286,11 @@ window.CBI_PROGRAMS = [
     minInvest: 350000,
     routes: "Real estate €250K-450K + €100K govt contribution",
     timelineMonths: 0,
-    visaFreeCount: 124,
     familyOK: true,
     status: "closed",
-    notes: "Closed end of 2022 as part of EU accession alignment. No replacement programme announced.",
-    source: "https://www.gov.me/en/article/montenegrin-citizenship-by-investment",
+    notes: "Closed on 31 December 2022. No replacement programme announced.",
+    source: "https://www.rferl.org/a/montenegro-golden-passports/32691046.html",
+    sourceType: "report",
+    checked: "2026-11-21",
   },
 ];

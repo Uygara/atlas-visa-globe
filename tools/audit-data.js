@@ -54,6 +54,13 @@ const OFFICIAL_LISTS = [
   { what: "ETIAS status and fee", checked: "2026-11-21", url: "https://travel-europe.europa.eu/en/etias" },
   { what: "ESTA fee", checked: "2026-11-21", url: "https://www.cbp.gov/travel/international-visitors/esta" },
   { what: "Thailand exemption and VoA lists (MFA, 15 Sep 2026)", checked: "2026-11-21", url: "https://image.mfa.go.th/mfa/0/zE6021nSnu/0303/%E0%B8%9C.30.pdf" },
+  // Hand-curated datasets: update `checked` here (and the date shown on the page) after each review.
+  { what: "Citizenship by investment (data/citizenship-by-investment.js, /citizenship-by-investment/)", checked: "2026-11-21", url: "data/citizenship-by-investment.js" },
+  { what: "Digital nomad visas (data/digital-nomad-visas.js, /digital-nomad-visa/)", checked: "2026-05-22", url: "data/digital-nomad-visas.js" },
+  { what: "Passport validity rules (data/passport-validity-rules.js, /passport-validity/)", checked: "2026-05-24", url: "data/passport-validity-rules.js" },
+  { what: "Turkish Schengen visa checklist (data/visa-checklists.js)", checked: "2026-05-24", url: "/visa-checklist/tr-schengen/" },
+  { what: "Transit hubs other than Schengen/UK (data/transit-visa-rules.js)", checked: "2026-11-21", url: "data/transit-visa-rules.js" },
+  { what: "Invitation-letter rules (data/loi-required.js)", checked: "2026-05-24", url: "data/loi-required.js" },
 ];
 for (const l of OFFICIAL_LISTS) {
   const age = -days(l.checked);

@@ -6,7 +6,9 @@
 
 ## ▶ Yeni oturumda buradan başla
 
-0. **Özellik işleri `docs/ROADMAP.md`den** (Aşama 0 → 3). Sıradaki: **D10 doğruluk denetimi devamı** (ROADMAP): BAE, Güney Kore ve Çin listeleri, ücretlerin resmî sayfalardan yeniden girilmesi
+0. **Özellik işleri `docs/ROADMAP.md`den** (Aşama 0 → 3). Sıradaki: **D10 doğruluk denetimi devamı** (ROADMAP): günlük denetimin 4 uyarısı (dijital göçebe vizeleri, pasaport geçerlilik
+   kuralları, TR Schengen kontrol listesi, davet mektubu kuralları: resmî siteler bot engelliyor, tarayıcı panelinden oku);
+   yatırımla vatandaşlıkta "Source (report)" satırlarını resmî sayfayla doğrula (GD, PT, GR, TR, EG, JO, KH, NR); BAE, Güney Kore ve Çin listeleri, ücretlerin resmî sayfalardan yeniden girilmesi
    (`verified` alanı), Nauru. Günlük denetim `node tools/audit-data.js`; sorun çıkarsa GitHub'da "data-audit" issue açılır.
    31 Aralık 2026: Kore K-ETA muafiyeti ve Çin vizesiz uygulaması bitiyor, uzatılmış mı bak. A3 paylaşılabilir kartlar. D6 İpek'te. iVisa canlı (19 Kasım): GA4'te
    `affiliate_click` olayını izle, 19 Aralık'ta tıklama ve sipariş sayısını yaz. 17 Aralık'ta `/visa/` sayfalarının etkisini ölç
