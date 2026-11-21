@@ -74,6 +74,14 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 24 (2026-11-21: safety map provinces on the world view):** warned admin-1 regions are painted on the
+  globe without a click. `tools/build-admin1-world.js` merges all `data/admin1/<ISO2>.json` into one coarse
+  `data/admin1/world.json` (~180 KB gz, one object per country, dissolved by id); the page fetches it after first
+  paint and draws only provinces whose level differs from the country's (~190 paths). Rebuild it only after
+  `build-admin1.js`. Gotchas: mapshaper `-clean` dropped Luxor (overlap) and `-filter-islands` above 10 km² dropped
+  Ceuta; some source ids repeat (duplicate React keys) until dissolved. requestIdleCallback needs a timeout or it
+  never fires in a background tab.
+
 - **Round 23 (2026-11-21: Thailand official lists):** `applyThailandList` in visa-overrides.js sets TH from the Thai
   MFA PDFs (30-day list of 60, 15-day SC/MU, bilateral 14/30/90, VoA AZ/BY/RS). Passports on no list: easier scraped
   status becomes vr, ev/vr kept. Removed the 60→30 cap. Audit check "thailand matches the MFA lists". Gotcha: the
