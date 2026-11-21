@@ -13,7 +13,7 @@
 //   - special string values describe complex rules below.
 //
 // Data verified against IATA Timatic summaries + each country's
-// immigration page where possible. Updated 2026-05-24.
+// immigration page where possible. Updated 2026-11-21 (see the GOV.UK block below).
 
 // NZ: 3 months beyond the date you leave (New Zealand Customs travel advisory, read 2026-11-21:
 // https://www.customs.govt.nz/media/cjlfsav2/major-events-travel-advisory-1.pdf).
@@ -43,6 +43,21 @@ window.PASSPORT_VALIDITY = {
   // Mostly land-border-friendly countries.
   US:0, CA:0, MX:0, IE:0, GB:0,
 };
+
+// GOV.UK foreign travel advice, "Passport validity requirements" for each country, read 2026-11-21
+// (https://www.gov.uk/foreign-travel-advice). Written for British passports; the rule is the same for
+// most nationalities. Overrides the defaults above where they differed (e.g. South Korea, Georgia, Argentina
+// and Ukraine need validity for the stay only; Algeria needs 6 months) and adds countries that were missing.
+// Day-based rules are rounded to months. Dominican Republic left as is: its GOV.UK rule is British-only.
+Object.assign(window.PASSPORT_VALIDITY, {
+  AM:0, AO:6, AR:0, AU:0, BF:0, BH:6, BJ:0, BW:6, BY:3, CF:6, CG:0, CI:6,
+  CL:0, CM:6, CR:0, CV:6, DJ:6, DZ:6, FK:0, FM:4, GA:6, GE:0, GM:0, GN:6,
+  GQ:6, GW:6, HK:1, IL:3, JM:0, JP:0, KI:6, KM:6, KR:0, KZ:1, LB:3, LC:0,
+  LR:0, LS:3, LY:0, MG:6, MH:6, ML:0, MO:3, MR:6, MU:0, MV:1, MW:6, MZ:6,
+  NC:3, NR:3, PF:3, PS:3, PW:6, PY:0, SB:6, SC:0, SN:6, SS:6, ST:0, SV:6,
+  SY:3, SZ:3, TD:6, TG:3, TL:6, TN:0, TO:6, TR:5, TV:6, UA:0, UY:0, UZ:3,
+  VU:6, WS:6, XK:0, ZA:1, ZM:6,
+});
 
 // ── Helpers ───────────────────────────────────────────────────────────
 // Given the user's passport expiry date and an intended stay end date,
@@ -82,7 +97,7 @@ window.passportValidityCheck = function (destIso2, opts) {
   };
   return {
     rule,
-    ruleLabel:        labels[rule] || `${rule} months past intended stay`,
+    ruleLabel:        labels[rule] || `${rule} month${rule === 1 ? "" : "s"} past intended stay`,
     monthsLeftOnExit,
     marginDays,
     ok,

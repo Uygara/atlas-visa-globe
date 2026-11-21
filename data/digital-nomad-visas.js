@@ -1,7 +1,7 @@
 // Curated digital-nomad-visa programs. Sources are official immigration
 // portals (linked in `source`). Income figures are converted to USD/month
 // at posting time and rounded. Values become stale — re-check before
-// publishing changes. Last reviewed: 2026-05-22.
+// publishing changes. Last reviewed: 2026-05-22; 2026-11-21: dead programmes removed (Georgia, Seychelles, Dubai), Croatia and Malta re-read.
 //
 // Schema:
 //   iso2         — ISO 3166-1 alpha-2
@@ -31,9 +31,9 @@ window.DIGITAL_NOMAD_VISAS = [
     familyOK: true, taxBreak: "Estonian tax on Estonian income only",
     source: "https://www.politsei.ee/en/", notes: "Pioneering programme, opened 2020." },
   { iso2: "HR", name: "Croatia", program: "Privremeni boravak za digitalne nomade",
-    income: 2870, fee: "60", duration: "1 yr", renewable: false,
+    income: 2870, fee: "60", duration: "Up to 18 months", renewable: false,
     familyOK: true, taxBreak: "Exempt from Croatian income tax",
-    source: "https://mup.gov.hr/", notes: "Six-month cooldown before re-applying." },
+    source: "https://mup.gov.hr/aliens-281621/stay-and-work/temporary-stay-of-digital-nomads/286833", notes: "Six-month cooldown before re-applying." },
   { iso2: "GR", name: "Greece", program: "Digital Nomad Visa",
     income: 3960, fee: "75", duration: "1 yr (renewable to 2 yr permit)", renewable: true,
     familyOK: true, taxBreak: "50% income tax reduction for 7 yr",
@@ -53,7 +53,7 @@ window.DIGITAL_NOMAD_VISAS = [
   { iso2: "MT", name: "Malta", program: "Nomad Residence Permit",
     income: 3744, fee: "300", duration: "1 yr", renewable: true,
     familyOK: true, taxBreak: "10% on foreign income remitted to Malta",
-    source: "https://nomad.residencymalta.gov.mt/", notes: "Up to 4 yr total." },
+    source: "https://nomad.residencymalta.gov.mt/nomad-eligibility/", notes: "Up to 4 yr total." },
   { iso2: "IS", name: "Iceland", program: "Long-Term Visa for Remote Work",
     income: 7800, fee: "85", duration: "6 mo", renewable: false,
     familyOK: true, taxBreak: "No Icelandic tax under 183 days",
@@ -66,10 +66,6 @@ window.DIGITAL_NOMAD_VISAS = [
     income: 39000, fee: "600", duration: "2 yr", renewable: true,
     familyOK: true, taxBreak: "Standard Norwegian rates",
     source: "https://www.udi.no/", notes: "Income is annual, not monthly. Must work for Norwegian client." },
-  { iso2: "GE", name: "Georgia", program: "Remotely from Georgia",
-    income: 2000, fee: "0", duration: "1 yr (visa-free 1 yr default for many)", renewable: true,
-    familyOK: true, taxBreak: "1% turnover tax (Small Business Status)",
-    source: "https://stopcov.ge/en/", notes: "Most passports get 1 yr visa-free; this is the formal track." },
   { iso2: "AL", name: "Albania", program: "Unique Permit (Digital Nomad)",
     income: 9800, fee: "300", duration: "1 yr", renewable: true,
     familyOK: true, taxBreak: "Exempt from Albanian tax on foreign income",
@@ -118,10 +114,6 @@ window.DIGITAL_NOMAD_VISAS = [
     source: "https://www.cancilleria.gov.co/", notes: "Lowest income threshold globally." },
 
   // ── Middle East / Africa ──────────────────────────────────────────────
-  { iso2: "AE", name: "United Arab Emirates", program: "Dubai Virtual Working Programme",
-    income: 5000, fee: "611", duration: "1 yr", renewable: true,
-    familyOK: true, taxBreak: "0% personal income tax",
-    source: "https://www.visitdubai.com/", notes: "Dubai-specific; Abu Dhabi has its own programme." },
   { iso2: "MU", name: "Mauritius", program: "Premium Travel Visa",
     income: 1500, fee: "0", duration: "1 yr", renewable: true,
     familyOK: true, taxBreak: "Foreign income exempt if not remitted",
@@ -142,10 +134,6 @@ window.DIGITAL_NOMAD_VISAS = [
     income: 4000, fee: "550", duration: "1 yr", renewable: true,
     familyOK: true, taxBreak: "Tax-resident after 183 days",
     source: "https://immigration.go.ke/", notes: "Approved 2024, applications opened 2025." },
-  { iso2: "SC", name: "Seychelles", program: "Workation Retreat Programme",
-    income: 0, fee: "45", duration: "1 yr", renewable: true,
-    familyOK: true, taxBreak: "0% personal income tax",
-    source: "https://www.workcation.sc/", notes: "Health insurance proof required." },
 
   // ── Asia / Oceania ────────────────────────────────────────────────────
   { iso2: "JP", name: "Japan", program: "Designated Activities: Digital Nomad",

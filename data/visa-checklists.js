@@ -51,8 +51,8 @@ window.VISA_CHECKLISTS = {
         items: [
           { label: "Travel medical insurance: €30,000 minimum coverage, valid in all Schengen",
             labelTr: "Seyahat sağlık sigortası: en az €30.000 teminat, tüm Schengen'de geçerli",
-            desc: "Must cover repatriation. Buy from a Turkish insurer (Aksigorta, Anadolu Sigorta) or via VFS, €25-40 typical.",
-            descTr: "Ülkene geri nakli (repatriasyon) kapsamalı. Bir Türk sigorta şirketinden (Aksigorta, Anadolu Sigorta) ya da VFS üzerinden alabilirsin; genelde 25-40 €." },
+            desc: "Must cover repatriation. Buy from a Turkish insurer (Aksigorta, Anadolu Sigorta) or via the visa centre.",
+            descTr: "Ülkene geri nakli (repatriasyon) kapsamalı. Bir Türk sigorta şirketinden (Aksigorta, Anadolu Sigorta) ya da vize başvuru merkezinden alabilirsin." },
         ],
       },
       {
@@ -61,8 +61,8 @@ window.VISA_CHECKLISTS = {
         items: [
           { label: "Flight reservation (round-trip): reservation only, not paid ticket",
             labelTr: "Uçak rezervasyonu (gidiş-dönüş): sadece rezervasyon, ödenmiş bilet değil",
-            desc: "Travel agency or services like onwardticket.com provide refundable reservations for €15-30. Don't buy the actual ticket before approval.",
-            descTr: "Seyahat acenteleri ya da onwardticket.com gibi servisler 15-30 € karşılığında iade edilebilir rezervasyon yapar. Vize onayı gelmeden asıl bileti alma." },
+            desc: "Travel agency or services like onwardticket.com provide reservations you can cancel. Don't buy the actual ticket before approval.",
+            descTr: "Seyahat acenteleri ya da onwardticket.com gibi servisler iptal edilebilir rezervasyon yapar. Vize onayı gelmeden asıl bileti alma." },
           { label: "Hotel reservations for full stay, OR rental contract, OR friend/family invitation",
             labelTr: "Tüm konaklama süresince otel rezervasyonu, VEYA kira sözleşmesi, VEYA arkadaş/aile davetiyesi",
             desc: "Booking.com 'free cancellation' reservations work for the visa stage.",
@@ -127,8 +127,8 @@ window.VISA_CHECKLISTS = {
         items: [
           { label: "Visa fee: €90 adult / €45 children 6-12 / free under 6",
             labelTr: "Vize ücreti: yetişkin €90 / 6-12 yaş €45 / 6 yaş altı ücretsiz",
-            desc: "Plus a VFS service fee €30-40 depending on the country.",
-            descTr: "Buna ülkeye göre 30-40 € VFS hizmet bedeli eklenir." },
+            desc: "Plus the visa centre's service fee, which depends on the country you apply to.",
+            descTr: "Buna başvurduğun ülkeye göre değişen vize merkezi hizmet bedeli eklenir." },
           { label: "Biometric appointment at VFS / consulate (fingerprints, photo)",
             labelTr: "VFS / konsoloslukta biyometrik randevu (parmak izi, fotoğraf)",
             desc: "Required every 59 months. If you've given biometrics in the last 5 years for any Schengen visa, you may be exempt.",
@@ -146,6 +146,6 @@ window.VISA_CHECKLISTS = {
       { label: "France visas TR", labelTr: "Fransa vize portalı", url: "https://france-visas.gouv.fr/" },
       { label: "VFS Global Türkiye", url: "https://www.vfsglobal.com/en/individuals/index.html" },
     ],
-    lastReviewed: "2026-05-24",
+    lastReviewed: "2026-11-21",
   },
 };

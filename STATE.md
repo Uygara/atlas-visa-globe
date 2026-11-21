@@ -74,6 +74,12 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 26 (2026-11-21: the four overdue datasets):** passport validity cross-checked with GOV.UK travel advice for
+  every country (20 corrected, 57 added; Object.assign block in passport-validity-rules.js). LOI rules rewritten from
+  official sources (Russia/Belarus e-visas need no invitation, Turkmenistan tourist e-visa via sponsor), notes now in TR,
+  label neutral. TR Schengen checklist: unsourced price ranges removed. Nomad visas: Georgia, Seychelles, Dubai removed
+  (dead official pages), Croatia 18 months; the other 31 programmes still unverified (audit WARN stays).
+  Gotcha: the GOV.UK content API (/api/content/foreign-travel-advice/<slug>) is the fastest official cross-check.
 - **Round 26 (2026-11-21: Google Ads, stopped before spend):** account 646-445-2494 (owner's second Google
   account) got through business info and a GA4 link (metrics only; GA audiences and YouTube off). Stopped at the
   account settings step before picking a currency. Google's sign-up "credit" only arrives after a minimum spend and

@@ -57,10 +57,10 @@ const OFFICIAL_LISTS = [
   // Hand-curated datasets: update `checked` here (and the date shown on the page) after each review.
   { what: "Citizenship by investment (data/citizenship-by-investment.js, /citizenship-by-investment/)", checked: "2026-11-21", url: "data/citizenship-by-investment.js" },
   { what: "Digital nomad visas (data/digital-nomad-visas.js, /digital-nomad-visa/)", checked: "2026-05-22", url: "data/digital-nomad-visas.js" },
-  { what: "Passport validity rules (data/passport-validity-rules.js, /passport-validity/)", checked: "2026-05-24", url: "data/passport-validity-rules.js" },
-  { what: "Turkish Schengen visa checklist (data/visa-checklists.js)", checked: "2026-05-24", url: "/visa-checklist/tr-schengen/" },
+  { what: "Passport validity rules (data/passport-validity-rules.js, /passport-validity/)", checked: "2026-11-21", url: "data/passport-validity-rules.js" },
+  { what: "Turkish Schengen visa checklist (data/visa-checklists.js)", checked: "2026-11-21", url: "/visa-checklist/tr-schengen/" },
   { what: "Transit hubs other than Schengen/UK (data/transit-visa-rules.js)", checked: "2026-11-21", url: "data/transit-visa-rules.js" },
-  { what: "Invitation-letter rules (data/loi-required.js)", checked: "2026-05-24", url: "data/loi-required.js" },
+  { what: "Invitation-letter rules (data/loi-required.js)", checked: "2026-11-21", url: "data/loi-required.js" },
 ];
 for (const l of OFFICIAL_LISTS) {
   const age = -days(l.checked);

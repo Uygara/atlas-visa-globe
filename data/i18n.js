@@ -182,7 +182,7 @@ const T = {
     "detail.israel_relaxed":       "Israel-stamp warning: historical refusal, verify before flying",
     "detail.israel_normalized":    "Note: Israel stamps no longer block entry to this country",
 
-    "detail.loi_required":         "Letter of invitation (LOI) required",
+    "detail.loi_required":         "Letter of invitation (LOI)",
     "detail.loi_cost":             "Typical cost: {cost}",
     "detail.trip_notes":           "Important notes for this trip",
 
@@ -622,7 +622,7 @@ const T = {
     "detail.israel_relaxed":       "İsrail damga uyarısı: geçmişte ret, uçmadan önce doğrula",
     "detail.israel_normalized":    "Not: İsrail damgası artık bu ülkeye girişi engellemiyor",
 
-    "detail.loi_required":         "Davet mektubu (LOI) zorunlu",
+    "detail.loi_required":         "Davet mektubu (LOI)",
     "detail.loi_cost":             "Tipik maliyet: {cost}",
     "detail.trip_notes":           "Bu yolculuk için önemli notlar",
 
@@ -1021,7 +1021,7 @@ const T = {
     "detail.israel_strict":        "Aviso sello Israel: entrada puede ser rechazada",
     "detail.israel_relaxed":       "Aviso sello Israel: rechazo histórico, verifica antes",
     "detail.israel_normalized":    "Nota: el sello de Israel ya no bloquea la entrada aquí",
-    "detail.loi_required":         "Carta de invitación (LOI) requerida",
+    "detail.loi_required":         "Carta de invitación (LOI)",
     "detail.loi_cost":             "Coste típico: {cost}",
     "detail.trip_notes":           "Notas importantes para este viaje",
     "picker.select_passport": "Selecciona un pasaporte…", "picker.search_passports": "Buscar pasaportes…",
@@ -1368,7 +1368,7 @@ const T = {
     "detail.israel_strict":        "Israel-Stempel Warnung: Einreise kann verweigert werden",
     "detail.israel_relaxed":       "Israel-Stempel Warnung: historisch verweigert, vor Flug prüfen",
     "detail.israel_normalized":    "Hinweis: Israel-Stempel blockieren die Einreise hier nicht mehr",
-    "detail.loi_required":         "Einladungsschreiben (LOI) erforderlich",
+    "detail.loi_required":         "Einladungsschreiben (LOI)",
     "detail.loi_cost":             "Typische Kosten: {cost}",
     "detail.trip_notes":           "Wichtige Hinweise für diese Reise",
     "picker.select_passport": "Pass auswählen…", "picker.search_passports": "Pässe suchen…",
@@ -1715,7 +1715,7 @@ const T = {
     "detail.israel_strict":        "Avertissement tampon Israël : entrée peut être refusée",
     "detail.israel_relaxed":       "Avertissement tampon Israël : refus historique, vérifie avant",
     "detail.israel_normalized":    "Note : les tampons Israël ne bloquent plus l'entrée ici",
-    "detail.loi_required":         "Lettre d'invitation (LOI) requise",
+    "detail.loi_required":         "Lettre d'invitation (LOI)",
     "detail.loi_cost":             "Coût typique : {cost}",
     "detail.trip_notes":           "Notes importantes pour ce voyage",
     "picker.select_passport": "Choisir un passeport…", "picker.search_passports": "Rechercher passeports…",
@@ -2061,7 +2061,7 @@ const T = {
     "detail.israel_strict":        "تحذير ختم إسرائيل: قد يُرفض الدخول",
     "detail.israel_relaxed":       "تحذير ختم إسرائيل: رفض تاريخي، تحقق قبل السفر",
     "detail.israel_normalized":    "ملاحظة: ختم إسرائيل لم يعد يمنع الدخول هنا",
-    "detail.loi_required":         "خطاب دعوة (LOI) مطلوب",
+    "detail.loi_required":         "خطاب دعوة (LOI)",
     "detail.loi_cost":             "التكلفة النموذجية: {cost}",
     "detail.trip_notes":           "ملاحظات مهمة لهذه الرحلة",
     "picker.select_passport": "اختر جواز سفر…", "picker.search_passports": "ابحث عن الجوازات…",

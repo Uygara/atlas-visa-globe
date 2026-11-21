@@ -1130,8 +1130,8 @@ function LoiHint({ destIso2 }) {
   return (
     <div className="note note-warn">
       <span className="note-k">{window.t("detail.loi_required")}</span>
-      <span className="note-s">{r.note}</span>
-      {r.typicalCost && <span className="note-fine">{window.t("detail.loi_cost", { cost: r.typicalCost })}</span>}
+      <span className="note-s">{(window.ATLAS_LANG === "tr" && r.noteTr) || r.note}</span>
+      {r.typicalCost &&<span className="note-fine">{window.t("detail.loi_cost", { cost: r.typicalCost })}</span>}
     </div>
   );
 }

@@ -105,7 +105,7 @@
     "Most consulates issue a single-entry or short MEV (6 months) for first-time applicants. Use it within the validity, exit on time, and you'll be in the cascade for your next application.": { tr:"Çoğu konsolosluk ilk kez başvuranlara tek girişli veya kısa MEV (6 ay) verir. Geçerlilik içinde kullan, zamanında çık; bir sonraki başvurunda kademeye girmiş olursun.", es:"La mayoría de los consulados emiten un visado de entrada única o un MEV corto (6 meses) a los solicitantes primerizos. Úsalo dentro de la validez, sal a tiempo y entrarás en la cascada para tu próxima solicitud.", de:"Die meisten Konsulate stellen Erstantragstellern ein Einzeleinreise- oder kurzes MEV (6 Monate) aus. Nutze es innerhalb der Gültigkeit, reise pünktlich aus, und du bist bei deinem nächsten Antrag in der Kaskade.", fr:"La plupart des consulats délivrent aux primo-demandeurs un visa à entrée unique ou un MEV court (6 mois). Utilise-le pendant sa validité, sors à temps, et tu seras dans la cascade pour ta prochaine demande.", ar:"تُصدر معظم القنصليات للمتقدّمين لأول مرة تأشيرة دخول واحد أو MEV قصير (6 أشهر). استخدمها ضمن صلاحيتها، وغادر في الوقت المحدد، وستدخل التدرّج لطلبك التالي." },
 
     // ── Tool-page page titles ──
-    "Digital nomad visas: 37 countries compared": { tr:"Dijital göçebe vizeleri: 37 ülke karşılaştırması", es:"Visados de nómada digital: 37 países comparados", de:"Digital-Nomad-Visa: 37 Länder im Vergleich", fr:"Visas nomades numériques: 37 pays comparés", ar:"تأشيرات الرحّل الرقميين: مقارنة 37 دولة" },
+    "Digital nomad visas: 34 countries compared": { tr:"Dijital göçebe vizeleri: 34 ülke karşılaştırması", es:"Visados de nómada digital: 34 países comparados", de:"Digital-Nomad-Visa: 34 Länder im Vergleich", fr:"Visas nomades numériques: 34 pays comparés", ar:"تأشيرات الرحّل الرقميين: مقارنة 34 دولة" },
     "Citizenship by investment (2026)": { tr:"Yatırımla vatandaşlık (2026)", es:"Ciudadanía por inversión (2026)", de:"Staatsbürgerschaft durch Investition (2026)", fr:"Citoyenneté par investissement (2026)", ar:"الجنسية عن طريق الاستثمار (2026)" },
     "ESTA disqualifier checker": { tr:"ESTA engel kontrolü", es:"Verificador de descalificación ESTA", de:"ESTA-Ausschluss-Prüfer", fr:"Vérificateur d'inéligibilité ESTA", ar:"فاحص موانع ESTA" },
     "Check your ESTA eligibility": { tr:"ESTA uygunluğunu kontrol et", es:"Comprueba tu elegibilidad para ESTA", de:"Prüfe deine ESTA-Berechtigung", fr:"Vérifie ton éligibilité ESTA", ar:"تحقق من أهليتك لـ ESTA" },
@@ -367,8 +367,8 @@
     "Application reminders":               { tr:"Başvuru hatırlatmaları", es:"Recordatorios de solicitud", de:"Antrags-Erinnerungen", fr:"Rappels de demande", ar:"تذكيرات التقديم" },
 
     // Digital nomad
-    "Digital nomad visas: 37 countries compared":
-      { tr:"Dijital göçebe vizeleri: 37 ülke karşılaştırması", es:"Visas para nómadas digitales: 37 países comparados", de:"Digital-Nomad-Visa: 37 Länder im Vergleich", fr:"Visas nomades numériques: 37 pays comparés", ar:"تأشيرات الرحّالة الرقميين: مقارنة 37 دولة" },
+    "Digital nomad visas: 34 countries compared":
+      { tr:"Dijital göçebe vizeleri: 34 ülke karşılaştırması", es:"Visas para nómadas digitales: 34 países comparados", de:"Digital-Nomad-Visa: 34 Länder im Vergleich", fr:"Visas nomades numériques: 34 pays comparés", ar:"تأشيرات الرحّالة الرقميين: مقارنة 34 دولة" },
     "Region":                              { tr:"Bölge", es:"Región", de:"Region", fr:"Région", ar:"المنطقة" },
     "travelnow.info link":                          { tr:"travelnow.info bağlantısı", es:"Enlace travelnow.info", de:"travelnow.info-Link", fr:"Lien travelnow.info", ar:"رابط أطلس" },
     "Track how many of your 90 short-stay days you've used in the last 180. Add past trips below, plan a future one to see if it fits.":
@@ -421,8 +421,8 @@
     // Digital nomad
     "Digital nomad visa explorer":         { tr:"Dijital göçebe vizesi gezgini", es:"Explorador de visas para nómadas digitales", de:"Digital-Nomad-Visum-Explorer", fr:"Explorateur de visas nomades numériques", ar:"مستكشف تأشيرات الرحالة الرقميين" },
     "Digital nomad visas":                 { tr:"Dijital göçebe vizeleri", es:"Visas para nómadas digitales", de:"Digital-Nomad-Visa", fr:"Visas nomades numériques", ar:"تأشيرات الرحالة الرقميين" },
-    "37 countries that issue dedicated remote-work visas, sortable by income requirement, fee, duration, tax, and family inclusion.":
-      { tr:"Uzaktan çalışma vizesi veren 37 ülke, gelir gereksinimi, ücret, süre, vergi ve aile dahil edilme durumuna göre sıralanabilir." },
+    "34 countries that issue dedicated remote-work visas, sortable by income requirement, fee, duration, tax, and family inclusion.":
+      { tr:"Uzaktan çalışma vizesi veren 34 ülke, gelir gereksinimi, ücret, süre, vergi ve aile dahil edilme durumuna göre sıralanabilir." },
     "Income requirement":                  { tr:"Gelir şartı", es:"Requisito de ingresos", de:"Einkommensanforderung", fr:"Exigence de revenu", ar:"شرط الدخل" },
     "Fee":                                 { tr:"Ücret", es:"Tarifa", de:"Gebühr", fr:"Frais", ar:"الرسوم" },
     "Duration":                            { tr:"Süre", es:"Duración", de:"Dauer", fr:"Durée", ar:"المدة" },

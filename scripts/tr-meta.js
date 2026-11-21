@@ -47,9 +47,9 @@ module.exports = {
     ogDescription: "Düzeltme, geri bildirim veya iş birliği için travelnow.info'nun yürütücüsüne ulaş.",
   },
   "/digital-nomad-visa/": {
-    title: "Dijital göçebe vizeleri: 37 ülke karşılaştırması (2026) · travelnow.info",
+    title: "Dijital göçebe vizeleri: 34 ülke karşılaştırması (2026) · travelnow.info",
     description: "2026'daki tüm dijital göçebe vizeleri: gelir şartları, harçlar, süre, vergi avantajları ve aile uygunluğu. Sıralanabilir, resmî kaynaklı.",
-    ogTitle: "Dijital göçebe vizeleri: 37 ülke karşılaştırması (2026)",
+    ogTitle: "Dijital göçebe vizeleri: 34 ülke karşılaştırması (2026)",
     ogDescription: "Gelir şartları, harçlar, süre, vergi avantajları. Tüm tablo tek yerde.",
   },
   "/esta-rules/": {

@@ -1610,7 +1610,7 @@ function LoiHint(_ref22) {
     className: "note-k"
   }, window.t("detail.loi_required")), React.createElement("span", {
     className: "note-s"
-  }, r.note), r.typicalCost && React.createElement("span", {
+  }, window.ATLAS_LANG === "tr" && r.noteTr || r.note), r.typicalCost && React.createElement("span", {
     className: "note-fine"
   }, window.t("detail.loi_cost", {
     cost: r.typicalCost
