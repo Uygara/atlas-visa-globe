@@ -65,7 +65,7 @@ function Globe({
   fillResolver,
   hoverRenderer,
   // ── Sub-national overlay (used by the Safety Map) ───────────────────────
-  // regionFeatures: GeoJSON features of one country's provinces/states, drawn
+  // regionFeatures: GeoJSON features of provinces/states (any countries), drawn
   // over the country layer; regionFill(feature) returns each one's colour.
   regionFeatures,
   regionFill,

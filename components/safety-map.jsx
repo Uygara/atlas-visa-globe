@@ -1,9 +1,10 @@
 // Travel Safety Map (beta) — a standalone globe page, sibling to the visa and
 // transit maps. Every country is painted by its government travel-advisory
 // level (1 normal precautions → 4 do not travel), using the strictest of the
-// UK FCDO, U.S. State Department and Government of Canada; pick a country and
-// its provinces are drawn on top, so a warning about one border province is
-// not smeared over the whole country.
+// UK FCDO, U.S. State Department and Government of Canada. Provinces an
+// advisory rates differently are painted on top of their country straight
+// away, so a warning about one border province is not smeared over the whole
+// country; pick a country and all its provinces are drawn in full detail.
 //
 // Deliberately NOT the visa palette: green means "visa-free" two tabs away, so
 // the safety ramp is one ink in four strengths (tokens --risk1…--risk4).
@@ -15,6 +16,7 @@ const { useState, useEffect, useMemo, useCallback, useRef } = React;
 
 const ADVISORIES = window.TRAVEL_ADVISORIES || { countries: {}, sources: {} };
 const ADMIN1_INDEX_URL = "/data/admin1/index.json";
+const ADMIN1_WORLD_URL = "/data/admin1/world.json";
 const LEVEL_COLOR = { 0: "var(--na)", 1: "var(--risk1)", 2: "var(--risk2)", 3: "var(--risk3)", 4: "var(--risk4)" };
 // A source older than this is shown as stale — the US reissues some advisories
 // only once a year, and a 2025 date must not look like today's news.
@@ -26,6 +28,17 @@ const EVENT_LABEL = {
 };
 
 function advisoryFor(iso2) { return ADVISORIES.countries[iso2] || null; }
+function countryLevelOf(iso2) { const a = iso2 && advisoryFor(iso2); return a ? a.level : 0; }
+// { NG: { "NG-BO": 4, … }, … }: every province an advisory names, by country.
+const REGION_LEVELS = (() => {
+  const out = {};
+  for (const [iso2, a] of Object.entries(ADVISORIES.countries)) {
+    if (!a || !a.regions || !a.regions.length) continue;
+    out[iso2] = {};
+    for (const r of a.regions) out[iso2][r.id] = r.level;
+  }
+  return out;
+})();
 const levelLabel = (n) => tr("safety.l" + (n || 0), ["No advisory data", "Normal precautions", "Increased caution", "Reconsider travel", "Do not travel"][n || 0]);
 
 function readView() {
@@ -99,6 +112,39 @@ function SafetyMapApp() {
     return () => { alive = false; };
   }, [selected]);
 
+  // Warned provinces of every country, painted on the world view without a
+  // click. data/admin1/world.json is a coarse merge of all province outlines
+  // (tools/build-admin1-world.js); it loads after the first paint so the globe
+  // shows up at the same speed as before, and only the provinces whose level
+  // differs from their country's are decoded and drawn.
+  const [worldRegions, setWorldRegions] = useState(null);
+  useEffect(() => {
+    let alive = true;
+    const load = () => fetch(ADMIN1_WORLD_URL)
+      .then(r => (r.ok ? r.json() : Promise.reject(new Error("no world provinces"))))
+      .then(topo => {
+        if (!alive) return;
+        const out = [];
+        for (const iso2 of Object.keys(REGION_LEVELS)) {
+          const obj = topo.objects[iso2];
+          if (!obj) continue;
+          const own = countryLevelOf(iso2);
+          for (const f of topojson.feature(topo, obj).features) {
+            const lv = REGION_LEVELS[iso2][f.id];
+            if (!lv || lv === own) continue;
+            f.properties = { id: f.id, c: iso2 };
+            out.push(f);
+          }
+        }
+        setWorldRegions(out);
+      })
+      .catch(() => {});
+    // The timeout makes sure it still loads in a busy or background tab.
+    if (window.requestIdleCallback) window.requestIdleCallback(load, { timeout: 1500 });
+    else setTimeout(load, 300);
+    return () => { alive = false; };
+  }, []);
+
   const fillResolver = useCallback((iso2) => {
     const a = advisoryFor(iso2);
     const level = a ? a.level : 0;
@@ -107,19 +153,28 @@ function SafetyMapApp() {
   }, [filter]);
 
   // Provinces named in an advisory take its level; the rest keep the country's
-  // own level, so the warned areas stand out inside their own country.
-  const regionLevels = useMemo(() => {
-    const a = selected && advisoryFor(selected);
-    const map = {};
-    for (const r of (a && a.regions) || []) map[r.id] = r.level;
-    return map;
-  }, [selected]);
-  const countryLevel = selected && advisoryFor(selected) ? advisoryFor(selected).level : 0;
-
+  // own level, so the warned areas stand out inside their own country. Province
+  // features of the selected country carry no country code, so they fall back
+  // to the selection.
   const regionFill = useCallback((f) => {
-    const id = f.properties && f.properties.id;
-    return LEVEL_COLOR[regionLevels[id] || countryLevel || 0];
-  }, [regionLevels, countryLevel]);
+    const p = f.properties || {};
+    const iso2 = p.c || selected;
+    const lv = (REGION_LEVELS[iso2] || {})[p.id] || countryLevelOf(iso2);
+    return LEVEL_COLOR[lv || 0];
+  }, [selected]);
+
+  // What the province layer draws: the selected country in full detail, plus
+  // the warned provinces of every other country. With a level filter on, a
+  // province shows only when its own level is the one picked, so a level 4
+  // border region still stands out inside a country that is level 2.
+  const regionFeatures = useMemo(() => {
+    const own = regions && regions.iso2 === selected ? regions.features : [];
+    const others = (worldRegions || []).filter(f =>
+      f.properties.c !== selected &&
+      (!filter || REGION_LEVELS[f.properties.c][f.properties.id] === filter));
+    const all = others.concat(own);
+    return all.length ? all : null;
+  }, [regions, selected, worldRegions, filter]);
 
   const hoverRenderer = useCallback((hover) => <SafetyHover hover={hover} />, []);
 
@@ -142,7 +197,7 @@ function SafetyMapApp() {
           hoverRenderer={hoverRenderer}
           onCountryClick={open}
           focusedCountry={selected}
-          regionFeatures={regions && regions.iso2 === selected ? regions.features : null}
+          regionFeatures={regionFeatures}
           regionFill={regionFill}
         />
         <SafetyLegend />
