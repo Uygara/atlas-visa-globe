@@ -1,8 +1,7 @@
 # Google Ads: first campaign plan (November 2026)
 
 Account: 646-445-2494 (signed in as the owner's second Google account, `authuser=1`).
-Credit: $300 promotional credit. Check the promo terms in Billing: Google often grants it only after a
-matching spend inside 60 days. Keep total spend at or below $300 unless the owner approves more.
+Credit: Google says the sign-up credit is paid only after a minimum spend and cannot cover that spend. The owner declined to spend (21 Nov 2026), so this plan is on hold.
 
 ## Why these keywords
 Search Console (28 days to 18 Nov): 25.3k impressions, 49 clicks, average position 14.8. The queries that

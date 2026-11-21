@@ -74,6 +74,11 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 26 (2026-11-21: Google Ads, stopped before spend):** account 646-445-2494 (owner's second Google
+  account) got through business info and a GA4 link (metrics only; GA audiences and YouTube off). Stopped at the
+  account settings step before picking a currency. Google's sign-up "credit" only arrives after a minimum spend and
+  cannot cover that spend, so it is not free; the owner does not want to spend, so nothing was created or charged.
+  Keyword and ad-text plan kept in `docs/ads/google-ads-plan.md` in case paid search is wanted later.
 - **Round 25 (2026-11-21: stale data sweep):** CBI rewritten from official pages where readable (Caribbean $200K+ floors,
   Malta closed after CJEU C-181/23, Spain BOE fix, Greece 2024 tiers, Cambodia, Nauru added); report-only rows carry
   `sourceType: "report"` and show "Source (report)". CBI visa-free column now reads open-data/passport-ranking.csv.

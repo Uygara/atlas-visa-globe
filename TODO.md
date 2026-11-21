@@ -20,6 +20,9 @@
 
 ## Senin yapacakların (hesap, ödeme, onay; benim yapamadıklarım)
 
+- [ ] **P3 · Google Ads (karar senin)**: hesap 646-445-2494 açık ama kampanya yok, ödeme yöntemi yok, para çıkmaz.
+      Google'ın "300 $ kredi"si önce aynı tutarda harcama ister; bedava değil. Harcamak istersen plan hazır:
+      `docs/ads/google-ads-plan.md` (anahtar kelimeler, reklam metni, günde 10 $). Bana "Google Ads'i kur" de.
 - [ ] **P2 · E-posta adresleri herkese açık depoda (İpek ile birlikte, 2 dk)**: depo herkese açık ve her commit'te
       yazanın e-postası görünüyor. GitHub → Settings → Emails → "Keep my email addresses private" işaretle, sonra
       kendi bilgisayarında: `git config --global user.email "<GitHub'ın verdiği ...@users.noreply.github.com adresi>"`.
