@@ -53,7 +53,7 @@ const OFFICIAL_LISTS = [
   { what: "New Zealand visa waiver countries", checked: "2026-11-21", url: "https://www.immigration.govt.nz/visit/what-you-need-to-visit-new-zealand/visa-waiver-countries-and-territories/" },
   { what: "ETIAS status and fee", checked: "2026-11-21", url: "https://travel-europe.europa.eu/en/etias" },
   { what: "ESTA fee", checked: "2026-11-21", url: "https://www.cbp.gov/travel/international-visitors/esta" },
-  { what: "Thailand visa exemption (per-country list not yet verified)", checked: "2026-11-21", url: "https://www.thaievisa.go.th/" },
+  { what: "Thailand exemption and VoA lists (MFA, 15 Sep 2026)", checked: "2026-11-21", url: "https://image.mfa.go.th/mfa/0/zE6021nSnu/0303/%E0%B8%9C.30.pdf" },
 ];
 for (const l of OFFICIAL_LISTS) {
   const age = -days(l.checked);
@@ -107,8 +107,14 @@ const EU = new Set(["AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR",
   check("conditions improve the shown status and cite a source", bad, "rows");
 }
 {
-  const bad = P.filter((p) => p !== "TH" && st(p, "TH") === "vf" && (ctx.resolveStatus(p, "TH").days || 0) === 60);
-  check("thailand: no 60-day exemption", bad, "passports");
+  const bad = [];
+  for (const p of P) {
+    if (p === "TH") continue;
+    const r = ctx.resolveStatus(p, "TH"), e = ctx.TH_ENTRY[p];
+    if (r.status === "ban") continue;
+    if (e ? (r.status !== e.status || (r.days || null) !== e.days) : (r.status === "vf" || r.status === "voa" || r.status === "idc")) bad.push(`${p}:${r.status}/${r.days}`);
+  }
+  check("thailand matches the MFA lists", bad, "passports");
 }
 {
   const { reconcile, loadResolver } = require(path.join(ROOT, "backend", "changelog.js"));

@@ -107,9 +107,8 @@ Durum: `açık` · `sürüyor` · `bekliyor: <neyi>` · `bitti <hash>`
   vize vatandaşı listesine göre vize gerekli (`UK_VISA_NATIONALS`, `data/visa-overrides.js`).
 - **D10 · Resmî kaynaklarla doğruluk denetimi** · sürüyor (2026-11-21) · İlke: haritanın gösterdiği her kural ya resmî
   listeyle tutarlı ya da gösterilmiyor. Bitti: Schengen (AB Ek II, 29 ülke), Birleşik Krallık, ABD, Kanada, Avustralya,
-  Yeni Zelanda, Türkiye, Japonya, ETIAS, ESTA; Wikipedia'dan çıkarılan koşullar ve doğrulanmamış ücretler kaldırıldı;
-  günlük denetim `tools/audit-data.js` (sorun olursa "data-audit" issue). Kalan: Tayland 30 günlük ülke listesi (resmî),
-  BAE, Güney Kore, Çin, Hindistan e-vize listesi; ücretleri resmî sayfalardan `verified` tarihiyle yeniden girmek;
+  Yeni Zelanda, Türkiye, Japonya, Tayland (Dışişleri listeleri, 15 Eylül 2026), ETIAS, ESTA; Wikipedia'dan çıkarılan koşullar ve doğrulanmamış ücretler kaldırıldı;
+  günlük denetim `tools/audit-data.js` (sorun olursa "data-audit" issue). Kalan: BAE, Güney Kore, Çin, Hindistan e-vize listesi; ücretleri resmî sayfalardan `verified` tarihiyle yeniden girmek;
   Nauru'nun AB anlaşması yürürlükte mi.
 
 ## Değerlendirilecek

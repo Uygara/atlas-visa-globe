@@ -161,12 +161,11 @@ window.ENTRY_CAVEATS = {
   CN: { whenStatus: ["vf"],
         note: "Birçok pasaport için vizesiz giriş geçici bir uygulamadır (şu an 31 Aralık 2026'ya kadar); bazı ülkelerin ise Çin'le kalıcı karşılıklı muafiyet anlaşması var.",
         noteEn: "For many passports visa-free entry is a temporary scheme (currently through 31 Dec 2026); some countries have a permanent mutual exemption agreement with China." },
-  // Thailand replaced its 60-day visa exemption (93 countries) with a 30-day exemption for a
-  // shorter list on 15 September 2026 (Royal Gazette, 31 August 2026; reported by Fragomen and
-  // Newland Chase). The official per-country list was not readable here, so the card says so.
+  // Thailand replaced its 60-day visa exemption (93 countries) with a 30-day tourist exemption
+  // for 60 countries on 15 September 2026. Per-country lists: applyThailandList below.
   TH: { whenStatus: ["vf"],
-        note: "Tayland 15 Eylül 2026'da vizesiz kalışı 60 günden 30 güne indirdi ve ülke listesini kısalttı. Pasaportunun hâlâ listede olduğunu yola çıkmadan önce resmî Tayland e-vize sitesinde (thaievisa.go.th) kontrol et.",
-        noteEn: "Thailand cut visa-free stays from 60 to 30 days on 15 September 2026 and shortened its list of countries. Check that your passport is still on it on the official Thai e-visa site (thaievisa.go.th) before you travel." },
+        note: "Tayland 15 Eylül 2026'da 60 günlük muafiyeti kaldırdı; 60 ülke için 30 günlük muafiyet yalnızca turizm amaçlı. Turizm dışında bir amaçla gidiyorsan Tayland büyükelçiliğine danış. Kaynak: Tayland Dışişleri Bakanlığı.",
+        noteEn: "Thailand ended its 60-day exemption on 15 September 2026; the 30-day exemption for 60 countries covers tourism only. If you travel for another purpose, ask a Thai embassy. Source: Thai Ministry of Foreign Affairs." },
 };
 
 // Return the caveat note for a (destination, status) pair, or null. Language-aware.
@@ -274,9 +273,6 @@ window.applyDestFloor = function (r, destIso2) {
   }
   const decl = window.DECLARATION_NOT_EVISA[destIso2];
   if (decl && r.status === "ev") return { ...r, status: decl.status, days: decl.days };
-  // Thailand: no 60-day visa exemption since 15 September 2026 (see ENTRY_CAVEATS.TH). The
-  // bilateral 90-day agreements (KR, AR, CL, BR, PE) are separate and keep their 90 days.
-  if (destIso2 === "TH" && r.status === "vf" && r.days === 60) return { ...r, days: 30 };
   return r;
 };
 
@@ -330,6 +326,36 @@ window.applySchengenCommonList = function (r, passportIso2, destIso2) {
   const free = r.status === "vf" || r.status === "idc";
   if (window.SCHENGEN_ANNEX_II.has(passportIso2)) return free ? r : { ...r, status: "vf", days: 90 };
   return free || r.status === "ev" || r.status === "voa" || r.status === "eta" ? { ...r, status: "vr", days: null } : r;
+};
+
+// Thailand's entry lists for ordinary passports since 15 September 2026, from the Thai
+// Ministry of Foreign Affairs (Department of Consular Affairs), read 2026-11-21:
+//   30-day tourist exemption (60), list dated 15 Sep 2026:
+//     https://image.mfa.go.th/mfa/0/zE6021nSnu/0303/%E0%B8%9C.30.pdf
+//   15-day exemption (Seychelles, Mauritius), list dated 15 Sep 2026: same site, ผ.15.pdf
+//   Bilateral agreements (14/30/90 days), list dated 12 Dec 2025: Bilat_Ordinary.pdf
+//   Visa on arrival (Azerbaijan, Belarus, Serbia): MFA summary "Status as of 31 August 2026",
+//     https://image.mfa.go.th/mfa/0/GuK2XatnjK/%E0%B8%82%E0%B9%88%E0%B8%B2%E0%B8%A7_%E0%B8%9B%E0%B8%8A%E0%B8%AA%E0%B8%9E_%E0%B8%88%E0%B8%B2%E0%B8%81_FB/26-08-69/VISA_Exemption_and_VoA_2026.pdf
+// The map showed 60 days for 68 passports and visa-free for countries no longer listed.
+// Passports on no list need a visa: an easier scraped status becomes vr; ev and vr are kept,
+// since the official e-visa site decides who can apply online. The VoA length is not in
+// these documents, so no days are shown for it.
+const _TH_LISTS = [
+  ["vf", 30, "AU AT BH BE BG BT BN CA HR CY CZ DK EE FJ FI FR GE DE GR HU IS IN ID IE IL IT JP JO KW KG " +
+             "LV LI LT LU MT MY MV NL NZ NO OM PH PL PT QA RO SA SG SK SI ZA ES SE CH TW TR UA AE GB US"],
+  ["vf", 15, "SC MU"],
+  ["vf", 14, "KH MM"],
+  ["vf", 30, "CN HK KZ LA MO MN RU TL VN"],
+  ["vf", 90, "AR BR CL KR PE"],
+  ["voa", null, "AZ BY RS"],
+];
+window.TH_ENTRY = {};
+for (const [status, days, list] of _TH_LISTS) for (const p of list.split(" ")) window.TH_ENTRY[p] = { status, days };
+window.applyThailandList = function (r, passportIso2, destIso2) {
+  if (!r || destIso2 !== "TH" || !passportIso2 || r.status === "self" || r.status === "ban") return r;
+  const e = window.TH_ENTRY[passportIso2];
+  if (e) return { ...r, status: e.status, days: e.days };
+  return r.status === "ev" || r.status === "vr" ? r : { ...r, status: "vr", days: null };
 };
 // European microstates de-facto inside the Schengen travel zone: not formal
 // members, but they have no border controls of their own — Andorra is only

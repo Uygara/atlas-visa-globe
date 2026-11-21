@@ -74,6 +74,10 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 23 (2026-11-21: Thailand official lists):** `applyThailandList` in visa-overrides.js sets TH from the Thai
+  MFA PDFs (30-day list of 60, 15-day SC/MU, bilateral 14/30/90, VoA AZ/BY/RS). Passports on no list: easier scraped
+  status becomes vr, ev/vr kept. Removed the 60→30 cap. Audit check "thailand matches the MFA lists". Gotcha: the
+  thaievisa.go.th API was down (Cloudflare 502); the MFA PDFs at image.mfa.go.th download fine with curl + pdftotext.
 - **Round 22 (2026-11-21: accuracy audit against official sources):**
   ETIAS was shown as launched (launchDate 2026-10-01, map card "ETIAS now required", €7): official site says not in
   operation, no date, €20, 30 countries incl. Cyprus. launchDate is now null; pages, card (6 languages), dest pages fixed.
