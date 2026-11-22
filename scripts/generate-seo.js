@@ -875,6 +875,14 @@ function renderDestPage(destCountry, allPassports, lang, ads) {
 ${ads.loader}
 <script src="/assets/analytics.js"></script>
 <script type="application/ld+json">${JSON.stringify(crumbSchema)}</script>
+<script type="application/ld+json">${JSON.stringify({
+  // Who publishes this and how fresh the data is, for search engines and AI answers: dateModified is the
+  // visa data snapshot the page was built from, datePublished the day these pages first went live.
+  "@context": "https://schema.org", "@type": "WebPage", "url": canonical, "name": titleText, "inLanguage": lang,
+  "datePublished": PAGE_TEMPLATE_DATE, "dateModified": snap,
+  "about": { "@type": "Country", "name": label },
+  "publisher": { "@type": "Organization", "name": "travelnow.info", "url": SITE_URL, "sameAs": ["https://www.instagram.com/travelnow.info/"] },
+})}</script>
 <script type="application/ld+json">${JSON.stringify(faqSchema)}</script>
 ${headAssets({ enPath, lang })}
 <style>.wrap{max-width:820px}.checker{padding:20px 22px}.checker label{display:block;font-weight:650;margin-bottom:10px}.checker select{width:100%;max-width:420px}.chk-out{margin:12px 0 0;font-size:var(--fs-lg)}.chk-map{margin:14px 0 0}details.vl{margin:0 0 10px}details.vl .n{margin-inline-start:8px;font-family:var(--font-mono);font-size:var(--fs-xs);font-weight:500;color:var(--ink-3)}.before ul{padding-inline-start:20px}.before li{margin:0 0 10px;max-width:var(--measure)}.before .fees{columns:2 220px;margin:6px 0 0}.before .fees li{margin:0 0 4px}.aff p{max-width:var(--measure)}.aff .ad-label{margin:8px 0 0;font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--ink-3)}</style>
@@ -1021,8 +1029,43 @@ ${footer({ lang })}
 }
 
 // ── sitemap.xml — with hreflang alternates for every page that has a twin ───
-function renderSitemap(allPassports, destinations) {
+// <lastmod> must be the date the page really changed: a sitemap that says "today" for every URL every day
+// teaches Google to ignore it. Passport and destination pages take the newest data/changelog.js entry that
+// affects them, or PAGE_TEMPLATE_DATE, whichever is later; other pages the last commit of their source file.
+// Bump PAGE_TEMPLATE_DATE only when the passport/destination page content changes for everyone (new
+// sections, new titles), not for styling or stamp changes. 2026-11-19: /visa/ pages and new passport titles.
+const PAGE_TEMPLATE_DATE = "2026-11-19";
+function gitDate(file) {
+  try {
+    return require("child_process").execSync(`git log -1 --format=%cs -- "${file}"`, { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();
+  } catch (e) { return ""; }
+}
+function lastmodResolver() {
   const today = new Date().toISOString().slice(0, 10);
+  const tpl = PAGE_TEMPLATE_DATE;
+  const byPassport = {}, byDest = {};
+  let newest = "";
+  for (const c of DATA.CHANGELOG || []) {
+    if (!c || !c.date) continue;
+    if (c.date > newest) newest = c.date;
+    const d = c.affects && c.affects.dest;
+    if (d && (!byDest[d] || c.date > byDest[d])) byDest[d] = c.date;
+    for (const p of (c.affects && c.affects.passports) || []) if (!byPassport[p] || c.date > byPassport[p]) byPassport[p] = c.date;
+  }
+  const max = (...xs) => xs.filter(Boolean).sort().pop() || today;
+  const cache = {};
+  return (p) => {
+    let m;
+    if ((m = /^\/passport\/([a-z]{2})\/$/.exec(p))) return max(tpl, byPassport[m[1].toUpperCase()]);
+    if ((m = /^\/visa\/([a-z]{2})\/$/.exec(p))) return max(tpl, byDest[m[1].toUpperCase()]);
+    if (p === "/passport/" || p === "/visa/") return max(tpl, newest);
+    if (!(p in cache)) cache[p] = gitDate(p.replace(/^\//, "") + "index.html") || today;
+    return cache[p] > today ? today : cache[p];
+  };
+}
+
+function renderSitemap(allPassports, destinations) {
+  const lastmodOf = lastmodResolver();
   const guides = [
     "visa-types-explained", "schengen-90-180-rule", "etias-2026-explained",
     "transit-visa-guide", "passport-validity-six-month-rule", "how-we-count",
@@ -1051,7 +1094,7 @@ function renderSitemap(allPassports, destinations) {
         `<xhtml:link rel="alternate" hreflang="tr" href="${SITE_URL}${toTr(p)}"/>` +
         `<xhtml:link rel="alternate" hreflang="x-default" href="${SITE_URL}${p}"/>`
       : "";
-    return `<url><loc>${SITE_URL}${prefix ? toTr(p) : p}</loc><lastmod>${today}</lastmod><priority>${pri.toFixed(2).replace(/0$/, "")}</priority>${alt}</url>`;
+    return `<url><loc>${SITE_URL}${prefix ? toTr(p) : p}</loc><lastmod>${lastmodOf(p)}</lastmod><priority>${pri.toFixed(2).replace(/0$/, "")}</priority>${alt}</url>`;
   };
   const urls = [];
   for (const [p, pri] of pages) {
