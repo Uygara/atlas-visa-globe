@@ -418,21 +418,18 @@ ul.dir { columns: 2; margin-top: 22px; }
 .other-passports a, ul.dir a { color: var(--ink); text-decoration: none; }
 .other-passports a:hover, ul.dir a:hover { text-decoration: underline; }
 /* Passport ranking (/passport/): rank on the left, name, count on the right. */
-.rank-cols { margin-top: 26px; }
-.rank-head, .rank-list li { display: grid; grid-template-columns: 2.6rem minmax(0, 1fr) auto; align-items: center; column-gap: 10px; }
-.rank-head { padding: 0 8px 8px; border-bottom: 1px solid var(--rule); font-size: var(--fs-xs); color: var(--ink-3); }
-.rank-head span:last-child { text-align: end; }
-.rank-head.is-repeat { display: none; }
-.rank-list { list-style: none; margin: 4px 0 0; padding: 0; }
-.rank-list li { padding: 0 8px; border-radius: 6px; font-size: var(--fs-base); }
-.rank-list li:hover { background: var(--paper-raised); }
+.intro-more { font-size: var(--fs-base); line-height: 1.6; color: var(--ink-2); max-width: 64ch; margin: -8px 0 14px; }
+.rank-cols { margin-top: 32px; }
+.rank-list { list-style: none; margin: 0; padding: 0; }
+.rank-list li { display: grid; grid-template-columns: 2.4rem minmax(0, 1fr) auto; align-items: baseline; column-gap: 8px; font-size: var(--fs-base); line-height: 1.4; }
 .rank-list .rk, .rank-list .ct { font-variant-numeric: tabular-nums; }
-.rank-list .rk { color: var(--ink-3); }
+.rank-list .rk { color: var(--ink-3); font-size: var(--fs-sm); }
+.rank-list a { color: var(--ink); text-decoration: none; padding: 7px 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rank-list a:hover { color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
 .rank-list .ct { text-align: end; color: var(--ink-2); }
-.rank-list a { color: var(--ink); text-decoration: none; padding: 6px 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.rank-list .u { color: var(--ink-3); font-size: var(--fs-sm); }
 @media (min-width: 900px) {
-  .rank-cols { display: grid; grid-template-columns: 1fr 1fr; column-gap: 56px; }
-  .rank-head.is-repeat { display: grid; }
+  .rank-cols { display: grid; grid-template-columns: 1fr 1fr; column-gap: 72px; }
 }
 .vf-count { margin-inline-start: 6px; font-family: var(--font-mono); font-size: var(--fs-xs); color: var(--ink-3); }
 .sw { display: inline-block; width: 11px; height: 11px; border-radius: 1px; background: var(--sw, var(--na)); }

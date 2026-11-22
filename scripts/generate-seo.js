@@ -69,6 +69,8 @@ const EASY = new Set(["idc", "vf", "eta", "voa"]);
 // Locale strings. Every user-visible sentence lives here, per language.
 // ─────────────────────────────────────────────────────────────────────────────
 const strong = (s) => `<strong>${s}</strong>`;
+// "a, b and c"
+const listJoin = (xs, and) => xs.length < 2 ? xs.join("") : xs.slice(0, -1).join(", ") + " " + and + " " + xs[xs.length - 1];
 
 const LOC = {
   en: {
@@ -164,10 +166,16 @@ const LOC = {
     dirTitle: (y) => `Passport visa requirements directory ${y} · travelnow.info`,
     dirDesc: (n) => `Browse visa requirements and the global mobility ranking for ${n} passports. Updated daily from public visa-policy sources.`,
     dirH1: "Passport visa-requirement directory",
-    dirIntro: `Passports ranked by how many countries you can enter without applying for a visa in advance: visa-free, with an ID card, with a travel authorization or with a visa on arrival. When two passports tie, the one with more eVisa countries ranks higher. The map uses the same ranking. Open a passport to see every country. <a href="%TYPES%">How we count</a>`,
+    // c: { n, top, mob, parts: [[status, count]], home: { name, href, mob, rank } | null, how }
+    dirIntro: (c) => [
+      `Which passport opens the most doors? We ranked ${c.n} passports by how many countries their holders can visit without applying for a visa at an embassy.`,
+      `At the top, a ${c.top} passport gets you into ${c.mob} countries with no visa arranged in advance: ${listJoin(c.parts.map(([k, v]) => `${v} ${({ idc: "with just an ID card", vf: "completely visa-free", eta: "with a short online permit", voa: "with a visa issued at the border" })[k]}`), "and")}.${c.home ? ` A <a href="${c.home.href}">${c.home.name} passport</a> reaches ${c.home.mob} and ranks ${c.home.rank}.` : ""}`,
+      `Open a passport to see how you enter each country, one by one. <a href="${c.how}">How we count</a>`,
+    ],
+    dirUnit: "countries",
     dirMeta: (n, date) => `${n} passports. Data refreshed ${date}.`,
     dirItem: (mob, rank) => `${mob} without a visa, rank #${rank}`,
-    dirColRank: "Rank", dirColName: "Passport", dirColCount: "Countries without a visa application",
+
     // Passport page: pointer to the inbound-visa page of the same country.
     toVisa: (name) => `Entry rules for ${theEn(name.iso, name.label)}`,
   },
@@ -267,10 +275,15 @@ const LOC = {
     dirTitle: (y) => `Pasaport vize şartları rehberi ${y} · travelnow.info`,
     dirDesc: (n) => `${n} pasaportun vize şartlarına ve küresel hareketlilik sıralamasına göz at. Her gün kamuya açık vize politikası kaynaklarından güncellenir.`,
     dirH1: "Pasaport vize şartları rehberi",
-    dirIntro: `Pasaportları, önceden vize başvurusu yapmadan girilebilen ülke sayısına göre sıraladık: vizesiz, kimlikle, seyahat izniyle ya da varışta vizeyle girilen ülkeler. İki pasaport eşitse e-Vize ile gidilebilen ülkesi fazla olan öne geçer. Haritadaki sıralama da aynıdır. Bütün ülkeleri görmek için bir pasaporta dokun. <a href="%TYPES%">Nasıl sayıyoruz?</a>`,
+    dirIntro: (c) => [
+      `Hangi pasaport dünyada daha çok kapı açıyor? ${c.n} pasaportu, sahibinin konsolosluğa vize başvurusu yapmadan kaç ülkeye gidebildiğine göre sıraladık.`,
+      `Listenin başındaki ${c.top} pasaportuyla ${c.mob} ülkeye önceden vize almadan gidilebiliyor: ${listJoin(c.parts.map(([k, v]) => `${v} ülkeye ${({ idc: "yalnızca kimlik kartıyla", vf: "tamamen vizesiz", eta: "kısa bir online izinle", voa: "vizeyi sınırda alarak" })[k]}`), "ve")}.${c.home ? ` <a href="${c.home.href}">${c.home.name} pasaportu</a> ise ${c.home.mob} ülkeyle ${c.home.rank}. sırada.` : ""}`,
+      `Bir pasaporta dokun, hangi ülkeye nasıl girildiğini tek tek gör. <a href="${c.how}">Nasıl sayıyoruz?</a>`,
+    ],
+    dirUnit: "ülke",
     dirMeta: (n, date) => `${n} pasaport. Veri yenilenme tarihi ${date}.`,
     dirItem: (mob, rank) => `vizesiz ${mob}, ${rank}. sırada`,
-    dirColRank: "Sıra", dirColName: "Pasaport", dirColCount: "Vize başvurusu gerekmeyen ülke",
+
     toVisa: (name) => `${name.label} giriş kuralları`,
   },
 };
@@ -1005,16 +1018,23 @@ function renderIndex(allPassports, ranks, lang) {
   const rows = ordered.filter(iso => COUNTRIES.some(x => x.iso2 === iso) && SNAPSHOT[iso]).map(iso => {
     const c = COUNTRIES.find(x => x.iso2 === iso);
     const ri = ranks.get(iso);
-    return `<li><span class="rk">${ri ? ri.rank : "?"}</span><a href="${iso.toLowerCase()}/"><span class="flag">${c.flag}</span> ${escapeHtml(passportName(iso, lang))}</a><span class="ct">${ri ? ri.mobility : "?"}</span></li>`;
+    return `<li><span class="rk">${ri ? ri.rank : "?"}</span><a href="${iso.toLowerCase()}/"><span class="flag">${c.flag}</span> ${escapeHtml(passportName(iso, lang))}</a><span class="ct">${ri ? ri.mobility : "?"} <span class="u">${L.dirUnit}</span></span></li>`;
   });
   const half = Math.ceil(rows.length / 2);
-  const head = (extra) => `<div class="rank-head${extra}" aria-hidden="true"><span>${escapeHtml(L.dirColRank)}</span><span>${escapeHtml(L.dirColName)}</span><span>${escapeHtml(L.dirColCount)}</span></div>`;
   const list = `<div class="rank-cols">
-    <div>${head("")}<ol class="rank-list">${rows.slice(0, half).join("")}</ol></div>
-    <div>${head(" is-repeat")}<ol class="rank-list" start="${half + 1}">${rows.slice(half).join("")}</ol></div>
+    <ol class="rank-list">${rows.slice(0, half).join("")}</ol>
+    <ol class="rank-list" start="${half + 1}">${rows.slice(half).join("")}</ol>
   </div>`;
   const date = new Date().toISOString().slice(0, 10);
   const types = lang === "tr" ? "/tr/guides/how-we-count/" : "/guides/how-we-count/";
+  const topIso = ordered[0], topT = DATA.tally(topIso);
+  const homeIso = lang === "tr" ? "TR" : null, homeR = homeIso && ranks.get(homeIso);
+  const intro = L.dirIntro({
+    n: allPassports.length, how: types,
+    top: escapeHtml(passportName(topIso, lang)), mob: DATA.mobilityScore(topT),
+    parts: ["idc", "vf", "eta", "voa"].filter((k) => topT[k]).map((k) => [k, topT[k]]),
+    home: homeR ? { name: escapeHtml(passportName(homeIso, lang)), href: homeIso.toLowerCase() + "/", mob: homeR.mobility, rank: homeR.rank } : null,
+  });
 
   return `<!DOCTYPE html>
 <html lang="${lang}"${lang === "tr" ? ' data-page-lang="tr"' : ""}>
@@ -1034,7 +1054,7 @@ ${headAssets({ enPath, lang })}
 ${masthead({ path: enPath, i18n: false, lang })}
 <div class="wrap">
   <h1>${escapeHtml(L.dirH1)}</h1>
-  <p class="intro">${L.dirIntro.replace("%TYPES%", types)}</p>
+${intro.map((p, i) => `  <p class="${i ? "intro-more" : "intro"}">${p}</p>`).join("\n")}
   <p style="font-size:13px;color:var(--fg-mute);">${escapeHtml(L.dirMeta(allPassports.length, fmtDate(date, lang)))}</p>
   ${list}
 </div>
