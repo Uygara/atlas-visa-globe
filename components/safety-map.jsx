@@ -189,7 +189,7 @@ function SafetyMapApp() {
   return (
     <div className="layout">
       <Masthead theme={theme} onTheme={setTheme} />
-      <div className="globe-stage">
+      <div className="globe-stage has-key">
         <Globe
           passport={null}
           mode={mode}
@@ -207,12 +207,12 @@ function SafetyMapApp() {
       <aside className="panel">
         <MobileSheetHandle />
         <header className="p-head" style={{ display: "block" }}>
-          <h1 className="p-head-title">
-            {tr("safety.title", "Travel safety map")}{" "}
-            <span className="stamp is-small" style={{ "--st": "var(--foil)", verticalAlign: "middle", marginInlineStart: 6 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+            <h1 className="p-head-title">{tr("safety.title", "Travel safety map")}</h1>
+            <span className="stamp is-small" style={{ "--st": "var(--foil)", flex: "none" }}>
               <span className="stamp-k" style={{ fontSize: 12 }}>{tr("safety.draft", "Beta")}</span>
             </span>
-          </h1>
+          </div>
           <p className="p-head-sub">{tr("safety.subtitle", "Official government travel advisories on one map.")}</p>
         </header>
 
@@ -335,7 +335,7 @@ function RecentlyUpdated({ onOpen }) {
 // ─── Legend over the globe ────────────────────────────────────────────────
 function SafetyLegend() {
   return (
-    <div className="map-key overlay-card">
+    <div className="map-key map-key-below overlay-card">
       <div className="map-key-title">{tr("safety.legend", "Advisory level")}</div>
       <ul>
         {[1, 2, 3, 4].map(n => (

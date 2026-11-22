@@ -62,7 +62,7 @@ function TransitMapApp() {
   return (
     <div className="layout">
       <Masthead theme={theme} onTheme={setTheme} />
-      <div className="globe-stage">
+      <div className="globe-stage has-key">
         <Globe
           passport={passport}
           mode={mode}
@@ -170,7 +170,7 @@ function TransitLegend() {
     { s: "vr",  k: "tmap.legend_vr" },
   ];
   return (
-    <div className="map-key overlay-card">
+    <div className="map-key map-key-below overlay-card">
       <div className="map-key-title">{window.t("tmap.legend")}</div>
       <ul>
         {items.map(i => <li key={i.k}><Swatch s={i.s} /><span>{window.t(i.k)}</span></li>)}

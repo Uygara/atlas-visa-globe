@@ -98,7 +98,7 @@ function TransitMapApp() {
     theme: theme,
     onTheme: setTheme
   }), React.createElement("div", {
-    className: "globe-stage"
+    className: "globe-stage has-key"
   }, React.createElement(Globe, {
     passport: passport,
     mode: mode,
@@ -269,7 +269,7 @@ function TransitLegend() {
     k: "tmap.legend_vr"
   }];
   return React.createElement("div", {
-    className: "map-key overlay-card"
+    className: "map-key map-key-below overlay-card"
   }, React.createElement("div", {
     className: "map-key-title"
   }, window.t("tmap.legend")), React.createElement("ul", null, items.map(function (i) {

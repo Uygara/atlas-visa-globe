@@ -125,9 +125,9 @@ module.exports = {
     ogDescription: "Türkiye'den Schengen turist vizesi için gereken tüm belgeler; çalışan, serbest çalışan, öğrenci, emekli ve reşit olmayanlar için koşullu kurallarla.",
   },
   "/visa-shortcuts/": {
-    title: "Vize kestirmeleri: elindeki vizelerle daha kolay vize yolları · travelnow.info",
-    description: "ABD, Birleşik Krallık, İrlanda veya Schengen vizesi taşımak, normalde tam vize gerektirecek ülkelere vizesiz ya da e-Vize ile girişe çoğu zaman imkân verir. Her kestirmenin pasaporta göre gezilebilir dizini.",
-    ogTitle: "Vize kestirmeleri: elindeki vizelerle daha kolay giriş",
-    ogDescription: "Hindistan pasaportu + ABD vizesi = Türkiye e-Vizesi. Çin pasaportu + Schengen vizesi = Meksika vizesiz. Her kestirme, pasaporta göre.",
+    title: "Vize kısayolları: elindeki vizelerle daha kolay vize yolları · travelnow.info",
+    description: "ABD, Birleşik Krallık, İrlanda veya Schengen vizesi taşımak, normalde tam vize gerektirecek ülkelere vizesiz ya da e-Vize ile girişe çoğu zaman imkân verir. Her kısayolun pasaporta göre gezilebilir dizini.",
+    ogTitle: "Vize kısayolları: elindeki vizelerle daha kolay giriş",
+    ogDescription: "Hindistan pasaportu + ABD vizesi = Türkiye e-Vizesi. Çin pasaportu + Schengen vizesi = Meksika vizesiz. Her kısayol, pasaporta göre.",
   },
 };

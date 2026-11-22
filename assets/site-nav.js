@@ -29,8 +29,8 @@
     { key: "nav.grp_read", en: "Read and explore", items: [
       { href: "/passport/",                  key: "nav.passports", en: "Passports" },
       { href: "/guides/",                    key: "nav.guides",    en: "Guides" },
-      { href: "/digital-nomad-visa/",        key: "nav.nomad",     en: "Nomad visas" },
-      { href: "/citizenship-by-investment/", key: "nav.cbi",       en: "Second passport" },
+      { href: "/digital-nomad-visa/",        key: "nav.nomad",     en: "Digital nomad visas" },
+      { href: "/citizenship-by-investment/", key: "nav.cbi",       en: "Citizenship by investment" },
       { href: "/alerts/",                    key: "nav.alerts",    en: "Alerts" },
       { href: "/about/",                     key: "nav.about",     en: "About" }
     ] }

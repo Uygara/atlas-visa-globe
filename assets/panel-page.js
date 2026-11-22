@@ -28,6 +28,7 @@
     "Visa status": "Vize durumu",
     "Choose a passport to see visa rules.": "Vize kurallarını görmek için bir pasaport seç.",
     "Add a country to see its visa rules.": "Vize kurallarını görmek için bir ülke ekle.",
+    "When a visa rule changes for a country you follow, it shows up here.": "Takip ettiğin bir ülkede vize kuralı değişince burada görürsün.",
     "Loading visa rules…": "Vize kuralları yükleniyor…",
     "Visa rules could not be loaded. Try again later.": "Vize kuralları yüklenemedi. Daha sonra tekrar dene.",
     "Country": "Ülke",
@@ -315,7 +316,7 @@
   function changesSection(plist, wlist) {
     var body = [];
     if (!plist.length) body.push(h("p", { class: "fine", text: t("Choose a passport to see visa rules.") }));
-    else if (!wlist.length) body.push(h("p", { class: "fine", text: t("Add a country to see its visa rules.") }));
+    else if (!wlist.length) body.push(h("p", { class: "fine", text: t("When a visa rule changes for a country you follow, it shows up here.") }));
     else {
       var list = changes(plist, wlist);
       if (seenAtLoad == null) seenAtLoad = parseInt(getRaw("atlas.panel.seen") || "0", 10) || 0;

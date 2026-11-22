@@ -32,7 +32,7 @@ module.exports = `<main class="seo-fallback">
           <li><a class="hm-card" href="/tr/etias/"><span class="hm-card-t">ETIAS kontrolü</span><span class="hm-card-d">AB'nin 2026 seyahat izni sana uygulanıyor mu?</span></a></li>
           <li><a class="hm-card" href="/tr/passport-validity/"><span class="hm-card-t">Pasaport geçerlilik kontrolü</span><span class="hm-card-d">6 ay kuralı, varış noktasına göre</span></a></li>
           <li><a class="hm-card" href="/itinerary/"><span class="hm-card-t">Seyahat planlayıcı</span><span class="hm-card-d">Çok duraklı bir gezi için vizeler, maliyetler ve süreler</span></a></li>
-          <li><a class="hm-card" href="/tr/visa-shortcuts/"><span class="hm-card-t">Vize kestirmeleri</span><span class="hm-card-d">Elindeki vizelerle daha kolay giriş</span></a></li>
+          <li><a class="hm-card" href="/tr/visa-shortcuts/"><span class="hm-card-t">Vize kısayolları</span><span class="hm-card-d">Elindeki vizelerle daha kolay giriş</span></a></li>
           <li><a class="hm-card" href="/tr/digital-nomad-visa/"><span class="hm-card-t">Dijital göçebe vizeleri</span><span class="hm-card-d">Uzaktan çalışırken yaşayabileceğin ülkeler</span></a></li>
           <li><a class="hm-card" href="/tr/citizenship-by-investment/"><span class="hm-card-t">Yatırımla vatandaşlık</span><span class="hm-card-d">Programlar, maliyetler ve her pasaportun açtığı kapılar</span></a></li>
         </ul>
@@ -97,7 +97,7 @@ module.exports = `<main class="seo-fallback">
           <li><a href="/tr/etias/" title="AB'nin 2026 seyahat izni sana uygulanıyor mu?">ETIAS kontrolü</a></li>
           <li><a href="/tr/passport-validity/" title="6 ay kuralı, varış noktasına göre">Pasaport geçerlilik kontrolü</a></li>
           <li><a href="/itinerary/" title="Çok duraklı bir gezi için vizeler, maliyetler ve süreler">Seyahat planlayıcı</a></li>
-          <li><a href="/tr/visa-shortcuts/" title="Elindeki vizelerle daha kolay giriş">Vize kestirmeleri</a></li>
+          <li><a href="/tr/visa-shortcuts/" title="Elindeki vizelerle daha kolay giriş">Vize kısayolları</a></li>
           <li><a href="/tr/digital-nomad-visa/" title="Uzaktan çalışırken yaşayabileceğin ülkeler">Dijital göçebe vizeleri</a></li>
           <li><a href="/tr/citizenship-by-investment/" title="Programlar, maliyetler ve her pasaportun açtığı kapılar">Yatırımla vatandaşlık</a></li>
         </ul>

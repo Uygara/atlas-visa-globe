@@ -214,7 +214,7 @@ const LOC = {
     feedTitle: (name) => `${name} pasaportu: vize kuralı değişiklikleri`,
     feedDesc: (name) => `${name} pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.`,
     feedItem: (name, dest, from, to, date) => `${name} pasaportu için ${dest}: önce ${from}, şimdi ${to}. ${date} tarihli günlük veri kontrolünde görüldü.`,
-    scoreLabel: "vize başvurusu gerektirmeyen destinasyon",
+    scoreLabel: "vize başvurusu gerektirmeyen ülke",
     ofTotal: (n) => `/ ${n}`,
     withEvisa: (n) => `e-Vize dahil ${n} (çevrimiçi başvuru, konsolosluğa gitmeden)`,
     tallyLabel: "Vize durumu dağılımı",
@@ -228,7 +228,7 @@ const LOC = {
       ["/guides/how-we-count/", "Pasaportun vizesiz sayısı nasıl okunur?"],
       ["/guides/", "Tüm seyahat rehberleri →"],
     ],
-    allHead: (name) => `${name} pasaportuyla gidilecek tüm destinasyonlar`,
+    allHead: (name) => `${name} pasaportuyla gidilecek tüm ülkeler`,
     relatedHead: "İlgili pasaportları karşılaştır",
     browseAll: (n) => `Ya da <a href="%ALL%">tüm ${n} pasaporta göz at</a>.`,
     faqHead: (name) => `${name} pasaportu: sık sorulan sorular`,
@@ -239,13 +239,13 @@ const LOC = {
         c.eta ? `çevrimiçi seyahat iziniyle ${c.eta}` : "",
         `varışta vizeyle ${c.voa}`,
       ].filter(Boolean);
-      let h = `${strong(`${c.name} pasaportu`)}, takip ettiğimiz ${c.total} destinasyondan yaklaşık ${strong(`${c.mob} tanesine`)} önceden vize almadan giriş sağlıyor: ${LOC.tr.join(easy)}.`;
-      h += ` Bunların ötesinde ${c.ev} destinasyon çevrimiçi başvurulan e-Vize sunuyor; onları da sayarsan konsolosluğa gitmeden ${strong(c.acc)} destinasyona ulaşılıyor. ${c.vr} destinasyon ise hâlâ büyükelçilik vizesi istiyor${c.ban ? `, ${c.ban} destinasyon bu uyruğa girişe kapalı` : ""}.`;
+      let h = `${strong(`${c.name} pasaportu`)}, takip ettiğimiz ${c.total} ülkeden yaklaşık ${strong(`${c.mob} tanesine`)} önceden vize almadan giriş sağlıyor: ${LOC.tr.join(easy)}.`;
+      h += ` Bunların ötesinde ${c.ev} ülke çevrimiçi başvurulan e-Vize sunuyor; onları da sayarsan konsolosluğa gitmeden ${strong(c.acc)} ülkeye ulaşılıyor. ${c.vr} ülke ise hâlâ büyükelçilik vizesi istiyor${c.ban ? `, ${c.ban} ülke bu uyruğa girişe kapalı` : ""}.`;
       if (c.rank) h += ` Vizesiz erişimde dünya genelinde ${c.rankTotal} pasaport arasında ${strong(`${c.rank}.`)} sırada.`;
       return h;
     },
     regional: (c) => `Bölge bölge bakınca ${c.name} pasaportu en çok ${strong(c.S)} bölgesinde güçlü: ${c.St} ülkenin ${c.Se} tanesine önceden vize gerekmeden giriliyor. En sınırlı olduğu bölge ise ${strong(c.W)} (${c.Wt} ülkenin ${c.We} tanesi). Bölgelere göre tam dağılım: ${c.all}.`,
-    easyMajors: (list) => `En çok sorulan destinasyonlar arasında ${strong(LOC.tr.join(list))} ülkelerine vizesiz (ya da varışta vizeyle) gidebilirsin.`,
+    easyMajors: (list) => `En çok sorulan ülkeler arasında ${strong(LOC.tr.join(list))} ülkelerine vizesiz (ya da varışta vizeyle) gidebilirsin.`,
     hardMajors: (vr, ev) => {
       const parts = [];
       if (vr.length) parts.push(`${strong(LOC.tr.join(vr))} için tam vize`);
@@ -273,11 +273,11 @@ const LOC = {
     },
     faq: (c) => [
       { q: `${c.name} pasaportuyla vizesiz kaç ülkeye gidilebilir?`,
-        a: `Takip ettiğimiz ${c.total} destinasyondan yaklaşık ${c.mob} tanesi önceden vize gerektirmiyor: ${LOC.tr.join(c.easyParts)}. ${c.ev} destinasyon ise çevrimiçi e-Vize sunuyor.` },
+        a: `Takip ettiğimiz ${c.total} ülkeden yaklaşık ${c.mob} tanesi önceden vize gerektirmiyor: ${LOC.tr.join(c.easyParts)}. ${c.ev} ülke ise çevrimiçi e-Vize sunuyor.` },
       { q: `${c.name} pasaportuyla Amerika Birleşik Devletleri için vize gerekir mi?`, a: LOC.tr.entry(c.name, "US", c.usR, "US") },
       { q: `${c.name} pasaportuyla Avrupa'ya (Schengen Bölgesi) gidilebilir mi?`, a: LOC.tr.entry(c.name, "DE", c.deR, "DE") },
       { q: `Sıralama nasıl yapılıyor, veriler ne kadar güncel?`,
-        a: `Pasaportlar, vize başvurusu yapmadan girebildikleri destinasyon sayısına göre sıralanır: vizesiz, ulusal kimlik kartıyla, çevrimiçi seyahat iziniyle ya da varışta vizeyle (pasaport endekslerinin de kullandığı ölçüt bu); eşitlikte e-Vize erişimi belirleyici olur. Etkileşimli haritanın gösterdiği sayı ve sıralamayla aynıdır. Rakamlar her 24 saatte bir kamuya açık vize politikası kaynaklarından yeniden oluşturulur; yani bu sayfa kaydettiğimiz en son değişikliği yansıtır. Rezervasyondan önce mutlaka gideceğin ülkenin büyükelçiliğinden doğrula.` },
+        a: `Pasaportlar, vize başvurusu yapmadan girebildikleri ülke sayısına göre sıralanır: vizesiz, ulusal kimlik kartıyla, çevrimiçi seyahat iziniyle ya da varışta vizeyle (pasaport endekslerinin de kullandığı ölçüt bu); eşitlikte e-Vize erişimi belirleyici olur. Etkileşimli haritanın gösterdiği sayı ve sıralamayla aynıdır. Rakamlar her 24 saatte bir kamuya açık vize politikası kaynaklarından yeniden oluşturulur; yani bu sayfa kaydettiğimiz en son değişikliği yansıtır. Rezervasyondan önce mutlaka gideceğin ülkenin büyükelçiliğinden doğrula.` },
     ],
     easyParts: (c) => [
       `${c.vf} vizesiz`,
@@ -684,7 +684,7 @@ const VLOC = {
     checkHead: "Pasaportunu kontrol et",
     choose: "Pasaportunu seç",
     who: (name) => `${name} pasaportu`,
-    more: "Bu pasaportla gidilecek tüm destinasyonlar",
+    more: "Bu pasaportla gidilecek tüm ülkeler",
     mapBtn: "Haritada aç →",
     scoreLabel: "pasaport vize başvurusu yapmadan girebiliyor",
     beforeHead: "Gitmeden önce",
@@ -723,12 +723,12 @@ const VLOC = {
     },
     passportLink: (name) => `${name} pasaportuyla mı seyahat edeceksin? Nereye gidebildiğine bak`,
     relatedHead: "Yakındaki ülkeler",
-    browseAll: (n, href) => `Ya da <a href="${href}">tüm ${n} destinasyona göz at</a>.`,
+    browseAll: (n, href) => `Ya da <a href="${href}">tüm ${n} ülkeye göz at</a>.`,
     dirTitle: (y) => `Ülkeye göre vize şartları ${y} · travelnow.info`,
     dirDesc: (n) => `${n} ülke ve bölgeye girmek için hangi uyruğa vize gerektiğini gör. Her gün kamuya açık vize politikası kaynaklarından güncellenir.`,
     dirH1: "Gidilecek ülkeye göre vize şartları",
     dirIntro: "Gitmek istediğin ülkeyi seç: hangi pasaportların vizesiz, varışta vizeyle, e-Vize ile ya da yalnızca önceden alınan vizeyle girebildiğini göreceksin. Tersini mi arıyorsun, yani bir pasaportla nereye gidilir? <a href=\"%PASSPORTS%\">Pasaport rehberine</a> bak.",
-    dirMeta: (n, date) => `${n} destinasyon. Veri yenilenme tarihi ${date}.`,
+    dirMeta: (n, date) => `${n} ülke. Veri yenilenme tarihi ${date}.`,
   },
 };
 
@@ -896,7 +896,7 @@ function renderDestPage(destCountry, allPassports, lang, ads) {
   const sameRegion = nearest(destCountry, 9);
   const related = sameRegion.map(c => `<li><a href="../${c.iso2.toLowerCase()}/"><span class="flag">${c.flag}</span> ${escapeHtml(cn(c.iso2, lang))}</a></li>`).join("");
   const passportCta = SNAPSHOT[dest]
-    ? `<p class="cta-row"><a class="primary" href="${ppHref(dest)}">${escapeHtml(V.passportLink(passportName(dest, lang)))}</a></p>`
+    ? `<p class="cta-row"><a href="${ppHref(dest)}">${escapeHtml(V.passportLink(passportName(dest, lang)))} →</a></p>`
     : "";
   const destCount = COUNTRIES.filter(c => c.continent !== "AN").length;
 

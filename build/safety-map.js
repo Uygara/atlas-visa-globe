@@ -274,7 +274,7 @@ function SafetyMapApp() {
     theme: theme,
     onTheme: setTheme
   }), React.createElement("div", {
-    className: "globe-stage"
+    className: "globe-stage has-key"
   }, React.createElement(Globe, {
     passport: null,
     mode: mode,
@@ -292,14 +292,20 @@ function SafetyMapApp() {
     style: {
       display: "block"
     }
+  }, React.createElement("div", {
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 8,
+      flexWrap: "wrap"
+    }
   }, React.createElement("h1", {
     className: "p-head-title"
-  }, tr("safety.title", "Travel safety map"), " ", React.createElement("span", {
+  }, tr("safety.title", "Travel safety map")), React.createElement("span", {
     className: "stamp is-small",
     style: {
       "--st": "var(--foil)",
-      verticalAlign: "middle",
-      marginInlineStart: 6
+      flex: "none"
     }
   }, React.createElement("span", {
     className: "stamp-k",
@@ -507,7 +513,7 @@ function RecentlyUpdated(_ref6) {
 }
 function SafetyLegend() {
   return React.createElement("div", {
-    className: "map-key overlay-card"
+    className: "map-key map-key-below overlay-card"
   }, React.createElement("div", {
     className: "map-key-title"
   }, tr("safety.legend", "Advisory level")), React.createElement("ul", null, [1, 2, 3, 4].map(function (n) {
