@@ -417,7 +417,7 @@ function App() {
   }), showIntro && React.createElement(IntroDialog, {
     onClose: dismissIntro
   }), React.createElement("div", {
-    className: "globe-stage"
+    className: "globe-stage" + (passport && !detailCountry ? " has-key" : "")
   }, React.createElement(Globe, {
     passport: passport,
     comparePassport: t.compareMode ? compare : null,
@@ -538,7 +538,7 @@ function MapKey() {
   var keys = ["idc", "vf", "eta", "ev", "voa", "vr", "ban"];
   var permitsActive = Array.isArray(window.ATLAS_RESIDENCE_PERMITS) && window.ATLAS_RESIDENCE_PERMITS.length > 0;
   return React.createElement("div", {
-    className: "map-key overlay-card"
+    className: "map-key map-key-below overlay-card"
   }, React.createElement("div", {
     className: "map-key-title"
   }, tr("map.key", "Key")), React.createElement("ul", null, keys.map(function (k) {

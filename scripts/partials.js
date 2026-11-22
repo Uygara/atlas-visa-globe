@@ -22,7 +22,6 @@ function esc(s) {
 // The mark: a passport page opening its MRZ with "P<", over a dotted filler line.
 const BRAND_MARK = `<svg class="brand-mark" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2.75" y="1.75" width="18.5" height="20.5" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M6.4 14.6V6.8h2.9a2.4 2.4 0 0 1 0 4.8H6.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.9 7.3 13.9 10.7l3 3.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.4 18.3h11.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="0.1 2.3"/></svg>`;
 const CARET = `<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-const MENU =`<svg viewBox="0 0 18 18" width="18" height="18" aria-hidden="true"><path d="M3 5.5h12M3 9h12M3 12.5h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`;
 
 // The last flag marks languages that are not fully translated yet (shown as "beta").
 const LANGS = [["en", "English"], ["tr", "Türkçe"], ["es", "Español", 1], ["de", "Deutsch", 1], ["fr", "Français", 1], ["ar", "العربية", 1]];
@@ -60,7 +59,7 @@ function headAssets({ enPath = null, lang = "en" } = {}) {
 // (only pages that load data/static-i18n.js); pages with a Turkish twin get an
 // EN/TR list that navigates between the twins. `lang: "tr"` renders the
 // Turkish page: labels from the site dictionary, links to Turkish twins.
-const UI_TR = { menu: "Menü", main: "Ana menü", home: "travelnow.info ana sayfa" };
+const UI_TR = { main: "Ana menü", home: "travelnow.info ana sayfa" };
 function masthead({ path = "/", i18n = true, lang = "en" } = {}) {
   const t = makeT(lang);
   const u = (k, en) => (lang === "tr" ? UI_TR[k] : en);
@@ -86,6 +85,12 @@ ${g.items.map((it) => `            <li><a class="mh-tool" href="${href(it.href)}
       <ul class="mh-opts" data-no-i18n>${langs.map(([c, n, beta]) => `<li><button type="button" class="mh-opt" data-lang-set="${c}" aria-pressed="${c === lang}">${n}${beta ? " (beta)" : ""}</button></li>`).join("")}</ul>`
     : "";
   const themeOpts = `<div class="mh-opts-row" role="group" aria-label="${esc(t("Theme"))}"><button type="button" class="mh-opt" data-theme-set="light" aria-pressed="true">${esc(t("Light"))}</button><button type="button" class="mh-opt" data-theme-set="dark" aria-pressed="false">${esc(t("Dark"))}</button></div>`;
+  // Phone bottom tab bar (< 900px, see chrome.css): four crawlable links and "More", which opens the sheet above.
+  const TAB_LABELS = { "/": "Map", "/visa/": "Countries", "/itinerary/": "Planner", "/panel/": "My panel" };
+  const tabbar = `<nav class="tabbar" aria-label="${esc(t("Quick links"))}">
+${PRIMARY.map((it) => `  <a class="tb-item" href="${href(it.href)}"${cur(it)}>${esc(t(TAB_LABELS[it.href] || it.en))}</a>`).join("\n")}
+  <button type="button" class="tb-item tb-more" aria-expanded="false">${esc(t("More"))}</button>
+</nav>`;
   return `<header class="masthead">
   <a class="brand" href="${href("/")}" aria-label="${u("home", "travelnow.info home")}">${BRAND_MARK}<span class="brand-word">travelnow<span class="brand-tld">.info</span></span></a>
   <nav class="mh-nav" aria-label="${u("main", "Main")}">
@@ -110,7 +115,6 @@ ${groups}
     </div>
     <a class="mh-account" href="${href("/account/")}" data-account-link hidden><span class="mh-signin">${esc(t("Sign in"))}</span><span class="mh-acct-dot" aria-hidden="true"><span data-account-initial></span></span><span class="mh-acct-name">${esc(t("Account"))}</span></a>
   </div>
-  <button type="button" class="mh-burger" aria-label="${u("menu", "Menu")}" aria-expanded="false">${MENU}</button>
   <div class="mh-sheet">
 ${sheet}
     <p class="mh-sheet-h">${esc(t("All tools"))}</p>
@@ -120,7 +124,8 @@ ${sheetTools}
     <div class="mh-sheet-foot">${langSelect}${themeOpts}<a class="mh-sheet-ext" href="${INSTAGRAM.href}" target="_blank" rel="noopener" data-no-i18n aria-label="${esc(INSTAGRAM.en)}">Instagram</a><a class="mh-sheet-ext" href="${SUPPORT.href}" target="_blank" rel="noopener">${esc(t(SUPPORT.en))}</a></div>
   </div>
 </header>
-<div class="doc-band" aria-hidden="true"></div>`;
+<div class="doc-band" aria-hidden="true"></div>
+${tabbar}`;
 }
 
 function footer({ lang = "en" } = {}) {

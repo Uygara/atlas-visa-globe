@@ -84,8 +84,11 @@ const LOC = {
     title: (name, mob) => `${name} passport visa-free countries 2026: ${mob} destinations without a visa`,
     description: (name, c, rank) => `Where can a ${name} passport take you? ${c.vf} visa-free, ${c.voa} visa on arrival, ${c.ev} eVisa, ${c.vr} visa required. Global rank #${rank}. Updated daily.`,
     h1: (name) => `${name} passport: visa-free countries and visa requirements`,
-    subtitle: (n, rank, date) => `${n} destinations${rank ? `, global rank #${rank}` : ""}. Updated ${date}.`,
-    feedLink: "Follow rule changes for this passport (RSS feed)",
+    idLine: (name, rank) => `${name} passport${rank ? ` · world rank ${rank}` : ""}`,
+    metaLine: (n, date) => `${n} destinations · Updated ${date} · Source: Wikipedia`,
+    relatedLinks: "Related",
+    feedShort: "Follow changes (RSS)",
+    panelAdd: "Add to my panel",
     feedTitle: (name) => `${name} passport: visa rule changes`,
     feedDesc: (name) => `Destinations whose entry rule changed for ${name} passport holders, found by the daily comparison of public visa-policy sources (mainly Wikipedia). Check the official source before you travel.`,
     feedItem: (name, dest, from, to, date) => `${dest}: ${from} before, ${to} now, for ${name} passport holders. Seen in the daily data check on ${date}.`,
@@ -94,7 +97,6 @@ const LOC = {
     withEvisa: (n) => `${n} counting eVisas (apply online, no embassy visit)`,
     tallyLabel: "Visa status breakdown",
     ctaTop: "See every country on the interactive map →",
-    ctaBar: (name) => `See the ${name} passport on the map`,
     ctaBarBtn: "Open the map →",
     guidesHead: "Helpful guides",
     guides: [
@@ -166,7 +168,7 @@ const LOC = {
     dirMeta: (n, date) => `${n} passports. Data refreshed ${date}.`,
     dirItem: (mob, rank) => `${mob} without a visa, rank #${rank}`,
     // Passport page: pointer to the inbound-visa page of the same country.
-    toVisa: (name) => `Planning to visit ${theEn(name.iso, name.label)}? See who needs a visa to enter`,
+    toVisa: (name) => `Entry rules for ${theEn(name.iso, name.label)}`,
   },
 
   tr: {
@@ -182,8 +184,11 @@ const LOC = {
     title: (name, mob) => `${name} pasaportu ile vizesiz gidilen ülkeler 2026: ${mob} ülke`,
     description: (name, c, rank) => `${name} pasaportuyla nereye gidebilirsin? ${c.vf} vizesiz, ${c.voa} varışta vize, ${c.ev} e-Vize, ${c.vr} vize gerekli. Dünya sıralaması ${rank}. Her gün güncellenir.`,
     h1: (name) => `${name} pasaportu ile vizesiz gidilen ülkeler`,
-    subtitle: (n, rank, date) => `${n} destinasyon${rank ? `, dünya sıralaması ${rank}` : ""}. Güncelleme ${date}.`,
-    feedLink: "Bu pasaportun kural değişikliklerini takip et (RSS akışı)",
+    idLine: (name, rank) => `${name} pasaportu${rank ? ` · dünya sıralaması ${rank}` : ""}`,
+    metaLine: (n, date) => `${n} destinasyon · Güncelleme ${date} · Kaynak: Wikipedia`,
+    relatedLinks: "İlgili",
+    feedShort: "Değişiklikleri takip et (RSS)",
+    panelAdd: "Panelime ekle",
     feedTitle: (name) => `${name} pasaportu: vize kuralı değişiklikleri`,
     feedDesc: (name) => `${name} pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.`,
     feedItem: (name, dest, from, to, date) => `${name} pasaportu için ${dest}: önce ${from}, şimdi ${to}. ${date} tarihli günlük veri kontrolünde görüldü.`,
@@ -192,7 +197,6 @@ const LOC = {
     withEvisa: (n) => `e-Vize dahil ${n} (çevrimiçi başvuru, konsolosluğa gitmeden)`,
     tallyLabel: "Vize durumu dağılımı",
     ctaTop: "Tüm ülkeleri etkileşimli haritada gör →",
-    ctaBar: (name) => `${name} pasaportunu haritada gör`,
     ctaBarBtn: "Haritayı aç →",
     guidesHead: "Faydalı rehberler",
     guides: [
@@ -265,7 +269,7 @@ const LOC = {
     dirIntro: `Takip ettiğimiz her pasaport, ${strong("küresel hareketlilik")}e göre sıralı: yani vize başvurusu yapmadan girilebilen destinasyon sayısı (vizesiz, kimlikle, seyahat iziniyle ya da varışta vizeyle); eşitlikte e-Vize erişimi belirleyici. Etkileşimli haritadaki sıralamayla aynıdır. Ülke dökümü, bölgesel analiz ve sık sorulan sorular için herhangi bir pasaportu aç. Rakamlar her 24 saatte bir yenilenir. Yeni misin? <a href="%TYPES%">Vize türleri rehberimizle</a> başla.`,
     dirMeta: (n, date) => `${n} pasaport. Veri yenilenme tarihi ${date}.`,
     dirItem: (mob, rank) => `vizesiz ${mob}, ${rank}. sırada`,
-    toVisa: (name) => `${name.label} ziyareti mi planlıyorsun? Hangi pasaportlara vize gerektiğini gör`,
+    toVisa: (name) => `${name.label} giriş kuralları`,
   },
 };
 
@@ -491,25 +495,29 @@ ${ads.loader}
 ${headAssets({ enPath, lang })}
 <style>.wrap{max-width:820px}</style>
 </head>
-<body class="has-map-cta">
+<body>
 ${masthead({ path: enPath, i18n: false, lang })}
 <div class="wrap">
   <p class="crumbs"><a href="${P("/")}">${crumbs.home}</a> › <a href="${P("/passport/")}">${escapeHtml(crumbs.passports)}</a> › ${escapeHtml(name)}</p>
 
-  <header class="bio">
-    <div class="bio-main">
-      <span class="hero-flag flag" aria-hidden="true">${country.flag}</span>
-      <div>
-        <h1>${escapeHtml(L.h1(name))}</h1>
-        <p class="subtitle">${escapeHtml(L.subtitle(total, rank, fmtDate(today, lang)))}</p>
-      </div>
-    </div>
+  <header class="pp-top">
+    <p class="pp-id"><span class="flag" aria-hidden="true">${country.flag}</span>${escapeHtml(L.idLine(name, rank))}</p>
+    <h1>${escapeHtml(L.h1(name))}</h1>
+    <p class="subtitle">${escapeHtml(L.metaLine(total, fmtDate(today, lang)))}</p>
   </header>
 
-  <p class="visa-in"><a href="${P(`/visa/${slug}/`)}">${escapeHtml(L.toVisa({ iso: passport, label: name }))}</a></p>
-  <p class="visa-in"><a href="${L.prefix}/passport/${slug}/feed.xml" type="application/rss+xml">${escapeHtml(L.feedLink)}</a></p>
+  <nav class="pp-related" aria-label="${escapeHtml(L.relatedLinks)}">
+    <h2>${escapeHtml(L.relatedLinks)}</h2>
+    <ul>
+      <li><a href="${P(`/visa/${slug}/`)}">${escapeHtml(L.toVisa({ iso: passport, label: name }))}</a></li>
+      <li><a href="${L.prefix}/passport/${slug}/feed.xml" type="application/rss+xml">${escapeHtml(L.feedShort)}</a></li>
+      <li><a href="${P("/panel/")}">${escapeHtml(L.panelAdd)}</a></li>
+    </ul>
+  </nav>
 
   ${tally}
+
+  <p class="pp-map"><a class="btn btn-primary" href="${mapHref}">${escapeHtml(L.ctaBarBtn)}</a></p>
 
   ${proseHtml}
 
@@ -535,7 +543,6 @@ ${masthead({ path: enPath, i18n: false, lang })}
 
   ${ads.bottom}
 </div>
-<div class="map-cta"><span>${escapeHtml(L.ctaBar(name))}</span><a class="btn btn-primary" href="${mapHref}">${escapeHtml(L.ctaBarBtn)}</a></div>
 ${footer({ lang })}
 </body>
 </html>`;

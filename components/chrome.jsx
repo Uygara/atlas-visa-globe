@@ -177,7 +177,7 @@ function Masthead({ theme, onTheme }) {
   const to = (h) => (nav.localHref ? nav.localHref(h, lang) : h);
   const [open, setOpen] = useStateC(null); // "tools" | "prefs" | null
   const [sheetOpen, setSheetOpen] = useStateC(false);
-  const headerRef = useRefC(null);
+  const headerRef = useRefC(null), moreRef = useRefC(null);
   const toolsBtn = useRefC(null), prefsBtn = useRefC(null);
   const toolsPanel = useRefC(null), prefsPanel = useRefC(null);
 
@@ -198,10 +198,11 @@ function Masthead({ theme, onTheme }) {
   // Close on a tap outside (pointerdown so iOS taps count) and on Escape; Escape hands focus back.
   useEffectC(() => {
     if (!open && !sheetOpen) return;
-    const onDown = (e) => { if (headerRef.current && !headerRef.current.contains(e.target)) { setOpen(null); setSheetOpen(false); } };
+    // "More" (tab bar) toggles the sheet itself, so a press on it is not "outside".
+    const onDown = (e) => { if (headerRef.current && !headerRef.current.contains(e.target) && !(moreRef.current && moreRef.current.contains(e.target))) { setOpen(null); setSheetOpen(false); } };
     const onKey = (e) => {
       if (e.key !== "Escape") return;
-      const btn = open === "tools" ? toolsBtn.current : open === "prefs" ? prefsBtn.current : null;
+      const btn = open === "tools" ? toolsBtn.current : open === "prefs" ? prefsBtn.current : sheetOpen ? moreRef.current : null;
       setOpen(null); setSheetOpen(false);
       if (btn) btn.focus();
     };
@@ -224,7 +225,11 @@ function Masthead({ theme, onTheme }) {
     </div>
   );
 
+  // Phone tab bar: the four main links as plain text and "More", which opens the sheet.
+  const TAB_LABEL = { "/": tr("nav.tab_map", "Map"), "/visa/": tr("nav.countries", "Countries"), "/itinerary/": tr("nav.tab_planner", "Planner"), "/panel/": tr("nav.panel", "My panel") };
+
   return (
+    <>
     <header ref={headerRef} className={"masthead" + (sheetOpen ? " is-open" : "")}>
       <a className="skip-link" href="#panel">{tr("a11y.skip", "Skip to content")}</a>
       <a className="brand" href={to("/")} aria-label="travelnow.info">
@@ -287,10 +292,6 @@ function Masthead({ theme, onTheme }) {
         <AccountLink />
       </div>
 
-      <button type="button" className="mh-burger" aria-label={tr("nav.menu", "Menu")} aria-expanded={sheetOpen} onClick={() => setSheetOpen(o => !o)}>
-        <IconMenu open={sheetOpen} />
-      </button>
-
       <div className="mh-sheet">
         {nav.PRIMARY.map(it => (
           <a key={it.href} className="mh-sheet-link" href={to(it.href)} aria-current={cur(it)}>{label(it)}</a>
@@ -309,6 +310,15 @@ function Masthead({ theme, onTheme }) {
         </div>
       </div>
     </header>
+    <nav className="tabbar" aria-label={tr("nav.tabs", "Quick links")}>
+      {nav.PRIMARY.map(it => (
+        <a key={it.href} className="tb-item" href={to(it.href)} aria-current={cur(it)}>{TAB_LABEL[it.href] || label(it)}</a>
+      ))}
+      <button ref={moreRef} type="button" className="tb-item tb-more" aria-expanded={sheetOpen} onClick={() => setSheetOpen(o => !o)}>
+        {tr("nav.tab_more", "More")}
+      </button>
+    </nav>
+    </>
   );
 }
 
@@ -331,8 +341,11 @@ function MobileSheetHandle() {
     if (!panel) return;
     const isMobile = () => window.matchMedia("(max-width: 900px)").matches;
     const reduced = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const snaps = () => [96, Math.round(window.innerHeight * 0.48), Math.round(window.innerHeight * 0.88)];
-    const MIN = 72, max = () => window.innerHeight * 0.92;
+    // The tab bar (phones, not in the app) sits under the sheet: the sheet's room is the screen minus it.
+    const tabH = () => { const t = document.querySelector(".tabbar"); return t ? t.getBoundingClientRect().height : 0; };
+    const room = () => window.innerHeight - tabH();
+    const snaps = () => [96, Math.round(room() * 0.48), Math.round(room() * 0.88)];
+    const MIN = 72, max = () => room() * 0.92;
     let startY = 0, startH = 0, dragging = false, moved = false, lastH = 0, hist = [], raf = 0;
 
     const publish = (h) => {
@@ -349,7 +362,7 @@ function MobileSheetHandle() {
     const clampSoft = (h) => {
       const hi = max();
       // The stretch approaches the room that is left (never past the top of the screen).
-      if (h > hi) return hi + rubber(h - hi, window.innerHeight - hi);
+      if (h > hi) return hi + rubber(h - hi, room() - hi);
       if (h < MIN) return MIN - rubber(MIN - h, MIN / 2);
       return h;
     };
@@ -423,7 +436,7 @@ function MobileSheetHandle() {
     window.atlasSheet = {
       ensure: (fraction) => {
         if (!isMobile()) return;
-        const want = Math.round(window.innerHeight * fraction);
+        const want = Math.round(room() * fraction);
         if (curH() < want - 4) springTo(want);
       },
     };

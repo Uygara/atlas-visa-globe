@@ -326,7 +326,8 @@ function Masthead(_ref9) {
     _useStateC0 = _slicedToArray(_useStateC9, 2),
     sheetOpen = _useStateC0[0],
     setSheetOpen = _useStateC0[1];
-  var headerRef = useRefC(null);
+  var headerRef = useRefC(null),
+    moreRef = useRefC(null);
   var toolsBtn = useRefC(null),
     prefsBtn = useRefC(null);
   var toolsPanel = useRefC(null),
@@ -355,14 +356,14 @@ function Masthead(_ref9) {
   useEffectC(function () {
     if (!open && !sheetOpen) return;
     var onDown = function onDown(e) {
-      if (headerRef.current && !headerRef.current.contains(e.target)) {
+      if (headerRef.current && !headerRef.current.contains(e.target) && !(moreRef.current && moreRef.current.contains(e.target))) {
         setOpen(null);
         setSheetOpen(false);
       }
     };
     var onKey = function onKey(e) {
       if (e.key !== "Escape") return;
-      var btn = open === "tools" ? toolsBtn.current : open === "prefs" ? prefsBtn.current : null;
+      var btn = open === "tools" ? toolsBtn.current : open === "prefs" ? prefsBtn.current : sheetOpen ? moreRef.current : null;
       setOpen(null);
       setSheetOpen(false);
       if (btn) btn.focus();
@@ -395,7 +396,13 @@ function Masthead(_ref9) {
       }
     }, themeName(v));
   }));
-  return React.createElement("header", {
+  var TAB_LABEL = {
+    "/": tr("nav.tab_map", "Map"),
+    "/visa/": tr("nav.countries", "Countries"),
+    "/itinerary/": tr("nav.tab_planner", "Planner"),
+    "/panel/": tr("nav.panel", "My panel")
+  };
+  return React.createElement(React.Fragment, null, React.createElement("header", {
     ref: headerRef,
     className: "masthead" + (sheetOpen ? " is-open" : "")
   }, React.createElement("a", {
@@ -504,19 +511,7 @@ function Masthead(_ref9) {
     }, l["native"], l.beta ? " (beta)" : ""));
   })), themeOpts && React.createElement("p", {
     className: "mh-grp-label"
-  }, tr("settings.theme", "Theme")), themeOpts)), React.createElement(AccountLink, null)), React.createElement("button", {
-    type: "button",
-    className: "mh-burger",
-    "aria-label": tr("nav.menu", "Menu"),
-    "aria-expanded": sheetOpen,
-    onClick: function onClick() {
-      return setSheetOpen(function (o) {
-        return !o;
-      });
-    }
-  }, React.createElement(IconMenu, {
-    open: sheetOpen
-  })), React.createElement("div", {
+  }, tr("settings.theme", "Theme")), themeOpts)), React.createElement(AccountLink, null)), React.createElement("div", {
     className: "mh-sheet"
   }, nav.PRIMARY.map(function (it) {
     return React.createElement("a", {
@@ -552,7 +547,27 @@ function Masthead(_ref9) {
     href: nav.SUPPORT.href,
     target: "_blank",
     rel: "noopener"
-  }, tr(nav.SUPPORT.key, nav.SUPPORT.en)))));
+  }, tr(nav.SUPPORT.key, nav.SUPPORT.en))))), React.createElement("nav", {
+    className: "tabbar",
+    "aria-label": tr("nav.tabs", "Quick links")
+  }, nav.PRIMARY.map(function (it) {
+    return React.createElement("a", {
+      key: it.href,
+      className: "tb-item",
+      href: to(it.href),
+      "aria-current": cur(it)
+    }, TAB_LABEL[it.href] || label(it));
+  }), React.createElement("button", {
+    ref: moreRef,
+    type: "button",
+    className: "tb-item tb-more",
+    "aria-expanded": sheetOpen,
+    onClick: function onClick() {
+      return setSheetOpen(function (o) {
+        return !o;
+      });
+    }
+  }, tr("nav.tab_more", "More"))));
 }
 function MobileSheetHandle() {
   var ref = useRefC(null);
@@ -566,12 +581,19 @@ function MobileSheetHandle() {
     var reduced = function reduced() {
       return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     };
+    var tabH = function tabH() {
+      var t = document.querySelector(".tabbar");
+      return t ? t.getBoundingClientRect().height : 0;
+    };
+    var room = function room() {
+      return window.innerHeight - tabH();
+    };
     var snaps = function snaps() {
-      return [96, Math.round(window.innerHeight * 0.48), Math.round(window.innerHeight * 0.88)];
+      return [96, Math.round(room() * 0.48), Math.round(room() * 0.88)];
     };
     var MIN = 72,
       max = function max() {
-        return window.innerHeight * 0.92;
+        return room() * 0.92;
       };
     var startY = 0,
       startH = 0,
@@ -601,7 +623,7 @@ function MobileSheetHandle() {
     };
     var clampSoft = function clampSoft(h) {
       var hi = max();
-      if (h > hi) return hi + rubber(h - hi, window.innerHeight - hi);
+      if (h > hi) return hi + rubber(h - hi, room() - hi);
       if (h < MIN) return MIN - rubber(MIN - h, MIN / 2);
       return h;
     };
@@ -702,7 +724,7 @@ function MobileSheetHandle() {
     window.atlasSheet = {
       ensure: function ensure(fraction) {
         if (!isMobile()) return;
-        var want = Math.round(window.innerHeight * fraction);
+        var want = Math.round(room() * fraction);
         if (curH() < want - 4) springTo(want);
       }
     };

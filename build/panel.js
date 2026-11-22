@@ -77,8 +77,31 @@ function Panel(_ref) {
     if (v) setShowPickerRaw(false);
   };
   useLangTick();
+  var isPhone = useIsPhone();
   var groupActive = groupMode && groupPassports && groupPassports.length > 0;
   var tallyData = groupActive ? window.tallyGroup(groupPassports) : passport ? direction === "incoming" ? window.tallyIncoming(passport) : variant && variant !== "ordinary" ? window.tallyVariant(passport, variant) : window.tally(passport) : null;
+  var typeSelector = passport && setVariant && window.passportVariants && window.passportVariants(passport).length > 0 && React.createElement(PassportTypeSelector, {
+    passport: passport,
+    value: variant || "ordinary",
+    onChange: setVariant
+  });
+  var permitPicker = passport && setResidencePermits && React.createElement(ResidencePermitPicker, {
+    value: residencePermits || [],
+    onChange: setResidencePermits
+  });
+  var directionToggle = passport && !groupMode && tallyData && React.createElement(DirectionToggle, {
+    value: direction,
+    onChange: setDirection,
+    passport: passport
+  });
+  var dualHint = passport && setGroupMode && setGroupPassports && !groupMode && React.createElement(DualCitizenshipHint, {
+    primary: passport,
+    onAccept: function onAccept(secondary) {
+      setGroupPassports([passport, secondary]);
+      setGroupMode(true);
+      if (setCompareMode) setCompareMode(false);
+    }
+  });
   return React.createElement("aside", {
     className: "panel",
     id: "panel",
@@ -101,29 +124,38 @@ function Panel(_ref) {
     onClick: function onClick() {
       return setShowPicker(true);
     }
-  }, tr("picker.guessed", "Guessed from your time zone. Not your passport? Change it")), passport && setVariant && window.passportVariants && window.passportVariants(passport).length > 0 && React.createElement(PassportTypeSelector, {
+  }, tr("picker.guessed", "Guessed from your time zone. Not your passport? Change it")), !isPhone && typeSelector, !isPhone && permitPicker, !isPhone && dualHint), isPhone && tallyData && React.createElement("section", {
+    className: "p-sec p-answer"
+  }, React.createElement(Tally, {
+    tally: tallyData,
+    filter: filter,
+    setFilter: setFilter,
+    groupActive: groupActive,
+    direction: direction,
+    part: "head"
+  }), (typeSelector || permitPicker || directionToggle) && React.createElement(PanelDetails, null, typeSelector, permitPicker, directionToggle)), isPhone && tallyData && React.createElement("section", {
+    className: "p-sec"
+  }, React.createElement(Tally, {
+    tally: tallyData,
+    filter: filter,
+    setFilter: setFilter,
+    groupActive: groupActive,
+    direction: direction,
+    part: "ledger"
+  }), filter !== "all" && React.createElement(FilterList, {
+    filter: filter,
     passport: passport,
-    value: variant || "ordinary",
-    onChange: setVariant
-  }), passport && setResidencePermits && React.createElement(ResidencePermitPicker, {
-    value: residencePermits || [],
-    onChange: setResidencePermits
-  }), passport && setGroupMode && setGroupPassports && !groupMode && React.createElement(DualCitizenshipHint, {
-    primary: passport,
-    onAccept: function onAccept(secondary) {
-      setGroupPassports([passport, secondary]);
-      setGroupMode(true);
-      if (setCompareMode) setCompareMode(false);
-    }
-  })), tallyData && React.createElement("section", {
+    direction: direction,
+    variant: variant,
+    groupPassports: groupActive ? groupPassports : null,
+    onOpen: onPickFromSearch
+  }), dualHint), isPhone && passport && !tallyData && (typeSelector || permitPicker || dualHint) && React.createElement("section", {
+    className: "p-sec"
+  }, typeSelector, permitPicker, dualHint), !isPhone && tallyData && React.createElement("section", {
     className: "p-sec"
   }, React.createElement(Caption, {
     n: 2
-  }, groupActive ? window.t("tally.group_label") : window.t("panel.direction")), passport && !groupMode && React.createElement(DirectionToggle, {
-    value: direction,
-    onChange: setDirection,
-    passport: passport
-  }), React.createElement(Tally, {
+  }, groupActive ? window.t("tally.group_label") : window.t("panel.direction")), directionToggle, React.createElement(Tally, {
     tally: tallyData,
     filter: filter,
     setFilter: setFilter,
@@ -200,18 +232,78 @@ function Panel(_ref) {
     }
   }), React.createElement(PanelFooter, null));
 }
-function ForYouSection(_ref2) {
-  var children = _ref2.children;
+function useIsPhone() {
+  var q = "(max-width: 900px)";
   var _useState5 = useState(function () {
+      return !!(window.matchMedia && window.matchMedia(q).matches);
+    }),
+    _useState6 = _slicedToArray(_useState5, 2),
+    phone = _useState6[0],
+    setPhone = _useState6[1];
+  useEffect(function () {
+    if (!window.matchMedia) return;
+    var mq = window.matchMedia(q);
+    var f = function f() {
+      return setPhone(mq.matches);
+    };
+    if (mq.addEventListener) mq.addEventListener("change", f);else mq.addListener(f);
+    f();
+    return function () {
+      if (mq.removeEventListener) mq.removeEventListener("change", f);else mq.removeListener(f);
+    };
+  }, []);
+  return phone;
+}
+function PanelDetails(_ref2) {
+  var children = _ref2.children;
+  var _useState7 = useState(function () {
+      try {
+        return sessionStorage.getItem("atlas.details.open") === "1";
+      } catch (e) {
+        return false;
+      }
+    }),
+    _useState8 = _slicedToArray(_useState7, 2),
+    open = _useState8[0],
+    setOpen = _useState8[1];
+  var toggle = function toggle() {
+    return setOpen(function (o) {
+      var next = !o;
+      try {
+        sessionStorage.setItem("atlas.details.open", next ? "1" : "0");
+      } catch (e) {}
+      return next;
+    });
+  };
+  return React.createElement("div", {
+    className: "p-details"
+  }, React.createElement("button", {
+    type: "button",
+    className: "row-btn p-details-btn",
+    "aria-expanded": open,
+    "aria-controls": "p-details-body",
+    onClick: toggle
+  }, React.createElement("span", {
+    className: "row-btn-label"
+  }, tr("panel.details", "Details: passport type, residence permit, direction")), React.createElement(IconCaret, {
+    className: open ? "is-flipped" : ""
+  })), open && React.createElement("div", {
+    id: "p-details-body",
+    className: "p-details-body"
+  }, children));
+}
+function ForYouSection(_ref3) {
+  var children = _ref3.children;
+  var _useState9 = useState(function () {
       try {
         return localStorage.getItem("atlas.foryou.collapsed") !== "1";
       } catch (e) {
         return true;
       }
     }),
-    _useState6 = _slicedToArray(_useState5, 2),
-    open = _useState6[0],
-    setOpen = _useState6[1];
+    _useState0 = _slicedToArray(_useState9, 2),
+    open = _useState0[0],
+    setOpen = _useState0[1];
   var toggle = function toggle() {
     setOpen(function (o) {
       var next = !o;
@@ -252,10 +344,10 @@ function PanelHeader() {
     title: window.t("footer.refresh")
   }, window.t("header.updated"), " ", formatted));
 }
-function PassportTypeSelector(_ref3) {
-  var passport = _ref3.passport,
-    value = _ref3.value,
-    onChange = _ref3.onChange;
+function PassportTypeSelector(_ref4) {
+  var passport = _ref4.passport,
+    value = _ref4.value,
+    onChange = _ref4.onChange;
   var variants = window.passportVariants(passport);
   if (!variants.length) return null;
   var lang = window.ATLAS_LANG || "en";
@@ -315,13 +407,13 @@ function PassportTypeSelector(_ref3) {
     }
   }, window.t("panel.variant_disclaimer")));
 }
-function ResidencePermitPicker(_ref4) {
-  var value = _ref4.value,
-    onChange = _ref4.onChange;
-  var _useState7 = useState(false),
-    _useState8 = _slicedToArray(_useState7, 2),
-    open = _useState8[0],
-    setOpen = _useState8[1];
+function ResidencePermitPicker(_ref5) {
+  var value = _ref5.value,
+    onChange = _ref5.onChange;
+  var _useState1 = useState(false),
+    _useState10 = _slicedToArray(_useState1, 2),
+    open = _useState10[0],
+    setOpen = _useState10[1];
   var T = function T(k, fallback) {
     var v = window.t ? window.t(k) : k;
     return v === k ? fallback : v;
@@ -413,9 +505,9 @@ function ResidencePermitPicker(_ref4) {
 var _POPULAR_DESTS = {
   US: ["MX", "CA", "GB", "FR", "IT", "DO", "JP", "ES"]
 };
-function PopularDestinations(_ref5) {
-  var passport = _ref5.passport,
-    onPick = _ref5.onPick;
+function PopularDestinations(_ref6) {
+  var passport = _ref6.passport,
+    onPick = _ref6.onPick;
   var dests = _POPULAR_DESTS[passport];
   if (!dests) return null;
   var T = function T(k, fallback) {
@@ -456,9 +548,9 @@ function PopularDestinations(_ref5) {
     }));
   })));
 }
-function DualCitizenshipHint(_ref6) {
-  var primary = _ref6.primary,
-    onAccept = _ref6.onAccept;
+function DualCitizenshipHint(_ref7) {
+  var primary = _ref7.primary,
+    onAccept = _ref7.onAccept;
   var hints = window.DUAL_CITIZENSHIP_HINTS;
   if (!hints || !hints[primary]) return null;
   var hint = hints[primary];
@@ -504,11 +596,11 @@ function DualCitizenshipHint(_ref6) {
     className: "note-s"
   }, hint.reason));
 }
-function ModeBar(_ref7) {
-  var compareMode = _ref7.compareMode,
-    setCompareMode = _ref7.setCompareMode,
-    groupMode = _ref7.groupMode,
-    setGroupMode = _ref7.setGroupMode;
+function ModeBar(_ref8) {
+  var compareMode = _ref8.compareMode,
+    setCompareMode = _ref8.setCompareMode,
+    groupMode = _ref8.groupMode,
+    setGroupMode = _ref8.setGroupMode;
   var toggleCompare = function toggleCompare() {
     var next = !compareMode;
     setCompareMode(next);
@@ -550,10 +642,10 @@ function ModeBar(_ref7) {
     "aria-hidden": "true"
   }, groupMode ? "✓" : "+"), window.t("mode.group_short"))));
 }
-function DirectionToggle(_ref8) {
-  var value = _ref8.value,
-    onChange = _ref8.onChange,
-    passport = _ref8.passport;
+function DirectionToggle(_ref9) {
+  var value = _ref9.value,
+    onChange = _ref9.onChange,
+    passport = _ref9.passport;
   var cur = value || "outgoing";
   var opts = [{
     v: "outgoing",
@@ -594,14 +686,14 @@ function DirectionToggle(_ref8) {
     className: "p-hint"
   }, active === null || active === void 0 ? void 0 : active.hint));
 }
-function GroupPicker(_ref9) {
-  var primary = _ref9.primary,
-    values = _ref9.values,
-    onChange = _ref9.onChange;
-  var _useState9 = useState(false),
-    _useState0 = _slicedToArray(_useState9, 2),
-    pickerOpen = _useState0[0],
-    setPickerOpen = _useState0[1];
+function GroupPicker(_ref0) {
+  var primary = _ref0.primary,
+    values = _ref0.values,
+    onChange = _ref0.onChange;
+  var _useState11 = useState(false),
+    _useState12 = _slicedToArray(_useState11, 2),
+    pickerOpen = _useState12[0],
+    setPickerOpen = _useState12[1];
   var MAX = 10;
   useEffect(function () {
     if (primary && values.length === 0) onChange([primary]);
@@ -680,13 +772,13 @@ function GroupPicker(_ref9) {
     }
   }));
 }
-function GroupAddDropdown(_ref0) {
-  var existing = _ref0.existing,
-    onPick = _ref0.onPick;
-  var _useState1 = useState(""),
-    _useState10 = _slicedToArray(_useState1, 2),
-    q = _useState10[0],
-    setQ = _useState10[1];
+function GroupAddDropdown(_ref1) {
+  var existing = _ref1.existing,
+    onPick = _ref1.onPick;
+  var _useState13 = useState(""),
+    _useState14 = _slicedToArray(_useState13, 2),
+    q = _useState14[0],
+    setQ = _useState14[1];
   var filtered = window.PASSPORT_LIST.filter(function (p) {
     return !existing.includes(p.iso2);
   }).filter(function (p) {
@@ -730,14 +822,14 @@ function GroupAddDropdown(_ref0) {
     className: "dd-empty"
   }, window.t("picker.no_matches_short"))));
 }
-function PassportPicker(_ref1) {
-  var value = _ref1.value,
-    open = _ref1.open,
-    setOpen = _ref1.setOpen,
-    onChange = _ref1.onChange,
-    isCompare = _ref1.isCompare,
-    placeholder = _ref1.placeholder,
-    allowClear = _ref1.allowClear;
+function PassportPicker(_ref10) {
+  var value = _ref10.value,
+    open = _ref10.open,
+    setOpen = _ref10.setOpen,
+    onChange = _ref10.onChange,
+    isCompare = _ref10.isCompare,
+    placeholder = _ref10.placeholder,
+    allowClear = _ref10.allowClear;
   var current = value ? window.PASSPORTS[value] : null;
   var country = value ? window.byIso2[value] : null;
   var rank = value && window.passportRank(value);
@@ -789,15 +881,15 @@ function PassportPicker(_ref1) {
     }
   }));
 }
-function PassportDropdown(_ref10) {
-  var value = _ref10.value,
-    onChange = _ref10.onChange,
-    allowClear = _ref10.allowClear,
-    onClear = _ref10.onClear;
-  var _useState11 = useState(""),
-    _useState12 = _slicedToArray(_useState11, 2),
-    q = _useState12[0],
-    setQ = _useState12[1];
+function PassportDropdown(_ref11) {
+  var value = _ref11.value,
+    onChange = _ref11.onChange,
+    allowClear = _ref11.allowClear,
+    onClear = _ref11.onClear;
+  var _useState15 = useState(""),
+    _useState16 = _slicedToArray(_useState15, 2),
+    q = _useState16[0],
+    setQ = _useState16[1];
   var list = useMemo(function () {
     var ql = q.toLowerCase().trim();
     var filtered = window.PASSPORT_LIST.filter(function (p) {
@@ -862,12 +954,13 @@ function PassportDropdown(_ref10) {
     className: "dd-empty"
   }, window.t("picker.no_matches"))));
 }
-function Tally(_ref11) {
-  var tally = _ref11.tally,
-    filter = _ref11.filter,
-    setFilter = _ref11.setFilter,
-    groupActive = _ref11.groupActive,
-    direction = _ref11.direction;
+function Tally(_ref12) {
+  var tally = _ref12.tally,
+    filter = _ref12.filter,
+    setFilter = _ref12.setFilter,
+    groupActive = _ref12.groupActive,
+    direction = _ref12.direction,
+    part = _ref12.part;
   var total = (tally.idc || 0) + tally.vf + (tally.eta || 0) + tally.ev + tally.voa + tally.vr + (tally.ban || 0);
   var rows = [].concat(_toConsumableArray((tally.idc || 0) > 0 ? [{
     k: "idc",
@@ -894,7 +987,7 @@ function Tally(_ref11) {
   var noVisa = window.mobilityScore(tally);
   var withEvisa = window.accessScore(tally);
   var scoreLabel = groupActive ? window.t("tally.group_score") : direction === "incoming" ? window.t("tally.incoming_label") : window.t("tally.no_visa");
-  return React.createElement("div", null, React.createElement("div", {
+  return React.createElement("div", null, part !== "ledger" && React.createElement(React.Fragment, null, React.createElement("div", {
     className: "score",
     "aria-live": "polite",
     "aria-atomic": "true"
@@ -920,7 +1013,7 @@ function Tally(_ref11) {
         background: r.k === "ban" ? undefined : "var(--".concat(r.k, ")")
       }
     });
-  })), React.createElement("ul", {
+  }))), part !== "head" && React.createElement("ul", {
     className: "ledger"
   }, React.createElement("li", null, React.createElement("button", {
     type: "button",
@@ -960,17 +1053,17 @@ function Tally(_ref11) {
   })));
 }
 var FILTER_LIST_PREVIEW = 12;
-function FilterList(_ref12) {
-  var filter = _ref12.filter,
-    passport = _ref12.passport,
-    direction = _ref12.direction,
-    variant = _ref12.variant,
-    groupPassports = _ref12.groupPassports,
-    onOpen = _ref12.onOpen;
-  var _useState13 = useState(false),
-    _useState14 = _slicedToArray(_useState13, 2),
-    showAll = _useState14[0],
-    setShowAll = _useState14[1];
+function FilterList(_ref13) {
+  var filter = _ref13.filter,
+    passport = _ref13.passport,
+    direction = _ref13.direction,
+    variant = _ref13.variant,
+    groupPassports = _ref13.groupPassports,
+    onOpen = _ref13.onOpen;
+  var _useState17 = useState(false),
+    _useState18 = _slicedToArray(_useState17, 2),
+    showAll = _useState18[0],
+    setShowAll = _useState18[1];
   useEffect(function () {
     setShowAll(false);
   }, [filter, passport, direction]);
@@ -1029,11 +1122,11 @@ function FilterList(_ref12) {
     n: rows.length
   })));
 }
-function CountrySearch(_ref13) {
-  var passport = _ref13.passport,
-    search = _ref13.search,
-    setSearch = _ref13.setSearch,
-    onPick = _ref13.onPick;
+function CountrySearch(_ref14) {
+  var passport = _ref14.passport,
+    search = _ref14.search,
+    setSearch = _ref14.setSearch,
+    onPick = _ref14.onPick;
   var results = useMemo(function () {
     var q = search.toLowerCase().trim();
     if (!q) return [];
@@ -1081,15 +1174,15 @@ function CountrySearch(_ref13) {
 function stampVar(s) {
   return ["idc", "vf", "eta", "ev", "voa", "vr", "ban"].includes(s) ? "var(--".concat(s, ")") : "var(--ink-3)";
 }
-function DetailCard(_ref14) {
+function DetailCard(_ref15) {
   var _window$byIso2$compar2;
-  var passport = _ref14.passport,
-    compare = _ref14.compare,
-    iso2 = _ref14.iso2,
-    onClose = _ref14.onClose,
-    direction = _ref14.direction,
-    groupPassports = _ref14.groupPassports,
-    variant = _ref14.variant;
+  var passport = _ref15.passport,
+    compare = _ref15.compare,
+    iso2 = _ref15.iso2,
+    onClose = _ref15.onClose,
+    direction = _ref15.direction,
+    groupPassports = _ref15.groupPassports,
+    variant = _ref15.variant;
   var ref = useRef(null);
   useEffect(function () {
     if (ref.current && ref.current.scrollIntoView) {
@@ -1323,9 +1416,9 @@ function DetailCard(_ref14) {
       fontWeight: 600,
       color: "var(--ink-2)"
     }
-  }, window.t("detail.per_group_member")), groupRows.map(function (_ref15) {
-    var p = _ref15.p,
-      rr = _ref15.r;
+  }, window.t("detail.per_group_member")), groupRows.map(function (_ref16) {
+    var p = _ref16.p,
+      rr = _ref16.r;
     var c = window.byIso2[p];
     var isBest = r.via === p;
     return React.createElement("div", {
@@ -1352,10 +1445,10 @@ function DetailCard(_ref14) {
     }, rr.days, "d"));
   })));
 }
-function ConditionsBox(_ref16) {
-  var passport = _ref16.passport,
-    destIso2 = _ref16.destIso2,
-    baseStatus = _ref16.baseStatus;
+function ConditionsBox(_ref17) {
+  var passport = _ref17.passport,
+    destIso2 = _ref17.destIso2,
+    baseStatus = _ref17.baseStatus;
   if (!passport || !destIso2) return null;
   if (baseStatus === "self" || baseStatus === "vf") return null;
   var rows = window.visaCondition && window.visaCondition(passport, destIso2);
@@ -1456,10 +1549,10 @@ function ConditionsBox(_ref16) {
     }, window.t("cond.source")));
   }));
 }
-function TripNotesGroup(_ref17) {
+function TripNotesGroup(_ref18) {
   var _window$etiasStatus;
-  var passport = _ref17.passport,
-    destIso2 = _ref17.destIso2;
+  var passport = _ref18.passport,
+    destIso2 = _ref18.destIso2;
   if (!passport || !destIso2) return null;
   var transitWouldRender = !!transitNoteFor(passport, destIso2);
   var estaWouldRender = destIso2 === "US" && !!window.estaEligible;
@@ -1517,9 +1610,9 @@ function transitNoteFor(passport, destIso2) {
   };
   return null;
 }
-function TransitVisaHint(_ref18) {
-  var passport = _ref18.passport,
-    destIso2 = _ref18.destIso2;
+function TransitVisaHint(_ref19) {
+  var passport = _ref19.passport,
+    destIso2 = _ref19.destIso2;
   var note = transitNoteFor(passport, destIso2);
   if (!note) return null;
   var vars = {
@@ -1551,9 +1644,9 @@ function schengenHelpFor(passport, destIso2) {
     checklist: checklist
   };
 }
-function SchengenHelp(_ref19) {
-  var passport = _ref19.passport,
-    destIso2 = _ref19.destIso2;
+function SchengenHelp(_ref20) {
+  var passport = _ref20.passport,
+    destIso2 = _ref20.destIso2;
   var help = schengenHelpFor(passport, destIso2);
   if (!help) return null;
   return React.createElement("div", {
@@ -1568,8 +1661,8 @@ function SchengenHelp(_ref19) {
     href: help.checklist
   }, tr("detail.schengen_checklist", "Visa document checklist")))));
 }
-function EstaHint(_ref20) {
-  var passport = _ref20.passport;
+function EstaHint(_ref21) {
+  var passport = _ref21.passport;
   if (!passport || !window.estaEligible) return null;
   var eligible = window.estaEligible(passport);
   return React.createElement("a", {
@@ -1584,8 +1677,8 @@ function EstaHint(_ref20) {
     "aria-hidden": "true"
   }, "\u2192"));
 }
-function IsraelStampHint(_ref21) {
-  var destIso2 = _ref21.destIso2;
+function IsraelStampHint(_ref22) {
+  var destIso2 = _ref22.destIso2;
   if (!destIso2 || !window.israelStampWarning) return null;
   var r = window.israelStampWarning(destIso2);
   if (!r) return null;
@@ -1599,8 +1692,8 @@ function IsraelStampHint(_ref21) {
     className: "note-s"
   }, r.note));
 }
-function LoiHint(_ref22) {
-  var destIso2 = _ref22.destIso2;
+function LoiHint(_ref23) {
+  var destIso2 = _ref23.destIso2;
   if (!destIso2 || !window.loiRule) return null;
   var r = window.loiRule(destIso2);
   if (!r) return null;
@@ -1616,8 +1709,8 @@ function LoiHint(_ref22) {
     cost: r.typicalCost
   })));
 }
-function ValidityHint(_ref23) {
-  var destIso2 = _ref23.destIso2;
+function ValidityHint(_ref24) {
+  var destIso2 = _ref24.destIso2;
   if (!destIso2 || !window.passportValidityCheck) return null;
   var res = window.passportValidityCheck(destIso2, {});
   if (!res) return null;
@@ -1636,9 +1729,9 @@ function ValidityHint(_ref23) {
     "aria-hidden": "true"
   }, "\u2192"));
 }
-function EtiasHint(_ref24) {
-  var passport = _ref24.passport,
-    destIso2 = _ref24.destIso2;
+function EtiasHint(_ref25) {
+  var passport = _ref25.passport,
+    destIso2 = _ref25.destIso2;
   if (!passport || !destIso2 || !window.etiasStatus) return null;
   var res = window.etiasStatus(passport, destIso2);
   if (!res || res.kind !== "required") return null;
@@ -1660,10 +1753,10 @@ function EtiasHint(_ref24) {
 var feeLabel = function feeLabel(s) {
   return window.translateFeeText ? window.translateFeeText(s) : s;
 };
-function VisaFeeBox(_ref25) {
-  var passport = _ref25.passport,
-    destIso2 = _ref25.destIso2,
-    status = _ref25.status;
+function VisaFeeBox(_ref26) {
+  var passport = _ref26.passport,
+    destIso2 = _ref26.destIso2,
+    status = _ref26.status;
   if (!passport || !destIso2) return null;
   if (status === "vf" || status === "self" || status === "ban") return null;
   var data = window.visaFee && window.visaFee(passport, destIso2);
@@ -1725,9 +1818,9 @@ function VisaFeeBox(_ref25) {
     date: data.lastReviewed
   })));
 }
-function AlertsCTA(_ref26) {
-  var iso2 = _ref26.iso2,
-    destName = _ref26.destName;
+function AlertsCTA(_ref27) {
+  var iso2 = _ref27.iso2,
+    destName = _ref27.destName;
   var href = "/alerts/?country=".concat(encodeURIComponent(iso2));
   return React.createElement("a", {
     className: "note note-accent",
@@ -1743,8 +1836,8 @@ function AlertsCTA(_ref26) {
     "aria-hidden": "true"
   }, "\u2192"));
 }
-function AdSlot(_ref27) {
-  var slotKey = _ref27.slotKey;
+function AdSlot(_ref28) {
+  var slotKey = _ref28.slotKey;
   var ref = React.useRef(null);
   var pushed = React.useRef(false);
   var ads = window.ADSENSE || {};
@@ -1775,9 +1868,9 @@ function AdSlot(_ref27) {
     className: "ad-label"
   }, "Ad"));
 }
-function AffiliatePartners(_ref28) {
-  var status = _ref28.status,
-    iso2 = _ref28.iso2;
+function AffiliatePartners(_ref29) {
+  var status = _ref29.status,
+    iso2 = _ref29.iso2;
   var partners = window.affiliatesFor && window.affiliatesFor(status, iso2) || [];
   if (partners.length === 0) return null;
   return React.createElement("div", {
@@ -1847,9 +1940,9 @@ function fmtDay(iso, withYear) {
     month: "short"
   });
 }
-function NewsItem(_ref29) {
-  var item = _ref29.item,
-    compact = _ref29.compact;
+function NewsItem(_ref30) {
+  var item = _ref30.item,
+    compact = _ref30.compact;
   var tone = SEVERITY_TONE[item.severity] || SEVERITY_TONE.neutral;
   var hasLink = !!item.sourceUrl;
   var Wrapper = hasLink ? "a" : "div";
@@ -1915,8 +2008,8 @@ function weeklyDigest(passport) {
     mine: mine
   };
 }
-function WeeklyDigest(_ref30) {
-  var passport = _ref30.passport;
+function WeeklyDigest(_ref31) {
+  var passport = _ref31.passport;
   var stats = useMemo(function () {
     return weeklyDigest(passport);
   }, [passport]);
@@ -1947,10 +2040,10 @@ function readItinerary() {
   }
 }
 function ItineraryCTA() {
-  var _useState15 = useState(0),
-    _useState16 = _slicedToArray(_useState15, 2),
-    tick = _useState16[0],
-    setTick = _useState16[1];
+  var _useState19 = useState(0),
+    _useState20 = _slicedToArray(_useState19, 2),
+    tick = _useState20[0],
+    setTick = _useState20[1];
   useEffect(function () {
     var onFocus = function onFocus() {
       return setTick(function (x) {
@@ -2022,12 +2115,12 @@ function toggleWatchlist(iso2) {
   return list;
 }
 function useWatchlist() {
-  var _useState17 = useState(function () {
+  var _useState21 = useState(function () {
       return readWatchlist();
     }),
-    _useState18 = _slicedToArray(_useState17, 2),
-    list = _useState18[0],
-    setList = _useState18[1];
+    _useState22 = _slicedToArray(_useState21, 2),
+    list = _useState22[0],
+    setList = _useState22[1];
   useEffect(function () {
     var onChange = function onChange() {
       return setList(readWatchlist());
@@ -2088,8 +2181,8 @@ function watchlistAlerts(list) {
   }
   return alerted;
 }
-function WatchlistCard(_ref31) {
-  var onOpen = _ref31.onOpen;
+function WatchlistCard(_ref32) {
+  var onOpen = _ref32.onOpen;
   var list = useWatchlist();
   var alerts = useMemo(function () {
     return watchlistAlerts(list, 14);
@@ -2161,8 +2254,8 @@ function WatchlistCard(_ref31) {
     href: window.ATLAS_LANG === "tr" ? "/tr/panel/" : "/panel/"
   }, window.t("watchlist.open_panel")));
 }
-function WatchToggle(_ref32) {
-  var iso2 = _ref32.iso2;
+function WatchToggle(_ref33) {
+  var iso2 = _ref33.iso2;
   var list = useWatchlist();
   var on = list.includes(iso2);
   return React.createElement("button", {
@@ -2222,12 +2315,12 @@ function passportPulse(passport) {
     items: items
   };
 }
-function PassportPulse(_ref33) {
-  var passport = _ref33.passport;
-  var _useState19 = useState(30),
-    _useState20 = _slicedToArray(_useState19, 2),
-    days = _useState20[0],
-    setDays = _useState20[1];
+function PassportPulse(_ref34) {
+  var passport = _ref34.passport;
+  var _useState23 = useState(30),
+    _useState24 = _slicedToArray(_useState23, 2),
+    days = _useState24[0],
+    setDays = _useState24[1];
   var pulse = useMemo(function () {
     return passportPulse(passport, days);
   }, [passport, days]);
@@ -2343,12 +2436,12 @@ function passportFeed(passport) {
   });
   return [].concat(_toConsumableArray(changes), _toConsumableArray(news)).sort(sortNewsDesc);
 }
-function PassportNewsFeed(_ref34) {
-  var passport = _ref34.passport;
-  var _useState21 = useState(false),
-    _useState22 = _slicedToArray(_useState21, 2),
-    expanded = _useState22[0],
-    setExpanded = _useState22[1];
+function PassportNewsFeed(_ref35) {
+  var passport = _ref35.passport;
+  var _useState25 = useState(false),
+    _useState26 = _slicedToArray(_useState25, 2),
+    expanded = _useState26[0],
+    setExpanded = _useState26[1];
   var list = useMemo(function () {
     return passportFeed(passport);
   }, [passport]);
@@ -2450,9 +2543,9 @@ function recentChangesFor(passport, destIso2) {
   });
   return out.slice(0, RC_MAX);
 }
-function RecentChangeRow(_ref35) {
-  var it = _ref35.it,
-    destIso2 = _ref35.destIso2;
+function RecentChangeRow(_ref36) {
+  var it = _ref36.it,
+    destIso2 = _ref36.destIso2;
   var text;
   if (it.kind === "adv") {
     text = tr("recent.advisory", "{issuer} advisory level {from} → {to}", {
@@ -2495,9 +2588,9 @@ function RecentChangeRow(_ref35) {
     }
   }, text));
 }
-function RecentChanges(_ref36) {
-  var passport = _ref36.passport,
-    destIso2 = _ref36.destIso2;
+function RecentChanges(_ref37) {
+  var passport = _ref37.passport,
+    destIso2 = _ref37.destIso2;
   useLangTick();
   var list = useMemo(function () {
     return recentChangesFor(passport, destIso2);
@@ -2552,9 +2645,9 @@ function RecentChanges(_ref36) {
     href: "".concat(lang, "/reports/")
   }, tr("recent.report", "Monthly report"))));
 }
-function NewsBox(_ref37) {
-  var passport = _ref37.passport,
-    destIso2 = _ref37.destIso2;
+function NewsBox(_ref38) {
+  var passport = _ref38.passport,
+    destIso2 = _ref38.destIso2;
   var list = useMemo(function () {
     if (!window.VISA_NEWS) return [];
     return window.VISA_NEWS.filter(function (it) {
@@ -2585,10 +2678,10 @@ function NewsBox(_ref37) {
   })));
 }
 function ChangelogFloater() {
-  var _useState23 = useState(false),
-    _useState24 = _slicedToArray(_useState23, 2),
-    open = _useState24[0],
-    setOpen = _useState24[1];
+  var _useState27 = useState(false),
+    _useState28 = _slicedToArray(_useState27, 2),
+    open = _useState28[0],
+    setOpen = _useState28[1];
   useLangTick();
   var count = (window.CHANGELOG || []).length;
   if (count === 0) return null;
@@ -2614,12 +2707,12 @@ function ChangelogFloater() {
     embedded: true
   })));
 }
-function Changelog(_ref38) {
-  var embedded = _ref38.embedded;
-  var _useState25 = useState(false),
-    _useState26 = _slicedToArray(_useState25, 2),
-    expanded = _useState26[0],
-    setExpanded = _useState26[1];
+function Changelog(_ref39) {
+  var embedded = _ref39.embedded;
+  var _useState29 = useState(false),
+    _useState30 = _slicedToArray(_useState29, 2),
+    expanded = _useState30[0],
+    setExpanded = _useState30[1];
   var items = expanded ? window.CHANGELOG : window.CHANGELOG.slice(0, 4);
   return React.createElement("div", {
     style: {
@@ -2656,9 +2749,9 @@ function describeStatusChange(from, to) {
   if (specific && specific !== key) return specific;
   return window.t("change.now_".concat(to)) || window.t("change.rules_updated");
 }
-function ChangelogItem(_ref39) {
+function ChangelogItem(_ref40) {
   var _entry$affects$passpo;
-  var entry = _ref39.entry;
+  var entry = _ref40.entry;
   var passportIso = (_entry$affects$passpo = entry.affects.passports) === null || _entry$affects$passpo === void 0 ? void 0 : _entry$affects$passpo[0];
   var passport = passportIso ? window.byIso2[passportIso] : null;
   var dest = window.byIso2[entry.affects.dest];

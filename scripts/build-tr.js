@@ -95,7 +95,7 @@ const ATTRS = ["placeholder", "title", "aria-label", "alt"];
 
 const skipped = (el) =>
   SKIP.has(el.localName) || el.hasAttribute("data-no-i18n") ||
-  el.matches("header.masthead, footer.site-foot, .doc-band");
+  el.matches("header.masthead, footer.site-foot, .doc-band, nav.tabbar");
 const inlineOnly = (el) => [...el.children].every((c) => INLINE.has(c.localName) && inlineOnly(c));
 
 // A unit is the largest stretch of text that has to be translated as a whole: an
@@ -116,7 +116,7 @@ function collectUnits(doc) {
   };
   walk(doc.body);
   doc.querySelectorAll("*").forEach((el) => {
-    if (skipped(el) || el.closest("header.masthead, footer.site-foot, [data-no-i18n], svg")) return;
+    if (skipped(el) || el.closest("header.masthead, footer.site-foot, nav.tabbar, [data-no-i18n], svg")) return;
     for (const a of ATTRS) {
       const v = el.getAttribute(a);
       if (v && hasLetters(v)) units.push({ kind: "attr", el, attr: a, key: a + "=" + norm(v) });

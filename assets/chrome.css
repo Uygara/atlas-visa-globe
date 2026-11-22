@@ -117,12 +117,6 @@
 .mh-account.is-signed-in .mh-acct-name {
   display: block; position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
 }
-.mh-burger {
-  display: none; width: 40px; height: 36px; flex: none;
-  align-items: center; justify-content: center;
-  background: transparent; color: var(--ink); cursor: pointer;
-  border: 1px solid var(--rule-strong); border-radius: var(--radius);
-}
 .mh-sheet { display: none; }
 
 /* Segmented control — two or three mutually-exclusive options. */
@@ -187,11 +181,10 @@
   .brand-word { font-size: var(--fs-lg); }
   .mh-nav, .mh-prefs { display: none; }
   .mh-tools { margin-inline-start: auto; gap: 6px; }
-  /* Phones: brand, a small outlined sign-in button and the menu button. */
+  /* Phones: brand and a small outlined sign-in button; the menu is "More" in the tab bar. */
   .mh-account { min-height: 36px; padding: 0 12px; background: transparent; color: var(--accent); font-size: var(--fs-xs); }
   .mh-account:hover { filter: none; background: color-mix(in oklab, var(--accent) 10%, transparent); }
   .mh-account.is-signed-in { width: 36px; padding: 0; background: var(--accent); color: var(--on-accent); }
-  .mh-burger { display: inline-flex; width: 44px; height: 40px; }
   .masthead.is-open .mh-sheet {
     display: block; position: absolute; top: 100%; inset-inline: 0;
     max-height: calc(100vh - 60px); max-height: calc(100dvh - 60px); overflow-y: auto;
@@ -219,13 +212,36 @@
   .mh-sheet a.mh-sheet-ext { display: inline-flex; align-items: center; min-height: 44px; padding: 0 4px; font-size: var(--fs-sm); font-weight: 600; color: var(--ink-2); text-decoration: none; }
 }
 
+/* ── Phone tab bar ───────────────────────────────────────────────────────
+   Five text links fixed to the bottom of every page below 900px; "More" opens
+   the menu sheet. --tb-h is the room pages and sheets leave for it. The app
+   (html.in-app) draws its own bar, so ours is off there. */
+.tabbar { display: none; }
+@media (max-width: 900px) {
+  :root { --tb-h: calc(60px + env(safe-area-inset-bottom, 0px)); }
+  html.in-app { --tb-h: 0px; }
+  .tabbar {
+    position: fixed; inset-inline: 0; bottom: 0; z-index: 30;
+    display: flex; height: var(--tb-h); padding-bottom: env(safe-area-inset-bottom, 0px);
+    background: var(--paper-raised); border-top: 1px solid var(--rule);
+  }
+  .tb-item {
+    flex: 1 1 0; min-width: 0; min-height: 44px; display: flex; align-items: center; justify-content: center;
+    margin: 0; padding: 0 2px; border: 0; border-radius: 0; background: transparent; cursor: pointer;
+    font-family: var(--font-sans); font-size: var(--fs-xs); font-weight: 500; line-height: 1.15; text-align: center;
+    color: var(--ink-2); text-decoration: none; overflow-wrap: anywhere;
+  }
+  .tb-item[aria-current="page"], .tb-item[aria-expanded="true"] { color: var(--accent); box-shadow: inset 0 2px 0 var(--accent); }
+  html.in-app .tabbar { display: none !important; }
+}
+
 /* Touch screens: segmented buttons big enough for a thumb (they were 26×19). */
 @media (pointer: coarse) {
   .seg button { min-width: 36px; min-height: 32px; }
   /* 44px targets (WCAG 2.5.5, Apple HIG): header controls keep their look and
      grow their hit area; the brand and footer links simply get taller. */
-  .mh-burger, .seg button, .mh-account, .icon-btn { position: relative; }
-  .mh-burger::after, .seg button::after, .mh-account::after, .icon-btn::after {
+  .seg button, .mh-account, .icon-btn { position: relative; }
+  .seg button::after, .mh-account::after, .icon-btn::after {
     content: ""; position: absolute; inset: -6px 0;
   }
   .mh-link, .mh-prefs-btn, .mh-opt { min-height: 44px; }

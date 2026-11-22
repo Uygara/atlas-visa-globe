@@ -1,6 +1,6 @@
 // Behaviour for the static-page masthead stamped by scripts/partials.js:
 //   • "All tools" and "Language and theme" pop-over menus (button + hidden panel)
-//   • mobile sheet (burger)
+//   • mobile sheet (opened by "More" in the tab bar)
 //   • light/dark toggle (shares atlas.tweaks.background with the globe apps)
 //   • language choice (hands off to data/static-i18n.js when the page has it)
 // Pure progressive enhancement: without JS every link is still a real link
@@ -100,7 +100,7 @@
     // ── Current page ─────────────────────────────────────────────────
     var path = location.pathname.replace(/index\.html$/, "").replace(/^\/tr(?=\/)/, "");
     var onTool = false;
-    head.querySelectorAll("a.mh-link, a.mh-sheet-link, a.mh-sheet-tool, a.mh-tool").forEach(function (a) {
+    document.querySelectorAll(".masthead a.mh-link, .masthead a.mh-sheet-link, .masthead a.mh-sheet-tool, .masthead a.mh-tool, .tabbar a.tb-item").forEach(function (a) {
       var href = (a.getAttribute("href") || "").replace(/^\/tr(?=\/)/, "");
       var on = href === "/" ? (path === "/") : (path === href || path.indexOf(href) === 0);
       if (on) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
@@ -146,7 +146,9 @@
     pop(head.querySelector(".mh-prefs-btn"), head.querySelector(".mh-prefs-panel"));
 
     // ── Mobile sheet ──────────────────────────────────────────────────
-    var burger = head.querySelector(".mh-burger");
+    // The sheet is opened by "More" in the phone tab bar (a sibling of the header, so the
+    // outside-click test below has to let it through).
+    var burger = document.querySelector(".tb-more");
     function closeSheet() {
       head.classList.remove("is-open");
       if (burger) burger.setAttribute("aria-expanded", "false");
@@ -159,6 +161,7 @@
       });
     }
     document.addEventListener("pointerdown", function (e) {
+      if (burger && burger.contains(e.target)) return;
       if (!head.contains(e.target)) {
         closeAll();
         closeSheet();

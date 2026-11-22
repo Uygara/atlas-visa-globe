@@ -46,6 +46,7 @@ function Panel({
   };
   // Force re-render whenever the user switches language.
   useLangTick();
+  const isPhone = useIsPhone();
   const groupActive = groupMode && groupPassports && groupPassports.length > 0;
   const tallyData = groupActive
     ? window.tallyGroup(groupPassports)
@@ -56,6 +57,38 @@ function Panel({
                 ? window.tallyVariant(passport, variant)
                 : window.tally(passport)))
         : null);
+
+  // The three setting controls and the dual-citizenship hint: placed by the layout below
+  // (under the picker on desktop, behind "Details" on phones).
+  const typeSelector = passport && setVariant && window.passportVariants && window.passportVariants(passport).length > 0 && (
+    <PassportTypeSelector
+      passport={passport}
+      value={variant || "ordinary"}
+      onChange={setVariant}
+    />
+  );
+  const permitPicker = passport && setResidencePermits && (
+    <ResidencePermitPicker
+      value={residencePermits || []}
+      onChange={setResidencePermits}
+    />
+  );
+  const directionToggle = passport && !groupMode && tallyData && (
+    <DirectionToggle value={direction} onChange={setDirection} passport={passport} />
+  );
+  const dualHint = passport && setGroupMode && setGroupPassports && !groupMode && (
+    <DualCitizenshipHint
+      primary={passport}
+      onAccept={(secondary) => {
+        // Switch to Combine mode (which models ONE traveller holding two
+        // passports → best status per destination) and pre-populate the
+        // group with [primary, suggested-secondary].
+        setGroupPassports([passport, secondary]);
+        setGroupMode(true);
+        if (setCompareMode) setCompareMode(false);
+      }}
+    />
+  );
 
   return (
     <aside className="panel" id="panel" tabIndex={-1}>
@@ -76,43 +109,49 @@ function Panel({
           </button>
         )}
 
-        {passport && setVariant && window.passportVariants && window.passportVariants(passport).length > 0 && (
-          <PassportTypeSelector
-            passport={passport}
-            value={variant || "ordinary"}
-            onChange={setVariant}
-          />
-        )}
-
-        {passport && setResidencePermits && (
-          <ResidencePermitPicker
-            value={residencePermits || []}
-            onChange={setResidencePermits}
-          />
-        )}
-
-        {passport && setGroupMode && setGroupPassports && !groupMode && (
-          <DualCitizenshipHint
-            primary={passport}
-            onAccept={(secondary) => {
-              // Switch to Combine mode (which models ONE traveller holding two
-              // passports → best status per destination) and pre-populate the
-              // group with [primary, suggested-secondary].
-              setGroupPassports([passport, secondary]);
-              setGroupMode(true);
-              if (setCompareMode) setCompareMode(false);
-            }}
-          />
-        )}
+        {!isPhone && typeSelector}
+        {!isPhone && permitPicker}
+        {!isPhone && dualHint}
       </section>
 
+      {/* Phones: the answer right after the picker, then one "Details" row, then the ledger. */}
+      {isPhone && tallyData && (
+        <section className="p-sec p-answer">
+          <Tally tally={tallyData} filter={filter} setFilter={setFilter} groupActive={groupActive} direction={direction} part="head" />
+          {(typeSelector || permitPicker || directionToggle) && (
+            <PanelDetails>
+              {typeSelector}
+              {permitPicker}
+              {directionToggle}
+            </PanelDetails>
+          )}
+        </section>
+      )}
+      {isPhone && tallyData && (
+        <section className="p-sec">
+          <Tally tally={tallyData} filter={filter} setFilter={setFilter} groupActive={groupActive} direction={direction} part="ledger" />
+          {filter !== "all" && (
+            <FilterList
+              filter={filter}
+              passport={passport}
+              direction={direction}
+              variant={variant}
+              groupPassports={groupActive ? groupPassports : null}
+              onOpen={onPickFromSearch}
+            />
+          )}
+          {dualHint}
+        </section>
+      )}
+      {isPhone && passport && !tallyData && (typeSelector || permitPicker || dualHint) && (
+        <section className="p-sec">{typeSelector}{permitPicker}{dualHint}</section>
+      )}
+
       {/* Core payoff first: direction + ledger, then search. */}
-      {tallyData && (
+      {!isPhone && tallyData && (
         <section className="p-sec">
           <Caption n={2}>{groupActive ? window.t("tally.group_label") : window.t("panel.direction")}</Caption>
-          {passport && !groupMode && (
-            <DirectionToggle value={direction} onChange={setDirection} passport={passport} />
-          )}
+          {directionToggle}
           <Tally tally={tallyData} filter={filter} setFilter={setFilter} groupActive={groupActive} direction={direction} />
           {filter !== "all" && (
             <FilterList
@@ -201,6 +240,44 @@ function Panel({
 
       <PanelFooter />
     </aside>
+  );
+}
+
+// True below 900px, where the panel is a bottom sheet.
+function useIsPhone() {
+  const q = "(max-width: 900px)";
+  const [phone, setPhone] = useState(() => !!(window.matchMedia && window.matchMedia(q).matches));
+  useEffect(() => {
+    if (!window.matchMedia) return;
+    const mq = window.matchMedia(q);
+    const f = () => setPhone(mq.matches);
+    if (mq.addEventListener) mq.addEventListener("change", f); else mq.addListener(f);
+    f();
+    return () => { if (mq.removeEventListener) mq.removeEventListener("change", f); else mq.removeListener(f); };
+  }, []);
+  return phone;
+}
+
+// Phone panel: the passport type, residence permit and direction controls sit behind one row
+// so the answer (the big number) comes right after the passport picker. Closed by default;
+// the open state lasts for the session only.
+function PanelDetails({ children }) {
+  const [open, setOpen] = useState(() => {
+    try { return sessionStorage.getItem("atlas.details.open") === "1"; } catch (e) { return false; }
+  });
+  const toggle = () => setOpen(o => {
+    const next = !o;
+    try { sessionStorage.setItem("atlas.details.open", next ? "1" : "0"); } catch (e) {}
+    return next;
+  });
+  return (
+    <div className="p-details">
+      <button type="button" className="row-btn p-details-btn" aria-expanded={open} aria-controls="p-details-body" onClick={toggle}>
+        <span className="row-btn-label">{tr("panel.details", "Details: passport type, residence permit, direction")}</span>
+        <IconCaret className={open ? "is-flipped" : ""} />
+      </button>
+      {open && <div id="p-details-body" className="p-details-body">{children}</div>}
+    </div>
   );
 }
 
@@ -619,7 +696,8 @@ function PassportDropdown({ value, onChange, allowClear, onClear }) {
 
 // The ledger: one big number, a proportional bar, and filter rows with dotted
 // leaders — printed-index style.
-function Tally({ tally, filter, setFilter, groupActive, direction }) {
+// `part` splits it for the phone panel: "head" is the number and the bar, "ledger" the rows.
+function Tally({ tally, filter, setFilter, groupActive, direction, part }) {
   const total = (tally.idc || 0) + tally.vf + (tally.eta || 0) + tally.ev + tally.voa + tally.vr + (tally.ban || 0);
   const rows = [
     // ID-card travel only when present; ETA only when present; ban only when present.
@@ -640,6 +718,7 @@ function Tally({ tally, filter, setFilter, groupActive, direction }) {
     : window.t("tally.no_visa");
   return (
     <div>
+      {part !== "ledger" && <>
       <div className="score" aria-live="polite" aria-atomic="true">
         <span className="score-n">{noVisa}</span>
         <span className="score-l">
@@ -657,8 +736,9 @@ function Tally({ tally, filter, setFilter, groupActive, direction }) {
             style={{ flex: `${r.n} 0 0`, background: r.k === "ban" ? undefined : `var(--${r.k})` }} />
         ))}
       </div>
+      </>}
 
-      <ul className="ledger">
+      {part !== "head" && <ul className="ledger">
         <li>
           <button type="button" className="lg-row" aria-pressed={filter === "all"} onClick={() => setFilter("all")}>
             <span className="sw sw-all" aria-hidden="true" />
@@ -677,7 +757,7 @@ function Tally({ tally, filter, setFilter, groupActive, direction }) {
             </button>
           </li>
         ))}
-      </ul>
+      </ul>}
     </div>
   );
 }

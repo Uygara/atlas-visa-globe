@@ -296,7 +296,7 @@ function App() {
         onTheme={(v) => setTweak("background", v)}
       />
       {showIntro && <IntroDialog onClose={dismissIntro} />}
-      <div className="globe-stage">
+      <div className={"globe-stage" + (passport && !detailCountry ? " has-key" : "")}>
         <Globe
           passport={passport}
           comparePassport={t.compareMode ? compare : null}
@@ -409,7 +409,7 @@ function MapKey() {
   const permitsActive = Array.isArray(window.ATLAS_RESIDENCE_PERMITS) &&
     window.ATLAS_RESIDENCE_PERMITS.length > 0;
   return (
-    <div className="map-key overlay-card">
+    <div className="map-key map-key-below overlay-card">
       <div className="map-key-title">{tr("map.key", "Key")}</div>
       <ul>
         {keys.map(k => (

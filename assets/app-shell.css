@@ -68,6 +68,11 @@ html.theme-dark .country:hover, body.theme-dark .country:hover { filter: brightn
 
 .p-sec { margin-bottom: 16px; padding-top: 14px; border-top: 1px solid var(--rule); }
 .p-head + .p-sec, .sheet-handle + .p-sec { padding-top: 0; border-top: 0; }
+/* Phone panel: the answer follows the picker with no rule; "Details" is one quiet row under it. */
+.p-answer { padding-top: 0; border-top: 0; margin-top: -4px; }
+.p-details { margin-top: 12px; }
+.p-details-btn { min-height: 44px; }
+.p-details-body { margin-top: 4px; padding-bottom: 4px; }
 .p-rule { padding-top: 14px; border-top: 1px solid var(--rule); }
 /* Field caption, visa-form style: a small numeral + label. */
 .p-cap {
@@ -481,7 +486,7 @@ a.feed-item:hover { border-color: var(--rule-strong); border-inline-start-color:
   }
   .panel {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 8;
-    height: var(--sheet-h, 48vh); max-height: 100vh; max-height: 100dvh; min-height: 36px;
+    bottom: var(--tb-h, 0px); height: var(--sheet-h, 48vh); max-height: calc(100vh - var(--tb-h, 0px)); max-height: calc(100dvh - var(--tb-h, 0px)); min-height: 36px;
     padding: 0 16px 16px;
     border-inline-start: 0; border-top: 1px solid var(--rule-strong);
     border-radius: 12px 12px 0 0;
@@ -500,7 +505,16 @@ a.feed-item:hover { border-color: var(--rule-strong); border-inline-start-color:
 
   /* The sheet covers the lower part of the stage: fit the globe to the strip
      left visible above it instead of centring it behind the sheet. */
-  .globe-wrap { height: max(45%, calc(100% - var(--sheet-h, 48vh) + 8px)) !important; }
+  .globe-wrap { height: max(32%, calc(100% - var(--sheet-h, 48vh) - var(--tb-h, 0px) - var(--key-gap, 0px) + 8px)) !important; }
+  /* Home: the status key sits straight under the globe (two wrapped lines), above the sheet. */
+  .globe-stage.has-key { --key-gap: 52px; }
+  .map-key.map-key-below {
+    top: auto; left: 10px; right: 10px; bottom: calc(var(--sheet-h, 48vh) + var(--tb-h, 0px) + 6px);
+    padding: 0 4px; background: transparent; border: 0; box-shadow: none;
+  }
+  .map-key.map-key-below ul { flex-wrap: wrap; justify-content: center; gap: 1px 8px; overflow: visible; -webkit-mask-image: none; mask-image: none; }
+  .map-key.map-key-below li { gap: 5px; }
+  @media (max-width: 360px) { .map-key.map-key-below { font-size: 10px; } .map-key.map-key-below ul { gap: 1px 6px; } .map-key.map-key-below li { gap: 4px; } .map-key.map-key-below .sw { width: 8px; height: 8px; } }
   /* The key is ONE scrollable row here: seven stacked lines used to cover the
      top third of the globe. The fade on the right says "there is more". */
   .map-key { left: 10px; right: 10px; bottom: auto; top: 10px; padding: 5px 8px; font-size: var(--fs-2xs); }
@@ -521,8 +535,11 @@ a.feed-item:hover { border-color: var(--rule-strong); border-inline-start-color:
   .entry-top { position: sticky; top: 34px; z-index: 2; margin: -14px -14px 6px; padding: 14px 14px 8px;
     background: var(--paper); border-bottom: 1px solid var(--rule); }
   .floater { display: none; }
-  .compare-strip { top: auto; bottom: calc(var(--sheet-h, 48vh) + 10px); inset-inline-start: 10px; }
+  .compare-strip { top: auto; bottom: calc(var(--sheet-h, 48vh) + var(--tb-h, 0px) + 10px); inset-inline-start: 10px; }
   .dialog h1 { font-size: var(--fs-2xl); }
+  /* The update date stays visible, under the heading. */
+  .p-head { flex-wrap: wrap; gap: 4px 10px; }
+  .p-head-date { margin-inline-start: 0; flex-basis: 100%; white-space: normal; }
 }
 
 
