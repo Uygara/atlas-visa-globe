@@ -119,6 +119,9 @@
   color: var(--ink-2); font-size: var(--fs-xs); font-weight: 600; cursor: pointer;
 }
 .lang-select option { color: #16202A; background: #fff; }
+/* In the top bar a select is as wide as its longest option ("Español (beta)"), which pushed menu links
+   into "More". Cap it; the chosen language name still fits, long ones end with an ellipsis. */
+.mh-tools .lang-select { max-width: 104px; text-overflow: ellipsis; }
 
 /* ── Buttons & fields ────────────────────────────────────────────────── */
 .btn {

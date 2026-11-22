@@ -898,6 +898,11 @@ ${masthead({ path: enPath, i18n: false, lang })}
 sel.addEventListener("change",function(){var v=sel.value;if(!v||!d.p[v]){out.hidden=true;out.textContent="";map.href=d.mapBase;return}
 var e=d.p[v],nm=sel.options[sel.selectedIndex].text,t=d.who.replace("{name}",nm)+": "+d.ph[e[0]]+(e[1]?d.days.replace("{n}",e[1]):"")+". ";
 out.textContent=t;var a=document.createElement("a");a.href=d.pp+v.toLowerCase()+"/";a.textContent=d.more;out.appendChild(a);out.hidden=false;map.href=d.mapBase+"?p="+v});
+// Answer straight away for a passport we already know: ?p=XX in the link, else the one chosen on the map
+// (atlas.passport, read only; this page never writes it). The select stays editable.
+(function(){var v="";try{v=(new URLSearchParams(location.search).get("p")||"").toUpperCase()}catch(x){}
+if(!d.p[v]){try{var s=localStorage.getItem("atlas.passport")||"";try{s=JSON.parse(s)}catch(y){}v=String(s||"").toUpperCase()}catch(x){v=""}}
+if(d.p[v]){sel.value=v;sel.dispatchEvent(new Event("change"))}})();
 function openHash(){var h=location.hash.slice(1),el=h&&document.getElementById(h);if(el&&el.tagName==="DETAILS")el.open=true}
 openHash();window.addEventListener("hashchange",openHash);
 Array.prototype.forEach.call(document.querySelectorAll(".lg-row"),function(a){a.addEventListener("click",function(){var el=document.getElementById(a.getAttribute("href").slice(1));if(el)el.open=true})})})();</script>
