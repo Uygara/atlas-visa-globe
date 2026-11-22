@@ -169,7 +169,7 @@ const LOC = {
     // c: { n, top, mob, parts: [[status, count]], home: { name, href, mob, rank } | null, how }
     dirIntro: (c) => [
       `Which passport opens the most doors? We ranked ${c.n} passports by how many countries their holders can visit without applying for a visa at an embassy.`,
-      `At the top, a ${c.top} passport gets you into ${c.mob} countries with no visa arranged in advance: ${listJoin(c.parts.map(([k, v]) => `${v} ${({ idc: "with just an ID card", vf: "completely visa-free", eta: "with a short online permit", voa: "with a visa issued at the border" })[k]}`), "and")}.${c.home ? ` A <a href="${c.home.href}">${c.home.name} passport</a> reaches ${c.home.mob} and ranks ${c.home.rank}.` : ""}`,
+      `At the top, a ${c.top} passport gets you into ${c.mob} countries with no visa arranged in advance: ${listJoin(c.parts.map(([k, v]) => `${v} ${({ idc: "with just an ID card", vf: "completely visa-free", eta: "with a short online permit", voa: "with a visa issued at the border" })[k]}`), "and")}.<span id="dir-you" data-tpl="${escapeHtml(' With your passport ({name}) you can reach {mob} countries without a visa arranged in advance. It ranks #{rank}.')}">${c.home ? ` A <a href="${c.home.href}">${c.home.name} passport</a> reaches ${c.home.mob} and ranks ${c.home.rank}.` : ""}</span>`,
       `Open a passport to see how you enter each country, one by one. <a href="${c.how}">How we count</a>`,
     ],
     dirUnit: "countries",
@@ -277,7 +277,7 @@ const LOC = {
     dirH1: "Pasaport vize şartları rehberi",
     dirIntro: (c) => [
       `Hangi pasaport dünyada daha çok kapı açıyor? ${c.n} pasaportu, sahibinin konsolosluğa vize başvurusu yapmadan kaç ülkeye gidebildiğine göre sıraladık.`,
-      `Listenin başındaki ${c.top} pasaportuyla ${c.mob} ülkeye önceden vize almadan gidilebiliyor: ${listJoin(c.parts.map(([k, v]) => `${v} ülkeye ${({ idc: "yalnızca kimlik kartıyla", vf: "tamamen vizesiz", eta: "kısa bir online izinle", voa: "vizeyi sınırda alarak" })[k]}`), "ve")}.${c.home ? ` <a href="${c.home.href}">${c.home.name} pasaportu</a> ise ${c.home.mob} ülkeyle ${c.home.rank}. sırada.` : ""}`,
+      `Listenin başındaki ${c.top} pasaportuyla ${c.mob} ülkeye önceden vize almadan gidilebiliyor: ${listJoin(c.parts.map(([k, v]) => `${v} ülkeye ${({ idc: "yalnızca kimlik kartıyla", vf: "tamamen vizesiz", eta: "kısa bir online izinle", voa: "vizeyi sınırda alarak" })[k]}`), "ve")}.<span id="dir-you" data-tpl="${escapeHtml(' Senin pasaportunla ({name}) {mob} ülkeye önceden vize almadan gidebilirsin. Pasaportun listede {rank}. sırada.')}">${c.home ? ` <a href="${c.home.href}">${c.home.name} pasaportu</a> ise ${c.home.mob} ülkeyle ${c.home.rank}. sırada.` : ""}</span>`,
       `Bir pasaporta dokun, hangi ülkeye nasıl girildiğini tek tek gör. <a href="${c.how}">Nasıl sayıyoruz?</a>`,
     ],
     dirUnit: "ülke",
@@ -1024,7 +1024,21 @@ function renderIndex(allPassports, ranks, lang) {
   const list = `<div class="rank-cols">
     <ol class="rank-list">${rows.slice(0, half).join("")}</ol>
     <ol class="rank-list" start="${half + 1}">${rows.slice(half).join("")}</ol>
-  </div>`;
+  </div>
+  <script>
+  // Swap the example for the passport this visitor picked on the map (kept on their device only; nothing is sent).
+  (function () {
+    var iso = ""; try { iso = (localStorage.getItem("atlas.passport") || "").replace(/"/g, "").toLowerCase(); } catch (e) {}
+    if (!/^[a-z]{2}$/.test(iso)) return;
+    var a = document.querySelector('.rank-list a[href="' + iso + '/"]'), out = document.getElementById("dir-you");
+    if (!a || !out) return;
+    var li = a.parentNode; li.classList.add("is-mine");
+    if (li === document.querySelector(".rank-list li")) { out.textContent = ""; return; }
+    var link = document.createElement("a"); link.href = iso + "/"; link.textContent = a.lastChild.textContent.trim();
+    var parts = out.getAttribute("data-tpl").replace("{mob}", li.querySelector(".ct").firstChild.textContent.trim()).replace("{rank}", li.querySelector(".rk").textContent).split("{name}");
+    out.textContent = ""; out.append(parts[0], link, parts[1]);
+  })();
+  </script>`;
   const date = new Date().toISOString().slice(0, 10);
   const types = lang === "tr" ? "/tr/guides/how-we-count/" : "/guides/how-we-count/";
   const topIso = ordered[0], topT = DATA.tally(topIso);
