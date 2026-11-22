@@ -74,6 +74,12 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Cloudflare dashboard settings (2026-11-22, not versioned in the repo):** `www.travelnow.info` answered 522 and
+  `http://` was not redirected. Added a Redirect Rule "Redirect from WWW to root [Template]" (`https://www.*` to
+  `https://${1}`, 301; path and query kept) and switched SSL/TLS, Edge Certificates, "Always Use HTTPS" on. Checked:
+  `http://www.travelnow.info/x` goes https://www then https://travelnow.info (2 hops), no loops. The `www` CNAME stays
+  proxied. HSTS is already sent by `_headers`; the dashboard HSTS and minimum TLS were left alone.
+
 - **Round 26 (2026-11-21: the four overdue datasets):** passport validity cross-checked with GOV.UK travel advice for
   every country (20 corrected, 57 added; Object.assign block in passport-validity-rules.js). LOI rules rewritten from
   official sources (Russia/Belarus e-visas need no invitation, Turkmenistan tourist e-visa via sponsor), notes now in TR,
