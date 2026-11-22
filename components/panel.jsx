@@ -1764,7 +1764,7 @@ function RecentChanges({ passport, destIso2 }) {
   const cc = String(destIso2).toLowerCase();
   return (
     <div style={{ marginBottom: 10 }}>
-      <div className="p-hint" style={{ margin: "0 0 6px", fontWeight: 600, color: "var(--ink-2)" }}>{tr("recent.title", "Recent changes")}</div>
+      <div className="p-hint" style={{ margin: "0 0 6px", fontWeight: 600, color: "var(--ink-2)" }}>{tr("recent.title", "Visa updates")}</div>
       <div className="feed">
         {head.map((it, i) => <RecentChangeRow key={i} it={it} destIso2={destIso2} />)}
         {rest.length > 0 && (

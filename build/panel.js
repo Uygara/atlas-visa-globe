@@ -2636,7 +2636,7 @@ function RecentChanges(_ref37) {
       fontWeight: 600,
       color: "var(--ink-2)"
     }
-  }, tr("recent.title", "Recent changes")), React.createElement("div", {
+  }, tr("recent.title", "Visa updates")), React.createElement("div", {
     className: "feed"
   }, head.map(function (it, i) {
     return React.createElement(RecentChangeRow, {
