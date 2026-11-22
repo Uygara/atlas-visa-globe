@@ -1,11 +1,10 @@
 /* ─────────────────────────────────────────────────────────────────────────
    travelnow.info — design tokens (single source of truth)
 
-   Visual language: the travel document itself.
-     • Light  = a visa page: pale security paper, blue-black ink, hairline rules.
-     • Dark   = the passport cover: deep navy board with gold-foil accents.
-     • Status colours are printed inks, not neon — they read on the paper
-       and on the globe without glow effects.
+   Visual language: "Mürdüm ve Kıyı" (redesign G, 2026-11-22).
+     • Light = cream paper, plum-tinted ink, mürdüm actions, sea-teal links.
+     • Dark  = plum night with cream text; same roles, lighter tints.
+     • Status colours are printed inks, not neon, and are not used for the brand.
    Loaded by every page (SPA shells + static pages). Component CSS lives in
    app-shell.css (globe apps) and site.css (static pages).
 
@@ -24,25 +23,26 @@
 
 :root {
   /* ── Paper & ink ─────────────────────────────────────────────────────── */
-  /* Neutral surfaces: the map and the status colours carry the identity, the chrome stays quiet. */
-  --paper:        #F5F5F7;
-  --paper-raised: #FFFFFF;
-  --paper-sunk:   #EDEDF0;
-  --paper-deep:   #E2E2E7;
-  --ink:          #1D1D1F;
-  --ink-2:        #424245;
-  --ink-3:        #636366;   /* 5.6:1 on --paper, 6.0:1 on white */
-  --ink-4:        #8E8E93;   /* decoration only */
-  --rule:         #E3E3E8;
-  --rule-strong:  #C9C9CF;
+  /* Redesign G, "Mürdüm ve Kıyı" (2026-11-22): cream paper, plum-tinted ink, mürdüm for actions,
+     kıyı (sea teal) for links and information. Status inks below are unchanged: they are the map's language. */
+  --paper:        #F5F0E8;   /* cream: warmer than white, easier on the eyes in long reading */
+  --paper-raised: #FBF8F3;
+  --paper-sunk:   #EDE6DB;
+  --paper-deep:   #E3D9CB;
+  --ink:          #2A2430;   /* night ink with a plum undertone */
+  --ink-2:        #4F4955;
+  --ink-3:        #625B67;   /* 5.8:1 on --paper, 6.2:1 on --paper-raised */
+  --ink-4:        #948C97;   /* decoration only */
+  --rule:         #E6DDCF;
+  --rule-strong:  #CFC3B3;
 
-  --accent:       #1E3A5F;
+  --accent:       #6B4468;   /* mürdüm: brand and primary actions (do). 7.0:1 on --paper, white on it 7.9:1 */
   --on-accent:    #FFFFFF;
-  --foil:         #8E8E93;
-  --foil-ink:     #636366;
-  --link:         #0B5CAD;
-  --shadow:       0 1px 2px rgba(0, 0, 0, 0.04), 0 8px 24px rgba(0, 0, 0, 0.06);
-  --shadow-lift:  0 2px 6px rgba(0, 0, 0, 0.06), 0 20px 48px rgba(0, 0, 0, 0.12);
+  --foil:         #A3929F;
+  --foil-ink:     #6E5F6B;
+  --link:         #2F5D62;   /* kıyı: links and information (read). 6.5:1 on --paper */
+  --shadow:       0 1px 2px rgba(42, 36, 48, 0.05);
+  --shadow-lift:  0 2px 6px rgba(42, 36, 48, 0.06), 0 16px 40px rgba(42, 36, 48, 0.10);
 
   /* ── Status inks ─────────────────────────────────────────────────────── */
   --idc:  #3F79A8;   /* ID card / freedom of movement */
@@ -61,20 +61,21 @@
   --risk2: #D69C3C;  /* increased caution */
   --risk3: #B05A2A;  /* reconsider travel */
   --risk4: #7C1F2B;  /* do not travel */
-  --self: #1E3A5F;   /* the passport's own country */
-  --compare-self: #8A4FA3;
+  --self: #6B4468;   /* the passport's own country, in the brand colour */
+  --compare-self: #2F5D62;   /* second passport in compare mode: kıyı, so it never reads as the brand */
 
   /* ── Globe ───────────────────────────────────────────────────────────── */
-  --ocean:       #CFDCDD;
-  --land:        #E7E7DC;
-  --land-stroke: #F8F8F3;
-  --graticule:   rgba(22, 32, 42, 0.07);
-  --globe-edge:  #9EACAD;
+  --ocean:       #DDE6E3;   /* sea mist */
+  --land:        #ECE6DA;
+  --land-stroke: #FBF8F3;
+  --graticule:   rgba(42, 36, 48, 0.06);
+  --globe-edge:  #B9C7C3;
 
   /* ── Type ────────────────────────────────────────────────────────────── */
-  /* System type: SF Pro on Apple devices, Segoe UI Variable on Windows, Roboto on Android. */
-  --font-sans:    "Twemoji Country Flags", -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI Variable Text", "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-display: "Twemoji Country Flags", -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI Variable Display", "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
+  /* Literata (a calm book serif) for headings and big numbers, Public Sans for text, forms and tables.
+     Both self-hosted in /assets/fonts (tools/selfhost-fonts.js), SIL OFL. */
+  --font-sans:    "Twemoji Country Flags", "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-display: "Twemoji Country Flags", "Literata", Georgia, "Times New Roman", serif;
   /* Former label face. Labels now use the text face with tabular figures; real code uses --font-code. */
   --font-mono:    var(--font-sans);
   --font-code:    ui-monospace, "SFMono-Regular", "Cascadia Mono", Menlo, Consolas, monospace;
@@ -129,22 +130,22 @@
 
 html.theme-dark,
 body.theme-dark {
-  --paper:        #0B0B0D;
-  --paper-raised: #1C1C1E;
-  --paper-sunk:   #050506;
-  --paper-deep:   #2C2C2E;
-  --ink:          #F5F5F7;
-  --ink-2:        #D1D1D6;
-  --ink-3:        #A1A1A6;
-  --ink-4:        #6E6E73;
-  --rule:         #2C2C2E;
-  --rule-strong:  #3A3A3C;
+  --paper:        #17131A;
+  --paper-raised: #221C26;
+  --paper-sunk:   #100D12;
+  --paper-deep:   #2E2633;
+  --ink:          #F3EEE6;
+  --ink-2:        #D6CED3;
+  --ink-3:        #A99FAA;
+  --ink-4:        #73697A;
+  --rule:         #2E2633;
+  --rule-strong:  #3F3545;
 
-  --accent:       #E8E8ED;
-  --on-accent:    #1D1D1F;
-  --foil:         #8E8E93;
-  --foil-ink:     #A1A1A6;
-  --link:         #5AA9FF;
+  --accent:       #D2AECB;
+  --on-accent:    #1C1520;
+  --foil:         #8E8291;
+  --foil-ink:     #B3A6B0;
+  --link:         #86C1BB;
   --shadow:       0 1px 0 rgba(0, 0, 0, 0.2), 0 10px 28px -14px rgba(0, 0, 0, 0.7);
   --shadow-lift:  0 22px 56px -20px rgba(0, 0, 0, 0.85);
 
@@ -161,14 +162,14 @@ body.theme-dark {
   --risk2: #C8913C;
   --risk3: #B4602F;
   --risk4: #8E2733;
-  --self: #D3B36C;
-  --compare-self: #B78BCF;
+  --self: #D2AECB;
+  --compare-self: #86C1BB;
 
-  --ocean:       #15263D;
-  --land:        #2E405A;
-  --land-stroke: #0E1928;
+  --ocean:       #142226;
+  --land:        #2C3534;
+  --land-stroke: #0F181A;
   --graticule:   rgba(236, 232, 219, 0.06);
-  --globe-edge:  #34475F;
+  --globe-edge:  #2F4448;
 
 
   color-scheme: dark;
@@ -215,8 +216,8 @@ button:active, .primary:active, a.btn:active { transform: scale(0.97); transitio
 html[lang="ar"] {
   --ls-tight: 0; --ls-caps: 0; --ls-label: 0; --ls-wide: 0;
   /* Arabic letters come from Plex where the system face has none. */
-  --font-sans:    "Twemoji Country Flags", -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text", "Segoe UI", "IBM Plex Sans Arabic", system-ui, Roboto, sans-serif;
-  --font-display: "Twemoji Country Flags", -apple-system, BlinkMacSystemFont, "Segoe UI Variable Display", "Segoe UI", "IBM Plex Sans Arabic", system-ui, Roboto, sans-serif;
+  --font-sans:    "Twemoji Country Flags", "Public Sans", "IBM Plex Sans Arabic", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-display: "Twemoji Country Flags", "Literata", "IBM Plex Sans Arabic", Georgia, serif;
 }
 
 ::-webkit-scrollbar { width: 10px; height: 10px; }
