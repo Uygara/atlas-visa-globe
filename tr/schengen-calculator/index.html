@@ -215,6 +215,7 @@
   <div class="footnote">Veriler yalnızca tarayıcında (localStorage) durur. Seyahat geçmişini hiçbir yere göndermiyoruz. Bu araç yalnızca planlama içindir: sınırda geçerli olan resmi kayıttır (EES ya da pasaport damgaları).</div>
 </div>
 
+<script src="/assets/schengen-core.js?v=20261120d"></script>
 <script>
 (function () {
   const LS_KEY = "atlas.schengen.trips";
@@ -442,71 +443,15 @@
   }
 
   function todayISO() { return new Date().toISOString().slice(0, 10); }
-  function parseDate(s) {
-    const [y, m, d] = (s || "").split("-").map(Number);
-    if (!y) return null;
-    return new Date(Date.UTC(y, m - 1, d));
-  }
-  function fmt(d) {
-    if (!d) return "";
-    return d.toISOString().slice(0, 10);
-  }
+  // The 90/180 arithmetic lives in /assets/schengen-core.js (shared with the travel planner).
+  const CORE = window.SCHENGEN_CORE;
+  const parseDate = CORE.parseDate, fmt = CORE.fmt, daysBetween = CORE.daysBetween, daysUsedAt = CORE.daysUsedAt,
+    stayOk = CORE.stayOk, maxStayFrom = CORE.maxStayFrom, nextAvailableDate = CORE.nextAvailableDate;
   function fmtPretty(d) {
     if (!d) return "";
     const lang = currentLang();
     return d.toLocaleDateString(DATE_LOCALE[lang] || "en-GB", { day: "numeric", month: "short", year: "numeric", timeZone: "UTC" });
   }
-  function daysBetween(a, b) {
-    return Math.round((b - a) / MS_PER_DAY) + 1; // inclusive of both endpoints
-  }
-
-  // Days used within (refDate - 180, refDate] inclusive
-  function daysUsedAt(refDate, trips) {
-    const ref = parseDate(refDate);
-    if (!ref) return 0;
-    const windowStart = new Date(ref.getTime() - (WINDOW_DAYS - 1) * MS_PER_DAY);
-    let total = 0;
-    for (const t of trips) {
-      const entry = parseDate(t.entry);
-      const exit = parseDate(t.exit);
-      if (!entry || !exit) continue;
-      // Clip overlap with [windowStart, ref]
-      const start = entry > windowStart ? entry : windowStart;
-      const end = exit < ref ? exit : ref;
-      if (end >= start) total += daysBetween(start, end);
-    }
-    return total;
-  }
-
-  // A stay of `length` days starting on `start` is legal only if the 90-day cap holds on
-  // every day of that stay, not just the last one: older days drop out of the window as
-  // the stay goes on, so a check on the exit day alone can miss a breach in the middle.
-  function stayOk(trips, start, length) {
-    const all = [...trips, { entry: fmt(start), exit: fmt(new Date(start.getTime() + (length - 1) * MS_PER_DAY)) }];
-    for (let d = 0; d < length; d++) {
-      if (daysUsedAt(fmt(new Date(start.getTime() + d * MS_PER_DAY)), all) > MAX_DAYS) return false;
-    }
-    return true;
-  }
-
-  // Longest stay (0..90) that can start on `start`.
-  function maxStayFrom(trips, start) {
-    let n = 0;
-    while (n < MAX_DAYS && stayOk(trips, start, n + 1)) n++;
-    return n;
-  }
-
-  // Earliest day on which a stay of `length` days can start.
-  function nextAvailableDate(trips, length, fromDate = new Date()) {
-    if (length <= 0) return fromDate;
-    // The window is 180 days, so any start this far ahead is clear of past trips.
-    for (let i = 0; i < 400; i++) {
-      const probe = new Date(fromDate.getTime() + i * MS_PER_DAY);
-      if (stayOk(trips, probe, length)) return probe;
-    }
-    return null;
-  }
-
   // ── Shareable link: #trips=2026-01-03_2026-01-20,2026-03-01_2026-03-10 ──────
   function tripsFromHash() {
     const m = /(?:^#|&)trips=([0-9_,-]+)/.exec(location.hash || "");

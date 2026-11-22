@@ -20,6 +20,8 @@
     "atlas.tweaks",          // theme + globe view
     "atlas.passports",       // extra passports for dual citizens (travel panel, /panel/); atlas.passport stays the main one
     "atlas.panel.seen",      // ms timestamp: when the travel panel's change list was last viewed
+    "atlas.trips",           // travel planner: saved trips with dates and checklist ticks (assets/trips-core.js)
+    // NOT synced on purpose: "atlas.passport.expiry" (passport expiry month for the validity check) stays on the device.
   ];
   // JSON arrays that are merged item-by-item the first time a device that
   // already had data joins an account, so nothing saved before signing in is lost.

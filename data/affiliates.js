@@ -9,6 +9,7 @@
 //   url      — the affiliate URL with your referral code embedded.
 //              Use the literal token "{DEST}" where the destination ISO2 should be substituted.
 //              Leave url as "" to disable that partner.
+//   kinds    — where the trip planner (/itinerary/) may show it: visa, flights, hotels, insurance, esim.
 //   shownFor — array of visa statuses to show this partner for (vf, ev, voa, vr)
 //              or ["*"] to show always.
 //
@@ -21,6 +22,7 @@
 window.AFFILIATES = [
   {
     id: "ivisa",
+    kinds: ["visa"],
     label: "Apply for your visa with iVisa",
     label_tr: "Vize başvurunu iVisa ile yap",
     // Keep blurbs free of prices or claims we can't source; the partner's site shows its own fees.
@@ -33,6 +35,7 @@ window.AFFILIATES = [
   },
   {
     id: "visahq",
+    kinds: ["visa"],
     label: "Get visa help from VisaHQ",
     blurb: "Embassy-required visas: full-service application.",
     url: "", // e.g. "https://www.visahq.com/?ref=YOUR_ID"
@@ -41,6 +44,7 @@ window.AFFILIATES = [
   },
   {
     id: "safetywing",
+    kinds: ["insurance"],
     label: "Travel insurance from SafetyWing",
     blurb: "Travel medical insurance for long trips and nomads.",
     url: "", // e.g. "https://safetywing.com/nomad-insurance/?referenceID=YOUR_ID"
@@ -49,6 +53,7 @@ window.AFFILIATES = [
   },
   {
     id: "airalo",
+    kinds: ["esim"],
     label: "Get an eSIM with Airalo",
     blurb: "Prepaid mobile data you install before you fly.",
     url: "", // e.g. "https://airalo.pxf.io/YOUR_ID"
@@ -57,6 +62,7 @@ window.AFFILIATES = [
   },
   {
     id: "wise",
+    kinds: [],
     label: "Travel debit card from Wise",
     blurb: "A debit card for spending in other currencies.",
     url: "", // e.g. "https://wise.com/invite/dic/YOUR_ID"
