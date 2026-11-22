@@ -151,6 +151,11 @@
   .masthead { gap: 8px; padding: 0 10px; }
   .brand-word { font-size: var(--fs-lg); }
   .mh-nav, .mh-tools .lang-select, .mh-tools .mh-support, .mh-tools .mh-help { display: none; }
+  /* Phones: the top bar keeps brand, account, theme and the menu button. Instagram and the 3D/2D switch
+     move into the menu sheet, otherwise the bar overflows and pushes the menu button off screen. */
+  .mh-tools .mh-ig, .mh-tools .mh-view-top { display: none; }
+  .mh-sheet-foot { flex-wrap: wrap; }
+  .mh-sheet-foot .mh-ig { width: 44px; height: 44px; }
   .mh-tools { margin-inline-start: auto; gap: 6px; }
   .mh-burger { display: inline-flex; }
   .masthead.is-open .mh-sheet {

@@ -127,10 +127,10 @@ function IconMenu({ open, ...props }) {
 }
 
 // ─── Controls ────────────────────────────────────────────────────────────
-function ViewToggle({ value, onChange }) {
+function ViewToggle({ value, onChange, className }) {
   const opts = [["globe3d", tr("mode.3d", "3D")], ["flat", tr("mode.2d", "2D")]];
   return (
-    <div className="seg" role="group" aria-label={tr("nav.mode", "Globe view")}>
+    <div className={"seg" + (className ? " " + className : "")} role="group" aria-label={tr("nav.mode", "Globe view")}>
       {opts.map(([v, l]) => (
         <button key={v} type="button" aria-pressed={value === v} onClick={() => onChange(v)}>{l}</button>
       ))}
@@ -270,7 +270,7 @@ function Masthead({ view, onView, theme, onTheme, onHelp }) {
           </a>
         )}
         <AccountLink />
-        {onView && <ViewToggle value={view} onChange={onView} />}
+        {onView && <ViewToggle value={view} onChange={onView} className="mh-view-top" />}
         {onTheme && <ThemeToggle value={theme} onChange={onTheme} />}
         <LangSelect />
         {onHelp && (
@@ -291,6 +291,13 @@ function Masthead({ view, onView, theme, onTheme, onHelp }) {
         ))}
         <div className="mh-sheet-foot">
           <LangSelect />
+          {/* On phones the 3D/2D switch and Instagram live here: the top bar has no room for them (see chrome.css). */}
+          {onView && <ViewToggle value={view} onChange={onView} />}
+          {nav.INSTAGRAM && (
+            <a className="mh-ig" href={nav.INSTAGRAM.href} target="_blank" rel="noopener" aria-label={tr(nav.INSTAGRAM.key, nav.INSTAGRAM.en)} title="Instagram">
+              <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><rect x="2" y="2" width="12" height="12" rx="3.6" fill="none" stroke="currentColor" strokeWidth="1.4"/><circle cx="8" cy="8" r="2.8" fill="none" stroke="currentColor" strokeWidth="1.4"/><circle cx="11.5" cy="4.5" r=".9" fill="currentColor"/></svg>
+            </a>
+          )}
           {nav.SUPPORT && <a className="mh-support" style={{ display: "inline-block" }} href={nav.SUPPORT.href} target="_blank" rel="noopener">{tr(nav.SUPPORT.key, nav.SUPPORT.en)}</a>}
         </div>
       </div>

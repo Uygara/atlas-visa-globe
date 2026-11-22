@@ -12,7 +12,7 @@
 const { NAV, SUPPORT, INSTAGRAM, isCurrent } = require("../assets/site-nav.js");
 const { makeT, hasTr, toTr, hreflang } = require("./locales");
 
-const ASSET_VERSION = "20261122a";
+const ASSET_VERSION = "20261122b";
 
 function esc(s) {
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -98,7 +98,7 @@ ${links}
   <button type="button" class="mh-burger" aria-label="${u("menu", "Menu")}" aria-expanded="false">${MENU}</button>
   <div class="mh-sheet">
 ${sheet}
-    <div class="mh-sheet-foot" data-no-i18n>${langSelect}<a class="mh-support" style="display:inline-block" href="${SUPPORT.href}" target="_blank" rel="noopener">${esc(t(SUPPORT.en))}</a></div>
+    <div class="mh-sheet-foot" data-no-i18n>${langSelect}<a class="mh-ig" href="${INSTAGRAM.href}" target="_blank" rel="noopener" aria-label="${u("instagram", INSTAGRAM.en)}" title="Instagram">${IG}</a><a class="mh-support" style="display:inline-block" href="${SUPPORT.href}" target="_blank" rel="noopener">${esc(t(SUPPORT.en))}</a></div>
   </div>
 </header>
 <div class="doc-band" aria-hidden="true"></div>`;
