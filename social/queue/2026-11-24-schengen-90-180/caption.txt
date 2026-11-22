@@ -1,12 +1,3 @@
-Schengen'de 90/180 kuralı: herhangi 180 günlük dönemde en fazla 90 gün kalabilirsin. Dönem her gün kayar, giriş ve çıkış günleri tam gün sayılır.
-
-Örnek: 1 Haziran ile 29 Ağustos 2026 arasında kaldıysan 90 günün dolmuştur. Tekrar girebileceğin ilk gün 28 Kasım 2026.
-
-Kendi tarihlerinle hesaplamak için: travelnow.info/tr/schengen-calculator/ (bağlantı profilde)
-
-Kaynak: AB Tüzüğü 2018/1806
-
-In English:
 The Schengen 90/180 rule: you can stay at most 90 days in any 180-day period. The window moves every day, and entry and exit days count as full days.
 
 Example: if you stayed from 1 June to 29 August 2026, you have used all 90 days. The first day you can enter again is 28 November 2026.
@@ -14,5 +5,14 @@ Example: if you stayed from 1 June to 29 August 2026, you have used all 90 days.
 Check your own dates: travelnow.info/schengen-calculator/ (link in bio)
 
 Source: EU Regulation 2018/1806
+
+Türkçe:
+Schengen'de 90/180 kuralı: herhangi 180 günlük dönemde en fazla 90 gün kalabilirsin. Dönem her gün kayar, giriş ve çıkış günleri tam gün sayılır.
+
+Örnek: 1 Haziran ile 29 Ağustos 2026 arasında kaldıysan 90 günün dolmuştur. Tekrar girebileceğin ilk gün 28 Kasım 2026.
+
+Kendi tarihlerinle hesaplamak için: travelnow.info/tr/schengen-calculator/ (bağlantı profilde)
+
+Kaynak: AB Tüzüğü 2018/1806
 
 #schengen #schengenvizesi #vize #seyahat #avrupa #schengenvisa #visa #travel

@@ -1,16 +1,16 @@
-AB Giriş/Çıkış Sistemi (EES), AB dışı ülke vatandaşlarının kısa süreli kalışlarda Schengen dış sınırındaki her giriş ve çıkışını dijital olarak kaydediyor. Vizen olsa da olmasa da uygulanıyor ve pasaport damgalarının yerini zamanla alacak.
+Since 10 April 2026, the EU Entry/Exit System (EES) records every entry and exit of non-EU nationals on a short stay at the Schengen external border, with fingerprints and a facial image. It applies whether or not you need a visa, and it has replaced passport stamps.
 
-Bilmen gereken bir ayrıntı: AB'nin resmi kalan gün aracı, 10 Nisan 2026'dan önce başlamış kalışları hesaba katmıyor. Son 180 gün içinde böyle bir kalışın varsa onu da say.
-
-Hesaplayıcı: travelnow.info/tr/schengen-calculator/ (bağlantı profilde)
-Kaynak: travel-europe.europa.eu
-
-In English:
-The EU Entry/Exit System (EES) records every entry and exit of non-EU nationals on a short stay at the Schengen external border. It applies whether or not you need a visa, and it will gradually replace passport stamps.
-
-One detail worth knowing: the EU's official days-left tool does not count stays that began before 10 April 2026. If you had one in the last 180 days, count it too.
+Worth knowing: days spent on an EU residence permit or a long-stay (D) visa do not count towards the 90/180 short-stay limit.
 
 Calculator: travelnow.info/schengen-calculator/ (link in bio)
-Source: travel-europe.europa.eu
+Source: European Commission, home-affairs.ec.europa.eu
+
+Türkçe:
+10 Nisan 2026'dan beri AB Giriş/Çıkış Sistemi (EES), AB dışı ülke vatandaşlarının kısa süreli kalışlarda Schengen dış sınırındaki her giriş ve çıkışını parmak izi ve yüz görüntüsüyle kaydediyor. Vizen olsa da olmasa da uygulanıyor ve pasaport damgasının yerini aldı.
+
+Bilmekte yarar var: AB oturma izniyle ya da uzun süreli (D tipi) vizeyle geçirdiğin günler 90/180 kısa kalış sınırına sayılmaz.
+
+Hesaplayıcı: travelnow.info/tr/schengen-calculator/ (bağlantı profilde)
+Kaynak: Avrupa Komisyonu, home-affairs.ec.europa.eu
 
 #schengen #EES #vize #seyahat #avrupa #visa #travel #europe

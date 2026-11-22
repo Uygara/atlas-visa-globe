@@ -2,11 +2,32 @@
   "slug": "ees",
   "lang": "tr",
   "slides": [
-    { "eyebrow": "AB giriş/çıkış sistemi", "title": "Schengen sınırında damganın yerini EES alıyor", "body": "Kısa süreli kalış için Avrupa'ya gidiyorsan bilmen gerekenler." },
-    { "eyebrow": "Nedir", "title": "Her sınır geçişin dijital olarak kaydediliyor", "body": "EES, AB dışı ülke vatandaşlarının kısa süreli kalışlarda dış sınırdan her giriş ve çıkışını otomatik kaydeder. Vizen olsa da olmasa da uygulanır." },
-    { "eyebrow": "Ne kaydediliyor", "title": "Parmak izi ve yüz görüntüsü", "body": "Pasaport damgalarının yerini zamanla bu kayıt alacak. Kıbrıs ve İrlanda pasaportları hâlâ elle damgalıyor." },
-    { "eyebrow": "Dikkat", "title": "Resmi kalan gün aracının bir sınırı var", "body": "AB'nin çevrim içi aracı, 10 Nisan 2026'dan önce başlamış kalışları hesaba katmıyor. Son 180 gün içinde böyle bir kalışın varsa kendin say." },
-    { "eyebrow": "Hesapla", "title": "Tüm kalışlarını birlikte say", "body": "travelnow.info hesaplayıcısı girdiğin her seyahati sayar, tarihi ne olursa olsun.", "footer": "travelnow.info/tr/schengen-calculator/" }
+    {
+      "eyebrow": "AB Giriş/Çıkış Sistemi",
+      "title": "Schengen sınırında damga yerine artık EES var",
+      "body": "Avrupa'ya kısa süreli gidiyorsan bilmen gerekenler."
+    },
+    {
+      "eyebrow": "Nedir",
+      "title": "Her sınır geçişin dijital olarak kaydediliyor",
+      "body": "EES, AB dışı ülke vatandaşlarının kısa süreli kalışlarda Schengen dış sınırındaki her giriş ve çıkışını kaydeder. Vizen olsa da olmasa da uygulanır."
+    },
+    {
+      "eyebrow": "10 Nisan 2026'dan beri",
+      "title": "Parmak izi ve yüz görüntüsü, damga yok",
+      "body": "Pasaport damgasının yerini dijital kayıt aldı. İrlanda ve Kıbrıs Schengen Bölgesi'nde değil; oralarda sınır işlemleri farklı."
+    },
+    {
+      "eyebrow": "Bilmekte yarar var",
+      "title": "Avrupa'daki her gün sayılmaz",
+      "body": "AB oturma izniyle ya da uzun süreli (D tipi) vizeyle geçirdiğin günler 90/180 kısa kalış hesabına girmez."
+    },
+    {
+      "eyebrow": "Hesapla",
+      "title": "Kendi tarihlerinle dene",
+      "body": "Seyahatlerini gir, kaç günün kaldığını ve ne zaman dönebileceğini gör.",
+      "footer": "travelnow.info/tr/schengen-calculator/"
+    }
   ],
-  "caption": "AB Giriş/Çıkış Sistemi (EES), AB dışı ülke vatandaşlarının kısa süreli kalışlarda Schengen dış sınırındaki her giriş ve çıkışını dijital olarak kaydediyor. Vizen olsa da olmasa da uygulanıyor ve pasaport damgalarının yerini zamanla alacak.\n\nBilmen gereken bir ayrıntı: AB'nin resmi kalan gün aracı, 10 Nisan 2026'dan önce başlamış kalışları hesaba katmıyor. Son 180 gün içinde böyle bir kalışın varsa onu da say.\n\nHesaplayıcı: travelnow.info/tr/schengen-calculator/ (bağlantı profilde)\nKaynak: travel-europe.europa.eu\n\n#schengen #EES #vize #seyahat #avrupa"
+  "caption": "10 Nisan 2026'dan beri AB Giriş/Çıkış Sistemi (EES), AB dışı ülke vatandaşlarının kısa süreli kalışlarda Schengen dış sınırındaki her giriş ve çıkışını parmak izi ve yüz görüntüsüyle kaydediyor. Vizen olsa da olmasa da uygulanıyor ve pasaport damgasının yerini aldı.\n\nBilmekte yarar var: AB oturma izniyle ya da uzun süreli (D tipi) vizeyle geçirdiğin günler 90/180 kısa kalış sınırına sayılmaz.\n\nHesaplayıcı: travelnow.info/tr/schengen-calculator/ (bağlantı profilde)\nKaynak: Avrupa Komisyonu, home-affairs.ec.europa.eu\n\n#schengen #EES #vize #seyahat #avrupa"
 }

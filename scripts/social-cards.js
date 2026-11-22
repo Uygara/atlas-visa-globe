@@ -92,11 +92,12 @@ const CSS = (tokens) => `${tokens}
 html,body{margin:0;width:${W}px;height:${H}px;overflow:hidden;background:var(--paper)}
 .card{position:relative;width:${W}px;height:${H}px;box-sizing:border-box;background:var(--paper);color:var(--ink);font-family:var(--font-sans)}
 .top{position:absolute;left:84px;right:84px;top:76px;display:flex;justify-content:space-between;align-items:center}
-.brand{display:flex;align-items:center;gap:14px;font:650 40px/1 var(--font-display);letter-spacing:-.01em;color:var(--ink)}
+.brand{display:flex;align-items:center;gap:14px;font:600 40px/1 var(--font-display);letter-spacing:0;color:var(--ink)}
+.top::after{content:"";position:absolute;left:0;right:0;top:66px;height:1px;background:var(--rule-strong)}
 .brand svg{width:40px;height:40px}
 .brand .tld{font-weight:500;color:var(--ink-3)}
-.eyebrow{position:absolute;left:84px;top:196px;font:600 32px/1.2 var(--font-sans);color:var(--ink-3)}
-.title{position:absolute;left:84px;right:84px;top:246px;font:700 88px/1.02 var(--font-display);letter-spacing:-.03em;color:var(--ink)}
+.eyebrow{position:absolute;left:84px;top:196px;font:600 32px/1.2 var(--font-sans);color:var(--accent)}
+.title{position:absolute;left:84px;right:84px;top:246px;font:600 88px/1.08 var(--font-display);letter-spacing:-.01em;color:var(--ink)}
 .rows{position:absolute;left:84px;right:84px;top:480px;display:flex;flex-direction:column;gap:14px}
 .row{display:flex;align-items:center;gap:26px;height:100px;border-bottom:1px solid var(--rule-strong);padding-bottom:8px}
 .row .fl{font-size:68px;line-height:1;flex:none;width:92px;text-align:center}
@@ -105,7 +106,7 @@ html,body{margin:0;width:${W}px;height:${H}px;overflow:hidden;background:var(--p
 .row .v small{display:block;font:500 24px var(--font-sans);letter-spacing:0;color:var(--ink-3);margin-top:6px}
 .row .v.up{color:var(--vf)}.row .v.down{color:var(--vr)}
 .note{position:absolute;left:84px;right:84px;bottom:96px;font:500 30px/1.35 var(--font-sans);color:var(--ink-3)}
-.big{font:700 280px/.85 var(--font-display);color:var(--ink);letter-spacing:-.045em}
+.big{font:600 280px/.85 var(--font-display);color:var(--ink);letter-spacing:-.03em}
 .cap{font:500 46px/1.2 var(--font-sans);color:var(--ink-2)}
 .row2{display:flex;align-items:center;gap:26px;height:112px;border-bottom:1px solid var(--rule-strong)}
 .row2 .fl{font-size:60px;line-height:1;flex:none;width:92px;text-align:center}
@@ -114,7 +115,7 @@ html,body{margin:0;width:${W}px;height:${H}px;overflow:hidden;background:var(--p
 .row2 .st{font:500 30px/1.2 var(--font-sans);color:var(--ink-3);margin-top:6px;white-space:nowrap;overflow:hidden}
 .row2 .st b{font-weight:600;color:var(--vf)}
 .txt{position:absolute;left:84px;right:84px;top:246px;bottom:190px;display:flex;flex-direction:column;justify-content:center;gap:48px}
-.txt .ttl{flex:none;max-height:540px;overflow:hidden;padding-bottom:.12em;font:700 104px/1.06 var(--font-display);letter-spacing:-.03em;color:var(--ink);overflow-wrap:anywhere}
+.txt .ttl{flex:none;max-height:540px;overflow:hidden;padding-bottom:.12em;font:600 96px/1.1 var(--font-display);letter-spacing:-.01em;color:var(--ink);overflow-wrap:anywhere}
 .txt .bd{flex:none;max-height:520px;overflow:hidden;font:500 46px/1.35 var(--font-sans);color:var(--ink-2);white-space:pre-line}
 .link{position:absolute;left:84px;right:84px;top:560px;font:600 56px/1.2 var(--font-sans);letter-spacing:-.01em;color:var(--link);word-break:break-all}
 `;
@@ -355,7 +356,12 @@ async function main() {
   const outArg = oi >= 0 ? args[oi + 1] : null;
   if (oi >= 0) { if (!outArg) throw new Error("--out needs a directory"); args.splice(oi, 2); }
   const kind = args[0], key = args[1];
-  const tokens = fs.readFileSync(path.join(ROOT, "assets", "tokens.css"), "utf8").replace(/@import[^;]+;/g, "");
+  // The site's own fonts (IBM Plex Sans and Serif), inlined as data URLs so the cards match the site.
+  const fonts = fs.readFileSync(path.join(ROOT, "assets", "fonts.css"), "utf8").split("\n")
+    .filter((l) => /font-family: 'IBM Plex (Sans|Serif)'/.test(l))
+    .map((l) => l.replace(/url\((\/assets\/fonts\/[^)]+)\)/, (_, p) => "url(data:font/woff2;base64," + fs.readFileSync(path.join(ROOT, p)).toString("base64") + ")"))
+    .join("\n");
+  const tokens = fonts + "\n" + fs.readFileSync(path.join(ROOT, "assets", "tokens.css"), "utf8").replace(/@import[^;]+;/g, "");
 
   const jobs = []; // { dir, htmls[], caption }
   if (kind === "month") {

@@ -2,11 +2,32 @@
   "slug": "ees",
   "lang": "en",
   "slides": [
-    { "eyebrow": "EU Entry/Exit System", "title": "EES is replacing passport stamps at the Schengen border", "body": "What to know before a short stay in Europe." },
-    { "eyebrow": "What it is", "title": "Every border crossing is recorded digitally", "body": "EES automatically registers each entry and exit of non-EU nationals on a short stay at the external border. It applies whether or not you need a visa." },
-    { "eyebrow": "What it records", "title": "Fingerprints and a facial image", "body": "This record will gradually replace passport stamps. Cyprus and Ireland still stamp passports by hand." },
-    { "eyebrow": "Worth knowing", "title": "The official days-left tool has a gap", "body": "The EU's online tool does not count any stay that began before 10 April 2026. If you had one in the last 180 days, count it yourself." },
-    { "eyebrow": "Calculate", "title": "Count all your stays together", "body": "The travelnow.info calculator counts every trip you enter, whatever its date.", "footer": "travelnow.info/schengen-calculator/" }
+    {
+      "eyebrow": "EU Entry/Exit System",
+      "title": "EES has replaced passport stamps at Schengen borders",
+      "body": "What to know before a short stay in Europe."
+    },
+    {
+      "eyebrow": "What it is",
+      "title": "Every border crossing is recorded digitally",
+      "body": "EES registers each entry and exit of non-EU nationals on a short stay at the Schengen external border. It applies whether or not you need a visa."
+    },
+    {
+      "eyebrow": "Since 10 April 2026",
+      "title": "Fingerprints and a facial image, no stamp",
+      "body": "The digital record has replaced passport stamping. Ireland and Cyprus are not in the Schengen Area, so their borders work differently."
+    },
+    {
+      "eyebrow": "Worth knowing",
+      "title": "Not every day in Europe counts",
+      "body": "Days spent on an EU residence permit or a long-stay (D) visa are not part of the 90/180 short-stay count."
+    },
+    {
+      "eyebrow": "Calculate",
+      "title": "Check your own dates",
+      "body": "Enter your trips and see how many days you have left and when you can go back.",
+      "footer": "travelnow.info/schengen-calculator/"
+    }
   ],
-  "caption": "The EU Entry/Exit System (EES) records every entry and exit of non-EU nationals on a short stay at the Schengen external border. It applies whether or not you need a visa, and it will gradually replace passport stamps.\n\nOne detail worth knowing: the EU's official days-left tool does not count stays that began before 10 April 2026. If you had one in the last 180 days, count it too.\n\nCalculator: travelnow.info/schengen-calculator/ (link in bio)\nSource: travel-europe.europa.eu\n\n#schengen #EES #visa #travel #europe"
+  "caption": "Since 10 April 2026, the EU Entry/Exit System (EES) records every entry and exit of non-EU nationals on a short stay at the Schengen external border, with fingerprints and a facial image. It applies whether or not you need a visa, and it has replaced passport stamps.\n\nWorth knowing: days spent on an EU residence permit or a long-stay (D) visa do not count towards the 90/180 short-stay limit.\n\nCalculator: travelnow.info/schengen-calculator/ (link in bio)\nSource: European Commission, home-affairs.ec.europa.eu\n\n#schengen #EES #visa #travel #europe"
 }
