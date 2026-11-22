@@ -1,3 +1,10 @@
 User-agent: *
 Allow: /
+
+# Heavy crawlers with no benefit to the site's visitors (no search product we appear in).
+User-agent: Bytespider
+User-agent: TikTokSpider
+User-agent: PetalBot
+Disallow: /
+
 Sitemap: https://travelnow.info/sitemap.xml
