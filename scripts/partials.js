@@ -13,7 +13,7 @@
 const { PRIMARY, GROUPS, SUPPORT, INSTAGRAM, isCurrent } = require("../assets/site-nav.js");
 const { makeT, hasTr, toTr, hreflang } = require("./locales");
 
-const ASSET_VERSION = "20261122h";
+const ASSET_VERSION = "20261122i";
 
 function esc(s) {
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -65,7 +65,7 @@ function masthead({ path = "/", i18n = true, lang = "en" } = {}) {
   const u = (k, en) => (lang === "tr" ? UI_TR[k] : en);
   const href = (h) => (lang === "tr" && hasTr(h) ? toTr(h) : h);
   const cur = (it) => isCurrent(it, path) ? ' aria-current="page"' : "";
-  const links = PRIMARY.map((it) => `      <li><a class="mh-link" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a></li>`).join("\n");
+  const links = PRIMARY.filter((it) => it.bar !== false).map((it) => `      <li><a class="mh-link" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a></li>`).join("\n");
   const TOP = GROUPS.filter((g) => g.top), REST = GROUPS.filter((g) => !g.top);
   const toolOn = REST.some((g) => g.items.some((it) => isCurrent(it, path)));
   const toolLink = (it) => `            <li><a class="mh-tool" href="${href(it.href)}"${cur(it)}><span class="mh-tool-t">${esc(t(it.en))}</span>${it.den ? `<span class="mh-tool-d">${esc(t(it.den))}</span>` : ""}</a></li>`;
@@ -85,7 +85,7 @@ ${g.items.map(toolLink).join("\n")}
 ${g.items.map((it) => `            <li><a class="mh-tool" href="${href(it.href)}"${cur(it)}><span class="mh-tool-t">${esc(t(it.en))}</span>${it.den ? `<span class="mh-tool-d">${esc(t(it.den))}</span>` : ""}</a></li>`).join("\n")}
           </ul>
         </div>`).join("\n");
-  const sheetTools = GROUPS.map((g) => g.items.map((it) => `      <li><a class="mh-sheet-tool" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a></li>`).join("\n")).join("\n");
+  const sheetTools = GROUPS.map((g) => g.items.filter((it) => it.href !== "/").map((it) => `      <li><a class="mh-sheet-tool" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a></li>`).join("\n")).join("\n");
   const sheet = PRIMARY.map((it) => `    <a class="mh-sheet-link" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a>`).join("\n");
   const langs = i18n ? LANGS : (hasTr(path) ? LANGS.filter(([c]) => c === "en" || c === "tr") : []);
   const langSelect = langs.length
@@ -105,10 +105,10 @@ ${PRIMARY.map((it) => `  <a class="tb-item" href="${href(it.href)}"${cur(it)}>${
   return `<header class="masthead">
   <a class="brand" href="${href("/")}" aria-label="${u("home", "travelnow.info home")}">${BRAND_MARK}<span class="brand-word">travelnow<span class="brand-tld">.info</span></span></a>
   <nav class="mh-nav" aria-label="${u("main", "Main")}">
+${topMenus}
     <ul class="mh-links">
 ${links}
     </ul>
-${topMenus}
     <div class="mh-all">
       <button type="button" class="mh-link mh-all-btn${toolOn ? " has-current" : ""}" aria-expanded="false" aria-controls="mh-all-panel">${esc(t("All tools"))}${CARET}</button>
       <div class="mh-panel mh-all-panel" id="mh-all-panel" hidden>

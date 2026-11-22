@@ -427,17 +427,7 @@ function Masthead(_ref9) {
   }, ".info"))), React.createElement("nav", {
     className: "mh-nav",
     "aria-label": tr("nav.main", "Main")
-  }, React.createElement("ul", {
-    className: "mh-links"
-  }, nav.PRIMARY.map(function (it) {
-    return React.createElement("li", {
-      key: it.href
-    }, React.createElement("a", {
-      className: "mh-link",
-      href: to(it.href),
-      "aria-current": cur(it)
-    }, label(it)));
-  })), TOP.map(function (g, i) {
+  }, TOP.map(function (g, i) {
     return React.createElement("div", {
       key: g.key,
       className: "mh-all mh-top"
@@ -470,7 +460,19 @@ function Masthead(_ref9) {
         className: "mh-tool-d"
       }, tr(it.dkey, it.den))));
     }))));
-  }), React.createElement("div", {
+  }), React.createElement("ul", {
+    className: "mh-links"
+  }, nav.PRIMARY.filter(function (it) {
+    return it.bar !== false;
+  }).map(function (it) {
+    return React.createElement("li", {
+      key: it.href
+    }, React.createElement("a", {
+      className: "mh-link",
+      href: to(it.href),
+      "aria-current": cur(it)
+    }, label(it)));
+  })), React.createElement("div", {
     className: "mh-all"
   }, React.createElement("button", {
     ref: toolsBtn,
@@ -564,7 +566,9 @@ function Masthead(_ref9) {
   }, tr("nav.all_tools", "All tools")), React.createElement("ul", {
     className: "mh-sheet-tools"
   }, nav.GROUPS.map(function (g) {
-    return g.items.map(function (it) {
+    return g.items.filter(function (it) {
+      return it.href !== "/";
+    }).map(function (it) {
       return React.createElement("li", {
         key: it.href
       }, React.createElement("a", {

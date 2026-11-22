@@ -10,13 +10,14 @@
 // `g` is the group index, kept for code that reads the flat list.
 (function (root) {
   var PRIMARY = [
-    { href: "/",            key: "nav.visa_map",  en: "Visa map" },
+    { href: "/",            key: "nav.visa_map",  en: "Visa map", bar: false },   // in the tab bar and phone sheet; on desktop it lives under Maps
     { href: "/visa/",       key: "nav.countries", en: "Countries" },
     { href: "/itinerary/",  key: "nav.itinerary", en: "Travel planner" },
     { href: "/panel/",      key: "nav.panel",     en: "My panel" }
   ];
   var GROUPS = [
     { key: "nav.grp_maps", en: "Maps", top: true, items: [
+      { href: "/",             key: "nav.visa_map",    en: "Visa map",     dkey: "nav.d_visa",    den: "Where your passport goes without a visa" },
       { href: "/transit-map/", key: "nav.transit_map", en: "Transit map",  dkey: "nav.d_transit", den: "Is a visa needed to change planes" },
       { href: "/safety-map/",  key: "nav.safety_map",  en: "Safety map",   dkey: "nav.d_safety",  den: "Official travel advisories" }
     ] },
@@ -36,7 +37,7 @@
   ];
   var NAV = PRIMARY.map(function (it) { var c = {}; for (var k in it) c[k] = it[k]; c.g = 0; return c; });
   GROUPS.forEach(function (grp, gi) {
-    grp.items.forEach(function (it) { var c = {}; for (var k in it) c[k] = it[k]; c.g = gi + 1; NAV.push(c); });
+    grp.items.forEach(function (it) { if (it.href === "/") return; var c = {}; for (var k in it) c[k] = it[k]; c.g = gi + 1; NAV.push(c); });
   });
   var SUPPORT = { href: "https://buymeacoffee.com/travelnowinfo", key: "nav.support", en: "Support" };
   // The site's Instagram profile: in the footer and at the bottom of the phone menu sheet.

@@ -45,6 +45,7 @@
     "Calculators": { tr:"Hesaplayıcılar", es:"Calculadoras", de:"Rechner", fr:"Calculateurs", ar:"الحاسبات" },
     "Read and explore": { tr:"Oku ve keşfet", es:"Leer y explorar", de:"Lesen und entdecken", fr:"Lire et explorer", ar:"اقرأ واكتشف" },
     "Visa rules for changing planes": { tr:"Aktarma için vize gerekir mi", es:"Visa para hacer escala", de:"Visum fürs Umsteigen", fr:"Visa pour une escale", ar:"التأشيرة عند العبور" },
+    "Where your passport goes without a visa": { tr:"Pasaportunla nereye vizesiz gidebilirsin", es:"Adónde viajas sin visado con tu pasaporte", de:"Wohin du ohne Visum reisen kannst", fr:"Où aller sans visa avec ton passeport", ar:"إلى أين تسافر دون تأشيرة بجوازك" },
     "Official travel advisories": { tr:"Resmi seyahat uyarıları", es:"Avisos oficiales de viaje", de:"Offizielle Reisehinweise", fr:"Avis officiels aux voyageurs", ar:"تحذيرات السفر الرسمية" },
     "How many days are left": { tr:"Kaç gün kaldı", es:"Cuántos días te quedan", de:"Wie viele Tage dir bleiben", fr:"Combien de jours il te reste", ar:"كم يومًا تبقّى لك" },
     "The 3-month and 6-month rules": { tr:"3 ay, 6 ay kuralı", es:"Las reglas de 3 y 6 meses", de:"Die 3- und 6-Monats-Regeln", fr:"Les règles des 3 et 6 mois", ar:"قاعدتا الثلاثة والستة أشهر" },

@@ -239,11 +239,6 @@ function Masthead({ theme, onTheme }) {
       </a>
 
       <nav className="mh-nav" aria-label={tr("nav.main", "Main")}>
-        <ul className="mh-links">
-          {nav.PRIMARY.map(it => (
-            <li key={it.href}><a className="mh-link" href={to(it.href)} aria-current={cur(it)}>{label(it)}</a></li>
-          ))}
-        </ul>
         {TOP.map((g, i) => (
           <div key={g.key} className="mh-all mh-top">
             <button type="button" className={"mh-link mh-all-btn mh-top-btn" + (g.items.some(it => nav.isCurrent(it, path)) ? " has-current" : "")}
@@ -259,6 +254,11 @@ function Masthead({ theme, onTheme }) {
             </div>
           </div>
         ))}
+        <ul className="mh-links">
+          {nav.PRIMARY.filter(it => it.bar !== false).map(it => (
+            <li key={it.href}><a className="mh-link" href={to(it.href)} aria-current={cur(it)}>{label(it)}</a></li>
+          ))}
+        </ul>
         <div className="mh-all">
           <button ref={toolsBtn} type="button" className={"mh-link mh-all-btn" + (toolOn ? " has-current" : "")}
             aria-expanded={open === "tools"} aria-controls="mh-all-panel" onClick={() => setOpen(o => o === "tools" ? null : "tools")}>
@@ -314,7 +314,7 @@ function Masthead({ theme, onTheme }) {
         ))}
         <p className="mh-sheet-h">{tr("nav.all_tools", "All tools")}</p>
         <ul className="mh-sheet-tools">
-          {nav.GROUPS.map(g => g.items.map(it => (
+          {nav.GROUPS.map(g => g.items.filter(it => it.href !== "/").map(it => (
             <li key={it.href}><a className="mh-sheet-tool" href={to(it.href)} aria-current={cur(it)}>{label(it)}</a></li>
           )))}
         </ul>
