@@ -840,8 +840,6 @@ function ItineraryApp() {
   return React.createElement("div", {
     className: "layout"
   }, React.createElement(Masthead, {
-    view: mode,
-    onView: setMode,
     theme: theme,
     onTheme: setTheme
   }), React.createElement("div", {
@@ -849,6 +847,7 @@ function ItineraryApp() {
   }, React.createElement(Globe, {
     passport: pps[0] || null,
     mode: mode,
+    onView: setMode,
     fillResolver: fillResolver,
     hoverRenderer: hoverRenderer,
     arcs: arcs,

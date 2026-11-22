@@ -6,13 +6,14 @@
 //
 // The nav list itself lives in assets/site-nav.js so the React masthead and
 // these static pages can never drift apart. Links are real <a href> in the
-// HTML (crawlable without JS); assets/site-chrome.js only adds behaviour
-// (overflow "More" menu, mobile sheet, theme + language controls).
+// HTML (crawlable without JS), the "All tools" panel included (it is `hidden`
+// until opened); assets/site-chrome.js only adds behaviour (the two pop-over
+// menus, mobile sheet, theme + language controls).
 
-const { NAV, SUPPORT, INSTAGRAM, isCurrent } = require("../assets/site-nav.js");
+const { PRIMARY, GROUPS, SUPPORT, INSTAGRAM, isCurrent } = require("../assets/site-nav.js");
 const { makeT, hasTr, toTr, hreflang } = require("./locales");
 
-const ASSET_VERSION = "20261122e";
+const ASSET_VERSION = "20261122f";
 
 function esc(s) {
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -21,10 +22,6 @@ function esc(s) {
 // The mark: a passport page opening its MRZ with "P<", over a dotted filler line.
 const BRAND_MARK = `<svg class="brand-mark" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2.75" y="1.75" width="18.5" height="20.5" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M6.4 14.6V6.8h2.9a2.4 2.4 0 0 1 0 4.8H6.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.9 7.3 13.9 10.7l3 3.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.4 18.3h11.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="0.1 2.3"/></svg>`;
 const CARET = `<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 4.5 6 7.5 9 4.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
-const SUN = `<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3" fill="currentColor"/><g stroke="currentColor" stroke-width="1.3" stroke-linecap="round"><path d="M8 1.2v1.7M8 13.1v1.7M1.2 8h1.7M13.1 8h1.7M3.2 3.2l1.2 1.2M11.6 11.6l1.2 1.2M12.8 3.2l-1.2 1.2M4.4 11.6l-1.2 1.2"/></g></svg>`;
-const MOON = `<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13.2 9.6A5.6 5.6 0 0 1 6.4 2.8a5.6 5.6 0 1 0 6.8 6.8z" fill="currentColor"/></svg>`;
-const USER = `<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><circle cx="8" cy="5.6" r="2.9" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M2.6 14.2c.7-2.8 2.8-4.3 5.4-4.3s4.7 1.5 5.4 4.3" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg>`;
-const IG = `<svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><rect x="2" y="2" width="12" height="12" rx="3.6" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="8" cy="8" r="2.8" fill="none" stroke="currentColor" stroke-width="1.4"/><circle cx="11.5" cy="4.5" r=".9" fill="currentColor"/></svg>`;
 const MENU =`<svg viewBox="0 0 18 18" width="18" height="18" aria-hidden="true"><path d="M3 5.5h12M3 9h12M3 12.5h12" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>`;
 
 // The last flag marks languages that are not fully translated yet (shown as "beta").
@@ -59,46 +56,68 @@ function headAssets({ enPath = null, lang = "en" } = {}) {
 }
 
 // `path` is the page's ENGLISH URL path ("/guides/", "/passport/tr/") for
-// aria-current and for the twin links. `i18n` adds the full language select
+// aria-current and for the twin links. `i18n` adds the full language list
 // (only pages that load data/static-i18n.js); pages with a Turkish twin get an
-// EN/TR select that navigates between the twins. `lang: "tr"` renders the
+// EN/TR list that navigates between the twins. `lang: "tr"` renders the
 // Turkish page: labels from the site dictionary, links to Turkish twins.
-const UI_TR = { menu: "Menü", theme: "Tema", light: "Açık", dark: "Koyu", lang: "Dil", account: "Hesap", main: "Ana menü", home: "travelnow.info ana sayfa", instagram: "Instagram'da travelnow.info" };
+const UI_TR = { menu: "Menü", main: "Ana menü", home: "travelnow.info ana sayfa" };
 function masthead({ path = "/", i18n = true, lang = "en" } = {}) {
   const t = makeT(lang);
   const u = (k, en) => (lang === "tr" ? UI_TR[k] : en);
   const href = (h) => (lang === "tr" && hasTr(h) ? toTr(h) : h);
   const cur = (it) => isCurrent(it, path) ? ' aria-current="page"' : "";
-  // The first link of each group carries `mh-grp-start` (a divider in the bar and the menus).
-  const start = (i) => (i > 0 && NAV[i].g !== NAV[i - 1].g ? " mh-grp-start" : "");
-  const links = NAV.map((it, i) => `      <li${start(i) ? ` class="${start(i).trim()}"` : ""}><a class="mh-link" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a></li>`).join("\n");
-  const sheet = NAV.map((it, i) => `    <a class="mh-sheet-link${start(i)}" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a>`).join("\n");
+  const links = PRIMARY.map((it) => `      <li><a class="mh-link" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a></li>`).join("\n");
+  const toolOn = GROUPS.some((g) => g.items.some((it) => isCurrent(it, path)));
+  // The "All tools" panel: three groups, each link with its one-line description (when it has one).
+  const groups = GROUPS.map((g) => `        <div class="mh-grp">
+          <p class="mh-grp-label">${esc(t(g.en))}</p>
+          <ul>
+${g.items.map((it) => `            <li><a class="mh-tool" href="${href(it.href)}"${cur(it)}><span class="mh-tool-t">${esc(t(it.en))}</span>${it.den ? `<span class="mh-tool-d">${esc(t(it.den))}</span>` : ""}</a></li>`).join("\n")}
+          </ul>
+        </div>`).join("\n");
+  const sheetTools = GROUPS.map((g) => g.items.map((it) => `      <li><a class="mh-sheet-tool" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a></li>`).join("\n")).join("\n");
+  const sheet = PRIMARY.map((it) => `    <a class="mh-sheet-link" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a>`).join("\n");
   const langs = i18n ? LANGS : (hasTr(path) ? LANGS.filter(([c]) => c === "en" || c === "tr") : []);
   const langSelect = langs.length
-    ? `<select class="lang-select" data-lang-select data-no-i18n aria-label="${u("lang", "Language")}">${langs.map(([c, n, beta]) => `<option value="${c}"${c === lang ? " selected" : ""}>${n}${beta ? " (beta)" : ""}</option>`).join("")}</select>`
+    ? `<select class="lang-select" data-lang-select data-no-i18n aria-label="${esc(t("Language"))}">${langs.map(([c, n, beta]) => `<option value="${c}"${c === lang ? " selected" : ""}>${n}${beta ? " (beta)" : ""}</option>`).join("")}</select>`
     : "";
+  const langList = langs.length
+    ? `<p class="mh-grp-label">${esc(t("Language"))}</p>
+      <ul class="mh-opts" data-no-i18n>${langs.map(([c, n, beta]) => `<li><button type="button" class="mh-opt" data-lang-set="${c}" aria-pressed="${c === lang}">${n}${beta ? " (beta)" : ""}</button></li>`).join("")}</ul>`
+    : "";
+  const themeOpts = `<div class="mh-opts-row" role="group" aria-label="${esc(t("Theme"))}"><button type="button" class="mh-opt" data-theme-set="light" aria-pressed="true">${esc(t("Light"))}</button><button type="button" class="mh-opt" data-theme-set="dark" aria-pressed="false">${esc(t("Dark"))}</button></div>`;
   return `<header class="masthead">
   <a class="brand" href="${href("/")}" aria-label="${u("home", "travelnow.info home")}">${BRAND_MARK}<span class="brand-word">travelnow<span class="brand-tld">.info</span></span></a>
   <nav class="mh-nav" aria-label="${u("main", "Main")}">
     <ul class="mh-links">
 ${links}
     </ul>
-    <div class="mh-more" hidden>
-      <button type="button" class="mh-link mh-more-btn" aria-expanded="false">${esc(t("More"))}${CARET}</button>
-      <ul class="mh-menu" hidden></ul>
+    <div class="mh-all">
+      <button type="button" class="mh-link mh-all-btn${toolOn ? " has-current" : ""}" aria-expanded="false" aria-controls="mh-all-panel">${esc(t("All tools"))}${CARET}</button>
+      <div class="mh-panel mh-all-panel" id="mh-all-panel" hidden>
+${groups}
+      </div>
     </div>
   </nav>
   <div class="mh-tools">
-    <a class="mh-ig" href="${INSTAGRAM.href}" target="_blank" rel="noopener" data-no-i18n aria-label="${u("instagram", INSTAGRAM.en)}" title="Instagram">${IG}</a>
-    <a class="mh-account" href="/account/" data-account-link hidden aria-label="${u("account", "Account")}" title="${u("account", "Account")}">${USER}<span data-account-initial></span></a>
-    <div class="seg" role="group" aria-label="${u("theme", "Theme")}"><button type="button" data-theme-set="light" aria-pressed="true" aria-label="${u("light", "Light")}" title="${u("light", "Light")}">${SUN}</button><button type="button" data-theme-set="dark" aria-pressed="false" aria-label="${u("dark", "Dark")}" title="${u("dark", "Dark")}">${MOON}</button></div>
-    ${langSelect}
-    <a class="mh-support" href="${SUPPORT.href}" target="_blank" rel="noopener">${esc(t(SUPPORT.en))}</a>
+    <div class="mh-prefs">
+      <button type="button" class="mh-prefs-btn" aria-expanded="false" aria-controls="mh-prefs-panel" aria-label="${esc(t("Language and theme"))}">${langs.length ? `<span data-lang-code data-no-i18n>${lang.toUpperCase()}</span><span aria-hidden="true" data-no-i18n> · </span>` : ""}<span data-theme-label="light">${esc(t("Light"))}</span><span data-theme-label="dark" hidden>${esc(t("Dark"))}</span>${CARET}</button>
+      <div class="mh-panel mh-prefs-panel" id="mh-prefs-panel" hidden>
+      ${langList}
+      <p class="mh-grp-label">${esc(t("Theme"))}</p>
+      ${themeOpts}
+      </div>
+    </div>
+    <a class="mh-account" href="${href("/account/")}" data-account-link hidden><span class="mh-signin">${esc(t("Sign in"))}</span><span class="mh-acct-dot" aria-hidden="true"><span data-account-initial></span></span><span class="mh-acct-name">${esc(t("Account"))}</span></a>
   </div>
   <button type="button" class="mh-burger" aria-label="${u("menu", "Menu")}" aria-expanded="false">${MENU}</button>
   <div class="mh-sheet">
 ${sheet}
-    <div class="mh-sheet-foot" data-no-i18n>${langSelect}<a class="mh-ig" href="${INSTAGRAM.href}" target="_blank" rel="noopener" aria-label="${u("instagram", INSTAGRAM.en)}" title="Instagram">${IG}</a><a class="mh-support" style="display:inline-block" href="${SUPPORT.href}" target="_blank" rel="noopener">${esc(t(SUPPORT.en))}</a></div>
+    <p class="mh-sheet-h">${esc(t("All tools"))}</p>
+    <ul class="mh-sheet-tools">
+${sheetTools}
+    </ul>
+    <div class="mh-sheet-foot">${langSelect}${themeOpts}<a class="mh-sheet-ext" href="${INSTAGRAM.href}" target="_blank" rel="noopener" data-no-i18n aria-label="${esc(INSTAGRAM.en)}">Instagram</a><a class="mh-sheet-ext" href="${SUPPORT.href}" target="_blank" rel="noopener">${esc(t(SUPPORT.en))}</a></div>
   </div>
 </header>
 <div class="doc-band" aria-hidden="true"></div>`;
@@ -121,7 +140,7 @@ ${items.map(([h, label]) => `        <li><a href="${href(h)}">${esc(t(label))}</
     </div>
 ${col("Tools", [["/", "Visa map"], ["/transit-map/", "Transit map"], ["/itinerary/", "Travel planner"], ["/panel/", "My panel"], ["/schengen-calculator/", "Schengen calc"], ["/etias/", "ETIAS 2026"], ["/passport-validity/", "Passport validity"], ["/alerts/", "Alerts"]])}
 ${col("Read", [["/guides/", "Guides"], ["/passport/", "All passports"], ["/visa-shortcuts/", "Visa shortcuts"], ["/digital-nomad-visa/", "Nomad visas"], ["/citizenship-by-investment/", "Second passport"], ["/open-data/", "Open data"]])}
-${col("The project", [["/about/", "About"], ["/contact/", "Contact"], ["/privacy/", "Privacy"], ["/terms/", "Terms"], ["https://www.instagram.com/travelnow.info/", "Instagram"], ["https://github.com/Uygara/atlas-visa-globe", "Source on GitHub"]])}
+${col("The project", [["/about/", "About"], ["/contact/", "Contact"], ["/privacy/", "Privacy"], ["/terms/", "Terms"], [SUPPORT.href, "Support"], ["https://www.instagram.com/travelnow.info/", "Instagram"], ["https://github.com/Uygara/atlas-visa-globe", "Source on GitHub"]])}
   </div>
 </footer>`;
 }

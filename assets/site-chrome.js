@@ -1,9 +1,10 @@
 // Behaviour for the static-page masthead stamped by scripts/partials.js:
-//   • priority+ nav — links that don't fit fold into "More", last first
+//   • "All tools" and "Language and theme" pop-over menus (button + hidden panel)
 //   • mobile sheet (burger)
 //   • light/dark toggle (shares atlas.tweaks.background with the globe apps)
-//   • language select (hands off to data/static-i18n.js when the page has it)
-// Pure progressive enhancement: without JS every link is still a real link.
+//   • language choice (hands off to data/static-i18n.js when the page has it)
+// Pure progressive enhancement: without JS every link is still a real link
+// (the panel markup is in the HTML, only hidden).
 (function () {
   "use strict";
 
@@ -21,6 +22,10 @@
     });
     document.querySelectorAll("[data-theme-set]").forEach(function (b) {
       b.setAttribute("aria-pressed", String(b.getAttribute("data-theme-set") === theme));
+    });
+    // The menu button shows the current theme's name.
+    document.querySelectorAll("[data-theme-label]").forEach(function (el) {
+      el.hidden = el.getAttribute("data-theme-label") !== theme;
     });
   }
   function setTheme(theme) {
@@ -58,6 +63,7 @@
 
     // ── Language ──────────────────────────────────────────────────────
     var selects = head.querySelectorAll("[data-lang-select]");
+    var langBtns = head.querySelectorAll("[data-lang-set]");
     var lang = "en";
     try { lang = localStorage.getItem("atlas.lang") || "en"; } catch (e) {}
     // Pages with a Turkish twin (/x/ ↔ /tr/x/) carry <link rel="alternate"
@@ -68,89 +74,83 @@
       var l = document.querySelector('link[rel="alternate"][hreflang="' + code + '"]');
       return l ? l.getAttribute("href") : null;
     }
-    selects.forEach(function (sel) {
-      sel.value = lang;
-      sel.addEventListener("change", function () {
-        var code = sel.value;
-        selects.forEach(function (s) { s.value = code; });
-        try { localStorage.setItem("atlas.lang", code); } catch (e) {}
-        // Between the two twins, navigate: the Turkish text is real HTML, not a
-        // client-side overlay. From a Turkish page to es/de/fr/ar go to the
-        // English twin, which translates in place.
-        var target = (code === "en" || code === "tr") ? twin(code) : (pageLang === "tr" ? twin("en") : null);
-        if (target && target.replace(/^https?:\/\/[^/]+/, "") !== location.pathname) {
-          location.href = target.replace(/^https?:\/\/[^/]+/, "") + location.hash;
-          return;
-        }
-        if (window.ATLAS_STATIC_I18N) window.ATLAS_STATIC_I18N.apply(code);
-        window.dispatchEvent(new CustomEvent("atlas:lang", { detail: { code: code } }));
-      });
-    });
+    function showLang(code) {
+      selects.forEach(function (s) { s.value = code; });
+      langBtns.forEach(function (b) { b.setAttribute("aria-pressed", String(b.getAttribute("data-lang-set") === code)); });
+      head.querySelectorAll("[data-lang-code]").forEach(function (el) { el.textContent = code.toUpperCase(); });
+    }
+    function chooseLang(code) {
+      showLang(code);
+      try { localStorage.setItem("atlas.lang", code); } catch (e) {}
+      // Between the two twins, navigate: the Turkish text is real HTML, not a
+      // client-side overlay. From a Turkish page to es/de/fr/ar go to the
+      // English twin, which translates in place.
+      var target = (code === "en" || code === "tr") ? twin(code) : (pageLang === "tr" ? twin("en") : null);
+      if (target && target.replace(/^https?:\/\/[^/]+/, "") !== location.pathname) {
+        location.href = target.replace(/^https?:\/\/[^/]+/, "") + location.hash;
+        return;
+      }
+      if (window.ATLAS_STATIC_I18N) window.ATLAS_STATIC_I18N.apply(code);
+      window.dispatchEvent(new CustomEvent("atlas:lang", { detail: { code: code } }));
+    }
+    showLang(lang);
+    selects.forEach(function (sel) { sel.addEventListener("change", function () { chooseLang(sel.value); }); });
+    langBtns.forEach(function (b) { b.addEventListener("click", function () { chooseLang(b.getAttribute("data-lang-set")); }); });
 
     // ── Current page ─────────────────────────────────────────────────
-    var path = location.pathname.replace(/index\.html$/, "");
-    head.querySelectorAll("a.mh-link, a.mh-sheet-link").forEach(function (a) {
-      var href = a.getAttribute("href");
+    var path = location.pathname.replace(/index\.html$/, "").replace(/^\/tr(?=\/)/, "");
+    var onTool = false;
+    head.querySelectorAll("a.mh-link, a.mh-sheet-link, a.mh-sheet-tool, a.mh-tool").forEach(function (a) {
+      var href = (a.getAttribute("href") || "").replace(/^\/tr(?=\/)/, "");
       var on = href === "/" ? (path === "/") : (path === href || path.indexOf(href) === 0);
       if (on) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
+      if (on && a.matches(".mh-tool")) onTool = true;
     });
+    var allBtn = head.querySelector(".mh-all-btn");
+    if (allBtn) allBtn.classList.toggle("has-current", onTool);
 
-    // ── Priority+ overflow ───────────────────────────────────────────
-    var nav = head.querySelector(".mh-nav");
-    var list = head.querySelector(".mh-links");
-    var more = head.querySelector(".mh-more");
-    var moreBtn = more && more.querySelector(".mh-more-btn");
-    var menu = more && more.querySelector(".mh-menu");
-    var items = list ? Array.prototype.slice.call(list.children) : [];
-
-    function closeMenu() { if (menu) { menu.hidden = true; moreBtn.setAttribute("aria-expanded", "false"); } }
-
-    function fit() {
-      if (!nav || !list || !more) return;
-      if (getComputedStyle(nav).display === "none") return; // mobile: burger sheet instead
-      items.forEach(function (li) { li.hidden = false; });
-      more.hidden = false;
-      var moreW = more.getBoundingClientRect().width;
-      more.hidden = true;
-      var avail = nav.clientWidth;
-      // Each link also takes the list's gap (and its margins), or the last ones overlap "More".
-      var gap = parseFloat(getComputedStyle(list).columnGap) || 0;
-      var widths = items.map(function (li) {
-        var cs = getComputedStyle(li);
-        return li.getBoundingClientRect().width + gap + (parseFloat(cs.marginLeft) || 0) + (parseFloat(cs.marginRight) || 0);
-      });
-      var total = widths.reduce(function (a, b) { return a + b; }, 0);
-      var n = items.length;
-      if (total > avail) {
-        var used = moreW; n = 0;
-        while (n < widths.length && used + widths[n] <= avail) { used += widths[n]; n++; }
-      }
-      menu.innerHTML = "";
-      items.forEach(function (li, i) {
-        li.hidden = i >= n;
-        if (i >= n) {
-          var a = li.querySelector("a").cloneNode(true);
-          a.className = "";
-          var item = document.createElement("li");
-          if (li.classList.contains("mh-grp-start")) item.className = "mh-grp-start";
-          item.appendChild(a);
-          menu.appendChild(item);
+    // ── Pop-over menus ───────────────────────────────────────────────
+    // A real <button aria-expanded aria-controls> and a `hidden` panel. Opening moves focus
+    // into the panel; Esc, a click outside, or tabbing out closes it and (for Esc) returns focus.
+    var pops = [];
+    function closeAll(except) {
+      pops.forEach(function (p) { if (p !== except) p.close(); });
+    }
+    function pop(btn, panel) {
+      if (!btn || !panel) return;
+      var p = {
+        btn: btn, panel: panel,
+        isOpen: function () { return !panel.hidden; },
+        open: function () {
+          closeAll(p);
+          panel.hidden = false;
+          btn.setAttribute("aria-expanded", "true");
+          var first = panel.querySelector("a[href], button");
+          if (first) first.focus();
+        },
+        close: function (refocus) {
+          if (panel.hidden) return;
+          panel.hidden = true;
+          btn.setAttribute("aria-expanded", "false");
+          if (refocus) btn.focus();
         }
+      };
+      btn.addEventListener("click", function () { if (p.isOpen()) p.close(true); else p.open(); });
+      panel.addEventListener("focusout", function (e) {
+        var to = e.relatedTarget;
+        if (to && !panel.contains(to) && to !== btn) p.close();
       });
-      more.hidden = n >= items.length;
-      if (more.hidden) closeMenu();
+      pops.push(p);
     }
-
-    if (moreBtn) {
-      moreBtn.addEventListener("click", function () {
-        var open = menu.hidden;
-        menu.hidden = !open;
-        moreBtn.setAttribute("aria-expanded", String(open));
-      });
-    }
+    pop(head.querySelector(".mh-all-btn"), head.querySelector(".mh-all-panel"));
+    pop(head.querySelector(".mh-prefs-btn"), head.querySelector(".mh-prefs-panel"));
 
     // ── Mobile sheet ──────────────────────────────────────────────────
     var burger = head.querySelector(".mh-burger");
+    function closeSheet() {
+      head.classList.remove("is-open");
+      if (burger) burger.setAttribute("aria-expanded", "false");
+    }
     if (burger) {
       burger.addEventListener("click", function () {
         var open = !head.classList.contains("is-open");
@@ -160,28 +160,18 @@
     }
     document.addEventListener("pointerdown", function (e) {
       if (!head.contains(e.target)) {
-        closeMenu();
-        head.classList.remove("is-open");
-        if (burger) burger.setAttribute("aria-expanded", "false");
+        closeAll();
+        closeSheet();
       }
     });
     document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape") { closeMenu(); head.classList.remove("is-open"); }
+      if (e.key !== "Escape") return;
+      var open = pops.filter(function (p) { return p.isOpen(); })[0];
+      if (open) open.close(true);
+      if (head.classList.contains("is-open")) { closeSheet(); if (burger) burger.focus(); }
     });
-
-    fit();
-    window.addEventListener("resize", fit);
-    window.addEventListener("atlas:lang", function () { setTimeout(fit, 0); });
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
-    // static-i18n translates labels in place; re-measure when text changes.
-    if (window.MutationObserver && list) {
-      var pending = false;
-      new MutationObserver(function () {
-        if (pending) return;
-        pending = true;
-        requestAnimationFrame(function () { pending = false; fit(); });
-      }).observe(list, { subtree: true, characterData: true, childList: true });
-    }
+    // Resizing past the phone breakpoint with a menu open would leave a stale one behind.
+    window.addEventListener("resize", closeAll);
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);

@@ -6,7 +6,7 @@ const fs = require("fs");
 const path = require("path");
 const https = require("https");
 
-const CSS_URL = "https://fonts.googleapis.com/css2?family=Literata:wght@400;500;600;700&family=Public+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;500&display=swap";
+const CSS_URL = "https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap";
 const KEEP = new Set(["latin", "latin-ext", "arabic"]);
 const OUT = path.join(__dirname, "..", "assets", "fonts");
 const UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36";

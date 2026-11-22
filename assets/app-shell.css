@@ -72,7 +72,7 @@ html.theme-dark .country:hover, body.theme-dark .country:hover { filter: brightn
 /* Field caption, visa-form style: a small numeral + label. */
 .p-cap {
   display: flex; align-items: baseline; gap: 7px; margin: 0 0 7px;
-  font-family: var(--font-display); font-size: var(--fs-sm); font-weight: 700;
+  font-family: var(--font-sans); font-size: var(--fs-sm); font-weight: 600;
   letter-spacing: var(--ls-caps); color: var(--ink-3);
 }
 .p-cap-n { font-family: var(--font-mono); font-size: var(--fs-2xs); font-weight: 500; color: var(--foil-ink); letter-spacing: 0; }
@@ -93,7 +93,7 @@ html.theme-dark .country:hover, body.theme-dark .country:hover { filter: brightn
 .pp-card.is-compare { --accent: var(--compare-self); }
 .pp-doc {
   display: flex; align-items: center; gap: 8px;
-  font-family: var(--font-display); font-size: var(--fs-xs); font-weight: 700;
+  font-family: var(--font-sans); font-size: var(--fs-xs); font-weight: 600;
   letter-spacing: var(--ls-wide); color: var(--foil-ink);
 }
 .pp-doc svg { margin-inline-start: auto; width: 12px; height: 12px; color: var(--ink-3); transition: transform 180ms ease; }
@@ -306,7 +306,7 @@ html.theme-dark .stamp, body.theme-dark .stamp { --st-ink: color-mix(in oklab, v
   border: 1px solid color-mix(in oklab, var(--vf) 50%, transparent); background: color-mix(in oklab, var(--vf) 8%, transparent);
   font-size: var(--fs-xs);
 }
-.entry-recommend .tag { font-family: var(--font-display); font-size: var(--fs-xs); font-weight: 700; letter-spacing: var(--ls-label); color: var(--vf); }
+.entry-recommend .tag { font-family: var(--font-sans); font-size: var(--fs-xs); font-weight: 600; letter-spacing: var(--ls-label); color: var(--vf); }
 
 .kv { display: grid; grid-template-columns: auto 1fr; gap: 3px 12px; margin: 8px 0 0; font-size: var(--fs-xs); }
 .kv dt { color: var(--ink-3); }
@@ -318,7 +318,7 @@ html.theme-dark .stamp, body.theme-dark .stamp { --st-ink: color-mix(in oklab, v
 .member .flag { font-size: var(--fs-md); }
 .member-name { flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .member.is-best .member-name { font-weight: 650; }
-.best-tag { font-family: var(--font-display); font-size: var(--fs-2xs); font-weight: 700; letter-spacing: var(--ls-label); color: var(--vf); }
+.best-tag { font-family: var(--font-sans); font-size: var(--fs-2xs); font-weight: 600; letter-spacing: var(--ls-label); color: var(--vf); }
 
 /* ── Feed items (news / changelog) ───────────────────────────────────── */
 .feed { display: grid; gap: 8px; }
@@ -390,14 +390,27 @@ a.feed-item:hover { border-color: var(--rule-strong); border-inline-start-color:
   box-shadow: var(--shadow);
 }
 .map-key { position: absolute; inset-inline-start: 16px; bottom: 16px; z-index: 5; padding: 9px 12px 10px; font-size: var(--fs-xs); color: var(--ink-2); }
-.map-key-title { margin-bottom: 5px; font-family: var(--font-display); font-size: var(--fs-xs); font-weight: 700; letter-spacing: var(--ls-label); color: var(--ink-3); }
+.map-key-title { margin-bottom: 5px; font-family: var(--font-sans); font-size: var(--fs-xs); font-weight: 600; letter-spacing: var(--ls-label); color: var(--ink-3); }
 .map-key ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 3px; }
 .map-key li { display: flex; align-items: center; gap: 8px; white-space: nowrap; }
 
-.zoom {
+/* Map controls: the 3D/2D switch and "?" above the zoom buttons. */
+.map-controls {
   position: absolute; inset-inline-end: 16px; bottom: 16px; z-index: 5;
-  display: flex; flex-direction: column; overflow: hidden;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 8px;
 }
+.zoom { display: flex; flex-direction: column; overflow: hidden; }
+.map-view { display: flex; overflow: hidden; }
+.map-view button {
+  display: grid; place-items: center; min-width: 38px; height: 32px; padding: 0 8px;
+  border: 0; border-inline-end: 1px solid var(--rule); background: var(--paper-raised); color: var(--ink-3); cursor: pointer;
+  font-size: var(--fs-xs); font-weight: 600;
+}
+.map-view > button:last-child, .map-view > span:last-child > button:last-child { border-inline-end: 0; }
+.map-view button:hover { color: var(--ink); background: var(--paper-sunk); }
+.map-view button[aria-pressed="true"] { color: var(--accent); background: color-mix(in oklab, var(--accent) 10%, transparent); }
+.map-view .map-help { font-family: var(--font-display); font-size: var(--fs-md); font-weight: 700; }
+@media (pointer: coarse) { .map-view button { min-width: 44px; height: 44px; } }
 .zoom button, .zoom output {
   display: grid; place-items: center; width: 34px; height: 32px;
   border: 0; border-bottom: 1px solid var(--rule); background: var(--paper-raised); color: var(--ink); cursor: pointer;
@@ -438,7 +451,7 @@ a.feed-item:hover { border-color: var(--rule-strong); border-inline-start-color:
 
 
 /* Empty-state prompt over the globe (no passport yet). */
-.welcome-kicker { font-family: var(--font-display); font-size: var(--fs-xs); font-weight: 700; letter-spacing: var(--ls-wide); color: var(--foil-ink); }
+.welcome-kicker { font-family: var(--font-sans); font-size: var(--fs-xs); font-weight: 600; letter-spacing: var(--ls-wide); color: var(--foil-ink); }
 
 /* ── Intro dialog ────────────────────────────────────────────────────── */
 .dialog-scrim {
@@ -497,8 +510,8 @@ a.feed-item:hover { border-color: var(--rule-strong); border-inline-start-color:
   .map-key li { flex: none; }
   .map-key .sw { width: 9px; height: 9px; }
   .map-key-title { display: none; }
-  .zoom { inset-inline-end: 10px; bottom: auto; top: 46px; }
-  /* Pinch zooms the globe; the +/− tower (34×32 targets) is desktop furniture. */
+  .map-controls { inset-inline-end: 10px; bottom: auto; top: 46px; }
+  /* Pinch zooms the globe; the +/− tower (34×32 targets) is desktop furniture. The 3D/2D switch and "?" stay. */
   @media (pointer: coarse) { .zoom { display: none; } }
 
   /* The country you tapped must never sit under the sheet handle: its title row

@@ -410,15 +410,10 @@ function App() {
   return React.createElement("div", {
     className: "layout"
   }, React.createElement(Masthead, {
-    view: t.globeStyle,
-    onView: function onView(v) {
-      return setTweak("globeStyle", v);
-    },
     theme: t.background === "dark" ? "dark" : "light",
     onTheme: function onTheme(v) {
       return setTweak("background", v);
-    },
-    onHelp: reopenIntro
+    }
   }), showIntro && React.createElement(IntroDialog, {
     onClose: dismissIntro
   }), React.createElement("div", {
@@ -429,6 +424,10 @@ function App() {
     groupPassports: t.groupMode ? groupPassports : null,
     filter: filter,
     mode: t.globeStyle,
+    onView: function onView(v) {
+      return setTweak("globeStyle", v);
+    },
+    onHelp: reopenIntro,
     direction: direction,
     variant: passportVariant,
     residencePermits: residencePermits,

@@ -101,6 +101,8 @@ function Globe(_ref) {
     groupPassports = _ref.groupPassports,
     filter = _ref.filter,
     mode = _ref.mode,
+    onView = _ref.onView,
+    onHelp = _ref.onHelp,
     direction = _ref.direction,
     variant = _ref.variant,
     residencePermits = _ref.residencePermits,
@@ -1130,7 +1132,10 @@ function Globe(_ref) {
     },
     onReset: function onReset() {
       return applyZoom(1, true, true);
-    }
+    },
+    mode: mode,
+    onView: onView,
+    onHelp: onHelp
   }), hover && hoverRenderer && hoverRenderer(hover), hover && !hoverRenderer && (passport || groupActive) && React.createElement(HoverCard, {
     hover: hover,
     passport: passport,
@@ -1302,8 +1307,40 @@ function ZoomControls(_ref6) {
   var zoom = _ref6.zoom,
     onZoomIn = _ref6.onZoomIn,
     onZoomOut = _ref6.onZoomOut,
-    onReset = _ref6.onReset;
+    onReset = _ref6.onReset,
+    mode = _ref6.mode,
+    onView = _ref6.onView,
+    onHelp = _ref6.onHelp;
+  var views = [["globe3d", window.t("mode.3d")], ["flat", window.t("mode.2d")]];
   return React.createElement("div", {
+    className: "map-controls"
+  }, (onView || onHelp) && React.createElement("div", {
+    className: "map-view overlay-card"
+  }, onView && React.createElement("span", {
+    role: "group",
+    "aria-label": window.t("nav.mode"),
+    style: {
+      display: "contents"
+    }
+  }, views.map(function (_ref7) {
+    var _ref8 = _slicedToArray(_ref7, 2),
+      v = _ref8[0],
+      l = _ref8[1];
+    return React.createElement("button", {
+      key: v,
+      type: "button",
+      "aria-pressed": mode === v || v === "flat" && mode === "globe2d",
+      onClick: function onClick() {
+        return onView(v);
+      }
+    }, l);
+  })), onHelp && React.createElement("button", {
+    type: "button",
+    className: "map-help",
+    onClick: onHelp,
+    title: window.t("nav.help"),
+    "aria-label": window.t("nav.help")
+  }, "?")), React.createElement("div", {
     className: "zoom overlay-card"
   }, React.createElement("button", {
     type: "button",
@@ -1355,7 +1392,7 @@ function ZoomControls(_ref6) {
     fill: "none",
     strokeLinecap: "round",
     strokeLinejoin: "round"
-  }))));
+  })))));
 }
 Object.assign(window, {
   Globe: Globe,

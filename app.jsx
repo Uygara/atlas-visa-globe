@@ -292,11 +292,8 @@ function App() {
   return (
     <div className="layout">
       <Masthead
-        view={t.globeStyle}
-        onView={(v) => setTweak("globeStyle", v)}
         theme={t.background === "dark" ? "dark" : "light"}
         onTheme={(v) => setTweak("background", v)}
-        onHelp={reopenIntro}
       />
       {showIntro && <IntroDialog onClose={dismissIntro} />}
       <div className="globe-stage">
@@ -306,6 +303,8 @@ function App() {
           groupPassports={t.groupMode ? groupPassports : null}
           filter={filter}
           mode={t.globeStyle}
+          onView={(v) => setTweak("globeStyle", v)}
+          onHelp={reopenIntro}
           direction={direction}
           variant={passportVariant}
           residencePermits={residencePermits}

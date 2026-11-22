@@ -271,8 +271,6 @@ function SafetyMapApp() {
   return React.createElement("div", {
     className: "layout"
   }, React.createElement(Masthead, {
-    view: mode,
-    onView: setMode,
     theme: theme,
     onTheme: setTheme
   }), React.createElement("div", {
@@ -280,6 +278,7 @@ function SafetyMapApp() {
   }, React.createElement(Globe, {
     passport: null,
     mode: mode,
+    onView: setMode,
     fillResolver: fillResolver,
     hoverRenderer: hoverRenderer,
     onCountryClick: open,

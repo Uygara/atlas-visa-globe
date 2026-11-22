@@ -188,11 +188,12 @@ function SafetyMapApp() {
 
   return (
     <div className="layout">
-      <Masthead view={mode} onView={setMode} theme={theme} onTheme={setTheme} />
+      <Masthead theme={theme} onTheme={setTheme} />
       <div className="globe-stage">
         <Globe
           passport={null}
           mode={mode}
+          onView={setMode}
           fillResolver={fillResolver}
           hoverRenderer={hoverRenderer}
           onCountryClick={open}

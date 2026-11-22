@@ -9,7 +9,7 @@
 .masthead {
   grid-area: masthead; position: relative; z-index: 20;
   display: flex; align-items: center; gap: 18px;
-  padding: 0 14px 0 16px;
+  padding-block: 0; padding-inline: 16px 14px;
   background: var(--paper-raised);
   border-bottom: 1px solid var(--rule);
 }
@@ -34,62 +34,91 @@
 }
 .brand-tld { font-family: var(--font-mono); font-weight: 400; font-size: var(--fs-2xs); color: var(--ink-3); margin-inline-start: 1px; letter-spacing: 0; }
 
-.mh-nav { position: relative; flex: 1; min-width: 0; display: flex; align-items: center; height: 100%; }
-.mh-links { display: flex; align-items: stretch; height: 100%; margin: 0; padding: 0; list-style: none; min-width: 0; }
+.mh-nav { flex: 1; min-width: 0; display: flex; align-items: center; gap: 2px; height: 100%; }
+.mh-links { display: flex; align-items: center; gap: 2px; margin: 0; padding: 0; list-style: none; min-width: 0; }
 .mh-links li { display: flex; }
-.mh-links li[hidden] { display: none !important; }
 .mh-link {
-  position: relative; display: inline-flex; align-items: center;
-  padding: 0 10px; white-space: nowrap;
+  position: relative; display: inline-flex; align-items: center; min-height: 34px;
+  padding: 0 11px; white-space: nowrap; border-radius: var(--radius);
   font-size: var(--fs-sm); font-weight: 500; color: var(--ink-2); text-decoration: none;
   background: none; border: 0; cursor: pointer;
 }
-.mh-link:hover { color: var(--ink); }
-.mh-link[aria-current="page"] { color: var(--ink); font-weight: 650; }
-.mh-link[aria-current="page"]::after {
-  content: ""; position: absolute; left: 10px; right: 10px; bottom: -1px; height: 2px; background: var(--ink);
+.mh-link:hover, .mh-all-btn[aria-expanded="true"] { color: var(--ink); background: var(--paper-sunk); }
+/* The selected item: mürdüm text on a faint wash of itself. */
+.mh-link[aria-current="page"], .mh-all-btn.has-current {
+  color: var(--accent); font-weight: 600;
+  background: color-mix(in oklab, var(--accent) 10%, transparent);
 }
-.mh-more { position: relative; display: flex; height: 100%; }
-.mh-more[hidden] { display: none !important; }
-.mh-more-btn svg { width: 10px; height: 10px; margin-inline-start: 5px; }
-.mh-menu {
-  position: absolute; top: calc(100% + 1px); left: 0; min-width: 200px;
-  padding: 6px 0; margin: 0; list-style: none;
-  background: var(--paper-raised); border: 1px solid var(--rule-strong);
+.mh-all-btn svg, .mh-prefs-btn svg { width: 10px; height: 10px; margin-inline-start: 6px; flex: none; transition: transform 140ms ease; }
+.mh-all-btn[aria-expanded="true"] svg, .mh-prefs-btn[aria-expanded="true"] svg { transform: rotate(180deg); }
+.mh-all { display: flex; align-items: center; }
+
+/* Pop-over panels (All tools, language and theme): real buttons + a hidden panel. */
+.mh-panel {
+  position: absolute; top: calc(100% + 6px); z-index: 30; padding: 16px;
+  background: var(--paper-raised); border: 1px solid var(--rule); border-radius: var(--radius-lg);
   box-shadow: var(--shadow-lift);
 }
-.mh-menu a { display: block; padding: 8px 16px; font-size: var(--fs-sm); color: var(--ink-2); text-decoration: none; white-space: nowrap; }
-.mh-menu a:hover, .mh-menu a[aria-current="page"] { color: var(--ink); background: var(--paper-sunk); }
+.mh-panel[hidden] { display: none; }
+.mh-all-panel {
+  inset-inline-start: 16px; width: min(780px, calc(100% - 32px));
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 20px;
+}
+.mh-grp ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.mh-grp-label {
+  margin: 0 0 6px; padding: 0 10px;
+  font-family: var(--font-sans); font-size: var(--fs-xs); font-weight: 600; color: var(--ink-3);
+}
+.mh-tool { display: block; padding: 8px 10px; border-radius: var(--radius); text-decoration: none; color: var(--ink); }
+.mh-tool:hover { background: var(--paper-sunk); }
+.mh-tool-t { display: block; font-size: var(--fs-sm); font-weight: 600; color: var(--ink); }
+.mh-tool-d { display: block; margin-top: 1px; font-size: var(--fs-xs); font-weight: 400; line-height: 1.35; color: var(--ink-3); }
+.mh-tool[aria-current="page"] { background: color-mix(in oklab, var(--accent) 10%, transparent); }
+.mh-tool[aria-current="page"] .mh-tool-t { color: var(--accent); }
 
-.mh-tools { display: flex; align-items: center; gap: 8px; flex: none; }
-.mh-support {
-  font-size: var(--fs-xs); font-weight: 600; color: var(--foil-ink); text-decoration: none;
-  padding: 4px 10px; border: 1px solid currentColor; border-radius: 999px; white-space: nowrap;
+.mh-tools { display: flex; align-items: center; gap: 10px; flex: none; }
+.mh-prefs { position: relative; }
+.mh-prefs-btn {
+  display: inline-flex; align-items: center; min-height: 34px; padding: 0 10px; white-space: nowrap;
+  border: 1px solid var(--rule-strong); border-radius: var(--radius); background: transparent; color: var(--ink-2);
+  font-size: var(--fs-xs); font-weight: 600; cursor: pointer;
 }
-.mh-support:hover { background: var(--foil-ink); color: var(--paper-raised); }
-.mh-help {
-  width: 28px; height: 27px; padding: 0; cursor: pointer;
-  border: 1px solid var(--rule-strong); border-radius: var(--radius); background: var(--paper);
-  font-family: var(--font-display); font-size: var(--fs-md); font-weight: 700; line-height: 1; color: var(--ink-3);
+.mh-prefs-btn > [aria-hidden="true"]:not(svg) { margin-inline: 5px; }
+.mh-prefs-btn:hover,.mh-prefs-btn[aria-expanded="true"] { color: var(--ink); background: var(--paper-sunk); }
+.mh-prefs-panel { inset-inline-end: 0; width: 240px; }
+.mh-opts { list-style: none; margin: 0 0 14px; padding: 0; display: grid; gap: 2px; }
+.mh-opts-row { display: flex; gap: 6px; }
+.mh-opt {
+  display: flex; align-items: center; width: 100%; min-height: 34px; padding: 0 10px;
+  border: 0; border-radius: var(--radius); background: transparent; color: var(--ink);
+  font-size: var(--fs-sm); font-weight: 500; text-align: start; cursor: pointer;
 }
-.mh-help:hover { color: var(--ink); border-color: var(--ink-3); }
+.mh-opts-row .mh-opt { justify-content: center; flex: 1; width: auto; border: 1px solid var(--rule-strong); text-align: center; }
+.mh-opt:hover { background: var(--paper-sunk); }
+.mh-opt[aria-pressed="true"] {
+  color: var(--accent); font-weight: 600;
+  background: color-mix(in oklab, var(--accent) 10%, transparent);
+}
+
+/* Sign in: the one filled mürdüm button. Signed in it turns into a circle with the initial. */
 .mh-account {
-  display: inline-flex; align-items: center; justify-content: center; flex: none;
-  width: 32px; height: 32px; border: 1px solid var(--rule-strong); border-radius: 50%;
-  background: var(--paper); color: var(--ink-3); text-decoration: none;
+  position: relative; display: inline-flex; align-items: center; justify-content: center; flex: none;
+  min-height: 34px; padding: 0 14px; border: 1px solid var(--accent); border-radius: var(--radius);
+  background: var(--accent); color: var(--on-accent); text-decoration: none; white-space: nowrap;
+  font-size: var(--fs-sm); font-weight: 600;
 }
-.mh-ig {
-  display: inline-flex; align-items: center; justify-content: center; flex: none;
-  width: 32px; height: 32px; border-radius: 50%; color: var(--ink-3); text-decoration: none;
-}
-.mh-ig:hover { color: var(--ink); background: var(--paper); }
+.mh-account:hover { filter: brightness(1.08); }
 .mh-account[hidden] { display: none; }
-.mh-account:hover { color: var(--ink); border-color: var(--ink-3); }
-.mh-account span:empty { display: none; }
-.mh-account.is-signed-in { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 650; font-size: var(--fs-sm); }
-.mh-account.is-signed-in svg { display: none; }
+.mh-acct-dot { display: none; }
+.mh-acct-name { display: none; }
+.mh-account.is-signed-in { width: 34px; padding: 0; border-radius: 50%; }
+.mh-account.is-signed-in .mh-signin { display: none; }
+.mh-account.is-signed-in .mh-acct-dot { display: inline; }
+.mh-account.is-signed-in .mh-acct-name {
+  display: block; position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
 .mh-burger {
-  display: none; width: 36px; height: 34px; flex: none;
+  display: none; width: 40px; height: 36px; flex: none;
   align-items: center; justify-content: center;
   background: transparent; color: var(--ink); cursor: pointer;
   border: 1px solid var(--rule-strong); border-radius: var(--radius);
@@ -119,10 +148,6 @@
   color: var(--ink-2); font-size: var(--fs-xs); font-weight: 600; cursor: pointer;
 }
 .lang-select option { color: #16202A; background: #fff; }
-/* In the top bar a select is as wide as its longest option ("Español (beta)"), which pushed menu links
-   into "More". Cap it; the chosen language name still fits, long ones end with an ellipsis. */
-.mh-tools .lang-select { max-width: 104px; text-overflow: ellipsis; }
-
 /* ── Buttons & fields ────────────────────────────────────────────────── */
 .btn {
   display: inline-flex; align-items: center; justify-content: center; gap: 6px;
@@ -150,26 +175,48 @@
 .search svg { position: absolute; inset-inline-start: 10px; top: 50%; transform: translateY(-50%); width: 14px; height: 14px; color: var(--ink-3); pointer-events: none; }
 .search .field { padding-inline-start: 32px; }
 
+/* Laptops: the Turkish labels are long, so the bar tightens a little before the phone layout takes over. */
+@media (max-width: 1180px) {
+  .masthead { gap: 10px; }
+  .mh-link { padding: 0 8px; }
+  .mh-tools { gap: 8px; }
+}
+
 @media (max-width: 900px) {
-  .masthead { gap: 8px; padding: 0 10px; }
+  .masthead { gap: 8px; padding-inline: 10px; }
   .brand-word { font-size: var(--fs-lg); }
-  .mh-nav, .mh-tools .lang-select, .mh-tools .mh-support, .mh-tools .mh-help { display: none; }
-  /* Phones: the top bar keeps brand, account, theme and the menu button. Instagram and the 3D/2D switch
-     move into the menu sheet, otherwise the bar overflows and pushes the menu button off screen. */
-  .mh-tools .mh-ig, .mh-tools .mh-view-top { display: none; }
-  .mh-sheet-foot { flex-wrap: wrap; }
-  .mh-sheet-foot .mh-ig { width: 44px; height: 44px; }
+  .mh-nav, .mh-prefs { display: none; }
   .mh-tools { margin-inline-start: auto; gap: 6px; }
-  .mh-burger { display: inline-flex; }
+  /* Phones: brand, a small outlined sign-in button and the menu button. */
+  .mh-account { min-height: 36px; padding: 0 12px; background: transparent; color: var(--accent); font-size: var(--fs-xs); }
+  .mh-account:hover { filter: none; background: color-mix(in oklab, var(--accent) 10%, transparent); }
+  .mh-account.is-signed-in { width: 36px; padding: 0; background: var(--accent); color: var(--on-accent); }
+  .mh-burger { display: inline-flex; width: 44px; height: 40px; }
   .masthead.is-open .mh-sheet {
-    display: block; position: absolute; top: 100%; left: 0; right: 0;
-    max-height: calc(100vh - 60px); overflow-y: auto;
+    display: block; position: absolute; top: 100%; inset-inline: 0;
+    max-height: calc(100vh - 60px); max-height: calc(100dvh - 60px); overflow-y: auto;
     padding: 8px 0 14px; background: var(--paper-raised);
     border-bottom: 1px solid var(--rule-strong); box-shadow: var(--shadow-lift);
   }
-  .mh-sheet a.mh-sheet-link { display: block; padding: 10px 18px; font-size: var(--fs-md); color: var(--ink); text-decoration: none; }
-  .mh-sheet a.mh-sheet-link[aria-current="page"] { font-weight: 700; box-shadow: inset 3px 0 0 var(--accent); }
-  .mh-sheet-foot { display: flex; align-items: center; gap: 10px; padding: 12px 18px 0; margin-top: 6px; border-top: 1px solid var(--rule); }
+  .mh-sheet a.mh-sheet-link {
+    display: flex; align-items: center; min-height: 48px; padding: 0 18px;
+    font-size: var(--fs-lg); font-weight: 600; color: var(--ink); text-decoration: none;
+  }
+  .mh-sheet a[aria-current="page"] { color: var(--accent); background: color-mix(in oklab, var(--accent) 10%, transparent); }
+  .mh-sheet-h {
+    margin: 8px 0 4px; padding: 14px 18px 0; border-top: 1px solid var(--rule);
+    font-family: var(--font-sans); font-size: var(--fs-xs); font-weight: 600; color: var(--ink-3);
+  }
+  .mh-sheet-tools { list-style: none; margin: 0; padding: 0 10px; display: grid; grid-template-columns: 1fr 1fr; }
+  .mh-sheet a.mh-sheet-tool {
+    display: flex; align-items: center; min-height: 44px; padding: 4px 8px; border-radius: var(--radius);
+    font-size: var(--fs-sm); font-weight: 500; line-height: 1.3; color: var(--ink-2); text-decoration: none;
+  }
+  .mh-sheet-foot { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; padding: 12px 18px 0; margin-top: 8px; border-top: 1px solid var(--rule); }
+  .mh-sheet-foot .lang-select { flex: 1 1 150px; min-height: 44px; font-size: var(--fs-sm); }
+  .mh-sheet-foot .mh-opts-row { flex: 1 1 150px; }
+  .mh-sheet-foot .mh-opt { min-height: 44px; }
+  .mh-sheet a.mh-sheet-ext { display: inline-flex; align-items: center; min-height: 44px; padding: 0 4px; font-size: var(--fs-sm); font-weight: 600; color: var(--ink-2); text-decoration: none; }
 }
 
 /* Touch screens: segmented buttons big enough for a thumb (they were 26×19). */
@@ -177,10 +224,11 @@
   .seg button { min-width: 36px; min-height: 32px; }
   /* 44px targets (WCAG 2.5.5, Apple HIG): header controls keep their look and
      grow their hit area; the brand and footer links simply get taller. */
-  .mh-burger, .seg button, .mh-account, .mh-ig, .mh-help, .icon-btn { position: relative; }
-  .mh-burger::after, .seg button::after, .mh-account::after, .mh-ig::after, .mh-help::after, .icon-btn::after {
+  .mh-burger, .seg button, .mh-account, .icon-btn { position: relative; }
+  .mh-burger::after, .seg button::after, .mh-account::after, .icon-btn::after {
     content: ""; position: absolute; inset: -6px 0;
   }
+  .mh-link, .mh-prefs-btn, .mh-opt { min-height: 44px; }
   .brand { min-height: 44px; }
   .site-foot a { display: inline-flex; align-items: center; min-height: 44px; }
 }
@@ -203,26 +251,19 @@
   .brand-tld { display: none; }
 }
 
-/* Group dividers: twelve links read as four clusters. The rule lives on the item's own
-   box (padding + border, not margin) so the priority+ measurement includes it. */
-.mh-links > li.mh-grp-start { padding-inline-start: 10px; margin-inline-start: 2px; border-inline-start: 1px solid var(--rule-strong); }
-.mh-menu li.mh-grp-start { border-top: 1px solid var(--rule); margin-top: 4px; padding-top: 4px; }
-.mh-menu li.mh-grp-start:first-child { border-top: 0; margin-top: 0; padding-top: 0; }
-.mh-sheet-link.mh-grp-start { border-top: 1px solid var(--rule); margin-top: 6px; padding-top: 16px; }
-
 /* ── Press feedback (Apple: respond on touch-down, instantly) ───────────────
    Every tappable thing answers the moment it is pressed, not on release, and
    double-tap zoom is off on controls so a tap is never delayed. */
 a, button, [role="button"], select, input, label, summary { touch-action: manipulation; }
 html { -webkit-tap-highlight-color: transparent; }
-.btn, .seg button, .mh-link, .mh-sheet-link, .lg-row, .dd-item, .chip, .icon-btn, .app-tab,
+.btn, .seg button, .mh-link, .mh-sheet-link, .mh-opt, .lg-row, .dd-item, .chip, .icon-btn, .app-tab,
 .toc-row, .al-hit, .al-x, .pp-card, .zoom button {
   transition: transform 140ms cubic-bezier(.2, .8, .2, 1), background-color 120ms ease, color 120ms ease;
 }
 .btn:active, .seg button:active, .icon-btn:active, .chip:active, .al-x:active, .zoom button:active { transform: scale(0.96); transition-duration: 60ms; }
 .lg-row:active, .dd-item:active, .toc-row:active, .al-hit:active, .pp-card:active, .mh-sheet-link:active, .app-tab:active { transform: scale(0.985); transition-duration: 60ms; }
 @media (prefers-reduced-motion: reduce) {
-  .btn, .seg button, .mh-link, .mh-sheet-link, .lg-row, .dd-item, .chip, .icon-btn, .app-tab,
+  .btn, .seg button, .mh-link, .mh-sheet-link, .mh-opt, .lg-row, .dd-item, .chip, .icon-btn, .app-tab,
   .toc-row, .al-hit, .al-x, .pp-card, .zoom button { transition: background-color 120ms ease, color 120ms ease; }
   .btn:active, .seg button:active, .icon-btn:active, .chip:active, .al-x:active, .zoom button:active,
   .lg-row:active, .dd-item:active, .toc-row:active, .al-hit:active, .pp-card:active, .mh-sheet-link:active, .app-tab:active { transform: none; }

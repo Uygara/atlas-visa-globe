@@ -2,8 +2,8 @@
    travelnow.info — design tokens (single source of truth)
 
    Visual language: "Mürdüm ve Kıyı" (redesign G, 2026-11-22).
-     • Light = cream paper, plum-tinted ink, mürdüm actions, sea-teal links.
-     • Dark  = plum night with cream text; same roles, lighter tints.
+     • Light = warm grey paper, off-white cards, ink headings, mürdüm actions, sea-teal links.
+     • Dark  = warm charcoal with off-white text; same roles, lighter tints.
      • Status colours are printed inks, not neon, and are not used for the brand.
    Loaded by every page (SPA shells + static pages). Component CSS lives in
    app-shell.css (globe apps) and site.css (static pages).
@@ -23,24 +23,24 @@
 
 :root {
   /* ── Paper & ink ─────────────────────────────────────────────────────── */
-  /* Redesign G, "Mürdüm ve Kıyı" (2026-11-22): cream paper, plum-tinted ink, mürdüm for actions,
-     kıyı (sea teal) for links and information. Status inks below are unchanged: they are the map's language. */
-  --paper:        #F5F0E8;   /* cream: warmer than white, easier on the eyes in long reading */
-  --paper-raised: #FBF8F3;
-  --paper-sunk:   #EDE6DB;
-  --paper-deep:   #E3D9CB;
-  --ink:          #2A2430;   /* night ink with a plum undertone */
-  --ink-2:        #4F4955;
-  --ink-3:        #625B67;   /* 5.8:1 on --paper, 6.2:1 on --paper-raised */
-  --ink-4:        #948C97;   /* decoration only */
-  --rule:         #E6DDCF;
-  --rule-strong:  #CFC3B3;
+  /* Redesign G, "Mürdüm ve Kıyı" (2026-11-22, rev. 2): warm grey paper, off-white cards, ink headings,
+     mürdüm only for actions, kıyı (sea teal) for links and information. Status inks below are unchanged. */
+  --paper:        #EEEBE6;   /* warm grey (stone): calm and serious, softens the mürdüm */
+  --paper-raised: #F8F7F4;   /* off-white cards and panels */
+  --paper-sunk:   #E7E3DD;
+  --paper-deep:   #DEDAD4;
+  --ink:          #2A2430;   /* headings, numbers and body: night ink with a plum undertone */
+  --ink-2:        #48434D;   /* 8.1:1 on --paper */
+  --ink-3:        #66605A;   /* 5.2:1 on --paper, 5.8:1 on --paper-raised */
+  --ink-4:        #9A948E;   /* decoration only */
+  --rule:         #DEDAD4;
+  --rule-strong:  #CBC5BD;
 
-  --accent:       #6B4468;   /* mürdüm: brand and primary actions (do). 7.0:1 on --paper, white on it 7.9:1 */
+  --accent:       #6B4468;   /* mürdüm: ONLY things you click (buttons, the selected tab, focus). 6.7:1 on --paper */
   --on-accent:    #FFFFFF;
-  --foil:         #A3929F;
-  --foil-ink:     #6E5F6B;
-  --link:         #2F5D62;   /* kıyı: links and information (read). 6.5:1 on --paper */
+  --foil:         #A39A95;
+  --foil-ink:     #6A6066;   /* 5.1:1 on --paper */
+  --link:         #2F5D62;   /* kıyı: links and information. 6.2:1 on --paper */
   --shadow:       0 1px 2px rgba(42, 36, 48, 0.05);
   --shadow-lift:  0 2px 6px rgba(42, 36, 48, 0.06), 0 16px 40px rgba(42, 36, 48, 0.10);
 
@@ -66,16 +66,16 @@
 
   /* ── Globe ───────────────────────────────────────────────────────────── */
   --ocean:       #DDE6E3;   /* sea mist */
-  --land:        #ECE6DA;
-  --land-stroke: #FBF8F3;
+  --land:        #E6E1D9;
+  --land-stroke: #F8F7F4;
   --graticule:   rgba(42, 36, 48, 0.06);
-  --globe-edge:  #B9C7C3;
+  --globe-edge:  #B7C2BE;
 
   /* ── Type ────────────────────────────────────────────────────────────── */
-  /* Literata (a calm book serif) for headings and big numbers, Public Sans for text, forms and tables.
-     Both self-hosted in /assets/fonts (tools/selfhost-fonts.js), SIL OFL. */
-  --font-sans:    "Twemoji Country Flags", "Public Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-display: "Twemoji Country Flags", "Literata", Georgia, "Times New Roman", serif;
+  /* IBM Plex: Serif for headings and big numbers, Sans for text, forms and tables, Sans Arabic for Arabic.
+     One family across all six interface languages. Self-hosted in /assets/fonts (tools/selfhost-fonts.js), SIL OFL. */
+  --font-sans:    "Twemoji Country Flags", "IBM Plex Sans", "IBM Plex Sans Arabic", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, Roboto, Arial, sans-serif;
+  --font-display: "Twemoji Country Flags", "IBM Plex Serif", "IBM Plex Sans Arabic", Georgia, "Times New Roman", serif;
   /* Former label face. Labels now use the text face with tabular figures; real code uses --font-code. */
   --font-mono:    var(--font-sans);
   --font-code:    ui-monospace, "SFMono-Regular", "Cascadia Mono", Menlo, Consolas, monospace;
@@ -130,21 +130,21 @@
 
 html.theme-dark,
 body.theme-dark {
-  --paper:        #17131A;
-  --paper-raised: #221C26;
-  --paper-sunk:   #100D12;
-  --paper-deep:   #2E2633;
-  --ink:          #F3EEE6;
-  --ink-2:        #D6CED3;
-  --ink-3:        #A99FAA;
-  --ink-4:        #73697A;
-  --rule:         #2E2633;
-  --rule-strong:  #3F3545;
+  --paper:        #1A1816;
+  --paper-raised: #24211E;
+  --paper-sunk:   #12100F;
+  --paper-deep:   #2E2A26;
+  --ink:          #F1EDE7;
+  --ink-2:        #D5CFC8;
+  --ink-3:        #A8A19B;
+  --ink-4:        #736C66;
+  --rule:         #2E2A26;
+  --rule-strong:  #3E3934;
 
   --accent:       #D2AECB;
   --on-accent:    #1C1520;
-  --foil:         #8E8291;
-  --foil-ink:     #B3A6B0;
+  --foil:         #8A827C;
+  --foil-ink:     #B0A8A1;
   --link:         #86C1BB;
   --shadow:       0 1px 0 rgba(0, 0, 0, 0.2), 0 10px 28px -14px rgba(0, 0, 0, 0.7);
   --shadow-lift:  0 22px 56px -20px rgba(0, 0, 0, 0.85);
@@ -166,8 +166,8 @@ body.theme-dark {
   --compare-self: #86C1BB;
 
   --ocean:       #142226;
-  --land:        #2C3534;
-  --land-stroke: #0F181A;
+  --land:        #2E3331;
+  --land-stroke: #141A1A;
   --graticule:   rgba(236, 232, 219, 0.06);
   --globe-edge:  #2F4448;
 
@@ -216,8 +216,8 @@ button:active, .primary:active, a.btn:active { transform: scale(0.97); transitio
 html[lang="ar"] {
   --ls-tight: 0; --ls-caps: 0; --ls-label: 0; --ls-wide: 0;
   /* Arabic letters come from Plex where the system face has none. */
-  --font-sans:    "Twemoji Country Flags", "Public Sans", "IBM Plex Sans Arabic", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
-  --font-display: "Twemoji Country Flags", "Literata", "IBM Plex Sans Arabic", Georgia, serif;
+  --font-sans:    "Twemoji Country Flags", "IBM Plex Sans Arabic", "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+  --font-display: "Twemoji Country Flags", "IBM Plex Sans Arabic", "IBM Plex Serif", Georgia, serif;
 }
 
 ::-webkit-scrollbar { width: 10px; height: 10px; }

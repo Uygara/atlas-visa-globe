@@ -3,31 +3,42 @@
 //     static-page masthead in assets/site-chrome.js).
 //   • Node: module.exports (scripts/partials.js stamps it into static HTML so
 //     crawlers see real links without running JS).
-// Order is priority order: when the bar is too narrow, items fold into "More"
-// from the END of the list, so keep the most-used tools first.
+// The top bar shows PRIMARY links; everything else sits in GROUPS, behind the "All tools"
+// button (a panel with three groups, each link with a one-line description).
+// NAV is the same links as one flat list (PRIMARY first, then every group item);
+// `g` is the group index, kept for code that reads the flat list.
 (function (root) {
-  // `g` is the group: maps and the planner, the two reference indexes, the two
-  // rule checkers, then the specialist pages and the site itself. Every header
-  // draws a divider where the group changes so twelve links read as four clusters.
-  var NAV = [
-    // Planner and panel come right after the visa map: they are the personal tools people come back to,
-    // and with long Turkish labels anything further along folds into "More" on a laptop screen.
-    { href: "/",                          key: "nav.visa_map",    en: "Visa map",        g: 0 },
-    { href: "/itinerary/",                key: "nav.itinerary",   en: "Travel planner",  g: 0 },
-    { href: "/panel/",                    key: "nav.panel",       en: "My panel",        g: 0 },
-    { href: "/transit-map/",              key: "nav.transit_map", en: "Transit map",     g: 0 },
-    { href: "/safety-map/",               key: "nav.safety_map",  en: "Safety map",      g: 0 },
-    { href: "/passport/",                 key: "nav.passports",   en: "Passports",       g: 1 },
-    { href: "/guides/",                   key: "nav.guides",      en: "Guides",          g: 1 },
-    { href: "/schengen-calculator/",      key: "nav.schengen",    en: "Schengen calc",   g: 2 },
-    { href: "/etias/",                    key: "nav.etias",       en: "ETIAS 2026",      g: 2 },
-    { href: "/digital-nomad-visa/",       key: "nav.nomad",       en: "Nomad visas",     g: 3 },
-    { href: "/citizenship-by-investment/", key: "nav.cbi",        en: "Second passport", g: 3 },
-    { href: "/alerts/",                   key: "nav.alerts",      en: "Alerts",          g: 3 },
-    { href: "/about/",                    key: "nav.about",       en: "About",           g: 3 }
+  var PRIMARY = [
+    { href: "/",            key: "nav.visa_map",  en: "Visa map" },
+    { href: "/visa/",       key: "nav.countries", en: "Countries" },
+    { href: "/itinerary/",  key: "nav.itinerary", en: "Travel planner" },
+    { href: "/panel/",      key: "nav.panel",     en: "My panel" }
   ];
+  var GROUPS = [
+    { key: "nav.grp_maps", en: "Maps", items: [
+      { href: "/transit-map/", key: "nav.transit_map", en: "Transit map",  dkey: "nav.d_transit", den: "Is a visa needed to change planes" },
+      { href: "/safety-map/",  key: "nav.safety_map",  en: "Safety map",   dkey: "nav.d_safety",  den: "Official travel advisories" }
+    ] },
+    { key: "nav.grp_calc", en: "Calculators", items: [
+      { href: "/schengen-calculator/", key: "nav.schengen90",  en: "Schengen 90/180",   dkey: "nav.d_schengen", den: "How many days are left" },
+      { href: "/passport-validity/",   key: "nav.validity",    en: "Passport validity", dkey: "nav.d_validity", den: "The 3-month and 6-month rules" },
+      { href: "/etias/",               key: "nav.etias",       en: "ETIAS 2026",        dkey: "nav.d_etias",    den: "European travel authorization" }
+    ] },
+    { key: "nav.grp_read", en: "Read and explore", items: [
+      { href: "/passport/",                  key: "nav.passports", en: "Passports" },
+      { href: "/guides/",                    key: "nav.guides",    en: "Guides" },
+      { href: "/digital-nomad-visa/",        key: "nav.nomad",     en: "Nomad visas" },
+      { href: "/citizenship-by-investment/", key: "nav.cbi",       en: "Second passport" },
+      { href: "/alerts/",                    key: "nav.alerts",    en: "Alerts" },
+      { href: "/about/",                     key: "nav.about",     en: "About" }
+    ] }
+  ];
+  var NAV = PRIMARY.map(function (it) { var c = {}; for (var k in it) c[k] = it[k]; c.g = 0; return c; });
+  GROUPS.forEach(function (grp, gi) {
+    grp.items.forEach(function (it) { var c = {}; for (var k in it) c[k] = it[k]; c.g = gi + 1; NAV.push(c); });
+  });
   var SUPPORT = { href: "https://buymeacoffee.com/travelnowinfo", key: "nav.support", en: "Support" };
-  // The site's Instagram profile: an icon in the masthead on every page (static pages and the SPA shells).
+  // The site's Instagram profile: in the footer and at the bottom of the phone menu sheet.
   var INSTAGRAM = { href: "https://www.instagram.com/travelnow.info/", key: "nav.instagram", en: "travelnow.info on Instagram" };
 
   // Pages that have a Turkish twin at /tr/<path> (scripts/build-tr.js writes the
@@ -66,7 +77,7 @@
   }
 
   var api = {
-    NAV: NAV, SUPPORT: SUPPORT, INSTAGRAM: INSTAGRAM, isCurrent: isCurrent,
+    NAV: NAV, PRIMARY: PRIMARY, GROUPS: GROUPS, SUPPORT: SUPPORT, INSTAGRAM: INSTAGRAM, isCurrent: isCurrent,
     TR_PAGES: TR_PAGES, hasTr: hasTr, toTr: toTr, fromTr: fromTr, isTrPath: isTrPath, localHref: localHref
   };
   if (typeof module !== "undefined" && module.exports) module.exports = api;

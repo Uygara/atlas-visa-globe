@@ -1,5 +1,5 @@
 // Shared chrome for the three globe apps (/, /transit-map/, /itinerary/):
-// masthead + nav, view/theme/language controls, icons, the mobile sheet handle
+// masthead + nav, theme/language menu, icons, the mobile sheet handle
 // and the theme store. Before this file each app carried its own TopNav with a
 // different link list; now the list comes from assets/site-nav.js and every
 // page gets the same header.
@@ -96,12 +96,8 @@ function IconSun(props) {
 function IconMoon(props) {
   return <svg viewBox="0 0 16 16" aria-hidden="true" {...props}><path d="M13.2 9.6A5.6 5.6 0 0 1 6.4 2.8a5.6 5.6 0 1 0 6.8 6.8z" fill="currentColor" /></svg>;
 }
-function IconUser(props) {
-  return <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" {...props}><circle cx="8" cy="5.6" r="2.9" fill="none" stroke="currentColor" strokeWidth="1.4" /><path d="M2.6 14.2c.7-2.8 2.8-4.3 5.4-4.3s4.7 1.5 5.4 4.3" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" /></svg>;
-}
-
-// Link to /account/ — only when accounts are switched on (assets/account.js);
-// shows the signed-in person's initial.
+// Link to /account/, only when accounts are switched on (assets/account.js). Signed out it is the
+// filled "Sign in" button; signed in it is a circle with the person's initial.
 function AccountLink() {
   const acct = window.ATLAS_ACCOUNT;
   const [, force] = useStateC(0);
@@ -110,8 +106,10 @@ function AccountLink() {
   const user = acct.state.user;
   const label = tr("nav.account", "Account");
   return (
-    <a className={"mh-account" + (user ? " is-signed-in" : "")} href="/account/" aria-label={label} title={user && user.email ? user.email : label}>
-      {user && user.email ? <span>{user.email.charAt(0).toUpperCase()}</span> : <IconUser />}
+    <a className={"mh-account" + (user ? " is-signed-in" : "")} href="/account/" title={user && user.email ? user.email : undefined}>
+      <span className="mh-signin">{tr("nav.signin", "Sign in")}</span>
+      <span className="mh-acct-dot" aria-hidden="true"><span>{user && user.email ? user.email.charAt(0).toUpperCase() : ""}</span></span>
+      <span className="mh-acct-name">{label}</span>
     </a>
   );
 }
@@ -152,11 +150,6 @@ function ThemeToggle({ value, onChange }) {
   );
 }
 
-// Divider class for the first link of a new group (see `g` in assets/site-nav.js).
-function grpStart(list, i) {
-  return i > 0 && list[i].g !== list[i - 1].g ? "mh-grp-start" : "";
-}
-
 function LangSelect({ className }) {
   useLangTick();
   const cur = window.ATLAS_LANG || "en";
@@ -170,62 +163,66 @@ function LangSelect({ className }) {
 }
 
 // ─── Masthead ────────────────────────────────────────────────────────────
-// Priority+ navigation: every link sits in one row; whatever doesn't fit folds
-// into "More" from the end of the list. An invisible measuring copy keeps the
-// widths current when the language (and so label length) changes.
-function Masthead({ view, onView, theme, onTheme, onHelp }) {
+// Brand, four always-visible links, an "All tools" panel (three groups, each link
+// with a one-line description), a "language and theme" menu and the sign-in button.
+// Same markup and class names as the static pages (scripts/partials.js), so
+// assets/chrome.css styles both. The 3D/2D switch and the help button live on the
+// map (components/globe.jsx), not here.
+function Masthead({ theme, onTheme }) {
   useLangTick();
-  const nav = window.SITE_NAV || { NAV: [], SUPPORT: null, isCurrent: () => false };
-  const items = nav.NAV;
+  const nav = window.SITE_NAV || { PRIMARY: [], GROUPS: [], SUPPORT: null, isCurrent: () => false };
   const path = location.pathname;
   // A reader of Turkish is sent to the Turkish twin of every page that has one.
   const lang = window.ATLAS_LANG || "en";
   const to = (h) => (nav.localHref ? nav.localHref(h, lang) : h);
-  const [fit, setFit] = useStateC(items.length);
-  const [moreOpen, setMoreOpen] = useStateC(false);
+  const [open, setOpen] = useStateC(null); // "tools" | "prefs" | null
   const [sheetOpen, setSheetOpen] = useStateC(false);
-  const navRef = useRefC(null);
-  const measureRef = useRefC(null);
   const headerRef = useRefC(null);
+  const toolsBtn = useRefC(null), prefsBtn = useRefC(null);
+  const toolsPanel = useRefC(null), prefsPanel = useRefC(null);
 
   const label = (it) => tr(it.key, it.en);
+  const cur = (it) => (nav.isCurrent(it, path) ? "page" : undefined);
+  const toolOn = nav.GROUPS.some(g => g.items.some(it => nav.isCurrent(it, path)));
+  const langs = window.LANGS || [];
+  const themeNow = theme === "dark" ? "dark" : "light";
+  const themeName = (v) => tr(v === "dark" ? "settings.theme_dark" : "settings.theme_light", v === "dark" ? "Dark" : "Light");
 
-  useLayoutEffectC(() => {
-    const navEl = navRef.current, m = measureRef.current;
-    if (!navEl || !m) return;
-    const compute = () => {
-      const widths = Array.from(m.children).map(li => li.getBoundingClientRect().width);
-      const moreW = widths.pop(); // last child of the measurer is the More button
-      const avail = navEl.clientWidth;
-      if (!avail) return; // hidden (mobile uses the burger sheet)
-      const total = widths.reduce((a, b) => a + b, 0);
-      if (total <= avail) { setFit(widths.length); return; }
-      let used = moreW, n = 0;
-      while (n < widths.length && used + widths[n] <= avail) { used += widths[n]; n++; }
-      setFit(n);
-    };
-    compute();
-    // Re-measure when the bar resizes, when the measuring copy's labels change
-    // width (language switch), and once web fonts have loaded.
-    const ro = new ResizeObserver(compute);
-    ro.observe(navEl);
-    ro.observe(m);
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(compute);
-    return () => ro.disconnect();
-  }, []);
-
-  // Close menus on outside tap (pointerdown so iOS taps count) and on Escape.
+  // Opening a menu moves focus to its first link or button.
   useEffectC(() => {
-    if (!moreOpen && !sheetOpen) return;
-    const onDown = (e) => { if (headerRef.current && !headerRef.current.contains(e.target)) { setMoreOpen(false); setSheetOpen(false); } };
-    const onKey = (e) => { if (e.key === "Escape") { setMoreOpen(false); setSheetOpen(false); } };
+    const panel = open === "tools" ? toolsPanel.current : open === "prefs" ? prefsPanel.current : null;
+    const first = panel && panel.querySelector("a[href], button");
+    if (first) first.focus();
+  }, [open]);
+
+  // Close on a tap outside (pointerdown so iOS taps count) and on Escape; Escape hands focus back.
+  useEffectC(() => {
+    if (!open && !sheetOpen) return;
+    const onDown = (e) => { if (headerRef.current && !headerRef.current.contains(e.target)) { setOpen(null); setSheetOpen(false); } };
+    const onKey = (e) => {
+      if (e.key !== "Escape") return;
+      const btn = open === "tools" ? toolsBtn.current : open === "prefs" ? prefsBtn.current : null;
+      setOpen(null); setSheetOpen(false);
+      if (btn) btn.focus();
+    };
     document.addEventListener("pointerdown", onDown);
     document.addEventListener("keydown", onKey);
     return () => { document.removeEventListener("pointerdown", onDown); document.removeEventListener("keydown", onKey); };
-  }, [moreOpen, sheetOpen]);
+  }, [open, sheetOpen]);
 
-  const overflow = items.slice(fit);
-  const moreLabel = tr("nav.more", "More");
+  // Tabbing out of an open panel closes it.
+  const leave = (btn) => (e) => {
+    const next = e.relatedTarget;
+    if (next && !e.currentTarget.contains(next) && next !== btn.current) setOpen(null);
+  };
+
+  const themeOpts = onTheme && (
+    <div className="mh-opts-row" role="group" aria-label={tr("settings.theme", "Theme")}>
+      {["light", "dark"].map(v => (
+        <button key={v} type="button" className="mh-opt" aria-pressed={themeNow === v} onClick={() => onTheme(v)}>{themeName(v)}</button>
+      ))}
+    </div>
+  );
 
   return (
     <header ref={headerRef} className={"masthead" + (sheetOpen ? " is-open" : "")}>
@@ -235,50 +232,59 @@ function Masthead({ view, onView, theme, onTheme, onHelp }) {
         <span className="brand-word">travelnow<span className="brand-tld">.info</span></span>
       </a>
 
-      <nav ref={navRef} className="mh-nav" aria-label={tr("nav.main", "Main")}>
+      <nav className="mh-nav" aria-label={tr("nav.main", "Main")}>
         <ul className="mh-links">
-          {items.map((it, i) => (
-            <li key={it.href} hidden={i >= fit} className={grpStart(items, i)}>
-              <a className="mh-link" href={to(it.href)} aria-current={nav.isCurrent(it, path) ? "page" : undefined}>{label(it)}</a>
-            </li>
+          {nav.PRIMARY.map(it => (
+            <li key={it.href}><a className="mh-link" href={to(it.href)} aria-current={cur(it)}>{label(it)}</a></li>
           ))}
         </ul>
-        <div className="mh-more" hidden={overflow.length === 0}>
-          <button type="button" className="mh-link mh-more-btn" aria-expanded={moreOpen} onClick={() => setMoreOpen(o => !o)}>
-            {moreLabel}<IconCaret />
+        <div className="mh-all">
+          <button ref={toolsBtn} type="button" className={"mh-link mh-all-btn" + (toolOn ? " has-current" : "")}
+            aria-expanded={open === "tools"} aria-controls="mh-all-panel" onClick={() => setOpen(o => o === "tools" ? null : "tools")}>
+            {tr("nav.all_tools", "All tools")}<IconCaret />
           </button>
-          {moreOpen && (
-            <ul className="mh-menu">
-              {overflow.map((it, j) => (
-                <li key={it.href} className={grpStart(overflow, j)}><a href={to(it.href)} aria-current={nav.isCurrent(it, path) ? "page" : undefined}>{label(it)}</a></li>
-              ))}
-            </ul>
-          )}
+          <div ref={toolsPanel} className="mh-panel mh-all-panel" id="mh-all-panel" hidden={open !== "tools"} onBlur={leave(toolsBtn)}>
+            {nav.GROUPS.map(g => (
+              <div key={g.key} className="mh-grp">
+                <p className="mh-grp-label">{tr(g.key, g.en)}</p>
+                <ul>
+                  {g.items.map(it => (
+                    <li key={it.href}>
+                      <a className="mh-tool" href={to(it.href)} aria-current={cur(it)}>
+                        <span className="mh-tool-t">{label(it)}</span>
+                        {it.dkey && <span className="mh-tool-d">{tr(it.dkey, it.den)}</span>}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
         </div>
-        {/* Invisible copy used only for measuring label widths. */}
-        <ul ref={measureRef} className="mh-links" aria-hidden="true"
-          style={{ position: "absolute", visibility: "hidden", pointerEvents: "none", height: "auto", left: 0, top: 0 }}>
-          {items.map(it => <li key={it.href}><span className="mh-link">{label(it)}</span></li>)}
-          <li><span className="mh-link mh-more-btn">{moreLabel}<IconCaret /></span></li>
-        </ul>
       </nav>
 
       <div className="mh-tools">
-        {nav.INSTAGRAM && (
-          <a className="mh-ig" href={nav.INSTAGRAM.href} target="_blank" rel="noopener" aria-label={tr(nav.INSTAGRAM.key, nav.INSTAGRAM.en)} title="Instagram">
-            <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><rect x="2" y="2" width="12" height="12" rx="3.6" fill="none" stroke="currentColor" strokeWidth="1.4"/><circle cx="8" cy="8" r="2.8" fill="none" stroke="currentColor" strokeWidth="1.4"/><circle cx="11.5" cy="4.5" r=".9" fill="currentColor"/></svg>
-          </a>
-        )}
+        <div className="mh-prefs">
+          <button ref={prefsBtn} type="button" className="mh-prefs-btn" aria-expanded={open === "prefs"} aria-controls="mh-prefs-panel"
+            aria-label={tr("nav.lang_theme", "Language and theme")} onClick={() => setOpen(o => o === "prefs" ? null : "prefs")}>
+            <span>{lang.toUpperCase()}</span><span aria-hidden="true"> · </span><span>{themeName(themeNow)}</span><IconCaret />
+          </button>
+          <div ref={prefsPanel} className="mh-panel mh-prefs-panel" id="mh-prefs-panel" hidden={open !== "prefs"} onBlur={leave(prefsBtn)}>
+            <p className="mh-grp-label">{tr("nav.language", "Language")}</p>
+            <ul className="mh-opts">
+              {langs.map(l => (
+                <li key={l.code}>
+                  <button type="button" className="mh-opt" aria-pressed={lang === l.code} onClick={() => { setOpen(null); window.setLang && window.setLang(l.code); }}>
+                    {l.native}{l.beta ? " (beta)" : ""}
+                  </button>
+                </li>
+              ))}
+            </ul>
+            {themeOpts && <p className="mh-grp-label">{tr("settings.theme", "Theme")}</p>}
+            {themeOpts}
+          </div>
+        </div>
         <AccountLink />
-        {onView && <ViewToggle value={view} onChange={onView} className="mh-view-top" />}
-        {onTheme && <ThemeToggle value={theme} onChange={onTheme} />}
-        <LangSelect />
-        {onHelp && (
-          <button type="button" className="mh-help" onClick={onHelp} aria-label={tr("nav.help", "What is this?")} title={tr("nav.help", "What is this?")}>?</button>
-        )}
-        {nav.SUPPORT && (
-          <a className="mh-support" href={nav.SUPPORT.href} target="_blank" rel="noopener">{tr(nav.SUPPORT.key, nav.SUPPORT.en)}</a>
-        )}
       </div>
 
       <button type="button" className="mh-burger" aria-label={tr("nav.menu", "Menu")} aria-expanded={sheetOpen} onClick={() => setSheetOpen(o => !o)}>
@@ -286,19 +292,20 @@ function Masthead({ view, onView, theme, onTheme, onHelp }) {
       </button>
 
       <div className="mh-sheet">
-        {items.map(it => (
-          <a key={it.href} className={"mh-sheet-link " + grpStart(items, items.indexOf(it))} href={to(it.href)} aria-current={nav.isCurrent(it, path) ? "page" : undefined}>{label(it)}</a>
+        {nav.PRIMARY.map(it => (
+          <a key={it.href} className="mh-sheet-link" href={to(it.href)} aria-current={cur(it)}>{label(it)}</a>
         ))}
+        <p className="mh-sheet-h">{tr("nav.all_tools", "All tools")}</p>
+        <ul className="mh-sheet-tools">
+          {nav.GROUPS.map(g => g.items.map(it => (
+            <li key={it.href}><a className="mh-sheet-tool" href={to(it.href)} aria-current={cur(it)}>{label(it)}</a></li>
+          )))}
+        </ul>
         <div className="mh-sheet-foot">
           <LangSelect />
-          {/* On phones the 3D/2D switch and Instagram live here: the top bar has no room for them (see chrome.css). */}
-          {onView && <ViewToggle value={view} onChange={onView} />}
-          {nav.INSTAGRAM && (
-            <a className="mh-ig" href={nav.INSTAGRAM.href} target="_blank" rel="noopener" aria-label={tr(nav.INSTAGRAM.key, nav.INSTAGRAM.en)} title="Instagram">
-              <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><rect x="2" y="2" width="12" height="12" rx="3.6" fill="none" stroke="currentColor" strokeWidth="1.4"/><circle cx="8" cy="8" r="2.8" fill="none" stroke="currentColor" strokeWidth="1.4"/><circle cx="11.5" cy="4.5" r=".9" fill="currentColor"/></svg>
-            </a>
-          )}
-          {nav.SUPPORT && <a className="mh-support" style={{ display: "inline-block" }} href={nav.SUPPORT.href} target="_blank" rel="noopener">{tr(nav.SUPPORT.key, nav.SUPPORT.en)}</a>}
+          {themeOpts}
+          {nav.INSTAGRAM && <a className="mh-sheet-ext" href={nav.INSTAGRAM.href} target="_blank" rel="noopener" aria-label={tr(nav.INSTAGRAM.key, nav.INSTAGRAM.en)}>Instagram</a>}
+          {nav.SUPPORT && <a className="mh-sheet-ext" href={nav.SUPPORT.href} target="_blank" rel="noopener">{tr(nav.SUPPORT.key, nav.SUPPORT.en)}</a>}
         </div>
       </div>
     </header>

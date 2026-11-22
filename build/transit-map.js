@@ -95,8 +95,6 @@ function TransitMapApp() {
   return React.createElement("div", {
     className: "layout"
   }, React.createElement(Masthead, {
-    view: mode,
-    onView: setMode,
     theme: theme,
     onTheme: setTheme
   }), React.createElement("div", {
@@ -104,6 +102,7 @@ function TransitMapApp() {
   }, React.createElement(Globe, {
     passport: passport,
     mode: mode,
+    onView: setMode,
     fillResolver: fillResolver,
     hoverRenderer: hoverRenderer,
     onCountryClick: openCountry,

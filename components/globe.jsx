@@ -49,6 +49,8 @@ function Globe({
   groupPassports,  // string[] — when set + non-empty, group mode is active
   filter,          // "all" | "vf" | "ev" | "voa" | "vr"
   mode,            // "globe3d" | "globe2d" | "flat"
+  onView,          // (mode) => void: the 3D/2D switch beside the zoom buttons (hidden when absent)
+  onHelp,          // () => void: the "?" button beside it (hidden when absent)
   direction,       // "outgoing" (default) | "incoming"
   variant,         // "ordinary" | "diplomatik" | "hususi" | "hizmet" | ...
   residencePermits,// string[] — held permit blocs (consumed via window global by resolveStatus; kept as a prop so this component re-renders when they change)
@@ -1012,6 +1014,9 @@ function Globe({
           onZoomIn={() => applyZoom(zoomRef.current * 1.4, true)}
           onZoomOut={() => applyZoom(zoomRef.current / 1.4, true)}
           onReset={() => applyZoom(1, true, true)}
+          mode={mode}
+          onView={onView}
+          onHelp={onHelp}
         />
       )}
 
@@ -1218,22 +1223,37 @@ function MicroStateMarkers({
   );
 }
 
-function ZoomControls({ zoom, onZoomIn, onZoomOut, onReset }) {
+function ZoomControls({ zoom, onZoomIn, onZoomOut, onReset, mode, onView, onHelp }) {
+  const views = [["globe3d", window.t("mode.3d")], ["flat", window.t("mode.2d")]];
   return (
-    <div className="zoom overlay-card">
-      <button type="button" onClick={onZoomIn} title={window.t("zoom.in")} aria-label={window.t("zoom.in")}>
-        <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M7 2 V12 M2 7 H12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
-      </button>
-      <button type="button" onClick={onZoomOut} title={window.t("zoom.out")} aria-label={window.t("zoom.out")}>
-        <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7 H12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
-      </button>
-      <output title={window.t("zoom.current")}>{zoom.toFixed(1)}×</output>
-      <button type="button" onClick={onReset} title={window.t("zoom.reset")} aria-label={window.t("zoom.reset")} disabled={zoom === 1}>
-        <svg viewBox="0 0 14 14" aria-hidden="true">
-          <path d="M3 7 a4 4 0 1 0 1.2 -2.8" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" />
-          <path d="M3 2 V5 H6" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      </button>
+    <div className="map-controls">
+      {(onView || onHelp) && (
+        <div className="map-view overlay-card">
+          {onView && (
+            <span role="group" aria-label={window.t("nav.mode")} style={{ display: "contents" }}>
+              {views.map(([v, l]) => (
+                <button key={v} type="button" aria-pressed={mode === v || (v === "flat" && mode === "globe2d")} onClick={() => onView(v)}>{l}</button>
+              ))}
+            </span>
+          )}
+          {onHelp && <button type="button" className="map-help" onClick={onHelp} title={window.t("nav.help")} aria-label={window.t("nav.help")}>?</button>}
+        </div>
+      )}
+      <div className="zoom overlay-card">
+        <button type="button" onClick={onZoomIn} title={window.t("zoom.in")} aria-label={window.t("zoom.in")}>
+          <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M7 2 V12 M2 7 H12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
+        </button>
+        <button type="button" onClick={onZoomOut} title={window.t("zoom.out")} aria-label={window.t("zoom.out")}>
+          <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M2 7 H12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" /></svg>
+        </button>
+        <output title={window.t("zoom.current")}>{zoom.toFixed(1)}×</output>
+        <button type="button" onClick={onReset} title={window.t("zoom.reset")} aria-label={window.t("zoom.reset")} disabled={zoom === 1}>
+          <svg viewBox="0 0 14 14" aria-hidden="true">
+            <path d="M3 7 a4 4 0 1 0 1.2 -2.8" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+            <path d="M3 2 V5 H6" stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+      </div>
     </div>
   );
 }

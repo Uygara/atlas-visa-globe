@@ -13,7 +13,9 @@ html.in-app input, html.in-app textarea, html.in-app select, html.in-app [conten
 
 /* The four site links become a bottom tab bar; only tools stay in the top bar. */
 html.in-app .mh-nav, html.in-app .mh-burger, html.in-app .mh-sheet,
-html.in-app .mh-more, html.in-app .mh-support { display: none !important; }
+html.in-app .mh-all { display: none !important; }
+/* The language and theme menu is the only place for them in the app, phones included. */
+html.in-app .mh-prefs { display: block !important; }
 html.in-app .masthead { padding-top: env(safe-area-inset-top, 0px); }
 html.in-app .doc-band { display: none; }
 

@@ -187,27 +187,6 @@ function IconMoon(props) {
     fill: "currentColor"
   }));
 }
-function IconUser(props) {
-  return React.createElement("svg", _extends({
-    viewBox: "0 0 16 16",
-    width: "16",
-    height: "16",
-    "aria-hidden": "true"
-  }, props), React.createElement("circle", {
-    cx: "8",
-    cy: "5.6",
-    r: "2.9",
-    fill: "none",
-    stroke: "currentColor",
-    strokeWidth: "1.4"
-  }), React.createElement("path", {
-    d: "M2.6 14.2c.7-2.8 2.8-4.3 5.4-4.3s4.7 1.5 5.4 4.3",
-    fill: "none",
-    stroke: "currentColor",
-    strokeWidth: "1.4",
-    strokeLinecap: "round"
-  }));
-}
 function AccountLink() {
   var acct = window.ATLAS_ACCOUNT;
   var _useStateC5 = useStateC(0),
@@ -226,9 +205,15 @@ function AccountLink() {
   return React.createElement("a", {
     className: "mh-account" + (user ? " is-signed-in" : ""),
     href: "/account/",
-    "aria-label": label,
-    title: user && user.email ? user.email : label
-  }, user && user.email ? React.createElement("span", null, user.email.charAt(0).toUpperCase()) : React.createElement(IconUser, null));
+    title: user && user.email ? user.email : undefined
+  }, React.createElement("span", {
+    className: "mh-signin"
+  }, tr("nav.signin", "Sign in")), React.createElement("span", {
+    className: "mh-acct-dot",
+    "aria-hidden": "true"
+  }, React.createElement("span", null, user && user.email ? user.email.charAt(0).toUpperCase() : "")), React.createElement("span", {
+    className: "mh-acct-name"
+  }, label));
 }
 function IconMenu(_ref) {
   var open = _ref.open,
@@ -298,9 +283,6 @@ function ThemeToggle(_ref5) {
     }, icon);
   }));
 }
-function grpStart(list, i) {
-  return i > 0 && list[i].g !== list[i - 1].g ? "mh-grp-start" : "";
-}
 function LangSelect(_ref8) {
   var className = _ref8.className;
   useLangTick();
@@ -320,91 +302,70 @@ function LangSelect(_ref8) {
   }));
 }
 function Masthead(_ref9) {
-  var view = _ref9.view,
-    onView = _ref9.onView,
-    theme = _ref9.theme,
-    onTheme = _ref9.onTheme,
-    onHelp = _ref9.onHelp;
+  var theme = _ref9.theme,
+    onTheme = _ref9.onTheme;
   useLangTick();
   var nav = window.SITE_NAV || {
-    NAV: [],
+    PRIMARY: [],
+    GROUPS: [],
     SUPPORT: null,
     isCurrent: function isCurrent() {
       return false;
     }
   };
-  var items = nav.NAV;
   var path = location.pathname;
   var lang = window.ATLAS_LANG || "en";
   var to = function to(h) {
     return nav.localHref ? nav.localHref(h, lang) : h;
   };
-  var _useStateC7 = useStateC(items.length),
+  var _useStateC7 = useStateC(null),
     _useStateC8 = _slicedToArray(_useStateC7, 2),
-    fit = _useStateC8[0],
-    setFit = _useStateC8[1];
+    open = _useStateC8[0],
+    setOpen = _useStateC8[1];
   var _useStateC9 = useStateC(false),
     _useStateC0 = _slicedToArray(_useStateC9, 2),
-    moreOpen = _useStateC0[0],
-    setMoreOpen = _useStateC0[1];
-  var _useStateC1 = useStateC(false),
-    _useStateC10 = _slicedToArray(_useStateC1, 2),
-    sheetOpen = _useStateC10[0],
-    setSheetOpen = _useStateC10[1];
-  var navRef = useRefC(null);
-  var measureRef = useRefC(null);
+    sheetOpen = _useStateC0[0],
+    setSheetOpen = _useStateC0[1];
   var headerRef = useRefC(null);
+  var toolsBtn = useRefC(null),
+    prefsBtn = useRefC(null);
+  var toolsPanel = useRefC(null),
+    prefsPanel = useRefC(null);
   var label = function label(it) {
     return tr(it.key, it.en);
   };
-  useLayoutEffectC(function () {
-    var navEl = navRef.current,
-      m = measureRef.current;
-    if (!navEl || !m) return;
-    var compute = function compute() {
-      var widths = Array.from(m.children).map(function (li) {
-        return li.getBoundingClientRect().width;
-      });
-      var moreW = widths.pop();
-      var avail = navEl.clientWidth;
-      if (!avail) return;
-      var total = widths.reduce(function (a, b) {
-        return a + b;
-      }, 0);
-      if (total <= avail) {
-        setFit(widths.length);
-        return;
-      }
-      var used = moreW,
-        n = 0;
-      while (n < widths.length && used + widths[n] <= avail) {
-        used += widths[n];
-        n++;
-      }
-      setFit(n);
-    };
-    compute();
-    var ro = new ResizeObserver(compute);
-    ro.observe(navEl);
-    ro.observe(m);
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(compute);
-    return function () {
-      return ro.disconnect();
-    };
-  }, []);
+  var cur = function cur(it) {
+    return nav.isCurrent(it, path) ? "page" : undefined;
+  };
+  var toolOn = nav.GROUPS.some(function (g) {
+    return g.items.some(function (it) {
+      return nav.isCurrent(it, path);
+    });
+  });
+  var langs = window.LANGS || [];
+  var themeNow = theme === "dark" ? "dark" : "light";
+  var themeName = function themeName(v) {
+    return tr(v === "dark" ? "settings.theme_dark" : "settings.theme_light", v === "dark" ? "Dark" : "Light");
+  };
   useEffectC(function () {
-    if (!moreOpen && !sheetOpen) return;
+    var panel = open === "tools" ? toolsPanel.current : open === "prefs" ? prefsPanel.current : null;
+    var first = panel && panel.querySelector("a[href], button");
+    if (first) first.focus();
+  }, [open]);
+  useEffectC(function () {
+    if (!open && !sheetOpen) return;
     var onDown = function onDown(e) {
       if (headerRef.current && !headerRef.current.contains(e.target)) {
-        setMoreOpen(false);
+        setOpen(null);
         setSheetOpen(false);
       }
     };
     var onKey = function onKey(e) {
-      if (e.key === "Escape") {
-        setMoreOpen(false);
-        setSheetOpen(false);
-      }
+      if (e.key !== "Escape") return;
+      var btn = open === "tools" ? toolsBtn.current : open === "prefs" ? prefsBtn.current : null;
+      setOpen(null);
+      setSheetOpen(false);
+      if (btn) btn.focus();
     };
     document.addEventListener("pointerdown", onDown);
     document.addEventListener("keydown", onKey);
@@ -412,9 +373,28 @@ function Masthead(_ref9) {
       document.removeEventListener("pointerdown", onDown);
       document.removeEventListener("keydown", onKey);
     };
-  }, [moreOpen, sheetOpen]);
-  var overflow = items.slice(fit);
-  var moreLabel = tr("nav.more", "More");
+  }, [open, sheetOpen]);
+  var leave = function leave(btn) {
+    return function (e) {
+      var next = e.relatedTarget;
+      if (next && !e.currentTarget.contains(next) && next !== btn.current) setOpen(null);
+    };
+  };
+  var themeOpts = onTheme && React.createElement("div", {
+    className: "mh-opts-row",
+    role: "group",
+    "aria-label": tr("settings.theme", "Theme")
+  }, ["light", "dark"].map(function (v) {
+    return React.createElement("button", {
+      key: v,
+      type: "button",
+      className: "mh-opt",
+      "aria-pressed": themeNow === v,
+      onClick: function onClick() {
+        return onTheme(v);
+      }
+    }, themeName(v));
+  }));
   return React.createElement("header", {
     ref: headerRef,
     className: "masthead" + (sheetOpen ? " is-open" : "")
@@ -432,117 +412,99 @@ function Masthead(_ref9) {
   }, "travelnow", React.createElement("span", {
     className: "brand-tld"
   }, ".info"))), React.createElement("nav", {
-    ref: navRef,
     className: "mh-nav",
     "aria-label": tr("nav.main", "Main")
   }, React.createElement("ul", {
     className: "mh-links"
-  }, items.map(function (it, i) {
+  }, nav.PRIMARY.map(function (it) {
     return React.createElement("li", {
-      key: it.href,
-      hidden: i >= fit,
-      className: grpStart(items, i)
+      key: it.href
     }, React.createElement("a", {
       className: "mh-link",
       href: to(it.href),
-      "aria-current": nav.isCurrent(it, path) ? "page" : undefined
+      "aria-current": cur(it)
     }, label(it)));
   })), React.createElement("div", {
-    className: "mh-more",
-    hidden: overflow.length === 0
+    className: "mh-all"
   }, React.createElement("button", {
+    ref: toolsBtn,
     type: "button",
-    className: "mh-link mh-more-btn",
-    "aria-expanded": moreOpen,
+    className: "mh-link mh-all-btn" + (toolOn ? " has-current" : ""),
+    "aria-expanded": open === "tools",
+    "aria-controls": "mh-all-panel",
     onClick: function onClick() {
-      return setMoreOpen(function (o) {
-        return !o;
+      return setOpen(function (o) {
+        return o === "tools" ? null : "tools";
       });
     }
-  }, moreLabel, React.createElement(IconCaret, null)), moreOpen && React.createElement("ul", {
-    className: "mh-menu"
-  }, overflow.map(function (it, j) {
-    return React.createElement("li", {
-      key: it.href,
-      className: grpStart(overflow, j)
-    }, React.createElement("a", {
-      href: to(it.href),
-      "aria-current": nav.isCurrent(it, path) ? "page" : undefined
-    }, label(it)));
-  }))), React.createElement("ul", {
-    ref: measureRef,
-    className: "mh-links",
-    "aria-hidden": "true",
-    style: {
-      position: "absolute",
-      visibility: "hidden",
-      pointerEvents: "none",
-      height: "auto",
-      left: 0,
-      top: 0
-    }
-  }, items.map(function (it) {
-    return React.createElement("li", {
-      key: it.href
-    }, React.createElement("span", {
-      className: "mh-link"
-    }, label(it)));
-  }), React.createElement("li", null, React.createElement("span", {
-    className: "mh-link mh-more-btn"
-  }, moreLabel, React.createElement(IconCaret, null))))), React.createElement("div", {
+  }, tr("nav.all_tools", "All tools"), React.createElement(IconCaret, null)), React.createElement("div", {
+    ref: toolsPanel,
+    className: "mh-panel mh-all-panel",
+    id: "mh-all-panel",
+    hidden: open !== "tools",
+    onBlur: leave(toolsBtn)
+  }, nav.GROUPS.map(function (g) {
+    return React.createElement("div", {
+      key: g.key,
+      className: "mh-grp"
+    }, React.createElement("p", {
+      className: "mh-grp-label"
+    }, tr(g.key, g.en)), React.createElement("ul", null, g.items.map(function (it) {
+      return React.createElement("li", {
+        key: it.href
+      }, React.createElement("a", {
+        className: "mh-tool",
+        href: to(it.href),
+        "aria-current": cur(it)
+      }, React.createElement("span", {
+        className: "mh-tool-t"
+      }, label(it)), it.dkey && React.createElement("span", {
+        className: "mh-tool-d"
+      }, tr(it.dkey, it.den))));
+    })));
+  })))), React.createElement("div", {
     className: "mh-tools"
-  }, nav.INSTAGRAM && React.createElement("a", {
-    className: "mh-ig",
-    href: nav.INSTAGRAM.href,
-    target: "_blank",
-    rel: "noopener",
-    "aria-label": tr(nav.INSTAGRAM.key, nav.INSTAGRAM.en),
-    title: "Instagram"
-  }, React.createElement("svg", {
-    viewBox: "0 0 16 16",
-    width: "16",
-    height: "16",
-    "aria-hidden": "true"
-  }, React.createElement("rect", {
-    x: "2",
-    y: "2",
-    width: "12",
-    height: "12",
-    rx: "3.6",
-    fill: "none",
-    stroke: "currentColor",
-    strokeWidth: "1.4"
-  }), React.createElement("circle", {
-    cx: "8",
-    cy: "8",
-    r: "2.8",
-    fill: "none",
-    stroke: "currentColor",
-    strokeWidth: "1.4"
-  }), React.createElement("circle", {
-    cx: "11.5",
-    cy: "4.5",
-    r: ".9",
-    fill: "currentColor"
-  }))), React.createElement(AccountLink, null), onView && React.createElement(ViewToggle, {
-    value: view,
-    onChange: onView,
-    className: "mh-view-top"
-  }), onTheme && React.createElement(ThemeToggle, {
-    value: theme,
-    onChange: onTheme
-  }), React.createElement(LangSelect, null), onHelp && React.createElement("button", {
+  }, React.createElement("div", {
+    className: "mh-prefs"
+  }, React.createElement("button", {
+    ref: prefsBtn,
     type: "button",
-    className: "mh-help",
-    onClick: onHelp,
-    "aria-label": tr("nav.help", "What is this?"),
-    title: tr("nav.help", "What is this?")
-  }, "?"), nav.SUPPORT && React.createElement("a", {
-    className: "mh-support",
-    href: nav.SUPPORT.href,
-    target: "_blank",
-    rel: "noopener"
-  }, tr(nav.SUPPORT.key, nav.SUPPORT.en))), React.createElement("button", {
+    className: "mh-prefs-btn",
+    "aria-expanded": open === "prefs",
+    "aria-controls": "mh-prefs-panel",
+    "aria-label": tr("nav.lang_theme", "Language and theme"),
+    onClick: function onClick() {
+      return setOpen(function (o) {
+        return o === "prefs" ? null : "prefs";
+      });
+    }
+  }, React.createElement("span", null, lang.toUpperCase()), React.createElement("span", {
+    "aria-hidden": "true"
+  }, " \xB7 "), React.createElement("span", null, themeName(themeNow)), React.createElement(IconCaret, null)), React.createElement("div", {
+    ref: prefsPanel,
+    className: "mh-panel mh-prefs-panel",
+    id: "mh-prefs-panel",
+    hidden: open !== "prefs",
+    onBlur: leave(prefsBtn)
+  }, React.createElement("p", {
+    className: "mh-grp-label"
+  }, tr("nav.language", "Language")), React.createElement("ul", {
+    className: "mh-opts"
+  }, langs.map(function (l) {
+    return React.createElement("li", {
+      key: l.code
+    }, React.createElement("button", {
+      type: "button",
+      className: "mh-opt",
+      "aria-pressed": lang === l.code,
+      onClick: function onClick() {
+        setOpen(null);
+        window.setLang && window.setLang(l.code);
+      }
+    }, l["native"], l.beta ? " (beta)" : ""));
+  })), themeOpts && React.createElement("p", {
+    className: "mh-grp-label"
+  }, tr("settings.theme", "Theme")), themeOpts)), React.createElement(AccountLink, null)), React.createElement("button", {
     type: "button",
     className: "mh-burger",
     "aria-label": tr("nav.menu", "Menu"),
@@ -556,56 +518,37 @@ function Masthead(_ref9) {
     open: sheetOpen
   })), React.createElement("div", {
     className: "mh-sheet"
-  }, items.map(function (it) {
+  }, nav.PRIMARY.map(function (it) {
     return React.createElement("a", {
       key: it.href,
-      className: "mh-sheet-link " + grpStart(items, items.indexOf(it)),
+      className: "mh-sheet-link",
       href: to(it.href),
-      "aria-current": nav.isCurrent(it, path) ? "page" : undefined
+      "aria-current": cur(it)
     }, label(it));
-  }), React.createElement("div", {
+  }), React.createElement("p", {
+    className: "mh-sheet-h"
+  }, tr("nav.all_tools", "All tools")), React.createElement("ul", {
+    className: "mh-sheet-tools"
+  }, nav.GROUPS.map(function (g) {
+    return g.items.map(function (it) {
+      return React.createElement("li", {
+        key: it.href
+      }, React.createElement("a", {
+        className: "mh-sheet-tool",
+        href: to(it.href),
+        "aria-current": cur(it)
+      }, label(it)));
+    });
+  })), React.createElement("div", {
     className: "mh-sheet-foot"
-  }, React.createElement(LangSelect, null), onView && React.createElement(ViewToggle, {
-    value: view,
-    onChange: onView
-  }), nav.INSTAGRAM && React.createElement("a", {
-    className: "mh-ig",
+  }, React.createElement(LangSelect, null), themeOpts, nav.INSTAGRAM && React.createElement("a", {
+    className: "mh-sheet-ext",
     href: nav.INSTAGRAM.href,
     target: "_blank",
     rel: "noopener",
-    "aria-label": tr(nav.INSTAGRAM.key, nav.INSTAGRAM.en),
-    title: "Instagram"
-  }, React.createElement("svg", {
-    viewBox: "0 0 16 16",
-    width: "16",
-    height: "16",
-    "aria-hidden": "true"
-  }, React.createElement("rect", {
-    x: "2",
-    y: "2",
-    width: "12",
-    height: "12",
-    rx: "3.6",
-    fill: "none",
-    stroke: "currentColor",
-    strokeWidth: "1.4"
-  }), React.createElement("circle", {
-    cx: "8",
-    cy: "8",
-    r: "2.8",
-    fill: "none",
-    stroke: "currentColor",
-    strokeWidth: "1.4"
-  }), React.createElement("circle", {
-    cx: "11.5",
-    cy: "4.5",
-    r: ".9",
-    fill: "currentColor"
-  }))), nav.SUPPORT && React.createElement("a", {
-    className: "mh-support",
-    style: {
-      display: "inline-block"
-    },
+    "aria-label": tr(nav.INSTAGRAM.key, nav.INSTAGRAM.en)
+  }, "Instagram"), nav.SUPPORT && React.createElement("a", {
+    className: "mh-sheet-ext",
     href: nav.SUPPORT.href,
     target: "_blank",
     rel: "noopener"
