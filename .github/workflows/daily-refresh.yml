@@ -16,6 +16,10 @@ jobs:
       FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          # Full history: generate-seo.js dates static pages in sitemap.xml by their last commit
+          # (git log); a shallow clone would stamp every one of them with today's date.
+          fetch-depth: 0
 
       - uses: actions/setup-node@v4
         with:
