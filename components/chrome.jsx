@@ -575,3 +575,51 @@ function PanelResizer() {
       onPointerDown={down} onKeyDown={key} onDoubleClick={() => setW(DEF)} />
   );
 }
+
+// ─── Home frame: drag its bottom edge (desktop) ──────────────────────────────
+// The globe + panel sit in a frame and the page continues below; drag the grip to make the
+// frame shorter (more room for reading) or taller. Arrow keys work; double-click resets.
+// Kept on this device only (localStorage "atlas.frameH").
+function FrameResizer() {
+  const MIN = 380, STEP = 40;
+  const max = () => Math.max(MIN, window.innerHeight - 52 - 22);
+  const clamp = (v) => Math.min(max(), Math.max(MIN, Math.round(v)));
+  const [h, setH] = useStateC(() => { try { const v = +localStorage.getItem("atlas.frameH"); return v >= MIN ? v : 0; } catch (e) { return 0; } });
+  const ref = useRefC(null);
+  useLangTick();
+  const apply = (v) => { if (v) document.documentElement.style.setProperty("--frame-h", clamp(v) + "px"); else document.documentElement.style.removeProperty("--frame-h"); };
+  useEffectC(() => {
+    apply(h);
+    try { if (h) localStorage.setItem("atlas.frameH", String(h)); else localStorage.removeItem("atlas.frameH"); } catch (e) {}
+    const onResize = () => apply(h);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [h]);
+  const current = () => { const st = document.querySelector(".globe-stage"); return st ? st.getBoundingClientRect().height + 16 : max(); };
+  const down = (e) => {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    const el = ref.current; el.setPointerCapture(e.pointerId);
+    document.documentElement.classList.add("is-resizing-y");
+    const startY = e.clientY, startH = current();
+    let last = startH;
+    const move = (ev) => { last = clamp(startH + ev.clientY - startY); apply(last); };
+    const up = () => {
+      el.removeEventListener("pointermove", move); el.removeEventListener("pointerup", up); el.removeEventListener("pointercancel", up);
+      document.documentElement.classList.remove("is-resizing-y");
+      setH(last);
+    };
+    el.addEventListener("pointermove", move); el.addEventListener("pointerup", up); el.addEventListener("pointercancel", up);
+  };
+  const key = (e) => {
+    const d = { ArrowUp: -STEP, ArrowDown: STEP }[e.key];
+    if (d) { e.preventDefault(); setH(clamp(current() + d)); }
+  };
+  return (
+    <div ref={ref} className="frame-grip" role="separator" tabIndex={0}
+      aria-orientation="horizontal" aria-label={tr("map.resize_frame", "Resize the map area")}
+      aria-valuemin={MIN} aria-valuemax={max()} aria-valuenow={Math.round(h || current())}
+      title={tr("nav.resize_panel_tip", "Drag to resize. Double-click to reset.")}
+      onPointerDown={down} onKeyDown={key} onDoubleClick={() => setH(0)} />
+  );
+}

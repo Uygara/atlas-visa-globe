@@ -962,3 +962,97 @@ function PanelResizer() {
     }
   });
 }
+function FrameResizer() {
+  var MIN = 380,
+    STEP = 40;
+  var max = function max() {
+    return Math.max(MIN, window.innerHeight - 52 - 22);
+  };
+  var clamp = function clamp(v) {
+    return Math.min(max(), Math.max(MIN, Math.round(v)));
+  };
+  var _useStateC11 = useStateC(function () {
+      try {
+        var v = +localStorage.getItem("atlas.frameH");
+        return v >= MIN ? v : 0;
+      } catch (e) {
+        return 0;
+      }
+    }),
+    _useStateC12 = _slicedToArray(_useStateC11, 2),
+    h = _useStateC12[0],
+    setH = _useStateC12[1];
+  var ref = useRefC(null);
+  useLangTick();
+  var apply = function apply(v) {
+    if (v) document.documentElement.style.setProperty("--frame-h", clamp(v) + "px");else document.documentElement.style.removeProperty("--frame-h");
+  };
+  useEffectC(function () {
+    apply(h);
+    try {
+      if (h) localStorage.setItem("atlas.frameH", String(h));else localStorage.removeItem("atlas.frameH");
+    } catch (e) {}
+    var onResize = function onResize() {
+      return apply(h);
+    };
+    window.addEventListener("resize", onResize);
+    return function () {
+      return window.removeEventListener("resize", onResize);
+    };
+  }, [h]);
+  var current = function current() {
+    var st = document.querySelector(".globe-stage");
+    return st ? st.getBoundingClientRect().height + 16 : max();
+  };
+  var down = function down(e) {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    var el = ref.current;
+    el.setPointerCapture(e.pointerId);
+    document.documentElement.classList.add("is-resizing-y");
+    var startY = e.clientY,
+      startH = current();
+    var last = startH;
+    var move = function move(ev) {
+      last = clamp(startH + ev.clientY - startY);
+      apply(last);
+    };
+    var _up2 = function up() {
+      el.removeEventListener("pointermove", move);
+      el.removeEventListener("pointerup", _up2);
+      el.removeEventListener("pointercancel", _up2);
+      document.documentElement.classList.remove("is-resizing-y");
+      setH(last);
+    };
+    el.addEventListener("pointermove", move);
+    el.addEventListener("pointerup", _up2);
+    el.addEventListener("pointercancel", _up2);
+  };
+  var key = function key(e) {
+    var d = {
+      ArrowUp: -STEP,
+      ArrowDown: STEP
+    }[e.key];
+    if (d) {
+      e.preventDefault();
+      setH(clamp(current() + d));
+    }
+  };
+  return React.createElement("div", {
+    ref: ref,
+    className: "frame-grip",
+    role: "separator",
+    tabIndex: 0,
+    "aria-orientation": "horizontal",
+    "aria-label": tr("map.resize_frame", "Resize the map area"),
+    "aria-valuemin": MIN,
+    "aria-valuemax": max(),
+    "aria-valuenow": Math.round(h || current()),
+    title: tr("nav.resize_panel_tip", "Drag to resize. Double-click to reset."),
+    onPointerDown: down,
+    onKeyDown: key,
+    onDoubleClick: function onDoubleClick() {
+      return setH(0);
+    }
+  });
+}

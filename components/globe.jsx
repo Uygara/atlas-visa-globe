@@ -57,6 +57,7 @@ function Globe({
   onCountryClick,
   onCountryHover,
   focusedCountry,  // iso2 string or null — highlights / centers
+  wheelNeedsKey,   // home (desktop): the page scrolls, so the wheel zooms only with Ctrl/⌘ held (trackpad pinch sends ctrlKey)
   // ── Optional decoupling hooks (used by the standalone Transit Map page) ──
   // When `fillResolver` is supplied, the globe ignores visa-status colouring
   // entirely and paints each country with the colour the resolver returns:
@@ -119,6 +120,11 @@ function Globe({
   const projRef = useRef(null);
   const pathRef = useRef(null);
   const [zoomDisplay, setZoomDisplay] = useState(1);  // for UI label
+  const wheelKeyRef = useRef(false);
+  wheelKeyRef.current = !!wheelNeedsKey;
+  const [wheelHint, setWheelHint] = useState(false);
+  const wheelHintT = useRef(null);
+  useEffect(() => () => clearTimeout(wheelHintT.current), []);
   useEffect(() => { restRef.current = !!focusedCountry || !!hover; }, [focusedCountry, hover]);
 
   // ─── Topology load ─────────────────────────────────────────────────────────
@@ -412,6 +418,13 @@ function Globe({
     // globe modes zoom from centre because rotation-based panning makes
     // "zoom toward cursor" feel unnatural on a sphere.
     const onWheel = (e) => {
+      // Let the page scroll unless the visitor asks to zoom; say how, briefly.
+      if (wheelKeyRef.current && !e.ctrlKey && !e.metaKey && window.matchMedia("(min-width: 901px)").matches) {
+        setWheelHint(true);
+        clearTimeout(wheelHintT.current);
+        wheelHintT.current = setTimeout(() => setWheelHint(false), 1300);
+        return;
+      }
       e.preventDefault();
       lastInteractRef.current = performance.now();
       autoRef.current = false;
@@ -784,6 +797,7 @@ function Globe({
 
   return (
     <div ref={wrapRef} className="globe-wrap" style={{ width: "100%", height: "100%", position: "relative" }}>
+      {wheelHint && <div className="wheel-hint" role="status">{tr("map.wheel_hint", "Hold {key} and scroll to zoom", { key: /Mac|iPhone|iPad/.test(navigator.platform) ? "⌘" : "Ctrl" })}</div>}
       <svg
         ref={svgRef}
         width={size.w}

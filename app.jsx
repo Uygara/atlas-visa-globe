@@ -310,6 +310,7 @@ function App() {
           residencePermits={residencePermits}
           onCountryClick={onCountryClick}
           focusedCountry={focusedCountry}
+          wheelNeedsKey
         />
 
         {passport && !detailCountry && <MapKey />}
@@ -321,6 +322,8 @@ function App() {
       </div>
 
       <PanelResizer />
+      <FrameResizer />
+      {passport && document.getElementById("home-picks") && ReactDOM.createPortal(<HomePicks passport={passport} />, document.getElementById("home-picks"))}
       <Panel
         passport={passport}
         setPassport={choosePassport}
@@ -452,6 +455,49 @@ function CompareStrip({ enabled, passport, compare }) {
         </span>
       </div>
     </div>
+  );
+}
+
+// ─── Under the frame: easy destinations for the chosen passport ─────────────
+// Popular places this passport reaches with no visa arranged in advance, straight from
+// resolveStatus (the same answer the globe paints). Each card opens that country's page.
+const HOME_POPULAR = ["JP", "TH", "GB", "US", "IT", "FR", "ES", "DE", "GR", "PT", "NL", "CH", "AE", "KR", "SG", "MY",
+  "ID", "VN", "BR", "AR", "MX", "CO", "PE", "CL", "MA", "EG", "TN", "ZA", "KE", "GE", "AZ", "RS", "BA", "ME", "AL",
+  "QA", "JO", "MV", "LK", "NP", "HK", "AU", "NZ", "CA", "CU", "DO"];
+const EASY_STATUS = { idc: 1, vf: 1, eta: 1, voa: 1 };
+function HomePicks({ passport }) {
+  useLangTick();
+  const lang = window.ATLAS_LANG || "en";
+  const pre = lang === "tr" ? "/tr" : "";
+  const picks = [];
+  for (const iso of HOME_POPULAR) {
+    if (iso === passport || picks.length >= 8) continue;
+    const r = window.resolveStatus(passport, iso);
+    if (!r || !EASY_STATUS[r.status]) continue;
+    picks.push({ iso, status: r.status, days: r.days });
+  }
+  if (!picks.length) return null;
+  const name = window.countryName(passport);
+  const flag = (iso) => (window.byIso2 && window.byIso2[iso] && window.byIso2[iso].flag) || "";
+  return (
+    <section className="hm-sec hm-picks-sec">
+      <div className="hm-sec-head">
+        <h2>{tr("home.picks_title", "Where your {name} passport goes without a visa application", { name })}</h2>
+        <a href={pre + "/passport/" + passport.toLowerCase() + "/"}>{tr("home.picks_all", "All countries")} →</a>
+      </div>
+      <p className="hm-sub">{tr("home.picks_sub", "A few popular places. Each page has the entry rules and how long you can stay.")}</p>
+      <ul className="hm-picks">
+        {picks.map(p => (
+          <li key={p.iso}>
+            <a className="hm-pick" href={pre + "/visa/" + p.iso.toLowerCase() + "/"}>
+              <span className="hm-pick-flag" aria-hidden="true">{flag(p.iso)}</span>
+              <span className="hm-pick-name">{window.countryName(p.iso)}</span>
+              <span className="hm-pick-st">{tr("status." + p.status, p.status)}{p.days ? " · " + tr("home.days", "{n} days", { n: p.days }) : ""}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 

@@ -109,6 +109,7 @@ function Globe(_ref) {
     onCountryClick = _ref.onCountryClick,
     onCountryHover = _ref.onCountryHover,
     focusedCountry = _ref.focusedCountry,
+    wheelNeedsKey = _ref.wheelNeedsKey,
     fillResolver = _ref.fillResolver,
     hoverRenderer = _ref.hoverRenderer,
     regionFeatures = _ref.regionFeatures,
@@ -168,6 +169,18 @@ function Globe(_ref) {
     _useState0 = _slicedToArray(_useState9, 2),
     zoomDisplay = _useState0[0],
     setZoomDisplay = _useState0[1];
+  var wheelKeyRef = useRef(false);
+  wheelKeyRef.current = !!wheelNeedsKey;
+  var _useState1 = useState(false),
+    _useState10 = _slicedToArray(_useState1, 2),
+    wheelHint = _useState10[0],
+    setWheelHint = _useState10[1];
+  var wheelHintT = useRef(null);
+  useEffect(function () {
+    return function () {
+      return clearTimeout(wheelHintT.current);
+    };
+  }, []);
   useEffect(function () {
     restRef.current = !!focusedCountry || !!hover;
   }, [focusedCountry, hover]);
@@ -441,6 +454,14 @@ function Globe(_ref) {
     if (!topology) return;
     var svg = svgRef.current;
     var onWheel = function onWheel(e) {
+      if (wheelKeyRef.current && !e.ctrlKey && !e.metaKey && window.matchMedia("(min-width: 901px)").matches) {
+        setWheelHint(true);
+        clearTimeout(wheelHintT.current);
+        wheelHintT.current = setTimeout(function () {
+          return setWheelHint(false);
+        }, 1300);
+        return;
+      }
       e.preventDefault();
       lastInteractRef.current = performance.now();
       autoRef.current = false;
@@ -804,7 +825,12 @@ function Globe(_ref) {
       height: "100%",
       position: "relative"
     }
-  }, React.createElement("svg", {
+  }, wheelHint && React.createElement("div", {
+    className: "wheel-hint",
+    role: "status"
+  }, tr("map.wheel_hint", "Hold {key} and scroll to zoom", {
+    key: /Mac|iPhone|iPad/.test(navigator.platform) ? "⌘" : "Ctrl"
+  })), React.createElement("svg", {
     ref: svgRef,
     width: size.w,
     height: size.h,

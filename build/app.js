@@ -3,6 +3,7 @@
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 var _excluded = ["globeStyle"];
+function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 function _objectWithoutProperties(e, t) { if (null == e) return {}; var o, r, i = _objectWithoutPropertiesLoose(e, t); if (Object.getOwnPropertySymbols) { var n = Object.getOwnPropertySymbols(e); for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]); } return i; }
 function _objectWithoutPropertiesLoose(r, e) { if (null == r) return {}; var t = {}; for (var n in r) if ({}.hasOwnProperty.call(r, n)) { if (-1 !== e.indexOf(n)) continue; t[n] = r[n]; } return t; }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
@@ -432,12 +433,15 @@ function App() {
     variant: passportVariant,
     residencePermits: residencePermits,
     onCountryClick: onCountryClick,
-    focusedCountry: focusedCountry
+    focusedCountry: focusedCountry,
+    wheelNeedsKey: true
   }), passport && !detailCountry && React.createElement(MapKey, null), React.createElement(CompareStrip, {
     enabled: t.compareMode,
     passport: passport,
     compare: compare
-  }), !detailCountry && React.createElement(ChangelogFloater, null)), React.createElement(PanelResizer, null), React.createElement(Panel, {
+  }), !detailCountry && React.createElement(ChangelogFloater, null)), React.createElement(PanelResizer, null), React.createElement(FrameResizer, null), passport && document.getElementById("home-picks") && ReactDOM.createPortal(React.createElement(HomePicks, {
+    passport: passport
+  }), document.getElementById("home-picks")), React.createElement(Panel, {
     passport: passport,
     setPassport: choosePassport,
     autoDetected: !!passport && passport === autoDetectedPassport,
@@ -590,5 +594,72 @@ function CompareStrip(_ref2) {
       fontWeight: 600
     }
   }, d > 0 ? "+" : "", d)));
+}
+var HOME_POPULAR = ["JP", "TH", "GB", "US", "IT", "FR", "ES", "DE", "GR", "PT", "NL", "CH", "AE", "KR", "SG", "MY", "ID", "VN", "BR", "AR", "MX", "CO", "PE", "CL", "MA", "EG", "TN", "ZA", "KE", "GE", "AZ", "RS", "BA", "ME", "AL", "QA", "JO", "MV", "LK", "NP", "HK", "AU", "NZ", "CA", "CU", "DO"];
+var EASY_STATUS = {
+  idc: 1,
+  vf: 1,
+  eta: 1,
+  voa: 1
+};
+function HomePicks(_ref3) {
+  var passport = _ref3.passport;
+  useLangTick();
+  var lang = window.ATLAS_LANG || "en";
+  var pre = lang === "tr" ? "/tr" : "";
+  var picks = [];
+  var _iterator = _createForOfIteratorHelper(HOME_POPULAR),
+    _step;
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var iso = _step.value;
+      if (iso === passport || picks.length >= 8) continue;
+      var r = window.resolveStatus(passport, iso);
+      if (!r || !EASY_STATUS[r.status]) continue;
+      picks.push({
+        iso: iso,
+        status: r.status,
+        days: r.days
+      });
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+  if (!picks.length) return null;
+  var name = window.countryName(passport);
+  var flag = function flag(iso) {
+    return window.byIso2 && window.byIso2[iso] && window.byIso2[iso].flag || "";
+  };
+  return React.createElement("section", {
+    className: "hm-sec hm-picks-sec"
+  }, React.createElement("div", {
+    className: "hm-sec-head"
+  }, React.createElement("h2", null, tr("home.picks_title", "Where your {name} passport goes without a visa application", {
+    name: name
+  })), React.createElement("a", {
+    href: pre + "/passport/" + passport.toLowerCase() + "/"
+  }, tr("home.picks_all", "All countries"), " \u2192")), React.createElement("p", {
+    className: "hm-sub"
+  }, tr("home.picks_sub", "A few popular places. Each page has the entry rules and how long you can stay.")), React.createElement("ul", {
+    className: "hm-picks"
+  }, picks.map(function (p) {
+    return React.createElement("li", {
+      key: p.iso
+    }, React.createElement("a", {
+      className: "hm-pick",
+      href: pre + "/visa/" + p.iso.toLowerCase() + "/"
+    }, React.createElement("span", {
+      className: "hm-pick-flag",
+      "aria-hidden": "true"
+    }, flag(p.iso)), React.createElement("span", {
+      className: "hm-pick-name"
+    }, window.countryName(p.iso)), React.createElement("span", {
+      className: "hm-pick-st"
+    }, tr("status." + p.status, p.status), p.days ? " · " + tr("home.days", "{n} days", {
+      n: p.days
+    }) : "")));
+  })));
 }
 ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(App, null));
