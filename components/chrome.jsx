@@ -183,14 +183,15 @@ function Masthead({ theme, onTheme }) {
 
   const label = (it) => tr(it.key, it.en);
   const cur = (it) => (nav.isCurrent(it, path) ? "page" : undefined);
-  const toolOn = nav.GROUPS.some(g => g.items.some(it => nav.isCurrent(it, path)));
+  const TOP = nav.GROUPS.filter(g => g.top), REST = nav.GROUPS.filter(g => !g.top);
+  const toolOn = REST.some(g => g.items.some(it => nav.isCurrent(it, path)));
   const langs = window.LANGS || [];
   const themeNow = theme === "dark" ? "dark" : "light";
   const themeName = (v) => tr(v === "dark" ? "settings.theme_dark" : "settings.theme_light", v === "dark" ? "Dark" : "Light");
 
   // Opening a menu moves focus to its first link or button.
   useEffectC(() => {
-    const panel = open === "tools" ? toolsPanel.current : open === "prefs" ? prefsPanel.current : null;
+    const panel = open === "tools" ? toolsPanel.current : open === "prefs" ? prefsPanel.current : (open && open.indexOf("top") === 0 ? document.getElementById("mh-" + open + "-panel") : null);
     const first = panel && panel.querySelector("a[href], button");
     if (first) first.focus();
   }, [open]);
@@ -202,7 +203,7 @@ function Masthead({ theme, onTheme }) {
     const onDown = (e) => { if (headerRef.current && !headerRef.current.contains(e.target) && !(moreRef.current && moreRef.current.contains(e.target))) { setOpen(null); setSheetOpen(false); } };
     const onKey = (e) => {
       if (e.key !== "Escape") return;
-      const btn = open === "tools" ? toolsBtn.current : open === "prefs" ? prefsBtn.current : sheetOpen ? moreRef.current : null;
+      const btn = open === "tools" ? toolsBtn.current : open === "prefs" ? prefsBtn.current : (open && open.indexOf("top") === 0) ? document.querySelector('[aria-controls="mh-' + open + '-panel"]') : sheetOpen ? moreRef.current : null;
       setOpen(null); setSheetOpen(false);
       if (btn) btn.focus();
     };
@@ -243,13 +244,28 @@ function Masthead({ theme, onTheme }) {
             <li key={it.href}><a className="mh-link" href={to(it.href)} aria-current={cur(it)}>{label(it)}</a></li>
           ))}
         </ul>
+        {TOP.map((g, i) => (
+          <div key={g.key} className="mh-all mh-top">
+            <button type="button" className={"mh-link mh-all-btn mh-top-btn" + (g.items.some(it => nav.isCurrent(it, path)) ? " has-current" : "")}
+              aria-expanded={open === "top" + i} aria-controls={"mh-top" + i + "-panel"} onClick={() => setOpen(o => o === "top" + i ? null : "top" + i)}>
+              {tr(g.key, g.en)}<IconCaret />
+            </button>
+            <div className="mh-panel mh-top-panel" id={"mh-top" + i + "-panel"} hidden={open !== "top" + i}>
+              <ul>
+                {g.items.map(it => (
+                  <li key={it.href}><a className="mh-tool" href={to(it.href)} aria-current={cur(it)}><span className="mh-tool-t">{label(it)}</span>{it.dkey && <span className="mh-tool-d">{tr(it.dkey, it.den)}</span>}</a></li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        ))}
         <div className="mh-all">
           <button ref={toolsBtn} type="button" className={"mh-link mh-all-btn" + (toolOn ? " has-current" : "")}
             aria-expanded={open === "tools"} aria-controls="mh-all-panel" onClick={() => setOpen(o => o === "tools" ? null : "tools")}>
             {tr("nav.all_tools", "All tools")}<IconCaret />
           </button>
           <div ref={toolsPanel} className="mh-panel mh-all-panel" id="mh-all-panel" hidden={open !== "tools"} onBlur={leave(toolsBtn)}>
-            {nav.GROUPS.map(g => (
+            {REST.map(g => (
               <div key={g.key} className="mh-grp">
                 <p className="mh-grp-label">{tr(g.key, g.en)}</p>
                 <ul>

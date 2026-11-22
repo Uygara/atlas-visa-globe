@@ -325,6 +325,10 @@ function PanelHeader() {
 // Segmented control under the passport picker for passports that have
 // type variants (TR has hususi / hizmet / diplomatik on top of bordo; GB has
 // its nationality classes). Ordinary is always first and the default.
+// Cover colours of the Turkish passport types, as their names say (bordo, yeşil, gri, siyah): a small
+// "passport" swatch before each label so the choice is recognisable at a glance. Only where the type names
+// are colours; other passports get no swatch.
+const COVER = { TR: { ordinary: "#6B1E2E", hususi: "#1F5A3E", hizmet: "#7C8084", diplomatik: "#1C1B1D" } };
 function PassportTypeSelector({ passport, value, onChange }) {
   const variants = window.passportVariants(passport);
   if (!variants.length) return null;
@@ -348,6 +352,9 @@ function PassportTypeSelector({ passport, value, onChange }) {
       <div className="seg seg-wide" role="group" aria-label={window.t("panel.passport_type")}>
         {opts.map(o => (
           <button key={o.key} type="button" aria-pressed={o.key === value} onClick={() => onChange(o.key)} title={o.label}>
+            {COVER[passport] && COVER[passport][o.key] && (
+              <span aria-hidden="true" style={{ display: "inline-block", width: 9, height: 12, borderRadius: 2, marginInlineEnd: 7, verticalAlign: "-1px", background: COVER[passport][o.key], boxShadow: "0 0 0 1px rgba(255,255,255,.55)" }} />
+            )}
             {o.label}
           </button>
         ))}

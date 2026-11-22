@@ -3,7 +3,8 @@
 //     static-page masthead in assets/site-chrome.js).
 //   • Node: module.exports (scripts/partials.js stamps it into static HTML so
 //     crawlers see real links without running JS).
-// The top bar shows PRIMARY links; everything else sits in GROUPS, behind the "All tools"
+// The top bar shows PRIMARY links, then each group marked `top` as its own dropdown (Maps), then the
+// "All tools" button for the remaining GROUPS. Original note: everything else sits in GROUPS, behind the "All tools"
 // button (a panel with three groups, each link with a one-line description).
 // NAV is the same links as one flat list (PRIMARY first, then every group item);
 // `g` is the group index, kept for code that reads the flat list.
@@ -15,7 +16,7 @@
     { href: "/panel/",      key: "nav.panel",     en: "My panel" }
   ];
   var GROUPS = [
-    { key: "nav.grp_maps", en: "Maps", items: [
+    { key: "nav.grp_maps", en: "Maps", top: true, items: [
       { href: "/transit-map/", key: "nav.transit_map", en: "Transit map",  dkey: "nav.d_transit", den: "Is a visa needed to change planes" },
       { href: "/safety-map/",  key: "nav.safety_map",  en: "Safety map",   dkey: "nav.d_safety",  den: "Official travel advisories" }
     ] },

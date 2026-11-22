@@ -142,7 +142,8 @@
       });
       pops.push(p);
     }
-    pop(head.querySelector(".mh-all-btn"), head.querySelector(".mh-all-panel"));
+    Array.prototype.forEach.call(head.querySelectorAll(".mh-top-btn"), function (b) { pop(b, document.getElementById(b.getAttribute("aria-controls"))); });
+    pop(head.querySelector(".mh-all-btn:not(.mh-top-btn)"), head.querySelector(".mh-all-panel"));
     pop(head.querySelector(".mh-prefs-btn"), head.querySelector(".mh-prefs-panel"));
 
     // ── Mobile sheet ──────────────────────────────────────────────────

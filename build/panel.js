@@ -344,6 +344,14 @@ function PanelHeader() {
     title: window.t("footer.refresh")
   }, window.t("header.updated"), " ", formatted));
 }
+var COVER = {
+  TR: {
+    ordinary: "#6B1E2E",
+    hususi: "#1F5A3E",
+    hizmet: "#7C8084",
+    diplomatik: "#1C1B1D"
+  }
+};
 function PassportTypeSelector(_ref4) {
   var passport = _ref4.passport,
     value = _ref4.value,
@@ -392,7 +400,19 @@ function PassportTypeSelector(_ref4) {
         return onChange(o.key);
       },
       title: o.label
-    }, o.label);
+    }, COVER[passport] && COVER[passport][o.key] && React.createElement("span", {
+      "aria-hidden": "true",
+      style: {
+        display: "inline-block",
+        width: 9,
+        height: 12,
+        borderRadius: 2,
+        marginInlineEnd: 7,
+        verticalAlign: "-1px",
+        background: COVER[passport][o.key],
+        boxShadow: "0 0 0 1px rgba(255,255,255,.55)"
+      }
+    }), o.label);
   })), (active.sub || active.source) && React.createElement("p", {
     className: "p-hint"
   }, active.sub, active.source && React.createElement(React.Fragment, null, React.createElement("br", null), React.createElement("a", {

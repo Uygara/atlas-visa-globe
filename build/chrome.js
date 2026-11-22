@@ -338,7 +338,13 @@ function Masthead(_ref9) {
   var cur = function cur(it) {
     return nav.isCurrent(it, path) ? "page" : undefined;
   };
-  var toolOn = nav.GROUPS.some(function (g) {
+  var TOP = nav.GROUPS.filter(function (g) {
+      return g.top;
+    }),
+    REST = nav.GROUPS.filter(function (g) {
+      return !g.top;
+    });
+  var toolOn = REST.some(function (g) {
     return g.items.some(function (it) {
       return nav.isCurrent(it, path);
     });
@@ -349,7 +355,7 @@ function Masthead(_ref9) {
     return tr(v === "dark" ? "settings.theme_dark" : "settings.theme_light", v === "dark" ? "Dark" : "Light");
   };
   useEffectC(function () {
-    var panel = open === "tools" ? toolsPanel.current : open === "prefs" ? prefsPanel.current : null;
+    var panel = open === "tools" ? toolsPanel.current : open === "prefs" ? prefsPanel.current : open && open.indexOf("top") === 0 ? document.getElementById("mh-" + open + "-panel") : null;
     var first = panel && panel.querySelector("a[href], button");
     if (first) first.focus();
   }, [open]);
@@ -363,7 +369,7 @@ function Masthead(_ref9) {
     };
     var onKey = function onKey(e) {
       if (e.key !== "Escape") return;
-      var btn = open === "tools" ? toolsBtn.current : open === "prefs" ? prefsBtn.current : sheetOpen ? moreRef.current : null;
+      var btn = open === "tools" ? toolsBtn.current : open === "prefs" ? prefsBtn.current : open && open.indexOf("top") === 0 ? document.querySelector('[aria-controls="mh-' + open + '-panel"]') : sheetOpen ? moreRef.current : null;
       setOpen(null);
       setSheetOpen(false);
       if (btn) btn.focus();
@@ -431,7 +437,40 @@ function Masthead(_ref9) {
       href: to(it.href),
       "aria-current": cur(it)
     }, label(it)));
-  })), React.createElement("div", {
+  })), TOP.map(function (g, i) {
+    return React.createElement("div", {
+      key: g.key,
+      className: "mh-all mh-top"
+    }, React.createElement("button", {
+      type: "button",
+      className: "mh-link mh-all-btn mh-top-btn" + (g.items.some(function (it) {
+        return nav.isCurrent(it, path);
+      }) ? " has-current" : ""),
+      "aria-expanded": open === "top" + i,
+      "aria-controls": "mh-top" + i + "-panel",
+      onClick: function onClick() {
+        return setOpen(function (o) {
+          return o === "top" + i ? null : "top" + i;
+        });
+      }
+    }, tr(g.key, g.en), React.createElement(IconCaret, null)), React.createElement("div", {
+      className: "mh-panel mh-top-panel",
+      id: "mh-top" + i + "-panel",
+      hidden: open !== "top" + i
+    }, React.createElement("ul", null, g.items.map(function (it) {
+      return React.createElement("li", {
+        key: it.href
+      }, React.createElement("a", {
+        className: "mh-tool",
+        href: to(it.href),
+        "aria-current": cur(it)
+      }, React.createElement("span", {
+        className: "mh-tool-t"
+      }, label(it)), it.dkey && React.createElement("span", {
+        className: "mh-tool-d"
+      }, tr(it.dkey, it.den))));
+    }))));
+  }), React.createElement("div", {
     className: "mh-all"
   }, React.createElement("button", {
     ref: toolsBtn,
@@ -450,7 +489,7 @@ function Masthead(_ref9) {
     id: "mh-all-panel",
     hidden: open !== "tools",
     onBlur: leave(toolsBtn)
-  }, nav.GROUPS.map(function (g) {
+  }, REST.map(function (g) {
     return React.createElement("div", {
       key: g.key,
       className: "mh-grp"

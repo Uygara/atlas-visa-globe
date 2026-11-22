@@ -13,7 +13,7 @@
 const { PRIMARY, GROUPS, SUPPORT, INSTAGRAM, isCurrent } = require("../assets/site-nav.js");
 const { makeT, hasTr, toTr, hreflang } = require("./locales");
 
-const ASSET_VERSION = "20261122g";
+const ASSET_VERSION = "20261122h";
 
 function esc(s) {
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -66,9 +66,20 @@ function masthead({ path = "/", i18n = true, lang = "en" } = {}) {
   const href = (h) => (lang === "tr" && hasTr(h) ? toTr(h) : h);
   const cur = (it) => isCurrent(it, path) ? ' aria-current="page"' : "";
   const links = PRIMARY.map((it) => `      <li><a class="mh-link" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a></li>`).join("\n");
-  const toolOn = GROUPS.some((g) => g.items.some((it) => isCurrent(it, path)));
+  const TOP = GROUPS.filter((g) => g.top), REST = GROUPS.filter((g) => !g.top);
+  const toolOn = REST.some((g) => g.items.some((it) => isCurrent(it, path)));
+  const toolLink = (it) => `            <li><a class="mh-tool" href="${href(it.href)}"${cur(it)}><span class="mh-tool-t">${esc(t(it.en))}</span>${it.den ? `<span class="mh-tool-d">${esc(t(it.den))}</span>` : ""}</a></li>`;
+  // Groups marked `top` (Maps) get their own dropdown in the bar, right after the primary links.
+  const topMenus = TOP.map((g, i) => `    <div class="mh-all mh-top">
+      <button type="button" class="mh-link mh-all-btn mh-top-btn${g.items.some((it) => isCurrent(it, path)) ? " has-current" : ""}" aria-expanded="false" aria-controls="mh-top-panel-${i}">${esc(t(g.en))}${CARET}</button>
+      <div class="mh-panel mh-top-panel" id="mh-top-panel-${i}" hidden>
+        <ul>
+${g.items.map(toolLink).join("\n")}
+        </ul>
+      </div>
+    </div>`).join("\n");
   // The "All tools" panel: three groups, each link with its one-line description (when it has one).
-  const groups = GROUPS.map((g) => `        <div class="mh-grp">
+  const groups = REST.map((g) => `        <div class="mh-grp">
           <p class="mh-grp-label">${esc(t(g.en))}</p>
           <ul>
 ${g.items.map((it) => `            <li><a class="mh-tool" href="${href(it.href)}"${cur(it)}><span class="mh-tool-t">${esc(t(it.en))}</span>${it.den ? `<span class="mh-tool-d">${esc(t(it.den))}</span>` : ""}</a></li>`).join("\n")}
@@ -97,6 +108,7 @@ ${PRIMARY.map((it) => `  <a class="tb-item" href="${href(it.href)}"${cur(it)}>${
     <ul class="mh-links">
 ${links}
     </ul>
+${topMenus}
     <div class="mh-all">
       <button type="button" class="mh-link mh-all-btn${toolOn ? " has-current" : ""}" aria-expanded="false" aria-controls="mh-all-panel">${esc(t("All tools"))}${CARET}</button>
       <div class="mh-panel mh-all-panel" id="mh-all-panel" hidden>

@@ -60,6 +60,12 @@
   box-shadow: var(--shadow-lift);
 }
 .mh-panel[hidden] { display: none; }
+/* Maps: its own small dropdown under its button. */
+.mh-top { position: relative; }
+.mh-top-panel { inset-inline-start: 0; width: 300px; }
+.mh-top-panel ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+/* All tools now holds two groups. */
+.mh-all-panel.mh-all-panel { width: min(560px, calc(100% - 32px)); grid-template-columns: repeat(2, minmax(0, 1fr)); }
 .mh-all-panel {
   inset-inline-start: 16px; width: min(780px, calc(100% - 32px));
   display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 20px;
