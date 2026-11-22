@@ -102,6 +102,10 @@ function Panel(_ref) {
       if (setCompareMode) setCompareMode(false);
     }
   });
+  var outlet = !isPhone ? document.getElementById("home-panel-more") : null;
+  var below = function below(node) {
+    return outlet ? ReactDOM.createPortal(node, outlet) : node;
+  };
   return React.createElement("aside", {
     className: "panel",
     id: "panel",
@@ -152,7 +156,7 @@ function Panel(_ref) {
   }), dualHint), isPhone && passport && !tallyData && (typeSelector || permitPicker || dualHint) && React.createElement("section", {
     className: "p-sec"
   }, typeSelector, permitPicker, dualHint), !isPhone && tallyData && React.createElement("section", {
-    className: "p-sec"
+    className: "p-sec p-dir" + (groupActive ? " is-group" : "")
   }, React.createElement(Caption, {
     n: 2
   }, groupActive ? window.t("tally.group_label") : window.t("panel.direction")), directionToggle, React.createElement(Tally, {
@@ -189,7 +193,7 @@ function Panel(_ref) {
       return setDetailCountry(null);
     }
   }), passport && setCompareMode && setGroupMode && React.createElement("section", {
-    className: "p-sec"
+    className: "p-sec p-modes"
   }, React.createElement(Caption, {
     n: 3
   }, window.t("modes.title")), React.createElement(ModeBar, {
@@ -216,7 +220,7 @@ function Panel(_ref) {
     primary: passport,
     values: groupPassports || [],
     onChange: setGroupPassports
-  })), !detailCountry && passport && React.createElement(ForYouSection, null, React.createElement(WeeklyDigest, {
+  })), !detailCountry && passport && below(React.createElement(ForYouSection, null, React.createElement(WeeklyDigest, {
     passport: passport
   }), !groupActive && React.createElement(PassportPulse, {
     passport: passport
@@ -226,11 +230,11 @@ function Panel(_ref) {
     }
   }), React.createElement(ItineraryCTA, null), React.createElement(PassportNewsFeed, {
     passport: passport
-  })), !detailCountry && !passport && React.createElement(WatchlistCard, {
+  }))), !detailCountry && !passport && below(React.createElement(WatchlistCard, {
     onOpen: function onOpen(iso2) {
       setDetailCountry(iso2);
     }
-  }), React.createElement(PanelFooter, null));
+  })), !outlet && React.createElement(PanelFooter, null));
 }
 function useIsPhone() {
   var q = "(max-width: 900px)";

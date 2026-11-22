@@ -90,6 +90,11 @@ function Panel({
     />
   );
 
+  // Home on desktop: the page continues under the map frame, so the reading parts ("For you",
+  // site links) go there and the panel keeps only what works with the map, so it fits.
+  const outlet = !isPhone ? document.getElementById("home-panel-more") : null;
+  const below = (node) => (outlet ? ReactDOM.createPortal(node, outlet) : node);
+
   return (
     <aside className="panel" id="panel" tabIndex={-1}>
       <MobileSheetHandle />
@@ -149,7 +154,7 @@ function Panel({
 
       {/* Core payoff first: direction + ledger, then search. */}
       {!isPhone && tallyData && (
-        <section className="p-sec">
+        <section className={"p-sec p-dir" + (groupActive ? " is-group" : "")}>
           <Caption n={2}>{groupActive ? window.t("tally.group_label") : window.t("panel.direction")}</Caption>
           {directionToggle}
           <Tally tally={tallyData} filter={filter} setFilter={setFilter} groupActive={groupActive} direction={direction} />
@@ -192,7 +197,7 @@ function Panel({
 
       {/* Advanced modes (compare / combine) after the core result. */}
       {passport && setCompareMode && setGroupMode && (
-        <section className="p-sec">
+        <section className="p-sec p-modes">
           <Caption n={3}>{window.t("modes.title")}</Caption>
           <ModeBar
             compareMode={compareMode}
@@ -224,7 +229,7 @@ function Panel({
       )}
 
       {/* "For you" — secondary, daily-return content, collapsible. */}
-      {!detailCountry && passport && (
+      {!detailCountry && passport && below(
         <ForYouSection>
           <WeeklyDigest passport={passport} />
           {!groupActive && <PassportPulse passport={passport} />}
@@ -234,11 +239,11 @@ function Panel({
         </ForYouSection>
       )}
 
-      {!detailCountry && !passport && (
+      {!detailCountry && !passport && below(
         <WatchlistCard onOpen={(iso2) => { setDetailCountry(iso2); }} />
       )}
 
-      <PanelFooter />
+      {!outlet && <PanelFooter />}
     </aside>
   );
 }

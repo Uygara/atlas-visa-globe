@@ -37,7 +37,7 @@ body { font-size: var(--fs-sm); }
 .hm-pick-flag { font-size: 22px; line-height: 1; grid-row: span 2; }
 .hm-pick-name { color: var(--ink); font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .hm-pick-st { font-size: var(--fs-xs); color: var(--ink-3); }
-.hm-about p { max-width: 75ch; font-size: var(--fs-sm); color: var(--ink-3); }
+.hm-about { margin-top: 32px; max-width: 75ch; font-size: var(--fs-sm); color: var(--ink-3); }
 .seo-fallback nav { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--rule); font-size: var(--fs-sm); }
 .frame-grip { display: none; }
 .wheel-hint { position: absolute; inset: 0; z-index: 6; display: grid; place-items: center; pointer-events: none; background: color-mix(in srgb, var(--ink) 28%, transparent); color: #fff; font-weight: 600; font-size: var(--fs-md); }
@@ -47,7 +47,7 @@ body { font-size: var(--fs-sm); }
   body.is-home #root { height: auto; width: auto; }
   body.is-home .layout {
     height: auto;
-    grid-template-rows: 52px var(--frame-h, calc(100vh - 140px)) 22px;
+    grid-template-rows: 52px var(--frame-h, calc(100vh - 52px - 26px)) 22px;
     grid-template-areas: "masthead masthead" "globe panel" "grip grip";
   }
   body.is-home .globe-stage { margin: 16px 0 0; margin-inline-start: 20px; border: 1px solid var(--rule-strong); border-inline-end: 0; border-start-start-radius: 14px; border-end-start-radius: 14px; }
@@ -61,9 +61,37 @@ body { font-size: var(--fs-sm); }
   body.is-home .frame-grip:hover::after, body.is-home .frame-grip:focus-visible::after, .is-resizing-y .frame-grip::after { background: var(--ink-3); }
   body.is-home .frame-grip:focus-visible { outline: none; }
   .is-resizing-y, .is-resizing-y * { cursor: row-resize !important; user-select: none; }
+  /* A tighter panel so the map answer fits without scrolling. */
+  body.is-home .panel { padding: 14px 18px 12px; }
+  /* The headline goes (the map says it); the data date sits at the top corner, beside "Your passport". */
+  body.is-home .p-head { position: absolute; top: 14px; inset-inline-end: 18px; margin: 0; }
+  body.is-home .p-head > div { display: none; }
+  body.is-home .p-modes .p-hint { display: none; }
+  body.is-home .panel .p-sec { margin-bottom: 7px; padding-top: 8px; }
+  body.is-home .panel .p-head + .p-sec { padding-top: 0; }
+  body.is-home .p-dir:not(.is-group) > .p-cap, body.is-home .p-dir .tabs + .p-hint { display: none; }
+  body.is-home .seg-wide { display: grid; grid-template-columns: 1fr 1fr; }
+  body.is-home .lg-row { padding-block: 2px; }
+  body.is-home .pp-card { padding-top: 9px; }
+  body.is-home .seg-wide button { white-space: normal; line-height: 1.2; font-size: var(--fs-xs); padding: 5px 6px; }
+  body.is-home .ledger { display: grid; grid-template-columns: 1fr 1fr; column-gap: 20px; }
+  body.is-home .score-n { font-size: var(--fs-4xl); }
+  body.is-home .score-sub { font-size: var(--fs-xs); }
+  /* Under the frame: passport picks beside "For you". */
+  .hm-top { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 32px; align-items: start; margin-top: 32px; }
+  .hm-top .hm-sec { margin-top: 0; }
+  .hm-top .hm-picks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  #home-panel-more:empty { display: none; }
+  .hm-top:has(#home-panel-more:empty) { grid-template-columns: minmax(0, 1fr); }
+  .hm-top:has(#home-panel-more:empty) .hm-picks { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  #home-panel-more { padding: 14px 16px; border: 1px solid var(--rule); border-radius: 12px; background: var(--paper-raised); }
 }
 @media (max-width: 900px) {
   body.is-home .seo-fallback { display: none; }
+}
+/* Shorter laptop screens: the compare buttons speak for themselves. */
+@media (min-width: 901px) and (max-height: 820px) {
+  body.is-home .p-modes > .p-cap { display: none; }
 }
 @media (max-width: 1100px) {
   .hm-cards, .hm-tools, .hm-picks { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -173,7 +201,7 @@ html.theme-dark .country:hover, body.theme-dark .country:hover { filter: brightn
 .pp-main > svg { flex: none; width: 14px; height: 14px; color: var(--ink-3); transition: transform 180ms ease-out; }
 .pp-card[aria-expanded="true"] .pp-main > svg { transform: rotate(180deg); }
 .pp-flag { font-size: var(--fs-2xl); }
-.pp-name { font-family: var(--font-display); font-size: var(--fs-2xl); font-weight: 650; line-height: 0.95; letter-spacing: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pp-name { font-family: var(--font-display); font-size: var(--fs-lg); font-weight: 650; line-height: 1.1; letter-spacing: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pp-meta { margin-top: 4px; font-family: var(--font-mono); font-size: var(--fs-2xs); color: var(--ink-3); }
 .pp-empty { padding: 12px 0 14px; font-size: var(--fs-base); color: var(--ink-3); }
 .mrz {
