@@ -146,7 +146,7 @@ function TransitPanelHeader() {
     style: {
       display: "block"
     }
-  }, React.createElement("div", {
+  }, React.createElement("h1", {
     className: "p-head-title"
   }, window.t("tmap.title")), React.createElement("p", {
     className: "p-head-sub"
@@ -558,7 +558,7 @@ function TransitHubList(_ref5) {
     var iso = repIso(h.area);
     var t = window.transitStatusForGlobe(passport, iso);
     var c = window.byIso2[iso];
-    var hubLabel = c && h.hubLabel === c.name.replace(/\s*\(.*\)$/, "") ? window.countryName(iso) : h.hubLabel;
+    var hubLabel = c && h.hubLabel === c.name.replace(/\s*\(.*\)$/, "") ? window.countryName(iso) : tr("hub." + h.area, h.hubLabel);
     return _objectSpread(_objectSpread({}, h), {}, {
       hubLabel: hubLabel,
       iso: iso,
@@ -600,7 +600,7 @@ function TransitHubList(_ref5) {
         color: "var(--ink-2)",
         textAlign: "end"
       }
-    }, r.line ? r.line.label : "-")));
+    }, r.line ? r.line.label : r.iso === passport ? tr("tmap.home_hub", "Your own country") : "-")));
   })));
 }
 ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(TransitMapApp, null));

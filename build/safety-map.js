@@ -292,7 +292,7 @@ function SafetyMapApp() {
     style: {
       display: "block"
     }
-  }, React.createElement("div", {
+  }, React.createElement("h1", {
     className: "p-head-title"
   }, tr("safety.title", "Travel safety map"), " ", React.createElement("span", {
     className: "stamp is-small",
@@ -492,7 +492,7 @@ function RecentlyUpdated(_ref6) {
     }, (_window$byIso2$r$iso = window.byIso2[r.iso2]) === null || _window$byIso2$r$iso === void 0 ? void 0 : _window$byIso2$r$iso.flag), React.createElement("span", null, window.countryName(r.iso2))), React.createElement("div", {
       className: "feed-sum",
       dir: "auto"
-    }, r.note));
+    }, (window.ATLAS_LANG || "en") === "en" ? wholeWords(r.note) : tr("safety.recent_uk", "UK travel advice for this country was updated. Open it for the details.")));
   })), rows.length > 5 && React.createElement("button", {
     type: "button",
     className: "more-btn",
@@ -919,3 +919,9 @@ function SourceRow(_ref0) {
   }, tr("safety.no_source", "No advisory from this source.")));
 }
 ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(SafetyMapApp, null));
+function wholeWords(s) {
+  s = String(s || "").trim();
+  if (/[.!?)"'”’]$/.test(s)) return s;
+  var cut = s.replace(/\s+\S*$/, "").replace(/[\s,;:(\-–'"‘“]+$/, "");
+  return (cut || s) + "…";
+}

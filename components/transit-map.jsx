@@ -98,7 +98,7 @@ function TransitMapApp() {
 function TransitPanelHeader() {
   return (
     <header className="p-head" style={{ display: "block" }}>
-      <div className="p-head-title">{window.t("tmap.title")}</div>
+      <h1 className="p-head-title">{window.t("tmap.title")}</h1>
       <p className="p-head-sub">{window.t("tmap.subtitle")}</p>
     </header>
   );
@@ -306,7 +306,8 @@ function TransitHubList({ passport, onOpen }) {
     const t = window.transitStatusForGlobe(passport, iso);
     // Hubs named after a whole country ("United States", "Singapore") follow the interface language.
     const c = window.byIso2[iso];
-    const hubLabel = c && h.hubLabel === c.name.replace(/\s*\(.*\)$/, "") ? window.countryName(iso) : h.hubLabel;
+    // City hubs follow the interface language too ("London" → "Londra"); the English name is the fallback.
+    const hubLabel = c && h.hubLabel === c.name.replace(/\s*\(.*\)$/, "") ? window.countryName(iso) : tr("hub." + h.area, h.hubLabel);
     return { ...h, hubLabel, iso, t, line: transitLine(t) };
   });
   return (
@@ -319,7 +320,7 @@ function TransitHubList({ passport, onOpen }) {
               {r.line ? <Swatch s={r.line.s} /> : <span className="sw sw-all" aria-hidden="true" />}
               <span className="lg-label" style={{ whiteSpace: "normal" }}>{r.hubLabel}</span>
               <span className="lg-dots" />
-              <span className="lg-n" style={{ fontSize: 12, color: "var(--ink-2)", textAlign: "end" }}>{r.line ? r.line.label : "-"}</span>
+              <span className="lg-n" style={{ fontSize: 12, color: "var(--ink-2)", textAlign: "end" }}>{r.line ? r.line.label : (r.iso === passport ? tr("tmap.home_hub", "Your own country") : "-")}</span>
             </button>
           </li>
         ))}

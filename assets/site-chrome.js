@@ -99,15 +99,17 @@
 
     // ── Current page ─────────────────────────────────────────────────
     var path = location.pathname.replace(/index\.html$/, "").replace(/^\/tr(?=\/)/, "");
-    var onTool = false;
+    // A dropdown button is lit only when the current page is one of ITS links: the "Maps" menu
+    // for a map, "All tools" for a tool. (Both buttons share .mh-all-btn, so look inside each panel.)
     document.querySelectorAll(".masthead a.mh-link, .masthead a.mh-sheet-link, .masthead a.mh-sheet-tool, .masthead a.mh-tool, .tabbar a.tb-item").forEach(function (a) {
       var href = (a.getAttribute("href") || "").replace(/^\/tr(?=\/)/, "");
       var on = href === "/" ? (path === "/") : (path === href || path.indexOf(href) === 0);
       if (on) a.setAttribute("aria-current", "page"); else a.removeAttribute("aria-current");
-      if (on && a.matches(".mh-tool")) onTool = true;
     });
-    var allBtn = head.querySelector(".mh-all-btn");
-    if (allBtn) allBtn.classList.toggle("has-current", onTool);
+    head.querySelectorAll(".mh-all-btn[aria-controls]").forEach(function (btn) {
+      var panel = document.getElementById(btn.getAttribute("aria-controls"));
+      btn.classList.toggle("has-current", !!(panel && panel.querySelector('a.mh-tool[aria-current="page"]')));
+    });
 
     // ── Pop-over menus ───────────────────────────────────────────────
     // A real <button aria-expanded aria-controls> and a `hidden` panel. Opening moves focus

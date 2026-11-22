@@ -134,11 +134,11 @@ button.cta { width: 100%; }
 button.cta:hover, .trip-form button:hover, a.primary:hover { filter: brightness(1.08); }
 button.cta:disabled { opacity: 0.5; cursor: not-allowed; filter: none; }
 .actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0; }
-.actions button, #ref-today {
+.actions button, #ref-today, #share-link {
   padding: 8px 14px !important; border: 1px solid var(--rule-strong) !important; border-radius: var(--radius) !important;
   background: var(--paper-raised) !important; color: var(--ink) !important; font-size: var(--fs-sm) !important; font-weight: 600; cursor: pointer;
 }
-.actions button:hover, #ref-today:hover { border-color: var(--ink-3) !important; }
+.actions button:hover, #ref-today:hover, #share-link:hover { border-color: var(--ink-3) !important; }
 
 .msg { margin-top: 12px; padding: 10px 12px 10px 14px; border-radius: var(--radius); background: color-mix(in oklab, var(--tone, var(--ink-3)) 10%, transparent); font-size: var(--fs-base); color: var(--ink); }
 .msg.ok { --tone: var(--vf); }

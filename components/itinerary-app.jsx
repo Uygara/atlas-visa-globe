@@ -445,7 +445,7 @@ function ItineraryApp() {
       <aside className="panel">
         <MobileSheetHandle />
         <header className="p-head" style={{ display: "block" }}>
-          <div className="p-head-title">{pt("title")}</div>
+          <h1 className="p-head-title">{pt("title")}</h1>
           <p className="p-head-sub">{pt("subtitle")}</p>
         </header>
         <PlPassports pps={pps} onPick={setMainPassport} />
@@ -616,7 +616,7 @@ function PlTrip({ state, trip, update, updTrip, expiry, setExpiry, bump }) {
 
       <label className="pl-label" htmlFor="pl-exp" style={{ marginTop: 14 }}>{pt("expiry")}</label>
       <div className="pl-line">
-        <input id="pl-exp" type="month" className="field" style={{ width: "auto" }} value={expiry} placeholder="YYYY-MM" onChange={(e) => setExpiry(e.target.value)} />
+        <ExpiryPicker id="pl-exp" value={expiry} onChange={setExpiry} />
         {expiry && <button type="button" className="btn btn-quiet pl-btn" onClick={() => setExpiry("")}>{pt("clear")}</button>}
       </div>
       <p className="p-hint">{pt("expiry_note")}</p>
@@ -1080,3 +1080,29 @@ function PlSignIn() {
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(<ItineraryApp />);
+
+// Passport expiry as month + year menus (the browser's month field shows "------- ----" until
+// filled, and Safari/Firefox render it as plain text). Value stays "YYYY-MM", or "" when unset.
+function ExpiryPicker({ id, value, onChange }) {
+  const [y0, m0] = (value || "").split("-");
+  const [y, setY] = React.useState(y0 || "");
+  const [m, setM] = React.useState(m0 || "");
+  React.useEffect(() => { const [a, b] = (value || "").split("-"); setY(a || ""); setM(b || ""); }, [value]);
+  const lang = window.ATLAS_LANG || "en";
+  const months = Array.from({ length: 12 }, (_, i) => new Date(2000, i, 1).toLocaleDateString(lang, { month: "long" }));
+  const now = new Date().getFullYear();
+  const years = Array.from({ length: 13 }, (_, i) => String(now + i));
+  const set = (ny, nm) => { setY(ny); setM(nm); if (ny && nm) onChange(ny + "-" + nm); else if (!ny && !nm) onChange(""); };
+  return (
+    <span className="pl-exp" style={{ display: "inline-flex", gap: 6 }}>
+      <select id={id} className="field" style={{ width: "auto" }} value={m} aria-label={tr("planner.exp_month", "Month")} onChange={(e) => set(y, e.target.value)}>
+        <option value="">{tr("planner.exp_month", "Month")}</option>
+        {months.map((n, i) => <option key={i} value={String(i + 1).padStart(2, "0")}>{n}</option>)}
+      </select>
+      <select className="field" style={{ width: "auto" }} value={y} aria-label={tr("planner.exp_year", "Year")} onChange={(e) => set(e.target.value, m)}>
+        <option value="">{tr("planner.exp_year", "Year")}</option>
+        {(y && !years.includes(y) ? [y, ...years] : years).map(v => <option key={v} value={v}>{v}</option>)}
+      </select>
+    </span>
+  );
+}

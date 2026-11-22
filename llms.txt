@@ -7,12 +7,18 @@
 
 Pages are available in English; many also have a Turkish twin under /tr/. The interface offers five more languages.
 
+## How to read the numbers
+- "Visa-free" means no visa at all: visa-free entry plus entry with a national ID card.
+- The headline number on passport pages ("destinations without a visa application") also counts visa on arrival and online travel authorisations (ESTA, eTA, ETIAS-type). eVisas are shown separately because they need an application.
+- Passports are ranked by that headline number; ties are broken by eVisa access. Full method: https://travelnow.info/guides/how-we-count/
+- Each page shows the date of its data. Turkish pages (/tr/) answer for Turkish citizens first.
+
 ## Main tools
 - [Visa globe](https://travelnow.info/): pick a passport and see the entry requirement for every destination.
 - [Travel planner](https://travelnow.info/itinerary/): saved trips with dated stops; for each stop the visa or travel authorisation the traveller's passports need, the allowed stay, costs and lead times where known, Schengen 90/180 days across all Schengen stops, airport transit rules, government advice and a checklist.
 - [Travel panel](https://travelnow.info/panel/): up to three passports and the countries a person follows, with their current visa status and recent rule changes on one screen.
 - [Transit map](https://travelnow.info/transit-map/): which airport hubs you can connect through without a transit visa for your passport.
-- [Safety map](https://travelnow.info/safety-map/): countries coloured by official U.S. and Canadian government travel advisories.
+- [Safety map](https://travelnow.info/safety-map/): countries coloured by the official UK, U.S. and Canadian government travel advisories (the strictest of the three).
 - [Schengen 90/180 calculator](https://travelnow.info/schengen-calculator/): days used and days left in the Schengen Area.
 - [Passport validity checker](https://travelnow.info/passport-validity/): per-destination rules on how long a passport must remain valid.
 

@@ -207,12 +207,12 @@ function SafetyMapApp() {
       <aside className="panel">
         <MobileSheetHandle />
         <header className="p-head" style={{ display: "block" }}>
-          <div className="p-head-title">
+          <h1 className="p-head-title">
             {tr("safety.title", "Travel safety map")}{" "}
             <span className="stamp is-small" style={{ "--st": "var(--foil)", verticalAlign: "middle", marginInlineStart: 6 }}>
               <span className="stamp-k" style={{ fontSize: 12 }}>{tr("safety.draft", "Beta")}</span>
             </span>
-          </div>
+          </h1>
           <p className="p-head-sub">{tr("safety.subtitle", "Official government travel advisories on one map.")}</p>
         </header>
 
@@ -317,7 +317,9 @@ function RecentlyUpdated({ onOpen }) {
               <span className="flag">{window.byIso2[r.iso2]?.flag}</span>
               <span>{window.countryName(r.iso2)}</span>
             </div>
-            <div className="feed-sum" dir="auto">{r.note}</div>
+            {/* The UK note is English and sometimes cut at the source: other languages get one plain line,
+                English gets the note ending on a whole word. */}
+            <div className="feed-sum" dir="auto">{(window.ATLAS_LANG || "en") === "en" ? wholeWords(r.note) : tr("safety.recent_uk", "UK travel advice for this country was updated. Open it for the details.")}</div>
           </button>
         ))}
       </div>
@@ -562,3 +564,11 @@ function SourceRow({ k, src }) {
 }
 
 ReactDOM.createRoot(document.getElementById("root")).render(<SafetyMapApp />);
+
+// "…drug-assisted robbery ('Warnings and i" → "…drug-assisted robbery…"
+function wholeWords(s) {
+  s = String(s || "").trim();
+  if (/[.!?)"'”’]$/.test(s)) return s;
+  const cut = s.replace(/\s+\S*$/, "").replace(/[\s,;:(\-–'"‘“]+$/, "");
+  return (cut || s) + "…";
+}

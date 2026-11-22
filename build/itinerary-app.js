@@ -872,7 +872,7 @@ function ItineraryApp() {
     style: {
       display: "block"
     }
-  }, React.createElement("div", {
+  }, React.createElement("h1", {
     className: "p-head-title"
   }, pt("title")), React.createElement("p", {
     className: "p-head-sub"
@@ -1276,18 +1276,10 @@ function PlTrip(_ref6) {
     }
   }, pt("expiry")), React.createElement("div", {
     className: "pl-line"
-  }, React.createElement("input", {
+  }, React.createElement(ExpiryPicker, {
     id: "pl-exp",
-    type: "month",
-    className: "field",
-    style: {
-      width: "auto"
-    },
     value: expiry,
-    placeholder: "YYYY-MM",
-    onChange: function onChange(e) {
-      return setExpiry(e.target.value);
-    }
+    onChange: setExpiry
   }), expiry && React.createElement("button", {
     type: "button",
     className: "btn btn-quiet pl-btn",
@@ -2185,3 +2177,89 @@ function PlSignIn() {
   }, pt("signin")));
 }
 ReactDOM.createRoot(document.getElementById("root")).render(React.createElement(ItineraryApp, null));
+function ExpiryPicker(_ref12) {
+  var id = _ref12.id,
+    value = _ref12.value,
+    onChange = _ref12.onChange;
+  var _split = (value || "").split("-"),
+    _split2 = _slicedToArray(_split, 2),
+    y0 = _split2[0],
+    m0 = _split2[1];
+  var _React$useState = React.useState(y0 || ""),
+    _React$useState2 = _slicedToArray(_React$useState, 2),
+    y = _React$useState2[0],
+    setY = _React$useState2[1];
+  var _React$useState3 = React.useState(m0 || ""),
+    _React$useState4 = _slicedToArray(_React$useState3, 2),
+    m = _React$useState4[0],
+    setM = _React$useState4[1];
+  React.useEffect(function () {
+    var _split3 = (value || "").split("-"),
+      _split4 = _slicedToArray(_split3, 2),
+      a = _split4[0],
+      b = _split4[1];
+    setY(a || "");
+    setM(b || "");
+  }, [value]);
+  var lang = window.ATLAS_LANG || "en";
+  var months = Array.from({
+    length: 12
+  }, function (_, i) {
+    return new Date(2000, i, 1).toLocaleDateString(lang, {
+      month: "long"
+    });
+  });
+  var now = new Date().getFullYear();
+  var years = Array.from({
+    length: 13
+  }, function (_, i) {
+    return String(now + i);
+  });
+  var set = function set(ny, nm) {
+    setY(ny);
+    setM(nm);
+    if (ny && nm) onChange(ny + "-" + nm);else if (!ny && !nm) onChange("");
+  };
+  return React.createElement("span", {
+    className: "pl-exp",
+    style: {
+      display: "inline-flex",
+      gap: 6
+    }
+  }, React.createElement("select", {
+    id: id,
+    className: "field",
+    style: {
+      width: "auto"
+    },
+    value: m,
+    "aria-label": tr("planner.exp_month", "Month"),
+    onChange: function onChange(e) {
+      return set(y, e.target.value);
+    }
+  }, React.createElement("option", {
+    value: ""
+  }, tr("planner.exp_month", "Month")), months.map(function (n, i) {
+    return React.createElement("option", {
+      key: i,
+      value: String(i + 1).padStart(2, "0")
+    }, n);
+  })), React.createElement("select", {
+    className: "field",
+    style: {
+      width: "auto"
+    },
+    value: y,
+    "aria-label": tr("planner.exp_year", "Year"),
+    onChange: function onChange(e) {
+      return set(e.target.value, m);
+    }
+  }, React.createElement("option", {
+    value: ""
+  }, tr("planner.exp_year", "Year")), (y && !years.includes(y) ? [y].concat(years) : years).map(function (v) {
+    return React.createElement("option", {
+      key: v,
+      value: v
+    }, v);
+  })));
+}

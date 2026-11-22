@@ -8,9 +8,9 @@
 
 module.exports = {
   "/": {
-    title: "travelnow.info: her pasaport için vize gereklilikleri",
-    description: "200'den fazla pasaport için etkileşimli vize küresi. Her gün Vikipedi'den yenilenir. Pasaportunla nerelere vizesiz, e-Vize veya varışta vizeyle gidebildiğini, nerelerde vize gerektiğini gör.",
-    ogDescription: "200'den fazla pasaportun vize gerekliliklerini etkileşimli bir küre üzerinde gör. Ücretsiz, her gün Vikipedi'den yenilenir.",
+    title: "Vizesiz ülkeler haritası: her pasaport için vize şartları · travelnow.info",
+    description: "Pasaportunu seç, hangi ülkeye vizesiz, kapıda vizeyle ya da e-Vize ile gidebileceğini haritada hemen gör. 200'den fazla pasaport, her gün güncellenen veri; ücretsiz, üyelik gerekmez.",
+    ogDescription: "Pasaportunla nereye vizesiz gidebilirsin? 200'den fazla pasaport, her gün güncellenen vize haritası. Ücretsiz.",
   },
   "/privacy/": {
     title: "Gizlilik politikası · travelnow.info",

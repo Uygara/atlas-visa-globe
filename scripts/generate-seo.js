@@ -51,6 +51,18 @@ const COUNTRIES  = DATA.COUNTRIES;
 // protocol REQUIRES absolute URLs — relative ones are ignored by Google.
 const SITE_URL   = process.env.SITE_URL || "https://travelnow.info";
 
+// Great-circle distance in km between two COUNTRIES entries (their lat/lon centroids).
+function kmBetween(a, b) {
+  const r = Math.PI / 180, dLat = (b.lat - a.lat) * r, dLon = (b.lon - a.lon) * r;
+  const h = Math.sin(dLat / 2) ** 2 + Math.cos(a.lat * r) * Math.cos(b.lat * r) * Math.sin(dLon / 2) ** 2;
+  return 12742 * Math.asin(Math.sqrt(h));
+}
+// The n nearest countries (not alphabetical: Japan's neighbours are Korea and Taiwan, not Afghanistan).
+function nearest(c, n, keep = () => true) {
+  return COUNTRIES.filter(x => x.iso2 !== c.iso2 && x.continent !== "AN" && keep(x) && isFinite(x.lat) && isFinite(x.lon))
+    .map(x => [x, kmBetween(c, x)]).sort((p, q) => p[1] - q[1]).slice(0, n).map(p => p[0]);
+}
+
 const STATUS_ORDER = ["idc", "vf", "eta", "ev", "voa", "vr", "ban"];
 
 // A curated set of high-interest destinations used to write the "notable"
@@ -83,11 +95,12 @@ const LOC = {
     join: (a) => a.length <= 1 ? (a[0] || "") : a.length === 2 ? `${a[0]} and ${a[1]}` : `${a.slice(0, -1).join(", ")}, and ${a[a.length - 1]}`,
     upTo: (n) => `up to ${n} days`,
     crumbs: (name) => ({ home: "travelnow.info", passports: "Passports", here: name }),
-    title: (name, mob) => `${name} passport visa-free countries 2026: ${mob} destinations without a visa`,
-    description: (name, c, rank) => `Where can a ${name} passport take you? ${c.vf} visa-free, ${c.voa} visa on arrival, ${c.ev} eVisa, ${c.vr} visa required. Global rank #${rank}. Updated daily.`,
+    // "Visa-free" counts only entries with no visa at all (visa-free + ID card); visa on arrival is named apart.
+    title: (name, c) => `${name} passport visa-free countries 2026: ${(c.vf || 0) + (c.idc || 0)} visa-free${c.voa ? ` + ${c.voa} visa on arrival` : ""}`,
+    description: (name, c, rank) => `A ${name} passport gets you into ${(c.vf || 0) + (c.idc || 0)} countries visa-free in 2026${c.idc ? ` (${c.idc} with just an ID card)` : ""}; ${[c.voa ? `${c.voa} more give a visa on arrival` : "", c.eta ? `${c.eta} need a short online permit` : "", c.ev ? `${c.ev} an eVisa` : ""].filter(Boolean).join(", ") || "no others are open without a visa"}. World rank #${rank}, updated daily.`,
     h1: (name) => `${name} passport: visa-free countries and visa requirements`,
     idLine: (name, rank) => `${name} passport${rank ? ` · world rank ${rank}` : ""}`,
-    metaLine: (n, date) => `${n} destinations · Updated ${date} · Source: Wikipedia`,
+    metaLine: (n, date) => `${n} destinations · Updated ${date} · Public visa-policy records, checked against official sources`,
     relatedLinks: "Related",
     feedShort: "Follow changes (RSS)",
     panelAdd: "Add to my panel",
@@ -190,11 +203,11 @@ const LOC = {
     join: (a) => a.length <= 1 ? (a[0] || "") : `${a.slice(0, -1).join(", ")} ve ${a[a.length - 1]}`,
     upTo: (n) => `${n} güne kadar`,
     crumbs: (name) => ({ home: "travelnow.info", passports: "Pasaportlar", here: name }),
-    title: (name, mob) => `${name} pasaportu ile vizesiz gidilen ülkeler 2026: ${mob} ülke`,
-    description: (name, c, rank) => `${name} pasaportuyla nereye gidebilirsin? ${c.vf} vizesiz, ${c.voa} varışta vize, ${c.ev} e-Vize, ${c.vr} vize gerekli. Dünya sıralaması ${rank}. Her gün güncellenir.`,
+    title: (name, c) => `${name} pasaportu ile vizesiz gidilen ülkeler 2026: ${(c.vf || 0) + (c.idc || 0)} ülke${c.voa ? ` + ${c.voa} kapıda vize` : ""}`,
+    description: (name, c, rank) => `${name} pasaportuyla 2026'da ${(c.vf || 0) + (c.idc || 0)} ülkeye vizesiz gidebilirsin${c.idc ? ` (${c.idc} ülkeye kimlik kartıyla)` : ""}; ${[c.voa ? `${c.voa} ülkede vize kapıda verilir` : "", c.eta ? `${c.eta} ülke kısa bir çevrimiçi izin ister` : "", c.ev ? `${c.ev} ülke e-Vize ister` : ""].filter(Boolean).join(", ") || "diğer ülkeler önceden vize ister"}. Dünya sıralamasında ${rank}., liste her gün güncellenir.`,
     h1: (name) => `${name} pasaportu ile vizesiz gidilen ülkeler`,
     idLine: (name, rank) => `${name} pasaportu${rank ? ` · dünya sıralaması ${rank}` : ""}`,
-    metaLine: (n, date) => `${n} destinasyon · Güncelleme ${date} · Kaynak: Wikipedia`,
+    metaLine: (n, date) => `${n} ülke · Güncelleme ${date} · Kamuya açık vize kayıtları, resmî kaynaklarla kontrol edilir`,
     relatedLinks: "İlgili",
     feedShort: "Değişiklikleri takip et (RSS)",
     panelAdd: "Panelime ekle",
@@ -413,7 +426,7 @@ function renderPage(passport, allPassports, ranks, lang, ads) {
 
   const { proseHtml, faqHtml, faqSchema, mob, acc, rank } = buildProse(L, passport, name, rows, counts, ranks, lang);
   const total = rows.length;
-  const titleText = L.title(name, mob);
+  const titleText = L.title(name, counts);
   const description = L.description(name, counts, rank || "?");
   // The passport's own social card (scripts/og-cards.js); the generic one until it exists.
   const ogCard = fs.existsSync(path.join(ROOT, "assets", "og", `${slug}-${lang}.png`));
@@ -446,7 +459,7 @@ function renderPage(passport, allPassports, ranks, lang, ads) {
   }).join("");
 
   // Related passports: same region + high-traffic anchors.
-  const sameRegion = COUNTRIES.filter(c => c.continent === country.continent && c.iso2 !== passport && SNAPSHOT[c.iso2]).slice(0, 6).map(c => c.iso2);
+  const sameRegion = nearest(country, 6, c => !!SNAPSHOT[c.iso2]).map(c => c.iso2);
   const anchors = ["US", "GB", "DE", "JP"].filter(iso => iso !== passport && SNAPSHOT[iso]);
   const related = Array.from(new Set([...sameRegion, ...anchors])).slice(0, 10);
   const otherPassports = related.map(iso => {
@@ -577,7 +590,8 @@ const FAQ_NATIONALITIES = ["US", "GB", "IN", "CN", "DE", "CA", "AU", "TR"];
 const VLOC = {
   en: {
     crumb: "Visa requirements",
-    title: (name, month) => `${name} visa requirements by nationality (${month}) · travelnow.info`,
+    title: (name, month, g) => `${name} visa requirements (${month}): ${({ free: "visa-free for most passports", voa: "visa on arrival for most", eta: "online authorization for most", ev: "eVisa for most passports", vr: "most passports need a visa" })[g]}`,
+    answerLead: (k, n, the, g) => ({ free: `${k} of ${n} passports can enter ${the} visa-free`, voa: `${k} of ${n} passports get a visa on arrival in ${the}`, eta: `${k} of ${n} passports need only an online travel authorization for ${the}`, ev: `${k} of ${n} passports need an eVisa for ${the}, applied for online`, vr: `${k} of ${n} passports must apply for a visa before travelling to ${the}` })[g],
     h1: (name) => `${name} visa requirements`,
     subtitle: (n, date) => `${n} passports compared. Updated ${date}.`,
     parts: {
@@ -586,7 +600,7 @@ const VLOC = {
       voa: (n) => `${n} with a visa on arrival`, vr: (n) => `${n} needing a visa in advance`,
       ban: (n) => `${n} refused entry`,
     },
-    description: (the, parts) => `Who needs a visa for ${the}: ${LOC.en.join(parts)}. Check your passport, the passport-validity rule and the current travel advisory. Updated daily.`,
+    description: (lead, rest) => `${lead}${rest.length ? `; ${LOC.en.join(rest)}` : ""}. Pick your passport for your rule, how long you can stay, passport validity and travel advice. Updated daily.`,
     lead: (the, n, parts) => `We compare ${n} passports for entry to ${the}: ${LOC.en.join(parts)}. Choose yours below to see the rule for your nationality.`,
     phrase: {
       idc: "no visa needed, a national ID card is enough", vf: "visa-free",
@@ -635,7 +649,7 @@ const VLOC = {
       ban: (n, the) => `No. Entry to ${the} is currently not allowed for citizens of ${n}.`,
     },
     passportLink: (name) => `Travelling on a ${name} passport? See where it takes you`,
-    relatedHead: "Other destinations in the same region",
+    relatedHead: "Nearby destinations",
     browseAll: (n, href) => `Or <a href="${href}">browse all ${n} destinations</a>.`,
     dirTitle: (y) => `Visa requirements by destination country ${y} · travelnow.info`,
     dirDesc: (n) => `Who needs a visa to enter ${n} countries and territories, by nationality. Updated daily from public visa-policy sources.`,
@@ -646,7 +660,11 @@ const VLOC = {
 
   tr: {
     crumb: "Vize şartları",
-    title: (name, month) => `${name} vizesi: hangi pasaporta vize gerekir? (${month}) · travelnow.info`,
+    // Turkish readers mostly ask about their own passport: the title answers that question.
+    title: (name, month, g, dest) => dest === "TR" ? `${name} vizesi: hangi pasaporta vize gerekir? (${month})` : `${name} vizesi Türk vatandaşlarına gerekli mi? (${month})`,
+    answerLead: (k, n, the, g) => ({ free: `${k} tanesi vizesiz girebiliyor`, voa: `${k} tanesine vize varışta veriliyor`, eta: `${k} tanesi yalnızca çevrimiçi seyahat izniyle girebiliyor`, ev: `${k} tanesi için e-Vize gerekiyor`, vr: `${k} tanesi için önceden vize gerekiyor` })[g],
+    trLine: (name, phrase, days) => `Türk vatandaşları için ${name}: ${phrase}${days}.`,
+    trAnswerHead: "Türk vatandaşları:", trAnswerLink: "Türkiye pasaportuyla gidilebilen tüm ülkeler",
     h1: (name) => `${name} vize şartları`,
     subtitle: (n, date) => `${n} pasaport karşılaştırıldı. Güncelleme ${date}.`,
     parts: {
@@ -655,7 +673,7 @@ const VLOC = {
       voa: (n) => `${n} varışta vizeyle`, vr: (n) => `${n} önceden vizeyle`,
       ban: (n) => `${n} girişe kapalı`,
     },
-    description: (name, n, parts) => `${name} vizesi kimlere gerekiyor? Takip ettiğimiz ${n} pasaport içinde: ${LOC.tr.join(parts)}. Pasaportunu, geçerlilik kuralını ve güncel seyahat uyarısını kontrol et. Her gün güncellenir.`,
+    description: (trLine, n, lead, rest) => `${trLine ? trLine + " " : ""}Takip ettiğimiz ${n} pasaporttan ${lead}${rest.length ? `; diğerleri: ${LOC.tr.join(rest)}` : ""}. Her gün güncellenir.`,
     lead: (name, n, parts) => `${name} için ${n} pasaportun giriş şartını karşılaştırıyoruz: ${LOC.tr.join(parts)}. Kendi uyruğunun kuralını görmek için pasaportunu aşağıdan seç.`,
     phrase: {
       idc: "vize gerekmez, ulusal kimlik kartı yeterli", vf: "vizesiz",
@@ -704,7 +722,7 @@ const VLOC = {
       ban: (n, d) => `Hayır. ${n} pasaportu sahipleri için ${d} girişi şu anda kapalı.`,
     },
     passportLink: (name) => `${name} pasaportuyla mı seyahat edeceksin? Nereye gidebildiğine bak`,
-    relatedHead: "Aynı bölgedeki diğer destinasyonlar",
+    relatedHead: "Yakındaki ülkeler",
     browseAll: (n, href) => `Ya da <a href="${href}">tüm ${n} destinasyona göz at</a>.`,
     dirTitle: (y) => `Ülkeye göre vize şartları ${y} · travelnow.info`,
     dirDesc: (n) => `${n} ülke ve bölgeye girmek için hangi uyruğa vize gerektiğini gör. Her gün kamuya açık vize politikası kaynaklarından güncellenir.`,
@@ -753,8 +771,16 @@ function renderDestPage(destCountry, allPassports, lang, ads) {
   const partsAll = present.map(s => V.parts[s](counts[s]));
   const descOrder = ["vf", "voa", "ev", "vr", "eta", "idc", "ban"].filter(s => counts[s] > 0).slice(0, 4);
   const partsDesc = descOrder.map(s => V.parts[s](counts[s]));
-  const titleText = V.title(label, month);
-  const description = lang === "tr" ? V.description(label, n, partsDesc) : V.description(the, partsDesc);
+  // The answer first: which way most passports get in, then the rest.
+  const entryGroups = { free: counts.vf + counts.idc, voa: counts.voa, eta: counts.eta, ev: counts.ev, vr: counts.vr };
+  const dom = Object.keys(entryGroups).sort((a, b) => entryGroups[b] - entryGroups[a])[0];
+  const domStatuses = dom === "free" ? ["vf", "idc"] : [dom];
+  const restParts = ["vf", "idc", "voa", "eta", "ev", "vr", "ban"].filter(s => counts[s] > 0 && !domStatuses.includes(s)).slice(0, 3).map(s => V.parts[s](counts[s]));
+  const lead = V.answerLead(entryGroups[dom], n, the, dom);
+  const trRow = lang === "tr" && dest !== "TR" ? rows.find(r => r.iso === "TR") || null : null;
+  const trLine = trRow ? V.trLine(label, V.phrase[trRow.status], trRow.days ? V.days(trRow.days) : "") : "";
+  const titleText = V.title(label, month, dom, dest);
+  const description = lang === "tr" ? V.description(trLine, n, lead, restParts) : V.description(lead, restParts);
   const pName = (iso) => passportName(iso, lang);
   const ppHref = (iso) => P(`/passport/${iso.toLowerCase()}/`);
 
@@ -838,14 +864,15 @@ function renderDestPage(destCountry, allPassports, lang, ads) {
   const iv = (DATA.AFFILIATES || []).find(a => a.id === "ivisa" && a.url);
   const needVisa = (counts.ev || 0) + (counts.vr || 0) + (counts.voa || 0);
   const ivisaHtml = iv && needVisa
-    ? `<section class="card aff"><p class="ad-label">${escapeHtml(V.affNote)}</p><h2>${escapeHtml(V.affHead)}</h2><p>${escapeHtml(V.affBody(the))}</p>` +
+    ? `<section class="card aff" id="aff-box"><p class="ad-label">${escapeHtml(V.affNote)}</p><h2>${escapeHtml(V.affHead)}</h2><p>${escapeHtml(V.affBody(the))}</p>` +
       `<p class="cta-row"><a class="primary" href="${escapeHtml(iv.url)}" target="_blank" rel="sponsored noopener noreferrer" ` +
       `onclick="window.gtag&&gtag('event','affiliate_click',{partner:'ivisa',destination:'${dest}',placement:'visa_page'})">${escapeHtml(V.affBtn)}</a></p>` +
       `</section>`
     : "";
 
   // ── FAQ: answered from the resolved status only ──
-  const faqs = FAQ_NATIONALITIES.filter(iso => iso !== dest && SNAPSHOT[iso]).slice(0, 8).map(iso => {
+  const faqOrder = lang === "tr" ? ["TR", ...FAQ_NATIONALITIES.filter(x => x !== "TR")] : FAQ_NATIONALITIES;
+  const faqs = faqOrder.filter(iso => iso !== dest && SNAPSHOT[iso]).slice(0, 8).map(iso => {
     const r = rows.find(x => x.iso === iso);
     const nm = lang === "tr" ? pName(iso) : theEn(iso, pName(iso));
     const fn = V.faqA[r.status];
@@ -866,7 +893,7 @@ function renderDestPage(destCountry, allPassports, lang, ads) {
   };
 
   // Related destinations: same continent, plus the way back to the passport page.
-  const sameRegion = COUNTRIES.filter(c => c.continent === destCountry.continent && c.iso2 !== dest).slice(0, 8);
+  const sameRegion = nearest(destCountry, 9);
   const related = sameRegion.map(c => `<li><a href="../${c.iso2.toLowerCase()}/"><span class="flag">${c.flag}</span> ${escapeHtml(cn(c.iso2, lang))}</a></li>`).join("");
   const passportCta = SNAPSHOT[dest]
     ? `<p class="cta-row"><a class="primary" href="${ppHref(dest)}">${escapeHtml(V.passportLink(passportName(dest, lang)))}</a></p>`
@@ -907,7 +934,7 @@ ${ads.loader}
 })}</script>
 <script type="application/ld+json">${JSON.stringify(faqSchema)}</script>
 ${headAssets({ enPath, lang })}
-<style>.wrap{max-width:820px}.checker{padding:20px 22px}.checker label{display:block;font-weight:650;margin-bottom:10px}.checker select{width:100%;max-width:420px}.chk-out{margin:12px 0 0;font-size:var(--fs-lg)}.chk-map{margin:14px 0 0}details.vl{margin:0 0 10px}details.vl .n{margin-inline-start:8px;font-family:var(--font-mono);font-size:var(--fs-xs);font-weight:500;color:var(--ink-3)}.before ul{padding-inline-start:20px}.before li{margin:0 0 10px;max-width:var(--measure)}.before .fees{columns:2 220px;margin:6px 0 0}.before .fees li{margin:0 0 4px}.aff p{max-width:var(--measure)}.aff .ad-label{margin:8px 0 0;font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--ink-3)}</style>
+<style>.wrap{max-width:820px}.checker{padding:20px 22px}.checker label{display:block;font-weight:650;margin-bottom:10px}.checker select{width:100%;max-width:420px}.chk-out{margin:12px 0 0;font-size:var(--fs-lg)}.chk-map{margin:14px 0 0}details.vl{margin:0 0 10px}details.vl .n{margin-inline-start:8px;font-family:var(--font-mono);font-size:var(--fs-xs);font-weight:500;color:var(--ink-3)}.before ul{padding-inline-start:20px}.before li{margin:0 0 10px;max-width:var(--measure)}.before .fees{columns:2 220px;margin:6px 0 0}.before .fees li{margin:0 0 4px}.aff p{max-width:var(--measure)}.aff .ad-label{margin:8px 0 0;font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--ink-3)}.tr-answer{margin:2px 0 14px;font-size:var(--fs-md)}</style>
 </head>
 <body>
 ${masthead({ path: enPath, i18n: false, lang })}
@@ -916,7 +943,7 @@ ${masthead({ path: enPath, i18n: false, lang })}
 
   <h1><span class="flag" aria-hidden="true">${destCountry.flag}</span> ${escapeHtml(V.h1(label))}</h1>
   <p class="subtitle">${escapeHtml(V.subtitle(n, fmtDate(snap, lang)))}</p>
-
+${trRow ? `  <p class="tr-answer"><strong>${escapeHtml(V.trAnswerHead)}</strong> ${escapeHtml(V.phrase[trRow.status] + (trRow.days ? V.days(trRow.days) : ""))}. <a href="/tr/passport/tr/">${escapeHtml(V.trAnswerLink)}</a></p>\n` : ""}
   <section class="card checker" aria-label="${escapeHtml(V.checkHead)}">
     <label for="chk-sel">${escapeHtml(V.checkHead)}</label>
     <select id="chk-sel"><option value="">${escapeHtml(V.choose)}</option>${options}</select>
@@ -925,14 +952,17 @@ ${masthead({ path: enPath, i18n: false, lang })}
   </section>
   <script type="application/json" id="chk-data">${chkJson}</script>
   <script>(function(){var d=JSON.parse(document.getElementById("chk-data").textContent),sel=document.getElementById("chk-sel"),out=document.getElementById("chk-out"),map=document.getElementById("chk-map");
-sel.addEventListener("change",function(){var v=sel.value;if(!v||!d.p[v]){out.hidden=true;out.textContent="";map.href=d.mapBase;return}
+sel.addEventListener("change",function(){var v=sel.value;if(!v||!d.p[v]){out.hidden=true;out.textContent="";map.href=d.mapBase;var ab0=document.getElementById("aff-box");if(ab0)ab0.hidden=false;return}
 var e=d.p[v],nm=sel.options[sel.selectedIndex].text,t=d.who.replace("{name}",nm)+": "+d.ph[e[0]]+(e[1]?d.days.replace("{n}",e[1]):"")+". ";
+var ab=document.getElementById("aff-box");if(ab)ab.hidden=!/^(ev|vr|eta)$/.test(e[0]);
 out.textContent=t;var a=document.createElement("a");a.href=d.pp+v.toLowerCase()+"/";a.textContent=d.more;out.appendChild(a);out.hidden=false;map.href=d.mapBase+"?p="+v});
 // Answer straight away for a passport we already know: ?p=XX in the link, else the one chosen on the map
 // (atlas.passport, read only; this page never writes it). The select stays editable.
 (function(){var v="";try{v=(new URLSearchParams(location.search).get("p")||"").toUpperCase()}catch(x){}
 if(!d.p[v]){try{var s=localStorage.getItem("atlas.passport")||"";try{s=JSON.parse(s)}catch(y){}v=String(s||"").toUpperCase()}catch(x){v=""}}
 if(d.p[v]){sel.value=v;sel.dispatchEvent(new Event("change"))}})();
+// The sponsored box comes later in the page: decide its visibility again once it exists.
+document.addEventListener("DOMContentLoaded",function(){if(sel.value)sel.dispatchEvent(new Event("change"))});
 function openHash(){var h=location.hash.slice(1),el=h&&document.getElementById(h);if(el&&el.tagName==="DETAILS")el.open=true}
 openHash();window.addEventListener("hashchange",openHash);
 Array.prototype.forEach.call(document.querySelectorAll(".lg-row"),function(a){a.addEventListener("click",function(){var el=document.getElementById(a.getAttribute("href").slice(1));if(el)el.open=true})})})();</script>

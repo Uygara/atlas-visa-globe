@@ -16,6 +16,7 @@ window.DIGITAL_NOMAD_VISAS_TR = {
   "1 yr (then up to 4 yr permit)": "1 yıl (ardından 4 yıla kadar izin)",
   "9 mo (then perm residency)": "9 ay (ardından daimi oturum)",
   "6-12 mo": "6-12 ay",
+  "Up to 18 months": "18 aya kadar",
   "3 yr": "3 yıl",
   "1-3 yr": "1-3 yıl",
   "5 yr (180-day stays)": "5 yıl (180 günlük kalışlar)",
