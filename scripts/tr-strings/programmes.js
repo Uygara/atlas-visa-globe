@@ -14,7 +14,7 @@ module.exports = {
   "c2db187a": `3 yıl`,
   "7d52c08f": `Resmî ETIAS portalını aç: <a href="https://travel-europe.europa.eu/etias_en" target="_blank" rel="noopener">travel-europe.europa.eu/etias_en</a>. Dolandırıcı sitelere dikkat: yalnızca .europa.eu alan adını kullan.`,
   "afb718e2": `Yanlış bir şey mi gördün? <a href="https://github.com/Uygara/atlas-visa-globe/issues" rel="noopener">github.com/Uygara/atlas-visa-globe</a> adresinde bir konu (issue) aç.`,
-  "5eea8021": `22 Mayıs 2026'da gözden geçirildi. Kaynaklar her satırda bağlantılı.`,
+  "a86cfb60": `22 Mayıs 2026'da gözden geçirildi; Portekiz, İspanya, Hırvatistan ve Malta Kasım 2026'da yeniden kontrol edildi. Kaynaklar her satırda bağlantılı.`,
   "c7da83e0": `<strong>ETIAS</strong> (Avrupa Seyahat Bilgi ve İzin Sistemi), vizeden muaf yolcuların 30 Avrupa ülkesinde (29 Schengen ülkesi ve Kıbrıs Cumhuriyeti) kısa kalışlar için alması gereken çevrimiçi bir seyahat izni olacak. Henüz uygulanmıyor ve AB bir başlangıç tarihi açıklamadı; tarihi birkaç ay önceden duyuracağını söylüyor. Başladığında ücreti 20 € olacak ve izin üç yıl ya da pasaportun bitimine kadar geçerli olacak.`,
   "e0b6fa0d": `<a href="https://travel-europe.europa.eu/etias_en" target="_blank" rel="noopener">Resmî AB ETIAS sitesiyle</a> 21 Kasım 2026'da karşılaştırıldı.`,
   "0b3e8912": `4 gün`,

@@ -1,7 +1,7 @@
 // Curated digital-nomad-visa programs. Sources are official immigration
 // portals (linked in `source`). Income figures are converted to USD/month
 // at posting time and rounded. Values become stale — re-check before
-// publishing changes. Last reviewed: 2026-05-22; 2026-11-21: dead programmes removed (Georgia, Seychelles, Dubai), Croatia and Malta re-read.
+// publishing changes. Last reviewed: 2026-05-22; 2026-11-21: dead programmes removed (Georgia, Seychelles, Dubai), Croatia and Malta re-read; 2026-11-22: Portugal (4x the 2026 minimum wage, EUR 920, Decreto-Lei 139/2025) and Spain (200% of the 2026 SMI, EUR 1,221 x 14 / 12, Real Decreto 126/2026) income updated.
 //
 // Schema:
 //   iso2         — ISO 3166-1 alpha-2
@@ -19,11 +19,11 @@
 window.DIGITAL_NOMAD_VISAS = [
   // ── Europe ─────────────────────────────────────────────────────────────
   { iso2: "PT", name: "Portugal", program: "D8 Digital Nomad Visa",
-    income: 3480, fee: "180", duration: "1 yr (residence permit then up to 5 yr)", renewable: true,
+    income: 3680, fee: "180", duration: "1 yr (residence permit then up to 5 yr)", renewable: true,
     familyOK: true, taxBreak: "NHR 20% for 10 yr (closed to new applicants 2024)",
     source: "https://aima.gov.pt/", notes: "Renewals require Portugal residency proof." },
   { iso2: "ES", name: "Spain", program: "Visa para teletrabajadores de carácter internacional",
-    income: 2762, fee: "73", duration: "1 yr (then residence card up to 5 yr)", renewable: true,
+    income: 2849, fee: "73", duration: "1 yr (then residence card up to 5 yr)", renewable: true,
     familyOK: true, taxBreak: "Beckham regime: 24% flat for 5 yr (foreign-source exempt)",
     source: "https://www.exteriores.gob.es/", notes: "Must work for non-Spanish employer or freelance clients." },
   { iso2: "EE", name: "Estonia", program: "Digital Nomad Visa (Type D)",

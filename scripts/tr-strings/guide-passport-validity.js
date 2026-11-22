@@ -32,4 +32,5 @@ module.exports = {
   "fcbc77ac": `<a href="/passport-validity/">Pasaport geçerlilik kontrolü</a>: her varış noktası için gereken aylar.`,
   "1812ee02": `<a href="/">Etkileşimli küre</a>: pasaportunu seç ve tam giriş ayrıntısı için bir ülkeye dokun.`,
   "26a5b443": `<a href="/guides/visa-types-explained/">Vize türleri açıklandı</a>: geçerliliğin daha geniş giriş kurallarına nasıl oturduğu.`,
+  "4b2c8c63": `Güncelleme: 17 Haziran 2026. Yaklaşık 5 dakikalık okuma.`,
 };

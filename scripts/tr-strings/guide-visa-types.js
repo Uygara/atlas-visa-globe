@@ -13,7 +13,7 @@ module.exports = {
   "d8e18b96": `Girişe izin verilmiyor`,
   "9f93a231": `Varış ülkesi bu uyruğu hiç kabul etmiyor ya da kendi hükûmetin seyahati yasaklıyor. Nadir, ama gerçek, ve hiçbir evrak bunu değiştirmez.`,
   "a337fee4": `Rezervasyondan önce bu ayrım neden önemli`,
-  "58d02f35": `En sık yapılan tek hata, “vizesiz” ile “evraksız”ı aynı şey saymaktır. Vizesiz varış noktalarının giderek artan bir kısmı artık önce elektronik bir seyahat izni istiyor: Amerika Birleşik Devletleri (ESTA), Kanada (eTA), Güney Kore (K-ETA) ve 2026'dan itibaren tüm Schengen Bölgesi (ETIAS). “Vizeye ihtiyacım yok” diye düşünen yolcular kaydı atlıyor ve check-in'de geri çevriliyor. Bunu uygulayan varış ülkesi değil, havayolu, ve bilet ücretini iade etmiyorlar.`,
+  "3d5ee9b5": `En sık yapılan tek hata, “vizesiz” ile “evraksız”ı aynı şey saymaktır. Vizesiz gidilen ülkelerin giderek artan bir kısmı artık önce elektronik bir seyahat izni istiyor: Amerika Birleşik Devletleri (ESTA), Kanada (eTA), Güney Kore (K-ETA), Birleşik Krallık (ETA) ve başladığında Schengen Bölgesi (ETIAS). “Vizeye ihtiyacım yok” diye düşünen yolcular kaydı atlıyor ve check-in'de geri çevriliyor. Bunu uygulayan varış ülkesi değil, havayolu, ve bilet ücretini iade etmiyorlar.`,
   "9752b3ba": `İkinci hata, e-Vize'yi son ana bırakmaktır. Çoğu e-Vize hızlı verilir, ama “çoğu” “hepsi” demek değildir: Hindistan, Rusya ve bazı Afrika sistemleri bir hafta veya daha uzun sürebilir; varış ülkesindeki bir resmî tatil de kuyruğu durdurabilir. Harita seyahatin için e-Vize gösteriyorsa, tarihlerin kesinleştiği anda başvur.`,
   "91f4df4f": `<strong>Pratik kural:</strong> vizesiz ve varışta vize için önceden bir işlem gerekmez (varsa ETA dışında), e-Vize birkaç gün, “vize gerekli” ise birkaç hafta ister. Rezervasyon takvimini rotandaki en yavaş kategoriye göre ayarla.`,
   "ff0b425c": `Giriş yöntemi işleri nasıl değiştirir`,
@@ -30,4 +30,5 @@ module.exports = {
   "7baa805f": `Eksiksiz vize gereklilikleri dökümü ve küresel sıralama için <a href="/passport/">tüm pasaportlara göz at</a>.`,
   "e7cdae58": `<a href="/esta-rules/">ESTA kontrolü</a>`,
   "12c6085e": `<a href="/etias/">ETIAS kontrolü</a>`,
+  "6d616946": `Güncelleme: 22 Kasım 2026. Yaklaşık 6 dakikalık okuma.`,
 };
