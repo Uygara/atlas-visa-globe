@@ -164,9 +164,10 @@ const LOC = {
     dirTitle: (y) => `Passport visa requirements directory ${y} · travelnow.info`,
     dirDesc: (n) => `Browse visa requirements and the global mobility ranking for ${n} passports. Updated daily from public visa-policy sources.`,
     dirH1: "Passport visa-requirement directory",
-    dirIntro: `Every passport we track, ranked by ${strong("global mobility")}: the number of destinations you can enter without applying for a visa (visa-free, ID card, travel authorization or visa on arrival), ties broken by eVisa access. It is the same ranking the interactive map shows. Open any passport for a full country breakdown, regional analysis and FAQ. Figures are rebuilt every 24 hours. New here? Start with our <a href="%TYPES%">guide to visa types</a>.`,
+    dirIntro: `Passports ranked by how many countries you can enter without applying for a visa in advance: visa-free, with an ID card, with a travel authorization or with a visa on arrival. When two passports tie, the one with more eVisa countries ranks higher. The map uses the same ranking. Open a passport to see every country. <a href="%TYPES%">How we count</a>`,
     dirMeta: (n, date) => `${n} passports. Data refreshed ${date}.`,
     dirItem: (mob, rank) => `${mob} without a visa, rank #${rank}`,
+    dirColRank: "Rank", dirColName: "Passport", dirColCount: "Countries without a visa application",
     // Passport page: pointer to the inbound-visa page of the same country.
     toVisa: (name) => `Entry rules for ${theEn(name.iso, name.label)}`,
   },
@@ -266,9 +267,10 @@ const LOC = {
     dirTitle: (y) => `Pasaport vize şartları rehberi ${y} · travelnow.info`,
     dirDesc: (n) => `${n} pasaportun vize şartlarına ve küresel hareketlilik sıralamasına göz at. Her gün kamuya açık vize politikası kaynaklarından güncellenir.`,
     dirH1: "Pasaport vize şartları rehberi",
-    dirIntro: `Takip ettiğimiz her pasaport, ${strong("küresel hareketlilik")}e göre sıralı: yani vize başvurusu yapmadan girilebilen destinasyon sayısı (vizesiz, kimlikle, seyahat iziniyle ya da varışta vizeyle); eşitlikte e-Vize erişimi belirleyici. Etkileşimli haritadaki sıralamayla aynıdır. Ülke dökümü, bölgesel analiz ve sık sorulan sorular için herhangi bir pasaportu aç. Rakamlar her 24 saatte bir yenilenir. Yeni misin? <a href="%TYPES%">Vize türleri rehberimizle</a> başla.`,
+    dirIntro: `Pasaportları, önceden vize başvurusu yapmadan girilebilen ülke sayısına göre sıraladık: vizesiz, kimlikle, seyahat izniyle ya da varışta vizeyle girilen ülkeler. İki pasaport eşitse e-Vize ile gidilebilen ülkesi fazla olan öne geçer. Haritadaki sıralama da aynıdır. Bütün ülkeleri görmek için bir pasaporta dokun. <a href="%TYPES%">Nasıl sayıyoruz?</a>`,
     dirMeta: (n, date) => `${n} pasaport. Veri yenilenme tarihi ${date}.`,
     dirItem: (mob, rank) => `vizesiz ${mob}, ${rank}. sırada`,
+    dirColRank: "Sıra", dirColName: "Pasaport", dirColCount: "Vize başvurusu gerekmeyen ülke",
     toVisa: (name) => `${name.label} giriş kuralları`,
   },
 };
@@ -1003,10 +1005,10 @@ function renderIndex(allPassports, ranks, lang) {
     const c = COUNTRIES.find(x => x.iso2 === iso);
     if (!c || !SNAPSHOT[iso]) return "";
     const ri = ranks.get(iso);
-    return `<li><a href="${iso.toLowerCase()}/"><span class="flag">${c.flag}</span> <strong>${escapeHtml(passportName(iso, lang))}</strong></a> <span class="vf-count">${escapeHtml(L.dirItem(ri ? ri.mobility : "?", ri ? ri.rank : "?"))}</span></li>`;
+    return `<li><span class="rk">${ri ? ri.rank : "?"}</span><a href="${iso.toLowerCase()}/"><span class="flag">${c.flag}</span> ${escapeHtml(passportName(iso, lang))}</a><span class="ct">${ri ? ri.mobility : "?"}</span></li>`;
   }).join("");
   const date = new Date().toISOString().slice(0, 10);
-  const types = lang === "tr" ? "/tr/guides/visa-types-explained/" : "/guides/visa-types-explained/";
+  const types = lang === "tr" ? "/tr/guides/how-we-count/" : "/guides/how-we-count/";
 
   return `<!DOCTYPE html>
 <html lang="${lang}"${lang === "tr" ? ' data-page-lang="tr"' : ""}>
@@ -1028,7 +1030,8 @@ ${masthead({ path: enPath, i18n: false, lang })}
   <h1>${escapeHtml(L.dirH1)}</h1>
   <p class="intro">${L.dirIntro.replace("%TYPES%", types)}</p>
   <p style="font-size:13px;color:var(--fg-mute);">${escapeHtml(L.dirMeta(allPassports.length, fmtDate(date, lang)))}</p>
-  <ul class="dir">${items}</ul>
+  <div class="rank-head" aria-hidden="true"><span>${escapeHtml(L.dirColRank)}</span><span>${escapeHtml(L.dirColName)}</span><span>${escapeHtml(L.dirColCount)}</span></div>
+  <ol class="rank-list">${items}</ol>
 </div>
 ${footer({ lang })}
 </body>
