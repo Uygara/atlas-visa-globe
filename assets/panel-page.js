@@ -35,7 +35,6 @@
     "Your passport": "Senin pasaportun",
     "No data": "Veri yok",
     "Data updated {date}.": "Veriler {date} tarihinde güncellendi.",
-    "Source: Wikipedia visa requirement articles, daily snapshot": "Kaynak: Wikipedia vize koşulları sayfaları, günlük kayıt",
     "Open data": "Açık veri",
     "Changes": "Değişiklikler",
     "New": "Yeni",
@@ -291,7 +290,6 @@
       var upd = matrix.generated ? fmtDate(matrix.generated) : "";
       body.push(h("p", { class: "fine" }, [
         upd ? t("Data updated {date}.", { date: upd }) + " " : "",
-        t("Source: Wikipedia visa requirement articles, daily snapshot"), ". ",
         h("a", { href: prefix() + "/open-data/", text: t("Open data") }),
       ]));
     }
@@ -331,7 +329,6 @@
             h("div", { "data-no-i18n": true, text: mine.map(name).join(", ") + " → " + name(c.affects.dest) + ": " + t(STATUS[c.statusFrom] || c.statusFrom) + " → " + t(STATUS[c.statusTo] || c.statusTo) }),
           ]);
         })));
-        body.push(h("p", { class: "fine", text: t("Source: Wikipedia visa requirement articles, daily snapshot") }));
         // The list is on screen: remember when, so the next visit can tag what is newer.
         if (!seenWritten) { seenWritten = true; setRaw("atlas.panel.seen", String(Date.now())); }
       }

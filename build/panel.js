@@ -1813,12 +1813,7 @@ function AffiliatePartners(_ref28) {
     }, p.label), React.createElement("div", {
       className: "feed-sum"
     }, p.blurb));
-  })), React.createElement("div", {
-    className: "ad-label",
-    style: {
-      marginTop: 4
-    }
-  }, window.t("detail.sponsored")));
+  })));
 }
 function namesPassport(item, passport) {
   var _item$affects;
@@ -2498,9 +2493,7 @@ function RecentChangeRow(_ref35) {
     style: {
       fontWeight: 500
     }
-  }, text), it.kind !== "adv" && React.createElement("div", {
-    className: "p-fine"
-  }, tr("recent.source", "Source: Wikipedia visa requirement articles, daily snapshot")));
+  }, text));
 }
 function RecentChanges(_ref36) {
   var passport = _ref36.passport,

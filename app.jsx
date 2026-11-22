@@ -388,7 +388,6 @@ function IntroDialog({ onClose }) {
           {sign && sign !== "intro.sign" && (
             <p className="dialog-sign">
               {interpolateNodes(sign, {
-                name: <strong>Uygar Atalay</strong>,
                 email: <a href="mailto:hello@travelnow.info">hello@travelnow.info</a>,
               })}
             </p>

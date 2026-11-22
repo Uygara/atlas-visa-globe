@@ -526,7 +526,6 @@ function IntroDialog(_ref) {
   })), sign && sign !== "intro.sign" && React.createElement("p", {
     className: "dialog-sign"
   }, interpolateNodes(sign, {
-    name: React.createElement("strong", null, "Uygar Atalay"),
     email: React.createElement("a", {
       href: "mailto:hello@travelnow.info"
     }, "hello@travelnow.info")

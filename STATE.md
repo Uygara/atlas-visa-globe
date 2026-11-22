@@ -74,6 +74,13 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 27 (2026-11-22: less small print, less owner name):** removed the repeated "Sponsorlu. travelnow.info komisyon
+  kazanabilir." line (panel + /visa/ boxes), the "Source: Wikipedia visa requirement articles, daily snapshot" lines (feed
+  items, /panel page) and the intro dialog byline ("Built and maintained by Uygar Atalay..."), now "Corrections, questions
+  or partnership enquiries: {email}". Affiliate disclosure stays in About, Terms and Privacy (reworded: affiliate links,
+  may earn a commission) and as `rel=sponsored`; the planner still shows a small "Sponsored" badge. Wikipedia CC BY-SA
+  credit stays on /open-data/. Owner name remains only on About, Contact, Terms and article author metadata. Stamp 20261122e.
+
 - **Cloudflare dashboard settings (2026-11-22, not versioned in the repo):** `www.travelnow.info` answered 522 and
   `http://` was not redirected. Added a Redirect Rule "Redirect from WWW to root [Template]" (`https://www.*` to
   `https://${1}`, 301; path and query kept) and switched SSL/TLS, Edge Certificates, "Always Use HTTPS" on. Checked:

@@ -1265,7 +1265,6 @@ function AffiliatePartners({ status, iso2 }) {
           </a>
         ))}
       </div>
-      <div className="ad-label" style={{ marginTop: 4 }}>{window.t("detail.sponsored")}</div>
     </div>
   );
 }
@@ -1665,7 +1664,6 @@ function RecentChangeRow({ it, destIso2 }) {
         {it.mine && <><strong>{tr("recent.yours", "Your passport")}</strong></>}
       </div>
       <div className="feed-title" style={{ fontWeight: 500 }}>{text}</div>
-      {it.kind !== "adv" && <div className="p-fine">{tr("recent.source", "Source: Wikipedia visa requirement articles, daily snapshot")}</div>}
     </div>
   );
 }
