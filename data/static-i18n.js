@@ -140,7 +140,7 @@
     "Passport validity checker": { tr:"Pasaport geçerlilik kontrolü", es:"Verificador de validez del pasaporte", de:"Reisepass-Gültigkeitsprüfer", fr:"Vérificateur de validité du passeport", ar:"فاحص صلاحية جواز السفر" },
     "Check your passport against a destination": { tr:"Pasaportunu bir ülkeye göre kontrol et", es:"Comprueba tu pasaporte para un destino", de:"Prüfe deinen Pass für ein Reiseziel", fr:"Vérifie ton passeport pour une destination", ar:"تحقق من جوازك مقابل وجهة" },
     "The three rule tiers": { tr:"Üç kural kademesi", es:"Los tres niveles de reglas", de:"Die drei Regelstufen", fr:"Les trois niveaux de règles", ar:"المستويات الثلاثة للقواعد" },
-    "Full list by destination": { tr:"Destinasyona göre tam liste", es:"Lista completa por destino", de:"Vollständige Liste nach Reiseziel", fr:"Liste complète par destination", ar:"القائمة الكاملة حسب الوجهة" },
+    "Full list by destination": { tr:"Ülkeye göre tam liste", es:"Lista completa por destino", de:"Vollständige Liste nach Reiseziel", fr:"Liste complète par destination", ar:"القائمة الكاملة حسب الوجهة" },
     "Visa shortcuts: easier entry with the visas you already hold": { tr:"Vize kısayolları: elindeki vizelerle daha kolay giriş", es:"Atajos de visado: entrada más fácil con los visados que ya tienes", de:"Visa-Abkürzungen: leichtere Einreise mit vorhandenen Visa", fr:"Raccourcis de visa: entrée plus facile avec vos visas actuels", ar:"اختصارات التأشيرة: دخول أسهل بتأشيراتك الحالية" },
 
     // ── Tool-page lead paragraphs ──
@@ -222,7 +222,7 @@
     "Official source ↗": { tr:"Resmi kaynak ↗", es:"Fuente oficial ↗", de:"Offizielle Quelle ↗", fr:"Source officielle ↗", ar:"المصدر الرسمي ↗" },
     "travelnow.info link": { tr:"travelnow.info bağlantısı", es:"Enlace travelnow.info", de:"travelnow.info-Link", fr:"Lien travelnow.info", ar:"رابط أطلس" },
     "Your passport": { tr:"Pasaportun", es:"Tu pasaporte", de:"Dein Pass", fr:"Ton passeport", ar:"جواز سفرك" },
-    "Destination": { tr:"Destinasyon", es:"Destino", de:"Reiseziel", fr:"Destination", ar:"الوجهة" },
+    "Destination": { tr:"Ülke", es:"Destino", de:"Reiseziel", fr:"Destination", ar:"الوجهة" },
     "Validity": { tr:"Geçerlilik", es:"Validez", de:"Gültigkeit", fr:"Validité", ar:"الصلاحية" },
     "No data": { tr:"Veri yok", es:"Sin datos", de:"Keine Daten", fr:"Aucune donnée", ar:"لا توجد بيانات" },
 
@@ -379,7 +379,7 @@
     "Pick your passport…":                 { tr:"Pasaportunu seç…", es:"Elige tu pasaporte…", de:"Wähle deinen Pass…", fr:"Choisis ton passeport…", ar:"اختر جواز سفرك…" },
     "Trip stops":                          { tr:"Seyahat durakları", es:"Paradas del viaje", de:"Reisestationen", fr:"Étapes du voyage", ar:"محطات الرحلة" },
     "+ Add a destination (pick a passport first)":
-      { tr:"+ Destinasyon ekle (önce pasaport seç)", es:"+ Añadir destino (elige un pasaporte primero)", de:"+ Ziel hinzufügen (zuerst Pass wählen)", fr:"+ Ajouter une destination (choisis d'abord un passeport)", ar:"+ أضف وجهة (اختر جوازًا أولًا)" },
+      { tr:"+ Ülke ekle (önce pasaport seç)", es:"+ Añadir destino (elige un pasaporte primero)", de:"+ Ziel hinzufügen (zuerst Pass wählen)", fr:"+ Ajouter une destination (choisis d'abord un passeport)", ar:"+ أضف وجهة (اختر جوازًا أولًا)" },
     "Departure date (optional, unlocks reminders)":
       { tr:"Kalkış tarihi (opsiyonel, hatırlatıcıları açar)", es:"Fecha de salida (opcional, activa recordatorios)", de:"Abreisedatum (optional, schaltet Erinnerungen frei)", fr:"Date de départ (optionnel, active les rappels)", ar:"تاريخ المغادرة (اختياري، يفعّل التذكيرات)" },
     "Clear":                               { tr:"Temizle", es:"Limpiar", de:"Löschen", fr:"Effacer", ar:"امسح" },
@@ -418,7 +418,7 @@
       { tr:"Birden fazla duraklı bir seyahat planla. travelnow.info her bacağı pasaportuna göre kontrol eder, hangilerinin vize gerektirdiğini gösterir ve başvuru hatırlatmalarını takvimine aktarır." },
     "Your itinerary":                      { tr:"Rotanız", es:"Tu itinerario", de:"Deine Route", fr:"Ton itinéraire", ar:"خط رحلتك" },
     "Departure":                           { tr:"Kalkış", es:"Salida", de:"Abreise", fr:"Départ", ar:"المغادرة" },
-    "Add destination":                     { tr:"Destinasyon ekle", es:"Añadir destino", de:"Ziel hinzufügen", fr:"Ajouter une destination", ar:"إضافة وجهة" },
+    "Add destination":                     { tr:"Ülke ekle", es:"Añadir destino", de:"Ziel hinzufügen", fr:"Ajouter une destination", ar:"إضافة وجهة" },
     "Download .ics":                       { tr:".ics indir", es:"Descargar .ics", de:".ics herunterladen", fr:"Télécharger .ics", ar:"تنزيل .ics" },
     "Apply by":                            { tr:"Son başvuru", es:"Solicitar antes de", de:"Beantragen bis", fr:"Demander avant", ar:"قدّم قبل" },
     "Visa-free":                           { tr:"Vizesiz", es:"Sin visa", de:"Visumfrei", fr:"Sans visa", ar:"بدون تأشيرة" },
@@ -564,11 +564,11 @@
     // ─── Passport Validity page ──────────────────────────────────────────
     "Passport validity checker": { tr:"Pasaport geçerlilik kontrolü", es:"Comprobador de validez del pasaporte", de:"Pass-Gültigkeitsprüfer", fr:"Vérificateur de validité du passeport", ar:"فاحص صلاحية جواز السفر" },
     "Check your passport against a destination": { tr:"Pasaportunu bir ülkeye karşı kontrol et", es:"Comprueba tu pasaporte contra un destino", de:"Pass gegen ein Ziel prüfen", fr:"Vérifie ton passeport contre une destination", ar:"تحقق من جواز سفرك مقابل وجهة" },
-    "Destination": { tr:"Destinasyon", es:"Destino", de:"Ziel", fr:"Destination", ar:"الوجهة" },
+    "Destination": { tr:"Ülke", es:"Destino", de:"Ziel", fr:"Destination", ar:"الوجهة" },
     "Your passport expiry date": { tr:"Pasaport son kullanma tarihi", es:"Fecha de caducidad del pasaporte", de:"Pass-Ablaufdatum", fr:"Date d'expiration du passeport", ar:"تاريخ انتهاء جواز السفر" },
     "Planned exit date (optional)": { tr:"Planlanan çıkış tarihi (opsiyonel)", es:"Fecha de salida planeada (opcional)", de:"Geplantes Ausreisedatum (optional)", fr:"Date de sortie prévue (optionnel)", ar:"تاريخ المغادرة المخطط (اختياري)" },
     "The three rule tiers": { tr:"Üç kural seviyesi", es:"Los tres niveles de regla", de:"Die drei Regelstufen", fr:"Les trois paliers de règle", ar:"المستويات الثلاثة للقاعدة" },
-    "Full list by destination": { tr:"Destinasyona göre tam liste", es:"Lista completa por destino", de:"Vollständige Liste nach Ziel", fr:"Liste complète par destination", ar:"القائمة الكاملة حسب الوجهة" },
+    "Full list by destination": { tr:"Ülkeye göre tam liste", es:"Lista completa por destino", de:"Vollständige Liste nach Ziel", fr:"Liste complète par destination", ar:"القائمة الكاملة حسب الوجهة" },
     "Validity required": { tr:"Gerekli geçerlilik", es:"Validez requerida", de:"Erforderliche Gültigkeit", fr:"Validité requise", ar:"الصلاحية المطلوبة" },
     "Cleared": { tr:"Onaylandı", es:"Aprobado", de:"Bestanden", fr:"Validé", ar:"مقبول" },
     "Will be refused boarding": { tr:"Uçuşa kabul edilmeyecek", es:"Te denegarán el embarque", de:"Beförderung wird verweigert", fr:"Embarquement refusé", ar:"سيُرفض الصعود" },

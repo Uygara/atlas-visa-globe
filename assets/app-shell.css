@@ -74,7 +74,11 @@ body { font-size: var(--fs-sm); }
   body.is-home .lg-row { padding-block: 2px; }
   body.is-home .pp-card { padding-top: 9px; }
   body.is-home .seg-wide button { white-space: normal; line-height: 1.2; font-size: var(--fs-xs); padding: 5px 6px; }
-  body.is-home .ledger { display: grid; grid-template-columns: 1fr 1fr; column-gap: 20px; }
+  body.is-home .ledger { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 16px; }
+  body.is-home .ledger .lg-label { white-space: normal; line-height: 1.2; min-width: 0; }
+  body.is-home .ledger .lg-dots { min-width: 4px; }
+  /* Two columns: rows stay inside their cell (the -6px bleed of the one-column list overflowed the panel in RTL). */
+  body.is-home .ledger .lg-row { margin-inline: 0; width: 100%; min-width: 0; }
   body.is-home .score-n { font-size: var(--fs-4xl); }
   body.is-home .score-sub { font-size: var(--fs-xs); }
   /* Under the frame: passport picks beside "For you". */

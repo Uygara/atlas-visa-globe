@@ -401,7 +401,7 @@ function adConfig() {
     ? `<div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="${client}" data-ad-slot="${slot}" data-ad-format="auto" data-full-width-responsive="true"></ins><script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>`
     : "";
   return {
-    loader: client ? `<script>(function(){try{var z=Intl.DateTimeFormat().resolvedOptions().timeZone||"";if(/^Europe\//.test(z)||/^Atlantic\/(Canary|Madeira|Azores|Reykjavik|Faroe)$/.test(z)||z==="Asia/Istanbul"||z==="Asia/Nicosia"||z==="Asia/Famagusta"||document.documentElement.lang==="tr")(window.adsbygoogle=window.adsbygoogle||[]).requestNonPersonalizedAds=1}catch(e){}})();</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${client}" crossorigin="anonymous"></script>` : "",
+    loader: client ? `<script>(function(){try{var z=Intl.DateTimeFormat().resolvedOptions().timeZone||"";if(z.indexOf("Europe/")===0||["Atlantic/Canary","Atlantic/Madeira","Atlantic/Azores","Atlantic/Reykjavik","Atlantic/Faroe","Asia/Istanbul","Asia/Nicosia","Asia/Famagusta"].indexOf(z)>=0||document.documentElement.lang==="tr")(window.adsbygoogle=window.adsbygoogle||[]).requestNonPersonalizedAds=1}catch(e){}})();</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${client}" crossorigin="anonymous"></script>` : "",
     top: unit(top), bottom: unit(bottom),
   };
 }

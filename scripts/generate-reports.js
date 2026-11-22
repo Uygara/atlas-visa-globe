@@ -220,7 +220,7 @@ function page({ lang, enPath, title, desc, body, jsonld, ogTitle }) {
 <meta name="twitter:title" content="${esc(ogTitle || title)}">
 <meta name="twitter:description" content="${esc(desc)}">
 <meta name="twitter:image" content="${ogImage}">
-<script>(function(){try{var z=Intl.DateTimeFormat().resolvedOptions().timeZone||"";if(/^Europe\//.test(z)||/^Atlantic\/(Canary|Madeira|Azores|Reykjavik|Faroe)$/.test(z)||z==="Asia/Istanbul"||z==="Asia/Nicosia"||z==="Asia/Famagusta"||document.documentElement.lang==="tr")(window.adsbygoogle=window.adsbygoogle||[]).requestNonPersonalizedAds=1}catch(e){}})();</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2617798720306957" crossorigin="anonymous"></script>
+<script>(function(){try{var z=Intl.DateTimeFormat().resolvedOptions().timeZone||"";if(z.indexOf("Europe/")===0||["Atlantic/Canary","Atlantic/Madeira","Atlantic/Azores","Atlantic/Reykjavik","Atlantic/Faroe","Asia/Istanbul","Asia/Nicosia","Asia/Famagusta"].indexOf(z)>=0||document.documentElement.lang==="tr")(window.adsbygoogle=window.adsbygoogle||[]).requestNonPersonalizedAds=1}catch(e){}})();</script><script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2617798720306957" crossorigin="anonymous"></script>
 <script src="/assets/analytics.js"></script>
 <script type="application/ld+json">${JSON.stringify(jsonld)}</script>
 <!-- chrome:head -->
