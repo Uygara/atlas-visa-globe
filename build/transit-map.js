@@ -107,7 +107,7 @@ function TransitMapApp() {
     hoverRenderer: hoverRenderer,
     onCountryClick: openCountry,
     focusedCountry: selected
-  }), React.createElement(TransitLegend, null)), React.createElement("aside", {
+  }), React.createElement(TransitLegend, null)), React.createElement(PanelResizer, null), React.createElement("aside", {
     className: "panel"
   }, React.createElement(MobileSheetHandle, null), React.createElement(TransitPanelHeader, null), React.createElement("section", {
     className: "p-sec"

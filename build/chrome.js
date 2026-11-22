@@ -862,3 +862,103 @@ Object.assign(window, {
   Swatch: Swatch,
   Dot: Dot
 });
+function PanelResizer() {
+  var DEF = 360,
+    MIN = 300,
+    STEP = 24;
+  var max = function max() {
+    return Math.max(MIN, Math.min(720, Math.round(window.innerWidth * 0.6)));
+  };
+  var clamp = function clamp(v) {
+    return Math.min(max(), Math.max(MIN, Math.round(v)));
+  };
+  var _useStateC1 = useStateC(function () {
+      try {
+        var v = +localStorage.getItem("atlas.panelW");
+        return v >= MIN ? v : DEF;
+      } catch (e) {
+        return DEF;
+      }
+    }),
+    _useStateC10 = _slicedToArray(_useStateC1, 2),
+    w = _useStateC10[0],
+    setW = _useStateC10[1];
+  var ref = useRefC(null);
+  useLangTick();
+  var apply = function apply(v) {
+    return document.documentElement.style.setProperty("--panel-w", clamp(v) + "px");
+  };
+  useEffectC(function () {
+    apply(w);
+    try {
+      if (w === DEF) localStorage.removeItem("atlas.panelW");else localStorage.setItem("atlas.panelW", String(w));
+    } catch (e) {}
+    var onResize = function onResize() {
+      return apply(w);
+    };
+    window.addEventListener("resize", onResize);
+    return function () {
+      return window.removeEventListener("resize", onResize);
+    };
+  }, [w]);
+  var fromX = function fromX(x) {
+    var box = ref.current.parentNode.getBoundingClientRect();
+    return document.documentElement.dir === "rtl" ? x - box.left : box.right - x;
+  };
+  var down = function down(e) {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    var el = ref.current;
+    el.setPointerCapture(e.pointerId);
+    document.documentElement.classList.add("is-resizing");
+    var last = w;
+    var move = function move(ev) {
+      last = clamp(fromX(ev.clientX));
+      apply(last);
+    };
+    var _up = function up() {
+      el.removeEventListener("pointermove", move);
+      el.removeEventListener("pointerup", _up);
+      el.removeEventListener("pointercancel", _up);
+      document.documentElement.classList.remove("is-resizing");
+      setW(last);
+    };
+    el.addEventListener("pointermove", move);
+    el.addEventListener("pointerup", _up);
+    el.addEventListener("pointercancel", _up);
+  };
+  var key = function key(e) {
+    var rtl = document.documentElement.dir === "rtl";
+    var grow = {
+      ArrowLeft: rtl ? -1 : 1,
+      ArrowRight: rtl ? 1 : -1
+    }[e.key];
+    if (grow) {
+      e.preventDefault();
+      setW(clamp(w + grow * STEP));
+    } else if (e.key === "Home") {
+      e.preventDefault();
+      setW(MIN);
+    } else if (e.key === "End") {
+      e.preventDefault();
+      setW(max());
+    }
+  };
+  return React.createElement("div", {
+    ref: ref,
+    className: "panel-resizer",
+    role: "separator",
+    tabIndex: 0,
+    "aria-orientation": "vertical",
+    "aria-label": tr("nav.resize_panel", "Resize the map and the panel"),
+    "aria-valuemin": MIN,
+    "aria-valuemax": max(),
+    "aria-valuenow": clamp(w),
+    title: tr("nav.resize_panel_tip", "Drag to resize. Double-click to reset."),
+    onPointerDown: down,
+    onKeyDown: key,
+    onDoubleClick: function onDoubleClick() {
+      return setW(DEF);
+    }
+  });
+}

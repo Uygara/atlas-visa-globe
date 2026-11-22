@@ -42,10 +42,23 @@ html.theme-dark .country:hover, body.theme-dark .country:hover { filter: brightn
 .layout {
   position: relative; height: 100%; width: 100%;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 360px;
+  grid-template-columns: minmax(0, 1fr) var(--panel-w, 360px);
   grid-template-rows: 52px minmax(0, 1fr);
   grid-template-areas: "masthead masthead" "globe panel";
 }
+/* Divider between map and panel (desktop): a wide invisible grab area over the panel's edge. */
+.panel-resizer {
+  grid-area: panel; justify-self: start; z-index: 4;
+  width: 12px; margin-inline-start: -6px; height: 100%;
+  cursor: col-resize; touch-action: none; position: relative;
+}
+.panel-resizer::after {
+  content: ""; position: absolute; inset-block: 0; inset-inline-start: 5px; width: 2px;
+  background: transparent; transition: background-color .15s;
+}
+.panel-resizer:hover::after, .panel-resizer:focus-visible::after, .is-resizing .panel-resizer::after { background: var(--ink-3); }
+.panel-resizer:focus-visible { outline: none; }
+.is-resizing, .is-resizing * { cursor: col-resize !important; user-select: none; }
 .globe-stage {
   grid-area: globe; position: relative; overflow: hidden;
   background: var(--paper);
@@ -479,6 +492,7 @@ a.feed-item:hover { border-color: var(--rule-strong); border-inline-start-color:
 
 /* ── Mobile ──────────────────────────────────────────────────────────── */
 @media (max-width: 900px) {
+  .panel-resizer { display: none; }
   .layout {
     grid-template-columns: minmax(0, 1fr);
     grid-template-rows: 52px minmax(0, 1fr);

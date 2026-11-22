@@ -74,6 +74,7 @@ function TransitMapApp() {
         />
         <TransitLegend />
       </div>
+      <PanelResizer />
       <aside className="panel">
         <MobileSheetHandle />
         <TransitPanelHeader />

@@ -521,3 +521,57 @@ Object.assign(window, {
   BrandMark, IconCaret, IconClose, IconSearch, IconSun, IconMoon,
   ViewToggle, ThemeToggle, LangSelect, Masthead, MobileSheetHandle, Caption, Swatch, Dot,
 });
+
+// ─── Map / panel divider (desktop) ───────────────────────────────────────────
+// Drag the line between the map and the side panel to give the map more or less room.
+// Arrow keys move it too; double-click puts it back. The width is a display preference kept
+// on this device only (localStorage "atlas.panelW"); it is not synced or sent anywhere.
+function PanelResizer() {
+  const DEF = 360, MIN = 300, STEP = 24;
+  const max = () => Math.max(MIN, Math.min(720, Math.round(window.innerWidth * 0.6)));
+  const clamp = (v) => Math.min(max(), Math.max(MIN, Math.round(v)));
+  const [w, setW] = useStateC(() => { try { const v = +localStorage.getItem("atlas.panelW"); return v >= MIN ? v : DEF; } catch (e) { return DEF; } });
+  const ref = useRefC(null);
+  useLangTick();
+  const apply = (v) => document.documentElement.style.setProperty("--panel-w", clamp(v) + "px");
+  useEffectC(() => {
+    apply(w);
+    try { if (w === DEF) localStorage.removeItem("atlas.panelW"); else localStorage.setItem("atlas.panelW", String(w)); } catch (e) {}
+    const onResize = () => apply(w);
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [w]);
+  // The panel's width measured from the pointer: the panel sits at the end of the row (left in Arabic).
+  const fromX = (x) => {
+    const box = ref.current.parentNode.getBoundingClientRect();
+    return document.documentElement.dir === "rtl" ? x - box.left : box.right - x;
+  };
+  const down = (e) => {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    const el = ref.current; el.setPointerCapture(e.pointerId);
+    document.documentElement.classList.add("is-resizing");
+    let last = w;
+    const move = (ev) => { last = clamp(fromX(ev.clientX)); apply(last); };
+    const up = () => {
+      el.removeEventListener("pointermove", move); el.removeEventListener("pointerup", up); el.removeEventListener("pointercancel", up);
+      document.documentElement.classList.remove("is-resizing");
+      setW(last);
+    };
+    el.addEventListener("pointermove", move); el.addEventListener("pointerup", up); el.addEventListener("pointercancel", up);
+  };
+  const key = (e) => {
+    const rtl = document.documentElement.dir === "rtl";
+    const grow = { ArrowLeft: rtl ? -1 : 1, ArrowRight: rtl ? 1 : -1 }[e.key];
+    if (grow) { e.preventDefault(); setW(clamp(w + grow * STEP)); }
+    else if (e.key === "Home") { e.preventDefault(); setW(MIN); }
+    else if (e.key === "End") { e.preventDefault(); setW(max()); }
+  };
+  return (
+    <div ref={ref} className="panel-resizer" role="separator" tabIndex={0}
+      aria-orientation="vertical" aria-label={tr("nav.resize_panel", "Resize the map and the panel")}
+      aria-valuemin={MIN} aria-valuemax={max()} aria-valuenow={clamp(w)}
+      title={tr("nav.resize_panel_tip", "Drag to resize. Double-click to reset.")}
+      onPointerDown={down} onKeyDown={key} onDoubleClick={() => setW(DEF)} />
+  );
+}

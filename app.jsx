@@ -320,6 +320,7 @@ function App() {
 
       </div>
 
+      <PanelResizer />
       <Panel
         passport={passport}
         setPassport={choosePassport}

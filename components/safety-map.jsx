@@ -203,6 +203,7 @@ function SafetyMapApp() {
         />
         <SafetyLegend />
       </div>
+      <PanelResizer />
       <aside className="panel">
         <MobileSheetHandle />
         <header className="p-head" style={{ display: "block" }}>

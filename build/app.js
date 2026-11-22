@@ -437,7 +437,7 @@ function App() {
     enabled: t.compareMode,
     passport: passport,
     compare: compare
-  }), !detailCountry && React.createElement(ChangelogFloater, null)), React.createElement(Panel, {
+  }), !detailCountry && React.createElement(ChangelogFloater, null)), React.createElement(PanelResizer, null), React.createElement(Panel, {
     passport: passport,
     setPassport: choosePassport,
     autoDetected: !!passport && passport === autoDetectedPassport,

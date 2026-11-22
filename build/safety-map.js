@@ -285,7 +285,7 @@ function SafetyMapApp() {
     focusedCountry: selected,
     regionFeatures: regionFeatures,
     regionFill: regionFill
-  }), React.createElement(SafetyLegend, null)), React.createElement("aside", {
+  }), React.createElement(SafetyLegend, null)), React.createElement(PanelResizer, null), React.createElement("aside", {
     className: "panel"
   }, React.createElement(MobileSheetHandle, null), React.createElement("header", {
     className: "p-head",
