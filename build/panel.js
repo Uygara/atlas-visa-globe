@@ -1791,7 +1791,12 @@ function AffiliatePartners(_ref28) {
       fontWeight: 600,
       color: "var(--ink-2)"
     }
-  }, window.t("detail.plan_your_trip")), React.createElement("div", {
+  }, window.t("detail.plan_your_trip"), " ", React.createElement("span", {
+    style: {
+      fontWeight: 400,
+      color: "var(--ink-3)"
+    }
+  }, "\xB7 ", window.t("detail.sponsored"))), React.createElement("div", {
     className: "feed"
   }, partners.map(function (p) {
     return React.createElement("a", {
