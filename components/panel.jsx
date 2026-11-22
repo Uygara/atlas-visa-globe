@@ -1335,7 +1335,7 @@ function AffiliatePartners({ status, iso2 }) {
   if (partners.length === 0) return null;
   return (
     <div style={{ marginBottom: 10 }}>
-      <div className="p-hint" style={{ margin: "0 0 6px", fontWeight: 600, color: "var(--ink-2)" }}>{window.t("detail.plan_your_trip")}</div>
+      <div className="p-hint" style={{ margin: "0 0 6px", fontWeight: 600, color: "var(--ink-2)" }}>{window.t("detail.plan_your_trip")} <span style={{ fontWeight: 400, color: "var(--ink-3)" }}>· {window.t("detail.sponsored")}</span></div>
       <div className="feed">
         {partners.map(p => (
           <a key={p.id} className="feed-item" href={p.href} target="_blank" rel="sponsored noopener noreferrer"

@@ -589,6 +589,7 @@ const VLOC = {
     affHead: "Help with the application",
     affBody: (the) => `If your passport needs a visa for ${the}, iVisa can fill in and submit the application for you. It charges a service fee on top of the government fee, so applying yourself on the official site costs less.`,
     affBtn: "Apply with iVisa",
+    affNote: "Sponsored link",
     validity: (the, rule) => rule > 0
       ? `Passport validity: the minimum on record for ${the} is ${rule} months beyond your intended stay.`
       : `Passport validity: for ${the} the rule on record is that the passport must be valid for the length of your stay.`,
@@ -657,6 +658,7 @@ const VLOC = {
     affHead: "Başvuru için yardım",
     affBody: (label) => `Pasaportunla ${label} için vize gerekiyorsa iVisa başvuruyu senin yerine doldurup gönderebilir. Devlet harcının üstüne hizmet bedeli alır; resmi sitede kendin başvurursan daha ucuza gelir.`,
     affBtn: "iVisa ile başvur",
+    affNote: "Sponsorlu bağlantı",
     validity: (name, rule) => rule > 0
       ? `Pasaport geçerliliği: ${name} için kayıtlı en düşük süre, planladığın kalışın bitiminden sonra ${rule} aydır.`
       : `Pasaport geçerliliği: ${name} için kayıtlı kural, pasaportun kalış süresince geçerli olmasıdır.`,
@@ -821,7 +823,7 @@ function renderDestPage(destCountry, allPassports, lang, ads) {
   const iv = (DATA.AFFILIATES || []).find(a => a.id === "ivisa" && a.url);
   const needVisa = (counts.ev || 0) + (counts.vr || 0) + (counts.voa || 0);
   const ivisaHtml = iv && needVisa
-    ? `<section class="card aff"><h2>${escapeHtml(V.affHead)}</h2><p>${escapeHtml(V.affBody(the))}</p>` +
+    ? `<section class="card aff"><p class="ad-label">${escapeHtml(V.affNote)}</p><h2>${escapeHtml(V.affHead)}</h2><p>${escapeHtml(V.affBody(the))}</p>` +
       `<p class="cta-row"><a class="primary" href="${escapeHtml(iv.url)}" target="_blank" rel="sponsored noopener noreferrer" ` +
       `onclick="window.gtag&&gtag('event','affiliate_click',{partner:'ivisa',destination:'${dest}',placement:'visa_page'})">${escapeHtml(V.affBtn)}</a></p>` +
       `</section>`
