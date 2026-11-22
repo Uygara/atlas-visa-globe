@@ -1001,12 +1001,18 @@ function renderIndex(allPassports, ranks, lang) {
     const ra = ranks.get(a), rb = ranks.get(b);
     return (ra ? ra.rank : 999) - (rb ? rb.rank : 999) || collator.compare(passportName(a, lang), passportName(b, lang));
   });
-  const items = ordered.map(iso => {
+  // Two halves: side by side on desktop, one after the other on phones. <ol start> keeps the ranks in the semantics.
+  const rows = ordered.filter(iso => COUNTRIES.some(x => x.iso2 === iso) && SNAPSHOT[iso]).map(iso => {
     const c = COUNTRIES.find(x => x.iso2 === iso);
-    if (!c || !SNAPSHOT[iso]) return "";
     const ri = ranks.get(iso);
     return `<li><span class="rk">${ri ? ri.rank : "?"}</span><a href="${iso.toLowerCase()}/"><span class="flag">${c.flag}</span> ${escapeHtml(passportName(iso, lang))}</a><span class="ct">${ri ? ri.mobility : "?"}</span></li>`;
-  }).join("");
+  });
+  const half = Math.ceil(rows.length / 2);
+  const head = (extra) => `<div class="rank-head${extra}" aria-hidden="true"><span>${escapeHtml(L.dirColRank)}</span><span>${escapeHtml(L.dirColName)}</span><span>${escapeHtml(L.dirColCount)}</span></div>`;
+  const list = `<div class="rank-cols">
+    <div>${head("")}<ol class="rank-list">${rows.slice(0, half).join("")}</ol></div>
+    <div>${head(" is-repeat")}<ol class="rank-list" start="${half + 1}">${rows.slice(half).join("")}</ol></div>
+  </div>`;
   const date = new Date().toISOString().slice(0, 10);
   const types = lang === "tr" ? "/tr/guides/how-we-count/" : "/guides/how-we-count/";
 
@@ -1021,7 +1027,7 @@ function renderIndex(allPassports, ranks, lang) {
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
 <meta property="og:locale" content="${lang === "tr" ? "tr_TR" : "en_US"}">
 ${headAssets({ enPath, lang })}
-<style>.wrap{max-width:880px}</style>
+<style>.wrap{max-width:1040px}</style>
 <script src="/assets/analytics.js"></script>
 </head>
 <body>
@@ -1030,8 +1036,7 @@ ${masthead({ path: enPath, i18n: false, lang })}
   <h1>${escapeHtml(L.dirH1)}</h1>
   <p class="intro">${L.dirIntro.replace("%TYPES%", types)}</p>
   <p style="font-size:13px;color:var(--fg-mute);">${escapeHtml(L.dirMeta(allPassports.length, fmtDate(date, lang)))}</p>
-  <div class="rank-head" aria-hidden="true"><span>${escapeHtml(L.dirColRank)}</span><span>${escapeHtml(L.dirColName)}</span><span>${escapeHtml(L.dirColCount)}</span></div>
-  <ol class="rank-list">${items}</ol>
+  ${list}
 </div>
 ${footer({ lang })}
 </body>
