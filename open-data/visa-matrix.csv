@@ -16242,7 +16242,7 @@ IN,India,CY,Cyprus,vr,
 IN,India,CZ,Czech Republic,vr,
 IN,India,DK,Denmark,vr,
 IN,India,DJ,Djibouti,ev,90
-IN,India,DM,Dominica,vf,180
+IN,India,DM,Dominica,vf,21
 IN,India,DO,Dominican Republic,vr,
 IN,India,EC,Ecuador,ev,
 IN,India,EG,Egypt,ev,30
@@ -28739,7 +28739,7 @@ PH,Philippines,CO,Colombia,vf,90
 PH,Philippines,KM,Comoros,voa,45
 PH,Philippines,CG,Republic of the Congo,vr,
 PH,Philippines,CD,Democratic Republic of the Congo,ev,7
-PH,Philippines,CR,Costa Rica,vf,90
+PH,Philippines,CR,Costa Rica,vf,30
 PH,Philippines,CI,Côte d'Ivoire,vf,90
 PH,Philippines,HR,Croatia,vr,
 PH,Philippines,CU,Cuba,vr,
@@ -37696,7 +37696,7 @@ UA,Ukraine,TO,Tonga,voa,31
 UA,Ukraine,TT,Trinidad and Tobago,ev,
 UA,Ukraine,TN,Tunisia,vr,
 UA,Ukraine,TR,Turkey,idc,90
-UA,Ukraine,TM,Turkmenistan,vr,
+UA,Ukraine,TM,Turkmenistan,ev,
 UA,Ukraine,TV,Tuvalu,voa,30
 UA,Ukraine,UG,Uganda,ev,90
 UA,Ukraine,AE,United Arab Emirates,vf,30

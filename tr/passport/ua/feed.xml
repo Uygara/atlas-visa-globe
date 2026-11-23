@@ -5,8 +5,15 @@
   <link>https://travelnow.info/tr/passport/ua/</link>
   <description>Ukrayna pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
   <language>tr</language>
-  <lastBuildDate>Tue, 22 Sep 2026 00:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Mon, 23 Nov 2026 00:00:00 GMT</lastBuildDate>
   <atom:link href="https://travelnow.info/tr/passport/ua/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Türkmenistan: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/tm/</link>
+    <guid isPermaLink="false">travelnow-UA-TM-2026-11-23-ev</guid>
+    <pubDate>Mon, 23 Nov 2026 00:00:00 GMT</pubDate>
+    <description>Ukrayna pasaportu için Türkmenistan: önce vize gerekli, şimdi e-Vize. 23 Kasım 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
   <item>
     <title>Filipinler: Vize gerekli → e-Vize</title>
     <link>https://travelnow.info/tr/visa/ph/</link>
