@@ -159,7 +159,8 @@ function ClimateMapApp() {
     hoverRenderer: hoverRenderer,
     onCountryClick: open,
     focusedCountry: selected,
-    nightShade: true
+    nightShade: true,
+    keepSpinning: true
   }), React.createElement(ClimateLegend, {
     view: view
   })), React.createElement(PanelResizer, null), React.createElement("aside", {

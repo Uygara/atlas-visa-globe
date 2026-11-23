@@ -110,20 +110,17 @@ function subsolarPoint(date) {
   if (lon < -180) lon += 360;
   return [lon, dec];
 }
-function nightCircles(date) {
+function nightCircle(date) {
   var _subsolarPoint = subsolarPoint(date),
     _subsolarPoint2 = _slicedToArray(_subsolarPoint, 2),
     lon = _subsolarPoint2[0],
     lat = _subsolarPoint2[1];
   var anti = [lon > 0 ? lon - 180 : lon + 180, -lat];
-  return NIGHT_STEPS.map(function (r) {
-    return d3.geoCircle().center(anti).radius(r).precision(2)();
-  });
+  return d3.geoCircle().center(anti).radius(90).precision(2)();
 }
-var NIGHT_STEPS = [90, 87, 84, 81, 78];
 var NIGHT_OPACITY = {
-  full: [0.07, 0.05, 0.05, 0.05, 0.05],
-  soft: [0.06, 0.045, 0.045, 0.04, 0.04]
+  full: 0.3,
+  soft: 0.2
 };
 function Globe(_ref) {
   var passport = _ref.passport,
@@ -146,7 +143,8 @@ function Globe(_ref) {
     regionFill = _ref.regionFill,
     arcs = _ref.arcs,
     stopMarkers = _ref.stopMarkers,
-    nightShade = _ref.nightShade;
+    nightShade = _ref.nightShade,
+    keepSpinning = _ref.keepSpinning;
   var groupActive = Array.isArray(groupPassports) && groupPassports.length > 0;
   var resolveDirected = function resolveDirected(iso2) {
     return direction === "incoming" ? window.resolveStatus(iso2, passport) : window.resolveStatus(passport, iso2);
@@ -213,8 +211,8 @@ function Globe(_ref) {
     };
   }, []);
   useEffect(function () {
-    restRef.current = !!focusedCountry || !!hover;
-  }, [focusedCountry, hover]);
+    restRef.current = !keepSpinning && !!focusedCountry || !!hover;
+  }, [focusedCountry, hover, keepSpinning]);
   useEffect(function () {
     var alive = true;
     fetch("https://unpkg.com/world-atlas@2.0.2/countries-110m.json").then(function (r) {
@@ -274,12 +272,19 @@ function Globe(_ref) {
       var d = pathRef.current(p.__feature);
       if (d) p.setAttribute("d", d);else p.setAttribute("d", "");
     });
-    var nights = svgRef.current.querySelectorAll("path.night-shade");
-    if (nights.length) {
-      var circles = nightCircles(new Date());
-      nights.forEach(function (p, i) {
-        return p.setAttribute("d", pathRef.current(circles[i]) || "");
-      });
+    var night = svgRef.current.querySelector("path.night-shade");
+    if (night) night.setAttribute("d", pathRef.current(nightCircle(new Date())) || "");
+    var sun = svgRef.current.querySelector("g.sun-rays");
+    if (sun && projRef.current && projRef.current.rotate) {
+      var _d3$geoRotation = d3.geoRotation(projRef.current.rotate())(subsolarPoint(new Date())),
+        _d3$geoRotation2 = _slicedToArray(_d3$geoRotation, 2),
+        lon = _d3$geoRotation2[0],
+        lat = _d3$geoRotation2[1];
+      var rad = Math.PI / 180;
+      var x = Math.cos(lat * rad) * Math.sin(lon * rad);
+      var y = -Math.sin(lat * rad);
+      var ang = Math.hypot(x, y) < 0.08 ? -135 : Math.atan2(y, x) / rad;
+      sun.setAttribute("transform", sun.getAttribute("data-origin") + " rotate(" + ang.toFixed(1) + ")");
     }
     if (projRef.current) {
       var isGlobe = mode !== "flat";
@@ -886,6 +891,64 @@ function Globe(_ref) {
     },
     onMouseMove: handleMove
   }, React.createElement("defs", null, React.createElement("radialGradient", {
+    id: "sun-glow"
+  }, React.createElement("stop", {
+    offset: "0%",
+    style: {
+      stopColor: "var(--sun)",
+      stopOpacity: 0.55
+    }
+  }), React.createElement("stop", {
+    offset: "45%",
+    style: {
+      stopColor: "var(--sun)",
+      stopOpacity: 0.18
+    }
+  }), React.createElement("stop", {
+    offset: "100%",
+    style: {
+      stopColor: "var(--sun)",
+      stopOpacity: 0
+    }
+  })), React.createElement("linearGradient", {
+    id: "sun-ray",
+    x1: "0",
+    y1: "0",
+    x2: "1",
+    y2: "0"
+  }, React.createElement("stop", {
+    offset: "0%",
+    style: {
+      stopColor: "var(--sun)",
+      stopOpacity: 0.22
+    }
+  }), React.createElement("stop", {
+    offset: "55%",
+    style: {
+      stopColor: "var(--sun)",
+      stopOpacity: 0.06
+    }
+  }), React.createElement("stop", {
+    offset: "100%",
+    style: {
+      stopColor: "var(--sun)",
+      stopOpacity: 0
+    }
+  })), React.createElement("filter", {
+    id: "night-blur",
+    x: "-20%",
+    y: "-20%",
+    width: "140%",
+    height: "140%"
+  }, React.createElement("feGaussianBlur", {
+    stdDeviation: Math.max(4, r * zoomDisplay * 0.075)
+  })), React.createElement("clipPath", {
+    id: "sphere-clip"
+  }, React.createElement("circle", {
+    cx: cx,
+    cy: cy,
+    r: r * zoomDisplay
+  })), React.createElement("radialGradient", {
     id: "limb",
     cx: "50%",
     cy: "50%",
@@ -1026,7 +1089,34 @@ function Globe(_ref) {
         fill: STATUS_HEX.self
       }
     }));
-  })), showGlobe && React.createElement("circle", {
+  })), showGlobe && nightShade === true && React.createElement("g", {
+    className: "sun-rays",
+    "data-origin": "translate(".concat(cx, ",").concat(cy, ")"),
+    transform: "translate(".concat(cx, ",").concat(cy, ")"),
+    style: {
+      pointerEvents: "none"
+    },
+    "aria-hidden": "true"
+  }, React.createElement("g", {
+    transform: "translate(".concat(r * zoomDisplay * 1.02, ",0)")
+  }, React.createElement("circle", {
+    r: r * zoomDisplay * 1.25,
+    fill: "url(#sun-glow)"
+  }), React.createElement("g", {
+    className: "sun-spokes"
+  }, Array.from({
+    length: 18
+  }, function (_, i) {
+    var L = Math.max(size.w, size.h),
+      a = i * 20,
+      w = i % 2 ? 2.2 : 3.6;
+    return React.createElement("path", {
+      key: i,
+      d: "M0,0 L".concat(L, ",").concat(-L * w / 100, " L").concat(L, ",").concat(L * w / 100, " Z"),
+      transform: "rotate(".concat(a, ")"),
+      fill: "url(#sun-ray)"
+    });
+  })))), showGlobe && React.createElement("circle", {
     cx: cx,
     cy: cy,
     r: r * zoomDisplay,
@@ -1085,17 +1175,16 @@ function Globe(_ref) {
     style: {
       pointerEvents: "none"
     },
-    "aria-hidden": "true"
-  }, NIGHT_OPACITY[nightShade === "soft" ? "soft" : "full"].map(function (o, i) {
-    return React.createElement("path", {
-      key: "n" + i,
-      className: "night-shade",
-      d: "",
-      style: {
-        fill: "var(--night)",
-        fillOpacity: o
-      }
-    });
+    "aria-hidden": "true",
+    clipPath: showGlobe ? "url(#sphere-clip)" : undefined
+  }, React.createElement("path", {
+    className: "night-shade",
+    d: "",
+    filter: "url(#night-blur)",
+    style: {
+      fill: "var(--night)",
+      fillOpacity: NIGHT_OPACITY[nightShade === "soft" ? "soft" : "full"]
+    }
   })), showGlobe && React.createElement("g", {
     style: {
       pointerEvents: "none"

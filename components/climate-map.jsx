@@ -108,6 +108,7 @@ function ClimateMapApp() {
           onCountryClick={open}
           focusedCountry={selected}
           nightShade
+          keepSpinning
         />
         <ClimateLegend view={view} />
       </div>

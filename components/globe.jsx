@@ -61,16 +61,14 @@ function subsolarPoint(date) {
   return [lon, dec];
 }
 // Night = the sun is below the horizon: everything within 90° of the point
-// opposite the sun. The smaller circles darken the deeper night (sun more
-// than 3°, 6°, 9° and 12° below the horizon), so the edge reads as dusk, not a hard line.
-function nightCircles(date) {
+// opposite the sun. Drawn as one shape and blurred, so day fades into night
+// through a wide dusk instead of a line.
+function nightCircle(date) {
   const [lon, lat] = subsolarPoint(date);
   const anti = [lon > 0 ? lon - 180 : lon + 180, -lat];
-  return NIGHT_STEPS.map(r => d3.geoCircle().center(anti).radius(r).precision(2)());
+  return d3.geoCircle().center(anti).radius(90).precision(2)();
 }
-// Five stacked circles, 3° apart: the edge fades through dusk instead of a hard line.
-const NIGHT_STEPS = [90, 87, 84, 81, 78];
-const NIGHT_OPACITY = { full: [0.07, 0.05, 0.05, 0.05, 0.05], soft: [0.06, 0.045, 0.045, 0.04, 0.04] };
+const NIGHT_OPACITY = { full: 0.3, soft: 0.2 };
 
 function Globe({
   passport,        // iso2 string, or null
@@ -108,7 +106,10 @@ function Globe({
   arcs,
   stopMarkers,
   // nightShade: darken the half of the Earth where it is night right now (updates every minute).
+  // true = full (with a sun glow behind the globe), "soft" = lighter, no glow (home).
   nightShade,
+  // keepSpinning: keep the idle spin going while a country is selected (climate map).
+  keepSpinning,
 }) {
   // Group mode wins over direction when active — the question is "where can
   // this group of people go", which is inherently outgoing.
@@ -156,7 +157,7 @@ function Globe({
   const [wheelHint, setWheelHint] = useState(false);
   const wheelHintT = useRef(null);
   useEffect(() => () => clearTimeout(wheelHintT.current), []);
-  useEffect(() => { restRef.current = !!focusedCountry || !!hover; }, [focusedCountry, hover]);
+  useEffect(() => { restRef.current = (!keepSpinning && !!focusedCountry) || !!hover; }, [focusedCountry, hover, keepSpinning]);
 
   // ─── Topology load ─────────────────────────────────────────────────────────
   useEffect(() => {
@@ -216,10 +217,19 @@ function Globe({
       if (d) p.setAttribute("d", d);
       else p.setAttribute("d", "");
     });
-    const nights = svgRef.current.querySelectorAll("path.night-shade");
-    if (nights.length) {
-      const circles = nightCircles(new Date());
-      nights.forEach((p, i) => p.setAttribute("d", pathRef.current(circles[i]) || ""));
+    const night = svgRef.current.querySelector("path.night-shade");
+    if (night) night.setAttribute("d", pathRef.current(nightCircle(new Date())) || "");
+    // Sun glow: turn it to the side of the globe where the sun is. The sun
+    // point is rotated with the view; its x/y on screen give the direction.
+    const sun = svgRef.current.querySelector("g.sun-rays");
+    if (sun && projRef.current && projRef.current.rotate) {
+      const [lon, lat] = d3.geoRotation(projRef.current.rotate())(subsolarPoint(new Date()));
+      const rad = Math.PI / 180;
+      const x = Math.cos(lat * rad) * Math.sin(lon * rad);
+      const y = -Math.sin(lat * rad);
+      // Sun straight in front of or behind the globe: light from the upper left.
+      const ang = Math.hypot(x, y) < 0.08 ? -135 : Math.atan2(y, x) / rad;
+      sun.setAttribute("transform", sun.getAttribute("data-origin") + " rotate(" + ang.toFixed(1) + ")");
     }
     // Also reposition micro-state markers (countries too small to draw as polygons).
     // d3.geoOrthographic's raw projection function returns coordinates even for the
@@ -849,6 +859,20 @@ function Globe({
         onMouseMove={handleMove}
       >
         <defs>
+          <radialGradient id="sun-glow">
+            <stop offset="0%" style={{ stopColor: "var(--sun)", stopOpacity: 0.55 }} />
+            <stop offset="45%" style={{ stopColor: "var(--sun)", stopOpacity: 0.18 }} />
+            <stop offset="100%" style={{ stopColor: "var(--sun)", stopOpacity: 0 }} />
+          </radialGradient>
+          <linearGradient id="sun-ray" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" style={{ stopColor: "var(--sun)", stopOpacity: 0.22 }} />
+            <stop offset="55%" style={{ stopColor: "var(--sun)", stopOpacity: 0.06 }} />
+            <stop offset="100%" style={{ stopColor: "var(--sun)", stopOpacity: 0 }} />
+          </linearGradient>
+          <filter id="night-blur" x="-20%" y="-20%" width="140%" height="140%">
+            <feGaussianBlur stdDeviation={Math.max(4, r * zoomDisplay * 0.075)} />
+          </filter>
+          <clipPath id="sphere-clip"><circle cx={cx} cy={cy} r={r * zoomDisplay} /></clipPath>
           {/* Limb shading: a faint darkening toward the edge of the sphere so
               the 3D globe reads as round without any glow or gradient ocean. */}
           <radialGradient id="limb" cx="50%" cy="50%" r="50%">
@@ -909,6 +933,21 @@ function Globe({
 
         {/* Sphere (ocean). Radius tracks the zoom — without scaling, zoom > 1
             drew country polygons outside the sphere. */}
+        {/* Sun: a warm glow and faint rays behind the globe, on the side the
+            sun is on (turned in redrawPaths). Globe views with full night shade only. */}
+        {showGlobe && nightShade === true && (
+          <g className="sun-rays" data-origin={`translate(${cx},${cy})`} transform={`translate(${cx},${cy})`} style={{ pointerEvents: "none" }} aria-hidden="true">
+            <g transform={`translate(${r * zoomDisplay * 1.02},0)`}>
+              <circle r={r * zoomDisplay * 1.25} fill="url(#sun-glow)" />
+              <g className="sun-spokes">
+                {Array.from({ length: 18 }, (_, i) => {
+                  const L = Math.max(size.w, size.h), a = i * 20, w = i % 2 ? 2.2 : 3.6;
+                  return <path key={i} d={`M0,0 L${L},${-L * w / 100} L${L},${L * w / 100} Z`} transform={`rotate(${a})`} fill="url(#sun-ray)" />;
+                })}
+              </g>
+            </g>
+          </g>
+        )}
         {showGlobe && (
           <circle cx={cx} cy={cy} r={r * zoomDisplay} style={{ fill: "var(--ocean)" }} />
         )}
@@ -969,10 +1008,9 @@ function Globe({
 
         {/* Night side, above the countries so the colours stay readable underneath. */}
         {nightShade && topology && (
-          <g className="night-layer" style={{ pointerEvents: "none" }} aria-hidden="true">
-            {NIGHT_OPACITY[nightShade === "soft" ? "soft" : "full"].map((o, i) => (
-              <path key={"n" + i} className="night-shade" d="" style={{ fill: "var(--night)", fillOpacity: o }} />
-            ))}
+          <g className="night-layer" style={{ pointerEvents: "none" }} aria-hidden="true" clipPath={showGlobe ? "url(#sphere-clip)" : undefined}>
+            <path className="night-shade" d="" filter="url(#night-blur)"
+              style={{ fill: "var(--night)", fillOpacity: NIGHT_OPACITY[nightShade === "soft" ? "soft" : "full"] }} />
           </g>
         )}
 

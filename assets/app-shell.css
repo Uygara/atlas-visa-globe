@@ -734,3 +734,8 @@ html[dir="rtl"] .note-go, html[dir="rtl"] .cta-go { display: inline-block; trans
 .cl-bar { display: block; width: 100%; background: var(--cl-p4); border-radius: 2px 2px 0 0; opacity: 0.75; }
 .cl-m { font-size: 10.5px; color: var(--ink-3); text-transform: uppercase; }
 .cl-night-sw { background: var(--night) !important; opacity: 0.45; }
+
+/* Sun rays behind the climate globe turn very slowly. */
+.sun-spokes { animation: sun-turn 240s linear infinite; transform-box: view-box; transform-origin: 0 0; }
+@keyframes sun-turn { to { transform: rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) { .sun-spokes { animation: none; } }

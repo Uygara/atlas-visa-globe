@@ -71,6 +71,7 @@
   --graticule:   rgba(42, 36, 48, 0.06);
   --globe-edge:  #B7C2BE;
   --night:       #1B2340;   /* night side of the globe, drawn at low opacity */
+  --sun:         #F2B84B;   /* sun glow behind the climate globe */
 
   /* Climate map: daytime high (cold blue → paper → hot rust; no green, green is visa-free)
      and monthly rain (dry sand → deep blue). */
@@ -177,6 +178,7 @@ body.theme-dark {
   --graticule:   rgba(236, 232, 219, 0.06);
   --globe-edge:  #2F4448;
   --night:       #000510;
+  --sun:         #C98A2E;
   --cl-t1: #35597A; --cl-t2: #5E8299; --cl-t3: #8EA4A4; --cl-t4: #C9B97F; --cl-t5: #C68A47; --cl-t6: #AF5736; --cl-t7: #7E3329;
   --cl-p1: #46443A; --cl-p2: #56675F; --cl-p3: #4E7B86; --cl-p4: #3E6F92; --cl-p5: #6C97C4;
 
