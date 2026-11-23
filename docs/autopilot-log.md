@@ -9,6 +9,13 @@ Newest run first. Each entry 10 lines or fewer. Playbook: `docs/AUTOPILOT.md`.
 
 ## Runs
 
+### 2026-11-23 · weekly run 3 (light: no subagents, token budget)
+- Numbers (7 days to 11-22): GA users 124 (-28%), sessions 141, engaged 23% (was 12% on 11-17). SC 28 days: 49 clicks, 28.6k impr, CTR 0.2%, pos 13.9 (impr up from 17.4k). Metrics row added to `.autopilot/metrics.tsv`.
+- Walk: 56 visits, 0 errors. audit-pages 0 errors (only og:image warnings on 5 static pages + TR twins, unchanged).
+- Shipped: f7e83f91a embed-snippet block on /visa/<cc>/ (EN + TR, D6 step 2) → referral sessions `utm_source=embed`.
+- Left: og:image on static pages; ux-walker not run; passport pages not regenerated (date-only churn, daily job does it).
+- Owner: nothing new. 2026-12-17 measure of /visa/ pages still due (see 11-19 entry).
+
 ### 2026-11-20 · weekly run 2 (new Mac checkout, no `.secrets/`, no push access)
 - Numbers: skipped (no `.secrets/` on this machine); `.autopilot/metrics.tsv` not started.
 - Walk: 56 visits, 0 errors. audit-pages 0 errors / 10 warnings (og:image, unchanged).

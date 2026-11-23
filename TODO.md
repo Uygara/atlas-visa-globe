@@ -1,6 +1,6 @@
 # travelnow.info: açık işler
 
-> Güncelleme: 2026-10-06 · **Yalnızca açık işler.** Biten iş silinir; ne yapıldığı `STATE.md`'de. Öncelik: **P1**
+> Güncelleme: 2026-11-23 · **Yalnızca açık işler.** Biten iş silinir; ne yapıldığı `STATE.md`'de. Öncelik: **P1**
 > sıradaki, **P2** yakında, **P3** sonra. Kurallar ve oturum rutini `CLAUDE.md`'de. Mobil: `MOBILE-SETUP.md`.
 > Oturum başında: `node tools/analytics-report.js` (GA4 + Search Console, ~40 satır).
 
