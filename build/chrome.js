@@ -573,7 +573,9 @@ function Masthead(_ref9) {
     className: "mh-grp-label"
   }, tr("settings.theme", "Theme")), themeOpts)), React.createElement(AccountLink, null)), React.createElement("div", {
     className: "mh-sheet"
-  }, nav.PRIMARY.map(function (it) {
+  }, nav.PRIMARY.filter(function (it) {
+    return it.href !== "/";
+  }).map(function (it) {
     return React.createElement("a", {
       key: it.href,
       className: "mh-sheet-link",
@@ -582,12 +584,22 @@ function Masthead(_ref9) {
     }, label(it));
   }), React.createElement("p", {
     className: "mh-sheet-h"
+  }, tr(TOP[0].key, TOP[0].en)), React.createElement("ul", {
+    className: "mh-sheet-tools"
+  }, TOP[0].items.map(function (it) {
+    return React.createElement("li", {
+      key: it.href
+    }, React.createElement("a", {
+      className: "mh-sheet-tool",
+      href: to(it.href),
+      "aria-current": cur(it)
+    }, label(it)));
+  })), React.createElement("p", {
+    className: "mh-sheet-h"
   }, tr("nav.all_tools", "All tools")), React.createElement("ul", {
     className: "mh-sheet-tools"
-  }, nav.GROUPS.map(function (g) {
-    return g.items.filter(function (it) {
-      return it.href !== "/";
-    }).map(function (it) {
+  }, REST.map(function (g) {
+    return g.items.map(function (it) {
       return React.createElement("li", {
         key: it.href
       }, React.createElement("a", {

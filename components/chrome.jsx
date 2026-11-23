@@ -317,12 +317,18 @@ function Masthead({ theme, onTheme }) {
       </div>
 
       <div className="mh-sheet">
-        {nav.PRIMARY.map(it => (
+        {nav.PRIMARY.filter(it => it.href !== "/").map(it => (
           <a key={it.href} className="mh-sheet-link" href={to(it.href)} aria-current={cur(it)}>{label(it)}</a>
         ))}
+        <p className="mh-sheet-h">{tr(TOP[0].key, TOP[0].en)}</p>
+        <ul className="mh-sheet-tools">
+          {TOP[0].items.map(it => (
+            <li key={it.href}><a className="mh-sheet-tool" href={to(it.href)} aria-current={cur(it)}>{label(it)}</a></li>
+          ))}
+        </ul>
         <p className="mh-sheet-h">{tr("nav.all_tools", "All tools")}</p>
         <ul className="mh-sheet-tools">
-          {nav.GROUPS.map(g => g.items.filter(it => it.href !== "/").map(it => (
+          {REST.map(g => g.items.map(it => (
             <li key={it.href}><a className="mh-sheet-tool" href={to(it.href)} aria-current={cur(it)}>{label(it)}</a></li>
           )))}
         </ul>

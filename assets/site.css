@@ -449,7 +449,7 @@ ul.dir { columns: 2; margin-top: 22px; }
 
 /* ── Site footer ─────────────────────────────────────────────────────── */
 .site-foot { margin-top: 40px; border-top: 1px solid var(--rule-strong); background: var(--paper-raised); }
-.site-foot-inner { max-width: 1120px; margin: 0 auto; padding: 28px 20px 34px; display: grid; grid-template-columns: minmax(220px, 1.3fr) repeat(3, minmax(0, 1fr)); gap: 24px; }
+.site-foot-inner { max-width: 1120px; margin: 0 auto; padding: 28px 20px 34px; display: grid; grid-template-columns: minmax(200px, 1.2fr) repeat(4, minmax(0, 1fr)); gap: 24px; }
 .site-foot .brand { margin-bottom: 10px; }
 .site-foot-about { margin: 0; font-size: var(--fs-sm); line-height: 1.55; color: var(--ink-2); }
 .site-foot h2 { margin: 0 0 8px; font-family: var(--font-sans); font-size: var(--fs-sm); font-weight: 600; letter-spacing: var(--ls-label); color: var(--ink-3); }

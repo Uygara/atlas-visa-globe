@@ -13,7 +13,7 @@
 const { PRIMARY, GROUPS, SUPPORT, INSTAGRAM, isCurrent } = require("../assets/site-nav.js");
 const { makeT, hasTr, toTr, hreflang } = require("./locales");
 
-const ASSET_VERSION = "20261123a";
+const ASSET_VERSION = "20261123b";
 
 function esc(s) {
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -85,8 +85,10 @@ ${g.items.map(toolLink).join("\n")}
 ${g.items.map((it) => `            <li><a class="mh-tool" href="${href(it.href)}"${cur(it)}><span class="mh-tool-t">${esc(t(it.en))}</span>${it.den ? `<span class="mh-tool-d">${esc(t(it.den))}</span>` : ""}</a></li>`).join("\n")}
           </ul>
         </div>`).join("\n");
-  const sheetTools = GROUPS.map((g) => g.items.filter((it) => it.href !== "/").map((it) => `      <li><a class="mh-sheet-tool" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a></li>`).join("\n")).join("\n");
-  const sheet = PRIMARY.map((it) => `    <a class="mh-sheet-link" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a>`).join("\n");
+  // Maps get their own heading in the sheet; "All tools" lists the rest only.
+  const sheetMaps = GROUPS.filter((g) => g.top).map((g) => g.items.map((it) => `      <li><a class="mh-sheet-tool" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a></li>`).join("\n")).join("\n");
+  const sheetTools = GROUPS.filter((g) => !g.top).map((g) => g.items.map((it) => `      <li><a class="mh-sheet-tool" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a></li>`).join("\n")).join("\n");
+  const sheet = PRIMARY.filter((it) => it.href !== "/").map((it) => `    <a class="mh-sheet-link" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a>`).join("\n");
   const langs = i18n ? LANGS : (hasTr(path) ? LANGS.filter(([c]) => c === "en" || c === "tr") : []);
   const langSelect = langs.length
     ? `<select class="lang-select" data-lang-select data-no-i18n aria-label="${esc(t("Language"))}">${langs.map(([c, n, beta]) => `<option value="${c}"${c === lang ? " selected" : ""}>${n}${beta ? " (beta)" : ""}</option>`).join("")}</select>`
@@ -139,6 +141,10 @@ ${groups}
   </div>
   <div class="mh-sheet">
 ${sheet}
+    <p class="mh-sheet-h">${esc(t("Maps"))}</p>
+    <ul class="mh-sheet-tools">
+${sheetMaps}
+    </ul>
     <p class="mh-sheet-h">${esc(t("All tools"))}</p>
     <ul class="mh-sheet-tools">
 ${sheetTools}
@@ -165,7 +171,8 @@ ${items.map(([h, label]) => `        <li><a href="${href(h)}">${esc(t(label))}</
       <a class="brand" href="${href("/")}" aria-label="travelnow.info">${BRAND_MARK}<span class="brand-word">travelnow<span class="brand-tld">.info</span></span></a>
       <p class="site-foot-about"><a href="mailto:hello@travelnow.info">hello@travelnow.info</a></p>
     </div>
-${col("Tools", [["/", "Visa map"], ["/transit-map/", "Transit map"], ["/itinerary/", "Travel planner"], ["/panel/", "My panel"], ["/schengen-calculator/", "Schengen calc"], ["/etias/", "ETIAS 2026"], ["/passport-validity/", "Passport validity"], ["/alerts/", "Alerts"]])}
+${col("Maps", [["/", "Visa map"], ["/transit-map/", "Transit map"], ["/safety-map/", "Safety map"]])}
+${col("Tools", [["/itinerary/", "Travel planner"], ["/panel/", "My panel"], ["/schengen-calculator/", "Schengen calc"], ["/etias/", "ETIAS 2026"], ["/passport-validity/", "Passport validity"], ["/alerts/", "Alerts"]])}
 ${col("Read", [["/guides/", "Guides"], ["/passport/", "All passports"], ["/visa-shortcuts/", "Visa shortcuts"], ["/digital-nomad-visa/", "Digital nomad visas"], ["/citizenship-by-investment/", "Citizenship by investment"], ["/open-data/", "Open data"]])}
 ${col("The project", [["/about/", "About"], ["/contact/", "Contact"], ["/privacy/", "Privacy"], ["/terms/", "Terms"], [SUPPORT.href, "Support"], ["https://www.instagram.com/travelnow.info/", "Instagram"], ["https://github.com/Uygara/atlas-visa-globe", "Source on GitHub"]])}
   </div>

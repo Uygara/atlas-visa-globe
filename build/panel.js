@@ -2829,8 +2829,6 @@ function PanelFooter() {
   }, window.t("footer.schengen")), React.createElement("a", {
     href: "/itinerary/"
   }, window.t("footer.itinerary")), React.createElement("a", {
-    href: "/transit-map/"
-  }, window.t("nav.transit_map")), React.createElement("a", {
     href: "/etias/"
   }, window.t("footer.etias")), React.createElement("a", {
     href: "/passport-validity/"

@@ -1897,7 +1897,6 @@ function PanelFooter() {
         <a href="/alerts/">{window.t("footer.alerts")}</a>
         <a href="/schengen-calculator/">{window.t("footer.schengen")}</a>
         <a href="/itinerary/">{window.t("footer.itinerary")}</a>
-        <a href="/transit-map/">{window.t("nav.transit_map")}</a>
         <a href="/etias/">{window.t("footer.etias")}</a>
         <a href="/passport-validity/">{window.t("footer.validity")}</a>
         <a href="/visa-shortcuts/">{window.t("footer.shortcuts")}</a>
