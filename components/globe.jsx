@@ -110,6 +110,8 @@ function Globe({
   nightShade,
   // keepSpinning: keep the idle spin going while a country is selected (climate map).
   keepSpinning,
+  // tilt: lean the globe's axis by this many degrees, like a desk globe. Default 23.4 (Earth's axis); 0 = upright. Globe views only.
+  tilt,
 }) {
   // Group mode wins over direction when active — the question is "where can
   // this group of people go", which is inherently outgoing.
@@ -140,6 +142,8 @@ function Globe({
 
   // Mutable state that lives outside React's render loop.
   const rotRef = useRef([20, -10, 0]);     // current rotation (globe modes)
+  const tiltRef = useRef(0);               // axis lean (third rotation angle), from the tilt prop
+  tiltRef.current = tilt == null ? 23.4 : +tilt || 0;
   const panRef = useRef([0, 0]);           // pan offset in pixels (flat mode)
   const zoomRef = useRef(1);               // 1.0 = default; multiplier on baseScale
   const baseScaleRef = useRef(1);          // base scale computed from size
@@ -368,7 +372,7 @@ function Globe({
         .scale(base * zoomRef.current)
         .translate([w / 2, h / 2])
         .clipAngle(90)
-        .rotate(rotRef.current);
+        .rotate([rotRef.current[0], rotRef.current[1], tiltRef.current]);
     }
     baseScaleRef.current = base;
     projRef.current = proj;
@@ -443,7 +447,7 @@ function Globe({
       rotRef.current = [
         start[0] + (target[0] - start[0]) * e,
         start[1] + (target[1] - start[1]) * e,
-        0,
+        tiltRef.current,
       ];
       if (projRef.current && projRef.current.rotate) {
         projRef.current.rotate(rotRef.current);
@@ -563,7 +567,7 @@ function Globe({
         rotRef.current = [
           startRot[0] + dx * s,
           Math.max(-90, Math.min(90, startRot[1] - dy * s)),
-          0,
+          tiltRef.current,
         ];
         if (projRef.current && projRef.current.rotate) {
           projRef.current.rotate(rotRef.current);
@@ -683,7 +687,7 @@ function Globe({
       }
       if (moved) {
         if (lon > 180) lon -= 360; else if (lon < -180) lon += 360;
-        rotRef.current = [lon, mode === "flat" ? 0 : lat, 0];
+        rotRef.current = [lon, mode === "flat" ? 0 : lat, mode === "flat" ? 0 : tiltRef.current];
         if (projRef.current && projRef.current.rotate) {
           projRef.current.rotate(rotRef.current);
           // A slow spin needs no more than 30 fps; a glide follows the finger's speed.

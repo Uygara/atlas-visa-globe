@@ -144,7 +144,8 @@ function Globe(_ref) {
     arcs = _ref.arcs,
     stopMarkers = _ref.stopMarkers,
     nightShade = _ref.nightShade,
-    keepSpinning = _ref.keepSpinning;
+    keepSpinning = _ref.keepSpinning,
+    tilt = _ref.tilt;
   var groupActive = Array.isArray(groupPassports) && groupPassports.length > 0;
   var resolveDirected = function resolveDirected(iso2) {
     return direction === "incoming" ? window.resolveStatus(iso2, passport) : window.resolveStatus(passport, iso2);
@@ -183,6 +184,8 @@ function Globe(_ref) {
     };
   }, []);
   var rotRef = useRef([20, -10, 0]);
+  var tiltRef = useRef(0);
+  tiltRef.current = tilt == null ? 23.4 : +tilt || 0;
   var panRef = useRef([0, 0]);
   var zoomRef = useRef(1);
   var baseScaleRef = useRef(1);
@@ -425,7 +428,7 @@ function Globe(_ref) {
       proj = d3.geoEquirectangular().scale(base * zoomRef.current).translate([w / 2, h / 2 + panRef.current[1]]).rotate([rotRef.current[0], 0, 0]);
     } else {
       base = Math.min(w, h) * 0.42;
-      proj = d3.geoOrthographic().scale(base * zoomRef.current).translate([w / 2, h / 2]).clipAngle(90).rotate(rotRef.current);
+      proj = d3.geoOrthographic().scale(base * zoomRef.current).translate([w / 2, h / 2]).clipAngle(90).rotate([rotRef.current[0], rotRef.current[1], tiltRef.current]);
     }
     baseScaleRef.current = base;
     projRef.current = proj;
@@ -484,7 +487,7 @@ function Globe(_ref) {
     var _tween = function tween(now) {
       var t = Math.min(1, (now - t0) / dur);
       var e = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
-      rotRef.current = [start[0] + (target[0] - start[0]) * e, start[1] + (target[1] - start[1]) * e, 0];
+      rotRef.current = [start[0] + (target[0] - start[0]) * e, start[1] + (target[1] - start[1]) * e, tiltRef.current];
       if (projRef.current && projRef.current.rotate) {
         projRef.current.rotate(rotRef.current);
         redrawPaths();
@@ -589,7 +592,7 @@ function Globe(_ref) {
         }
       } else {
         var s = sensitivity / Math.max(1, zoomRef.current * 0.85);
-        rotRef.current = [startRot[0] + dx * s, Math.max(-90, Math.min(90, startRot[1] - dy * s)), 0];
+        rotRef.current = [startRot[0] + dx * s, Math.max(-90, Math.min(90, startRot[1] - dy * s)), tiltRef.current];
         if (projRef.current && projRef.current.rotate) {
           projRef.current.rotate(rotRef.current);
           redrawPaths();
@@ -723,7 +726,7 @@ function Globe(_ref) {
       }
       if (moved) {
         if (lon > 180) lon -= 360;else if (lon < -180) lon += 360;
-        rotRef.current = [lon, mode === "flat" ? 0 : lat, 0];
+        rotRef.current = [lon, mode === "flat" ? 0 : lat, mode === "flat" ? 0 : tiltRef.current];
         if (projRef.current && projRef.current.rotate) {
           projRef.current.rotate(rotRef.current);
           if (glide || frameNo % 2 === 0) redrawPaths();
