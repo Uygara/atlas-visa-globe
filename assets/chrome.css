@@ -307,8 +307,8 @@ html { -webkit-tap-highlight-color: transparent; }
   .btn, .field, .seg { border-color: var(--ink); }
 }
 
-/* The last menu in the bar (Read and explore) opens toward the start of the bar. */
-.mh-nav > .mh-top:last-child .mh-top-panel { inset-inline-start: auto; inset-inline-end: 0; }
+/* The menu nearest the end of the bar (Read and explore) opens toward the start of the bar. */
+.mh-nav > .mh-top:nth-last-child(-n+2) .mh-top-panel { inset-inline-start: auto; inset-inline-end: 0; }
 
 /* Static pages give every li a bottom margin; the bar items must not inherit it. */
 .masthead li { margin: 0; }
