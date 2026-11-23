@@ -38,7 +38,7 @@ Durum: `açık` · `sürüyor` · `bekliyor: <neyi>` · `bitti <hash>`
   EES bölümü (travel-europe.europa.eu). Ölç: GA `schengen_share` olayı.
 - **D6 · Gömülebilir vize denetleyicisi** · sürüyor · `<iframe>` veya küçük betik, altında bağlantı.
   Adım 1 (2026-11-20): `/embed/?to=&from=&lang=` sayfası, `_headers` ile çerçeveye izin, `/open-data/` üzerinde kod
-  parçası. Sıradaki: `/visa/<kod>/` sayfalarına "bu kutuyu sitene ekle" bloğu; GA4'te `utm_source=embed` ölçümü.
+  parçası. Adım 2 (2026-11-23): `/visa/<kod>/` sayfalarında (EN + TR) "bu kutuyu sitene ekle" bloğu. Sıradaki: GA4te `utm_source=embed` ölçümü (4 hafta sonra).
 - **D8 · Veri kalitesi: varış formu eVisa sanılıyor** · kısmen bitti 5d853b274 · Maldivler'de ücretsiz IMUGA beyanı eVisa
   sayılıyordu; 140 pasaport yanlış görünüyordu (bc897c2c9 ile düzeldi). Aynı kalıp Tayland (TDAC), Kolombiya
   (Check-MIG) ve başkalarında olabilir; kaynaklı denetim `visa-data-auditor` ile. Kalıcı çözüm: scraper'da
