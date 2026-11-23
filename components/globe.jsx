@@ -865,10 +865,13 @@ function Globe({
             <stop offset="100%" style={{ stopColor: "var(--sun)", stopOpacity: 0 }} />
           </radialGradient>
           <linearGradient id="sun-ray" x1="0" y1="0" x2="1" y2="0">
-            <stop offset="0%" style={{ stopColor: "var(--sun)", stopOpacity: 0.22 }} />
-            <stop offset="55%" style={{ stopColor: "var(--sun)", stopOpacity: 0.06 }} />
+            <stop offset="0%" style={{ stopColor: "var(--sun)", stopOpacity: 0.24 }} />
+            <stop offset="50%" style={{ stopColor: "var(--sun)", stopOpacity: 0.07 }} />
             <stop offset="100%" style={{ stopColor: "var(--sun)", stopOpacity: 0 }} />
           </linearGradient>
+          <filter id="sun-soften" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation={Math.max(10, r * 0.06)} />
+          </filter>
           <filter id="night-blur" x="-20%" y="-20%" width="140%" height="140%">
             <feGaussianBlur stdDeviation={Math.max(4, r * zoomDisplay * 0.075)} />
           </filter>
@@ -939,9 +942,9 @@ function Globe({
           <g className="sun-rays" data-origin={`translate(${cx},${cy})`} transform={`translate(${cx},${cy})`} style={{ pointerEvents: "none" }} aria-hidden="true">
             <g transform={`translate(${r * zoomDisplay * 1.02},0)`}>
               <circle r={r * zoomDisplay * 1.25} fill="url(#sun-glow)" />
-              <g className="sun-spokes">
-                {Array.from({ length: 18 }, (_, i) => {
-                  const L = Math.max(size.w, size.h), a = i * 20, w = i % 2 ? 2.2 : 3.6;
+              <g className="sun-spokes" filter="url(#sun-soften)">
+                {Array.from({ length: 10 }, (_, i) => {
+                  const L = Math.max(size.w, size.h), a = i * 36 + (i % 2 ? 9 : 0), w = i % 2 ? 5 : 8;
                   return <path key={i} d={`M0,0 L${L},${-L * w / 100} L${L},${L * w / 100} Z`} transform={`rotate(${a})`} fill="url(#sun-ray)" />;
                 })}
               </g>

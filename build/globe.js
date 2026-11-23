@@ -920,13 +920,13 @@ function Globe(_ref) {
     offset: "0%",
     style: {
       stopColor: "var(--sun)",
-      stopOpacity: 0.22
+      stopOpacity: 0.24
     }
   }), React.createElement("stop", {
-    offset: "55%",
+    offset: "50%",
     style: {
       stopColor: "var(--sun)",
-      stopOpacity: 0.06
+      stopOpacity: 0.07
     }
   }), React.createElement("stop", {
     offset: "100%",
@@ -934,6 +934,14 @@ function Globe(_ref) {
       stopColor: "var(--sun)",
       stopOpacity: 0
     }
+  })), React.createElement("filter", {
+    id: "sun-soften",
+    x: "-50%",
+    y: "-50%",
+    width: "200%",
+    height: "200%"
+  }, React.createElement("feGaussianBlur", {
+    stdDeviation: Math.max(10, r * 0.06)
   })), React.createElement("filter", {
     id: "night-blur",
     x: "-20%",
@@ -1103,13 +1111,14 @@ function Globe(_ref) {
     r: r * zoomDisplay * 1.25,
     fill: "url(#sun-glow)"
   }), React.createElement("g", {
-    className: "sun-spokes"
+    className: "sun-spokes",
+    filter: "url(#sun-soften)"
   }, Array.from({
-    length: 18
+    length: 10
   }, function (_, i) {
     var L = Math.max(size.w, size.h),
-      a = i * 20,
-      w = i % 2 ? 2.2 : 3.6;
+      a = i * 36 + (i % 2 ? 9 : 0),
+      w = i % 2 ? 5 : 8;
     return React.createElement("path", {
       key: i,
       d: "M0,0 L".concat(L, ",").concat(-L * w / 100, " L").concat(L, ",").concat(L * w / 100, " Z"),
