@@ -31,15 +31,15 @@
 <link rel="alternate" hreflang="tr" href="https://travelnow.info/tr/digital-nomad-visa/">
 <link rel="alternate" hreflang="x-default" href="https://travelnow.info/digital-nomad-visa/">
 <script>try{if(localStorage.getItem("atlas.lang")==="tr")location.replace("/tr"+location.pathname+location.search+location.hash)}catch(e){}</script>
-<link rel="stylesheet" href="/assets/fonts.css?v=20261122z">
-<link rel="stylesheet" href="/assets/tokens.css?v=20261122z">
-<link rel="stylesheet" href="/assets/chrome.css?v=20261122z">
-<link rel="stylesheet" href="/assets/site.css?v=20261122z">
+<link rel="stylesheet" href="/assets/fonts.css?v=20261123a">
+<link rel="stylesheet" href="/assets/tokens.css?v=20261123a">
+<link rel="stylesheet" href="/assets/chrome.css?v=20261123a">
+<link rel="stylesheet" href="/assets/site.css?v=20261123a">
 <script>try{if((JSON.parse(localStorage.getItem("atlas.tweaks")||"{}")).background==="dark")document.documentElement.classList.add("theme-dark")}catch(e){}</script>
-<script src="/assets/account-config.js?v=20261122z"></script>
-<script src="/assets/account-sync.js?v=20261122z"></script>
-<script src="/assets/account.js?v=20261122z"></script>
-<script src="/assets/site-chrome.js?v=20261122z" defer></script>
+<script src="/assets/account-config.js?v=20261123a"></script>
+<script src="/assets/account-sync.js?v=20261123a"></script>
+<script src="/assets/account.js?v=20261123a"></script>
+<script src="/assets/site-chrome.js?v=20261123a" defer></script>
 <!-- /chrome:head -->
 <style>.wrap{max-width:1100px}</style>
 <script src="/data/digital-nomad-visas.js"></script>
@@ -57,7 +57,7 @@
       <div class="mh-panel mh-top-panel" id="mh-top-panel-0" hidden>
         <ul>
             <li><a class="mh-tool" href="/"><span class="mh-tool-t">Visa map</span><span class="mh-tool-d">Where your passport goes without a visa</span></a></li>
-            <li><a class="mh-tool" href="/transit-map/"><span class="mh-tool-t">Transit map</span><span class="mh-tool-d">Is a visa needed to change planes</span></a></li>
+            <li><a class="mh-tool" href="/transit-map/"><span class="mh-tool-t">Transit map</span><span class="mh-tool-d">Visa rules for changing planes</span></a></li>
             <li><a class="mh-tool" href="/safety-map/"><span class="mh-tool-t">Safety map</span><span class="mh-tool-d">Official travel advisories</span></a></li>
         </ul>
       </div>
@@ -128,7 +128,14 @@
 </header>
 <div class="doc-band" aria-hidden="true"></div>
 <nav class="tabbar" aria-label="Quick links">
-  <a class="tb-item" href="/">Map</a>
+  <div class="tb-maps">
+    <button type="button" class="tb-item tb-maps-btn" aria-expanded="false" aria-controls="tb-maps-panel">Maps</button>
+    <div class="tb-maps-panel" id="tb-maps-panel" hidden>
+      <a class="tb-map" href="/">Visa map</a>
+      <a class="tb-map" href="/transit-map/">Transit map</a>
+      <a class="tb-map" href="/safety-map/">Safety map</a>
+    </div>
+  </div>
   <a class="tb-item" href="/visa/">Countries</a>
   <a class="tb-item" href="/itinerary/">Planner</a>
   <a class="tb-item" href="/panel/">My panel</a>
@@ -179,7 +186,7 @@
 
   <footer class="fine">
     <p><strong>How to read the table.</strong> Income is the minimum monthly proof
-    of earnings, converted to USD at publication. Fees are application fees only.
+    of earnings, converted to USD at publication; amounts marked € are the official euro figure, not converted. Fees are application fees only.
     Most programmes also require health insurance ($30–100/month typical) and,
     in some cases, an apartment lease. "Family OK" means a spouse + dependent
     children can be added under the primary applicant.</p>
@@ -228,9 +235,10 @@
     if (v == null || v === "") return '<span class="nope">' + (TR ? "yok" : "N/A") + '</span>';
     return String(v);
   }
-  function formatIncome(n) {
+  // Amounts are US dollars unless the row says otherwise (currency: "EUR" = the official euro figure, not converted).
+  function formatIncome(n, cur) {
     if (!n) return `<span class="nope">${TR ? "belirtilmemiş" : "none stated"}</span>`;
-    return `<span class="income">$${n.toLocaleString("en-US")}</span>`;
+    return `<span class="income">${cur === "EUR" ? "€" : "$"}${n.toLocaleString("en-US")}</span>`;
   }
   function formatFee(s) {
     if (s == null) return `<span class="nope">${TR ? "yok" : "N/A"}</span>`;
@@ -261,7 +269,7 @@
             <div style="font-size:var(--fs-xs);color:var(--fg-mute);">${REGION_LABEL[REGION_BY_ISO[d.iso2]] || ""}</div></td>
         <td>${escapeHtml(d.program)}<div class="src-link">
             <a href="${d.source}" target="_blank" rel="noopener nofollow">${TR ? "Resmî kaynak" : "Official source"} ↗</a></div></td>
-        <td style="text-align:right;">${formatIncome(d.income)}</td>
+        <td style="text-align:right;">${formatIncome(d.income, d.currency)}</td>
         <td style="text-align:right;">${formatFee(d.fee)}</td>
         <td>${escapeHtml(d.duration)}</td>
         <td>${escapeHtml(d.taxBreak)}</td>
@@ -300,7 +308,7 @@
   render();
 })();
 </script>
-<script src="/data/static-i18n.js?v=20261122z" defer></script>
+<script src="/data/static-i18n.js?v=20261123a" defer></script>
 <!-- chrome:footer -->
 <footer class="site-foot">
   <div class="site-foot-inner">

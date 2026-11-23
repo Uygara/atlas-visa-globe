@@ -148,6 +148,18 @@
     pop(head.querySelector(".mh-all-btn:not(.mh-top-btn)"), head.querySelector(".mh-all-panel"));
     pop(head.querySelector(".mh-prefs-btn"), head.querySelector(".mh-prefs-panel"));
 
+    // ── Phone "Maps" tab: a small menu of the three maps ─────────────
+    var mapsBtn = document.querySelector(".tb-maps-btn"), mapsPanel = document.getElementById("tb-maps-panel");
+    function closeMaps() { if (mapsPanel) { mapsPanel.hidden = true; mapsBtn.setAttribute("aria-expanded", "false"); } }
+    if (mapsBtn && mapsPanel) {
+      mapsBtn.addEventListener("click", function () {
+        var open = mapsPanel.hidden;
+        mapsPanel.hidden = !open; mapsBtn.setAttribute("aria-expanded", String(open));
+      });
+      document.addEventListener("pointerdown", function (e) { if (!e.target.closest(".tb-maps")) closeMaps(); });
+      document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeMaps(); });
+    }
+
     // ── Mobile sheet ──────────────────────────────────────────────────
     // The sheet is opened by "More" in the phone tab bar (a sibling of the header, so the
     // outside-click test below has to let it through).

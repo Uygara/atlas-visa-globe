@@ -7,7 +7,7 @@ module.exports = {
   "b7ad66d0": `Ülke veya program ara…`, // placeholder (also on /digital-nomad-visa/)
 
   // /digital-nomad-visa/
-  "a68f5703": `<strong>Tabloyu nasıl okumalı.</strong> Gelir, yayım tarihinde ABD dolarına çevrilmiş aylık asgari kazanç kanıtıdır. Harçlar yalnızca başvuru harçlarıdır. Çoğu program ayrıca sağlık sigortası (genelde ayda 30–100 $) ve bazı durumlarda kira sözleşmesi ister. “Aile OK”, bir eş ve bakmakla yükümlü çocukların ana başvuru sahibinin başvurusuna eklenebileceği anlamına gelir.`,
+  "5c16fe15": `<strong>Tabloyu nasıl okumalı.</strong> Gelir, yayım tarihinde ABD dolarına çevrilmiş aylık asgari kazanç kanıtıdır; € işaretli tutarlar resmî euro rakamıdır, çevrilmemiştir. Harçlar yalnızca başvuru harçlarıdır. Çoğu program ayrıca sağlık sigortası (genelde ayda 30–100 $) ve bazı durumlarda kira sözleşmesi ister. “Aile OK”, bir eş ve bakmakla yükümlü çocukların ana başvuru sahibinin başvurusuna eklenebileceği anlamına gelir.`,
   "5a867ec1": `Güncelliğini yitirmiş bir rakam ya da eksik bir program mı gördün? <a href="https://github.com/Uygara/atlas-visa-globe/issues" rel="noopener">github.com/Uygara/atlas-visa-globe</a> adresinde bir konu (issue) aç.`,
 
   // /etias/

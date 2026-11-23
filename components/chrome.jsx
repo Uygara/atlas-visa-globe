@@ -177,6 +177,14 @@ function Masthead({ theme, onTheme }) {
   const to = (h) => (nav.localHref ? nav.localHref(h, lang) : h);
   const [open, setOpen] = useStateC(null); // "tools" | "prefs" | null
   const [sheetOpen, setSheetOpen] = useStateC(false);
+  const [mapsOpen, setMapsOpen] = useStateC(false);
+  useEffectC(() => {
+    if (!mapsOpen) return;
+    const down = (e) => { if (!e.target.closest(".tb-maps")) setMapsOpen(false); };
+    const key = (e) => { if (e.key === "Escape") setMapsOpen(false); };
+    document.addEventListener("pointerdown", down); document.addEventListener("keydown", key);
+    return () => { document.removeEventListener("pointerdown", down); document.removeEventListener("keydown", key); };
+  }, [mapsOpen]);
   const headerRef = useRefC(null), moreRef = useRefC(null);
   const toolsBtn = useRefC(null), prefsBtn = useRefC(null);
   const toolsPanel = useRefC(null), prefsPanel = useRefC(null);
@@ -327,10 +335,20 @@ function Masthead({ theme, onTheme }) {
       </div>
     </header>
     <nav className="tabbar" aria-label={tr("nav.tabs", "Quick links")}>
-      {nav.PRIMARY.map(it => (
+      <div className="tb-maps">
+        <button type="button" className={"tb-item tb-maps-btn" + (TOP.some(g => g.items.some(it => cur(it))) ? " has-current" : "")}
+          aria-expanded={mapsOpen} aria-controls="tb-maps-panel"
+          onClick={() => { setSheetOpen(false); setMapsOpen(o => !o); }}>{tr(TOP[0].key, TOP[0].en)}</button>
+        <div className="tb-maps-panel" id="tb-maps-panel" hidden={!mapsOpen}>
+          {TOP[0].items.map(it => (
+            <a key={it.href} className="tb-map" href={to(it.href)} aria-current={cur(it)}>{label(it)}</a>
+          ))}
+        </div>
+      </div>
+      {nav.PRIMARY.filter(it => it.href !== "/").map(it => (
         <a key={it.href} className="tb-item" href={to(it.href)} aria-current={cur(it)}>{TAB_LABEL[it.href] || label(it)}</a>
       ))}
-      <button ref={moreRef} type="button" className="tb-item tb-more" aria-expanded={sheetOpen} onClick={() => setSheetOpen(o => !o)}>
+      <button ref={moreRef} type="button" className="tb-item tb-more" aria-expanded={sheetOpen} onClick={() => { setMapsOpen(false); setSheetOpen(o => !o); }}>
         {tr("nav.tab_more", "More")}
       </button>
     </nav>

@@ -326,6 +326,25 @@ function Masthead(_ref9) {
     _useStateC0 = _slicedToArray(_useStateC9, 2),
     sheetOpen = _useStateC0[0],
     setSheetOpen = _useStateC0[1];
+  var _useStateC1 = useStateC(false),
+    _useStateC10 = _slicedToArray(_useStateC1, 2),
+    mapsOpen = _useStateC10[0],
+    setMapsOpen = _useStateC10[1];
+  useEffectC(function () {
+    if (!mapsOpen) return;
+    var down = function down(e) {
+      if (!e.target.closest(".tb-maps")) setMapsOpen(false);
+    };
+    var key = function key(e) {
+      if (e.key === "Escape") setMapsOpen(false);
+    };
+    document.addEventListener("pointerdown", down);
+    document.addEventListener("keydown", key);
+    return function () {
+      document.removeEventListener("pointerdown", down);
+      document.removeEventListener("keydown", key);
+    };
+  }, [mapsOpen]);
   var headerRef = useRefC(null),
     moreRef = useRefC(null);
   var toolsBtn = useRefC(null),
@@ -593,7 +612,37 @@ function Masthead(_ref9) {
   }, tr(nav.SUPPORT.key, nav.SUPPORT.en))))), React.createElement("nav", {
     className: "tabbar",
     "aria-label": tr("nav.tabs", "Quick links")
-  }, nav.PRIMARY.map(function (it) {
+  }, React.createElement("div", {
+    className: "tb-maps"
+  }, React.createElement("button", {
+    type: "button",
+    className: "tb-item tb-maps-btn" + (TOP.some(function (g) {
+      return g.items.some(function (it) {
+        return cur(it);
+      });
+    }) ? " has-current" : ""),
+    "aria-expanded": mapsOpen,
+    "aria-controls": "tb-maps-panel",
+    onClick: function onClick() {
+      setSheetOpen(false);
+      setMapsOpen(function (o) {
+        return !o;
+      });
+    }
+  }, tr(TOP[0].key, TOP[0].en)), React.createElement("div", {
+    className: "tb-maps-panel",
+    id: "tb-maps-panel",
+    hidden: !mapsOpen
+  }, TOP[0].items.map(function (it) {
+    return React.createElement("a", {
+      key: it.href,
+      className: "tb-map",
+      href: to(it.href),
+      "aria-current": cur(it)
+    }, label(it));
+  }))), nav.PRIMARY.filter(function (it) {
+    return it.href !== "/";
+  }).map(function (it) {
     return React.createElement("a", {
       key: it.href,
       className: "tb-item",
@@ -606,7 +655,8 @@ function Masthead(_ref9) {
     className: "tb-item tb-more",
     "aria-expanded": sheetOpen,
     onClick: function onClick() {
-      return setSheetOpen(function (o) {
+      setMapsOpen(false);
+      setSheetOpen(function (o) {
         return !o;
       });
     }
@@ -872,7 +922,7 @@ function PanelResizer() {
   var clamp = function clamp(v) {
     return Math.min(max(), Math.max(MIN, Math.round(v)));
   };
-  var _useStateC1 = useStateC(function () {
+  var _useStateC11 = useStateC(function () {
       try {
         var v = +localStorage.getItem("atlas.panelW");
         return v >= MIN ? v : DEF;
@@ -880,9 +930,9 @@ function PanelResizer() {
         return DEF;
       }
     }),
-    _useStateC10 = _slicedToArray(_useStateC1, 2),
-    w = _useStateC10[0],
-    setW = _useStateC10[1];
+    _useStateC12 = _slicedToArray(_useStateC11, 2),
+    w = _useStateC12[0],
+    setW = _useStateC12[1];
   var ref = useRefC(null);
   useLangTick();
   var apply = function apply(v) {
@@ -971,7 +1021,7 @@ function FrameResizer() {
   var clamp = function clamp(v) {
     return Math.min(max(), Math.max(MIN, Math.round(v)));
   };
-  var _useStateC11 = useStateC(function () {
+  var _useStateC13 = useStateC(function () {
       try {
         var v = +localStorage.getItem("atlas.frameH");
         return v >= MIN ? v : 0;
@@ -979,9 +1029,9 @@ function FrameResizer() {
         return 0;
       }
     }),
-    _useStateC12 = _slicedToArray(_useStateC11, 2),
-    h = _useStateC12[0],
-    setH = _useStateC12[1];
+    _useStateC14 = _slicedToArray(_useStateC13, 2),
+    h = _useStateC14[0],
+    setH = _useStateC14[1];
   var ref = useRefC(null);
   useLangTick();
   var apply = function apply(v) {

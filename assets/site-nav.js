@@ -18,7 +18,7 @@
   var GROUPS = [
     { key: "nav.grp_maps", en: "Maps", top: true, items: [
       { href: "/",             key: "nav.visa_map",    en: "Visa map",     dkey: "nav.d_visa",    den: "Where your passport goes without a visa" },
-      { href: "/transit-map/", key: "nav.transit_map", en: "Transit map",  dkey: "nav.d_transit", den: "Is a visa needed to change planes" },
+      { href: "/transit-map/", key: "nav.transit_map", en: "Transit map",  dkey: "nav.d_transit", den: "Visa rules for changing planes" },
       { href: "/safety-map/",  key: "nav.safety_map",  en: "Safety map",   dkey: "nav.d_safety",  den: "Official travel advisories" }
     ] },
     { key: "nav.grp_calc", en: "Calculators", items: [

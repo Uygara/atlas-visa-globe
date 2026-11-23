@@ -36,15 +36,15 @@
 <link rel="alternate" hreflang="tr" href="https://travelnow.info/tr/digital-nomad-visa/">
 <link rel="alternate" hreflang="x-default" href="https://travelnow.info/digital-nomad-visa/">
 <script>try{localStorage.setItem("atlas.lang","tr")}catch(e){}</script>
-<link rel="stylesheet" href="/assets/fonts.css?v=20261122z">
-<link rel="stylesheet" href="/assets/tokens.css?v=20261122z">
-<link rel="stylesheet" href="/assets/chrome.css?v=20261122z">
-<link rel="stylesheet" href="/assets/site.css?v=20261122z">
+<link rel="stylesheet" href="/assets/fonts.css?v=20261123a">
+<link rel="stylesheet" href="/assets/tokens.css?v=20261123a">
+<link rel="stylesheet" href="/assets/chrome.css?v=20261123a">
+<link rel="stylesheet" href="/assets/site.css?v=20261123a">
 <script>try{if((JSON.parse(localStorage.getItem("atlas.tweaks")||"{}")).background==="dark")document.documentElement.classList.add("theme-dark")}catch(e){}</script>
-<script src="/assets/account-config.js?v=20261122z"></script>
-<script src="/assets/account-sync.js?v=20261122z"></script>
-<script src="/assets/account.js?v=20261122z"></script>
-<script src="/assets/site-chrome.js?v=20261122z" defer=""></script>
+<script src="/assets/account-config.js?v=20261123a"></script>
+<script src="/assets/account-sync.js?v=20261123a"></script>
+<script src="/assets/account.js?v=20261123a"></script>
+<script src="/assets/site-chrome.js?v=20261123a" defer=""></script>
 <!-- /chrome:head -->
 <style>.wrap{max-width:1100px}</style>
 <script src="/data/digital-nomad-visas.js"></script>
@@ -62,7 +62,7 @@
       <div class="mh-panel mh-top-panel" id="mh-top-panel-0" hidden="">
         <ul>
             <li><a class="mh-tool" href="/tr/"><span class="mh-tool-t">Vize haritası</span><span class="mh-tool-d">Pasaportunla nereye vizesiz gidebilirsin</span></a></li>
-            <li><a class="mh-tool" href="/transit-map/"><span class="mh-tool-t">Transit haritası</span><span class="mh-tool-d">Is a visa needed to change planes</span></a></li>
+            <li><a class="mh-tool" href="/transit-map/"><span class="mh-tool-t">Transit haritası</span><span class="mh-tool-d">Aktarma için vize gerekir mi</span></a></li>
             <li><a class="mh-tool" href="/safety-map/"><span class="mh-tool-t">Güvenlik haritası</span><span class="mh-tool-d">Resmi seyahat uyarıları</span></a></li>
         </ul>
       </div>
@@ -133,7 +133,14 @@
 </header>
 <div class="doc-band" aria-hidden="true"></div>
 <nav class="tabbar" aria-label="Hızlı bağlantılar">
-  <a class="tb-item" href="/tr/">Harita</a>
+  <div class="tb-maps">
+    <button type="button" class="tb-item tb-maps-btn" aria-expanded="false" aria-controls="tb-maps-panel">Haritalar</button>
+    <div class="tb-maps-panel" id="tb-maps-panel" hidden="">
+      <a class="tb-map" href="/tr/">Vize haritası</a>
+      <a class="tb-map" href="/transit-map/">Transit haritası</a>
+      <a class="tb-map" href="/safety-map/">Güvenlik haritası</a>
+    </div>
+  </div>
   <a class="tb-item" href="/tr/visa/">Ülkeler</a>
   <a class="tb-item" href="/itinerary/">Planlayıcı</a>
   <a class="tb-item" href="/tr/panel/">Panelim</a>
@@ -183,7 +190,7 @@
 
 
   <footer class="fine">
-    <p><strong>Tabloyu nasıl okumalı.</strong> Gelir, yayım tarihinde ABD dolarına çevrilmiş aylık asgari kazanç kanıtıdır. Harçlar yalnızca başvuru harçlarıdır. Çoğu program ayrıca sağlık sigortası (genelde ayda 30–100 $) ve bazı durumlarda kira sözleşmesi ister. “Aile OK”, bir eş ve bakmakla yükümlü çocukların ana başvuru sahibinin başvurusuna eklenebileceği anlamına gelir.</p>
+    <p><strong>Tabloyu nasıl okumalı.</strong> Gelir, yayım tarihinde ABD dolarına çevrilmiş aylık asgari kazanç kanıtıdır; € işaretli tutarlar resmî euro rakamıdır, çevrilmemiştir. Harçlar yalnızca başvuru harçlarıdır. Çoğu program ayrıca sağlık sigortası (genelde ayda 30–100 $) ve bazı durumlarda kira sözleşmesi ister. “Aile OK”, bir eş ve bakmakla yükümlü çocukların ana başvuru sahibinin başvurusuna eklenebileceği anlamına gelir.</p>
     <p>Vergi avantajı özetleri bilinçli olarak kısadır. Her programın ince yazısı, çifte vergilendirme anlaşmaları ve gerçek sonucu değiştiren ikamet-gün eşikleri vardır. Karar vermeden önce her zaman yerel bir muhasebeciyle hesapla.</p>
     <p>Güncelliğini yitirmiş bir rakam ya da eksik bir program mı gördün? <a href="https://github.com/Uygara/atlas-visa-globe/issues" rel="noopener">github.com/Uygara/atlas-visa-globe</a> adresinde bir konu (issue) aç.</p>
   </footer>
@@ -226,9 +233,10 @@
     if (v == null || v === "") return '<span class="nope">' + (TR ? "yok" : "N/A") + '</span>';
     return String(v);
   }
-  function formatIncome(n) {
+  // Amounts are US dollars unless the row says otherwise (currency: "EUR" = the official euro figure, not converted).
+  function formatIncome(n, cur) {
     if (!n) return `<span class="nope">${TR ? "belirtilmemiş" : "none stated"}</span>`;
-    return `<span class="income">$${n.toLocaleString("en-US")}</span>`;
+    return `<span class="income">${cur === "EUR" ? "€" : "$"}${n.toLocaleString("en-US")}</span>`;
   }
   function formatFee(s) {
     if (s == null) return `<span class="nope">${TR ? "yok" : "N/A"}</span>`;
@@ -259,7 +267,7 @@
             <div style="font-size:var(--fs-xs);color:var(--fg-mute);">${REGION_LABEL[REGION_BY_ISO[d.iso2]] || ""}</div></td>
         <td>${escapeHtml(d.program)}<div class="src-link">
             <a href="${d.source}" target="_blank" rel="noopener nofollow">${TR ? "Resmî kaynak" : "Official source"} ↗</a></div></td>
-        <td style="text-align:right;">${formatIncome(d.income)}</td>
+        <td style="text-align:right;">${formatIncome(d.income, d.currency)}</td>
         <td style="text-align:right;">${formatFee(d.fee)}</td>
         <td>${escapeHtml(d.duration)}</td>
         <td>${escapeHtml(d.taxBreak)}</td>
@@ -298,7 +306,7 @@
   render();
 })();
 </script>
-<script src="/data/static-i18n.js?v=20261122z" defer=""></script>
+<script src="/data/static-i18n.js?v=20261123a" defer=""></script>
 <!-- chrome:footer -->
 <footer class="site-foot">
   <div class="site-foot-inner">

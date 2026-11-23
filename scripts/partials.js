@@ -13,7 +13,7 @@
 const { PRIMARY, GROUPS, SUPPORT, INSTAGRAM, isCurrent } = require("../assets/site-nav.js");
 const { makeT, hasTr, toTr, hreflang } = require("./locales");
 
-const ASSET_VERSION = "20261122z";
+const ASSET_VERSION = "20261123a";
 
 function esc(s) {
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -98,8 +98,18 @@ ${g.items.map((it) => `            <li><a class="mh-tool" href="${href(it.href)}
   const themeOpts = `<div class="mh-opts-row" role="group" aria-label="${esc(t("Theme"))}"><button type="button" class="mh-opt" data-theme-set="light" aria-pressed="true">${esc(t("Light"))}</button><button type="button" class="mh-opt" data-theme-set="dark" aria-pressed="false">${esc(t("Dark"))}</button></div>`;
   // Phone bottom tab bar (< 900px, see chrome.css): four crawlable links and "More", which opens the sheet above.
   const TAB_LABELS = { "/": "Map", "/visa/": "Countries", "/itinerary/": "Planner", "/panel/": "My panel" };
+  // The first tab is "Maps": it opens a small menu of the three maps (visa, transit, safety), like the desktop bar.
+  const mapItems = TOP.flatMap((g) => g.items);
+  const onMap = mapItems.some((it) => isCurrent(it, path));
+  const mapsTab = `  <div class="tb-maps">
+    <button type="button" class="tb-item tb-maps-btn${onMap ? " has-current" : ""}" aria-expanded="false" aria-controls="tb-maps-panel">${esc(t(TOP[0].en))}</button>
+    <div class="tb-maps-panel" id="tb-maps-panel" hidden>
+${mapItems.map((it) => `      <a class="tb-map" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a>`).join("\n")}
+    </div>
+  </div>`;
   const tabbar = `<nav class="tabbar" aria-label="${esc(t("Quick links"))}">
-${PRIMARY.map((it) => `  <a class="tb-item" href="${href(it.href)}"${cur(it)}>${esc(t(TAB_LABELS[it.href] || it.en))}</a>`).join("\n")}
+${mapsTab}
+${PRIMARY.filter((it) => it.href !== "/").map((it) => `  <a class="tb-item" href="${href(it.href)}"${cur(it)}>${esc(t(TAB_LABELS[it.href] || it.en))}</a>`).join("\n")}
   <button type="button" class="tb-item tb-more" aria-expanded="false">${esc(t("More"))}</button>
 </nav>`;
   return `<header class="masthead">
