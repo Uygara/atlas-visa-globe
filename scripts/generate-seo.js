@@ -1162,7 +1162,7 @@ function renderSitemap(allPassports, destinations) {
     ["/", 1.0], ["/guides/", 0.9],
     ...guides.map(g => [`/guides/${g}/`, 0.85]),
     ["/alerts/", 0.7], ["/panel/", 0.7],["/digital-nomad-visa/", 0.9], ["/citizenship-by-investment/", 0.9],
-    ["/transit-map/", 0.95], ["/safety-map/", 0.9], ["/etias/", 0.95], ["/passport-validity/", 0.95],
+    ["/transit-map/", 0.95], ["/safety-map/", 0.9], ["/climate-map/", 0.85], ["/etias/", 0.95], ["/passport-validity/", 0.95],
     ["/visa-shortcuts/", 0.9], ["/esta-rules/", 0.9], ["/visa-checklist/tr-schengen/", 0.9],
     ["/schengen-calculator/", 0.95], ["/itinerary/", 0.8], ["/about/", 0.6], ["/contact/", 0.5],
     ["/privacy/", 0.3], ["/terms/", 0.3], ["/passport/", 0.8],

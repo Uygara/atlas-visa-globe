@@ -25,7 +25,7 @@ const babel = require("@babel/core");
 
 const ROOT = path.resolve(__dirname, "..");
 const OUT_DIR = path.join(ROOT, "build");
-const PAGES = ["index.html", "transit-map/index.html", "itinerary/index.html", "safety-map/index.html"];
+const PAGES = ["index.html", "transit-map/index.html", "itinerary/index.html", "safety-map/index.html", "climate-map/index.html"];
 
 const REACT_PROD = {
   react: '<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" integrity="sha384-DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z" crossorigin="anonymous"></script>',

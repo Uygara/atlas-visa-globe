@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
+<meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<title>Climate map: the usual weather in every country, month by month · travelnow.info</title>
+<meta name="description" content="Pick a month and see the typical daytime high, night low and rainfall in every country, with the most pleasant months to visit. 1991–2020 averages from the World Bank climate portal." />
+<link rel="canonical" href="https://travelnow.info/climate-map/" />
+<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
+<meta property="og:title" content="Climate map — travelnow.info" />
+<meta property="og:description" content="The usual weather in every country, month by month, and where it is night right now." />
+<meta property="og:image" content="https://travelnow.info/assets/og.png" />
+<meta property="og:url" content="https://travelnow.info/climate-map/" />
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content="travelnow.info" />
+<meta name="twitter:card" content="summary_large_image" />
+<link rel="stylesheet" href="/assets/fonts.css?v=20261123c" />
+<link rel="stylesheet" href="/assets/tokens.css?v=20261123c" />
+<link rel="stylesheet" href="/assets/chrome.css?v=20261123c" />
+<link rel="stylesheet" href="/assets/app-shell.css?v=20261123c" />
+<script>try{if((JSON.parse(localStorage.getItem("atlas.tweaks")||"{}")).background==="dark")document.documentElement.classList.add("theme-dark")}catch(e){}</script>
+
+<!-- D3 + TopoJSON for the globe -->
+<script src="https://unpkg.com/d3@7.8.5/dist/d3.min.js"></script>
+<script src="https://unpkg.com/topojson-client@3.1.0/dist/topojson-client.min.js"></script>
+
+<!-- React -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.production.min.js" integrity="sha384-DGyLxAyjq0f9SPpVevD6IgztCFlnMF6oW/XQGmfe+IsZ8TqEiDrcHkMLKI6fiB/Z" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.production.min.js" integrity="sha384-gTGxhz21lVGYNMcdJOyq01Edg0jhn/c22nsx0kyqP0TxaV5WVdsSH1fSDUf5YJj1" crossorigin="anonymous"></script>
+  <script src="/assets/account-config.js?v=20261123c"></script>
+  <script src="/assets/account-sync.js?v=20261123c"></script>
+  <script src="/assets/account.js?v=20261123c"></script>
+  <script src="/assets/analytics.js"></script>
+</head>
+<body>
+  <div class="loading-screen" id="loading" aria-hidden="true">
+    <div class="loading-mark">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="2.75" y="1.75" width="18.5" height="20.5" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M6.4 14.6V6.8h2.9a2.4 2.4 0 0 1 0 4.8H6.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.9 7.3 13.9 10.7l3 3.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.4 18.3h11.2" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="0.1 2.3"/></svg>
+      <div class="loading-line"></div>
+    </div>
+  </div>
+  <div id="root"></div>
+
+  <!-- Data (subset needed for the climate globe) -->
+  <script src="/data/i18n.js?v=20261123c"></script>
+  <script src="/assets/site-nav.js?v=20261123c"></script>
+  <script src="/data/countries.js"></script>
+  <script src="/data/country-names.js?v=20261123c"></script>
+  <script src="/data/climate.js"></script>
+
+  <script src="/build/chrome.js?v=30551ce32d"></script>
+  <script src="/build/globe.js?v=a61ed47eb8"></script>
+  <script src="/build/climate-map.js?v=4ab341611c"></script>
+</body>
+</html>

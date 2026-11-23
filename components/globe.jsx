@@ -43,6 +43,35 @@ const STATUS_HEX = {
   na: "var(--na)",
 };
 
+// Where the sun is overhead right now (NOAA low-precision formulas, good to a
+// fraction of a degree, plenty for a shading line). Returns [lon, lat].
+function subsolarPoint(date) {
+  const rad = Math.PI / 180;
+  const d = date.getTime() / 86400000 - 10957.5; // days since J2000.0
+  const g = (357.529 + 0.98560028 * d) * rad;
+  const q = 280.459 + 0.98564736 * d;
+  const L = (q + 1.915 * Math.sin(g) + 0.020 * Math.sin(2 * g)) * rad;
+  const e = (23.439 - 0.00000036 * d) * rad;
+  const ra = Math.atan2(Math.cos(e) * Math.sin(L), Math.cos(L)) / rad;
+  const dec = Math.asin(Math.sin(e) * Math.sin(L)) / rad;
+  const gmst = (18.697374558 + 24.06570982441908 * d) * 15;
+  let lon = (ra - gmst) % 360;
+  if (lon > 180) lon -= 360;
+  if (lon < -180) lon += 360;
+  return [lon, dec];
+}
+// Night = the sun is below the horizon: everything within 90° of the point
+// opposite the sun. The smaller circles darken the deeper night (sun more
+// than 3°, 6°, 9° and 12° below the horizon), so the edge reads as dusk, not a hard line.
+function nightCircles(date) {
+  const [lon, lat] = subsolarPoint(date);
+  const anti = [lon > 0 ? lon - 180 : lon + 180, -lat];
+  return NIGHT_STEPS.map(r => d3.geoCircle().center(anti).radius(r).precision(2)());
+}
+// Five stacked circles, 3° apart: the edge fades through dusk instead of a hard line.
+const NIGHT_STEPS = [90, 87, 84, 81, 78];
+const NIGHT_OPACITY = { full: [0.07, 0.05, 0.05, 0.05, 0.05], soft: [0.06, 0.045, 0.045, 0.04, 0.04] };
+
 function Globe({
   passport,        // iso2 string, or null
   comparePassport, // iso2 string, or null (compare mode)
@@ -78,6 +107,8 @@ function Globe({
   // Both rotate/cull with the globe. Home page passes neither.
   arcs,
   stopMarkers,
+  // nightShade: darken the half of the Earth where it is night right now (updates every minute).
+  nightShade,
 }) {
   // Group mode wins over direction when active — the question is "where can
   // this group of people go", which is inherently outgoing.
@@ -185,6 +216,11 @@ function Globe({
       if (d) p.setAttribute("d", d);
       else p.setAttribute("d", "");
     });
+    const nights = svgRef.current.querySelectorAll("path.night-shade");
+    if (nights.length) {
+      const circles = nightCircles(new Date());
+      nights.forEach((p, i) => p.setAttribute("d", pathRef.current(circles[i]) || ""));
+    }
     // Also reposition micro-state markers (countries too small to draw as polygons).
     // d3.geoOrthographic's raw projection function returns coordinates even for the
     // back hemisphere — clipAngle only kicks in inside d3.geoPath. So for raw point
@@ -691,6 +727,13 @@ function Globe({
   useEffect(() => {
     if (topology) redrawPaths();
   }, [regionFeatures, topology, redrawPaths]);
+  // The night edge moves about 15° an hour: redraw once a minute.
+  useEffect(() => {
+    if (!nightShade || !topology) return;
+    redrawPaths();
+    const id = setInterval(redrawPaths, 60000);
+    return () => clearInterval(id);
+  }, [nightShade, topology, redrawPaths]);
 
   // ─── Fill resolution ───────────────────────────────────────────────────────
   // resolveOne picks the right resolver for the active mode. Group mode
@@ -920,6 +963,15 @@ function Globe({
                 strokeWidth="0.5"
                 strokeOpacity="0.7"
               />
+            ))}
+          </g>
+        )}
+
+        {/* Night side, above the countries so the colours stay readable underneath. */}
+        {nightShade && topology && (
+          <g className="night-layer" style={{ pointerEvents: "none" }} aria-hidden="true">
+            {NIGHT_OPACITY[nightShade === "soft" ? "soft" : "full"].map((o, i) => (
+              <path key={"n" + i} className="night-shade" d="" style={{ fill: "var(--night)", fillOpacity: o }} />
             ))}
           </g>
         )}

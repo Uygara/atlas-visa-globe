@@ -29,7 +29,7 @@ const WWW = path.join(__dirname, "www");
 const CACHE = path.join(__dirname, ".cache");
 
 // Directory pages that ship in the app (each is <dir>/index.html). "" = root.
-const PAGES = ["", "itinerary", "transit-map", "safety-map", "account", "schengen-calculator"];
+const PAGES = ["", "itinerary", "transit-map", "safety-map", "climate-map", "account", "schengen-calculator"];
 // Directories copied whole. assets/og (social cards, 25 MB) has no use in the app.
 const COPY_DIRS = ["assets", "build", "data"];
 const SKIP = [/^assets[\\/]og([\\/]|$)/, /(^|[\\/])\.DS_Store$/];

@@ -70,6 +70,12 @@
   --land-stroke: #F8F7F4;
   --graticule:   rgba(42, 36, 48, 0.06);
   --globe-edge:  #B7C2BE;
+  --night:       #1B2340;   /* night side of the globe, drawn at low opacity */
+
+  /* Climate map: daytime high (cold blue → paper → hot rust; no green, green is visa-free)
+     and monthly rain (dry sand → deep blue). */
+  --cl-t1: #3F6683; --cl-t2: #7FA1B6; --cl-t3: #BCCDCB; --cl-t4: #EBDDA8; --cl-t5: #E2A660; --cl-t6: #C8663F; --cl-t7: #8B3A2D;
+  --cl-p1: #F1E2BC; --cl-p2: #D0C79D; --cl-p3: #92B9C2; --cl-p4: #4F86A3; --cl-p5: #2A4F72;
 
   /* ── Type ────────────────────────────────────────────────────────────── */
   /* IBM Plex: Serif for headings and big numbers, Sans for text, forms and tables, Sans Arabic for Arabic.
@@ -170,6 +176,9 @@ body.theme-dark {
   --land-stroke: #141A1A;
   --graticule:   rgba(236, 232, 219, 0.06);
   --globe-edge:  #2F4448;
+  --night:       #000510;
+  --cl-t1: #35597A; --cl-t2: #5E8299; --cl-t3: #8EA4A4; --cl-t4: #C9B97F; --cl-t5: #C68A47; --cl-t6: #AF5736; --cl-t7: #7E3329;
+  --cl-p1: #46443A; --cl-p2: #56675F; --cl-p3: #4E7B86; --cl-p4: #3E6F92; --cl-p5: #6C97C4;
 
 
   color-scheme: dark;

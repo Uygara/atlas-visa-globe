@@ -50,14 +50,14 @@ your last one) and tell the owner in 3-5 plain lines what changed on the site an
 Save durable lessons in memory (the auto-memory folder), not in this file.
 
 ## Where things are
-- `index.html`, `itinerary/`, `transit-map/`, `safety-map/` — SPA shells; JSX in `components/` + `app.jsx`
+- `index.html`, `itinerary/`, `transit-map/`, `safety-map/`, `climate-map/` — SPA shells; JSX in `components/` + `app.jsx`
   → compiled to `build/*.js` by `cd tools && node build.js` (CI also does it). Shared data layer: `data/*.js`.
 - Static pages get masthead/footer from `scripts/partials.js` via `node scripts/apply-chrome.js`.
   Turkish twins at `/tr/…`: `node scripts/build-tr.js` (`--check` fails on a stale twin; text in `scripts/tr-strings/`).
   Passport pages (EN + TR) and `sitemap.xml`: `node scripts/generate-seo.js`.
   **Rebuild order after editing pages:** `tools/build.js` → `apply-chrome.js` → `build-tr.js` → `generate-seo.js`.
 - Data jobs (`backend/`): `scraper.js` (visa maps), `fetch-variants.js` (diplomatic/official passports),
-  `fetch-advisories.js` (safety map), `fetch-transit.js`, `fetch-airports.js`, `dispatch-push.js` (app push).
+  `fetch-advisories.js` (safety map), `fetch-climate.js` (climate map; run by hand, normals do not change), `fetch-transit.js`, `fetch-airports.js`, `dispatch-push.js` (app push).
 - App: `app/` (Capacitor) — see `MOBILE-SETUP.md`. `assets/app-native.js` runs only inside it.
 - Accounts: `assets/account*.js`, rules `firestore.rules`, `firebase.json`. Try without Firebase: `/account/?account=mock`.
 - Cache stamps: when a JS/CSS asset changes, bump `ASSET_VERSION` in `scripts/partials.js` and the `?v=` stamps

@@ -95,6 +95,36 @@ var STATUS_HEX = {
   self: "var(--self)",
   na: "var(--na)"
 };
+function subsolarPoint(date) {
+  var rad = Math.PI / 180;
+  var d = date.getTime() / 86400000 - 10957.5;
+  var g = (357.529 + 0.98560028 * d) * rad;
+  var q = 280.459 + 0.98564736 * d;
+  var L = (q + 1.915 * Math.sin(g) + 0.020 * Math.sin(2 * g)) * rad;
+  var e = (23.439 - 0.00000036 * d) * rad;
+  var ra = Math.atan2(Math.cos(e) * Math.sin(L), Math.cos(L)) / rad;
+  var dec = Math.asin(Math.sin(e) * Math.sin(L)) / rad;
+  var gmst = (18.697374558 + 24.06570982441908 * d) * 15;
+  var lon = (ra - gmst) % 360;
+  if (lon > 180) lon -= 360;
+  if (lon < -180) lon += 360;
+  return [lon, dec];
+}
+function nightCircles(date) {
+  var _subsolarPoint = subsolarPoint(date),
+    _subsolarPoint2 = _slicedToArray(_subsolarPoint, 2),
+    lon = _subsolarPoint2[0],
+    lat = _subsolarPoint2[1];
+  var anti = [lon > 0 ? lon - 180 : lon + 180, -lat];
+  return NIGHT_STEPS.map(function (r) {
+    return d3.geoCircle().center(anti).radius(r).precision(2)();
+  });
+}
+var NIGHT_STEPS = [90, 87, 84, 81, 78];
+var NIGHT_OPACITY = {
+  full: [0.07, 0.05, 0.05, 0.05, 0.05],
+  soft: [0.06, 0.045, 0.045, 0.04, 0.04]
+};
 function Globe(_ref) {
   var passport = _ref.passport,
     comparePassport = _ref.comparePassport,
@@ -115,7 +145,8 @@ function Globe(_ref) {
     regionFeatures = _ref.regionFeatures,
     regionFill = _ref.regionFill,
     arcs = _ref.arcs,
-    stopMarkers = _ref.stopMarkers;
+    stopMarkers = _ref.stopMarkers,
+    nightShade = _ref.nightShade;
   var groupActive = Array.isArray(groupPassports) && groupPassports.length > 0;
   var resolveDirected = function resolveDirected(iso2) {
     return direction === "incoming" ? window.resolveStatus(iso2, passport) : window.resolveStatus(passport, iso2);
@@ -243,6 +274,13 @@ function Globe(_ref) {
       var d = pathRef.current(p.__feature);
       if (d) p.setAttribute("d", d);else p.setAttribute("d", "");
     });
+    var nights = svgRef.current.querySelectorAll("path.night-shade");
+    if (nights.length) {
+      var circles = nightCircles(new Date());
+      nights.forEach(function (p, i) {
+        return p.setAttribute("d", pathRef.current(circles[i]) || "");
+      });
+    }
     if (projRef.current) {
       var isGlobe = mode !== "flat";
       var rot = projRef.current.rotate ? projRef.current.rotate() : [0, 0, 0];
@@ -723,6 +761,14 @@ function Globe(_ref) {
   useEffect(function () {
     if (topology) redrawPaths();
   }, [regionFeatures, topology, redrawPaths]);
+  useEffect(function () {
+    if (!nightShade || !topology) return;
+    redrawPaths();
+    var id = setInterval(redrawPaths, 60000);
+    return function () {
+      return clearInterval(id);
+    };
+  }, [nightShade, topology, redrawPaths]);
   var resolveOne = useCallback(function (iso2) {
     if (groupActive) {
       if (groupPassports.includes(iso2)) return {
@@ -1033,6 +1079,22 @@ function Globe(_ref) {
       stroke: "var(--paper-raised)",
       strokeWidth: "0.5",
       strokeOpacity: "0.7"
+    });
+  })), nightShade && topology && React.createElement("g", {
+    className: "night-layer",
+    style: {
+      pointerEvents: "none"
+    },
+    "aria-hidden": "true"
+  }, NIGHT_OPACITY[nightShade === "soft" ? "soft" : "full"].map(function (o, i) {
+    return React.createElement("path", {
+      key: "n" + i,
+      className: "night-shade",
+      d: "",
+      style: {
+        fill: "var(--night)",
+        fillOpacity: o
+      }
     });
   })), showGlobe && React.createElement("g", {
     style: {

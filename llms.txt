@@ -19,6 +19,7 @@ Pages are available in English; many also have a Turkish twin under /tr/. The in
 - [Travel panel](https://travelnow.info/panel/): up to three passports and the countries a person follows, with their current visa status and recent rule changes on one screen.
 - [Transit map](https://travelnow.info/transit-map/): which airport hubs you can connect through without a transit visa for your passport.
 - [Safety map](https://travelnow.info/safety-map/): countries coloured by the official UK, U.S. and Canadian government travel advisories (the strictest of the three).
+- [Climate map](https://travelnow.info/climate-map/): pick a month to see each country's average daytime high, night low and rainfall (World Bank climate portal, ERA5 1991–2020, one average per country), the months that meet a simple pleasant-weather rule, and the night side of the Earth right now.
 - [Schengen 90/180 calculator](https://travelnow.info/schengen-calculator/): days used and days left in the Schengen Area.
 - [Passport validity checker](https://travelnow.info/passport-validity/): per-destination rules on how long a passport must remain valid.
 

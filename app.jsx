@@ -311,6 +311,7 @@ function App() {
           onCountryClick={onCountryClick}
           focusedCountry={focusedCountry}
           wheelNeedsKey
+          nightShade="soft"
         />
 
         {passport && !detailCountry && <MapKey />}

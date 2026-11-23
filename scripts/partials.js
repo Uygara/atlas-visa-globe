@@ -13,7 +13,7 @@
 const { PRIMARY, GROUPS, SUPPORT, INSTAGRAM, isCurrent } = require("../assets/site-nav.js");
 const { makeT, hasTr, toTr, hreflang } = require("./locales");
 
-const ASSET_VERSION = "20261123b";
+const ASSET_VERSION = "20261123c";
 
 function esc(s) {
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -100,7 +100,7 @@ ${g.items.map((it) => `            <li><a class="mh-tool" href="${href(it.href)}
   const themeOpts = `<div class="mh-opts-row" role="group" aria-label="${esc(t("Theme"))}"><button type="button" class="mh-opt" data-theme-set="light" aria-pressed="true">${esc(t("Light"))}</button><button type="button" class="mh-opt" data-theme-set="dark" aria-pressed="false">${esc(t("Dark"))}</button></div>`;
   // Phone bottom tab bar (< 900px, see chrome.css): four crawlable links and "More", which opens the sheet above.
   const TAB_LABELS = { "/": "Map", "/visa/": "Countries", "/itinerary/": "Planner", "/panel/": "My panel" };
-  // The first tab is "Maps": it opens a small menu of the three maps (visa, transit, safety), like the desktop bar.
+  // The first tab is "Maps": it opens a small menu of the maps (visa, transit, safety, climate), like the desktop bar.
   const mapItems = TOP.flatMap((g) => g.items);
   const onMap = mapItems.some((it) => isCurrent(it, path));
   const mapsTab = `  <div class="tb-maps">
@@ -171,7 +171,7 @@ ${items.map(([h, label]) => `        <li><a href="${href(h)}">${esc(t(label))}</
       <a class="brand" href="${href("/")}" aria-label="travelnow.info">${BRAND_MARK}<span class="brand-word">travelnow<span class="brand-tld">.info</span></span></a>
       <p class="site-foot-about"><a href="mailto:hello@travelnow.info">hello@travelnow.info</a></p>
     </div>
-${col("Maps", [["/", "Visa map"], ["/transit-map/", "Transit map"], ["/safety-map/", "Safety map"]])}
+${col("Maps", [["/", "Visa map"], ["/transit-map/", "Transit map"], ["/safety-map/", "Safety map"], ["/climate-map/", "Climate map"]])}
 ${col("Tools", [["/itinerary/", "Travel planner"], ["/panel/", "My panel"], ["/schengen-calculator/", "Schengen calc"], ["/etias/", "ETIAS 2026"], ["/passport-validity/", "Passport validity"], ["/alerts/", "Alerts"]])}
 ${col("Read", [["/guides/", "Guides"], ["/passport/", "All passports"], ["/visa-shortcuts/", "Visa shortcuts"], ["/digital-nomad-visa/", "Digital nomad visas"], ["/citizenship-by-investment/", "Citizenship by investment"], ["/open-data/", "Open data"]])}
 ${col("The project", [["/about/", "About"], ["/contact/", "Contact"], ["/privacy/", "Privacy"], ["/terms/", "Terms"], [SUPPORT.href, "Support"], ["https://www.instagram.com/travelnow.info/", "Instagram"], ["https://github.com/Uygara/atlas-visa-globe", "Source on GitHub"]])}
