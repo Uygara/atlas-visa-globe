@@ -638,6 +638,8 @@ const VLOC = {
     transitLink: "Open the transit map",
     schengen: "the Schengen Area",
     faqHead: (the) => `${the.charAt(0).toUpperCase() + the.slice(1)} entry: frequently asked questions`,
+    embedHead: "Add this checker to your site",
+    embedBody: "Paste this line into a blog post or page. Visitors pick a passport and see the entry status and allowed stay, read from the same data as this page.",
     faqQ: (name, the) => `Do citizens of ${name} need a visa for ${the}?`,
     faqA: {
       idc: (n, the) => `No visa is needed. Citizens of ${n} can enter ${the} with a national ID card.`,
@@ -711,6 +713,8 @@ const VLOC = {
     transitLink: "Transit haritasını aç",
     schengen: "Schengen Bölgesi",
     faqHead: (name) => `${name} girişi: sık sorulan sorular`,
+    embedHead: "Bu denetleyiciyi sitene ekle",
+    embedBody: "Bu satırı bir blog yazısına veya sayfaya yapıştır. Ziyaretçi pasaportunu seçer, giriş durumunu ve kalış süresini bu sayfayla aynı veriden görür.",
     faqQ: (name, dest) => `${name} pasaportu sahipleri ${dest} için vize almalı mı?`,
     faqA: {
       idc: (n, d) => `Vize gerekmez. ${n} pasaportu sahipleri ${d} ülkesine ulusal kimlik kartıyla girebilir.`,
@@ -878,6 +882,8 @@ function renderDestPage(destCountry, allPassports, lang, ads) {
     const fn = V.faqA[r.status];
     return fn ? { q: V.faqQ(nm, lang === "tr" ? label : the), a: fn(nm, lang === "tr" ? label : the, r.days) } : null;
   }).filter(Boolean);
+  const embedCode = `<iframe src="https://travelnow.info/embed/?to=${dest.toLowerCase()}${lang === "tr" ? "&lang=tr" : ""}" width="100%" height="260" style="border:0;max-width:480px" title="Visa checker by travelnow.info" loading="lazy"></iframe>`;
+  const embedHtml = `<section class="embed-box"><h2>${escapeHtml(V.embedHead)}</h2><p>${escapeHtml(V.embedBody)}</p><pre style="white-space:pre-wrap;word-break:break-all;overflow-x:auto;font-size:.85rem"><code>${escapeHtml(embedCode)}</code></pre></section>`;
   const faqHtml = `<section class="faq"><h2>${escapeHtml(V.faqHead(lang === "tr" ? label : the))}</h2>${faqs.map(f => `<div class="qa"><h3>${escapeHtml(f.q)}</h3><p>${escapeHtml(f.a)}</p></div>`).join("")}</section>`;
   const faqSchema = {
     "@context": "https://schema.org", "@type": "FAQPage", "inLanguage": lang,
@@ -980,6 +986,8 @@ Array.prototype.forEach.call(document.querySelectorAll(".lg-row"),function(a){a.
   ${passportCta}
 
   ${faqHtml}
+
+  ${embedHtml}
 
   <div class="other-passports">
     <h2>${escapeHtml(V.relatedHead)}</h2>
