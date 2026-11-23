@@ -2,6 +2,10 @@
 "use strict";
 
 var _excluded = ["open"];
+function _toConsumableArray(r) { return _arrayWithoutHoles(r) || _iterableToArray(r) || _unsupportedIterableToArray(r) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArray(r) { if ("undefined" != typeof Symbol && null != r[Symbol.iterator] || null != r["@@iterator"]) return Array.from(r); }
+function _arrayWithoutHoles(r) { if (Array.isArray(r)) return _arrayLikeToArray(r); }
 function _objectWithoutProperties(e, t) { if (null == e) return {}; var o, r, i = _objectWithoutPropertiesLoose(e, t); if (Object.getOwnPropertySymbols) { var n = Object.getOwnPropertySymbols(e); for (r = 0; r < n.length; r++) o = n[r], -1 === t.indexOf(o) && {}.propertyIsEnumerable.call(e, o) && (i[o] = e[o]); } return i; }
 function _objectWithoutPropertiesLoose(r, e) { if (null == r) return {}; var t = {}; for (var n in r) if ({}.hasOwnProperty.call(r, n)) { if (-1 !== e.indexOf(n)) continue; t[n] = r[n]; } return t; }
 function _extends() { return _extends = Object.assign ? Object.assign.bind() : function (n) { for (var e = 1; e < arguments.length; e++) { var t = arguments[e]; for (var r in t) ({}).hasOwnProperty.call(t, r) && (n[r] = t[r]); } return n; }, _extends.apply(null, arguments); }
@@ -363,6 +367,25 @@ function Masthead(_ref9) {
     REST = nav.GROUPS.filter(function (g) {
       return !g.top;
     });
+  var MAPS = nav.GROUPS.find(function (g) {
+    return g.maps;
+  }) || TOP[0];
+  var BAR = [].concat(_toConsumableArray(TOP.map(function (g, i) {
+    return {
+      g: g,
+      i: i,
+      pos: g.pos
+    };
+  })), _toConsumableArray(nav.PRIMARY.filter(function (it) {
+    return it.bar !== false;
+  }).map(function (it) {
+    return {
+      it: it,
+      pos: it.pos
+    };
+  }))).sort(function (a, b) {
+    return (a.pos || 99) - (b.pos || 99);
+  });
   var toolOn = REST.some(function (g) {
     return g.items.some(function (it) {
       return nav.isCurrent(it, path);
@@ -446,8 +469,18 @@ function Masthead(_ref9) {
   }, ".info"))), React.createElement("nav", {
     className: "mh-nav",
     "aria-label": tr("nav.main", "Main")
-  }, TOP.map(function (g, i) {
-    return React.createElement("div", {
+  }, BAR.map(function (_ref0) {
+    var g = _ref0.g,
+      i = _ref0.i,
+      it = _ref0.it;
+    return it ? React.createElement("ul", {
+      key: it.href,
+      className: "mh-links"
+    }, React.createElement("li", null, React.createElement("a", {
+      className: "mh-link",
+      href: to(it.href),
+      "aria-current": cur(it)
+    }, label(it)))) : React.createElement("div", {
       key: g.key,
       className: "mh-all mh-top"
     }, React.createElement("button", {
@@ -479,19 +512,7 @@ function Masthead(_ref9) {
         className: "mh-tool-d"
       }, tr(it.dkey, it.den))));
     }))));
-  }), React.createElement("ul", {
-    className: "mh-links"
-  }, nav.PRIMARY.filter(function (it) {
-    return it.bar !== false;
-  }).map(function (it) {
-    return React.createElement("li", {
-      key: it.href
-    }, React.createElement("a", {
-      className: "mh-link",
-      href: to(it.href),
-      "aria-current": cur(it)
-    }, label(it)));
-  })), React.createElement("div", {
+  }), REST.length > 0 && React.createElement("div", {
     className: "mh-all"
   }, React.createElement("button", {
     ref: toolsBtn,
@@ -582,24 +603,14 @@ function Masthead(_ref9) {
       href: to(it.href),
       "aria-current": cur(it)
     }, label(it));
-  }), React.createElement("p", {
-    className: "mh-sheet-h"
-  }, tr(TOP[0].key, TOP[0].en)), React.createElement("ul", {
-    className: "mh-sheet-tools"
-  }, TOP[0].items.map(function (it) {
-    return React.createElement("li", {
-      key: it.href
-    }, React.createElement("a", {
-      className: "mh-sheet-tool",
-      href: to(it.href),
-      "aria-current": cur(it)
-    }, label(it)));
-  })), React.createElement("p", {
-    className: "mh-sheet-h"
-  }, tr("nav.all_tools", "All tools")), React.createElement("ul", {
-    className: "mh-sheet-tools"
-  }, REST.map(function (g) {
-    return g.items.map(function (it) {
+  }), nav.GROUPS.map(function (g) {
+    return React.createElement(React.Fragment, {
+      key: g.key
+    }, React.createElement("p", {
+      className: "mh-sheet-h"
+    }, tr(g.key, g.en)), React.createElement("ul", {
+      className: "mh-sheet-tools"
+    }, g.items.map(function (it) {
       return React.createElement("li", {
         key: it.href
       }, React.createElement("a", {
@@ -607,8 +618,8 @@ function Masthead(_ref9) {
         href: to(it.href),
         "aria-current": cur(it)
       }, label(it)));
-    });
-  })), React.createElement("div", {
+    })));
+  }), React.createElement("div", {
     className: "mh-sheet-foot"
   }, React.createElement(LangSelect, null), themeOpts, nav.INSTAGRAM && React.createElement("a", {
     className: "mh-sheet-ext",
@@ -628,10 +639,8 @@ function Masthead(_ref9) {
     className: "tb-maps"
   }, React.createElement("button", {
     type: "button",
-    className: "tb-item tb-maps-btn" + (TOP.some(function (g) {
-      return g.items.some(function (it) {
-        return cur(it);
-      });
+    className: "tb-item tb-maps-btn" + (MAPS.items.some(function (it) {
+      return cur(it);
     }) ? " has-current" : ""),
     "aria-expanded": mapsOpen,
     "aria-controls": "tb-maps-panel",
@@ -641,11 +650,11 @@ function Masthead(_ref9) {
         return !o;
       });
     }
-  }, tr(TOP[0].key, TOP[0].en)), React.createElement("div", {
+  }, tr(MAPS.key, MAPS.en)), React.createElement("div", {
     className: "tb-maps-panel",
     id: "tb-maps-panel",
     hidden: !mapsOpen
-  }, TOP[0].items.map(function (it) {
+  }, MAPS.items.map(function (it) {
     return React.createElement("a", {
       key: it.href,
       className: "tb-map",
@@ -869,17 +878,17 @@ function MobileSheetHandle() {
     "aria-hidden": "true"
   }));
 }
-function Caption(_ref0) {
-  var children = _ref0.children,
-    aside = _ref0.aside;
+function Caption(_ref1) {
+  var children = _ref1.children,
+    aside = _ref1.aside;
   return React.createElement("span", {
     className: "p-cap"
   }, React.createElement("span", null, children), aside && React.createElement("span", {
     className: "p-cap-aside"
   }, aside));
 }
-function Swatch(_ref1) {
-  var s = _ref1.s;
+function Swatch(_ref10) {
+  var s = _ref10.s;
   if (s === "ban") return React.createElement("span", {
     className: "sw sw-ban",
     "aria-hidden": "true"
@@ -893,8 +902,8 @@ function Swatch(_ref1) {
     }
   });
 }
-function Dot(_ref10) {
-  var s = _ref10.s;
+function Dot(_ref11) {
+  var s = _ref11.s;
   return React.createElement("span", {
     className: "dot",
     "aria-hidden": "true",

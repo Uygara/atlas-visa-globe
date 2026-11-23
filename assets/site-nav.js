@@ -3,31 +3,32 @@
 //     static-page masthead in assets/site-chrome.js).
 //   • Node: module.exports (scripts/partials.js stamps it into static HTML so
 //     crawlers see real links without running JS).
-// The top bar shows PRIMARY links, then each group marked `top` as its own dropdown (Maps), then the
-// "All tools" button for the remaining GROUPS. Original note: everything else sits in GROUPS, behind the "All tools"
+// The top bar shows PRIMARY links and each group marked `top` as its own dropdown, in `pos` order
+// (Maps, Countries, Tools, Travel planner, My panel, Read and explore). Groups without `top` would go
+// behind an "All tools" button (none today). Original note: everything else sits in GROUPS, behind the "All tools"
 // button (a panel with three groups, each link with a one-line description).
 // NAV is the same links as one flat list (PRIMARY first, then every group item);
 // `g` is the group index, kept for code that reads the flat list.
 (function (root) {
   var PRIMARY = [
     { href: "/",            key: "nav.visa_map",  en: "Visa map", bar: false },   // in the tab bar and phone sheet; on desktop it lives under Maps
-    { href: "/visa/",       key: "nav.countries", en: "Countries" },
-    { href: "/itinerary/",  key: "nav.itinerary", en: "Travel planner" },
-    { href: "/panel/",      key: "nav.panel",     en: "My panel" }
+    { href: "/visa/",       key: "nav.countries", en: "Countries", pos: 2 },
+    { href: "/itinerary/",  key: "nav.itinerary", en: "Travel planner", pos: 4 },
+    { href: "/panel/",      key: "nav.panel",     en: "My panel", pos: 5 }
   ];
   var GROUPS = [
-    { key: "nav.grp_maps", en: "Maps", top: true, items: [
+    { key: "nav.grp_maps", en: "Maps", top: true, maps: true, pos: 1, items: [
       { href: "/",             key: "nav.visa_map",    en: "Visa map",     dkey: "nav.d_visa",    den: "Where your passport goes without a visa" },
       { href: "/transit-map/", key: "nav.transit_map", en: "Transit map",  dkey: "nav.d_transit", den: "Visa rules for changing planes" },
       { href: "/safety-map/",  key: "nav.safety_map",  en: "Safety map",   dkey: "nav.d_safety",  den: "Official travel advisories" },
       { href: "/climate-map/", key: "nav.climate_map", en: "Climate map",  dkey: "nav.d_climate", den: "Average weather by month" }
     ] },
-    { key: "nav.grp_calc", en: "Calculators", items: [
+    { key: "nav.grp_calc", en: "Tools", top: true, pos: 3, items: [
       { href: "/schengen-calculator/", key: "nav.schengen90",  en: "Schengen 90/180",   dkey: "nav.d_schengen", den: "How many days are left" },
       { href: "/passport-validity/",   key: "nav.validity",    en: "Passport validity", dkey: "nav.d_validity", den: "The 3-month and 6-month rules" },
       { href: "/etias/",               key: "nav.etias",       en: "ETIAS 2026",        dkey: "nav.d_etias",    den: "European travel authorization" }
     ] },
-    { key: "nav.grp_read", en: "Read and explore", items: [
+    { key: "nav.grp_read", en: "Read and explore", top: true, pos: 6, items: [
       { href: "/passport/",                  key: "nav.passports", en: "Passports" },
       { href: "/guides/",                    key: "nav.guides",    en: "Guides" },
       { href: "/digital-nomad-visa/",        key: "nav.nomad",     en: "Digital nomad visas" },

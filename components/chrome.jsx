@@ -192,6 +192,12 @@ function Masthead({ theme, onTheme }) {
   const label = (it) => tr(it.key, it.en);
   const cur = (it) => (nav.isCurrent(it, path) ? "page" : undefined);
   const TOP = nav.GROUPS.filter(g => g.top), REST = nav.GROUPS.filter(g => !g.top);
+  const MAPS = nav.GROUPS.find(g => g.maps) || TOP[0];
+  // The bar: top-group dropdowns and primary links in one order (`pos`).
+  const BAR = [
+    ...TOP.map((g, i) => ({ g, i, pos: g.pos })),
+    ...nav.PRIMARY.filter(it => it.bar !== false).map(it => ({ it, pos: it.pos })),
+  ].sort((a, b) => (a.pos || 99) - (b.pos || 99));
   const toolOn = REST.some(g => g.items.some(it => nav.isCurrent(it, path)));
   const langs = window.LANGS || [];
   const themeNow = theme === "dark" ? "dark" : "light";
@@ -247,7 +253,9 @@ function Masthead({ theme, onTheme }) {
       </a>
 
       <nav className="mh-nav" aria-label={tr("nav.main", "Main")}>
-        {TOP.map((g, i) => (
+        {BAR.map(({ g, i, it }) => it ? (
+          <ul key={it.href} className="mh-links"><li><a className="mh-link" href={to(it.href)} aria-current={cur(it)}>{label(it)}</a></li></ul>
+        ) : (
           <div key={g.key} className="mh-all mh-top">
             <button type="button" className={"mh-link mh-all-btn mh-top-btn" + (g.items.some(it => nav.isCurrent(it, path)) ? " has-current" : "")}
               aria-expanded={open === "top" + i} aria-controls={"mh-top" + i + "-panel"} onClick={() => setOpen(o => o === "top" + i ? null : "top" + i)}>
@@ -262,12 +270,7 @@ function Masthead({ theme, onTheme }) {
             </div>
           </div>
         ))}
-        <ul className="mh-links">
-          {nav.PRIMARY.filter(it => it.bar !== false).map(it => (
-            <li key={it.href}><a className="mh-link" href={to(it.href)} aria-current={cur(it)}>{label(it)}</a></li>
-          ))}
-        </ul>
-        <div className="mh-all">
+        {REST.length > 0 && <div className="mh-all">
           <button ref={toolsBtn} type="button" className={"mh-link mh-all-btn" + (toolOn ? " has-current" : "")}
             aria-expanded={open === "tools"} aria-controls="mh-all-panel" onClick={() => setOpen(o => o === "tools" ? null : "tools")}>
             {tr("nav.all_tools", "All tools")}<IconCaret />
@@ -289,7 +292,7 @@ function Masthead({ theme, onTheme }) {
               </div>
             ))}
           </div>
-        </div>
+        </div>}
       </nav>
 
       <div className="mh-tools">
@@ -320,18 +323,16 @@ function Masthead({ theme, onTheme }) {
         {nav.PRIMARY.filter(it => it.href !== "/").map(it => (
           <a key={it.href} className="mh-sheet-link" href={to(it.href)} aria-current={cur(it)}>{label(it)}</a>
         ))}
-        <p className="mh-sheet-h">{tr(TOP[0].key, TOP[0].en)}</p>
-        <ul className="mh-sheet-tools">
-          {TOP[0].items.map(it => (
-            <li key={it.href}><a className="mh-sheet-tool" href={to(it.href)} aria-current={cur(it)}>{label(it)}</a></li>
-          ))}
-        </ul>
-        <p className="mh-sheet-h">{tr("nav.all_tools", "All tools")}</p>
-        <ul className="mh-sheet-tools">
-          {REST.map(g => g.items.map(it => (
-            <li key={it.href}><a className="mh-sheet-tool" href={to(it.href)} aria-current={cur(it)}>{label(it)}</a></li>
-          )))}
-        </ul>
+        {nav.GROUPS.map(g => (
+          <React.Fragment key={g.key}>
+            <p className="mh-sheet-h">{tr(g.key, g.en)}</p>
+            <ul className="mh-sheet-tools">
+              {g.items.map(it => (
+                <li key={it.href}><a className="mh-sheet-tool" href={to(it.href)} aria-current={cur(it)}>{label(it)}</a></li>
+              ))}
+            </ul>
+          </React.Fragment>
+        ))}
         <div className="mh-sheet-foot">
           <LangSelect />
           {themeOpts}
@@ -342,11 +343,11 @@ function Masthead({ theme, onTheme }) {
     </header>
     <nav className="tabbar" aria-label={tr("nav.tabs", "Quick links")}>
       <div className="tb-maps">
-        <button type="button" className={"tb-item tb-maps-btn" + (TOP.some(g => g.items.some(it => cur(it))) ? " has-current" : "")}
+        <button type="button" className={"tb-item tb-maps-btn" + (MAPS.items.some(it => cur(it)) ? " has-current" : "")}
           aria-expanded={mapsOpen} aria-controls="tb-maps-panel"
-          onClick={() => { setSheetOpen(false); setMapsOpen(o => !o); }}>{tr(TOP[0].key, TOP[0].en)}</button>
+          onClick={() => { setSheetOpen(false); setMapsOpen(o => !o); }}>{tr(MAPS.key, MAPS.en)}</button>
         <div className="tb-maps-panel" id="tb-maps-panel" hidden={!mapsOpen}>
-          {TOP[0].items.map(it => (
+          {MAPS.items.map(it => (
             <a key={it.href} className="tb-map" href={to(it.href)} aria-current={cur(it)}>{label(it)}</a>
           ))}
         </div>

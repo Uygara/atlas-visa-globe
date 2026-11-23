@@ -65,19 +65,23 @@ function masthead({ path = "/", i18n = true, lang = "en" } = {}) {
   const u = (k, en) => (lang === "tr" ? UI_TR[k] : en);
   const href = (h) => (lang === "tr" && hasTr(h) ? toTr(h) : h);
   const cur = (it) => isCurrent(it, path) ? ' aria-current="page"' : "";
-  const links = PRIMARY.filter((it) => it.bar !== false).map((it) => `      <li><a class="mh-link" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a></li>`).join("\n");
   const TOP = GROUPS.filter((g) => g.top), REST = GROUPS.filter((g) => !g.top);
   const toolOn = REST.some((g) => g.items.some((it) => isCurrent(it, path)));
   const toolLink = (it) => `            <li><a class="mh-tool" href="${href(it.href)}"${cur(it)}><span class="mh-tool-t">${esc(t(it.en))}</span>${it.den ? `<span class="mh-tool-d">${esc(t(it.den))}</span>` : ""}</a></li>`;
-  // Groups marked `top` (Maps) get their own dropdown in the bar, right after the primary links.
-  const topMenus = TOP.map((g, i) => `    <div class="mh-all mh-top">
+  // Groups marked `top` get their own dropdown; they and the primary links share one order (`pos`).
+  const topMenu = (g, i) => `    <div class="mh-all mh-top">
       <button type="button" class="mh-link mh-all-btn mh-top-btn${g.items.some((it) => isCurrent(it, path)) ? " has-current" : ""}" aria-expanded="false" aria-controls="mh-top-panel-${i}">${esc(t(g.en))}${CARET}</button>
       <div class="mh-panel mh-top-panel" id="mh-top-panel-${i}" hidden>
         <ul>
 ${g.items.map(toolLink).join("\n")}
         </ul>
       </div>
-    </div>`).join("\n");
+    </div>`;
+  const bar = [
+    ...TOP.map((g, i) => ({ pos: g.pos, html: topMenu(g, i) })),
+    ...PRIMARY.filter((it) => it.bar !== false).map((it) => ({ pos: it.pos, html: `    <ul class="mh-links"><li><a class="mh-link" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a></li></ul>` })),
+  ].sort((a, b) => (a.pos || 99) - (b.pos || 99)).map((x) => x.html).join("\n");
+  const MAPS = GROUPS.find((g) => g.maps);
   // The "All tools" panel: three groups, each link with its one-line description (when it has one).
   const groups = REST.map((g) => `        <div class="mh-grp">
           <p class="mh-grp-label">${esc(t(g.en))}</p>
@@ -85,9 +89,11 @@ ${g.items.map(toolLink).join("\n")}
 ${g.items.map((it) => `            <li><a class="mh-tool" href="${href(it.href)}"${cur(it)}><span class="mh-tool-t">${esc(t(it.en))}</span>${it.den ? `<span class="mh-tool-d">${esc(t(it.den))}</span>` : ""}</a></li>`).join("\n")}
           </ul>
         </div>`).join("\n");
-  // Maps get their own heading in the sheet; "All tools" lists the rest only.
-  const sheetMaps = GROUPS.filter((g) => g.top).map((g) => g.items.map((it) => `      <li><a class="mh-sheet-tool" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a></li>`).join("\n")).join("\n");
-  const sheetTools = GROUPS.filter((g) => !g.top).map((g) => g.items.map((it) => `      <li><a class="mh-sheet-tool" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a></li>`).join("\n")).join("\n");
+  // Phone sheet: one heading per group (Maps, Tools, Read and explore).
+  const sheetGroups = GROUPS.map((g) => `    <p class="mh-sheet-h">${esc(t(g.en))}</p>
+    <ul class="mh-sheet-tools">
+${g.items.map((it) => `      <li><a class="mh-sheet-tool" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a></li>`).join("\n")}
+    </ul>`).join("\n");
   const sheet = PRIMARY.filter((it) => it.href !== "/").map((it) => `    <a class="mh-sheet-link" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a>`).join("\n");
   const langs = i18n ? LANGS : (hasTr(path) ? LANGS.filter(([c]) => c === "en" || c === "tr") : []);
   const langSelect = langs.length
@@ -101,10 +107,10 @@ ${g.items.map((it) => `            <li><a class="mh-tool" href="${href(it.href)}
   // Phone bottom tab bar (< 900px, see chrome.css): four crawlable links and "More", which opens the sheet above.
   const TAB_LABELS = { "/": "Map", "/visa/": "Countries", "/itinerary/": "Planner", "/panel/": "My panel" };
   // The first tab is "Maps": it opens a small menu of the maps (visa, transit, safety, climate), like the desktop bar.
-  const mapItems = TOP.flatMap((g) => g.items);
+  const mapItems = MAPS.items;
   const onMap = mapItems.some((it) => isCurrent(it, path));
   const mapsTab = `  <div class="tb-maps">
-    <button type="button" class="tb-item tb-maps-btn${onMap ? " has-current" : ""}" aria-expanded="false" aria-controls="tb-maps-panel">${esc(t(TOP[0].en))}</button>
+    <button type="button" class="tb-item tb-maps-btn${onMap ? " has-current" : ""}" aria-expanded="false" aria-controls="tb-maps-panel">${esc(t(MAPS.en))}</button>
     <div class="tb-maps-panel" id="tb-maps-panel" hidden>
 ${mapItems.map((it) => `      <a class="tb-map" href="${href(it.href)}"${cur(it)}>${esc(t(it.en))}</a>`).join("\n")}
     </div>
@@ -117,16 +123,13 @@ ${PRIMARY.filter((it) => it.href !== "/").map((it) => `  <a class="tb-item" href
   return `<header class="masthead">
   <a class="brand" href="${href("/")}" aria-label="${u("home", "travelnow.info home")}">${BRAND_MARK}<span class="brand-word">travelnow<span class="brand-tld">.info</span></span></a>
   <nav class="mh-nav" aria-label="${u("main", "Main")}">
-${topMenus}
-    <ul class="mh-links">
-${links}
-    </ul>
-    <div class="mh-all">
+${bar}
+${REST.length ? `    <div class="mh-all">
       <button type="button" class="mh-link mh-all-btn${toolOn ? " has-current" : ""}" aria-expanded="false" aria-controls="mh-all-panel">${esc(t("All tools"))}${CARET}</button>
       <div class="mh-panel mh-all-panel" id="mh-all-panel" hidden>
 ${groups}
       </div>
-    </div>
+    </div>` : ""}
   </nav>
   <div class="mh-tools">
     <div class="mh-prefs">
@@ -141,14 +144,7 @@ ${groups}
   </div>
   <div class="mh-sheet">
 ${sheet}
-    <p class="mh-sheet-h">${esc(t("Maps"))}</p>
-    <ul class="mh-sheet-tools">
-${sheetMaps}
-    </ul>
-    <p class="mh-sheet-h">${esc(t("All tools"))}</p>
-    <ul class="mh-sheet-tools">
-${sheetTools}
-    </ul>
+${sheetGroups}
     <div class="mh-sheet-foot">${langSelect}${themeOpts}<a class="mh-sheet-ext" href="${INSTAGRAM.href}" target="_blank" rel="noopener" data-no-i18n aria-label="${esc(INSTAGRAM.en)}">Instagram</a><a class="mh-sheet-ext" href="${SUPPORT.href}" target="_blank" rel="noopener">${esc(t(SUPPORT.en))}</a></div>
   </div>
 </header>

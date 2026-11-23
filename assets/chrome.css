@@ -306,3 +306,9 @@ html { -webkit-tap-highlight-color: transparent; }
 @media (prefers-contrast: more) {
   .btn, .field, .seg { border-color: var(--ink); }
 }
+
+/* The last menu in the bar (Read and explore) opens toward the start of the bar. */
+.mh-nav > .mh-top:last-child .mh-top-panel { inset-inline-start: auto; inset-inline-end: 0; }
+
+/* Static pages give every li a bottom margin; the bar items must not inherit it. */
+.masthead li { margin: 0; }
