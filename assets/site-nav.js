@@ -20,7 +20,7 @@
       { href: "/",             key: "nav.visa_map",    en: "Visa map",     dkey: "nav.d_visa",    den: "Where your passport goes without a visa" },
       { href: "/transit-map/", key: "nav.transit_map", en: "Transit map",  dkey: "nav.d_transit", den: "Visa rules for changing planes" },
       { href: "/safety-map/",  key: "nav.safety_map",  en: "Safety map",   dkey: "nav.d_safety",  den: "Official travel advisories" },
-      { href: "/climate-map/", key: "nav.climate_map", en: "Climate map",  dkey: "nav.d_climate", den: "The usual weather, month by month" }
+      { href: "/climate-map/", key: "nav.climate_map", en: "Climate map",  dkey: "nav.d_climate", den: "When to go where"      }
     ] },
     { key: "nav.grp_calc", en: "Calculators", items: [
       { href: "/schengen-calculator/", key: "nav.schengen90",  en: "Schengen 90/180",   dkey: "nav.d_schengen", den: "How many days are left" },

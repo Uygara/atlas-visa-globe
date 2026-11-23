@@ -29,7 +29,7 @@
     "Visa map": { tr:"Vize haritası", es:"Mapa de visas", de:"Visakarte", fr:"Carte des visas", ar:"خريطة التأشيرات" },
     "Transit map": { tr:"Transit haritası", es:"Mapa de tránsito", de:"Transitkarte", fr:"Carte du transit", ar:"خريطة العبور" },
     "Climate map": { tr:"İklim haritası", es:"Mapa del clima", de:"Klimakarte", fr:"Carte du climat", ar:"خريطة المناخ" },
-    "The usual weather, month by month": { tr:"Ay ay ülkelerin olağan havası", es:"El tiempo habitual, mes a mes", de:"Das übliche Wetter, Monat für Monat", fr:"Le temps habituel, mois par mois", ar:"الطقس المعتاد شهرًا بشهر" },
+    "When to go where": { tr:"Hangi ay nereye gidilir", es:"Cuándo ir a cada sitio", de:"Wann wohin reisen", fr:"Quand partir, et où", ar:"متى تسافر وإلى أين" },
     "Safety map": { tr:"Güvenlik haritası", es:"Mapa de seguridad", de:"Sicherheitskarte", fr:"Carte de sécurité", ar:"خريطة السلامة" },
     "Travel planner": { tr:"Seyahat planlayıcı", es:"Planificador de viaje", de:"Reiseplaner", fr:"Planificateur de voyage", ar:"مخطّط الرحلة" },
     "My panel": { tr:"Panelim", es:"Mi panel", de:"Mein Panel", fr:"Mon tableau de bord", ar:"لوحتي" },
