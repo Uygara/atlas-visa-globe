@@ -434,7 +434,6 @@ function App() {
     residencePermits: residencePermits,
     onCountryClick: onCountryClick,
     focusedCountry: focusedCountry,
-    wheelNeedsKey: true,
     nightShade: "soft"
   }), passport && !detailCountry && React.createElement(MapKey, null), React.createElement(CompareStrip, {
     enabled: t.compareMode,

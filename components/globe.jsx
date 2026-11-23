@@ -84,7 +84,6 @@ function Globe({
   onCountryClick,
   onCountryHover,
   focusedCountry,  // iso2 string or null — highlights / centers
-  wheelNeedsKey,   // home (desktop): the page scrolls, so the wheel zooms only with Ctrl/⌘ held (trackpad pinch sends ctrlKey)
   // ── Optional decoupling hooks (used by the standalone Transit Map page) ──
   // When `fillResolver` is supplied, the globe ignores visa-status colouring
   // entirely and paints each country with the colour the resolver returns:
@@ -110,7 +109,7 @@ function Globe({
   nightShade,
   // keepSpinning: keep the idle spin going while a country is selected (climate map).
   keepSpinning,
-  // tilt: lean the globe's axis by this many degrees, like a desk globe. Default 23.4 (Earth's axis); 0 = upright. Globe views only.
+  // tilt: lean the globe's axis by this many degrees, like a desk globe. Default 0 (upright, north up); 23.4 = Earth's axis. Globe views only.
   tilt,
 }) {
   // Group mode wins over direction when active — the question is "where can
@@ -143,7 +142,7 @@ function Globe({
   // Mutable state that lives outside React's render loop.
   const rotRef = useRef([20, -10, 0]);     // current rotation (globe modes)
   const tiltRef = useRef(0);               // axis lean (third rotation angle), from the tilt prop
-  tiltRef.current = tilt == null ? 23.4 : +tilt || 0;
+  tiltRef.current = tilt == null ? 0 : +tilt || 0;
   const panRef = useRef([0, 0]);           // pan offset in pixels (flat mode)
   const zoomRef = useRef(1);               // 1.0 = default; multiplier on baseScale
   const baseScaleRef = useRef(1);          // base scale computed from size
@@ -156,11 +155,7 @@ function Globe({
   const projRef = useRef(null);
   const pathRef = useRef(null);
   const [zoomDisplay, setZoomDisplay] = useState(1);  // for UI label
-  const wheelKeyRef = useRef(false);
-  wheelKeyRef.current = !!wheelNeedsKey;
-  const [wheelHint, setWheelHint] = useState(false);
-  const wheelHintT = useRef(null);
-  useEffect(() => () => clearTimeout(wheelHintT.current), []);
+  const lastWheelZoomRef = useRef(0);
   useEffect(() => { restRef.current = (!keepSpinning && !!focusedCountry) || !!hover; }, [focusedCountry, hover, keepSpinning]);
 
   // ─── Topology load ─────────────────────────────────────────────────────────
@@ -468,13 +463,15 @@ function Globe({
     // globe modes zoom from centre because rotation-based panning makes
     // "zoom toward cursor" feel unnatural on a sphere.
     const onWheel = (e) => {
-      // Let the page scroll unless the visitor asks to zoom; say how, briefly.
-      if (wheelKeyRef.current && !e.ctrlKey && !e.metaKey && window.matchMedia("(min-width: 901px)").matches) {
-        setWheelHint(true);
-        clearTimeout(wheelHintT.current);
-        wheelHintT.current = setTimeout(() => setWheelHint(false), 1300);
+      // At the widest zoom a downward wheel has nothing left to zoom out, so the page scrolls
+      // instead (the home page has content under the map). The pause after the last zoom step
+      // keeps a fast zoom-out from spilling into a page scroll.
+      if (e.deltaY > 0 && zoomRef.current <= 1.001 && !e.ctrlKey && !e.metaKey
+          && performance.now() - lastWheelZoomRef.current > 500
+          && document.documentElement.scrollHeight > window.innerHeight + 4) {
         return;
       }
+      lastWheelZoomRef.current = performance.now();
       e.preventDefault();
       lastInteractRef.current = performance.now();
       autoRef.current = false;
@@ -854,7 +851,6 @@ function Globe({
 
   return (
     <div ref={wrapRef} className="globe-wrap" style={{ width: "100%", height: "100%", position: "relative" }}>
-      {wheelHint && <div className="wheel-hint" role="status">{tr("map.wheel_hint", "Hold {key} and scroll to zoom", { key: /Mac|iPhone|iPad/.test(navigator.platform) ? "⌘" : "Ctrl" })}</div>}
       <svg
         ref={svgRef}
         width={size.w}

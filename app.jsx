@@ -310,7 +310,6 @@ function App() {
           residencePermits={residencePermits}
           onCountryClick={onCountryClick}
           focusedCountry={focusedCountry}
-          wheelNeedsKey
           nightShade="soft"
         />
 

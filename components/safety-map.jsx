@@ -115,15 +115,28 @@ function SafetyMapApp() {
   // Warned provinces of every country, painted on the world view without a
   // click. data/admin1/world.json is a coarse merge of all province outlines
   // (tools/build-admin1-world.js); it loads after the first paint so the globe
-  // shows up at the same speed as before, and only the provinces whose level
-  // differs from their country's are decoded and drawn.
+  // shows up at the same speed as before. Two layers come out of it: the
+  // provinces whose level differs from their country's (filled), and the
+  // province borders of EVERY country as one line layer, so each country reads
+  // as sub-national. A province without its own warning keeps the country's
+  // level; no level is ever guessed for it.
   const [worldRegions, setWorldRegions] = useState(null);
+  const [provinceMesh, setProvinceMesh] = useState(null);
   useEffect(() => {
     let alive = true;
     const load = () => fetch(ADMIN1_WORLD_URL)
       .then(r => (r.ok ? r.json() : Promise.reject(new Error("no world provinces"))))
       .then(topo => {
         if (!alive) return;
+        // Inner province borders, one line feature per country (a !== b drops the outer outline).
+        // Kept per country on purpose: one world-sized line feature costs about 3x more to clip every frame.
+        const meshes = [];
+        for (const iso2 of Object.keys(topo.objects)) {
+          const m = topojson.mesh(topo, topo.objects[iso2], (a, b) => a !== b);
+          if (!m || !m.coordinates || !m.coordinates.length) continue;
+          meshes.push({ type: "Feature", id: "__prov-" + iso2, properties: { mesh: true, id: "__prov-" + iso2 }, geometry: m });
+        }
+        setProvinceMesh(meshes);
         const out = [];
         for (const iso2 of Object.keys(REGION_LEVELS)) {
           const obj = topo.objects[iso2];
@@ -158,6 +171,7 @@ function SafetyMapApp() {
   // to the selection.
   const regionFill = useCallback((f) => {
     const p = f.properties || {};
+    if (p.mesh) return "none"; // border lines only
     const iso2 = p.c || selected;
     const lv = (REGION_LEVELS[iso2] || {})[p.id] || countryLevelOf(iso2);
     return LEVEL_COLOR[lv || 0];
@@ -172,9 +186,12 @@ function SafetyMapApp() {
     const others = (worldRegions || []).filter(f =>
       f.properties.c !== selected &&
       (!filter || REGION_LEVELS[f.properties.c][f.properties.id] === filter));
-    const all = others.concat(own);
+    // The border mesh sits under the filled provinces; with a level filter on it is left out
+    // so only the picked level stands out.
+    const base = provinceMesh && !filter ? provinceMesh : [];
+    const all = base.concat(others, own);
     return all.length ? all : null;
-  }, [regions, selected, worldRegions, filter]);
+  }, [regions, selected, worldRegions, provinceMesh, filter]);
 
   const hoverRenderer = useCallback((hover) => <SafetyHover hover={hover} />, []);
 

@@ -74,6 +74,13 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 28 (2026-11-24: map fixes after the redesign):** globe wheel zoom no longer needs Ctrl (removed `wheelNeedsKey`,
+  the hint and its strings); at the widest zoom a downward wheel scrolls the page instead, so the content under the home map
+  stays reachable. Globes default to upright again (`tilt` default 0; 23.4 stays available as a prop). Safety map: province
+  borders of every country are drawn as thin lines in the world view (per-country line features from
+  `data/admin1/world.json`, about 9 ms per frame; one world-sized line feature cost about 27 ms). Provinces without their own
+  warning keep the country's level, nothing is invented. Stamp 20261123d. Other editor's changes this week are in `git log`.
+
 - **Round 27 (2026-11-22: less small print, less owner name):** removed the repeated "Sponsorlu. travelnow.info komisyon
   kazanabilir." line (panel + /visa/ boxes), the "Source: Wikipedia visa requirement articles, daily snapshot" lines (feed
   items, /panel page) and the intro dialog byline ("Built and maintained by Uygar Atalay..."), now "Corrections, questions

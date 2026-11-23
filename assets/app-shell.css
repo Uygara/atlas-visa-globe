@@ -40,7 +40,6 @@ body { font-size: var(--fs-sm); }
 .hm-about { margin-top: 32px; max-width: 75ch; font-size: var(--fs-sm); color: var(--ink-3); }
 .seo-fallback nav { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--rule); font-size: var(--fs-sm); }
 .frame-grip { display: none; }
-.wheel-hint { position: absolute; inset: 0; z-index: 6; display: grid; place-items: center; pointer-events: none; background: color-mix(in srgb, var(--ink) 28%, transparent); color: #fff; font-weight: 600; font-size: var(--fs-md); }
 
 @media (min-width: 901px) {
   html:has(> body.is-home), body.is-home { height: auto; overflow: auto; }

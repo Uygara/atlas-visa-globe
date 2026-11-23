@@ -63,6 +63,10 @@
       bir Banner birimi oluştur; uygulama kimliğini ve birim kimliğini bana ver. Yayından sonra mağaza kaydına bağla.
 - [ ] **P2 · Canlıda Google ile giriş (1 dk)**: travelnow.info/account/ → "Continue with Google". Açılır pencere
       otomatik test edilemiyor.
+- [ ] **P1 · AdSense yeniden başvuru (en erken 17 Aralık)**: önce AdSense → Siteler'de son ret e-postasındaki gerekçeyi oku ve bana yaz
+      (ilk ret Haziran'da "düşük değerli içerik" idi, ikincisinin gerekçesi kayıtlarda yok). Başvurmadan önce: Search Console →
+      Sayfalar'da dizinlenen sayfa sayısına bak (sitemap 22-23 Kasım'da gönderildi), site adresi AdSense'te `travelnow.info`
+      (www değil) olmalı. www yönlendirmesi 22 Kasım'da düzeldi.
 - [ ] **P2 · AdSense onaylanınca**: AdSense → Privacy & messaging → Avrupa (GDPR) mesajını aç. Gizlilik metni AB/BK/İsviçre
       için kişiselleştirilmiş reklamdan önce onay istendiğini söylüyor; bu açılmadan reklam o bölgede gösterilmemeli.
 - [ ] **P3 · Apple Developer (99 $/yıl)**: Android'den sonra. Sonra Mac'te iOS derlemesi + Apple ile Giriş.

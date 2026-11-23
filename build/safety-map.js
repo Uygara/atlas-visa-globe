@@ -184,6 +184,10 @@ function SafetyMapApp() {
     _useState10 = _slicedToArray(_useState1, 2),
     worldRegions = _useState10[0],
     setWorldRegions = _useState10[1];
+  var _useState11 = useState(null),
+    _useState12 = _slicedToArray(_useState11, 2),
+    provinceMesh = _useState12[0],
+    setProvinceMesh = _useState12[1];
   useEffect(function () {
     var alive = true;
     var load = function load() {
@@ -191,22 +195,40 @@ function SafetyMapApp() {
         return r.ok ? r.json() : Promise.reject(new Error("no world provinces"));
       }).then(function (topo) {
         if (!alive) return;
-        var out = [];
-        for (var _i2 = 0, _Object$keys = Object.keys(REGION_LEVELS); _i2 < _Object$keys.length; _i2++) {
+        var meshes = [];
+        for (var _i2 = 0, _Object$keys = Object.keys(topo.objects); _i2 < _Object$keys.length; _i2++) {
           var iso2 = _Object$keys[_i2];
-          var obj = topo.objects[iso2];
+          var m = topojson.mesh(topo, topo.objects[iso2], function (a, b) {
+            return a !== b;
+          });
+          if (!m || !m.coordinates || !m.coordinates.length) continue;
+          meshes.push({
+            type: "Feature",
+            id: "__prov-" + iso2,
+            properties: {
+              mesh: true,
+              id: "__prov-" + iso2
+            },
+            geometry: m
+          });
+        }
+        setProvinceMesh(meshes);
+        var out = [];
+        for (var _i3 = 0, _Object$keys2 = Object.keys(REGION_LEVELS); _i3 < _Object$keys2.length; _i3++) {
+          var _iso = _Object$keys2[_i3];
+          var obj = topo.objects[_iso];
           if (!obj) continue;
-          var own = countryLevelOf(iso2);
+          var own = countryLevelOf(_iso);
           var _iterator2 = _createForOfIteratorHelper(topojson.feature(topo, obj).features),
             _step2;
           try {
             for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
               var f = _step2.value;
-              var lv = REGION_LEVELS[iso2][f.id];
+              var lv = REGION_LEVELS[_iso][f.id];
               if (!lv || lv === own) continue;
               f.properties = {
                 id: f.id,
-                c: iso2
+                c: _iso
               };
               out.push(f);
             }
@@ -238,6 +260,7 @@ function SafetyMapApp() {
   }, [filter]);
   var regionFill = useCallback(function (f) {
     var p = f.properties || {};
+    if (p.mesh) return "none";
     var iso2 = p.c || selected;
     var lv = (REGION_LEVELS[iso2] || {})[p.id] || countryLevelOf(iso2);
     return LEVEL_COLOR[lv || 0];
@@ -247,9 +270,10 @@ function SafetyMapApp() {
     var others = (worldRegions || []).filter(function (f) {
       return f.properties.c !== selected && (!filter || REGION_LEVELS[f.properties.c][f.properties.id] === filter);
     });
-    var all = others.concat(own);
+    var base = provinceMesh && !filter ? provinceMesh : [];
+    var all = base.concat(others, own);
     return all.length ? all : null;
-  }, [regions, selected, worldRegions, filter]);
+  }, [regions, selected, worldRegions, provinceMesh, filter]);
   var hoverRenderer = useCallback(function (hover) {
     return React.createElement(SafetyHover, {
       hover: hover
@@ -440,15 +464,15 @@ function LevelLedger(_ref5) {
 }
 function RecentlyUpdated(_ref6) {
   var onOpen = _ref6.onOpen;
-  var _useState11 = useState(false),
-    _useState12 = _slicedToArray(_useState11, 2),
-    expanded = _useState12[0],
-    setExpanded = _useState12[1];
+  var _useState13 = useState(false),
+    _useState14 = _slicedToArray(_useState13, 2),
+    expanded = _useState14[0],
+    setExpanded = _useState14[1];
   var rows = useMemo(function () {
     var out = [];
-    for (var _i3 = 0, _Object$entries2 = Object.entries(ADVISORIES.countries); _i3 < _Object$entries2.length; _i3++) {
+    for (var _i4 = 0, _Object$entries2 = Object.entries(ADVISORIES.countries); _i4 < _Object$entries2.length; _i4++) {
       var _daysSince;
-      var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i3], 2),
+      var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i4], 2),
         iso2 = _Object$entries2$_i[0],
         c = _Object$entries2$_i[1];
       if (!window.byIso2[iso2] || !c.uk || !c.uk.updates || !c.uk.updates.length) continue;
@@ -561,10 +585,10 @@ function SafetyHover(_ref7) {
 }
 function SafetySearch(_ref8) {
   var onPick = _ref8.onPick;
-  var _useState13 = useState(""),
-    _useState14 = _slicedToArray(_useState13, 2),
-    q = _useState14[0],
-    setQ = _useState14[1];
+  var _useState15 = useState(""),
+    _useState16 = _slicedToArray(_useState15, 2),
+    q = _useState16[0],
+    setQ = _useState16[1];
   var results = useMemo(function () {
     var ql = q.toLowerCase().trim();
     if (!ql) return [];
