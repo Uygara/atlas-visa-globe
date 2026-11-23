@@ -8,3 +8,4 @@ User-agent: PetalBot
 Disallow: /
 
 Sitemap: https://travelnow.info/sitemap.xml
+Sitemap: https://travelnow.info/sitemap-pages.xml

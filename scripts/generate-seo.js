@@ -1284,7 +1284,11 @@ function main() {
     fs.writeFileSync(path.join(visaDir, "index.html"), renderDestIndex(destinations, lang));
   }
 
-  fs.writeFileSync(path.join(ROOT, "sitemap.xml"), renderSitemap(allPassports, destinations));
+  const sitemapXml = renderSitemap(allPassports, destinations);
+  fs.writeFileSync(path.join(ROOT, "sitemap.xml"), sitemapXml);
+  // The same file under a second name. Search Console marked /sitemap.xml "couldn't fetch" in September and
+  // kept that status although the URL serves fine (its live test passes); a fresh URL gets a fresh fetch.
+  fs.writeFileSync(path.join(ROOT, "sitemap-pages.xml"), sitemapXml);
 
   const robotsPath = path.join(ROOT, "robots.txt");
   if (!fs.existsSync(robotsPath)) {
