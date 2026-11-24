@@ -5,8 +5,15 @@
   <link>https://travelnow.info/passport/iq/</link>
   <description>Destinations whose entry rule changed for Iraq passport holders, found by the daily comparison of public visa-policy sources (mainly Wikipedia). Check the official source before you travel.</description>
   <language>en</language>
-  <lastBuildDate>Sun, 08 Nov 2026 00:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Tue, 24 Nov 2026 00:00:00 GMT</lastBuildDate>
   <atom:link href="https://travelnow.info/passport/iq/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Egypt: eVisa → Visa-free</title>
+    <link>https://travelnow.info/visa/eg/</link>
+    <guid isPermaLink="false">travelnow-IQ-EG-2026-11-24-vf</guid>
+    <pubDate>Tue, 24 Nov 2026 00:00:00 GMT</pubDate>
+    <description>Egypt: eVisa before, visa-free now, for Iraq passport holders. Seen in the daily data check on 24 November 2026.</description>
+  </item>
   <item>
     <title>Jordan: Visa required → Visa on arrival</title>
     <link>https://travelnow.info/visa/jo/</link>

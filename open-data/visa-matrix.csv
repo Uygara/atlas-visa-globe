@@ -16450,7 +16450,7 @@ IQ,Iraq,DJ,Djibouti,ev,90
 IQ,Iraq,DM,Dominica,vf,21
 IQ,Iraq,DO,Dominican Republic,vr,
 IQ,Iraq,EC,Ecuador,vr,
-IQ,Iraq,EG,Egypt,ev,
+IQ,Iraq,EG,Egypt,vf,
 IQ,Iraq,SV,El Salvador,vr,
 IQ,Iraq,GQ,Equatorial Guinea,ev,
 IQ,Iraq,ER,Eritrea,vr,
@@ -30840,7 +30840,7 @@ RU,Russia,KE,Kenya,ev,90
 RU,Russia,KI,Kiribati,vf,90
 RU,Russia,KP,North Korea,vr,
 RU,Russia,KR,South Korea,ev,60
-RU,Russia,KW,Kuwait,vr,
+RU,Russia,KW,Kuwait,ev,
 RU,Russia,KG,Kyrgyzstan,vf,90
 RU,Russia,LA,Laos,vf,30
 RU,Russia,LV,Latvia,ban,
