@@ -9,6 +9,10 @@ Newest run first. Each entry 10 lines or fewer. Playbook: `docs/AUTOPILOT.md`.
 
 ## Runs
 
+### 2026-11-26 · mid-week light run
+- Walk: 48 visits, 0 errors (third-party `appendChild` of null on /alerts/, /etias/, /passport-validity/, /about/). Shipped 07ddb04a9: default og:image on about/contact/privacy/terms/passport dir (EN + TR); audit-pages warnings 10 → 1 (404 description).
+- Worktree fix: `tools/node_modules` was a broken symlink; now a junction to the main checkout's (walk and build-tr need it).
+
 ### 2026-11-23 · weekly run 3 (light: no subagents, token budget)
 - Numbers (7 days to 11-22): GA users 124 (-28%), sessions 141, engaged 23% (was 12% on 11-17). SC 28 days: 49 clicks, 28.6k impr, CTR 0.2%, pos 13.9 (impr up from 17.4k). Metrics row added to `.autopilot/metrics.tsv`.
 - Walk: 56 visits, 0 errors. audit-pages 0 errors (only og:image warnings on 5 static pages + TR twins, unchanged).
