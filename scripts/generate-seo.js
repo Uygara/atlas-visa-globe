@@ -1095,6 +1095,9 @@ function renderIndex(allPassports, ranks, lang) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${escapeHtml(L.dirTitle(new Date().getFullYear()))}</title>
 <meta name="description" content="${escapeHtml(L.dirDesc(allPassports.length))}">
+<meta property="og:image" content="${SITE_URL}/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="${SITE_URL}/assets/og.png">
 <link rel="canonical" href="${canonical}">
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
 <meta property="og:locale" content="${lang === "tr" ? "tr_TR" : "en_US"}">
