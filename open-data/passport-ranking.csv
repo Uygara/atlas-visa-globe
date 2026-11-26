@@ -68,7 +68,7 @@ rank,passport_iso2,passport_name,no_advance_visa_count,easy_access_count,idc_cou
 67,LC,Saint Lucia,109,160,0,93,0,51,16,45,0
 68,GT,Guatemala,109,150,0,84,2,41,23,55,0
 69,UA,Ukraine,108,177,1,89,0,69,18,28,0
-70,RS,Serbia,108,169,5,86,0,61,17,36,0
+70,RS,Serbia,108,171,5,86,0,63,17,34,0
 71,PA,Panama,107,166,0,91,2,59,14,39,0
 72,SB,Solomon Islands,107,163,0,88,3,56,16,42,0
 73,PY,Paraguay,106,173,8,84,2,67,12,32,0
@@ -186,11 +186,11 @@ rank,passport_iso2,passport_name,no_advance_visa_count,easy_access_count,idc_cou
 185,ER,Eritrea,27,82,0,13,0,55,14,121,2
 186,LY,Libya,26,94,0,15,0,68,11,111,0
 187,HT,Haiti,25,95,0,12,0,70,13,110,0
-188,SO,Somalia,25,81,0,12,0,56,13,123,1
+188,SO,Somalia,25,81,0,12,0,56,13,124,0
 189,LK,Sri Lanka,24,88,0,16,0,64,8,117,0
 190,BD,Bangladesh,24,82,0,16,0,58,8,121,2
 191,PS,Palestine,23,100,0,11,0,77,12,104,1
-192,IR,Iran,23,87,0,13,0,64,10,114,4
+192,IR,Iran,23,88,0,13,0,65,10,113,4
 193,NP,Nepal,21,88,0,9,0,67,12,117,0
 194,IQ,Iraq,21,71,0,11,0,50,10,133,1
 195,KP,North Korea,20,84,0,8,0,64,12,120,1

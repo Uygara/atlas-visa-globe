@@ -16741,7 +16741,7 @@ IR,Iran,PA,Panama,vr,
 IR,Iran,PG,Papua New Guinea,ev,60
 IR,Iran,PY,Paraguay,vr,
 IR,Iran,PE,Peru,vr,
-IR,Iran,PH,Philippines,vr,
+IR,Iran,PH,Philippines,ev,59
 IR,Iran,PL,Poland,vr,
 IR,Iran,PT,Portugal,vr,
 IR,Iran,QA,Qatar,ev,30
@@ -30682,7 +30682,7 @@ RS,Serbia,PA,Panama,vf,90
 RS,Serbia,PG,Papua New Guinea,ev,60
 RS,Serbia,PY,Paraguay,vr,
 RS,Serbia,PE,Peru,vf,90
-RS,Serbia,PH,Philippines,vr,
+RS,Serbia,PH,Philippines,ev,
 RS,Serbia,PL,Poland,vf,90
 RS,Serbia,PT,Portugal,vf,90
 RS,Serbia,QA,Qatar,ev,
@@ -30706,7 +30706,7 @@ RS,Serbia,SK,Slovakia,vf,90
 RS,Serbia,SI,Slovenia,vf,90
 RS,Serbia,SB,Solomon Islands,vr,
 RS,Serbia,SO,Somalia,ev,30
-RS,Serbia,ZA,South Africa,vr,
+RS,Serbia,ZA,South Africa,ev,90
 RS,Serbia,SS,South Sudan,ev,
 RS,Serbia,ES,Spain,vf,90
 RS,Serbia,LK,Sri Lanka,ev,30
@@ -33422,7 +33422,7 @@ SO,Somalia,AO,Angola,vr,
 SO,Somalia,AG,Antigua and Barbuda,ev,
 SO,Somalia,AR,Argentina,vr,
 SO,Somalia,AM,Armenia,vr,
-SO,Somalia,AU,Australia,ban,
+SO,Somalia,AU,Australia,vr,
 SO,Somalia,AT,Austria,vr,
 SO,Somalia,AZ,Azerbaijan,vr,
 SO,Somalia,BS,Bahamas,ev,

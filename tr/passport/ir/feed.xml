@@ -5,8 +5,15 @@
   <link>https://travelnow.info/tr/passport/ir/</link>
   <description>İran pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
   <language>tr</language>
-  <lastBuildDate>Thu, 19 Nov 2026 00:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Thu, 26 Nov 2026 00:00:00 GMT</lastBuildDate>
   <atom:link href="https://travelnow.info/tr/passport/ir/feed.xml" rel="self" type="application/rss+xml"/>
+  <item>
+    <title>Filipinler: Vize gerekli → e-Vize</title>
+    <link>https://travelnow.info/tr/visa/ph/</link>
+    <guid isPermaLink="false">travelnow-IR-PH-2026-11-26-ev</guid>
+    <pubDate>Thu, 26 Nov 2026 00:00:00 GMT</pubDate>
+    <description>İran pasaportu için Filipinler: önce vize gerekli, şimdi e-Vize. 26 Kasım 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
   <item>
     <title>Cabo Verde: Vize gerekli → e-Vize</title>
     <link>https://travelnow.info/tr/visa/cv/</link>
@@ -15,11 +22,11 @@
     <description>İran pasaportu için Cabo Verde: önce vize gerekli, şimdi e-Vize. 19 Kasım 2026 tarihli günlük veri kontrolünde görüldü.</description>
   </item>
   <item>
-    <title>Filipinler: e-Vize → Vize gerekli</title>
+    <title>Filipinler: Vize gerekli → e-Vize</title>
     <link>https://travelnow.info/tr/visa/ph/</link>
-    <guid isPermaLink="false">travelnow-IR-PH-2026-11-09-vr</guid>
-    <pubDate>Mon, 09 Nov 2026 00:00:00 GMT</pubDate>
-    <description>İran pasaportu için Filipinler: önce e-Vize, şimdi vize gerekli. 9 Kasım 2026 tarihli günlük veri kontrolünde görüldü.</description>
+    <guid isPermaLink="false">travelnow-IR-PH-2026-10-24-ev</guid>
+    <pubDate>Sat, 24 Oct 2026 00:00:00 GMT</pubDate>
+    <description>İran pasaportu için Filipinler: önce vize gerekli, şimdi e-Vize. 24 Ekim 2026 tarihli günlük veri kontrolünde görüldü.</description>
   </item>
   <item>
     <title>Türkmenistan: Vize gerekli → e-Vize</title>

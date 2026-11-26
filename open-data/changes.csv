@@ -1,4 +1,8 @@
 date,passport_iso2,destination_iso2,from,to
+2026-11-26,RS,PH,vr,ev
+2026-11-26,RS,ZA,vr,ev
+2026-11-26,IR,PH,vr,ev
+2026-11-26,SO,AU,ban,vr
 2026-11-24,RU,KW,vr,ev
 2026-11-24,IQ,EG,ev,vf
 2026-11-23,UA,TM,vr,ev
@@ -12,8 +16,8 @@ date,passport_iso2,destination_iso2,from,to
 2026-11-11,KW,ZA,ev,vr
 2026-11-10,NL,TM,vr,ev
 2026-11-10,RS,SA,vr,ev
-2026-11-09,TT,TH,vf,ev
 2026-11-09,IR,PH,ev,vr
+2026-11-09,TT,TH,vf,ev
 2026-11-08,IQ,JO,vr,voa
 2026-11-06,CN,SN,voa,vf
 2026-11-04,KW,RS,vr,vf
