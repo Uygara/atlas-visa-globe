@@ -66,7 +66,7 @@
 	</array>
 	<!-- AdMob: Google's TEST app id. Replace with the real one (assets/app-config.js explains). -->
 	<key>GADApplicationIdentifier</key>
-	<string>ca-app-pub-3940256099942544~1458002511</string>
+	<string>ca-app-pub-2617798720306957~5495213604</string>
 	<key>SKAdNetworkItems</key>
 	<array>
 		<dict>
