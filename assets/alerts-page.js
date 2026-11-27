@@ -35,6 +35,19 @@
   function saveWatch(list) { try { localStorage.setItem("atlas.watchlist", JSON.stringify(list)); } catch (e) {} }
   var countries = (window.COUNTRIES || []).filter(function (c) { return c.continent !== "AN"; });
 
+  // Links from /visa/<cc>/ and /passport/<cc>/ arrive as ?watch=fr and/or ?p=tr (roadmap R6).
+  // The watched country is added; the passport is only filled in when none is chosen yet, so a
+  // visitor reading about another nationality never loses their own. Then the query is dropped.
+  (function fromLink() {
+    var q; try { q = new URLSearchParams(location.search); } catch (e) { return; }
+    var known = function (v) { v = String(v || "").toUpperCase(); return countries.some(function (c) { return c.iso2 === v; }) ? v : ""; };
+    var w = known(q.get("watch")), p = known(q.get("p"));
+    if (!w && !p) return;
+    if (p && !passport()) { try { localStorage.setItem("atlas.passport", p); } catch (e) {} }
+    if (w) { var list = watchlist(); if (list.indexOf(w) < 0 && list.length < MAX) { list.push(w); saveWatch(list); } }
+    try { history.replaceState(null, "", location.pathname + location.hash); } catch (e) {}
+  })();
+
   function section(n, title, body) {
     return h("section", { class: "al-sec" }, [h("h2", {}, [h("span", { class: "al-n", "aria-hidden": "true", text: String(n).padStart(2, "0") }), title])].concat(body));
   }
