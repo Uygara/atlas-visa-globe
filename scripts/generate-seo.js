@@ -572,6 +572,8 @@ ${masthead({ path: enPath, i18n: false, lang })}
 
   ${faqHtml}
 
+  ${lang === "en" ? `<section class="card" id="pass-box"><h2>Travel often on this passport?</h2><p>We are planning Travel Pass: day counts for your trips with a warning before you overstay, passport expiry reminders and alerts for every passport in your family. Join the waiting list if you would use it.</p><p class="cta-row"><a href="/travel-pass/?src=passport_${slug}" onclick="window.gtag&&gtag('event','waitlist_cta',{product:'pass',placement:'passport_page',passport:'${passport}'})">See Travel Pass</a></p></section>` : ""}
+
   <div class="other-passports">
     <h2>${escapeHtml(L.relatedHead)}</h2>
     <ul>${otherPassports}</ul>
@@ -1235,7 +1237,7 @@ function renderSitemap(allPassports, destinations) {
     ...guides.map(g => [`/guides/${g}/`, 0.85]),
     ["/alerts/", 0.7], ["/panel/", 0.7],["/digital-nomad-visa/", 0.9], ["/citizenship-by-investment/", 0.9],
     ["/transit-map/", 0.95], ["/safety-map/", 0.9], ["/climate-map/", 0.85], ["/etias/", 0.95], ["/passport-validity/", 0.95],
-    ["/visa-shortcuts/", 0.9], ["/esta-rules/", 0.9], ["/visa-checklist/tr-schengen/", 0.9], ["/appointment-alert/", 0.6],
+    ["/visa-shortcuts/", 0.9], ["/esta-rules/", 0.9], ["/visa-checklist/tr-schengen/", 0.9], ["/appointment-alert/", 0.6], ["/travel-pass/", 0.6],
     ["/schengen-calculator/", 0.95], ["/itinerary/", 0.8], ["/about/", 0.6], ["/contact/", 0.5],
     ["/privacy/", 0.3], ["/terms/", 0.3], ["/passport/", 0.8],
     ...allPassports.map(iso => [`/passport/${iso.toLowerCase()}/`, 0.6]),

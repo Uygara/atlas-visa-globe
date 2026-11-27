@@ -7,7 +7,7 @@
 ## ▶ Yeni oturumda buradan başla
 
 0. **Gelir testi (27 Kasım – 27 Aralık, yeni özellik yok):** `docs/revenue-test.md`. Her oturumda
-   `node tools/analytics-report.js` "revenue test" satırı ve `node tools/usage-report.js` bekleme listesi satırı.
+   `node tools/analytics-report.js` "revenue test" satırı ve `node tools/usage-report.js` iki bekleme listesi satırı (randevu alarmı TR, Travel Pass global).
    27 Aralık'ta tablodaki ölçütlere göre karar ver. Tradedoubler bağlantısı gelince `_redirects` ve `go/axa-schengen*/index.html`'i değiştir.
 0b. **Özellik işleri `docs/ROADMAP.md`den** (Aşama 0 → 3). Sıradaki: **D10 doğruluk denetimi devamı** (ROADMAP): dijital göçebe vizelerinin kalan 31 programı (resmî sayfalar bot engelliyor, tarayıcı panelinden oku;
    denetim uyarısı bunu bekliyor);
