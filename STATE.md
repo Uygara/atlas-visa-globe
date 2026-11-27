@@ -74,6 +74,13 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 29 (2026-11-27: GSC noindex notice, usage numbers, sign-up notices, feature events):** the GSC "Excluded by
+  noindex" mail was /account/ (first crawled 24 Nov via the masthead link); intentional, nothing to fix. /embed/ and 404 are
+  noindex too; /visa/<cc>/ pages are in the sitemap but still "unknown to Google" on 27 Nov (new on 23 Nov).
+  `tools/usage-report.js` counts accounts, watch lists, push devices (no personal data); 27 Nov: 7 accounts, 3 watch lists,
+  2 web devices. `.github/workflows/signups.yml` (every 2 h) comments counts on a "signup" issue so GitHub emails the owner;
+  needs the FIREBASE_SERVICE_ACCOUNT secret. GA4 events via `window.atlasTrack`: passport_select, country_open, sign_up,
+  login, alerts_on (privacy EN+TR updated). GA4 is cookieless in EU/UK/CH/TR, so returning visitors there are not countable.
 - **Round 28 (2026-11-24: map fixes after the redesign):** globe wheel zoom no longer needs Ctrl (removed `wheelNeedsKey`,
   the hint and its strings); at the widest zoom a downward wheel scrolls the page instead, so the content under the home map
   stays reachable. Globes default to upright again (`tilt` default 0; 23.4 stays available as a prop). Safety map: province

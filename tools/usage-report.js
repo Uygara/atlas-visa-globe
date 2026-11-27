@@ -2,7 +2,10 @@
 // phone number or user id is ever printed.
 //
 //   node tools/usage-report.js            accounts, alert watch lists, notification devices
-//   node tools/usage-report.js --json     the same as one JSON line (for the daily job)
+//   node tools/usage-report.js --json     the same as one JSON line
+//   node tools/usage-report.js --since 2026-11-27T06:00:00Z
+//                                         only what was created after that moment, as one JSON line
+//                                         (.github/workflows/signups.yml turns it into a GitHub notification)
 //
 // Credentials: .secrets/firebase-admin.json (the service account tools/analytics-report.js uses),
 // or the FIREBASE_SERVICE_ACCOUNT env var holding the same JSON (GitHub Actions).
@@ -15,6 +18,7 @@ const ROOT = path.resolve(__dirname, "..");
 const SA_FILE = path.join(ROOT, ".secrets", "firebase-admin.json");
 const PROJECT = "travelnow-a0cf3";
 const AS_JSON = process.argv.includes("--json");
+const SINCE = (() => { const i = process.argv.indexOf("--since"); return i > 0 ? Date.parse(process.argv[i + 1]) : NaN; })();
 const DAY = 864e5;
 const b64 = (o) => Buffer.from(typeof o === "string" ? o : JSON.stringify(o)).toString("base64url");
 
@@ -68,7 +72,7 @@ async function userDocs(tok) {
       const raw = (k) => { const e = ((f[k] || {}).mapValue || {}).fields || {}; return e.v && e.v.stringValue != null ? e.v.stringValue : null; };
       let watch = [];
       try { const a = JSON.parse(raw("atlas.watchlist") || "[]"); if (Array.isArray(a)) watch = a; } catch (_) {}
-      out.push({ passport: raw("atlas.passport") || "", watch: watch.length, updated: Date.parse(d.updateTime) || 0 });
+      out.push({ passport: raw("atlas.passport") || "", watch: watch.length, created: Date.parse(d.createTime) || 0, updated: Date.parse(d.updateTime) || 0 });
     }
     next = j.nextPageToken || "";
   } while (next);
@@ -107,6 +111,16 @@ function weekly(list, key, weeks) {
   const A = Array.isArray(result.accounts) ? result.accounts : null;
   const U = Array.isArray(result.users) ? result.users : null;
   const D = Array.isArray(result.devices) ? result.devices : null;
+  if (!Number.isNaN(SINCE)) {
+    const fresh = (list, key) => list.filter((x) => x[key] > SINCE);
+    const out = { since: new Date(SINCE).toISOString(), at: new Date().toISOString() };
+    if (A) { const n = fresh(A, "created"); out.accounts = n.length; out.accountTotal = A.length;
+      out.providers = n.reduce((m, a) => { for (const p of a.providers) m[p] = (m[p] || 0) + 1; return m; }, {}); } else out.accountsError = result.accounts.error;
+    if (U) { out.watchlists = fresh(U, "created").filter((u) => u.watch > 0).length; out.watchlistTotal = U.filter((u) => u.watch > 0).length; } else out.usersError = result.users.error;
+    if (D) { out.devices = fresh(D, "created").length; out.deviceTotal = D.length; } else out.devicesError = result.devices.error;
+    console.log(JSON.stringify(out));
+    return;
+  }
   const summary = {
     at: new Date().toISOString(),
     accounts: A ? { total: A.length, new1d: since(A, "created", 1), new7d: since(A, "created", 7), new30d: since(A, "created", 30),

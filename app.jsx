@@ -221,6 +221,7 @@ function App() {
   const choosePassport = useCallback((iso2) => {
     setAutoDetectedPassport(null);
     setPassport(iso2);
+    window.atlasTrack && window.atlasTrack("passport_select", { passport: iso2 });
   }, []);
 
   // ─── Background theme ───────────────────────────────────────────────────
@@ -280,9 +281,11 @@ function App() {
     setDetailCountry(iso2);
     setFocusedCountry(iso2);
     window.atlasSheet && window.atlasSheet.ensure(0.48);
+    window.atlasTrack && window.atlasTrack("country_open", { passport, destination: iso2, via: "map" });
   };
 
   const onPickFromSearch = (iso2) => {
+    window.atlasTrack && window.atlasTrack("country_open", { passport, destination: iso2, via: "search" });
     setDetailCountry(iso2);
     setFocusedCountry(iso2);
     window.atlasSheet && window.atlasSheet.ensure(0.48);

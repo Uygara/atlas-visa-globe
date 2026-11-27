@@ -353,6 +353,9 @@ function App() {
   var choosePassport = useCallback(function (iso2) {
     setAutoDetectedPassport(null);
     setPassport(iso2);
+    window.atlasTrack && window.atlasTrack("passport_select", {
+      passport: iso2
+    });
   }, []);
   useEffect(function () {
     applyThemeClass(t.background === "dark" ? "dark" : "light");
@@ -402,8 +405,18 @@ function App() {
     _setDetailCountry(iso2);
     setFocusedCountry(iso2);
     window.atlasSheet && window.atlasSheet.ensure(0.48);
+    window.atlasTrack && window.atlasTrack("country_open", {
+      passport: passport,
+      destination: iso2,
+      via: "map"
+    });
   };
   var onPickFromSearch = function onPickFromSearch(iso2) {
+    window.atlasTrack && window.atlasTrack("country_open", {
+      passport: passport,
+      destination: iso2,
+      via: "search"
+    });
     _setDetailCountry(iso2);
     setFocusedCountry(iso2);
     window.atlasSheet && window.atlasSheet.ensure(0.48);
