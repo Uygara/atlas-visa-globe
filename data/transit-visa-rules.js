@@ -82,6 +82,7 @@ window.TRANSIT_RULES = {
   // The C-1 transit visa is needed unless the passport is ESTA-eligible.
   US: {
     label: "United States (no airside transit anywhere)",
+    authDoc: "ESTA",
     kind: "visa",
     requiredFor: "*",
     exemptions: [
@@ -96,6 +97,7 @@ window.TRANSIT_RULES = {
   // ─── Canada (no general airside transit; CTAS for select Chinese) ───
   CA: {
     label: "Canada (Transit Visa required; CTAS exception)",
+    authDoc: "eTA",
     kind: "visa",
     requiredFor: "*",
     exemptions: [
@@ -123,18 +125,19 @@ window.TRANSIT_RULES = {
   // ─── Singapore (Visa-Free Transit Facility, 96h) ───────────────────
   // ICA VFTF page, read 2026-11-21: who may use the facility and, for Indian nationals only,
   // which third-country visas qualify. requiredFor (airside transit visa) not confirmed there.
+  // ICA "Transit through Singapore" (updated 25 Nov 2026, read 2026-11-27): "There are no specific
+  // requirements to transit through Singapore" as long as you don't clear arrival immigration.
   SG: {
     label: "Singapore (Visa-Free Transit Facility, 96h)",
-    kind: "unverified",
-    requiredFor: ["AF","BD","IN","MM","PK","CN","PS","SY","TM","UZ"],
+    requiredFor: [],
     exemptions: [
       { holds: ["AU","CA","DE","JP","NZ","CH","GB","US"],
         note: "Indian nationals only: a visa or long-term pass of Australia, Canada, Germany, Japan, New Zealand, Switzerland, the UK or the US, valid at least one month from entry" },
     ],
     twovHours: 96,
     twovEligible: ["AM","AZ","BY","KZ","KG","MD","RU","TJ","UZ","GE","IN","TM","UA"],
-    notes: "The facility covers nationals of the CIS states, Georgia, India, Turkmenistan and Ukraine, plus holders of a PRC Travel Document, Hong Kong Document of Identity or Macau Travel Permit. You need a confirmed onward ticket leaving Singapore within 96 hours.",
-    source: "https://www.ica.gov.sg/enter-transit-depart/entering-singapore/visa_requirements/visa-free-transit-facility",
+    notes: "No specific requirements to transit if you do not clear arrival immigration. If you must collect bags or a boarding pass outside, entry rules apply. The Visa-Free Transit Facility lets the listed passports leave the airport for up to 96 hours.",
+    source: "https://www.ica.gov.sg/enter-transit-depart/transiting-singapore",
   },
 
   // ─── China (240-hour visa-free transit) ─────────────────────────────
@@ -152,6 +155,63 @@ window.TRANSIT_RULES = {
     ],
     notes: "Up to 240 hours (10 days) without a visa for ordinary passports of 57 countries, with a confirmed onward ticket to a third country or region. Enter and leave through one of the 65 designated ports and stay within the permitted areas.",
     source: "https://en.nia.gov.cn/n147418/n147463/c183412/content.html",
+  },
+
+  // ─── Ireland (Dublin) ───────────────────────────────────────────────
+  // Irish Immigration Service "Transit (including Transfer Visa) Advice", read 2026-11-27.
+  // Listed nationalities need a transit visa. Everyone presents to an immigration officer;
+  // the transit visa (or no visa) only works if both flights use Terminal 2 between 04:00
+  // and 20:00 the same day. Otherwise it is entry and needs an Irish visa where required.
+  IE: {
+    label: "Ireland (Dublin transit visa)",
+    kind: "atv",
+    requiredFor: ["AF","AL","BO","BW","CU","CD","DM","ER","SZ","ET","GE","GH","HN","IR","IQ","LB","LS","MD",
+                  "NR","NI","NG","KN","LC","SO","ZA","LK","TT","VU","ZW"],
+    conditionalFree: true,
+    exemptions: [],
+    twovHours: null, twovEligible: [],
+    notes: "Both flights must use Terminal 2 at Dublin between 04:00 and 20:00 on the same day. Otherwise you pass border control and need permission to enter Ireland (an Irish visa if your passport needs one).",
+    conditions: { ET: "Ethiopian passports: no transit visa when flying directly between Ethiopia and the US or Canada via Ireland, with permission to travel to the US or Canada." },
+    source: "https://www.irishimmigration.ie/at-the-border/transit-including-transfer-visa-advice/",
+  },
+
+  // ─── Australia (Transit visa subclass 771 / TWOV) ───────────────────
+  // Home Affairs "Travellers eligible to transit without a visa", read 2026-11-27. Listed
+  // passports may stay airside up to 8 hours with an onward flight to a third country.
+  // Everyone else needs a visa, even airside (Transit visa subclass 771).
+  AU: {
+    label: "Australia (Transit visa 771; transit without visa for listed passports, 8h)",
+    kind: "atv",
+    requiredFor: "*",
+    twovLifts: true,
+    exemptions: [
+      { holds: ["AU"], key: "au_visa", note: "Any valid Australian visa" },
+    ],
+    twovHours: 8,
+    twovEligible: ["AD","AR","AT","BE","BN","BG","CA","CL","HR","CY","CZ","DK","EE","FM","FJ","FI","FR","DE","GR","HU",
+                   "IS","ID","IE","IT","JP","KI","LV","LI","LT","LU","MY","MT","MH","MX","MC","NR","NL","NZ","NO","OM",
+                   "PW","PG","PH","PL","PT","QA","RO","WS","SM","SG","SK","SI","SB","ZA","KR","ES","SE","CH","TH","TO",
+                   "TV","AE","GB","US","UY","VU","VA"],
+    notes: "Transit without a visa only works if you stay in the transit lounge and fly on to a third country within 8 hours. If you must clear immigration (for example to collect bags), you need an Australian visa.",
+    source: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/transit-771/travellers-eligible-to-transit-without-visa",
+  },
+
+  // ─── New Zealand (Auckland transit) ─────────────────────────────────
+  // Immigration NZ "Transit visa waiver countries and territories", read 2026-11-27. Visa
+  // waiver and transit visa waiver passports transit Auckland with an NZeTA; others need a
+  // Transit Visa. Only Auckland has a transit area.
+  NZ: {
+    label: "New Zealand (Auckland transit: NZeTA or Transit Visa)",
+    kind: "atv",
+    requiredFor: "*",
+    authByEntry: true,
+    authFor: ["BS","BM","BO","CN","CO","CR","EC","FM","FJ","ID","KI","NR","PW","PA","PG","PY","PE","PH","MH","WS",
+              "SB","TH","TO","TV","VU","VE"],
+    authDoc: "NZeTA",
+    exemptions: [],
+    twovHours: null, twovEligible: [],
+    notes: "Only Auckland International Airport has a transit area. Connecting at any other New Zealand airport is entry.",
+    source: "https://www.immigration.govt.nz/visit/transiting-through-new-zealand/transit-visa-waiver-countries-and-territories/",
   },
 
   // ─── Hong Kong (visa-free transit, generous) ────────────────────────
@@ -322,6 +382,7 @@ window.transitVisaRule = function (passportIso, transitArea, opts) {
   } else if (rule.requiredFor === "*" && passport) needs = true;
   else if (Array.isArray(rule.requiredFor) && rule.requiredFor.includes(passport)) needs = true;
   if (needs && !basis) basis = rule.requiredFor === "*" ? "all" : "list";
+  if (!condition && rule.conditions && rule.conditions[passport]) condition = rule.conditions[passport];
 
   // Check exemptions
   let exemption = null;
@@ -340,9 +401,14 @@ window.transitVisaRule = function (passportIso, transitArea, opts) {
     (Array.isArray(rule.twovEligible) && rule.twovEligible.includes(passport))
   ));
 
+  // A transit-without-visa list that replaces the visa (Australia).
+  if (needs && twov && rule.twovLifts) needs = false;
+  const auth = !!(Array.isArray(rule.authFor) && rule.authFor.includes(passport));
+
   return {
     transitArea,
     label: rule.label,
+    auth, authDoc: rule.authDoc || null, authByEntry: !!rule.authByEntry, conditionalFree: !!rule.conditionalFree,
     kind: rule.kind || "atv",
     needs: needs && !exemption,
     basis,
@@ -389,7 +455,12 @@ function _transitEntryStatus(pp, iso) {
 
 window.transitStatusForGlobe = function (passport, destIso2, opts) {
   const pp = String(passport || "").toUpperCase();
-  const iso = String(destIso2 || "").toUpperCase();
+  let iso = String(destIso2 || "").toUpperCase();
+  if (pp && iso === pp) return { status: "self" };
+  // Territories that share a hub's rule (Puerto Rico follows the US). Only direct hub keys:
+  // French or Danish territories are outside Schengen and keep their own answer.
+  const alias = window.TERRITORY_ALIAS && window.TERRITORY_ALIAS[iso];
+  if (alias && window.TRANSIT_RULES[alias] && alias !== "SCHENGEN") iso = alias;
   if (pp && iso === pp) return { status: "self" };
   const area = window.transitAreaForDest(iso);
   const entry = _transitEntryStatus(pp, iso);
@@ -402,7 +473,7 @@ window.transitStatusForGlobe = function (passport, destIso2, opts) {
   const res = window.transitVisaRule(pp, area, { ...(opts || {}), state: area === "SCHENGEN" ? iso : null });
   if (!res) return { status: "unknown", generic: true };
   const base = {
-    area, state: area === "SCHENGEN" ? iso : null, label: res.label, kind: res.kind,
+    area, state: area === "SCHENGEN" ? iso : null, label: res.label, kind: res.kind, authDoc: res.authDoc,
     twovHours: res.twovHours, basis: res.basis, condition: res.condition,
     exemption: res.exemption, exemptions: res.exemptions, notes: res.notes, source: res.source,
     byEntry: _TRANSIT_EASY_ENTRY.has(entry),
@@ -417,8 +488,12 @@ window.transitStatusForGlobe = function (passport, destIso2, opts) {
       return { status: "vr", ...base };
     }
     if (res.kind === "unverified") return { status: "unknown", ...base, unverified: true };
+    if (base.byEntry) return { status: "free", ...base };
+    if (res.auth || (res.authByEntry && entry === "eta")) return { status: "auth", ...base };
     return { status: "atv", ...base };
   }
+  // Allowed without a visa, but only under conditions that often fail (Dublin's Terminal 2 window).
+  if (res.conditionalFree && !base.byEntry) return { status: "twov", ...base, conditional: true };
   if (res.twov && !base.byEntry) return { status: "twov", ...base };
   return { status: "free", ...base };
 };

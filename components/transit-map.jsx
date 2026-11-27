@@ -189,7 +189,8 @@ const AUTH_DOC = { US: "ESTA", CA: "eTA" };
 function transitLine(t) {
   if (t.status === "vr") return { label: window.t("tmap.needs_visa"), color: TG_COLOR.vr, s: "vr" };
   if (t.status === "atv") return { label: window.t("tmap.atv"), color: TG_COLOR.atv, s: "voa" };
-  if (t.status === "auth") return { label: window.t("tmap.auth", { doc: AUTH_DOC[t.area] || "ETA" }), color: TG_COLOR.auth, s: "ev" };
+  if (t.status === "auth") return { label: window.t("tmap.auth", { doc: t.authDoc || AUTH_DOC[t.area] || "ETA" }), color: TG_COLOR.auth, s: "ev" };
+  if (t.status === "twov" && !t.twovHours) return { label: window.t("tmap.cond_ok"), color: TG_COLOR.twov, s: "eta" };
   if (t.status === "twov") return { label: window.t("tmap.twov_ok", { n: t.twovHours }), color: TG_COLOR.twov, s: "eta" };
   if (t.status === "free") return { label: window.t("tmap.free_ok"), color: TG_COLOR.free, s: "vf" };
   if (t.status === "unknown") return { label: window.t("tmap.unknown"), color: TG_COLOR.unknown, s: "na" };
@@ -205,13 +206,15 @@ function transitWhy(passport, iso2, t) {
   else if (t.generic && t.byEntry) out.push(window.t("tmap.why_entry_free"));
   else if (t.status === "atv" && t.area === "SCHENGEN") out.push(window.t(t.basis === "common" ? "tmap.why_common" : "tmap.why_national", { country }));
   else if (t.status === "atv" && t.area === "GB") out.push(window.t("tmap.why_gb"));
-  else if (t.status === "auth") { out.push(window.t("tmap.why_no_airside", { country })); out.push(window.t("tmap.why_auth", { doc: AUTH_DOC[t.area] || "ETA" })); }
+  else if (t.status === "atv") out.push(window.t("tmap.why_list", { country }));
+  else if (t.status === "auth" && t.kind !== "visa") out.push(window.t("tmap.why_auth", { doc: t.authDoc || "ETA" }));
+  else if (t.status === "auth") { out.push(window.t("tmap.why_no_airside", { country })); out.push(window.t("tmap.why_auth", { doc: t.authDoc || AUTH_DOC[t.area] || "ETA" })); }
   else if (t.status === "vr" && t.kind === "visa") out.push(window.t("tmap.why_no_airside", { country }));
   else if (t.status === "free" && t.byEntry) out.push(window.t("tmap.why_entry_free"));
   else if (t.status === "free" && t.area === "SCHENGEN") out.push(window.t("tmap.why_free_schengen", { country }));
   // A visa-required passport at a Schengen airport: the classic trap is the onward Schengen flight.
   if (t.area === "SCHENGEN" && !t.byEntry && (t.status === "free" || t.status === "atv")) out.push(window.t("tmap.schengen_entry"));
-  if (t.condition) out.push(tr("tmap.cond_" + passport + "_" + t.state, t.condition));
+  if (t.condition) out.push(tr("tmap.cond_" + passport + "_" + (t.state || t.area), t.condition));
   return out;
 }
 
@@ -282,7 +285,7 @@ function TransitDetail({ passport, iso2, onClose }) {
       )}
       {transitWhy(passport, iso2, t).map((x, i) => <p key={i} className="entry-note">{x}</p>)}
       <TransitExemptions t={t} />
-      {t.notes && t.area !== "SCHENGEN" && !t.byEntry && t.status !== "unknown" && <p className="entry-note">{tr("tmap.note_" + t.area, t.notes)}</p>}
+      {t.notes && t.area !== "SCHENGEN" && !(t.area === "AU" && t.status === "atv") && !t.byEntry && t.status !== "unknown" && <p className="entry-note">{tr("tmap.note_" + t.area, t.notes)}</p>}
       <TransitSource t={t} />
     </article>
   );
@@ -335,7 +338,7 @@ function TransitLegChecker({ passport, onOpen }) {
               {t.status === "twov" && leg.thirdCountry !== null && (
                 <p className="entry-note">{window.t("tmap.leg_third", { answer: window.t(leg.thirdCountry ? "tmap.leg_yes" : "tmap.leg_no") })}</p>
               )}
-              {t.notes && t.area !== "SCHENGEN" && !t.byEntry && t.status !== "unknown" && <p className="entry-note">{tr("tmap.note_" + t.area, t.notes)}</p>}
+              {t.notes && t.area !== "SCHENGEN" && !(t.area === "AU" && t.status === "atv") && !t.byEntry && t.status !== "unknown" && <p className="entry-note">{tr("tmap.note_" + t.area, t.notes)}</p>}
             </>
           )}
           <button type="button" className="btn" style={{ marginTop: 6 }} onClick={() => onOpen(leg.viaIso)}>
