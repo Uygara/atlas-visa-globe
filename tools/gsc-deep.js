@@ -72,4 +72,10 @@ function template(q) {
   pages.sort((a, b) => b.impressions - a.impressions).slice(0, 20).forEach((r) => console.log(`  ${r.impressions}\t${r.clicks}\t${r.position.toFixed(1)}\t${r.keys[0].replace("https://travelnow.info", "")}`));
   console.log("countries: " + countries.slice(0, 10).map((r) => `${r.keys[0]} ${r.impressions}/${r.clicks}`).join(" · "));
   console.log("devices: " + devices.map((r) => `${r.keys[0]} ${r.impressions}/${r.clicks} pos ${r.position.toFixed(1)}`).join(" · "));
+  // The queries a better page or title could win: on page 1-2 with impressions but few clicks, and the page Google picked.
+  const best = {};
+  for (const r of pq) { const q = r.keys[1]; if (!best[q] || r.impressions > best[q].impressions) best[q] = r; }
+  console.log("queries at position 4-20 (impr, clicks, pos, page Google shows):");
+  queries.filter((r) => r.position >= 4 && r.position < 20).sort((a, b) => b.impressions - a.impressions).slice(0, 30)
+    .forEach((r) => console.log(`  ${r.impressions}\t${r.clicks}\t${r.position.toFixed(1)}\t${r.keys[0]}\t${best[r.keys[0]] ? best[r.keys[0]].keys[0].replace("https://travelnow.info", "") : ""}`));
 })().catch((e) => { console.error("gsc-deep failed:", e.message); process.exit(1); });

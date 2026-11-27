@@ -1,0 +1,41 @@
+name: Search Console report
+
+# Weekly Search Console deep dive (tools/gsc-deep.js), so search work is based on real queries without the
+# owner's laptop. Summary in the job log; full rows as a 90-day artifact (not committed: the repo is public).
+# Needs the FIREBASE_SERVICE_ACCOUNT secret (the service account has Search Console read access).
+on:
+  schedule:
+    - cron: "30 7 * * 1"   # Mondays 07:30 UTC
+  workflow_dispatch:
+    inputs:
+      days:
+        description: "Days to look back"
+        default: "28"
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+    steps:
+      - uses: actions/checkout@v4
+        if: env.FIREBASE_SERVICE_ACCOUNT != ''
+      - uses: actions/setup-node@v4
+        if: env.FIREBASE_SERVICE_ACCOUNT != ''
+        with:
+          node-version: "20"
+      - name: Pull Search Console data
+        if: env.FIREBASE_SERVICE_ACCOUNT != ''
+        run: |
+          mkdir -p .secrets
+          printf '%s' "$FIREBASE_SERVICE_ACCOUNT" > .secrets/firebase-admin.json
+          node tools/gsc-deep.js --days "${{ inputs.days || '28' }}"
+          rm -f .secrets/firebase-admin.json
+      - uses: actions/upload-artifact@v4
+        if: env.FIREBASE_SERVICE_ACCOUNT != ''
+        with:
+          name: gsc-deep
+          path: .autopilot/gsc-deep.json
+          retention-days: 90
