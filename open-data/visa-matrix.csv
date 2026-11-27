@@ -36494,14 +36494,14 @@ TR,Turkey,AL,Albania,vf,90
 TR,Turkey,DZ,Algeria,vr,
 TR,Turkey,AD,Andorra,vr,90
 TR,Turkey,AO,Angola,vf,30
-TR,Turkey,AG,Antigua and Barbuda,vf,180
+TR,Turkey,AG,Antigua and Barbuda,vf,90
 TR,Turkey,AR,Argentina,vf,90
 TR,Turkey,AM,Armenia,ev,120
 TR,Turkey,AU,Australia,vr,
 TR,Turkey,AT,Austria,vr,
 TR,Turkey,AZ,Azerbaijan,vf,90
 TR,Turkey,BS,Bahamas,vf,240
-TR,Turkey,BH,Bahrain,ev,14
+TR,Turkey,BH,Bahrain,ev,30
 TR,Turkey,BD,Bangladesh,voa,30
 TR,Turkey,BB,Barbados,vf,180
 TR,Turkey,BY,Belarus,vf,30
@@ -36517,7 +36517,7 @@ TR,Turkey,BN,Brunei,vf,30
 TR,Turkey,BG,Bulgaria,vr,
 TR,Turkey,BF,Burkina Faso,ev,
 TR,Turkey,BI,Burundi,ev,30
-TR,Turkey,CV,Cabo Verde,vr,
+TR,Turkey,CV,Cabo Verde,voa,
 TR,Turkey,KH,Cambodia,ev,30
 TR,Turkey,CM,Cameroon,ev,
 TR,Turkey,CA,Canada,vr,
@@ -36529,7 +36529,7 @@ TR,Turkey,CO,Colombia,vf,90
 TR,Turkey,KM,Comoros,voa,45
 TR,Turkey,CG,Republic of the Congo,vr,
 TR,Turkey,CD,Democratic Republic of the Congo,ev,7
-TR,Turkey,CR,Costa Rica,vf,90
+TR,Turkey,CR,Costa Rica,vf,30
 TR,Turkey,CI,Côte d'Ivoire,ev,90
 TR,Turkey,HR,Croatia,vr,
 TR,Turkey,CU,Cuba,ev,90
@@ -36547,12 +36547,12 @@ TR,Turkey,ER,Eritrea,vr,
 TR,Turkey,EE,Estonia,vr,
 TR,Turkey,SZ,Eswatini,vf,30
 TR,Turkey,ET,Ethiopia,ev,90
-TR,Turkey,FJ,Fiji,vf,120
+TR,Turkey,FJ,Fiji,vf,90
 TR,Turkey,FI,Finland,vr,
 TR,Turkey,FR,France,vr,
 TR,Turkey,GA,Gabon,ev,90
 TR,Turkey,GM,Gambia,vf,90
-TR,Turkey,GE,Georgia,idc,360
+TR,Turkey,GE,Georgia,idc,365
 TR,Turkey,DE,Germany,vr,
 TR,Turkey,GH,Ghana,vr,
 TR,Turkey,GR,Greece,vr,
@@ -36561,12 +36561,12 @@ TR,Turkey,GT,Guatemala,vf,90
 TR,Turkey,GN,Guinea,ev,90
 TR,Turkey,GW,Guinea-Bissau,voa,90
 TR,Turkey,GY,Guyana,ev,
-TR,Turkey,HT,Haiti,vf,90
+TR,Turkey,HT,Haiti,voa,90
 TR,Turkey,HN,Honduras,vf,90
 TR,Turkey,HU,Hungary,vr,
 TR,Turkey,IS,Iceland,vr,
 TR,Turkey,IN,India,vr,
-TR,Turkey,ID,Indonesia,voa,30
+TR,Turkey,ID,Indonesia,vf,30
 TR,Turkey,IR,Iran,vf,90
 TR,Turkey,IQ,Iraq,ev,30
 TR,Turkey,IE,Ireland,vr,
@@ -36575,16 +36575,16 @@ TR,Turkey,IT,Italy,vr,
 TR,Turkey,JM,Jamaica,vf,90
 TR,Turkey,JP,Japan,vf,90
 TR,Turkey,JO,Jordan,vf,90
-TR,Turkey,KZ,Kazakhstan,vf,30
+TR,Turkey,KZ,Kazakhstan,vf,90
 TR,Turkey,KE,Kenya,ev,90
 TR,Turkey,KI,Kiribati,vr,
 TR,Turkey,KP,North Korea,vr,
-TR,Turkey,KR,South Korea,ev,90
-TR,Turkey,KW,Kuwait,ev,90
+TR,Turkey,KR,South Korea,eta,90
+TR,Turkey,KW,Kuwait,voa,90
 TR,Turkey,KG,Kyrgyzstan,vf,90
 TR,Turkey,LA,Laos,ev,30
 TR,Turkey,LV,Latvia,vr,
-TR,Turkey,LB,Lebanon,voa,30
+TR,Turkey,LB,Lebanon,vf,90
 TR,Turkey,LS,Lesotho,vr,
 TR,Turkey,LR,Liberia,voa,90
 TR,Turkey,LY,Libya,ev,
@@ -36599,8 +36599,8 @@ TR,Turkey,ML,Mali,vr,
 TR,Turkey,MT,Malta,vr,
 TR,Turkey,MH,Marshall Islands,voa,90
 TR,Turkey,MR,Mauritania,ev,30
-TR,Turkey,MU,Mauritius,vf,90
-TR,Turkey,MX,Mexico,ev,180
+TR,Turkey,MU,Mauritius,vf,30
+TR,Turkey,MX,Mexico,ev,30
 TR,Turkey,FM,Micronesia,vf,30
 TR,Turkey,MD,Moldova,vf,90
 TR,Turkey,MC,Monaco,vr,
@@ -36621,12 +36621,12 @@ TR,Turkey,MK,North Macedonia,vf,90
 TR,Turkey,NO,Norway,vr,
 TR,Turkey,OM,Oman,vf,30
 TR,Turkey,PK,Pakistan,ev,90
-TR,Turkey,PW,Palau,voa,30
+TR,Turkey,PW,Palau,vf,
 TR,Turkey,PS,Palestine,vf,90
 TR,Turkey,PA,Panama,vf,90
 TR,Turkey,PG,Papua New Guinea,ev,60
 TR,Turkey,PY,Paraguay,vf,90
-TR,Turkey,PE,Peru,vf,183
+TR,Turkey,PE,Peru,vf,90
 TR,Turkey,PH,Philippines,vf,30
 TR,Turkey,PL,Poland,vr,
 TR,Turkey,PT,Portugal,vr,
@@ -36634,10 +36634,10 @@ TR,Turkey,QA,Qatar,vf,90
 TR,Turkey,RO,Romania,vr,
 TR,Turkey,RU,Russia,ev,30
 TR,Turkey,RW,Rwanda,ev,30
-TR,Turkey,KN,Saint Kitts and Nevis,ev,90
-TR,Turkey,LC,Saint Lucia,vf,90
+TR,Turkey,KN,Saint Kitts and Nevis,vf,90
+TR,Turkey,LC,Saint Lucia,vf,42
 TR,Turkey,VC,Saint Vincent and the Grenadines,vf,90
-TR,Turkey,WS,Samoa,voa,90
+TR,Turkey,WS,Samoa,vf,90
 TR,Turkey,SM,San Marino,vr,
 TR,Turkey,ST,São Tomé and Príncipe,vf,15
 TR,Turkey,SA,Saudi Arabia,ev,90
@@ -36661,17 +36661,17 @@ TR,Turkey,SR,Suriname,vf,90
 TR,Turkey,SE,Sweden,vr,
 TR,Turkey,CH,Switzerland,vr,
 TR,Turkey,SY,Syria,vf,90
-TR,Turkey,TW,Taiwan,vf,90
+TR,Turkey,TW,Taiwan,ev,30
 TR,Turkey,TJ,Tajikistan,vr,
 TR,Turkey,TZ,Tanzania,ev,90
 TR,Turkey,TH,Thailand,vf,30
 TR,Turkey,TL,Timor-Leste,voa,30
 TR,Turkey,TG,Togo,ev,15
-TR,Turkey,TO,Tonga,voa,31
-TR,Turkey,TT,Trinidad and Tobago,vf,90
+TR,Turkey,TO,Tonga,vf,30
+TR,Turkey,TT,Trinidad and Tobago,vf,30
 TR,Turkey,TN,Tunisia,vf,90
 TR,Turkey,TM,Turkmenistan,vr,
-TR,Turkey,TV,Tuvalu,voa,30
+TR,Turkey,TV,Tuvalu,vf,30
 TR,Turkey,UG,Uganda,ev,90
 TR,Turkey,UA,Ukraine,idc,90
 TR,Turkey,AE,United Arab Emirates,vr,
@@ -36679,15 +36679,15 @@ TR,Turkey,GB,United Kingdom,vr,
 TR,Turkey,US,United States,vr,
 TR,Turkey,UY,Uruguay,vf,90
 TR,Turkey,UZ,Uzbekistan,vf,30
-TR,Turkey,VU,Vanuatu,vf,120
+TR,Turkey,VU,Vanuatu,vf,30
 TR,Turkey,VA,Vatican City,vr,
 TR,Turkey,VE,Venezuela,vf,90
 TR,Turkey,VN,Vietnam,ev,
 TR,Turkey,YE,Yemen,vr,
-TR,Turkey,ZM,Zambia,vf,90
+TR,Turkey,ZM,Zambia,vf,30
 TR,Turkey,ZW,Zimbabwe,ev,30
 TR,Turkey,HK,Hong Kong,vf,90
-TR,Turkey,MO,Macao,vf,90
+TR,Turkey,MO,Macao,vf,30
 TR,Turkey,EH,Western Sahara,vf,90
 TR,Turkey,GL,Greenland,vr,
 TR,Turkey,NC,New Caledonia,vr,

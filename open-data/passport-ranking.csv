@@ -89,9 +89,9 @@ rank,passport_iso2,passport_name,no_advance_visa_count,easy_access_count,idc_cou
 88,RU,Russia,93,146,0,81,0,53,12,52,7
 89,BA,Bosnia and Herzegovina,92,157,5,74,0,65,13,48,0
 90,FM,Micronesia,92,156,0,73,2,64,17,49,0
-91,QA,Qatar,90,140,5,65,6,50,14,65,0
-92,TW,Taiwan,89,169,0,73,7,80,9,32,4
-93,TR,Turkey,89,137,3,70,0,48,16,68,0
+91,TR,Turkey,92,138,3,75,1,46,13,67,0
+92,QA,Qatar,90,140,5,65,6,50,14,65,0
+93,TW,Taiwan,89,169,0,73,7,80,9,32,4
 94,PW,Palau,88,155,0,70,2,67,16,50,0
 95,VE,Venezuela,87,149,0,73,0,62,14,56,0
 96,KW,Kuwait,79,137,5,55,2,58,17,68,0
