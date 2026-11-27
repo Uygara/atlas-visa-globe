@@ -74,6 +74,14 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 30 (2026-11-27: search + AI reach):** GSC's 9k-impression "maldives visa requirements" problem is intent, not
+  rank: Google shows /passport/mv/ to people visiting the Maldives. Passport h1 is now "<X> passport: visa-free countries"
+  (no "visa requirements"), with a visitor line under it linking "<X> visa requirements" to /visa/<cc>/. Home seo-fallback
+  (EN + TR) gained "Visa requirements by destination" chips; footer "Read" column links /visa/. PAGE_TEMPLATE_DATE
+  2026-11-27. IndexNow added (key file at root, `scripts/indexnow.js`, workflow `indexnow.yml` after each daily refresh):
+  Bing feeds ChatGPT search, Copilot and DuckDuckGo. Gotcha: scripts/tr-home-fallback.js held two `module.exports`
+  (the first was dead); removed. tools/node_modules must be installed (`cd tools && npm ci`) before build-tr runs.
+
 - **Round 29 (2026-11-27: GSC noindex notice, usage numbers, sign-up notices, feature events):** the GSC "Excluded by
   noindex" mail was /account/ (first crawled 24 Nov via the masthead link); intentional, nothing to fix. /embed/ and 404 are
   noindex too; /visa/<cc>/ pages are in the sitemap but still "unknown to Google" on 27 Nov (new on 23 Nov).

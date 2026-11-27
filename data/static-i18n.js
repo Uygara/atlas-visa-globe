@@ -40,6 +40,7 @@
     "Second passport": { tr:"İkinci pasaport", es:"Segundo pasaporte", de:"Zweitpass", fr:"Second passeport", ar:"جواز سفر ثانٍ" },
     "Citizenship by investment": { tr:"Yatırımla vatandaşlık", es:"Ciudadanía por inversión", de:"Staatsbürgerschaft durch Investition", fr:"Citoyenneté par investissement", ar:"الجنسية عن طريق الاستثمار" },
     "Open data": { tr:"Açık veri", es:"Datos abiertos", de:"Offene Daten", fr:"Données ouvertes", ar:"بيانات مفتوحة" },
+    "Visa by destination": { tr:"Ülkeye göre vize", es:"Visados por destino", de:"Visa nach Reiseziel", fr:"Visas par destination", ar:"التأشيرات حسب الوجهة" },
     "Alerts": { tr:"Uyarılar", es:"Alertas", de:"Benachrichtigungen", fr:"Alertes", ar:"التنبيهات" },
     "About": { tr:"Hakkında", es:"Acerca de", de:"Über uns", fr:"À propos", ar:"حول" },
     "Countries": { tr:"Ülkeler", es:"Países", de:"Länder", fr:"Pays", ar:"الدول" },

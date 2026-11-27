@@ -1,0 +1,32 @@
+name: IndexNow ping
+
+# After the daily data refresh has pushed (and Cloudflare has deployed), tell Bing and the other IndexNow
+# engines which pages changed. Run by hand with "all" to submit every sitemap URL once.
+on:
+  workflow_run:
+    workflows: ["Daily visa refresh"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      all:
+        description: "Submit every URL in sitemap.xml"
+        type: boolean
+        default: false
+
+jobs:
+  ping:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Wait for the Cloudflare deploy
+        run: sleep 90
+      - name: Submit changed URLs
+        run: node scripts/indexnow.js ${{ inputs.all && '--all' || '--days 1' }}

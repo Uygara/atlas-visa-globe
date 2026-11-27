@@ -98,7 +98,7 @@ const LOC = {
     // "Visa-free" counts only entries with no visa at all (visa-free + ID card); visa on arrival is named apart.
     title: (name, c) => `${name} passport visa-free countries 2026: ${(c.vf || 0) + (c.idc || 0)} visa-free${c.voa ? ` + ${c.voa} visa on arrival` : ""}`,
     description: (name, c, rank) => `A ${name} passport gets you into ${(c.vf || 0) + (c.idc || 0)} countries visa-free in 2026${c.idc ? ` (${c.idc} with just an ID card)` : ""}; ${[c.voa ? `${c.voa} more give a visa on arrival` : "", c.eta ? `${c.eta} need a short online permit` : "", c.ev ? `${c.ev} an eVisa` : ""].filter(Boolean).join(", ") || "no others are open without a visa"}. World rank #${rank}, updated daily.`,
-    h1: (name) => `${name} passport: visa-free countries and visa requirements`,
+    h1: (name) => `${name} passport: visa-free countries`,
     idLine: (name, rank) => `${name} passport${rank ? ` · world rank ${rank}` : ""}`,
     metaLine: (n, date) => `${n} destinations · Updated ${date} · Public visa-policy records, checked against official sources`,
     relatedLinks: "Related",
@@ -191,6 +191,9 @@ const LOC = {
 
     // Passport page: pointer to the inbound-visa page of the same country.
     toVisa: (name) => `Entry rules for ${theEn(name.iso, name.label)}`,
+    // Line under the h1 for visitors who searched "<country> visa requirements" and landed on the passport page.
+    visitorLine: (name, a) => `Travelling to ${theEn(name.iso, name.label)} on another passport? See ${a}.`,
+    visitorLink: (name) => `${name.label} visa requirements`,
   },
 
   tr: {
@@ -298,6 +301,8 @@ const LOC = {
     dirItem: (mob, rank) => `vizesiz ${mob}, ${rank}. sırada`,
 
     toVisa: (name) => `${name.label} giriş kuralları`,
+    visitorLine: (name, a) => `Bu ülkeye başka bir pasaportla mı gideceksin? Giriş kuralları için: ${a}.`,
+    visitorLink: (name) => `${name.label} vize şartları`,
   },
 };
 
@@ -532,6 +537,7 @@ ${masthead({ path: enPath, i18n: false, lang })}
     <p class="pp-id"><span class="flag" aria-hidden="true">${country.flag}</span>${escapeHtml(L.idLine(name, rank))}</p>
     <h1>${escapeHtml(L.h1(name))}</h1>
     <p class="subtitle">${escapeHtml(L.metaLine(total, fmtDate(today, lang)))}</p>
+    <p class="pp-visitor">${L.visitorLine({ iso: passport, label: name }, `<a href="${P(`/visa/${slug}/`)}">${escapeHtml(L.visitorLink({ iso: passport, label: name }))}</a>`)}</p>
   </header>
 
   <nav class="pp-related" aria-label="${escapeHtml(L.relatedLinks)}">
@@ -1124,7 +1130,8 @@ ${footer({ lang })}
 // affects them, or PAGE_TEMPLATE_DATE, whichever is later; other pages the last commit of their source file.
 // Bump PAGE_TEMPLATE_DATE only when the passport/destination page content changes for everyone (new
 // sections, new titles), not for styling or stamp changes. 2026-11-19: /visa/ pages and new passport titles.
-const PAGE_TEMPLATE_DATE = "2026-11-19";
+// 2026-11-27: passport h1 no longer says "visa requirements"; visitor line links to the /visa/ page.
+const PAGE_TEMPLATE_DATE = "2026-11-27";
 function gitDate(file) {
   try {
     return require("child_process").execSync(`git log -1 --format=%cs -- "${file}"`, { cwd: ROOT, encoding: "utf8", stdio: ["ignore", "pipe", "ignore"] }).trim();

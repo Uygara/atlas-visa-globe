@@ -20,6 +20,11 @@
 
 ## Senin yapacakların (hesap, ödeme, onay; benim yapamadıklarım)
 
+- [ ] **P1 · Bing Webmaster Tools (3 dk, ücretsiz)**: bing.com/webmasters → Google hesabınla giriş → "Import from Google
+      Search Console" → travelnow.info'yu seç. ChatGPT araması, Copilot ve DuckDuckGo Bing dizinini kullanıyor; şu an
+      Bing'de hiçbir kaydımız yok. IndexNow her gün değişen sayfaları zaten Bing'e bildiriyor, bu adım sadece raporu açar.
+- [ ] **P2 · Cloudflare AI bot ayarı (1 dk)**: dash.cloudflare.com → travelnow.info → Security → Bots: "Block AI bots"
+      KAPALI olsun; "Manage robots.txt" (AI Crawl Control) bizim robots.txt'imizi ezmesin. Açıksa ChatGPT/Perplexity bizi okuyamaz.
 - [ ] **P3 · Google Ads (karar senin)**: hesap 646-445-2494 açık ama kampanya yok, ödeme yöntemi yok, para çıkmaz.
       Google'ın "300 $ kredi"si önce aynı tutarda harcama ister; bedava değil. Harcamak istersen plan hazır:
       `docs/ads/google-ads-plan.md` (anahtar kelimeler, reklam metni, günde 10 $). Bana "Google Ads'i kur" de.
