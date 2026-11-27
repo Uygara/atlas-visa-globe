@@ -2041,6 +2041,8 @@ function ExperiencesBox({ passport, destIso2 }) {
   const [writing, setWriting] = useStateC(false);
   const [tick, setTick] = useStateC(0);
   useEffectC(() => { setOpen(false); setList(null); setWriting(false); }, [passport, destIso2]);
+  const [avail, setAvail] = useStateC(false);
+  useEffectC(() => { let live = true; if (X) X.available().then(ok => { if (live) setAvail(ok); }); return () => { live = false; }; }, []);
   // Sign-in finishes after the page loads: reload the list, so "your post" and report buttons appear.
   useEffectC(() => {
     const a = window.ATLAS_ACCOUNT;
@@ -2053,7 +2055,7 @@ function ExperiencesBox({ passport, destIso2 }) {
     X.list(passport, destIso2).then(l => { if (live) setList(l); }, () => { if (live) setList([]); });
     return () => { live = false; };
   }, [open, passport, destIso2, tick]);
-  if (!X || !X.enabled() || !passport || passport === destIso2) return null;
+  if (!X || !X.enabled() || !avail || !passport || passport === destIso2) return null;
   const reload = () => { setWriting(false); setTick(t => t + 1); };
   const mine = list && list.some(e => e.mine);
   const vars = { passport: window.countryName(passport), dest: window.countryName(destIso2) };

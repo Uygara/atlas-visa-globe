@@ -3124,6 +3124,19 @@ function ExperiencesBox(_ref43) {
     setList(null);
     setWriting(false);
   }, [passport, destIso2]);
+  var _useStateC21 = useStateC(false),
+    _useStateC22 = _slicedToArray(_useStateC21, 2),
+    avail = _useStateC22[0],
+    setAvail = _useStateC22[1];
+  useEffectC(function () {
+    var live = true;
+    if (X) X.available().then(function (ok) {
+      if (live) setAvail(ok);
+    });
+    return function () {
+      live = false;
+    };
+  }, []);
   useEffectC(function () {
     var a = window.ATLAS_ACCOUNT;
     if (!a || !a.onChange) return undefined;
@@ -3145,7 +3158,7 @@ function ExperiencesBox(_ref43) {
       live = false;
     };
   }, [open, passport, destIso2, tick]);
-  if (!X || !X.enabled() || !passport || passport === destIso2) return null;
+  if (!X || !X.enabled() || !avail || !passport || passport === destIso2) return null;
   var reload = function reload() {
     setWriting(false);
     setTick(function (t) {
