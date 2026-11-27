@@ -1,10 +1,13 @@
 // Travel Safety Map — a standalone globe page, sibling to the visa and
-// transit maps. Every country is painted by its government travel-advisory
-// level (1 normal precautions → 4 do not travel), using the strictest of the
-// UK FCDO, U.S. State Department and Government of Canada. Provinces an
-// advisory rates differently are painted on top of their country straight
-// away, so a warning about one border province is not smeared over the whole
-// country; pick a country and all its provinces are drawn in full detail.
+// transit maps. Every country is painted whole by its country-wide advisory
+// level (1 normal precautions → 4 do not travel), the strictest of the UK
+// FCDO, U.S. State Department and Government of Canada. That is the level the
+// governments give the country itself; we do not paint it by its worst
+// province, because one border area at level 4 would then turn Turkey or
+// Mexico red. A country with provinces rated HIGHER than that is striped in
+// the higher colour, so the world view still says "parts are worse". Pick a
+// country and the map drills down: it zooms in, draws every province in its
+// own level, fades the rest of the world, and a back button returns.
 //
 // Deliberately NOT the visa palette: green means "visa-free" two tabs away, so
 // the safety ramp is one ink in four strengths (tokens --risk1…--risk4).
@@ -16,7 +19,6 @@ const { useState, useEffect, useMemo, useCallback, useRef } = React;
 
 const ADVISORIES = window.TRAVEL_ADVISORIES || { countries: {}, sources: {} };
 const ADMIN1_INDEX_URL = "/data/admin1/index.json";
-const ADMIN1_WORLD_URL = "/data/admin1/world.json";
 const LEVEL_COLOR = { 0: "var(--na)", 1: "var(--risk1)", 2: "var(--risk2)", 3: "var(--risk3)", 4: "var(--risk4)" };
 // A source older than this is shown as stale — the US reissues some advisories
 // only once a year, and a 2025 date must not look like today's news.
@@ -39,6 +41,14 @@ const REGION_LEVELS = (() => {
   }
   return out;
 })();
+// Highest province level above the country's own, or 0. Drives the stripes.
+function worseLevelOf(iso2) {
+  const own = countryLevelOf(iso2);
+  let hi = 0;
+  for (const lv of Object.values(REGION_LEVELS[iso2] || {})) if (lv > own && lv > hi) hi = lv;
+  return hi;
+}
+const hatchFill = (base, top) => `url(#risk-hatch-${base}-${top})`;
 const levelLabel = (n) => tr("safety.l" + (n || 0), ["No advisory data", "Normal precautions", "Increased caution", "Reconsider travel", "Do not travel"][n || 0]);
 
 function readView() {
@@ -73,6 +83,7 @@ function SafetyMapApp() {
   const [theme, setTheme] = useSiteTheme();
   const [regions, setRegions] = useState(null); // { iso2, features }
   const [regionNames, setRegionNames] = useState({});
+  const [pickedRegion, setPickedRegion] = useState(null);
   useLangTick();
 
   const setMode = (v) => {
@@ -106,106 +117,68 @@ function SafetyMapApp() {
       .then(topo => {
         if (!alive || loadedFor.current !== selected) return;
         const key = Object.keys(topo.objects)[0];
-        setRegions({ iso2: selected, features: topojson.feature(topo, topo.objects[key]).features });
+        const features = topojson.feature(topo, topo.objects[key]).features;
+        for (const f of features) f.properties = Object.assign({}, f.properties, { id: (f.properties && f.properties.id) || f.id, c: selected });
+        setRegions({ iso2: selected, features });
       })
       .catch(() => { if (alive) setRegions(null); });
     return () => { alive = false; };
   }, [selected]);
 
-  // Warned provinces of every country, painted on the world view without a
-  // click. data/admin1/world.json is a coarse merge of all province outlines
-  // (tools/build-admin1-world.js); it loads after the first paint so the globe
-  // shows up at the same speed as before. Two layers come out of it: the
-  // provinces whose level differs from their country's (filled), and the
-  // province borders of EVERY country as one line layer, so each country reads
-  // as sub-national. A province without its own warning keeps the country's
-  // level; no level is ever guessed for it.
-  const [worldRegions, setWorldRegions] = useState(null);
-  const [provinceMesh, setProvinceMesh] = useState(null);
-  useEffect(() => {
-    let alive = true;
-    const load = () => fetch(ADMIN1_WORLD_URL)
-      .then(r => (r.ok ? r.json() : Promise.reject(new Error("no world provinces"))))
-      .then(topo => {
-        if (!alive) return;
-        // Inner province borders, one line feature per country (a !== b drops the outer outline).
-        // Kept per country on purpose: one world-sized line feature costs about 3x more to clip every frame.
-        const meshes = [];
-        for (const iso2 of Object.keys(topo.objects)) {
-          const m = topojson.mesh(topo, topo.objects[iso2], (a, b) => a !== b);
-          if (!m || !m.coordinates || !m.coordinates.length) continue;
-          meshes.push({ type: "Feature", id: "__prov-" + iso2, properties: { mesh: true, id: "__prov-" + iso2 }, geometry: m });
-        }
-        setProvinceMesh(meshes);
-        const out = [];
-        for (const iso2 of Object.keys(REGION_LEVELS)) {
-          const obj = topo.objects[iso2];
-          if (!obj) continue;
-          const own = countryLevelOf(iso2);
-          for (const f of topojson.feature(topo, obj).features) {
-            const lv = REGION_LEVELS[iso2][f.id];
-            if (!lv || lv === own) continue;
-            f.properties = { id: f.id, c: iso2 };
-            out.push(f);
-          }
-        }
-        setWorldRegions(out);
-      })
-      .catch(() => {});
-    // The timeout makes sure it still loads in a busy or background tab.
-    if (window.requestIdleCallback) window.requestIdleCallback(load, { timeout: 1500 });
-    else setTimeout(load, 300);
-    return () => { alive = false; };
-  }, []);
-
+  // World view: the whole country in its country-wide level, striped when some
+  // provinces are rated higher. Drill-down: the picked country is covered by
+  // its provinces, the rest of the world fades back.
   const fillResolver = useCallback((iso2) => {
-    const a = advisoryFor(iso2);
-    const level = a ? a.level : 0;
-    if (filter && level !== filter) return { color: "var(--land)" };
-    return { color: LEVEL_COLOR[level] };
-  }, [filter]);
+    const level = countryLevelOf(iso2);
+    if (selected) return { color: LEVEL_COLOR[level], opacity: iso2 === selected ? 1 : 0.35 };
+    const worse = worseLevelOf(iso2);
+    if (filter) {
+      if (level === filter) return { color: worse ? hatchFill(level, worse) : LEVEL_COLOR[level] };
+      // A level 2 country with a level 4 province still shows under "4", striped on blank land.
+      if (Object.values(REGION_LEVELS[iso2] || {}).includes(filter) && filter > level) return { color: hatchFill("x", filter) };
+      return { color: "var(--land)" };
+    }
+    return { color: worse ? hatchFill(level, worse) : LEVEL_COLOR[level] };
+  }, [filter, selected]);
 
   // Provinces named in an advisory take its level; the rest keep the country's
-  // own level, so the warned areas stand out inside their own country. Province
-  // features of the selected country carry no country code, so they fall back
-  // to the selection.
+  // own level (no level is ever guessed for them).
   const regionFill = useCallback((f) => {
     const p = f.properties || {};
-    if (p.mesh) return "none"; // border lines only
     const iso2 = p.c || selected;
     const lv = (REGION_LEVELS[iso2] || {})[p.id] || countryLevelOf(iso2);
+    if (p.id && p.id === pickedRegion) return "var(--ink)";
     return LEVEL_COLOR[lv || 0];
-  }, [selected]);
+  }, [selected, pickedRegion]);
 
-  // What the province layer draws: the selected country in full detail, plus
-  // the warned provinces of every other country. With a level filter on, a
-  // province shows only when its own level is the one picked, so a level 4
-  // border region still stands out inside a country that is level 2.
-  const regionFeatures = useMemo(() => {
-    const own = regions && regions.iso2 === selected ? regions.features : [];
-    const others = (worldRegions || []).filter(f =>
-      f.properties.c !== selected &&
-      (!filter || REGION_LEVELS[f.properties.c][f.properties.id] === filter));
-    // The border mesh sits under the filled provinces; with a level filter on it is left out
-    // so only the picked level stands out.
-    const base = provinceMesh && !filter ? provinceMesh : [];
-    const all = base.concat(others, own);
-    return all.length ? all : null;
-  }, [regions, selected, worldRegions, provinceMesh, filter]);
+  // Provinces are drawn only in the drill-down, for the picked country.
+  const regionFeatures = useMemo(() => (
+    regions && regions.iso2 === selected ? regions.features : null
+  ), [regions, selected]);
 
-  const hoverRenderer = useCallback((hover) => <SafetyHover hover={hover} />, []);
+  const hoverRenderer = useCallback((hover) => <SafetyHover hover={hover} names={regionNames} />, [regionNames]);
 
   const open = (iso2) => {
     setSelected(iso2);
+    setPickedRegion(null);
     window.atlasSheet && window.atlasSheet.ensure(0.48);
     if (window.matchMedia("(max-width: 900px)").matches) {
       requestAnimationFrame(() => document.querySelector(".panel")?.scrollTo({ top: 0, behavior: "smooth" }));
     }
   };
 
+  const back = () => { setSelected(null); setPickedRegion(null); };
+  useEffect(() => {
+    if (!selected) return;
+    const onKey = (e) => { if (e.key === "Escape") back(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [selected]);
+
   return (
     <div className="layout">
       <Masthead theme={theme} onTheme={setTheme} />
+      <HatchDefs />
       <div className="globe-stage has-key">
         <Globe
           passport={null}
@@ -215,9 +188,22 @@ function SafetyMapApp() {
           hoverRenderer={hoverRenderer}
           onCountryClick={open}
           focusedCountry={selected}
+          fitFocus
           regionFeatures={regionFeatures}
           regionFill={regionFill}
+          regionInteractive
+          onRegionClick={(f) => setPickedRegion(id => (id === f.properties.id ? null : f.properties.id))}
         />
+        {selected && (
+          <div style={{ position: "absolute", insetInlineStart: 12, top: 12, zIndex: 6, display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 8, maxWidth: "calc(100% - 24px)" }}>
+            <button type="button" className="overlay-card safety-back" onClick={back}
+              style={{ display: "inline-flex", alignItems: "center", gap: 6, minHeight: 40, padding: "8px 14px", border: "1px solid var(--rule-strong)",
+                borderRadius: 999, font: "inherit", fontSize: 13.5, fontWeight: 600, color: "var(--ink)", cursor: "pointer" }}>
+              <span aria-hidden="true">←</span>{tr("safety.back", "All countries")}
+            </button>
+            {pickedRegion && <PickedRegion iso2={selected} id={pickedRegion} names={regionNames} />}
+          </div>
+        )}
         <SafetyLegend />
       </div>
       <PanelResizer />
@@ -232,12 +218,12 @@ function SafetyMapApp() {
           <SafetySearch onPick={open} />
         </section>
 
-        {selected && <SafetyDetail iso2={selected} names={regionNames} onClose={() => setSelected(null)} />}
+        {selected && <SafetyDetail iso2={selected} names={regionNames} picked={pickedRegion} onPick={setPickedRegion} onClose={back} />}
 
         <section className="p-sec">
           <Caption n={1}>{tr("safety.levels", "Countries by level")}</Caption>
           <LevelLedger filter={filter} setFilter={setFilter} />
-          <p className="p-fine" style={{ marginTop: 6 }}>{tr("safety.stricter_note", "Coloured by the strictest of the three governments.")}</p>
+          <p className="p-fine" style={{ marginTop: 6 }}>{tr("safety.rule_note", "Each country shows its country-wide level: the strictest of the three governments. Stripes mean some provinces are rated higher, so one dangerous border area does not colour the whole country. Tap a country to see its provinces.")}</p>
         </section>
 
         <section className="p-sec">
@@ -344,6 +330,41 @@ function RecentlyUpdated({ onOpen }) {
   );
 }
 
+// The province last tapped in the drill-down: name and level, over the map,
+// so a phone user does not have to scroll the list to see what they touched.
+function PickedRegion({ iso2, id, names }) {
+  const lv = (REGION_LEVELS[iso2] || {})[id] || countryLevelOf(iso2);
+  const hit = (names[iso2] || []).find(u => u.id === id);
+  return (
+    <div className="overlay-card safety-picked" style={{ display: "flex", alignItems: "center", gap: 6, maxWidth: "100%", padding: "5px 10px",
+      border: "1px solid var(--rule-strong)", borderRadius: 999, fontSize: 12.5, color: "var(--ink-2)" }}>
+      <span className="dot" style={{ "--sw": LEVEL_COLOR[lv] }} />
+      <strong style={{ color: "var(--ink)", fontWeight: 600, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{hit ? hit.nm : id}</strong>
+      <span style={{ whiteSpace: "nowrap" }}>{lv ? `${lv}: ${levelLabel(lv)}` : levelLabel(0)}</span>
+    </div>
+  );
+}
+
+// ─── Stripe patterns ──────────────────────────────────────────────────────
+// Referenced by the globe's country fills (url(#risk-hatch-<base>-<top>)); an
+// SVG fill url resolves anywhere in the document. Base "x" is blank land, used
+// when a level filter matches only a country's provinces.
+function HatchDefs() {
+  const bases = ["x", 0, 1, 2, 3];
+  return (
+    <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden="true" focusable="false">
+      <defs>
+        {bases.flatMap(base => [2, 3, 4].filter(top => base === "x" || top > base).map(top => (
+          <pattern key={base + "-" + top} id={`risk-hatch-${base}-${top}`} width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+            <rect width="6" height="6" style={{ fill: base === "x" ? "var(--land)" : LEVEL_COLOR[base] }} />
+            <rect width="2.6" height="6" style={{ fill: LEVEL_COLOR[top] }} />
+          </pattern>
+        )))}
+      </defs>
+    </svg>
+  );
+}
+
 // ─── Legend over the globe ────────────────────────────────────────────────
 function SafetyLegend() {
   return (
@@ -356,17 +377,37 @@ function SafetyLegend() {
             <span><span className="mono" style={{ color: "var(--ink-3)" }}>{n}</span> {levelLabel(n)}</span>
           </li>
         ))}
+        <li>
+          <span className="sw" style={{ background: "repeating-linear-gradient(45deg, var(--risk2) 0 2.5px, var(--risk4) 2.5px 4.5px)" }} />
+          <span>{tr("safety.legend_hatch", "Some provinces higher")}</span>
+        </li>
       </ul>
     </div>
   );
 }
 
 // ─── Hover ────────────────────────────────────────────────────────────────
-function SafetyHover({ hover }) {
+function SafetyHover({ hover, names }) {
   const dest = window.byIso2[hover.iso2];
   if (!dest) return null;
   const a = advisoryFor(hover.iso2);
   const level = a ? a.level : 0;
+  if (hover.region) {
+    const own = (REGION_LEVELS[hover.iso2] || {})[hover.region];
+    const hit = (names[hover.iso2] || []).find(u => u.id === hover.region);
+    const lv = own || level;
+    return (
+      <div className="hovercard overlay-card" style={{ left: hover.x + 18, top: hover.y + 18 }}>
+        <div className="hovercard-title"><span>{hit ? hit.nm : hover.region}</span></div>
+        <div className="hovercard-row">
+          <span className="dot" style={{ "--sw": LEVEL_COLOR[lv] }} />
+          <span>{lv ? `${lv}: ${levelLabel(lv)}` : levelLabel(0)}</span>
+        </div>
+        {!own && <div className="hovercard-row hovercard-cap">{tr("safety.region_country_level", "No separate warning: country level")}</div>}
+      </div>
+    );
+  }
+  const worse = worseLevelOf(hover.iso2);
   return (
     <div className="hovercard overlay-card" style={{ left: hover.x + 18, top: hover.y + 18 }}>
       <div className="hovercard-title"><span className="flag">{dest.flag}</span><span>{window.countryName(hover.iso2)}</span></div>
@@ -374,8 +415,8 @@ function SafetyHover({ hover }) {
         <span className="dot" style={{ "--sw": LEVEL_COLOR[level] }} />
         <span>{level ? `${level}: ${levelLabel(level)}` : levelLabel(0)}</span>
       </div>
-      {a && a.regions && a.regions.length > 0 && (
-        <div className="hovercard-row hovercard-cap">{tr("safety.has_regions", "Some regions are worse. Tap to see them")}</div>
+      {worse > 0 && (
+        <div className="hovercard-row hovercard-cap">{tr("safety.parts_higher", "Parts at level {n}: {label}. Tap to see them", { n: worse, label: levelLabel(worse) })}</div>
       )}
     </div>
   );
@@ -419,7 +460,7 @@ function SafetySearch({ onPick }) {
 }
 
 // ─── Detail card ──────────────────────────────────────────────────────────
-function SafetyDetail({ iso2, names, onClose }) {
+function SafetyDetail({ iso2, names, picked, onPick, onClose }) {
   const dest = window.byIso2[iso2];
   const a = advisoryFor(iso2);
   if (!dest) return null;
@@ -434,6 +475,7 @@ function SafetyDetail({ iso2, names, onClose }) {
   const events = (a && a.events) || [];
   const updates = (a && a.uk && a.uk.updates) || [];
   const mfa = (a && a.mfa) || [];
+  const worse = worseLevelOf(iso2);
   const disagree = a && a.uk && a.us && a.ca &&
     (Math.max(a.uk.level, a.us.level, a.ca.level) - Math.min(a.uk.level, a.us.level, a.ca.level) >= 2);
 
@@ -456,6 +498,12 @@ function SafetyDetail({ iso2, names, onClose }) {
         </div>
       </div>
 
+      {worse > 0 && (
+        <div className="note note-risk" style={{ cursor: "default" }}>
+          <span className="note-k" style={{ fontWeight: 500 }}>{tr("safety.parts_note", "Parts of this country are rated level {n} ({label}). The provinces are shaded on the map and listed below.", { n: worse, label: levelLabel(worse) })}</span>
+        </div>
+      )}
+
       {disagree && <div className="note note-info"><span className="note-k" style={{ fontWeight: 500 }}>{tr("safety.disagree", "")}</span></div>}
 
       {/* Regions, the part a country-level colour hides. */}
@@ -471,12 +519,12 @@ function SafetyDetail({ iso2, names, onClose }) {
             <ul className="ledger" style={{ marginBottom: notes.length ? 8 : 0 }}>
               {regions.map(r => (
                 <li key={r.id}>
-                  <div className="lg-row" style={{ cursor: "default" }}>
+                  <button type="button" className="lg-row" aria-pressed={picked === r.id} onClick={() => onPick(picked === r.id ? null : r.id)}>
                     <span className="sw" style={{ "--sw": LEVEL_COLOR[r.level] }} aria-hidden="true" />
                     <span className="lg-label" style={{ whiteSpace: "normal" }}>{regionName(r.id)}</span>
                     <span className="lg-dots" />
                     <span className="lg-n" style={{ fontSize: 12, color: "var(--ink-2)", textAlign: "end" }}>{levelLabel(r.level)}</span>
-                  </div>
+                  </button>
                 </li>
               ))}
             </ul>

@@ -2,6 +2,7 @@
 "use strict";
 
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function _createForOfIteratorHelper(r, e) { var t = "undefined" != typeof Symbol && r[Symbol.iterator] || r["@@iterator"]; if (!t) { if (Array.isArray(r) || (t = _unsupportedIterableToArray(r)) || e && r && "number" == typeof r.length) { t && (r = t); var _n = 0, F = function F() {}; return { s: F, n: function n() { return _n >= r.length ? { done: !0 } : { done: !1, value: r[_n++] }; }, e: function e(r) { throw r; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var o, a = !0, u = !1; return { s: function s() { t = t.call(r); }, n: function n() { var r = t.next(); return a = r.done, r; }, e: function e(r) { u = !0, o = r; }, f: function f() { try { a || null == t["return"] || t["return"](); } finally { if (u) throw o; } } }; }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
 function _defineProperty(e, r, t) { return (r = _toPropertyKey(r)) in e ? Object.defineProperty(e, r, { value: t, enumerable: !0, configurable: !0, writable: !0 }) : e[r] = t, e; }
@@ -140,6 +141,9 @@ function Globe(_ref) {
     hoverRenderer = _ref.hoverRenderer,
     regionFeatures = _ref.regionFeatures,
     regionFill = _ref.regionFill,
+    regionInteractive = _ref.regionInteractive,
+    onRegionClick = _ref.onRegionClick,
+    fitFocus = _ref.fitFocus,
     arcs = _ref.arcs,
     stopMarkers = _ref.stopMarkers,
     nightShade = _ref.nightShade,
@@ -463,9 +467,29 @@ function Globe(_ref) {
     if (!focusedCountry) return;
     var c = window.byIso2[focusedCountry];
     if (!c) return;
-    applyZoom(2.2, true);
+    var lon = c.lon,
+      lat = c.lat,
+      zoom = 2.2;
+    var fit = fitFocus && topology ? fitFor(topology.features, focusedCountry, mode) : null;
+    if (fit) {
+      lon = fit.lon;
+      lat = fit.lat;
+      zoom = fit.zoom;
+    }
+    if (fit && mode === "flat" && projRef.current) {
+      var proj = projRef.current;
+      rotRef.current = [-lon, 0, 0];
+      proj.rotate(rotRef.current);
+      proj.scale(baseScaleRef.current * Math.max(1, Math.min(8, zoom)));
+      proj.translate([size.w / 2, size.h / 2]);
+      var pt = proj([lon, lat]);
+      panRef.current = [0, pt ? size.h / 2 - pt[1] : 0];
+      applyZoom(zoom, false);
+      return;
+    }
+    applyZoom(zoom, true);
     if (mode === "flat") return;
-    var target = [-c.lon, -c.lat, 0];
+    var target = [-lon, -lat, 0];
     var start = _toConsumableArray(rotRef.current);
     var t0 = performance.now();
     var dur = 800;
@@ -483,7 +507,7 @@ function Globe(_ref) {
       if (t < 1) requestAnimationFrame(_tween);
     };
     requestAnimationFrame(_tween);
-  }, [focusedCountry, mode, applyZoom]);
+  }, [focusedCountry, mode, applyZoom, fitFocus, fitFocus ? topology : null]);
   useEffect(function () {
     if (!topology) return;
     var svg = svgRef.current;
@@ -802,7 +826,10 @@ function Globe(_ref) {
     return ((_STATUS_COLOR$r$statu = STATUS_COLOR[r.status]) === null || _STATUS_COLOR$r$statu === void 0 ? void 0 : _STATUS_COLOR$r$statu.fill) || STATUS_COLOR.na.fill;
   }, [passport, filter, resolveOne, groupActive, comparePassport, direction, fillResolver]);
   var opacityFor = useCallback(function (iso2) {
-    if (fillResolver) return 1;
+    if (fillResolver) {
+      var res = fillResolver(iso2);
+      return res && res.opacity != null ? res.opacity : 1;
+    }
     if (!passport && !groupActive) return 1;
     if (filter === "all") return 1;
     var r = resolveOne(iso2);
@@ -840,6 +867,25 @@ function Globe(_ref) {
   var handleLeave = function handleLeave() {
     setHover(null);
     onCountryHover === null || onCountryHover === void 0 || onCountryHover(null);
+  };
+  var handleRegionEnter = function handleRegionEnter(e, f) {
+    var p = f.properties || {};
+    if (!p.c) return;
+    var rect = wrapRef.current.getBoundingClientRect();
+    setHover({
+      iso2: p.c,
+      region: p.id,
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top
+    });
+  };
+  var handleRegionClick = function handleRegionClick(f) {
+    if (dragMovedRef.current) {
+      dragMovedRef.current = false;
+      return;
+    }
+    var p = f.properties || {};
+    if (onRegionClick) onRegionClick(f);else if (p.c) onCountryClick === null || onCountryClick === void 0 || onCountryClick(p.c);
   };
   var handleClick = function handleClick(feature) {
     if (dragMovedRef.current) {
@@ -1146,7 +1192,7 @@ function Globe(_ref) {
     });
   })), regionFeatures && regionFeatures.length > 0 && React.createElement("g", {
     style: {
-      pointerEvents: "none"
+      pointerEvents: regionInteractive ? "auto" : "none"
     }
   }, regionFeatures.map(function (f, i) {
     return React.createElement("path", {
@@ -1159,7 +1205,14 @@ function Globe(_ref) {
       fill: regionFill ? regionFill(f) : "none",
       stroke: "var(--paper-raised)",
       strokeWidth: "0.5",
-      strokeOpacity: "0.7"
+      strokeOpacity: "0.7",
+      onMouseEnter: regionInteractive ? function (e) {
+        return handleRegionEnter(e, f);
+      } : undefined,
+      onMouseLeave: regionInteractive ? handleLeave : undefined,
+      onClick: regionInteractive ? function () {
+        return handleRegionClick(f);
+      } : undefined
     });
   })), nightShade && topology && React.createElement("g", {
     className: "night-layer",
@@ -1321,6 +1374,58 @@ var FEATURE_NAME_TO_ISO2 = {
   "Siachen Glacier": null,
   "Indian Ocean Ter.": "AU"
 };
+function fitFor(features, iso2, mode) {
+  var f = features.find(function (x) {
+    return featureToIso2(x) === iso2;
+  });
+  if (!f || !f.geometry) return null;
+  var geom = f.geometry;
+  if (geom.type === "MultiPolygon") {
+    var best = null,
+      bestA = -1;
+    var _iterator = _createForOfIteratorHelper(geom.coordinates),
+      _step2;
+    try {
+      for (_iterator.s(); !(_step2 = _iterator.n()).done;) {
+        var coords = _step2.value;
+        var g = {
+          type: "Polygon",
+          coordinates: coords
+        };
+        var a = d3.geoArea(g);
+        if (a > bestA) {
+          bestA = a;
+          best = g;
+        }
+      }
+    } catch (err) {
+      _iterator.e(err);
+    } finally {
+      _iterator.f();
+    }
+    geom = best;
+  }
+  var _d3$geoBounds = d3.geoBounds(geom),
+    _d3$geoBounds2 = _slicedToArray(_d3$geoBounds, 2),
+    _d3$geoBounds2$ = _slicedToArray(_d3$geoBounds2[0], 2),
+    x0 = _d3$geoBounds2$[0],
+    y0 = _d3$geoBounds2$[1],
+    _d3$geoBounds2$2 = _slicedToArray(_d3$geoBounds2[1], 2),
+    x1 = _d3$geoBounds2$2[0],
+    y1 = _d3$geoBounds2$2[1];
+  var lonSpan = x1 >= x0 ? x1 - x0 : x1 + 360 - x0;
+  var lat = (y0 + y1) / 2;
+  var lon = x0 + lonSpan / 2;
+  if (lon > 180) lon -= 360;
+  var extent = Math.max(lonSpan * Math.cos(lat * Math.PI / 180), y1 - y0, 1);
+  var zoom;
+  if (mode === "flat") zoom = 120 / extent;else zoom = 0.7 / Math.sin(Math.min(extent, 170) * Math.PI / 360);
+  return {
+    lon: lon,
+    lat: lat,
+    zoom: Math.max(1.3, Math.min(8, zoom))
+  };
+}
 function featureToIso2(feature) {
   if (!feature) return null;
   if (feature.id) {

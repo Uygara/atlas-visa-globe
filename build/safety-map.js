@@ -19,7 +19,6 @@ var ADVISORIES = window.TRAVEL_ADVISORIES || {
   sources: {}
 };
 var ADMIN1_INDEX_URL = "/data/admin1/index.json";
-var ADMIN1_WORLD_URL = "/data/admin1/world.json";
 var LEVEL_COLOR = {
   0: "var(--na)",
   1: "var(--risk1)",
@@ -67,6 +66,18 @@ var REGION_LEVELS = function () {
   }
   return out;
 }();
+function worseLevelOf(iso2) {
+  var own = countryLevelOf(iso2);
+  var hi = 0;
+  for (var _i2 = 0, _Object$values = Object.values(REGION_LEVELS[iso2] || {}); _i2 < _Object$values.length; _i2++) {
+    var lv = _Object$values[_i2];
+    if (lv > own && lv > hi) hi = lv;
+  }
+  return hi;
+}
+var hatchFill = function hatchFill(base, top) {
+  return "url(#risk-hatch-".concat(base, "-").concat(top, ")");
+};
 var levelLabel = function levelLabel(n) {
   return tr("safety.l" + (n || 0), ["No advisory data", "Normal precautions", "Increased caution", "Reconsider travel", "Do not travel"][n || 0]);
 };
@@ -132,6 +143,10 @@ function SafetyMapApp() {
     _useState0 = _slicedToArray(_useState9, 2),
     regionNames = _useState0[0],
     setRegionNames = _useState0[1];
+  var _useState1 = useState(null),
+    _useState10 = _slicedToArray(_useState1, 2),
+    pickedRegion = _useState10[0],
+    setPickedRegion = _useState10[1];
   useLangTick();
   var setMode = function setMode(v) {
     setModeState(v);
@@ -169,9 +184,25 @@ function SafetyMapApp() {
     }).then(function (topo) {
       if (!alive || loadedFor.current !== selected) return;
       var key = Object.keys(topo.objects)[0];
+      var features = topojson.feature(topo, topo.objects[key]).features;
+      var _iterator2 = _createForOfIteratorHelper(features),
+        _step2;
+      try {
+        for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
+          var f = _step2.value;
+          f.properties = Object.assign({}, f.properties, {
+            id: f.properties && f.properties.id || f.id,
+            c: selected
+          });
+        }
+      } catch (err) {
+        _iterator2.e(err);
+      } finally {
+        _iterator2.f();
+      }
       setRegions({
         iso2: selected,
-        features: topojson.feature(topo, topo.objects[key]).features
+        features: features
       });
     })["catch"](function () {
       if (alive) setRegions(null);
@@ -180,107 +211,47 @@ function SafetyMapApp() {
       alive = false;
     };
   }, [selected]);
-  var _useState1 = useState(null),
-    _useState10 = _slicedToArray(_useState1, 2),
-    worldRegions = _useState10[0],
-    setWorldRegions = _useState10[1];
-  var _useState11 = useState(null),
-    _useState12 = _slicedToArray(_useState11, 2),
-    provinceMesh = _useState12[0],
-    setProvinceMesh = _useState12[1];
-  useEffect(function () {
-    var alive = true;
-    var load = function load() {
-      return fetch(ADMIN1_WORLD_URL).then(function (r) {
-        return r.ok ? r.json() : Promise.reject(new Error("no world provinces"));
-      }).then(function (topo) {
-        if (!alive) return;
-        var meshes = [];
-        for (var _i2 = 0, _Object$keys = Object.keys(topo.objects); _i2 < _Object$keys.length; _i2++) {
-          var iso2 = _Object$keys[_i2];
-          var m = topojson.mesh(topo, topo.objects[iso2], function (a, b) {
-            return a !== b;
-          });
-          if (!m || !m.coordinates || !m.coordinates.length) continue;
-          meshes.push({
-            type: "Feature",
-            id: "__prov-" + iso2,
-            properties: {
-              mesh: true,
-              id: "__prov-" + iso2
-            },
-            geometry: m
-          });
-        }
-        setProvinceMesh(meshes);
-        var out = [];
-        for (var _i3 = 0, _Object$keys2 = Object.keys(REGION_LEVELS); _i3 < _Object$keys2.length; _i3++) {
-          var _iso = _Object$keys2[_i3];
-          var obj = topo.objects[_iso];
-          if (!obj) continue;
-          var own = countryLevelOf(_iso);
-          var _iterator2 = _createForOfIteratorHelper(topojson.feature(topo, obj).features),
-            _step2;
-          try {
-            for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
-              var f = _step2.value;
-              var lv = REGION_LEVELS[_iso][f.id];
-              if (!lv || lv === own) continue;
-              f.properties = {
-                id: f.id,
-                c: _iso
-              };
-              out.push(f);
-            }
-          } catch (err) {
-            _iterator2.e(err);
-          } finally {
-            _iterator2.f();
-          }
-        }
-        setWorldRegions(out);
-      })["catch"](function () {});
-    };
-    if (window.requestIdleCallback) window.requestIdleCallback(load, {
-      timeout: 1500
-    });else setTimeout(load, 300);
-    return function () {
-      alive = false;
-    };
-  }, []);
   var fillResolver = useCallback(function (iso2) {
-    var a = advisoryFor(iso2);
-    var level = a ? a.level : 0;
-    if (filter && level !== filter) return {
-      color: "var(--land)"
+    var level = countryLevelOf(iso2);
+    if (selected) return {
+      color: LEVEL_COLOR[level],
+      opacity: iso2 === selected ? 1 : 0.35
     };
+    var worse = worseLevelOf(iso2);
+    if (filter) {
+      if (level === filter) return {
+        color: worse ? hatchFill(level, worse) : LEVEL_COLOR[level]
+      };
+      if (Object.values(REGION_LEVELS[iso2] || {}).includes(filter) && filter > level) return {
+        color: hatchFill("x", filter)
+      };
+      return {
+        color: "var(--land)"
+      };
+    }
     return {
-      color: LEVEL_COLOR[level]
+      color: worse ? hatchFill(level, worse) : LEVEL_COLOR[level]
     };
-  }, [filter]);
+  }, [filter, selected]);
   var regionFill = useCallback(function (f) {
     var p = f.properties || {};
-    if (p.mesh) return "none";
     var iso2 = p.c || selected;
     var lv = (REGION_LEVELS[iso2] || {})[p.id] || countryLevelOf(iso2);
+    if (p.id && p.id === pickedRegion) return "var(--ink)";
     return LEVEL_COLOR[lv || 0];
-  }, [selected]);
+  }, [selected, pickedRegion]);
   var regionFeatures = useMemo(function () {
-    var own = regions && regions.iso2 === selected ? regions.features : [];
-    var others = (worldRegions || []).filter(function (f) {
-      return f.properties.c !== selected && (!filter || REGION_LEVELS[f.properties.c][f.properties.id] === filter);
-    });
-    var base = provinceMesh && !filter ? provinceMesh : [];
-    var all = base.concat(others, own);
-    return all.length ? all : null;
-  }, [regions, selected, worldRegions, provinceMesh, filter]);
+    return regions && regions.iso2 === selected ? regions.features : null;
+  }, [regions, selected]);
   var hoverRenderer = useCallback(function (hover) {
     return React.createElement(SafetyHover, {
-      hover: hover
+      hover: hover,
+      names: regionNames
     });
-  }, []);
+  }, [regionNames]);
   var open = function open(iso2) {
     setSelected(iso2);
+    setPickedRegion(null);
     window.atlasSheet && window.atlasSheet.ensure(0.48);
     if (window.matchMedia("(max-width: 900px)").matches) {
       requestAnimationFrame(function () {
@@ -292,12 +263,26 @@ function SafetyMapApp() {
       });
     }
   };
+  var back = function back() {
+    setSelected(null);
+    setPickedRegion(null);
+  };
+  useEffect(function () {
+    if (!selected) return;
+    var onKey = function onKey(e) {
+      if (e.key === "Escape") back();
+    };
+    window.addEventListener("keydown", onKey);
+    return function () {
+      return window.removeEventListener("keydown", onKey);
+    };
+  }, [selected]);
   return React.createElement("div", {
     className: "layout"
   }, React.createElement(Masthead, {
     theme: theme,
     onTheme: setTheme
-  }), React.createElement("div", {
+  }), React.createElement(HatchDefs, null), React.createElement("div", {
     className: "globe-stage has-key"
   }, React.createElement(Globe, {
     passport: null,
@@ -307,9 +292,52 @@ function SafetyMapApp() {
     hoverRenderer: hoverRenderer,
     onCountryClick: open,
     focusedCountry: selected,
+    fitFocus: true,
     regionFeatures: regionFeatures,
-    regionFill: regionFill
-  }), React.createElement(SafetyLegend, null)), React.createElement(PanelResizer, null), React.createElement("aside", {
+    regionFill: regionFill,
+    regionInteractive: true,
+    onRegionClick: function onRegionClick(f) {
+      return setPickedRegion(function (id) {
+        return id === f.properties.id ? null : f.properties.id;
+      });
+    }
+  }), selected && React.createElement("div", {
+    style: {
+      position: "absolute",
+      insetInlineStart: 12,
+      top: 12,
+      zIndex: 6,
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "flex-start",
+      gap: 8,
+      maxWidth: "calc(100% - 24px)"
+    }
+  }, React.createElement("button", {
+    type: "button",
+    className: "overlay-card safety-back",
+    onClick: back,
+    style: {
+      display: "inline-flex",
+      alignItems: "center",
+      gap: 6,
+      minHeight: 40,
+      padding: "8px 14px",
+      border: "1px solid var(--rule-strong)",
+      borderRadius: 999,
+      font: "inherit",
+      fontSize: 13.5,
+      fontWeight: 600,
+      color: "var(--ink)",
+      cursor: "pointer"
+    }
+  }, React.createElement("span", {
+    "aria-hidden": "true"
+  }, "\u2190"), tr("safety.back", "All countries")), pickedRegion && React.createElement(PickedRegion, {
+    iso2: selected,
+    id: pickedRegion,
+    names: regionNames
+  })), React.createElement(SafetyLegend, null)), React.createElement(PanelResizer, null), React.createElement("aside", {
     className: "panel"
   }, React.createElement(MobileSheetHandle, null), React.createElement("header", {
     className: "p-head",
@@ -327,9 +355,9 @@ function SafetyMapApp() {
   })), selected && React.createElement(SafetyDetail, {
     iso2: selected,
     names: regionNames,
-    onClose: function onClose() {
-      return setSelected(null);
-    }
+    picked: pickedRegion,
+    onPick: setPickedRegion,
+    onClose: back
   }), React.createElement("section", {
     className: "p-sec"
   }, React.createElement(Caption, {
@@ -342,7 +370,7 @@ function SafetyMapApp() {
     style: {
       marginTop: 6
     }
-  }, tr("safety.stricter_note", "Coloured by the strictest of the three governments."))), React.createElement("section", {
+  }, tr("safety.rule_note", "Each country shows its country-wide level: the strictest of the three governments. Stripes mean some provinces are rated higher, so one dangerous border area does not colour the whole country. Tap a country to see its provinces."))), React.createElement("section", {
     className: "p-sec"
   }, React.createElement(Caption, {
     n: 2
@@ -446,15 +474,15 @@ function LevelLedger(_ref5) {
 }
 function RecentlyUpdated(_ref6) {
   var onOpen = _ref6.onOpen;
-  var _useState13 = useState(false),
-    _useState14 = _slicedToArray(_useState13, 2),
-    expanded = _useState14[0],
-    setExpanded = _useState14[1];
+  var _useState11 = useState(false),
+    _useState12 = _slicedToArray(_useState11, 2),
+    expanded = _useState12[0],
+    setExpanded = _useState12[1];
   var rows = useMemo(function () {
     var out = [];
-    for (var _i4 = 0, _Object$entries2 = Object.entries(ADVISORIES.countries); _i4 < _Object$entries2.length; _i4++) {
+    for (var _i3 = 0, _Object$entries2 = Object.entries(ADVISORIES.countries); _i3 < _Object$entries2.length; _i3++) {
       var _daysSince;
-      var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i4], 2),
+      var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i3], 2),
         iso2 = _Object$entries2$_i[0],
         c = _Object$entries2$_i[1];
       if (!window.byIso2[iso2] || !c.uk || !c.uk.updates || !c.uk.updates.length) continue;
@@ -517,6 +545,83 @@ function RecentlyUpdated(_ref6) {
     n: rows.length
   })));
 }
+function PickedRegion(_ref7) {
+  var iso2 = _ref7.iso2,
+    id = _ref7.id,
+    names = _ref7.names;
+  var lv = (REGION_LEVELS[iso2] || {})[id] || countryLevelOf(iso2);
+  var hit = (names[iso2] || []).find(function (u) {
+    return u.id === id;
+  });
+  return React.createElement("div", {
+    className: "overlay-card safety-picked",
+    style: {
+      display: "flex",
+      alignItems: "center",
+      gap: 6,
+      maxWidth: "100%",
+      padding: "5px 10px",
+      border: "1px solid var(--rule-strong)",
+      borderRadius: 999,
+      fontSize: 12.5,
+      color: "var(--ink-2)"
+    }
+  }, React.createElement("span", {
+    className: "dot",
+    style: {
+      "--sw": LEVEL_COLOR[lv]
+    }
+  }), React.createElement("strong", {
+    style: {
+      color: "var(--ink)",
+      fontWeight: 600,
+      overflow: "hidden",
+      textOverflow: "ellipsis",
+      whiteSpace: "nowrap"
+    }
+  }, hit ? hit.nm : id), React.createElement("span", {
+    style: {
+      whiteSpace: "nowrap"
+    }
+  }, lv ? "".concat(lv, ": ").concat(levelLabel(lv)) : levelLabel(0)));
+}
+function HatchDefs() {
+  var bases = ["x", 0, 1, 2, 3];
+  return React.createElement("svg", {
+    width: "0",
+    height: "0",
+    style: {
+      position: "absolute"
+    },
+    "aria-hidden": "true",
+    focusable: "false"
+  }, React.createElement("defs", null, bases.flatMap(function (base) {
+    return [2, 3, 4].filter(function (top) {
+      return base === "x" || top > base;
+    }).map(function (top) {
+      return React.createElement("pattern", {
+        key: base + "-" + top,
+        id: "risk-hatch-".concat(base, "-").concat(top),
+        width: "6",
+        height: "6",
+        patternUnits: "userSpaceOnUse",
+        patternTransform: "rotate(45)"
+      }, React.createElement("rect", {
+        width: "6",
+        height: "6",
+        style: {
+          fill: base === "x" ? "var(--land)" : LEVEL_COLOR[base]
+        }
+      }), React.createElement("rect", {
+        width: "2.6",
+        height: "6",
+        style: {
+          fill: LEVEL_COLOR[top]
+        }
+      }));
+    });
+  })));
+}
 function SafetyLegend() {
   return React.createElement("div", {
     className: "map-key map-key-below overlay-card"
@@ -536,14 +641,46 @@ function SafetyLegend() {
         color: "var(--ink-3)"
       }
     }, n), " ", levelLabel(n)));
-  })));
+  }), React.createElement("li", null, React.createElement("span", {
+    className: "sw",
+    style: {
+      background: "repeating-linear-gradient(45deg, var(--risk2) 0 2.5px, var(--risk4) 2.5px 4.5px)"
+    }
+  }), React.createElement("span", null, tr("safety.legend_hatch", "Some provinces higher")))));
 }
-function SafetyHover(_ref7) {
-  var hover = _ref7.hover;
+function SafetyHover(_ref8) {
+  var hover = _ref8.hover,
+    names = _ref8.names;
   var dest = window.byIso2[hover.iso2];
   if (!dest) return null;
   var a = advisoryFor(hover.iso2);
   var level = a ? a.level : 0;
+  if (hover.region) {
+    var own = (REGION_LEVELS[hover.iso2] || {})[hover.region];
+    var hit = (names[hover.iso2] || []).find(function (u) {
+      return u.id === hover.region;
+    });
+    var lv = own || level;
+    return React.createElement("div", {
+      className: "hovercard overlay-card",
+      style: {
+        left: hover.x + 18,
+        top: hover.y + 18
+      }
+    }, React.createElement("div", {
+      className: "hovercard-title"
+    }, React.createElement("span", null, hit ? hit.nm : hover.region)), React.createElement("div", {
+      className: "hovercard-row"
+    }, React.createElement("span", {
+      className: "dot",
+      style: {
+        "--sw": LEVEL_COLOR[lv]
+      }
+    }), React.createElement("span", null, lv ? "".concat(lv, ": ").concat(levelLabel(lv)) : levelLabel(0))), !own && React.createElement("div", {
+      className: "hovercard-row hovercard-cap"
+    }, tr("safety.region_country_level", "No separate warning: country level")));
+  }
+  var worse = worseLevelOf(hover.iso2);
   return React.createElement("div", {
     className: "hovercard overlay-card",
     style: {
@@ -561,16 +698,19 @@ function SafetyHover(_ref7) {
     style: {
       "--sw": LEVEL_COLOR[level]
     }
-  }), React.createElement("span", null, level ? "".concat(level, ": ").concat(levelLabel(level)) : levelLabel(0))), a && a.regions && a.regions.length > 0 && React.createElement("div", {
+  }), React.createElement("span", null, level ? "".concat(level, ": ").concat(levelLabel(level)) : levelLabel(0))), worse > 0 && React.createElement("div", {
     className: "hovercard-row hovercard-cap"
-  }, tr("safety.has_regions", "Some regions are worse. Tap to see them")));
+  }, tr("safety.parts_higher", "Parts at level {n}: {label}. Tap to see them", {
+    n: worse,
+    label: levelLabel(worse)
+  })));
 }
-function SafetySearch(_ref8) {
-  var onPick = _ref8.onPick;
-  var _useState15 = useState(""),
-    _useState16 = _slicedToArray(_useState15, 2),
-    q = _useState16[0],
-    setQ = _useState16[1];
+function SafetySearch(_ref9) {
+  var onPick = _ref9.onPick;
+  var _useState13 = useState(""),
+    _useState14 = _slicedToArray(_useState13, 2),
+    q = _useState14[0],
+    setQ = _useState14[1];
   var results = useMemo(function () {
     var ql = q.toLowerCase().trim();
     if (!ql) return [];
@@ -616,10 +756,12 @@ function SafetySearch(_ref8) {
     }));
   })));
 }
-function SafetyDetail(_ref9) {
-  var iso2 = _ref9.iso2,
-    names = _ref9.names,
-    onClose = _ref9.onClose;
+function SafetyDetail(_ref0) {
+  var iso2 = _ref0.iso2,
+    names = _ref0.names,
+    picked = _ref0.picked,
+    onPick = _ref0.onPick,
+    onClose = _ref0.onClose;
   var dest = window.byIso2[iso2];
   var a = advisoryFor(iso2);
   if (!dest) return null;
@@ -636,6 +778,7 @@ function SafetyDetail(_ref9) {
   var events = a && a.events || [];
   var updates = a && a.uk && a.uk.updates || [];
   var mfa = a && a.mfa || [];
+  var worse = worseLevelOf(iso2);
   var disagree = a && a.uk && a.us && a.ca && Math.max(a.uk.level, a.us.level, a.ca.level) - Math.min(a.uk.level, a.us.level, a.ca.level) >= 2;
   return React.createElement("article", {
     className: "entry"
@@ -674,7 +817,20 @@ function SafetyDetail(_ref9) {
     className: "stamp-s"
   }, tr("safety.level_n", "Level {n}", {
     n: level
-  }), " / 4"))), disagree && React.createElement("div", {
+  }), " / 4"))), worse > 0 && React.createElement("div", {
+    className: "note note-risk",
+    style: {
+      cursor: "default"
+    }
+  }, React.createElement("span", {
+    className: "note-k",
+    style: {
+      fontWeight: 500
+    }
+  }, tr("safety.parts_note", "Parts of this country are rated level {n} ({label}). The provinces are shaded on the map and listed below.", {
+    n: worse,
+    label: levelLabel(worse)
+  }))), disagree && React.createElement("div", {
     className: "note note-info"
   }, React.createElement("span", {
     className: "note-k",
@@ -705,10 +861,12 @@ function SafetyDetail(_ref9) {
   }, regions.map(function (r) {
     return React.createElement("li", {
       key: r.id
-    }, React.createElement("div", {
+    }, React.createElement("button", {
+      type: "button",
       className: "lg-row",
-      style: {
-        cursor: "default"
+      "aria-pressed": picked === r.id,
+      onClick: function onClick() {
+        return onPick(picked === r.id ? null : r.id);
       }
     }, React.createElement("span", {
       className: "sw",
@@ -839,10 +997,10 @@ function SafetyDetail(_ref9) {
     });
   }));
 }
-function SourceRow(_ref0) {
+function SourceRow(_ref1) {
   var _daysSince2;
-  var k = _ref0.k,
-    src = _ref0.src;
+  var k = _ref1.k,
+    src = _ref1.src;
   var label = tr("safety." + k, {
     uk: "UK FCDO",
     us: "U.S. State Department",
