@@ -153,7 +153,7 @@
 <!-- /chrome:masthead -->
 <div class="wrap">
   <h1>Schengen 90/180 hesaplayıcı</h1>
-  <p class="sub">Ücretsiz, anında, üyeliksiz. Schengen Bölgesi'ne geçmiş seyahatlerini gir: kayan 180 günlük pencerede 90 gününün ne kadarını kullandığını tam olarak gör ve kuralı çiğnemeden ileriki ziyaretleri planla.</p>
+  <p class="sub">Schengen Bölgesi'ne geçmiş seyahatlerini gir: kayan 180 günlük pencerede 90 gününün ne kadarını kullandığını tam olarak gör ve kuralı çiğnemeden ileriki ziyaretleri planla.</p>
 
 
   <div id="hero" aria-live="polite" class="hero" data-no-i18n=""><!-- filled by JS --></div>
@@ -666,6 +666,11 @@
   }
 
   function rerender() {
+    // With no trips the ring and the planner only say "0 of 90"; hide them so the
+    // trip form is the first thing on a phone screen.
+    const empty = trips.length === 0;
+    document.getElementById("hero").style.display = empty ? "none" : "";
+    document.getElementById("plan-card").style.display = empty ? "none" : "";
     renderHero();
     renderSharedNote();
     renderPlan();

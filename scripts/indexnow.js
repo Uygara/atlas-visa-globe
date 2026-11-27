@@ -27,6 +27,12 @@ async function main() {
   const urls = changedUrls();
   console.log(`indexnow: ${urls.length} URL(s) ${arg("--all") ? "(all)" : `changed in the last ${DAYS} day(s)`}`);
   if (!urls.length || arg("--dry")) return;
+  // The engines fetch the key file to verify the host; log what they will see.
+  try {
+    const k = await fetch(`https://${HOST}/${KEY}.txt`, { redirect: "manual" });
+    const body = (await k.text()).trim();
+    console.log(`indexnow: key file HTTP ${k.status}${k.headers.get("location") ? " -> " + k.headers.get("location") : ""}, ${body === KEY ? "content matches" : "CONTENT MISMATCH: " + body.slice(0, 80)}`);
+  } catch (e) { console.log("indexnow: key file fetch failed, " + e.message); }
   for (let i = 0; i < urls.length; i += 10000) {
     const r = await fetch("https://api.indexnow.org/indexnow", {
       method: "POST",
