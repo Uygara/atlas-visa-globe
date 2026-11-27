@@ -74,6 +74,14 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 34 (2026-11-27: owner console chores via the browser):** the GCP/Firebase/GA4 project lives on the second
+  Google login in the owner's Chrome (`/u/1/`, `authuser=1`); `/u/0/` is a different account and shows "no access".
+  Granted Firebase Rules Admin to `firebase-adminsdk-fbsvc@travelnow-a0cf3`; "Firestore rules" workflow then published
+  (run 46001109003), so the R5 experiences box can show. GA4 event-scoped dimensions passport, destination, via, method,
+  platform created. Firebase Phone sign-in enabled with an SMS allow list of 24 countries (TR, US, GB, EU core, CA, AU,
+  NZ, IN, JP, AZ). AdSense: only one rejection (17 Jun, low value content); 14 Nov notice says the unactivated account is
+  deactivated after 30 days. GitHub email privacy was already on. AdMob and iVisa need sign-up/login: left to the owner.
+
 - **Round 33 (2026-11-27: R5 traveller experiences):** experiences/{uid}_{PP-DD} + posters/{uid} in Firestore, rules and 26
   emulator tests (`tools/test-firestore-rules.js`; needs Java + firebase-tools, CI installs them), client
   `assets/experiences.js`, `ExperiencesBox` at the end of components/panel.jsx. The box probes once per page load and stays

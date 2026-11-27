@@ -25,8 +25,8 @@
       Google'ın "300 $ kredi"si önce aynı tutarda harcama ister; bedava değil. Harcamak istersen plan hazır:
       `docs/ads/google-ads-plan.md` (anahtar kelimeler, reklam metni, günde 10 $). Bana "Google Ads'i kur" de.
 - [ ] **P2 · E-posta adresleri herkese açık depoda (İpek ile birlikte, 2 dk)**: depo herkese açık ve her commit'te
-      yazanın e-postası görünüyor. GitHub → Settings → Emails → "Keep my email addresses private" işaretle, sonra
-      kendi bilgisayarında: `git config --global user.email "<GitHub'ın verdiği ...@users.noreply.github.com adresi>"`.
+      yazanın e-postası görünüyor. Senin GitHub'ında "Keep my email addresses private" zaten açık; kalan tek adım kendi
+      bilgisayarında: `git config --global user.email "58884301+Uygara@users.noreply.github.com"`. İpek de aynısını yapmalı.
       Eski commit'lerdeki adres kalır. Depoyu gizliye almak da bir seçenek (Settings → General → Danger Zone);
       Cloudflare ve GitHub Actions çalışmaya devam eder, ama Actions ücretsiz dakikası ayda 2000'e iner.
 - [ ] **P2 · Türkiye için çerez onayı**: Türkiye'den gelenlere artık yalnızca kişiselleştirilmemiş reklam gidiyor
@@ -34,7 +34,8 @@
       açılmadan önce KVKK, VERBİS ve aydınlatma metnini bir hukukçuya bir kez kontrol ettir.
 
 - [ ] **P1 · iVisa ödeme bilgisi (5 dk)**: ivisa.com/affiliates → giriş → Account → ödeme yöntemi (PayPal) ve bilgiler.
-      Ödeme ayın 15'inde, en az 50 $ birikince yapılır. Komisyon oranını aynı sayfadaki şartlardan bana yaz.
+      Ödeme ayın 15'inde, en az 50 $ birikince yapılır. Herkese açık sayfa: hizmet bedelinin "en fazla %20"si, ilk tıklama,
+      365 gün çerez; senin hesabındaki gerçek oranı giriş yapınca bana yaz (tarayıcıda oturum açık değildi).
       İsteğe bağlı: Assets → "Generate Custom Deep link" ile en çok ziyaret alan 5 ülke sayfası (ABD, Schengen,
       İngiltere, Kanada, Hindistan e-vize) için bağlantı üret, bana ver; ülke sayfalarında genel bağlantının yerine koyarım.
 - [ ] **P1 · E-posta bildirimleri için Resend (ücretsiz plan)**: resend.com → kayıt → Domains → travelnow.info ekle →
@@ -50,28 +51,23 @@
          `.secrets/instagram-token.txt`. Sonra bana "Instagram bağlandı" yaz; `node scripts/ig-publish.js --check`
          ile denerim. Şifre paylaşmana gerek yok.
 - [ ] **P1 · Yeni stildeki 4 Instagram gönderisini onayla**: `social/queue/` (24, 26, 28 Kasım, 5 Aralık); görseller yenilendiği için onay sıfırlandı.
+- [ ] **P3 · GA4'te hatalı özel boyut (10 sn)**: Özel tanımlar listesinde "passport destination via method platform"
+      adlı, `campaign` parametresine bağlı bir boyut var (beş doğru boyut ayrıca kuruldu). Arşivlemek geri alınamadığı için
+      bıraktım; satırdaki üç nokta → Archive. Zararı yok, yalnızca listede kafa karıştırır.
 - [ ] **P2 · İkinci editör**: `docs/ONBOARDING.md` bölüm 1 (GitHub, GA, Search Console, Cloudflare davetleri).
 
-- [ ] **P1 · GA4 özel boyutları (3 dk)**: analytics.google.com → Yönetici → Özel tanımlar → Özel boyut oluştur, kapsam "Etkinlik":
-      `passport`, `destination`, `via`, `method`, `platform` (parametre adı aynı). Böylece pasaport seçimi ve açılan ülke raporlarda görünür.
-- [ ] **P1 · Firestore kurallarını yayınlama izni (3 dk, deneyim özelliği bunu bekliyor)**: `Firestore rules` iş akışı kuralları
-      testten geçirip yayınlıyor ama hizmet hesabının izni yok (403, `firebaserules.googleapis.com`). Deneyim kutusu kurallar
-      yayınlanana kadar sitede görünmüyor. İki yoldan biri yeter. (a) Kalıcı çözüm: `.secrets/firebase-admin.json` içindeki
-      `client_email` değerini kopyala, Google Cloud Console → IAM → projesi `travelnow-a0cf3` → o adrese "Firebase Rules Admin"
-      rolünü ekle; sonra GitHub → Actions → "Firestore rules" → Run workflow. (b) Tek seferlik: Firebase Console → Firestore
-      Database → Rules → `firestore.rules` dosyasının içeriğini yapıştır → Publish. (a)'yı seçersen sonraki kural değişiklikleri
-      kendiliğinden yayınlanır.
-- [ ] **P1 · Firebase Console: telefonla giriş**: Authentication → Sign-in method → Phone → Etkinleştir; Settings →
-      SMS region policy → yalnızca kullanıcı ülkeleri (sahte SMS maliyetine karşı). Kota dolarsa Blaze kararı senin.
 - [ ] **P1 · Google Play Console hesabı (25 $)**: play.google.com/console, kişisel hesap, kimlik doğrulama. Yeni kişisel
       hesaplarda yayından önce **en az 12 test kullanıcısı 14 gün kesintisiz** kapalı testte olmalı: Android kullanan
       12 kişinin Gmail adresini topla. (Kuruluş hesabı bu şarttan muaf ama D-U-N-S numarası ister.)
-- [ ] **P1 · AdMob hesabı**: admob.google.com, aynı Google hesabı. Bir Android uygulaması ekle ("henüz yayında değil"),
+- [ ] **P1 · AdMob hesabı**: admob.google.com, uygaratly@ hesabıyla (AdSense yayıncı kimliği hazır geliyor; kayıt sözleşme
+      onayı istediği için ben açmadım). Bir Android uygulaması ekle ("henüz yayında değil"),
       bir Banner birimi oluştur; uygulama kimliğini ve birim kimliğini bana ver. Yayından sonra mağaza kaydına bağla.
 - [ ] **P2 · Canlıda Google ile giriş (1 dk)**: travelnow.info/account/ → "Continue with Google". Açılır pencere
       otomatik test edilemiyor.
-- [ ] **P1 · AdSense yeniden başvuru (en erken 17 Aralık)**: önce AdSense → Siteler'de son ret e-postasındaki gerekçeyi oku ve bana yaz
-      (ilk ret Haziran'da "düşük değerli içerik" idi, ikincisinin gerekçesi kayıtlarda yok). Başvurmadan önce: Search Console →
+- [ ] **P1 · AdSense yeniden başvuru (14 Aralık'tan önce)**: AdSense 14 Kasım'da "hesap 30 gün içinde etkinleştirilmezse
+      devre dışı kalır" e-postası gönderdi (yaklaşık 14 Aralık). Devre dışı kalırsa yeniden etkinleştirilebilir, ama 10-13 Aralık
+      arası başvurmak daha temiz. Siteler sayfasında tek ret var: 17 Haziran, "Low value content"; ads.txt durumu o tarihten
+      kalma "Not found" (dosya depoda var, başvuruyla yenilenir). Başvurmadan önce: Search Console →
       Sayfalar'da dizinlenen sayfa sayısına bak (sitemap 22-23 Kasım'da gönderildi), site adresi AdSense'te `travelnow.info`
       (www değil) olmalı. www yönlendirmesi 22 Kasım'da düzeldi.
 - [ ] **P2 · AdSense onaylanınca**: AdSense → Privacy & messaging → Avrupa (GDPR) mesajını aç. Gizlilik metni AB/BK/İsviçre
@@ -84,6 +80,8 @@
       çevrilmemiş (`node scripts/build-tr.js --todo`). `data/travel-advisories.js` resmi metin alıntısı; tireler orada kalır.
 - [ ] **P1 · Play yükleme anahtarı + imzalı AAB**: Play hesabı açılınca. Anahtar `.secrets/`'ta kalır; sen 4 GitHub gizli
       anahtarı eklersin (`ANDROID_UPLOAD_*`), CI `travelnow-release-aab` üretir. Play App Signing açık olacak.
+      Telefonla giriş Android'de çalışsın diye yükleme ve Play imza anahtarlarının SHA-1'ini Firebase → Proje ayarları →
+      Android uygulamasına ekle (Phone sağlayıcısı 27 Kasım'da açıldı, SMS yalnızca 24 ülkeye izinli).
 - [ ] **P2 · Mağaza ekran görüntüleri**: app/www'den headless Chrome ile, EN + TR, 6 adet (`store/play-listing.md` sonu).
 - [ ] **P2 · Rehber yazıları**: Search Console'daki aramalar çoğunlukla "<ülke> passport visa free countries". Pasaport
       sayfaları bunu hedefliyor; ek olarak ESTA/eTA/UK ETA/ETIAS karşılaştırması (ücret ve tarih yazmadan) ve
