@@ -75,9 +75,6 @@ function worseLevelOf(iso2) {
   }
   return hi;
 }
-var hatchFill = function hatchFill(base, top) {
-  return "url(#risk-hatch-".concat(base, "-").concat(top, ")");
-};
 var levelLabel = function levelLabel(n) {
   return tr("safety.l" + (n || 0), ["No advisory data", "Normal precautions", "Increased caution", "Reconsider travel", "Do not travel"][n || 0]);
 };
@@ -217,20 +214,11 @@ function SafetyMapApp() {
       color: LEVEL_COLOR[level],
       opacity: iso2 === selected ? 1 : 0.35
     };
-    var worse = worseLevelOf(iso2);
-    if (filter) {
-      if (level === filter) return {
-        color: worse ? hatchFill(level, worse) : LEVEL_COLOR[level]
-      };
-      if (Object.values(REGION_LEVELS[iso2] || {}).includes(filter) && filter > level) return {
-        color: hatchFill("x", filter)
-      };
-      return {
-        color: "var(--land)"
-      };
-    }
+    if (filter && level !== filter) return {
+      color: "var(--land)"
+    };
     return {
-      color: worse ? hatchFill(level, worse) : LEVEL_COLOR[level]
+      color: LEVEL_COLOR[level]
     };
   }, [filter, selected]);
   var regionFill = useCallback(function (f) {
@@ -282,7 +270,7 @@ function SafetyMapApp() {
   }, React.createElement(Masthead, {
     theme: theme,
     onTheme: setTheme
-  }), React.createElement(HatchDefs, null), React.createElement("div", {
+  }), React.createElement("div", {
     className: "globe-stage has-key"
   }, React.createElement(Globe, {
     passport: null,
@@ -370,7 +358,7 @@ function SafetyMapApp() {
     style: {
       marginTop: 6
     }
-  }, tr("safety.rule_note", "Each country shows its country-wide level: the strictest of the three governments. Stripes mean some provinces are rated higher, so one dangerous border area does not colour the whole country. Tap a country to see its provinces."))), React.createElement("section", {
+  }, tr("safety.rule_note", "Each country shows its country-wide level: the strictest of the three governments. Where some provinces are rated higher, the country card says so. Tap a country to see its provinces."))), React.createElement("section", {
     className: "p-sec"
   }, React.createElement(Caption, {
     n: 2
@@ -585,43 +573,6 @@ function PickedRegion(_ref7) {
     }
   }, lv ? "".concat(lv, ": ").concat(levelLabel(lv)) : levelLabel(0)));
 }
-function HatchDefs() {
-  var bases = ["x", 0, 1, 2, 3];
-  return React.createElement("svg", {
-    width: "0",
-    height: "0",
-    style: {
-      position: "absolute"
-    },
-    "aria-hidden": "true",
-    focusable: "false"
-  }, React.createElement("defs", null, bases.flatMap(function (base) {
-    return [2, 3, 4].filter(function (top) {
-      return base === "x" || top > base;
-    }).map(function (top) {
-      return React.createElement("pattern", {
-        key: base + "-" + top,
-        id: "risk-hatch-".concat(base, "-").concat(top),
-        width: "6",
-        height: "6",
-        patternUnits: "userSpaceOnUse",
-        patternTransform: "rotate(45)"
-      }, React.createElement("rect", {
-        width: "6",
-        height: "6",
-        style: {
-          fill: base === "x" ? "var(--land)" : LEVEL_COLOR[base]
-        }
-      }), React.createElement("rect", {
-        width: "2.6",
-        height: "6",
-        style: {
-          fill: LEVEL_COLOR[top]
-        }
-      }));
-    });
-  })));
-}
 function SafetyLegend() {
   return React.createElement("div", {
     className: "map-key map-key-below overlay-card"
@@ -641,12 +592,7 @@ function SafetyLegend() {
         color: "var(--ink-3)"
       }
     }, n), " ", levelLabel(n)));
-  }), React.createElement("li", null, React.createElement("span", {
-    className: "sw",
-    style: {
-      background: "repeating-linear-gradient(45deg, var(--risk2) 0 2.5px, var(--risk4) 2.5px 4.5px)"
-    }
-  }), React.createElement("span", null, tr("safety.legend_hatch", "Some provinces higher")))));
+  })));
 }
 function SafetyHover(_ref8) {
   var hover = _ref8.hover,
