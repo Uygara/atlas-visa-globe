@@ -36,6 +36,7 @@ const EXPIRING = [
   { what: "Korea K-ETA waiver (CA → KR override, data/visa-overrides.js)", ends: "2026-12-31" },
   { what: "China unilateral visa-free scheme (ENTRY_CAVEATS.CN note)", ends: "2026-12-31" },
   { what: "North Macedonia visa-or-permit holder entry (_PERMIT_GLOBAL_UPGRADES MK rows)", ends: "2026-12-31" },
+  { what: "Ireland Short Stay Visa Waiver Programme (IE rows in data/visa-conditions.js)", ends: "2026-12-31" },
 ];
 for (const e of EXPIRING) {
   const d = days(e.ends);
@@ -145,6 +146,17 @@ const EU = new Set(["AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR",
     ["IN", "XK", ["US"], "vr", "Kosovo accepts only Schengen documents"],
     ["IN", "XK", ["SCHENGEN"], "vf", "Kosovo accepts Schengen documents"],
     ["IN", "AL", ["CA"], "ev", "Albania does not list Canada"],
+    ["TR", "AE", ["GCC-AE"], "vf", "UAE permit: home state"],
+    ["TR", "OM", ["GCC-AE"], ctx.resolveStatus("TR", "OM").status, "Oman: no general GCC-resident rule"],
+    ["IN", "SA", ["GCC-AE"], "ev", "Saudi e-visa for GCC residents"],
+    ["IN", "KW", ["GCC-AE"], "voa", "Kuwait VoA for GCC residents since Aug 2025"],
+    ["IR", "BH", ["GCC-AE"], ctx.resolveStatus("IR", "BH").status, "Bahrain excludes Iranians"],
+    ["IN", "AE", ["GCC"], ctx.resolveStatus("IN", "AE").status, "GCC without a chosen state: no home"],
+    ["PK", "GE", ["SCHENGEN"], "vf", "Georgia accepts EU/EFTA documents"],
+    ["XK", "GE", ["US"], ctx.resolveStatus("XK", "GE").status, "Georgia refuses Kosovo passports"],
+    ["IN", "CO", ["US"], "vf", "Colombia list includes India"],
+    ["PK", "CO", ["US"], ctx.resolveStatus("PK", "CO").status, "Colombia list excludes Pakistan"],
+    ["TR", "IE", ["GB"], "vr", "Irish waiver needs a UK C visa: card only, no repaint"],
   ];
   const bad = CASES.filter(([p, d, h, want]) => withPermit(p, d, h) !== want)
     .map(([p, d, h, want, why]) => `${p}>${d}+${h.join("/") || "none"}=${withPermit(p, d, h)} (want ${want}: ${why})`);

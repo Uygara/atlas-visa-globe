@@ -28,6 +28,8 @@ function _permitLabel(code) {
     BH: "Bahrain",
     OM: "Oman"
   };
+  var g = /^GCC-([A-Z]{2})$/.exec(code || "");
+  if (g) return window.countryName && window.countryName(g[1]) || map[g[1]] || g[1];
   return map[code] || code;
 }
 function Panel(_ref) {
@@ -467,11 +469,23 @@ function ResidencePermitPicker(_ref5) {
     flag: "🇸🇦",
     label: T("permits.gcc", "GCC residence")
   }];
-  var set = new Set(value);
+  var gccValue = value.find(function (v) {
+    return v === "GCC" || /^GCC-/.test(v);
+  }) || null;
+  var set = new Set(value.map(function (v) {
+    return /^GCC-/.test(v) ? "GCC" : v;
+  }));
   var toggle = function toggle(k) {
-    var next = new Set(set);
-    if (next.has(k)) next["delete"](k);else next.add(k);
+    var next = new Set(value);
+    if (k === "GCC" && gccValue) next["delete"](gccValue);else if (next.has(k)) next["delete"](k);else next.add(k);
     onChange(_toConsumableArray(next));
+  };
+  var pickGcc = function pickGcc(member) {
+    var next = value.filter(function (v) {
+      return v !== gccValue;
+    });
+    next.push(member ? "GCC-" + member : "GCC");
+    onChange(next);
   };
   var active = value.length > 0;
   return React.createElement("div", {
@@ -493,7 +507,7 @@ function ResidencePermitPicker(_ref5) {
     className: "flag"
   }, value.map(function (v) {
     var b = blocs.find(function (x) {
-      return x.key === v;
+      return x.key === (/^GCC-/.test(v) ? "GCC" : v);
     });
     return b ? b.flag : v;
   }).join(" "))) : T("permits.add", "Also have a residence permit? Add it →").replace(/\s*→\s*$/, "")), React.createElement(IconCaret, {
@@ -519,7 +533,25 @@ function ResidencePermitPicker(_ref5) {
     }), React.createElement("span", {
       className: "flag"
     }, b.flag), React.createElement("span", null, b.label));
-  })), React.createElement("p", {
+  })), gccValue && React.createElement("label", {
+    className: "p-fine",
+    style: {
+      display: "block",
+      marginTop: 8
+    }
+  }, T("permits.gcc_which", "Which Gulf country issued it?"), " ", React.createElement("select", {
+    value: gccValue.slice(4),
+    onChange: function onChange(e) {
+      return pickGcc(e.target.value);
+    }
+  }, React.createElement("option", {
+    value: ""
+  }, "-"), ["AE", "SA", "QA", "KW", "BH", "OM"].map(function (c) {
+    return React.createElement("option", {
+      key: c,
+      value: c
+    }, window.countryName && window.countryName(c) || c);
+  }))), React.createElement("p", {
     className: "p-fine",
     style: {
       margin: "8px 0 0"

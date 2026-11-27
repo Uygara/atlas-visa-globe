@@ -82,6 +82,10 @@ EN in those four (engine ready — just add dict entries).
   for GCC) and unfound rules (TN, NI) removed; a SCHENGEN bloc added (Balkans, MD, CR, DO, QA). Georgia, Colombia,
   Morocco left out until their country lists are read. Mexico: caveat only (permanent permits only).
   `tools/audit-data.js` now asserts known permit answers. Gotcha: Montenegro needs a visa for TR since 1 Nov 2026.
+  Follow-up PR: Georgia, Colombia (8 passports only, row field `only`), Morocco e-visa added after reading the lists
+  in a browser (WebFetch drops Wikipedia list cells). Gulf picker now stores "GCC-<state>": only that state is home;
+  the others per _GCC_RESIDENT_ACCESS (SA ev, KW voa, BH voa, QA ev). Ireland's UK-visa waiver (to 31 Dec 2026) is a
+  card-only condition (`cardOnly`), because a UK residence card does not qualify.
 - **Round 31 (2026-11-27: roadmap items, PRs #9-#11 and the A3 PR):** Schengen calculator hides the empty ring and
   planner until a trip exists (trip form first on phones). R6: /visa/<cc>/ and /passport/<cc>/ link to /alerts/?watch= / ?p=;
   alerts-page.js adds the country and fills the passport only when empty. Push now sends apply-by reminders for dated stops

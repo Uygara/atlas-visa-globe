@@ -12,6 +12,9 @@ function _permitLabel(code) {
     SCHENGEN: "Schengen", US: "US", GB: "UK", CA: "Canada", AU: "Australia/NZ", GCC: "GCC",
     AE: "UAE", SA: "Saudi", KW: "Kuwait", QA: "Qatar", BH: "Bahrain", OM: "Oman",
   };
+  // "GCC-AE" → the issuing state's name.
+  const g = /^GCC-([A-Z]{2})$/.exec(code || "");
+  if (g) return (window.countryName && window.countryName(g[1])) || map[g[1]] || g[1];
   return map[code] || code;
 }
 
@@ -390,11 +393,21 @@ function ResidencePermitPicker({ value, onChange }) {
     { key: "AU",       flag: "🇦🇺", label: T("permits.au",       "Australia / NZ PR") },
     { key: "GCC",      flag: "🇸🇦", label: T("permits.gcc",      "GCC residence") },
   ];
-  const set = new Set(value);
+  // The Gulf entry is stored as "GCC-<member>" once the user names the issuing state (only that
+  // state counts as home; see applyResidenceUpgrade). A plain "GCC" means "not chosen yet".
+  const gccValue = value.find(v => v === "GCC" || /^GCC-/.test(v)) || null;
+  const set = new Set(value.map(v => (/^GCC-/.test(v) ? "GCC" : v)));
   const toggle = (k) => {
-    const next = new Set(set);
-    if (next.has(k)) next.delete(k); else next.add(k);
+    const next = new Set(value);
+    if (k === "GCC" && gccValue) next.delete(gccValue);
+    else if (next.has(k)) next.delete(k);
+    else next.add(k);
     onChange([...next]);
+  };
+  const pickGcc = (member) => {
+    const next = value.filter(v => v !== gccValue);
+    next.push(member ? "GCC-" + member : "GCC");
+    onChange(next);
   };
   const active = value.length > 0;
   return (
@@ -402,7 +415,7 @@ function ResidencePermitPicker({ value, onChange }) {
       <button type="button" className={"row-btn" + (active ? " is-on" : "")} onClick={() => setOpen(o => !o)} aria-expanded={open}>
         <span className="row-btn-label">
           {active
-            ? <>{T("permits.active", "Holding")} <span className="flag">{value.map(v => { const b = blocs.find(x => x.key === v); return b ? b.flag : v; }).join(" ")}</span></>
+            ? <>{T("permits.active", "Holding")} <span className="flag">{value.map(v => { const b = blocs.find(x => x.key === (/^GCC-/.test(v) ? "GCC" : v)); return b ? b.flag : v; }).join(" ")}</span></>
             : T("permits.add", "Also have a residence permit? Add it →").replace(/\s*→\s*$/, "")}
         </span>
         <IconCaret className={open ? "is-flipped" : ""} />
@@ -418,6 +431,17 @@ function ResidencePermitPicker({ value, onChange }) {
               </label>
             ))}
           </div>
+          {gccValue && (
+            <label className="p-fine" style={{ display: "block", marginTop: 8 }}>
+              {T("permits.gcc_which", "Which Gulf country issued it?")}{" "}
+              <select value={gccValue.slice(4)} onChange={e => pickGcc(e.target.value)}>
+                <option value="">-</option>
+                {["AE", "SA", "QA", "KW", "BH", "OM"].map(c => (
+                  <option key={c} value={c}>{(window.countryName && window.countryName(c)) || c}</option>
+                ))}
+              </select>
+            </label>
+          )}
           <p className="p-fine" style={{ margin: "8px 0 0" }}>
             {T("permits.hint", "Holding any of these unlocks easier entry to certain destinations. The map and the tally update automatically.")}
           </p>

@@ -972,7 +972,7 @@ ${trRow ? `  <p class="tr-answer"><strong>${escapeHtml(V.trAnswerHead)}</strong>
     <p class="chk-follow"><a id="chk-follow" href="${P("/alerts/")}?watch=${dest.toLowerCase()}">${escapeHtml(V.follow(lang === "tr" ? label : the))} →</a></p>
   </section>
   <script type="application/json" id="chk-data">${chkJson}</script>
-  <script src="/assets/share-card.js?v=20261127d" defer></script>
+  <script src="/assets/share-card.js?v=20261127e" defer></script>
   <script>(function(){var d=JSON.parse(document.getElementById("chk-data").textContent),sel=document.getElementById("chk-sel"),out=document.getElementById("chk-out"),map=document.getElementById("chk-map");
 sel.addEventListener("change",function(){var v=sel.value;if(!v||!d.p[v]){out.hidden=true;out.textContent="";map.href=d.mapBase;var ab0=document.getElementById("aff-box");if(ab0)ab0.hidden=false;return}
 var e=d.p[v],nm=sel.options[sel.selectedIndex].text,t=d.who.replace("{name}",nm)+": "+d.ph[e[0]]+(e[1]?d.days.replace("{n}",e[1]):"")+". ";

@@ -269,6 +269,26 @@ window.VISA_CONDITIONS = {
 //   2. Scraper output stored on PASSPORTS[iso2].cond (auto-extracted from
 //      Wikipedia Notes columns).
 // Manual entries win on key collision because they're verified.
+// Ireland's Short Stay Visa Waiver Programme: nationals of the listed countries who entered the UK
+// on a UK short-stay (C) visa may visit Ireland for up to 90 days within their UK permission. It
+// does not cover UK residence permits (BRP, D visas) or the UK ETA, so the row is card-only and
+// never repaints the map for the "UK ILR / visa" bloc. Due to end 31 December 2026.
+// Saudi Arabia, Bahrain, Kuwait, Oman, Qatar and Peru are listed but now travel to the UK on an
+// ETA, which does not count, so they are left out. Ukraine is visa-free for Ireland.
+// Source: Irish Immigration Service Delivery, read 2026-11-27.
+(function () {
+  const src = "https://www.irishimmigration.ie/coming-to-visit-ireland/short-stay-visa-waiver-programme/";
+  ["BA", "XK", "ME", "MK", "RS", "TR", "IN", "ID", "KZ", "CN", "PH", "TH", "UZ", "VN", "CO"].forEach((p) => {
+    const t = (window.VISA_CONDITIONS[p] = window.VISA_CONDITIONS[p] || {});
+    (t.IE = t.IE || []).push({
+      ifHolds: ["GB"], then: "vf", days: 90, cardOnly: true,
+      note: "Birleşik Krallık'a kısa süreli (C) İngiltere vizesiyle giriş yaptıysan, İngiltere'deki izin süren içinde İrlanda'ya 90 güne kadar vizesiz gidebilirsin. Önce İngiltere'ye girmen gerekir; İngiltere oturum kartı ya da ETA geçerli değil. Program 31 Aralık 2026'da bitiyor.",
+      noteEn: "If you entered the UK on a UK short-stay (C) visa, you can visit Ireland visa-free for up to 90 days within your UK permission. You must enter the UK first; a UK residence card or ETA does not count. The programme ends on 31 December 2026.",
+      source: src,
+    });
+  });
+})();
+
 window.visaCondition = function (passportIso2, destIso2) {
   if (!passportIso2 || !destIso2) return null;
   const aliased = (window.TERRITORY_ALIAS && window.TERRITORY_ALIAS[destIso2]) || destIso2;
