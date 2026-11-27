@@ -74,6 +74,14 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 31 (2026-11-27: roadmap items, PRs #9-#11 and the A3 PR):** Schengen calculator hides the empty ring and
+  planner until a trip exists (trip form first on phones). R6: /visa/<cc>/ and /passport/<cc>/ link to /alerts/?watch= / ?p=;
+  alerts-page.js adds the country and fills the passport only when empty. Push now sends apply-by reminders for dated stops
+  in atlas.trips (a week before, and when due); the job's sandbox loads passports.js, visa-overrides.js, visa-fees.js;
+  privacy EN + TR updated. A3: "Share this answer" on /visa/<cc>/ (assets/share-card.js, canvas image + ?p= link, GA4
+  `share_answer`). Pair pages deferred (thin-content risk) until the 17 Dec GSC check. Gotcha: data/static-i18n.js keys are
+  the English text, so editing EN copy means editing the key in all six languages; its ?v= stamp was not bumped (883 files).
+
 - **Round 30 (2026-11-27: search + AI reach):** GSC's 9k-impression "maldives visa requirements" problem is intent, not
   rank: Google shows /passport/mv/ to people visiting the Maldives. Passport h1 is now "<X> passport: visa-free countries"
   (no "visa requirements"), with a visitor line under it linking "<X> visa requirements" to /visa/<cc>/. Home seo-fallback

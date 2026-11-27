@@ -65,7 +65,7 @@ Durum: `açık` · `sürüyor` · `bekliyor: <neyi>` · `bitti <hash>`
 
 ### Aşama 2: takip ve bildirim (sahibinden bir adım bekler)
 
-- **R1 · Pasaporta göre takip** · bekliyor: e-posta servisi · Pasaport + istenen ülkeler seçilir; o pasaport için
+- **R1 · Pasaporta göre takip** · bildirim kısmı canlı (2026-11-27, `FIREBASE_SERVICE_ACCOUNT` eklendi: web + uygulama push, pasaporta ve izleme listesine göre); e-posta kısmı bekliyor: Resend · Pasaport + istenen ülkeler seçilir; o pasaport için
   bir ülkenin kuralı değişince e-posta ve uygulama bildirimi gider. Eski `functions/api/` abonelik ve Stripe kodu
   2026-11-21'de silindi: site Workers'ta yalnızca statik dosya olarak yayında, o kod hiç çalışmıyordu (git geçmişinde
   duruyor). Abonelik uç noktası yeniden yazılacak. Altyapı var ama canlı değil:
@@ -74,7 +74,9 @@ Durum: `açık` · `sürüyor` · `bekliyor: <neyi>` · `bitti <hash>`
   süzmek, girişsiz e-posta aboneliği (çift onaylı), her e-postada tek tık abonelikten çıkma. Tercih: aboneleri
   Cloudflare KV yerine Firestore'da tutmak; böylece sahibinden yalnızca `RESEND_API_KEY` ve
   `FIREBASE_SERVICE_ACCOUNT` gizli anahtarları istenir (ikisi de `TODO.md`de).
-- **R6 · "Takip et" düğmeleri** · R1'e bağlı · Ülke kartı, pasaport sayfaları, rehberler ve uygulamada.
+- **R6 · "Takip et" düğmeleri** · kısmen bitti (2026-11-27) · Harita ülke kartında izleme yıldızı zaten vardı. `/visa/<kod>/` ve
+  `/passport/<kod>/` (EN + TR) artık `/alerts/?watch=` ve `?p=` bağlantısı veriyor; sayfa ülkeyi listeye ekler, pasaportu yalnızca boşsa
+  doldurur. Kalan: rehberler. Ölç: `/alerts/` girişleri (GA4).
 - **R4 · Haftalık güvenlik özeti** · R1 + R3'e bağlı · Pasaportu veren devletin yayımladığı uyarılardan o hafta
   değişenler: "Bu hafta Birleşik Krallık, Türkiye'nin şu bölgelerine seyahati önermemeye başladı". Kapsanan
   kaynaklar: Birleşik Krallık FCDO, ABD, Kanada, Türkiye Dışişleri. Diğer pasaportlar için bu kaynakların
@@ -93,7 +95,9 @@ Durum: `açık` · `sürüyor` · `bekliyor: <neyi>` · `bitti <hash>`
 
 ### Aşama 4: dağıtım
 
-- **A3 · Paylaşılabilir sonuç kartları** · açık · Pasaport → ülke sonucu için görsel kart ve kısa bağlantı.
+- **A3 · Paylaşılabilir sonuç kartları** · bitti (2026-11-27) · `/visa/<kod>/` denetleyicisinde "Bu cevabı paylaş": telefonda paylaşım
+  menüsüyle 1080x1350 görsel + `?p=` bağlantısı, masaüstünde bağlantı kopyalanır (`assets/share-card.js`). Ölç: GA4 `share_answer`.
+  Sonraki adım ancak ölçüm gösterirse: `?p=` bağlantıları için çifte özel og:image (şu an genel görsel).
 - **A4 · Instagram içerik hattı** · kısmen bitti (`scripts/social-cards.js`, aylık carousel + pasaport kartı) · Her hafta `changelog`dan otomatik gönderi taslakları (görsel + metin,
   EN + TR) `content/instagram/<tarih>/` klasörüne. Paylaşımı insan yapar.
 - **A5 · Pasaport başına değişiklik akışı (RSS/JSON)** · bitti (2026-11-21) · `/passport/<kod>/feed.xml` ve
@@ -114,7 +118,9 @@ Durum: `açık` · `sürüyor` · `bekliyor: <neyi>` · `bitti <hash>`
 ## Değerlendirilecek
 
 - Uygulamada veri tazeliği (mağaza güncellemesi olmadan JSON indirme), `TODO.md`de de var.
-- Başvuru son tarihi hatırlatması (`backend/dispatch-reminders.js` var, girişli hesaplara bağlanmalı).
+- Başvuru son tarihi hatırlatması: bitti (2026-11-27), `dispatch-push.js` push olarak gönderiyor (bir hafta önce + günü geldiğinde).
+  E-postası Resend bekliyor; eski `dispatch-reminders.js` Cloudflare KV'ye bağlı ve çalışmıyor, R1 e-posta işiyle birlikte silinmeli.
 - Pasaport + ülke çifti sayfaları (`/visa/mv/in/`): "<ülke> visa for <uyruk>" aramaları için. Şu an 404. (ux-walker 2026-11-20)
-- `/visa/<kod>/` telefonda: cevap ilk ekranda değil; pasaport seçilince sonuç kartı en üste. (ux-walker 2026-11-20)
-- Schengen hesaplayıcı telefonda boş "0/90" kartıyla açılıyor, "seyahat ekle" formu ekranın altında. (ux-walker 2026-11-20)
+  Karar (2026-11-27): 40 bin benzer sayfa ince içerik riski. 17 Aralık GSC ölçümünde `/visa/<kod>/` sayfaları dizinlenmişse, yalnızca
+  çok aranan ~400 çift için, üst sayfada olmayan bir şeyle (ücret, kaynak, deneyim) ve geri kalanı noindex.
+- (bitti 2026-11-27) `/visa/<kod>/` telefonda cevap zaten ilk ekranda; Schengen hesaplayıcı boşken önce "seyahat ekle" formu.
