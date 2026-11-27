@@ -396,17 +396,29 @@ window.SCHENGEN_PERMIT_EXTRA = _SCHENGEN_PERMIT_EXTRA;
 // arrangements). Caveat documented here: the reverse is NOT true (NZ PR does
 // not grant Australian entry), but the picker models one combined "Australia
 // / NZ PR" bloc, so an NZ-PR-only holder will see AU slightly over-promised.
-// GCC: the picker expands "GCC" to all six member codes, so each member's
-// self-entry triggers — a resident of one GCC state sees all six unlocked,
-// which matches the common GCC-resident visa facilitation schemes (eVisa /
-// VoA for residents of fellow GCC states).
+// GCC: the picker stores "GCC-<member>" (e.g. "GCC-AE"), so only the state that issued the
+// permit counts as home. Until 2026-11-27 a single "GCC" box painted all six states visa-free,
+// which is wrong: the other five give GCC residents an e-visa or a visa on arrival at best (see
+// _GCC_RESIDENT_ACCESS). A stored plain "GCC" (older picker) gets no home territory.
 const _PERMIT_HOME_TERRITORY = {
   US: ["US"],
   GB: ["GB"],
   CA: ["CA"],
   AU: ["AU", "NZ"],
-  AE: ["AE"], SA: ["SA"], KW: ["KW"], QA: ["QA"], BH: ["BH"], OM: ["OM"],
 };
+// What a resident of one GCC state gets in the other GCC states (Wikipedia "Visa policy of
+// <country>", read 2026-11-27): Saudi Arabia e-visa (decree of 1 Sep 2022); Kuwait visa on arrival
+// for all GCC residents since 10 Aug 2025 (permit valid 6+ months); Bahrain e-visa or visa on
+// arrival (permit held 3+ months, Iranians excluded); Qatar Hayya A2 entry permit (permit held 3+
+// months, profession must match). UAE and Oman: no general rule found, so nothing is shown.
+const _GCC_RESIDENT_ACCESS = {
+  SA: { status: "ev", days: null },
+  KW: { status: "voa", days: null },
+  BH: { status: "voa", days: null },
+  QA: { status: "ev", days: null },
+};
+window.GCC_RESIDENT_ACCESS = _GCC_RESIDENT_ACCESS;
+const _GCC_RESIDENT_EXCLUDED = { BH: new Set(["IR"]) };
 
 const _ACCESS_BETTER = { idc: 0, vf: 1, eta: 2, ev: 3, voa: 4, vr: 5, ban: 6 };
 
@@ -419,16 +431,24 @@ const _ACCESS_BETTER = { idc: 0, vf: 1, eta: 2, ev: 3, voa: 4, vr: 5, ban: 6 };
 // that cover only a named list (Philippines, Peru, Bahamas, Taiwan, Oman, Jordan), listed blocs
 // the destination does not accept (Kosovo with a US/UK/CA/AU document, Costa Rica with a UK
 // document, Albania with a CA/AU/GCC document, Türkiye with a CA/AU/GCC document) and rules not
-// found at all (Tunisia, Nicaragua). Those rows are gone. Rows that could not be confirmed
-// (Georgia, Colombia, Morocco: the country lists did not load) are left out until checked; the
-// per-passport rules for e.g. India keep their sourced Georgia row. Türkiye's conditional e-Visa
+// found at all (Tunisia, Nicaragua). Those rows are gone. Georgia, Colombia and Morocco were read
+// in a browser on 2026-11-27 (their lists do not survive text extraction) and added. Türkiye's conditional e-Visa
 // is limited to listed nationalities, so it stays per passport in visa-conditions.js.
 // A Schengen permit had no effect outside the Schengen Area before this audit, although the
 // Western Balkans, Moldova, Costa Rica, the Dominican Republic and Qatar accept it.
 // Rows marked "visa only" accept the bloc's visa but not every residence document; the picker
 // bloc covers both, so they are kept.
 //
-// Shape: bloc → destIso2 → { status, days }
+// Georgia (Government Ordinance 256): visas or residence permits of the EU, EFTA, GCC, AU, CA,
+//   IL, JP, NZ, KR, UK, US give 90 days in 180. Kosovo, Palestine and Taiwan are refused entry.
+// Colombia: visa or residence permit of the US or a Schengen state gives 90 days, but only to
+//   passports of KH, CN, IN, MM, NI, TW, TH, VN (row field `only`). US C1 visas excluded.
+// Morocco: conditional e-Visa with a visa or permanent residence of a Schengen state, AU, CA, IE,
+//   JP, NZ, UAE, UK, US. Not open to IR, XK, PS, SY, TW, TV. The UAE row is left out because the
+//   picker has one Gulf bloc.
+//
+// Shape: bloc → destIso2 → { status, days, only? }
+const _CO_ONLY = ["KH", "CN", "IN", "MM", "NI", "TW", "TH", "VN"];
 window._PERMIT_GLOBAL_UPGRADES = {
   SCHENGEN: {
     CR: { status: "vf", days: 30 },    // Costa Rica: CA, Schengen or US multiple-entry visa or residence.
@@ -441,6 +461,9 @@ window._PERMIT_GLOBAL_UPGRADES = {
     MD: { status: "vf", days: 90 },    // Moldova: visa or residence of Schengen, CA, UK, US (90 in 180).
     XK: { status: "vf", days: 15 },    // Kosovo: only a multiple-entry Schengen visa or Schengen residence.
     QA: { status: "eta", days: null }, // Qatar: Hayya A3 authorisation for Schengen, AU, CA, NZ, UK, US visa or residence.
+    GE: { status: "vf", days: 90 },
+    CO: { status: "vf", days: 90, only: _CO_ONLY },
+    MA: { status: "ev", days: null },
   },
   US: {
     MX: { status: "vf", days: 180 },   // Mexico: multiple-entry visa or permanent residence.
@@ -458,6 +481,9 @@ window._PERMIT_GLOBAL_UPGRADES = {
     RS: { status: "vf", days: 90 },
     MD: { status: "vf", days: 90 },
     QA: { status: "eta", days: null },
+    GE: { status: "vf", days: 90 },
+    CO: { status: "vf", days: 90, only: _CO_ONLY },
+    MA: { status: "ev", days: null },
   },
   GB: {
     PA: { status: "vf", days: 30 },
@@ -468,6 +494,8 @@ window._PERMIT_GLOBAL_UPGRADES = {
     RS: { status: "vf", days: 90 },    // visa only, not a UK residence document.
     MD: { status: "vf", days: 90 },
     QA: { status: "eta", days: null },
+    GE: { status: "vf", days: 90 },
+    MA: { status: "ev", days: null },
   },
   CA: {
     MX: { status: "vf", days: 180 },
@@ -478,25 +506,29 @@ window._PERMIT_GLOBAL_UPGRADES = {
     MK: { status: "vf", days: 15 },
     MD: { status: "vf", days: 90 },
     QA: { status: "eta", days: null },
+    GE: { status: "vf", days: 90 },
+    MA: { status: "ev", days: null },
   },
   AU: {
     PA: { status: "vf", days: 30 },
     ME: { status: "vf", days: 30 },
     QA: { status: "eta", days: null },
+    GE: { status: "vf", days: 90 },
+    MA: { status: "ev", days: null },
   },
   // GCC residence: Egypt gives a visa on arrival to holders of a GCC residence permit, except
   // nationals of AF, ET, IR, IL, ML, NE, PS, SD, SY (see _PERMIT_EXCLUDED below).
-  AE: { EG: { status: "voa", days: 30 } },
-  SA: { EG: { status: "voa", days: 30 } },
-  KW: { EG: { status: "voa", days: 30 } },
-  QA: { EG: { status: "voa", days: 30 } },
-  BH: { EG: { status: "voa", days: 30 } },
-  OM: { EG: { status: "voa", days: 30 } },
+  GCC: {
+    EG: { status: "voa", days: 30 },
+    GE: { status: "vf", days: 90 },
+  },
 };
 // Nationalities a destination excludes from its visa-or-permit rule: destIso2 → Set(passports).
 window._PERMIT_EXCLUDED = {
   EG: new Set(["AF", "ET", "IR", "IL", "ML", "NE", "PS", "SD", "SY"]),
   BA: new Set(["XK"]),
+  GE: new Set(["XK", "PS", "TW"]),
+  MA: new Set(["IR", "XK", "PS", "SY", "TW", "TV"]),
 };
 
 window.applyResidenceUpgrade = function (r, passportIso2, destIso2) {
@@ -505,11 +537,13 @@ window.applyResidenceUpgrade = function (r, passportIso2, destIso2) {
   if (!permits || (Array.isArray(permits) ? permits.length === 0 : permits.size === 0)) return r;
   // Already at the easiest tier — nothing to upgrade.
   if (r.status === "idc" || r.status === "self") return r;
-  // Expand the held-permits set: GCC → each member; SCHENGEN stays virtual
-  // (matches the ifHolds: ["SCHENGEN"] convention).
+  // Expand the held-permits set. "GCC-AE" → bloc "GCC" + home state AE; a plain "GCC" (older
+  // picker) → bloc only. SCHENGEN stays virtual (matches the ifHolds: ["SCHENGEN"] convention).
   const held = new Set();
+  let gccHome = null;
   const add = (k) => {
-    if (k === "GCC") _GCC_MEMBERS.forEach(m => held.add(m));
+    const m = /^GCC-([A-Z]{2})$/.exec(k);
+    if (m && _GCC_MEMBERS.includes(m[1])) { held.add("GCC"); gccHome = m[1]; }
     else held.add(k);
   };
   (Array.isArray(permits) ? permits : Array.from(permits)).forEach(add);
@@ -543,6 +577,18 @@ window.applyResidenceUpgrade = function (r, passportIso2, destIso2) {
     }
   }
 
+  // GCC: the state that issued the permit is home; the others per _GCC_RESIDENT_ACCESS.
+  if (held.has("GCC") && _GCC_MEMBERS.includes(destIso2)) {
+    const ex = _GCC_RESIDENT_EXCLUDED[destIso2];
+    const up = destIso2 === gccHome ? { status: "vf", days: null }
+      : (ex && ex.has(passportIso2) ? null : _GCC_RESIDENT_ACCESS[destIso2]);
+    if (up && (_ACCESS_BETTER[up.status] ?? 99) < bestRank) {
+      best = { status: up.status, days: up.days };
+      bestRank = _ACCESS_BETTER[up.status];
+      via = destIso2 === gccHome ? "GCC-" + gccHome : "GCC";
+    }
+  }
+
   // Global per-bloc upgrades — applies to ANY nationality whose passport
   // doesn't already have a better status. Held bloc codes (US/GB/CA/AU + the
   // 6 GCC members after expansion) each carry a small destination map; pick
@@ -553,7 +599,7 @@ window.applyResidenceUpgrade = function (r, passportIso2, destIso2) {
       const m = window._PERMIT_GLOBAL_UPGRADES[code];
       if (!m) continue;
       const up = m[destIso2];
-      if (!up) continue;
+      if (!up || (up.only && !up.only.includes(passportIso2))) continue;
       const rank = _ACCESS_BETTER[up.status] ?? 99;
       if (rank < bestRank) {
         best = { status: up.status, days: up.days || null };
@@ -569,6 +615,7 @@ window.applyResidenceUpgrade = function (r, passportIso2, destIso2) {
     if (rules) {
       for (const rule of rules) {
         // Does any held permit satisfy this rule?
+        if (rule.cardOnly) continue; // shown in the detail card only, never repaints the map
         const codes = rule.ifHolds || [];
         const hit = codes.find(c => held.has(c));
         if (!hit) continue;
