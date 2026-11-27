@@ -4,9 +4,8 @@
 // FCDO, U.S. State Department and Government of Canada. That is the level the
 // governments give the country itself; we do not paint it by its worst
 // province, because one border area at level 4 would then turn Turkey or
-// Mexico red. A country with provinces rated HIGHER than that is striped in
-// the higher colour, so the world view still says "parts are worse". Pick a
-// country and the map drills down: it zooms in, draws every province in its
+// Mexico red. Countries stay one flat colour; provinces rated higher are named
+// in the hover card and the country card. Pick a country and the map drills down: it zooms in, draws every province in its
 // own level, fades the rest of the world, and a back button returns.
 //
 // Deliberately NOT the visa palette: green means "visa-free" two tabs away, so
@@ -41,14 +40,13 @@ const REGION_LEVELS = (() => {
   }
   return out;
 })();
-// Highest province level above the country's own, or 0. Drives the stripes.
+// Highest province level above the country's own, or 0 (hover and country card).
 function worseLevelOf(iso2) {
   const own = countryLevelOf(iso2);
   let hi = 0;
   for (const lv of Object.values(REGION_LEVELS[iso2] || {})) if (lv > own && lv > hi) hi = lv;
   return hi;
 }
-const hatchFill = (base, top) => `url(#risk-hatch-${base}-${top})`;
 const levelLabel = (n) => tr("safety.l" + (n || 0), ["No advisory data", "Normal precautions", "Increased caution", "Reconsider travel", "Do not travel"][n || 0]);
 
 function readView() {
@@ -125,20 +123,14 @@ function SafetyMapApp() {
     return () => { alive = false; };
   }, [selected]);
 
-  // World view: the whole country in its country-wide level, striped when some
-  // provinces are rated higher. Drill-down: the picked country is covered by
-  // its provinces, the rest of the world fades back.
+  // World view: the whole country in one flat colour, its country-wide level.
+  // Drill-down: the picked country is covered by its provinces, the rest of
+  // the world fades back.
   const fillResolver = useCallback((iso2) => {
     const level = countryLevelOf(iso2);
     if (selected) return { color: LEVEL_COLOR[level], opacity: iso2 === selected ? 1 : 0.35 };
-    const worse = worseLevelOf(iso2);
-    if (filter) {
-      if (level === filter) return { color: worse ? hatchFill(level, worse) : LEVEL_COLOR[level] };
-      // A level 2 country with a level 4 province still shows under "4", striped on blank land.
-      if (Object.values(REGION_LEVELS[iso2] || {}).includes(filter) && filter > level) return { color: hatchFill("x", filter) };
-      return { color: "var(--land)" };
-    }
-    return { color: worse ? hatchFill(level, worse) : LEVEL_COLOR[level] };
+    if (filter && level !== filter) return { color: "var(--land)" };
+    return { color: LEVEL_COLOR[level] };
   }, [filter, selected]);
 
   // Provinces named in an advisory take its level; the rest keep the country's
@@ -178,7 +170,6 @@ function SafetyMapApp() {
   return (
     <div className="layout">
       <Masthead theme={theme} onTheme={setTheme} />
-      <HatchDefs />
       <div className="globe-stage has-key">
         <Globe
           passport={null}
@@ -223,7 +214,7 @@ function SafetyMapApp() {
         <section className="p-sec">
           <Caption n={1}>{tr("safety.levels", "Countries by level")}</Caption>
           <LevelLedger filter={filter} setFilter={setFilter} />
-          <p className="p-fine" style={{ marginTop: 6 }}>{tr("safety.rule_note", "Each country shows its country-wide level: the strictest of the three governments. Stripes mean some provinces are rated higher, so one dangerous border area does not colour the whole country. Tap a country to see its provinces.")}</p>
+          <p className="p-fine" style={{ marginTop: 6 }}>{tr("safety.rule_note", "Each country shows its country-wide level: the strictest of the three governments. Where some provinces are rated higher, the country card says so. Tap a country to see its provinces.")}</p>
         </section>
 
         <section className="p-sec">
@@ -345,26 +336,6 @@ function PickedRegion({ iso2, id, names }) {
   );
 }
 
-// ─── Stripe patterns ──────────────────────────────────────────────────────
-// Referenced by the globe's country fills (url(#risk-hatch-<base>-<top>)); an
-// SVG fill url resolves anywhere in the document. Base "x" is blank land, used
-// when a level filter matches only a country's provinces.
-function HatchDefs() {
-  const bases = ["x", 0, 1, 2, 3];
-  return (
-    <svg width="0" height="0" style={{ position: "absolute" }} aria-hidden="true" focusable="false">
-      <defs>
-        {bases.flatMap(base => [2, 3, 4].filter(top => base === "x" || top > base).map(top => (
-          <pattern key={base + "-" + top} id={`risk-hatch-${base}-${top}`} width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-            <rect width="6" height="6" style={{ fill: base === "x" ? "var(--land)" : LEVEL_COLOR[base] }} />
-            <rect width="2.6" height="6" style={{ fill: LEVEL_COLOR[top] }} />
-          </pattern>
-        )))}
-      </defs>
-    </svg>
-  );
-}
-
 // ─── Legend over the globe ────────────────────────────────────────────────
 function SafetyLegend() {
   return (
@@ -377,10 +348,6 @@ function SafetyLegend() {
             <span><span className="mono" style={{ color: "var(--ink-3)" }}>{n}</span> {levelLabel(n)}</span>
           </li>
         ))}
-        <li>
-          <span className="sw" style={{ background: "repeating-linear-gradient(45deg, var(--risk2) 0 2.5px, var(--risk4) 2.5px 4.5px)" }} />
-          <span>{tr("safety.legend_hatch", "Some provinces higher")}</span>
-        </li>
       </ul>
     </div>
   );
