@@ -99,4 +99,43 @@ t("every language has the same set of text keys", () => {
   for (const l of Object.keys(p.TXT)) assert.strictEqual(Object.keys(p.TXT[l]).sort().join(), keys, l);
 });
 
+console.log("pickApplyReminders (apply-by date of a dated trip stop)");
+// Stub resolver: TR needs a visa for US, DE goes visa-free; no processing time on record → 14 + 7 days.
+const RW = { resolveStatus: (p, d) => ({ status: ({ "TR>US": "vr", "DE>US": "vf", "TR>JP": "vf", "TR>IN": "ev" })[p + ">" + d] || "vf" }), visaFee: (p, d) => (p + d === "TRIN" ? { processingDays: "3–5 days" } : null) };
+const prof = (dated, passports = ["TR"]) => ({ passport: passports[0], passports, watch: new Set(), stops: new Set(), dated });
+const plus = (n) => new Date(Date.parse(TODAY + "T00:00:00Z") + n * 864e5).toISOString().slice(0, 10);
+t("profileOf reads dated stops from saved trips; undated stops take the trip's first date", () => {
+  const pr = p.profileOf(stored({ "atlas.passport": "tr", "atlas.passports": ["de"], "atlas.trips": { v: 1, trips: [{ stops: [{ iso: "US", arrive: "2026-12-01" }, { iso: "MX", arrive: "" }] }] } }));
+  assert.deepStrictEqual(pr.passports, ["TR", "DE"]);
+  assert.deepStrictEqual(pr.dated, [{ iso: "US", arrive: "2026-12-01" }, { iso: "MX", arrive: "2026-12-01" }]);
+});
+t("a week before the apply-by date: one 'week' reminder", () => {
+  const c = p.pickApplyReminders(prof([{ iso: "US", arrive: plus(21 + 5) }]), new Set(), TODAY, RW);
+  assert.strictEqual(c.length, 1); assert.strictEqual(c[0].stage, "week"); assert.strictEqual(c[0].applyBy, plus(5));
+});
+t("on or after the apply-by date while the trip is ahead: 'due'", () => {
+  assert.strictEqual(p.pickApplyReminders(prof([{ iso: "US", arrive: plus(10) }]), new Set(), TODAY, RW)[0].stage, "due");
+});
+t("too early, past trips, visa-free stops and a second passport that avoids the visa: nothing", () => {
+  assert.strictEqual(p.pickApplyReminders(prof([{ iso: "US", arrive: plus(60) }]), new Set(), TODAY, RW).length, 0);
+  assert.strictEqual(p.pickApplyReminders(prof([{ iso: "US", arrive: plus(-1) }]), new Set(), TODAY, RW).length, 0);
+  assert.strictEqual(p.pickApplyReminders(prof([{ iso: "JP", arrive: plus(10) }]), new Set(), TODAY, RW).length, 0);
+  assert.strictEqual(p.pickApplyReminders(prof([{ iso: "US", arrive: plus(10) }], ["TR", "DE"]), new Set(), TODAY, RW).length, 0);
+});
+t("processing time on record shortens the lead; each stage is sent once", () => {
+  const c = p.pickApplyReminders(prof([{ iso: "IN", arrive: plus(12 + 3) }]), new Set(), TODAY, RW);
+  assert.strictEqual(c[0].proc, 5); assert.strictEqual(c[0].applyBy, plus(3));
+  assert.strictEqual(p.pickApplyReminders(prof([{ iso: "IN", arrive: plus(15) }]), new Set([c[0].key]), TODAY, RW).length, 0);
+});
+t("compose: apply reminder opens the planner, names the country and the date", () => {
+  const c = p.pickApplyReminders(prof([{ iso: "US", arrive: plus(26) }]), new Set(), TODAY, RW);
+  const m = p.compose(c, "en", W);
+  assert.strictEqual(m.path, "/itinerary/index.html");
+  assert.ok(/^United States: apply by /.test(m.title), m.title);
+  assert.ok(/no processing time on record/.test(m.body), m.body);
+  const tr = p.compose(c, "tr", W);
+  assert.ok(/başvur/.test(tr.title), tr.title);
+});
+t("the real resolver loads in the sandbox", () => assert.ok(["vf", "idc", "eta", "ev", "voa", "vr", "ban"].includes(W.resolveStatus("TR", "US").status)));
+
 console.log(`\n${n} passed`);
