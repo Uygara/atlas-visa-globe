@@ -126,7 +126,19 @@
       watch: function (cb) {
         ready.then(function (x) {
           x.A.getRedirectResult(x.auth).catch(function (e) { set({ error: e.code || e.message }); });
-          x.A.onAuthStateChanged(x.auth, function (u) { cb(toUser(u)); });
+          x.A.onAuthStateChanged(x.auth, function (u) {
+            // One analytics event per sign-in: sign_up when the account is brand new, else login.
+            // Only the method goes along (google.com, password, phone), never who it is.
+            try {
+              var m = u && u.metadata, key = u && "atlas.tracked." + u.uid;
+              if (u && window.atlasTrack && m && !sessionStorage.getItem(key)) {
+                sessionStorage.setItem(key, "1");
+                var fresh = Math.abs(Date.parse(m.lastSignInTime) - Date.parse(m.creationTime)) < 60000;
+                window.atlasTrack(fresh ? "sign_up" : "login", { method: (u.providerData[0] || {}).providerId || "link" });
+              }
+            } catch (_) {}
+            cb(toUser(u));
+          });
         }).catch(function (e) { set({ ready: true, error: "sdk-load-failed" }); });
       },
       google: function () {

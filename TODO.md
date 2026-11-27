@@ -51,9 +51,11 @@
 - [ ] **P1 · Yeni stildeki 4 Instagram gönderisini onayla**: `social/queue/` (24, 26, 28 Kasım, 5 Aralık); görseller yenilendiği için onay sıfırlandı.
 - [ ] **P2 · İkinci editör**: `docs/ONBOARDING.md` bölüm 1 (GitHub, GA, Search Console, Cloudflare davetleri).
 
+- [ ] **P1 · GA4 özel boyutları (3 dk)**: analytics.google.com → Yönetici → Özel tanımlar → Özel boyut oluştur, kapsam "Etkinlik":
+      `passport`, `destination`, `via`, `method`, `platform` (parametre adı aynı). Böylece pasaport seçimi ve açılan ülke raporlarda görünür.
 - [ ] **P1 · GitHub gizli anahtarı (2 dk)**: github.com/Uygara/atlas-visa-globe → Settings → Secrets and variables →
       Actions → New repository secret → ad `FIREBASE_SERVICE_ACCOUNT`, değer: `.secrets/firebase-admin.json`
-      dosyasının tüm içeriği. Bu olmadan günlük bildirimler gitmez (adım atlanır, hata vermez). **En acil iş:** sitede
+      dosyasının tüm içeriği. Bu olmadan günlük bildirimler ve yeni kayıt bildirimi (`signups.yml`) gitmez (adım atlanır, hata vermez). **En acil iş:** sitede
       "bildirimleri aç" düğmesi zaten çalışıyor, açan kişiye hiçbir şey gitmiyor (26 Kasım çalışmasında adım "skipped").
 - [ ] **P1 · Firebase Console: telefonla giriş**: Authentication → Sign-in method → Phone → Etkinleştir; Settings →
       SMS region policy → yalnızca kullanıcı ülkeleri (sahte SMS maliyetine karşı). Kota dolarsa Blaze kararı senin.

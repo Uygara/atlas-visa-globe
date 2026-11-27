@@ -1,0 +1,62 @@
+name: New sign-up notice
+
+# Every two hours: did anyone open an account, save an alert watch list or allow notifications?
+# If so, comment on the "signup" issue; GitHub emails the repository owner about it.
+# Counts only. The repository is public, so no email, phone, user id, passport or country goes in the issue.
+# Needs the FIREBASE_SERVICE_ACCOUNT secret (same one the daily push step uses); without it the job does nothing.
+
+on:
+  schedule:
+    - cron: "17 */2 * * *"
+  workflow_dispatch: {}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    env:
+      FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+        if: env.FIREBASE_SERVICE_ACCOUNT != ''
+
+      - uses: actions/setup-node@v4
+        if: env.FIREBASE_SERVICE_ACCOUNT != ''
+        with:
+          node-version: "20"
+
+      - name: Look for new sign-ups and post them
+        if: env.FIREBASE_SERVICE_ACCOUNT != ''
+        run: |
+          set -e
+          gh label create signup --color 0E8A16 --description "New account, watch list or notification device" 2>/dev/null || true
+          # Watermark: the last time the signup issue changed (each notice is a comment); first run looks back one day.
+          last="$(gh issue list --label signup --state all --limit 1 --json updatedAt --jq '.[0].updatedAt' || true)"
+          [ -n "$last" ] || last="$(date -u -d '1 day ago' +%Y-%m-%dT%H:%M:%SZ)"
+          json="$(node tools/usage-report.js --since "$last")"
+          echo "$json"
+          body="$(node -e '
+            const j = JSON.parse(process.argv[1]);
+            const lines = [];
+            if (j.accounts) {
+              const how = Object.entries(j.providers || {}).map(([p, n]) => ({ "google.com": "Google", password: "e-posta + şifre", phone: "telefon", "apple.com": "Apple" }[p] || p) + " " + n).join(", ");
+              lines.push(`- Yeni hesap: ${j.accounts}${how ? " (" + how + ")" : ""}. Toplam ${j.accountTotal}.`);
+            }
+            if (j.watchlists) lines.push(`- Yeni takip listesi: ${j.watchlists}. Toplam ${j.watchlistTotal}.`);
+            if (j.devices) lines.push(`- Bildirime izin veren yeni cihaz: ${j.devices}. Toplam ${j.deviceTotal}.`);
+            const errs = ["accountsError", "usersError", "devicesError"].filter((k) => j[k]);
+            if (errs.length) lines.push("- Okunamayan kaynak: " + errs.map((k) => j[k]).join("; "));
+            process.stdout.write(lines.join("\n"));
+          ' "$json")"
+          if [ -z "$body" ]; then echo "Nothing new."; exit 0; fi
+          when="$(TZ=Europe/Istanbul date +'%d.%m.%Y %H:%M')"
+          num="$(gh issue list --label signup --state open --limit 1 --json number --jq '.[0].number' || true)"
+          if [ -n "$num" ]; then
+            gh issue comment "$num" --body "$when (TR saati)"$'\n\n'"$body"
+          else
+            gh issue create --label signup --title "Yeni kayıtlar" \
+              --body "Hesap, takip listesi ya da bildirim izni geldiğinde buraya yorum düşer. Yalnızca sayılar yazılır; kişisel bilgi yok. Ayrıntı için: node tools/usage-report.js"$'\n\n'"$when (TR saati)"$'\n\n'"$body"
+          fi

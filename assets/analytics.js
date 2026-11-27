@@ -8,6 +8,13 @@
 //   - GA4 does not log or store IP addresses.
 // Cloudflare Web Analytics (cookieless) is injected by Cloudflare itself, not here.
 // If this file changes, update /privacy/ (section 2) in the same commit.
+//
+// window.atlasTrack(name, params): feature-use events (passport_select, country_open, sign_up, login,
+// alerts_on). Params are country codes and sign-in methods only, never anything about the person.
+// A no-op off production and before gtag exists, so callers never need to check.
+window.atlasTrack = function (name, params) {
+  try { if (typeof window.gtag === "function") window.gtag("event", name, params || {}); } catch (_) {}
+};
 (function () {
   try {
     var host = location.hostname || "";

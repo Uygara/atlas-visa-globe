@@ -32,6 +32,7 @@
           .then(function (token) {
             return acct.registerDevice(token, { platform: "web", lang: lang() }).then(function () {
               ls("atlas.push", "on"); ls("atlas.push.token", token);
+              if (window.atlasTrack) window.atlasTrack("alerts_on", { platform: "web" });
               return { ok: true };
             });
           });
