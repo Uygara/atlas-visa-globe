@@ -41,7 +41,7 @@ const DATA = (() => {
   // The rule files below feed the "Before you go" block of the destination pages (/visa/<cc>/).
   for (const f of ["countries.js", "country-names.js", "passports.js", "visa-overrides.js", "mrz.js",
                    "passport-validity-rules.js", "travel-advisories.js", "visa-fees.js", "etias-rules.js",
-                   "esta-rules.js", "transit-visa-rules.js", "affiliates.js", "changelog.js"]) {
+                   "esta-rules.js", "transit-visa-rules.js", "affiliates.js", "changelog.js", "official-sources.js"]) {
     vm.runInContext(fs.readFileSync(path.join(ROOT, "data", f), "utf8"), ctx, { filename: f });
   }
   return ctx;
@@ -639,6 +639,10 @@ const VLOC = {
     levels: { 1: "normal precautions", 2: "increased caution", 3: "reconsider travel", 4: "do not travel" },
     advisoryMore: (date) => `Levels as of ${date}.`,
     safetyLink: "Open the safety map",
+    officialHead: "Official application details",
+    officialApply: (name) => `Apply on the official site: ${name}`,
+    officialLabels: { fee: "Fee", processing: "Processing", stay: "Stay", validity: "Validity", note: "Note" },
+    officialChecked: (date) => `Read from the government page on ${date}. Fees and rules change, so confirm on the official page before you pay.`,
     feesHead: "Visa fees we have on record for some nationalities (from the official pages linked):",
     etias: (the, e, since) => `ETIAS: once it starts, visa-exempt travellers will need an ETIAS authorization for countries such as ${the} (fee ${e.fee}, valid ${e.validityYears} years). ${since ? `The EU has set the start for ${since}.` : "It is not in operation yet and the EU has not announced a start date."}`,
     etiasLink: "ETIAS checker",
@@ -716,6 +720,10 @@ const VLOC = {
     levels: { 1: "olağan önlemler", 2: "dikkatli ol", 3: "seyahati yeniden düşün", 4: "seyahat etme" },
     advisoryMore: (date) => `Seviyeler ${date} tarihli.`,
     safetyLink: "Güvenlik haritasını aç",
+    officialHead: "Resmî başvuru bilgileri",
+    officialApply: (name) => `Resmî sitede başvur: ${name}`,
+    officialLabels: { fee: "Ücret", processing: "İşlem süresi", stay: "Kalış", validity: "Geçerlilik", note: "Not" },
+    officialChecked: (date) => `Bilgiler ${date} tarihinde devletin kendi sayfasından okundu. Ücretler ve kurallar değişir, ödemeden önce resmî sayfadan doğrula.`,
     feesHead: "Bazı uyruklar için kayıtlı vize ücretleri (bağlantılar resmî sayfalara gider):",
     etias: (name, e, since) => `ETIAS: başladığında, vizeden muaf yolcular ${name} gibi ülkeler için ETIAS izni almak zorunda olacak (ücret ${e.fee}, ${e.validityYears} yıl geçerli). ${since ? `AB başlangıç tarihini ${since} olarak açıkladı.` : "Henüz uygulanmıyor ve AB bir başlangıç tarihi açıklamadı."}`,
     etiasLink: "ETIAS denetleyicisi",
@@ -874,6 +882,18 @@ function renderDestPage(destCountry, allPassports, lang, ads) {
       before.push(`${escapeHtml(V.transit(areaName, names))} <a href="${P("/transit-map/")}">${escapeHtml(V.transitLink)}</a>.`);
     }
   }
+  const off = DATA.officialSource && DATA.officialSource(dest);
+  const officialHtml = off ? (() => {
+    const li = off.rows.map(r => `<li><strong>${escapeHtml(V.officialLabels[r.k])}:</strong> ${escapeHtml(r[lang] || r.en)}</li>`).join("");
+    return `<section class="official"><h2>${escapeHtml(V.officialHead)}</h2><p style="overflow-wrap:anywhere"><a href="${escapeHtml(off.portal.url)}" rel="nofollow noopener">${escapeHtml(V.officialApply(off.portal.name))}</a></p><ul>${li}</ul><p class="fine">${escapeHtml(V.officialChecked(fmtDate(off.checked, lang)))} <a href="${escapeHtml(off.source)}" rel="nofollow noopener">${escapeHtml(lang === "tr" ? "Kaynak" : "Source")}</a></p></section>`;
+  })() : "";
+  const officialSchema = off ? {
+    "@context": "https://schema.org", "@type": "GovernmentService", "inLanguage": lang,
+    "name": `${off.portal.name}`, "url": off.portal.url, "serviceType": "Visa or travel authorization",
+    "areaServed": { "@type": "Country", "name": cn(dest, "en") },
+    "dateModified": off.checked,
+    "offers": off.rows.filter(r => r.k === "fee" && r.price).map(r => ({ "@type": "Offer", "price": r.price, "priceCurrency": r.cur, "description": r[lang] || r.en })),
+  } : null;
   const beforeHtml = before.length
     ? `<section class="before"><h2>${escapeHtml(V.beforeHead)}</h2><ul>${before.map(b => `<li>${b}</li>`).join("")}</ul></section>`
     : "";
@@ -952,7 +972,8 @@ ${ads.loader}
   "about": { "@type": "Country", "name": label },
   "publisher": { "@type": "Organization", "name": "travelnow.info", "url": SITE_URL, "sameAs": ["https://www.instagram.com/travelnow.info/"] },
 })}</script>
-<script type="application/ld+json">${JSON.stringify(faqSchema)}</script>
+<script type="application/ld+json">${JSON.stringify(faqSchema)}</script>${officialSchema ? `
+<script type="application/ld+json">${JSON.stringify(officialSchema)}</script>` : ""}
 ${headAssets({ enPath, lang })}
 <style>.wrap{max-width:820px}.checker{padding:20px 22px}.checker label{display:block;font-weight:650;margin-bottom:10px}.checker select{width:100%;max-width:420px}.chk-out{margin:12px 0 0;font-size:var(--fs-lg)}.chk-map{margin:14px 0 0}.chk-follow{margin:12px 0 0;font-size:var(--fs-sm)}details.vl{margin:0 0 10px}details.vl .n{margin-inline-start:8px;font-family:var(--font-mono);font-size:var(--fs-xs);font-weight:500;color:var(--ink-3)}.before ul{padding-inline-start:20px}.before li{margin:0 0 10px;max-width:var(--measure)}.before .fees{columns:2 220px;margin:6px 0 0}.before .fees li{margin:0 0 4px}.aff p{max-width:var(--measure)}.aff .ad-label{margin:8px 0 0;font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--ink-3)}.tr-answer{margin:2px 0 14px;font-size:var(--fs-md)}</style>
 </head>
@@ -995,7 +1016,7 @@ Array.prototype.forEach.call(document.querySelectorAll(".lg-row"),function(a){a.
 
   ${groups}
 
-  ${beforeHtml}
+  ${officialHtml}${beforeHtml}
 
   ${ivisaHtml}
 

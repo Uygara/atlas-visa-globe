@@ -117,6 +117,11 @@ Durum: `açık` · `sürüyor` · `bekliyor: <neyi>` · `bitti <hash>`
   2026-11-27: oturum izni/vize ile giriş tablosu denetlendi (Grönland hatası düzeltildi, 40'a yakın dayanaksız satır
   kaldırıldı); aynı gün Gürcistan, Kolombiya, Fas, Körfez oturumu (artık hangi Körfez ülkesi seçiliyor) ve İrlanda'nın
   İngiltere vizesi programı (31 Aralık 2026'ya kadar) da eklendi.
+  2026-11-27 (2): resmî başvuru bilgileri `data/official-sources.js`'te: ülke başına resmî portal, ücret, işlem süresi,
+  kalış, kaynak bağlantısı ve son kontrol tarihi; /visa/ sayfalarında "Resmî başvuru bilgileri" kutusu ve GovernmentService
+  yapılandırılmış verisi. İlk set: İngiltere, ABD (ESTA), Kanada, Avustralya, Güney Kore, Hindistan, Mısır, Kenya, Vietnam,
+  29 Schengen ülkesi. Eklendi (2. tur): Türkiye, Japonya, Tayland, Suudi Arabistan, Gürcistan. Sıradaki: Endonezya, BAE (u.ae metin vermiyor), Katar, Azerbaycan (bot doğrulaması),
+  Sri Lanka, Kamboçya, Yeni Zelanda, Meksika, Brezilya; ABD B1/B2 ücreti (travel.state.gov bot doğrulaması istiyor).
   Kalite süreci önerisi: her kuralda kaynak bağlantısı + son kontrol tarihi (detay kartında görünür), kullanıcı
   "bu yanlış" bildirimi, denetim testinde bilinen cevaplar listesi büyür.
 
