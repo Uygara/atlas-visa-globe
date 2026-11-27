@@ -630,6 +630,13 @@ const VLOC = {
     affBody: (the) => `If your passport needs a visa for ${the}, iVisa can fill in and submit the application for you. It charges a service fee on top of the government fee, so applying yourself on the official site costs less.`,
     affBtn: "Apply with iVisa",
     affNote: "Sponsored link",
+    insHead: "Travel insurance for the Schengen visa",
+    insBody: "If you need a Schengen visa, the consulate asks for travel medical insurance: at least €30,000 of cover, valid in every Schengen country for the whole stay, including repatriation. AXA Schengen sells policies written for this and issues the certificate as soon as you pay. Policies from insurers in your own country qualify too, so compare before you buy.",
+    insBtn: "Get a quote from AXA Schengen",
+    insNote: "Partner link: travelnow.info may earn a commission if you buy through it.",
+    apptHead: "Waiting weeks for a visa appointment?",
+    apptBody: "We are thinking about an alert that tells you when appointments open at the visa centre you need. Join the waiting list if you would use it.",
+    apptBtn: "Join the appointment alert list",
     validity: (the, rule) => rule > 0
       ? `Passport validity: the minimum on record for ${the} is ${rule} months beyond your intended stay.`
       : `Passport validity: for ${the} the rule on record is that the passport must be valid for the length of your stay.`,
@@ -712,6 +719,13 @@ const VLOC = {
     affBody: (label) => `Pasaportunla ${label} için vize gerekiyorsa iVisa başvuruyu senin yerine doldurup gönderebilir. Devlet harcının üstüne hizmet bedeli alır; resmi sitede kendin başvurursan daha ucuza gelir.`,
     affBtn: "iVisa ile başvur",
     affNote: "Sponsorlu bağlantı",
+    insHead: "Schengen vizesi için seyahat sağlık sigortası",
+    insBody: "Schengen vizesine başvururken konsolosluk seyahat sağlık sigortası ister: en az 30.000 € teminat, kalacağın sürenin tamamı ve bütün Schengen ülkeleri için geçerli, cenaze ve hasta nakli dahil. AXA Schengen bu şartlara göre hazırlanmış poliçe satıyor ve sertifikayı ödemeden hemen sonra veriyor. Türk sigorta şirketlerinin poliçeleri de geçerli; almadan önce fiyatları karşılaştır.",
+    insBtn: "AXA Schengen'den fiyat al",
+    insNote: "Ortaklık bağlantısı: bu bağlantıdan satın alırsan travelnow.info komisyon alabilir.",
+    apptHead: "Vize randevusu için haftalarca mı bekliyorsun?",
+    apptBody: "Başvuracağın vize merkezinde randevu açıldığında haber veren bir alarm üzerinde düşünüyoruz. Kullanırım diyorsan bekleme listesine yazıl.",
+    apptBtn: "Randevu alarmı listesine yazıl",
     validity: (name, rule) => rule > 0
       ? `Pasaport geçerliliği: ${name} için kayıtlı en düşük süre, planladığın kalışın bitiminden sonra ${rule} aydır.`
       : `Pasaport geçerliliği: ${name} için kayıtlı kural, pasaportun kalış süresince geçerli olmasıdır.`,
@@ -913,6 +927,18 @@ function renderDestPage(destCountry, allPassports, lang, ads) {
       `</section>`
     : "";
 
+  // Schengen states: insurance partner (redirect /go/axa-schengen in _redirects, so the
+  // affiliate link changes in one place) and the appointment-alert waiting list (demand test).
+  const schengenDest = !!(DATA.ETIAS && DATA.ETIAS.schengenStates.includes(dest));
+  const schengenHtml = schengenDest
+    ? `<section class="card aff" id="ins-box"><p class="ad-label">${escapeHtml(V.insNote)}</p><h2>${escapeHtml(V.insHead)}</h2><p>${escapeHtml(V.insBody)}</p>` +
+      `<p class="cta-row"><a class="primary" href="/go/axa-schengen${lang === "tr" ? "-tr" : ""}" target="_blank" rel="sponsored noopener" ` +
+      `onclick="window.gtag&&gtag('event','affiliate_click',{partner:'axa-schengen',destination:'${dest}',placement:'visa_page'})">${escapeHtml(V.insBtn)}</a></p></section>` +
+      `<section class="card" id="appt-box"><h2>${escapeHtml(V.apptHead)}</h2><p>${escapeHtml(V.apptBody)}</p>` +
+      `<p class="cta-row"><a href="${P("/appointment-alert/")}?src=visa_${dest.toLowerCase()}" ` +
+      `onclick="window.gtag&&gtag('event','waitlist_cta',{placement:'visa_page',destination:'${dest}'})">${escapeHtml(V.apptBtn)}</a></p></section>`
+    : "";
+
   // ── FAQ: answered from the resolved status only ──
   const faqOrder = lang === "tr" ? ["TR", ...FAQ_NATIONALITIES.filter(x => x !== "TR")] : FAQ_NATIONALITIES;
   const faqs = faqOrder.filter(iso => iso !== dest && SNAPSHOT[iso]).slice(0, 8).map(iso => {
@@ -998,7 +1024,7 @@ ${trRow ? `  <p class="tr-answer"><strong>${escapeHtml(V.trAnswerHead)}</strong>
     <p class="chk-follow"><a id="chk-follow" href="${P("/alerts/")}?watch=${dest.toLowerCase()}">${escapeHtml(V.follow(lang === "tr" ? label : the))} →</a></p>
   </section>
   <script type="application/json" id="chk-data">${chkJson}</script>
-  <script src="/assets/share-card.js?v=20261127v" defer></script>
+  <script src="/assets/share-card.js?v=20261127w" defer></script>
   <script>(function(){var d=JSON.parse(document.getElementById("chk-data").textContent),sel=document.getElementById("chk-sel"),out=document.getElementById("chk-out"),map=document.getElementById("chk-map");
 sel.addEventListener("change",function(){var v=sel.value;if(!v||!d.p[v]){out.hidden=true;out.textContent="";map.href=d.mapBase;var ab0=document.getElementById("aff-box");if(ab0)ab0.hidden=false;return}
 var e=d.p[v],nm=sel.options[sel.selectedIndex].text,t=d.who.replace("{name}",nm)+": "+d.ph[e[0]]+(e[1]?d.days.replace("{n}",e[1]):"")+". ";
@@ -1023,7 +1049,7 @@ Array.prototype.forEach.call(document.querySelectorAll(".lg-row"),function(a){a.
 
   ${officialHtml}${beforeHtml}
 
-  ${ivisaHtml}
+  ${schengenHtml}${ivisaHtml}
 
   ${passportCta}
 
@@ -1209,7 +1235,7 @@ function renderSitemap(allPassports, destinations) {
     ...guides.map(g => [`/guides/${g}/`, 0.85]),
     ["/alerts/", 0.7], ["/panel/", 0.7],["/digital-nomad-visa/", 0.9], ["/citizenship-by-investment/", 0.9],
     ["/transit-map/", 0.95], ["/safety-map/", 0.9], ["/climate-map/", 0.85], ["/etias/", 0.95], ["/passport-validity/", 0.95],
-    ["/visa-shortcuts/", 0.9], ["/esta-rules/", 0.9], ["/visa-checklist/tr-schengen/", 0.9],
+    ["/visa-shortcuts/", 0.9], ["/esta-rules/", 0.9], ["/visa-checklist/tr-schengen/", 0.9], ["/appointment-alert/", 0.6],
     ["/schengen-calculator/", 0.95], ["/itinerary/", 0.8], ["/about/", 0.6], ["/contact/", 0.5],
     ["/privacy/", 0.3], ["/terms/", 0.3], ["/passport/", 0.8],
     ...allPassports.map(iso => [`/passport/${iso.toLowerCase()}/`, 0.6]),

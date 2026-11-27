@@ -16,15 +16,15 @@
 <link rel="alternate" hreflang="tr" href="https://travelnow.info/tr/privacy/">
 <link rel="alternate" hreflang="x-default" href="https://travelnow.info/privacy/">
 <script>try{if(localStorage.getItem("atlas.lang")==="tr")location.replace("/tr"+location.pathname+location.search+location.hash)}catch(e){}</script>
-<link rel="stylesheet" href="/assets/fonts.css?v=20261127v">
-<link rel="stylesheet" href="/assets/tokens.css?v=20261127v">
-<link rel="stylesheet" href="/assets/chrome.css?v=20261127v">
-<link rel="stylesheet" href="/assets/site.css?v=20261127v">
+<link rel="stylesheet" href="/assets/fonts.css?v=20261127w">
+<link rel="stylesheet" href="/assets/tokens.css?v=20261127w">
+<link rel="stylesheet" href="/assets/chrome.css?v=20261127w">
+<link rel="stylesheet" href="/assets/site.css?v=20261127w">
 <script>try{if((JSON.parse(localStorage.getItem("atlas.tweaks")||"{}")).background==="dark")document.documentElement.classList.add("theme-dark")}catch(e){}</script>
-<script src="/assets/account-config.js?v=20261127v"></script>
-<script src="/assets/account-sync.js?v=20261127v"></script>
-<script src="/assets/account.js?v=20261127v"></script>
-<script src="/assets/site-chrome.js?v=20261127v" defer></script>
+<script src="/assets/account-config.js?v=20261127w"></script>
+<script src="/assets/account-sync.js?v=20261127w"></script>
+<script src="/assets/account.js?v=20261127w"></script>
+<script src="/assets/site-chrome.js?v=20261127w" defer></script>
 <!-- /chrome:head -->
   <script src="/assets/analytics.js"></script>
 </head>
@@ -145,8 +145,9 @@
     <li><strong>Time zone.</strong> On a first visit the site reads your device's time zone to suggest a passport. This happens in your browser and nothing is sent to us.</li>
     <li><strong>Passport expiry.</strong> If you enter the month your passport expires in the travel planner, to check it against each country's validity rule, it stays in this browser only. It is never added to your account and never sent to us.</li>
     <li><strong>Hosting.</strong> Cloudflare delivers and protects the site. To do so it processes technical request data such as your IP address, browser type and the page requested.</li>
-    <li><strong>Statistics.</strong> We count visits with Cloudflare Web Analytics, which uses no cookies, and with Google Analytics 4. In the EU and EEA, the United Kingdom, Switzerland and Turkey, Google Analytics runs without cookies and stores nothing on your device. Elsewhere it may set the first-party cookies <code>_ga</code> and <code>_ga_*</code>. Google Analytics 4 does not log or store IP addresses. We also count which features are used: the passport chosen, the country opened, and whether someone signed up or turned on alerts. These events carry country codes and the sign-in method only.</li>
-    <li><strong>Partner links.</strong> Some pages carry affiliate links to iVisa, a paid visa application service. The link tells iVisa that you came from travelnow.info; it carries nothing about you. Once you are on iVisa's site, its own privacy policy applies. We count clicks on these links in Google Analytics, together with the destination page they were on.</li>
+    <li><strong>Statistics.</strong> We count visits with Cloudflare Web Analytics, which uses no cookies, and with Google Analytics 4. In the EU and EEA, the United Kingdom, Switzerland and Turkey, Google Analytics runs without cookies and stores nothing on your device. Elsewhere it may set the first-party cookies <code>_ga</code> and <code>_ga_*</code>. Google Analytics 4 does not log or store IP addresses. We also count which features are used: the passport chosen, the country opened, and whether someone signed up or turned on alerts. On the appointment alert page we also count sign-ups with the price, country and city chosen. These events carry country codes, the sign-in method and those answers only, never an email address.</li>
+    <li><strong>Partner links.</strong> Some pages carry affiliate links to iVisa, a paid visa application service, and to AXA Schengen, a travel insurance seller. The link tells the partner that you came from travelnow.info; it carries nothing about you. Once you are on the partner's site, its own privacy policy applies. We count clicks on these links in Google Analytics, together with the destination page they were on.</li>
+    <li><strong>Appointment alert waiting list.</strong> If you join the waiting list on the <a href="/appointment-alert/">appointment alert page</a>, we store your email address, the country and city you choose, your price answer, the page language and the page that sent you there. We use them only to judge whether to build the service and to email you once when it opens. The list is stored in Cloud Firestore in Google's European Union region and nobody can read it from the website. The legal basis is your explicit consent (Article 6(1)(a); KVKK articles 5 and 9), which you can withdraw by writing to us.</li>
   </ul>
 
   <h2>3. If you create an account</h2>
@@ -176,6 +177,7 @@
   <ul>
     <li>Account data: until you delete the account.</li>
     <li>Traveller experiences: until you delete the post or the account, or until we remove it because it breaks the rules in the terms.</li>
+    <li>Appointment alert waiting list: until we email you that the service has opened, and no longer than 12 months. If we decide not to build it, we delete the list.</li>
     <li>Notification tokens: until you turn notifications off, sign out or delete the account, or until the token stops working.</li>
     <li>Google Analytics data: no longer than 14 months.</li>
     <li>Emails you send us: as long as needed to reply and follow up.</li>
@@ -195,7 +197,7 @@
 
   <p>See also our <a href="/terms/">Terms of use</a>.</p>
 </div>
-<script src="/data/static-i18n.js?v=20261127v" defer></script>
+<script src="/data/static-i18n.js?v=20261127w" defer></script>
 <!-- chrome:footer -->
 <footer class="site-foot">
   <div class="site-foot-inner">

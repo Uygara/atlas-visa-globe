@@ -13,7 +13,7 @@
 const { PRIMARY, GROUPS, SUPPORT, INSTAGRAM, isCurrent } = require("../assets/site-nav.js");
 const { makeT, hasTr, toTr, hreflang } = require("./locales");
 
-const ASSET_VERSION = "20261127v";
+const ASSET_VERSION = "20261127w";
 
 function esc(s) {
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");

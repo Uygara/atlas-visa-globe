@@ -64,6 +64,14 @@ async function ga() {
   await top("sessionSourceMedium", "sessions", 6, "sources");
   await top("deviceCategory", "activeUsers", 3, "devices");
   await top("language", "activeUsers", 6, "languages");
+  // Revenue test (started 27 Nov 2026, read on 27 Dec): partner clicks and the appointment-alert waiting list.
+  const ev = await run({ dateRanges: [ranges[0]], dimensions: [{ name: "eventName" }], metrics: [{ name: "eventCount" }],
+    dimensionFilter: { filter: { fieldName: "eventName", inListFilter: { values: ["affiliate_click", "waitlist_cta", "waitlist_signup"] } } } });
+  const alertViews = await run({ dateRanges: [ranges[0]], dimensions: [{ name: "pagePath" }], metrics: [{ name: "screenPageViews" }],
+    dimensionFilter: { filter: { fieldName: "pagePath", stringFilter: { matchType: "CONTAINS", value: "/appointment-alert/" } } } });
+  const views = (alertViews.rows || []).reduce((n, x) => n + Number(x.metricValues[0].value), 0);
+  out.push("  revenue test: " + ((ev.rows || []).map((x) => `${x.dimensionValues[0].value} ${fmt(x.metricValues[0].value)}`).join(" · ") || "no events") +
+    ` · appointment-alert views ${fmt(views)}`);
   return out;
 }
 

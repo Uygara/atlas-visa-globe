@@ -89,6 +89,25 @@ async function devices(tok) {
   });
 }
 
+// Firestore waitlist/{sha256}: the Schengen appointment-alert waiting list (/appointment-alert/).
+// Only the answers are read here; the address field is never requested (mask).
+async function waitlist(tok) {
+  const out = [];
+  let next = "";
+  const mask = ["price", "country", "city", "lang", "src"].map((k) => "mask.fieldPaths=" + k).join("&");
+  do {
+    const j = await api(tok, `https://firestore.googleapis.com/v1/projects/${PROJECT}/databases/(default)/documents/waitlist?pageSize=300&${mask}` + (next ? "&pageToken=" + encodeURIComponent(next) : ""));
+    for (const d of j.documents || []) {
+      const f = d.fields || {};
+      const v = (k) => (f[k] || {}).stringValue || "?";
+      out.push({ price: v("price"), country: v("country"), city: v("city"), lang: v("lang"), src: v("src"), created: Date.parse(d.createTime) || 0 });
+    }
+    next = j.nextPageToken || "";
+  } while (next);
+  return out;
+}
+const tally = (list, key) => list.reduce((m, x) => { m[x[key]] = (m[x[key]] || 0) + 1; return m; }, {});
+
 function since(list, key, days) { const t = Date.now() - days * DAY; return list.filter((x) => x[key] >= t).length; }
 function weekly(list, key, weeks) {
   const res = [];
@@ -107,10 +126,12 @@ function weekly(list, key, weeks) {
   await part("accounts", () => accounts(tok));
   await part("users", () => userDocs(tok));
   await part("devices", () => devices(tok));
+  await part("waitlist", () => waitlist(tok));
 
   const A = Array.isArray(result.accounts) ? result.accounts : null;
   const U = Array.isArray(result.users) ? result.users : null;
   const D = Array.isArray(result.devices) ? result.devices : null;
+  const W = Array.isArray(result.waitlist) ? result.waitlist : null;
   if (!Number.isNaN(SINCE)) {
     const fresh = (list, key) => list.filter((x) => x[key] > SINCE);
     const out = { since: new Date(SINCE).toISOString(), at: new Date().toISOString() };
@@ -118,6 +139,7 @@ function weekly(list, key, weeks) {
       out.providers = n.reduce((m, a) => { for (const p of a.providers) m[p] = (m[p] || 0) + 1; return m; }, {}); } else out.accountsError = result.accounts.error;
     if (U) { out.watchlists = fresh(U, "created").filter((u) => u.watch > 0).length; out.watchlistTotal = U.filter((u) => u.watch > 0).length; } else out.usersError = result.users.error;
     if (D) { out.devices = fresh(D, "created").length; out.deviceTotal = D.length; } else out.devicesError = result.devices.error;
+    if (W) { out.waitlist = fresh(W, "created").length; out.waitlistTotal = W.length; } else out.waitlistError = result.waitlist.error;
     console.log(JSON.stringify(out));
     return;
   }
@@ -131,6 +153,9 @@ function weekly(list, key, weeks) {
       passports: U.filter((u) => u.watch > 0).reduce((m, u) => { const p = u.passport || "?"; m[p] = (m[p] || 0) + 1; return m; }, {}) } : result.users,
     devices: D ? { total: D.length, new1d: since(D, "created", 1), new7d: since(D, "created", 7), new30d: since(D, "created", 30),
       byPlatform: D.reduce((m, d) => { m[d.platform] = (m[d.platform] || 0) + 1; return m; }, {}) } : result.devices,
+    waitlist: W ? { total: W.length, new7d: since(W, "created", 7), new30d: since(W, "created", 30),
+      paying: W.filter((w) => w.price !== "0").length, byPrice: tally(W, "price"), byCountry: tally(W, "country"),
+      byCity: tally(W, "city"), bySource: tally(W, "src") } : result.waitlist,
   };
   if (AS_JSON) { console.log(JSON.stringify(summary)); return; }
   const a = summary.accounts, al = summary.alerts, d = summary.devices;
@@ -138,4 +163,7 @@ function weekly(list, key, weeks) {
   if (!a.error) console.log("  new per week (oldest→newest, 8 wk): " + a.weeklyNew8.join(" ") + " · providers " + JSON.stringify(a.providers));
   console.log("Alerts: " + (al.error ? "error " + al.error : `${al.withWatchlist} of ${al.syncedProfiles} synced profiles have a watch list (${al.watchedCountries} countries) · passports ${JSON.stringify(al.passports)}`));
   console.log("Notification devices: " + (d.error ? "error " + d.error : `${d.total} total · new 1d ${d.new1d} · 7d ${d.new7d} · 30d ${d.new30d} · ${JSON.stringify(d.byPlatform)}`));
+  const w = summary.waitlist;
+  console.log("Appointment-alert waiting list: " + (w.error ? "error " + w.error : `${w.total} total · new 7d ${w.new7d} · 30d ${w.new30d} · would pay ${w.paying} · price ${JSON.stringify(w.byPrice)}`));
+  if (!w.error && w.total) console.log("  country " + JSON.stringify(w.byCountry) + " · city " + JSON.stringify(w.byCity) + " · source " + JSON.stringify(w.bySource));
 })().catch((e) => { console.error("usage-report: " + e.message); process.exit(1); });

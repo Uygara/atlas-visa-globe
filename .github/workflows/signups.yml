@@ -47,7 +47,8 @@ jobs:
             }
             if (j.watchlists) lines.push(`- Yeni takip listesi: ${j.watchlists}. Toplam ${j.watchlistTotal}.`);
             if (j.devices) lines.push(`- Bildirime izin veren yeni cihaz: ${j.devices}. Toplam ${j.deviceTotal}.`);
-            const errs = ["accountsError", "usersError", "devicesError"].filter((k) => j[k]);
+            if (j.waitlist) lines.push(`- Randevu alarmı bekleme listesine yeni kayıt: ${j.waitlist}. Toplam ${j.waitlistTotal}.`);
+            const errs = ["accountsError", "usersError", "devicesError", "waitlistError"].filter((k) => j[k]);
             if (errs.length) lines.push("- Okunamayan kaynak: " + errs.map((k) => j[k]).join("; "));
             process.stdout.write(lines.join("\n"));
           ' "$json")"

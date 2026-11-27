@@ -12,6 +12,11 @@ module.exports = {
     description: "Pasaportunu seç, hangi ülkeye vizesiz, kapıda vizeyle ya da e-Vize ile gidebileceğini haritada hemen gör. 200'den fazla pasaport, her gün güncellenen veri; ücretsiz, üyelik gerekmez.",
     ogDescription: "Pasaportunla nereye vizesiz gidebilirsin? 200'den fazla pasaport, her gün güncellenen vize haritası. Ücretsiz.",
   },
+  "/appointment-alert/": {
+    title: "Schengen vize randevusu alarmı: bekleme listesi · travelnow.info",
+    description: "Türkiye'deki vize merkezinde Schengen randevusu açıldığında haber veren alarmın bekleme listesine yazıl. Hizmet henüz yok; önce talebi ölçüyoruz.",
+    ogDescription: "Vize merkezinde Schengen randevusu açıldığında haber al. Bekleme listesine yazıl.",
+  },
   "/privacy/": {
     title: "Gizlilik politikası · travelnow.info",
     description: "travelnow.info ve uygulamasının hangi kişisel verileri, neden ve ne kadar süre işlediği; verilerine nasıl erişip silebileceğin.",

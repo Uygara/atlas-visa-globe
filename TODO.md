@@ -6,7 +6,10 @@
 
 ## ▶ Yeni oturumda buradan başla
 
-0. **Özellik işleri `docs/ROADMAP.md`den** (Aşama 0 → 3). Sıradaki: **D10 doğruluk denetimi devamı** (ROADMAP): dijital göçebe vizelerinin kalan 31 programı (resmî sayfalar bot engelliyor, tarayıcı panelinden oku;
+0. **Gelir testi (27 Kasım – 27 Aralık, yeni özellik yok):** `docs/revenue-test.md`. Her oturumda
+   `node tools/analytics-report.js` "revenue test" satırı ve `node tools/usage-report.js` bekleme listesi satırı.
+   27 Aralık'ta tablodaki ölçütlere göre karar ver. Tradedoubler bağlantısı gelince `_redirects` ve `go/axa-schengen*/index.html`'i değiştir.
+0b. **Özellik işleri `docs/ROADMAP.md`den** (Aşama 0 → 3). Sıradaki: **D10 doğruluk denetimi devamı** (ROADMAP): dijital göçebe vizelerinin kalan 31 programı (resmî sayfalar bot engelliyor, tarayıcı panelinden oku;
    denetim uyarısı bunu bekliyor);
    resmî başvuru bilgilerini (`data/official-sources.js`, şu an 18 kayıt + Schengen) sıradaki ülkelere genişlet (liste ROADMAP D10);
    yatırımla vatandaşlıkta "Source (report)" satırlarını resmî sayfayla doğrula (GD, PT, GR, TR, EG, JO, KH, NR); BAE, Güney Kore ve Çin listeleri, Nauru. 31 Aralık 2026'da İrlanda'nın İngiltere vizesi programı ve Kuzey Makedonya'nın vize/oturum muafiyeti de bitiyor (denetim uyarır). Günlük denetim `node tools/audit-data.js`; sorun çıkarsa GitHub'da "data-audit" issue açılır.
@@ -22,6 +25,13 @@
 
 ## Senin yapacakların (hesap, ödeme, onay; benim yapamadıklarım)
 
+- [ ] **P1 · AXA Schengen ortaklığı (Tradedoubler, 15 dk)**: sigorta kutusu canlıda ama şimdilik komisyonsuz.
+      1) publisher.tradedoubler.com/public/aSignup.action?language=en&country=fr adresinde yayıncı hesabı aç (site: travelnow.info,
+      ödeme ve vergi bilgisi burada istenir). 2) publisher.fr@tradedoubler.com adresine konu "AFFILIATION AXA SCHENGEN" olan
+      kısa bir e-posta at (program ID 285301). 3) Onay gelince programın takip bağlantısını (mümkünse /tr ve /en ana sayfa için
+      iki ayrı derin bağlantı) bana yaz; tek yerde değiştiririm. Komisyon oranını da yaz.
+- [ ] **P2 · Bekleme listesi KVKK kontrolü**: `/tr/appointment-alert/` sayfasındaki aydınlatma metnini çerez onayı
+      maddesindeki hukukçu kontrolüne ekle. Liste yurt dışında (Firebase, AB) tutulduğu için açık rıza alınıyor.
 - [ ] **P3 · Google Ads (karar senin)**: hesap 646-445-2494 açık ama kampanya yok, ödeme yöntemi yok, para çıkmaz.
       Google'ın "300 $ kredi"si önce aynı tutarda harcama ister; bedava değil. Harcamak istersen plan hazır:
       `docs/ads/google-ads-plan.md` (anahtar kelimeler, reklam metni, günde 10 $). Bana "Google Ads'i kur" de.
