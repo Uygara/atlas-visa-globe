@@ -74,6 +74,16 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 35 (2026-11-27: official application facts on /visa/ pages):** new `data/official-sources.js`, keyed by
+  destination: official portal link, fee, processing time, stay, validity and notes, each read by hand from the
+  government page with a source link and a `checked` date. First set: GB, US (ESTA), CA (eTA), AU (ETA 601), KR (K-ETA),
+  IN, EG, KE, VN and one SCHENGEN entry that covers all 29 Schengen states (EU Visa Code fee and timings).
+  /visa/<cc>/ pages show an "Official application details" box (EN + TR) and a GovernmentService JSON-LD block.
+  `tools/audit-data.js` checks the schema, warns after 120 days, and in CI warns when a link returns 404/410 or dies.
+  Gotchas: travel.state.gov serves a bot challenge (US visa fee not read; do not bypass it), immigration.govt.nz errored,
+  eta.gov.lk fee page redirects to an error page, evisa.gov.vn loads its facts by script. The old `visa-fees.js`
+  stays hidden; per-destination facts replace it. UK fee is GBP 135 now (the old file said 115).
+
 - **Round 34 (2026-11-27: owner console chores via the browser):** the GCP/Firebase/GA4 project lives on the second
   Google login in the owner's Chrome (`/u/1/`, `authuser=1`); `/u/0/` is a different account and shows "no access".
   Granted Firebase Rules Admin to `firebase-adminsdk-fbsvc@travelnow-a0cf3`; "Firestore rules" workflow then published

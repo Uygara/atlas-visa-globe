@@ -8,8 +8,8 @@
 
 0. **Özellik işleri `docs/ROADMAP.md`den** (Aşama 0 → 3). Sıradaki: **D10 doğruluk denetimi devamı** (ROADMAP): dijital göçebe vizelerinin kalan 31 programı (resmî sayfalar bot engelliyor, tarayıcı panelinden oku;
    denetim uyarısı bunu bekliyor);
-   yatırımla vatandaşlıkta "Source (report)" satırlarını resmî sayfayla doğrula (GD, PT, GR, TR, EG, JO, KH, NR); BAE, Güney Kore ve Çin listeleri, ücretlerin resmî sayfalardan yeniden girilmesi
-   (`verified` alanı), Nauru. 31 Aralık 2026'da İrlanda'nın İngiltere vizesi programı ve Kuzey Makedonya'nın vize/oturum muafiyeti de bitiyor (denetim uyarır). Günlük denetim `node tools/audit-data.js`; sorun çıkarsa GitHub'da "data-audit" issue açılır.
+   resmî başvuru bilgilerini (`data/official-sources.js`, şu an 10 kayıt + Schengen) sıradaki ülkelere genişlet (liste ROADMAP D10);
+   yatırımla vatandaşlıkta "Source (report)" satırlarını resmî sayfayla doğrula (GD, PT, GR, TR, EG, JO, KH, NR); BAE, Güney Kore ve Çin listeleri, Nauru. 31 Aralık 2026'da İrlanda'nın İngiltere vizesi programı ve Kuzey Makedonya'nın vize/oturum muafiyeti de bitiyor (denetim uyarır). Günlük denetim `node tools/audit-data.js`; sorun çıkarsa GitHub'da "data-audit" issue açılır.
    31 Aralık 2026: Kore K-ETA muafiyeti ve Çin vizesiz uygulaması bitiyor, uzatılmış mı bak. D6 İpek'te. Bildirimler canlı (27 Kasım): `node tools/usage-report.js` ile push cihaz sayısını izle;
    ROADMAP R6'nın kalanı (rehberlerde "bildirim al"), A3 ölçümü (GA4 `share_answer`), R5 deneyimleri (`node tools/experiences-review.js`). iVisa canlı (19 Kasım): GA4'te
    `affiliate_click` olayını izle, 19 Aralık'ta tıklama ve sipariş sayısını yaz. 17 Aralık'ta `/visa/` sayfalarının etkisini ölç

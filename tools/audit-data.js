@@ -16,7 +16,7 @@ const ctx = { console };
 ctx.window = ctx;
 vm.createContext(ctx);
 for (const f of ["countries.js", "country-names.js", "passports.js", "visa-overrides.js", "visa-conditions.js",
-                 "visa-fees.js", "etias-rules.js", "esta-rules.js", "changelog.js"]) {
+                 "visa-fees.js", "etias-rules.js", "esta-rules.js", "changelog.js", "official-sources.js"]) {
   vm.runInContext(fs.readFileSync(path.join(ROOT, "data", f), "utf8"), ctx, { filename: f });
 }
 const SNAP = JSON.parse(fs.readFileSync(path.join(ROOT, "data", "passports-snapshot.json"), "utf8"));
@@ -172,5 +172,44 @@ const EU = new Set(["AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR",
   check("changelog matches the map", n === m ? [] : [`${n - m} broken`], "entries");
 }
 
-console.log(`${fails} failed, ${warns} warnings`);
-process.exit(fails ? 1 : 0);
+{
+  // Official application facts (data/official-sources.js): every entry names an https page and the
+  // date it was read; fee rows that feed structured data carry a number and an ISO currency.
+  const KINDS = new Set(["fee", "processing", "stay", "validity", "note"]), bad = [], stale = [];
+  for (const [d, e] of Object.entries(ctx.OFFICIAL_SOURCES || {})) {
+    if (!ctx.byIso2[d] && d !== "SCHENGEN") bad.push(`${d}: unknown country`);
+    if (!e.portal || !/^https:\/\//.test(e.portal.url || "") || !e.portal.name) bad.push(`${d}: portal`);
+    if (!/^https:\/\//.test(e.source || "")) bad.push(`${d}: source`);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(e.checked || "") || days(e.checked) > 0) bad.push(`${d}: checked date`);
+    else if (days(e.checked) < -120) stale.push(`${d} read ${e.checked}`);
+    if (!Array.isArray(e.rows) || !e.rows.length) bad.push(`${d}: no rows`);
+    for (const r of e.rows || []) {
+      if (!KINDS.has(r.k) || !r.en || !r.tr) bad.push(`${d}: row ${r.k}`);
+      if (r.price != null && (!(r.price > 0) || !/^[A-Z]{3}$/.test(r.cur || ""))) bad.push(`${d}: price ${r.price} ${r.cur}`);
+      if (/[\u2013\u2014]/.test((r.en || "") + (r.tr || "")) && !/\d\u2013\d/.test(r.en + r.tr)) bad.push(`${d}: dash in copy`);
+    }
+  }
+  check("official sources well formed", bad, "problems");
+  if (stale.length) warn("official sources older than 120 days, read the page again", stale.join(", "));
+  else ok("official sources fresh", `${Object.keys(ctx.OFFICIAL_SOURCES || {}).length} destinations`);
+}
+// Official links still answer (CI only: the daily workflow has open network; local runs skip it).
+// Many government sites answer bots with 403/429 or a challenge page, so only a 404/410 or a dead
+// host counts as broken, and even that is a warning: the entry must be read again by hand.
+(async () => {
+  if (process.env.CI) {
+    const urls = new Set();
+    for (const e of Object.values(ctx.OFFICIAL_SOURCES || {})) { urls.add(e.portal.url); urls.add(e.source); }
+    const dead = [];
+    for (const u of urls) {
+      try {
+        const r = await fetch(u, { redirect: "follow", signal: AbortSignal.timeout(20000), headers: { "user-agent": "Mozilla/5.0 (travelnow.info link check)" } });
+        if (r.status === 404 || r.status === 410) dead.push(`${u} (${r.status})`);
+      } catch (err) { dead.push(`${u} (${err.cause?.code || err.name})`); }
+    }
+    if (dead.length) warn("official links not answering", dead.join(" "));
+    else ok("official links answer", `${urls.size} urls`);
+  }
+  console.log(`${fails} failed, ${warns} warnings`);
+  process.exit(fails ? 1 : 0);
+})();

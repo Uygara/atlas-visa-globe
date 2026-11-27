@@ -32,7 +32,7 @@ function files() {
     }
   };
   walk(ROOT);
-  for (const f of ["data/i18n.js", "data/static-i18n.js", "data/visa-fees-i18n.js", "scripts/partials.js", "scripts/generate-seo.js", "scripts/tr-meta.js", "scripts/tr-home-fallback.js"]) out.push(path.join(ROOT, f));
+  for (const f of ["data/i18n.js", "data/static-i18n.js", "data/visa-fees-i18n.js", "data/official-sources.js", "scripts/partials.js", "scripts/generate-seo.js", "scripts/tr-meta.js", "scripts/tr-home-fallback.js"]) out.push(path.join(ROOT, f));
   for (const f of fs.readdirSync(path.join(ROOT, "scripts", "tr-strings"))) out.push(path.join(ROOT, "scripts", "tr-strings", f));
   for (const f of fs.readdirSync(path.join(ROOT, "components"))) out.push(path.join(ROOT, "components", f));
   out.push(path.join(ROOT, "app.jsx"));
