@@ -1,0 +1,29 @@
+name: Experiences review
+
+# Weekly look at the traveller experiences (ROADMAP R5): counts, new and hidden posts, and a second
+# check of every visible post against the personal-data pattern (matches are hidden). The log is public,
+# so it lists only posts that are public on the site anyway and never the text of hidden ones.
+# Needs the FIREBASE_SERVICE_ACCOUNT secret; without it the job does nothing.
+
+on:
+  schedule:
+    - cron: "40 5 * * 1"
+  workflow_dispatch: {}
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      FIREBASE_SERVICE_ACCOUNT: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+    steps:
+      - uses: actions/checkout@v4
+        if: env.FIREBASE_SERVICE_ACCOUNT != ''
+      - uses: actions/setup-node@v4
+        if: env.FIREBASE_SERVICE_ACCOUNT != ''
+        with:
+          node-version: "20"
+      - name: Review and hide posts that match the personal-data pattern
+        if: env.FIREBASE_SERVICE_ACCOUNT != ''
+        run: node tools/experiences-review.js --auto
