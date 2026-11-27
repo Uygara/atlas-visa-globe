@@ -1,4 +1,4 @@
-// Travel Safety Map (beta) — a standalone globe page, sibling to the visa and
+// Travel Safety Map — a standalone globe page, sibling to the visa and
 // transit maps. Every country is painted by its government travel-advisory
 // level (1 normal precautions → 4 do not travel), using the strictest of the
 // UK FCDO, U.S. State Department and Government of Canada. Provinces an
@@ -224,12 +224,7 @@ function SafetyMapApp() {
       <aside className="panel">
         <MobileSheetHandle />
         <header className="p-head" style={{ display: "block" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
-            <h1 className="p-head-title">{tr("safety.title", "Travel safety map")}</h1>
-            <span className="stamp is-small" style={{ "--st": "var(--foil)", flex: "none" }}>
-              <span className="stamp-k" style={{ fontSize: 12 }}>{tr("safety.draft", "Beta")}</span>
-            </span>
-          </div>
+          <h1 className="p-head-title">{tr("safety.title", "Travel safety map")}</h1>
           <p className="p-head-sub">{tr("safety.subtitle", "Official government travel advisories on one map.")}</p>
         </header>
 

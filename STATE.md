@@ -81,6 +81,12 @@ EN in those four (engine ready — just add dict entries).
   2 web devices. `.github/workflows/signups.yml` (every 2 h) comments counts on a "signup" issue so GitHub emails the owner;
   needs the FIREBASE_SERVICE_ACCOUNT secret. GA4 events via `window.atlasTrack`: passport_select, country_open, sign_up,
   login, alerts_on (privacy EN+TR updated). GA4 is cookieless in EU/UK/CH/TR, so returning visitors there are not countable.
+- **Round 29 (2026-11-27: release sweep):** inventory of "ready but not live" work. No open PRs; every branch except the
+  other thread's and the stale May `cloudflare/workers-autoconfig` (unrelated history) is merged. Everything still off
+  waits on an owner step (push secret, Resend, phone sign-in, Instagram token, Play/AdMob, AdSense approval) or is
+  unfinished (apply-by reminders still tied to the deleted Pro tier). Shipped: safety map "Beta" stamp removed (owner's
+  choice); language "(beta)" labels stay because passport page bodies are only EN/TR.
+
 - **Round 28 (2026-11-24: map fixes after the redesign):** globe wheel zoom no longer needs Ctrl (removed `wheelNeedsKey`,
   the hint and its strings); at the widest zoom a downward wheel scrolls the page instead, so the content under the home map
   stays reachable. Globes default to upright again (`tilt` default 0; 23.4 stays available as a prop). Safety map: province
