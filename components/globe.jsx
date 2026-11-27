@@ -425,7 +425,8 @@ function Globe({
 
   // ─── Center on focused country ─────────────────────────────────────────────
   useEffect(() => {
-    if (!focusedCountry) return;
+    // fitFocus pages (safety map) zoom back out to the whole world when the focus clears.
+    if (!focusedCountry) { if (fitFocus && zoomRef.current > 1) applyZoom(1, true); return; }
     const c = window.byIso2[focusedCountry];
     if (!c) return;
 
