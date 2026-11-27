@@ -1,5 +1,6 @@
 // Turkish text for /open-data/ — see scripts/tr-strings/index.js for the format.
 module.exports = {
+  "71e2b7bf": `Aynı dosyaların bir kopyası <a href="https://www.kaggle.com/datasets/uygaratalay/visa-requirements-for-every-passport-daily" rel="noopener">Kaggle</a>'da da var; Kaggle onları her gün buradan çekiyor.`,
   "fb099a39": `Açık vize gereklilikleri veri seti`,
   "d3d8ab0c": `Bu, travelnow.info haritasının arkasındaki veridir; düz dosyalar olarak yayımlıyoruz. Takip ettiğimiz her pasaport ve varış noktası çifti için vize gerekliliğini (200 pasaport, 205 varış noktası, yaklaşık 41.000 çift), pasaport sıralamasını ve tespit ettiğimiz politika değişikliklerinin kaydını içerir. Araştırma, haber, ders ve kendi projelerinde kullanabilirsin. Üyelik gerekmez.`,
   "7cc56faf": `İndirmeler`,
