@@ -11,7 +11,7 @@
    yatırımla vatandaşlıkta "Source (report)" satırlarını resmî sayfayla doğrula (GD, PT, GR, TR, EG, JO, KH, NR); BAE, Güney Kore ve Çin listeleri, ücretlerin resmî sayfalardan yeniden girilmesi
    (`verified` alanı), Nauru. Günlük denetim `node tools/audit-data.js`; sorun çıkarsa GitHub'da "data-audit" issue açılır.
    31 Aralık 2026: Kore K-ETA muafiyeti ve Çin vizesiz uygulaması bitiyor, uzatılmış mı bak. D6 İpek'te. Bildirimler canlı (27 Kasım): `node tools/usage-report.js` ile push cihaz sayısını izle;
-   ROADMAP R6'nın kalanı (rehberlerde "bildirim al"), A3 ölçümü (GA4 `share_answer`). iVisa canlı (19 Kasım): GA4'te
+   ROADMAP R6'nın kalanı (rehberlerde "bildirim al"), A3 ölçümü (GA4 `share_answer`), R5 deneyimleri (`node tools/experiences-review.js`). iVisa canlı (19 Kasım): GA4'te
    `affiliate_click` olayını izle, 19 Aralık'ta tıklama ve sipariş sayısını yaz. 17 Aralık'ta `/visa/` sayfalarının etkisini ölç
    (`docs/autopilot-log.md` en üst kayıt).
 1. **Android test APK'sını telefonda dene**: GitHub → Actions → "Android build" → son çalışma → `travelnow-debug-apk`.
@@ -54,6 +54,13 @@
 
 - [ ] **P1 · GA4 özel boyutları (3 dk)**: analytics.google.com → Yönetici → Özel tanımlar → Özel boyut oluştur, kapsam "Etkinlik":
       `passport`, `destination`, `via`, `method`, `platform` (parametre adı aynı). Böylece pasaport seçimi ve açılan ülke raporlarda görünür.
+- [ ] **P1 · Firestore kurallarını yayınlama izni (3 dk, deneyim özelliği bunu bekliyor)**: `Firestore rules` iş akışı kuralları
+      testten geçirip yayınlıyor ama hizmet hesabının izni yok (403, `firebaserules.googleapis.com`). Deneyim kutusu kurallar
+      yayınlanana kadar sitede görünmüyor. İki yoldan biri yeter. (a) Kalıcı çözüm: `.secrets/firebase-admin.json` içindeki
+      `client_email` değerini kopyala, Google Cloud Console → IAM → projesi `travelnow-a0cf3` → o adrese "Firebase Rules Admin"
+      rolünü ekle; sonra GitHub → Actions → "Firestore rules" → Run workflow. (b) Tek seferlik: Firebase Console → Firestore
+      Database → Rules → `firestore.rules` dosyasının içeriğini yapıştır → Publish. (a)'yı seçersen sonraki kural değişiklikleri
+      kendiliğinden yayınlanır.
 - [ ] **P1 · Firebase Console: telefonla giriş**: Authentication → Sign-in method → Phone → Etkinleştir; Settings →
       SMS region policy → yalnızca kullanıcı ülkeleri (sahte SMS maliyetine karşı). Kota dolarsa Blaze kararı senin.
 - [ ] **P1 · Google Play Console hesabı (25 $)**: play.google.com/console, kişisel hesap, kimlik doğrulama. Yeni kişisel

@@ -74,6 +74,13 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 32 (2026-11-27: R5 traveller experiences):** experiences/{uid}_{PP-DD} + posters/{uid} in Firestore, rules and 26
+  emulator tests (`tools/test-firestore-rules.js`; needs Java + firebase-tools, CI installs them), client
+  `assets/experiences.js`, `ExperiencesBox` at the end of components/panel.jsx. The box probes once per page load and stays
+  hidden until the live rules accept the query. Publishing the rules from CI failed with 403 (service account lacks Firebase
+  Rules Admin): owner step in TODO.md. Privacy (EN + TR) and terms (EN only, no TR twin) updated; weekly
+  `experiences-review.yml`. Stamps 20261127d. Gotcha: the sandbox cannot reach unpkg, so UI tests route React/D3 from npm.
+
 - **Round 31 (2026-11-27: roadmap items, PRs #9-#11 and the A3 PR):** Schengen calculator hides the empty ring and
   planner until a trip exists (trip form first on phones). R6: /visa/<cc>/ and /passport/<cc>/ link to /alerts/?watch= / ?p=;
   alerts-page.js adds the country and fills the passport only when empty. Push now sends apply-by reminders for dated stops
