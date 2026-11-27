@@ -92,6 +92,26 @@ service cloud.firestore {
         && request.resource.data.last == request.time;
     }
 
+    // Schengen appointment-alert waiting list (/appointment-alert/, demand test, Nov 2026).
+    // Anyone may add one entry; nobody can read, change or delete it from the web.
+    // The document id is the SHA-256 hex of the lower-cased address, so the same address
+    // can't be added twice (a second create is refused). tools/usage-report.js counts them
+    // with the Admin SDK; addresses are only used to write once the service opens.
+    match /waitlist/{id} {
+      allow create: if id.matches('[0-9a-f]{64}')
+        && request.resource.data.keys().hasOnly(['email', 'lang', 'country', 'city', 'price', 'src', 'consent'])
+        && request.resource.data.keys().hasAll(['email', 'lang', 'price', 'consent'])
+        && request.resource.data.email is string
+        && request.resource.data.email.size() <= 254
+        && request.resource.data.email.matches('[^@ ]+@[^@ ]+[.][^@ ]+')
+        && request.resource.data.lang in ['en', 'tr']
+        && request.resource.data.price in ['0', '99', '199', '299']
+        && request.resource.data.consent == true
+        && (!('country' in request.resource.data) || (request.resource.data.country is string && request.resource.data.country.matches('[A-Z]{2}|any')))
+        && (!('city' in request.resource.data) || request.resource.data.city in ['ist', 'ank', 'izm', 'other'])
+        && (!('src' in request.resource.data) || (request.resource.data.src is string && request.resource.data.src.size() <= 40));
+    }
+
     match /{document=**} {
       allow read, write: if false;
     }

@@ -74,6 +74,13 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 38 (2026-11-27: revenue test, 30 days):** AXA Schengen insurance box (partner link via `/go/axa-schengen[-tr]`
+  in `_redirects` + `go/*/index.html` fallback; Tradedoubler not approved yet, so no commission until the link is swapped)
+  on the TR Schengen checklist, the Schengen calculator and the 29 Schengen `/visa/<cc>/` pages. Appointment-alert
+  waiting list `/appointment-alert/` (EN + TR, KVKK notice), stored in Firestore `waitlist/{sha256(email)}`, create-only
+  rules, written over the REST API with no SDK. GA4: `affiliate_click` partner axa-schengen, `waitlist_cta`,
+  `waitlist_signup`. Counts in usage-report.js, analytics-report.js and the signups workflow. Plan and decision
+  thresholds: `docs/revenue-test.md`. No new features until 27 Dec.
 - **Round 37 (2026-11-27: Turkish passport rows from the Turkish MFA list):** compared all ~190 rows of the MFA
   list with the site. `TR_MFA_ROWS` in data/visa-overrides.js overrides 30 rows where the MFA names a mechanism or
   stay length (KR K-ETA 90, TW eVisa, MX air eVisa, LB 90...). Audit check "turkish passport answers (MFA list)".

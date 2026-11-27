@@ -20,6 +20,10 @@
 
 ## Sıra
 
+> **27 Kasım – 27 Aralık 2026: gelir testi, yeni özellik yok.** Schengen sigortası (AXA Schengen) ve randevu alarmı
+> bekleme listesi canlıda; karar ölçütleri `docs/revenue-test.md`. Bu sürede aşağıdaki işlerden yalnızca veri doğruluğu
+> (D10) ve hata düzeltmeleri yapılır.
+
 Durum: `açık` · `sürüyor` · `bekliyor: <neyi>` · `bitti <hash>`
 
 ### Aşama 0: arama trafiği (gerekçe: `docs/GROWTH-ANALYSIS.md`)

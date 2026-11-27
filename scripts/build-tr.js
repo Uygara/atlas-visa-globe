@@ -189,6 +189,8 @@ function rewriteLinks(doc) {
     if (!h.startsWith("/") || h.startsWith("//")) return;
     const m = h.match(/^([^?#]*)(.*)$/);
     if (hasTr(m[1])) a.setAttribute("href", toTr(m[1]) + m[2]);
+    // Partner redirects (_redirects /go/…) have a Turkish landing page under /go/<name>-tr.
+    else if (m[1] === "/go/axa-schengen") a.setAttribute("href", "/go/axa-schengen-tr" + m[2]);
   });
 }
 
