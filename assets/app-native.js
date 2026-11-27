@@ -187,6 +187,7 @@
       return AdMob.showBanner({
         adId: platform === "ios" ? a.bannerIos : a.bannerAndroid,
         adSize: "ADAPTIVE_BANNER", position: "BOTTOM_CENTER", margin: 56,
+        isTesting: !a.live,
       });
     }).catch(noop);
   }

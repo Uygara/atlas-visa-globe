@@ -80,7 +80,10 @@ EN in those four (engine ready — just add dict entries).
   (run 46001109003), so the R5 experiences box can show. GA4 event-scoped dimensions passport, destination, via, method,
   platform created. Firebase Phone sign-in enabled with an SMS allow list of 24 countries (TR, US, GB, EU core, CA, AU,
   NZ, IN, JP, AZ). AdSense: only one rejection (17 Jun, low value content); 14 Nov notice says the unactivated account is
-  deactivated after 30 days. GitHub email privacy was already on. AdMob and iVisa need sign-up/login: left to the owner.
+  deactivated after 30 days. GitHub email privacy was already on. After the owner opened AdMob: apps "travelnow
+  Android/iOS" with one Banner unit each, real ids in app-config/Info.plist/strings.xml, GDPR message published (Do not
+  consent button on). Debug builds ask for test ads (`isTesting: !ads.live`); only the CI release bundle rebuilds www
+  with `ATLAS_ADS_LIVE=1`. iVisa portal needs a login (email link), so the commission rate is still unknown.
 
 - **Round 33 (2026-11-27: R5 traveller experiences):** experiences/{uid}_{PP-DD} + posters/{uid} in Firestore, rules and 26
   emulator tests (`tools/test-firestore-rules.js`; needs Java + firebase-tools, CI installs them), client

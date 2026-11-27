@@ -92,12 +92,13 @@ sayılabilir, ama incelemeciler çoğu zaman Apple ile Giriş ister. Riski sıf�
 
 ## 5. AdMob (reklam)
 
-Şu an **Google'ın test reklam kimlikleri** var (gerçek reklam göstermez, hesap gerekmez). Gerçeğe geçmek için:
-1. AdMob hesabı aç → bir iOS bir Android uygulaması ekle → her birine **Banner** birimi oluştur.
-2. Banner birim kimliklerini `assets/app-config.js` içine yaz.
-3. **Uygulama** kimliklerini (`ca-app-pub-…~…`) `app/ios/App/App/Info.plist` (`GADApplicationIdentifier`) ve
-   `app/android/app/src/main/res/values/strings.xml` (`admob_app_id`) içine yaz.
-4. AdMob → Gizlilik ve mesajlaşma: **GDPR** ve (iOS için) **IDFA** mesajını oluştur (aksi halde AB'de reklam gitmez).
+AdMob hesabı açık (27 Kasım 2026): "travelnow Android" ve "travelnow iOS" uygulamaları, her birinde bir Banner birimi.
+Kimlikler `assets/app-config.js`, `Info.plist` (`GADApplicationIdentifier`) ve `strings.xml` (`admob_app_id`) içinde.
+- Hata ayıklama APK'sı ve yerel derlemeler **test reklamı** ister (`isTesting`), böylece kendi dokunuşlarımız geçersiz
+  tıklama sayılmaz. Gerçek reklamı yalnızca CI'daki Play sürüm paketi ister (`ATLAS_ADS_LIVE=1 node build-www.js`).
+- Uygulamalar mağazaya bağlanana kadar AdMob'da "Limited ad serving" görünür: yayından sonra AdMob → Apps → Add store.
+- `app-ads.txt` sitenin kökünde (yayıncı kimliği AdMob ile aynı, doğrulandı); Play kaydındaki geliştirici sitesi `https://travelnow.info` olmalı.
+- AdMob → Gizlilik ve mesajlaşma: **GDPR** ve (iOS için) **IDFA** mesajını oluştur (aksi halde AB'de reklam gitmez).
 
 ## 6. Yayın öncesi kontrol listesi
 

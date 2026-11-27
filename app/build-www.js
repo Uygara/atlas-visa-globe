@@ -156,6 +156,13 @@ async function vendorFonts(htmlSources) {
     if (after !== before) { fs.writeFileSync(f, after); rewritten++; }
   }
 
+  // Real ads only in store builds: CI sets ATLAS_ADS_LIVE=1 before the release bundle.
+  // Every other build (debug APK, local runs) asks AdMob for test ads, so our own taps never count.
+  if (process.env.ATLAS_ADS_LIVE === "1") {
+    fs.appendFileSync(path.join(WWW, "assets", "app-config.js"), "\nwindow.ATLAS_APP_CONFIG.ads.live = true;\n");
+    console.log("ads: live units");
+  }
+
   // The generated native projects read this to know which paths are local.
   fs.writeFileSync(path.join(WWW, "bundled-pages.json"), JSON.stringify(PAGES.filter(Boolean).map((p) => "/" + p + "/").concat("/")));
   const size = walk(WWW, []).reduce((n, f) => n + fs.statSync(f).size, 0);

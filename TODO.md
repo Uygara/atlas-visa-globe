@@ -17,7 +17,6 @@
 1. **Android test APK'sını telefonda dene**: GitHub → Actions → "Android build" → son çalışma → `travelnow-debug-apk`.
    Telefonda "bilinmeyen kaynaklardan yükleme"ye izin verip kur. Hata/izlenim varsa yaz, düzeltirim.
 2. **Google Play hesabı** açıldıysa: yükleme anahtarını üretip imzalı AAB'yi CI'dan alırım, kapalı test kanalını kurarız.
-3. **AdMob** açıldıysa: uygulama kimliği ve banner birim kimliklerini bana ver, test kimliklerinin yerine koyarım.
 
 ## Senin yapacakların (hesap, ödeme, onay; benim yapamadıklarım)
 
@@ -33,11 +32,9 @@
       (04211e5e7), ama Google bunlarda da çerez kullanabiliyor. Tam çözüm bir onay penceresi; e-posta listesi
       açılmadan önce KVKK, VERBİS ve aydınlatma metnini bir hukukçuya bir kez kontrol ettir.
 
-- [ ] **P1 · iVisa ödeme bilgisi (5 dk)**: ivisa.com/affiliates → giriş → Account → ödeme yöntemi (PayPal) ve bilgiler.
-      Ödeme ayın 15'inde, en az 50 $ birikince yapılır. Herkese açık sayfa: hizmet bedelinin "en fazla %20"si, ilk tıklama,
-      365 gün çerez; senin hesabındaki gerçek oranı giriş yapınca bana yaz (tarayıcıda oturum açık değildi).
-      İsteğe bağlı: Assets → "Generate Custom Deep link" ile en çok ziyaret alan 5 ülke sayfası (ABD, Schengen,
-      İngiltere, Kanada, Hindistan e-vize) için bağlantı üret, bana ver; ülke sayfalarında genel bağlantının yerine koyarım.
+- [ ] **P2 · iVisa komisyon oranı (1 dk)**: ödeme bilgisi girildi (27 Kasım). ivisa.com/affiliates'ta oturum açıkken
+      gerçek komisyon oranını bana yaz (herkese açık sayfa "en fazla %20", ilk tıklama, 365 gün çerez diyor). İsteğe bağlı:
+      Assets → "Generate Custom Deep link" ile ABD, Schengen, İngiltere, Kanada, Hindistan e-vize bağlantıları; ülke sayfalarına koyarım.
 - [ ] **P1 · E-posta bildirimleri için Resend (ücretsiz plan)**: resend.com → kayıt → Domains → travelnow.info ekle →
       verdiği DNS kayıtlarını Cloudflare → DNS'e gir → API Keys → Create (Sending access) → GitHub → Settings →
       Secrets → Actions → `RESEND_API_KEY`. Pasaport bazlı uyarılar (ROADMAP R1) bunu bekliyor.
@@ -59,9 +56,8 @@
 - [ ] **P1 · Google Play Console hesabı (25 $)**: play.google.com/console, kişisel hesap, kimlik doğrulama. Yeni kişisel
       hesaplarda yayından önce **en az 12 test kullanıcısı 14 gün kesintisiz** kapalı testte olmalı: Android kullanan
       12 kişinin Gmail adresini topla. (Kuruluş hesabı bu şarttan muaf ama D-U-N-S numarası ister.)
-- [ ] **P1 · AdMob hesabı**: admob.google.com, uygaratly@ hesabıyla (AdSense yayıncı kimliği hazır geliyor; kayıt sözleşme
-      onayı istediği için ben açmadım). Bir Android uygulaması ekle ("henüz yayında değil"),
-      bir Banner birimi oluştur; uygulama kimliğini ve birim kimliğini bana ver. Yayından sonra mağaza kaydına bağla.
+- [ ] **P2 · AdMob mağaza bağlantısı (yayından sonra)**: AdMob → Apps → travelnow Android/iOS → Add store. Bağlanana kadar
+      "Limited ad serving" görünür. Uygulamalar, Banner birimleri ve AB onay (GDPR) mesajı 27 Kasım'da kuruldu.
 - [ ] **P2 · Canlıda Google ile giriş (1 dk)**: travelnow.info/account/ → "Continue with Google". Açılır pencere
       otomatik test edilemiyor.
 - [ ] **P1 · AdSense yeniden başvuru (14 Aralık'tan önce)**: AdSense 14 Kasım'da "hesap 30 gün içinde etkinleştirilmezse
@@ -78,6 +74,9 @@
 
 - [ ] **P3 · Birkaç Türkçe çeviri boşluğu**: hakkında sayfasının giriş paragrafı ve Schengen hesaplayıcıda iki cümle hiç
       çevrilmemiş (`node scripts/build-tr.js --todo`). `data/travel-advisories.js` resmi metin alıntısı; tireler orada kalır.
+- [ ] **P1 · Reklam onayını geri alma düğmesi (mağazadan önce)**: AdMob GDPR mesajı yayında; AB kuralı kullanıcının onayı
+      sonradan değiştirebilmesini istiyor. Uygulamada "Reklam gizliliği" bağlantısı → `AdMob.showPrivacyOptionsForm()` (yalnızca
+      `privacyOptionsRequirementStatus` REQUIRED iken göster). iOS için AdMob'da IDFA açıklama mesajı da iOS derlemesiyle birlikte.
 - [ ] **P1 · Play yükleme anahtarı + imzalı AAB**: Play hesabı açılınca. Anahtar `.secrets/`'ta kalır; sen 4 GitHub gizli
       anahtarı eklersin (`ANDROID_UPLOAD_*`), CI `travelnow-release-aab` üretir. Play App Signing açık olacak.
       Telefonla giriş Android'de çalışsın diye yükleme ve Play imza anahtarlarının SHA-1'ini Firebase → Proje ayarları →
