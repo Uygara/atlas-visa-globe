@@ -35,6 +35,7 @@ const st = (p, d) => (ctx.resolveStatus(p, d) || {}).status;
 const EXPIRING = [
   { what: "Korea K-ETA waiver (CA → KR override, data/visa-overrides.js)", ends: "2026-12-31" },
   { what: "China unilateral visa-free scheme (ENTRY_CAVEATS.CN note)", ends: "2026-12-31" },
+  { what: "North Macedonia visa-or-permit holder entry (_PERMIT_GLOBAL_UPGRADES MK rows)", ends: "2026-12-31" },
 ];
 for (const e of EXPIRING) {
   const d = days(e.ends);
@@ -61,6 +62,8 @@ const OFFICIAL_LISTS = [
   { what: "Turkish Schengen visa checklist (data/visa-checklists.js)", checked: "2026-11-21", url: "/visa-checklist/tr-schengen/" },
   { what: "Transit hubs other than Schengen/UK (data/transit-visa-rules.js)", checked: "2026-11-21", url: "data/transit-visa-rules.js" },
   { what: "Invitation-letter rules (data/loi-required.js)", checked: "2026-11-21", url: "data/loi-required.js" },
+  { what: "Residence-permit upgrades (_PERMIT_GLOBAL_UPGRADES in data/visa-overrides.js)", checked: "2026-11-27", url: "data/visa-overrides.js" },
+  { what: "Greenland entry for Schengen residence-permit holders (Danish Immigration Service)", checked: "2026-11-27", url: "https://www.nyidanmark.dk/en-GB/You-want-to-apply/short-stay-visa/Visa-to-the-Faroe-Island-or-Greenland" },
 ];
 for (const l of OFFICIAL_LISTS) {
   const age = -days(l.checked);
@@ -122,6 +125,34 @@ const EU = new Set(["AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR",
     if (e ? (r.status !== e.status || (r.days || null) !== e.days) : (r.status === "vf" || r.status === "voa" || r.status === "idc")) bad.push(`${p}:${r.status}/${r.days}`);
   }
   check("thailand matches the MFA lists", bad, "passports");
+}
+{
+  // Residence permits: known answers from official sources, re-checked on every run.
+  const withPermit = (p, d, permits) => {
+    ctx.ATLAS_RESIDENCE_PERMITS = permits;
+    try { return (ctx.resolveStatus(p, d) || {}).status; } finally { ctx.ATLAS_RESIDENCE_PERMITS = []; }
+  };
+  const CASES = [
+    // [passport, dest, permits, expected status, why]
+    ["TR", "GL", ["SCHENGEN"], "vf", "Schengen permit opens Greenland since 20 Mar 2026"],
+    ["TR", "GL", [], "vr", "Turkish passport alone needs a Greenland visa"],
+    ["TR", "DE", ["SCHENGEN"], "vf", "Schengen permit inside Schengen"],
+    ["TR", "IE", ["SCHENGEN"], "vr", "Ireland is outside Schengen"],
+    ["TR", "CY", ["SCHENGEN"], "vr", "Cyprus is outside Schengen"],
+    ["TR", "ME", ["SCHENGEN"], "vf", "Montenegro accepts Schengen visas and permits"],
+    ["TR", "ME", ["GCC"], "vr", "Montenegro does not list GCC permits"],
+    ["TR", "MX", ["SCHENGEN"], "ev", "Mexico takes only PERMANENT Schengen permits: caveat, no repaint"],
+    ["IN", "XK", ["US"], "vr", "Kosovo accepts only Schengen documents"],
+    ["IN", "XK", ["SCHENGEN"], "vf", "Kosovo accepts Schengen documents"],
+    ["IN", "AL", ["CA"], "ev", "Albania does not list Canada"],
+  ];
+  const bad = CASES.filter(([p, d, h, want]) => withPermit(p, d, h) !== want)
+    .map(([p, d, h, want, why]) => `${p}>${d}+${h.join("/") || "none"}=${withPermit(p, d, h)} (want ${want}: ${why})`);
+  check("residence-permit answers", bad, "wrong");
+  const STATUSES = new Set(["vf", "eta", "ev", "voa"]), badRows = [];
+  for (const [bloc, m] of Object.entries(ctx._PERMIT_GLOBAL_UPGRADES || {}))
+    for (const [d, r] of Object.entries(m)) if (!STATUSES.has(r.status) || !ctx.byIso2[d]) badRows.push(`${bloc}>${d}`);
+  check("permit table rows valid", badRows, "rows");
 }
 {
   const { reconcile, loadResolver } = require(path.join(ROOT, "backend", "changelog.js"));
