@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Airport transit visa checker: Do you need one? · travelnow.info</title>
-<meta name="description" content="Free airport transit visa checker. Schengen ATV, UK DATV, US C-1, Canada CTAS, Japan / Singapore / China TWOV. Find out if you need a transit visa for your connection — before you book the flight.">
+<meta name="description" content="Free airport transit visa checker. Schengen ATV, UK DATV, US C-1, Canada CTAS, Japan / Singapore / China TWOV. Find out if you need a transit visa for your connection before you book the flight.">
 <link rel="canonical" href="https://travelnow.info/transit-visa/">
 <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
 <meta property="og:title" content="Airport transit visa checker">
-<meta property="og:description" content="Schengen ATV, UK DATV, US C-1, Canada CTAS, Japan / Singapore / China TWOV — all the airport transit rules in one tool.">
+<meta property="og:description" content="Schengen ATV, UK DATV, US C-1, Canada CTAS, Japan / Singapore / China TWOV: the airport transit rules in one tool.">
 <meta property="og:image" content="https://travelnow.info/assets/og.png">
 <meta property="og:url" content="https://travelnow.info/transit-visa/">
 <meta name="twitter:card" content="summary_large_image">
@@ -26,20 +26,21 @@
 }
 </script>
 <!-- chrome:head -->
-<link rel="stylesheet" href="/assets/fonts.css?v=20261127e">
-<link rel="stylesheet" href="/assets/tokens.css?v=20261127e">
-<link rel="stylesheet" href="/assets/chrome.css?v=20261127e">
-<link rel="stylesheet" href="/assets/site.css?v=20261127e">
+<link rel="stylesheet" href="/assets/fonts.css?v=20261127t">
+<link rel="stylesheet" href="/assets/tokens.css?v=20261127t">
+<link rel="stylesheet" href="/assets/chrome.css?v=20261127t">
+<link rel="stylesheet" href="/assets/site.css?v=20261127t">
 <script>try{if((JSON.parse(localStorage.getItem("atlas.tweaks")||"{}")).background==="dark")document.documentElement.classList.add("theme-dark")}catch(e){}</script>
-<script src="/assets/account-config.js?v=20261127e"></script>
-<script src="/assets/account-sync.js?v=20261127e"></script>
-<script src="/assets/account.js?v=20261127e"></script>
-<script src="/assets/site-chrome.js?v=20261127e" defer></script>
+<script src="/assets/account-config.js?v=20261127t"></script>
+<script src="/assets/account-sync.js?v=20261127t"></script>
+<script src="/assets/account.js?v=20261127t"></script>
+<script src="/assets/site-chrome.js?v=20261127t" defer></script>
 <!-- /chrome:head -->
 <style>.wrap{max-width:780px}</style>
 <script src="/data/countries.js"></script>
 <script src="/data/country-names.js"></script>
-<script src="/data/transit-visa-rules.js"></script>
+<script src="/data/transit-visa-data.js"></script>
+<script src="/data/transit-visa-rules.js?v=20261127t"></script>
   <script src="/assets/analytics.js"></script>
 </head>
 <body>
@@ -189,18 +190,26 @@
     transit visa for certain nationalities <strong>even airside</strong>.
     The US and Canada don't have an airside option at all: every
     transit means clearing immigration.</p>
-    <p><strong>Exemptions usually exist.</strong> If you hold a valid
-    visa or residence permit for the US, UK, Canada, Schengen, Australia
-    or Japan, you'll often qualify for an exemption that lets you transit
-    without a separate transit visa. Tick the boxes above to see
-    whether yours applies.</p>
+    <p><strong>Schengen is not one rule.</strong> Twelve nationalities need an
+    airport transit visa at every Schengen airport (EU Visa Code, Annex IV).
+    Single states add more nationalities to their own lists: Turkish citizens,
+    for example, need one in Germany, the Netherlands, France, Belgium, Spain,
+    the Czech Republic, Switzerland and Norway, but not in Italy, Austria or
+    Greece. We read the official list (Visa Code Handbook, Annex 7B) and show
+    the rule for each airport.</p>
+    <p><strong>Exemptions.</strong> For Schengen, a Schengen visa or residence
+    permit, a visa of Ireland, Cyprus, the US, Canada or Japan, and the
+    residence permits listed in the Visa Code lift the requirement. A UK or
+    Australian visa does not. For the UK, a visa or permanent residence of the
+    US, Canada, Australia or New Zealand, an EEA long-stay visa or residence
+    permit and an Irish visa do. Tick the boxes above to check yours.</p>
     <p><strong>TWOV (transit without visa)</strong> programs exist in
     Japan (72h), Singapore (96h), Hong Kong (7 days for most), China
     (240h at designated ports). These can let you exit the airport during
     a long layover: eligibility depends on your nationality and your
     onward ticket.</p>
-    <p>Numbers and lists are reviewed periodically against IATA Timatic
-    and each country's official source. Open an issue at
+    <p>Lists come from each country's official source, linked in every
+    answer, and are checked every day by our data audit. Open an issue at
     <a href="https://github.com/Uygara/atlas-visa-globe/issues" rel="noopener">github.com/Uygara/atlas-visa-globe</a>
     if you spot something wrong or out of date.</p>
   </footer>
@@ -213,40 +222,46 @@
   const holdsEl     = document.getElementById("holds");
   const verdictEl   = document.getElementById("verdict");
   const gridEl      = document.getElementById("hub-grid");
+  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+  const cname = (iso) => (window.countryName ? window.countryName(iso) : iso);
 
   // ── Populate passport dropdown ──────────────────────────────────────
   const passports = (window.COUNTRIES || []).slice().sort((a, b) => a.name.localeCompare(b.name));
   passports.forEach(c => {
     const o = document.createElement("option");
     o.value = c.iso2;
-    o.textContent = `${c.flag || ""} ${window.countryName ? window.countryName(c.iso2) : c.name}`;
+    o.textContent = `${c.flag || ""} ${cname(c.iso2)}`;
     passportSel.appendChild(o);
   });
 
   // ── Populate transit hub dropdown ───────────────────────────────────
+  // Schengen hubs carry their state ("SCHENGEN:DE"): the national lists differ.
+  const hubKey = (hub) => hub.state ? hub.area + ":" + hub.state : hub.area;
   (window.COMMON_TRANSIT_HUBS || []).forEach(hub => {
     const o = document.createElement("option");
-    o.value = hub.area;
+    o.value = hubKey(hub);
     o.textContent = `${hub.hubLabel} (${(hub.airports || []).join(" / ")})`;
     hubSel.appendChild(o);
   });
 
   // ── Populate "do you also hold" checkboxes ─────────────────────────
   const HOLDS = [
-    ["SCHENGEN", "🇪🇺 Schengen visa / residence"],
-    ["US",       "🇺🇸 US visa or green card"],
-    ["GB",       "🇬🇧 UK visa or residence"],
-    ["IE",       "🇮🇪 Irish biometric visa"],
-    ["CA",       "🇨🇦 Canadian visa"],
-    ["AU",       "🇦🇺 Australian visa / residence"],
-    ["NZ",       "🇳🇿 New Zealand visa"],
-    ["JP",       "🇯🇵 Japanese visa / residence"],
+    ["SCHENGEN",     "Schengen short-stay visa (C)"],
+    ["SCHENGEN-RES", "Schengen long-stay visa (D) or residence permit"],
+    ["US",           "US visa"],
+    ["US-RES",       "US green card"],
+    ["CA",           "Canadian visa"],
+    ["GB",           "UK visitor visa or ETA"],
+    ["IE",           "Irish visa"],
+    ["AU",           "Australian visa"],
+    ["NZ",           "New Zealand visa"],
+    ["JP",           "Japanese visa"],
   ];
   HOLDS.forEach(([code, label]) => {
     const id = "hold-" + code;
     const lab = document.createElement("label");
     lab.className = "chk";
-    lab.innerHTML = `<input type="checkbox" id="${id}" data-hold="${code}"> ${label}`;
+    lab.innerHTML = `<input type="checkbox" id="${id}" data-hold="${code}"> ${esc(label)}`;
     holdsEl.appendChild(lab);
     lab.querySelector("input").addEventListener("change", (e) => {
       lab.classList.toggle("on", e.target.checked);
@@ -261,46 +276,64 @@
   function currentHolds() {
     return Array.from(holdsEl.querySelectorAll("input:checked")).map(i => i.dataset.hold);
   }
+  const src = (res) => res.source ? `<p><a href="${esc(res.source)}" target="_blank" rel="noopener">Official source ↗</a></p>` : "";
   function render() {
     const passport = passportSel.value;
-    const hub      = hubSel.value;
-    if (!passport || !hub) {
-      verdictEl.innerHTML = "";
-      return;
-    }
-    const res = window.transitVisaRule(passport, hub, { holds: currentHolds() });
+    const [area, state] = (hubSel.value || "").split(":");
+    if (!passport || !area) { verdictEl.innerHTML = ""; return; }
+    const res = window.transitVisaRule(passport, area, { holds: currentHolds(), state: state || null });
     if (!res) { verdictEl.innerHTML = ""; return; }
-    let cls = "info", badge = "Info", title = res.label, body = res.notes || "";
-    if (res.needs && !res.exemption) {
+    const where = state ? cname(state) : res.label;
+    const exList = (res.exemptions || []).filter(e => e.note).map(e => `<li>${esc(e.note)}</li>`).join("");
+    let cls = "info", badge = "Info", title = where, body = "";
+    if (res.kind === "unverified" && res.needs) {
+      badge = "Not confirmed";
+      title = `We could not confirm the transit rule for ${where}`;
+      body = `<p>Our list for this hub is not confirmed by an official source for your passport. Ask your airline before you book.</p>`;
+    } else if (res.kind === "visa" && res.needs) {
       cls = "danger";
-      badge = "Transit visa REQUIRED";
-      title = `You need a transit visa for ${res.label}`;
-      body = `<p>Your ${passport} passport is on the list that requires a transit visa for ${res.label}. ${res.notes || ""}</p>`;
-      body += `<p><strong>Apply before you fly.</strong> Airlines deny boarding if the documentation isn't on your booking. ` +
-              `Check the embassy of the transit country: some allow online application, others require an in-person consulate visit.</p>`;
-      if (res.source) body += `<p><a href="${res.source}" target="_blank" rel="noopener">Official source ↗</a></p>`;
+      badge = "No airside transit";
+      title = `${where}: you pass immigration even to change planes`;
+      body = `<p>${esc(res.notes)}</p><p>If your passport can travel visa-free there, you need the electronic authorisation (ESTA for the US, eTA for Canada). Otherwise you need a visa.</p>`;
+    } else if (res.needs) {
+      cls = "danger";
+      badge = "Airport transit visa required";
+      title = `You need an airport transit visa in ${where}`;
+      const why = res.basis === "national"
+        ? `${esc(cname(state))} puts your passport on its own airport transit visa list. Most other Schengen states do not.`
+        : area === "SCHENGEN" ? "Your passport is on the EU-wide list: every Schengen airport asks for it."
+        : `Your passport is on the list for ${esc(res.label)}.`;
+      body = `<p>${why} You need it even if you never leave the transit area.</p>`;
+      if (res.condition) body += `<p>${esc(res.condition)}</p>`;
+      if (exList) body += `<p><strong>You don't need it if you hold one of these:</strong></p><ul>${exList}</ul>`;
+      if (area === "SCHENGEN") body += `<p>A UK or Australian visa does not exempt you from a Schengen airport transit visa.</p>`;
+      body += `<p>Airlines check this at check-in and refuse boarding without it.</p>`;
     } else if (res.exemption) {
       cls = "ok";
       badge = "Exemption applies";
-      title = `You're covered for ${res.label}`;
-      body = `<p>You normally would need a transit visa, but the document(s) you hold qualify for an exemption: <strong>${res.exemption.note}</strong></p>`;
-      body += `<p>Carry the relevant visa/residence permit physically (or printed e-visa) plus the passport that contains it. Airlines verify at check-in.</p>`;
-      if (res.source) body += `<p><a href="${res.source}" target="_blank" rel="noopener">Official source ↗</a></p>`;
+      title = `You're covered in ${where}`;
+      body = `<p>You would normally need an airport transit visa, but this document exempts you: <strong>${esc(res.exemption.note)}</strong>.</p>`;
+      body += `<p>Carry it with the passport it is in. Airlines check it at check-in.</p>`;
     } else if (res.twov && res.twovHours) {
       cls = "ok";
-      badge = `TWOV available: up to ${res.twovHours}h`;
-      title = `Visa-free transit possible at ${res.label}`;
-      body = `<p>Your ${passport} passport qualifies for the ${res.twovHours}-hour Transit Without Visa program. ${res.notes || ""}</p>`;
-      body += `<p>Conditions: confirmed onward ticket to a third country (not back to your origin), and entry/exit through eligible airports/ports only.</p>`;
-      if (res.source) body += `<p><a href="${res.source}" target="_blank" rel="noopener">Official source ↗</a></p>`;
+      badge = `Visa-free transit up to ${res.twovHours}h`;
+      title = `Visa-free transit possible in ${where}`;
+      body = `<p>${esc(res.notes)}</p>`;
     } else {
       cls = "ok";
       badge = "No transit visa needed";
-      title = `You can transit ${res.label} without a visa`;
-      body = `<p>${res.notes || "Airside transit is allowed for your passport: you can stay in the international zone without a transit visa."}</p>`;
-      if (res.source) body += `<p><a href="${res.source}" target="_blank" rel="noopener">Official source ↗</a></p>`;
+      title = `You can change planes in ${where} without a visa`;
+      body = area === "SCHENGEN"
+        ? `<p>Your passport is not on the EU-wide list or on ${esc(cname(state))}'s own list. This holds if you stay in the transit area, both flights come from and go to non-Schengen countries, and you don't change airports.</p>`
+        : `<p>${esc(res.notes || "Airside transit is allowed for your passport.")}</p>`;
+      if (area === "SCHENGEN" && res.nationalStates == null) {
+        const states = (window.SCHENGEN_NATIONAL_ATV.byNationality[passport] || []).filter(s => s !== state && s !== "CY");
+        if (states.length) body += `<p>Other Schengen countries do ask your passport for one: ${states.map(cname).map(esc).join(", ")}.</p>`;
+      }
     }
-    verdictEl.innerHTML = `<div class="verdict ${cls}"><div class="badge">${badge}</div><div class="title">${title}</div><div class="body">${body}</div></div>`;
+    if (area === "SCHENGEN") body += `<p>Flying on to another Schengen country is entry, not transit: you need a Schengen visa for that.</p>`;
+    body += src(res);
+    verdictEl.innerHTML = `<div class="verdict ${cls}"><div class="badge">${esc(badge)}</div><div class="title">${esc(title)}</div><div class="body">${body}</div></div>`;
   }
 
   // ── Hub grid (always shown) ────────────────────────────────────────
@@ -309,14 +342,20 @@
     if (!rule) return;
     const card = document.createElement("div");
     card.className = "hub-card";
-    let summary = "";
-    if (rule.requiredFor === "*") summary = "All passports need transit visa (or eligible exemption)";
-    else if (Array.isArray(rule.requiredFor) && rule.requiredFor.length) summary = `Required for ${rule.requiredFor.length} nationalities`;
-    else if (rule.twovHours) summary = `TWOV up to ${rule.twovHours}h`;
-    else summary = "Airside transit visa-free";
-    card.innerHTML = `<div><strong>${rule.label}</strong></div><div class="small">${summary}</div>`;
+    let summary = "", label = rule.label;
+    if (hub.state) {
+      const nat = window.SCHENGEN_NATIONAL_ATV.byNationality;
+      const n = Object.keys(nat).filter(k => nat[k].includes(hub.state)).length;
+      label = `${hub.hubLabel}, ${cname(hub.state)}`;
+      summary = `Airport transit visa: ${rule.requiredFor.length} nationalities on the EU-wide list` + (n ? ` plus ${n} on ${cname(hub.state)}'s own list` : "");
+    } else if (rule.kind === "visa") summary = "No airside transit: everyone passes immigration";
+    else if (rule.kind === "unverified") summary = rule.twovHours ? `Visa-free transit up to ${rule.twovHours}h for some passports` : "Rules not confirmed";
+    else if (Array.isArray(rule.requiredFor) && rule.requiredFor.length) summary = `Airport transit visa for ${rule.requiredFor.length} nationalities`;
+    else if (rule.twovHours) summary = `Visa-free transit up to ${rule.twovHours}h`;
+    else summary = "Airside transit without a visa";
+    card.innerHTML = `<div><strong>${esc(label)}</strong></div><div class="small">${esc(summary)}</div>`;
     card.addEventListener("click", () => {
-      hubSel.value = hub.area;
+      hubSel.value = hubKey(hub);
       render();
       verdictEl.scrollIntoView({ behavior: "smooth", block: "center" });
     });
@@ -324,7 +363,7 @@
   });
 })();
 </script>
-<script src="/data/static-i18n.js?v=20261127e" defer></script>
+<script src="/data/static-i18n.js?v=20261127t" defer></script>
 <!-- chrome:footer -->
 <footer class="site-foot">
   <div class="site-foot-inner">

@@ -1,7 +1,8 @@
 // Transit Map — a standalone globe page (sibling to the home visa globe).
-// Paints every country by the airport-transit-visa status for the chosen
-// passport: green = airside transit open, saffron = visa-free but time-limited
-// (TWOV), red = transit visa required, neutral = not a tracked hub.
+// Paints every country by the airport-transit status for the chosen passport
+// (see transitStatusForGlobe in data/transit-visa-rules.js): no visa needed,
+// time-limited visa-free transit, ESTA/eTA, airport transit visa, full visa,
+// or "not confirmed" where we hold no rule and the passport needs a visa to enter.
 //
 // Reuses components/globe.jsx via its decoupled `fillResolver` + `hoverRenderer`
 // props, and the shared masthead / sheet / controls from components/chrome.jsx.
@@ -83,6 +84,7 @@ function TransitMapApp() {
           <TransitPicker value={passport} onChange={(v) => { setPassport(v); setSelected(null); }} />
           {!passport && <div className="box box-dashed p-hint" style={{ marginTop: 10 }}>{window.t("tmap.pick_prompt")}</div>}
         </section>
+        {passport && <TransitSchengenSummary passport={passport} onOpen={openCountry} />}
         {passport && selected && (
           <TransitDetail passport={passport} iso2={selected} onClose={() => setSelected(null)} />
         )}
@@ -166,8 +168,11 @@ function TransitPicker({ value, onChange }) {
 function TransitLegend() {
   const items = [
     { s: "vf",  k: "tmap.legend_free" },
-    { s: "voa", k: "tmap.legend_twov" },
+    { s: "eta", k: "tmap.legend_twov" },
+    { s: "ev",  k: "tmap.legend_auth" },
+    { s: "voa", k: "tmap.legend_atv" },
     { s: "vr",  k: "tmap.legend_vr" },
+    { s: "na",  k: "tmap.legend_unknown" },
   ];
   return (
     <div className="map-key map-key-below overlay-card">
@@ -180,11 +185,62 @@ function TransitLegend() {
 }
 
 // ─── Hover tooltip ──────────────────────────────────────────────────────────
+const AUTH_DOC = { US: "ESTA", CA: "eTA" };
 function transitLine(t) {
   if (t.status === "vr") return { label: window.t("tmap.needs_visa"), color: TG_COLOR.vr, s: "vr" };
-  if (t.status === "twov") return { label: window.t("tmap.twov_ok", { n: t.twovHours }), color: TG_COLOR.twov, s: "voa" };
+  if (t.status === "atv") return { label: window.t("tmap.atv"), color: TG_COLOR.atv, s: "voa" };
+  if (t.status === "auth") return { label: window.t("tmap.auth", { doc: AUTH_DOC[t.area] || "ETA" }), color: TG_COLOR.auth, s: "ev" };
+  if (t.status === "twov") return { label: window.t("tmap.twov_ok", { n: t.twovHours }), color: TG_COLOR.twov, s: "eta" };
   if (t.status === "free") return { label: window.t("tmap.free_ok"), color: TG_COLOR.free, s: "vf" };
+  if (t.status === "unknown") return { label: window.t("tmap.unknown"), color: TG_COLOR.unknown, s: "na" };
   return null;
+}
+
+// Why the country has that colour, in one or two plain sentences, plus what
+// lifts the requirement. Shared by the detail card and the connection check.
+function transitWhy(passport, iso2, t) {
+  const country = window.countryName(iso2);
+  const out = [];
+  if (t.status === "unknown") out.push(window.t(t.unverified ? "tmap.why_unverified" : "tmap.why_unknown", { country }));
+  else if (t.generic && t.byEntry) out.push(window.t("tmap.why_entry_free"));
+  else if (t.status === "atv" && t.area === "SCHENGEN") out.push(window.t(t.basis === "common" ? "tmap.why_common" : "tmap.why_national", { country }));
+  else if (t.status === "atv" && t.area === "GB") out.push(window.t("tmap.why_gb"));
+  else if (t.status === "auth") { out.push(window.t("tmap.why_no_airside", { country })); out.push(window.t("tmap.why_auth", { doc: AUTH_DOC[t.area] || "ETA" })); }
+  else if (t.status === "vr" && t.kind === "visa") out.push(window.t("tmap.why_no_airside", { country }));
+  else if (t.status === "free" && t.byEntry) out.push(window.t("tmap.why_entry_free"));
+  else if (t.status === "free" && t.area === "SCHENGEN") out.push(window.t("tmap.why_free_schengen", { country }));
+  // A visa-required passport at a Schengen airport: the classic trap is the onward Schengen flight.
+  if (t.area === "SCHENGEN" && !t.byEntry && (t.status === "free" || t.status === "atv")) out.push(window.t("tmap.schengen_entry"));
+  if (t.condition) out.push(tr("tmap.cond_" + passport + "_" + t.state, t.condition));
+  return out;
+}
+
+function TransitExemptions({ t }) {
+  if (t.status !== "atv" || !t.exemptions || !t.exemptions.length) return null;
+  return (
+    <div className="note note-info">
+      <span className="note-k" style={{ fontWeight: 600 }}>{window.t("tmap.exemptions")}</span>
+      <ul className="note-s" style={{ margin: "4px 0 0", paddingInlineStart: 18 }}>
+        {t.exemptions.map((ex, i) => <li key={i}>{tr("tmap.ex_" + ex.key, ex.note)}</li>)}
+      </ul>
+      {t.area === "SCHENGEN" && <span className="note-s" style={{ display: "block", marginTop: 4 }}>{window.t("tmap.no_uk_visa")}</span>}
+    </div>
+  );
+}
+
+function fmtDay(iso) {
+  try { return new Date(iso + "T00:00:00Z").toLocaleDateString(window.ATLAS_LANG || "en", { day: "numeric", month: "long", year: "numeric", timeZone: "UTC" }); } catch (e) { return iso; }
+}
+
+function TransitSource({ t }) {
+  if (!t.source) return null;
+  const nat = t.area === "SCHENGEN" && t.basis === "national" && window.SCHENGEN_NATIONAL_ATV;
+  return (
+    <p className="p-fine" style={{ margin: "6px 0 0" }}>
+      <a className="link-quiet" href={t.source} target="_blank" rel="noopener noreferrer">{window.t("tmap.source")} →</a>
+      {nat && <span>{" · " + window.t("tmap.checked", { date: fmtDay(nat.checked) })}</span>}
+    </p>
+  );
 }
 
 function TransitHover({ hover, passport }) {
@@ -224,12 +280,10 @@ function TransitDetail({ passport, iso2, onClose }) {
       ) : (
         <p className="entry-note" style={{ marginTop: 10 }}>{window.t("tmap.legend_na")}</p>
       )}
-      {t.generic && <p className="entry-note">{window.t("tmap.generic_note")}</p>}
-      {t.exemption && t.exemption.note && (
-        <div className="note note-ok"><span className="note-k" style={{ fontWeight: 500 }}>{window.t("tmap.exempt_via", { note: t.exemption.note })}</span></div>
-      )}
-      {t.notes && <p className="entry-note">{t.notes}</p>}
-      {t.source && <a className="link-quiet" href={t.source} target="_blank" rel="noopener noreferrer">{window.t("tmap.source")} →</a>}
+      {transitWhy(passport, iso2, t).map((x, i) => <p key={i} className="entry-note">{x}</p>)}
+      <TransitExemptions t={t} />
+      {t.notes && t.area !== "SCHENGEN" && !t.byEntry && t.status !== "unknown" && <p className="entry-note">{tr("tmap.note_" + t.area, t.notes)}</p>}
+      <TransitSource t={t} />
     </article>
   );
 }
@@ -271,11 +325,8 @@ function TransitLegChecker({ passport, onOpen }) {
             <div className="note note-info"><span className="note-k" style={{ fontWeight: 500 }}>{window.t("tmap.leg_not_transit", { country: window.countryName(leg.viaIso) })}</span></div>
           ) : (
             <>
-              {line && <div className={"note " + (t.status === "vr" ? "note-risk" : t.status === "twov" ? "note-warn" : "note-ok")}><span className="note-k" style={{ fontWeight: 600 }}>{line.label}</span></div>}
-              {t.generic && <p className="entry-note">{window.t("tmap.generic_note")}</p>}
-              {t.exemption && t.exemption.note && (
-                <div className="note note-ok"><span className="note-k" style={{ fontWeight: 500 }}>{window.t("tmap.exempt_via", { note: t.exemption.note })}</span></div>
-              )}
+              {line && <div className={"note " + (t.status === "vr" || t.status === "atv" ? "note-risk" : t.status === "free" ? "note-ok" : "note-warn")}><span className="note-k" style={{ fontWeight: 600 }}>{line.label}</span></div>}
+              {transitWhy(passport, leg.viaIso, t).filter((x) => x !== window.t("tmap.schengen_entry")).map((x, i) => <p key={i} className="entry-note">{x}</p>)}
               {leg.legExemptions.map((ex, i) => (
                 <div key={i} className="note note-info"><span className="note-k" style={{ fontWeight: 500 }}>
                   {window.t("tmap.leg_exempt", { country: window.countryName((ex.holds || []).find(h => [leg.fromIso, leg.toIso].includes(String(h).toUpperCase()))) })}
@@ -284,7 +335,7 @@ function TransitLegChecker({ passport, onOpen }) {
               {t.status === "twov" && leg.thirdCountry !== null && (
                 <p className="entry-note">{window.t("tmap.leg_third", { answer: window.t(leg.thirdCountry ? "tmap.leg_yes" : "tmap.leg_no") })}</p>
               )}
-              {t.notes && <p className="entry-note">{t.notes}</p>}
+              {t.notes && t.area !== "SCHENGEN" && !t.byEntry && t.status !== "unknown" && <p className="entry-note">{tr("tmap.note_" + t.area, t.notes)}</p>}
             </>
           )}
           <button type="button" className="btn" style={{ marginTop: 6 }} onClick={() => onOpen(leg.viaIso)}>
@@ -296,18 +347,45 @@ function TransitLegChecker({ passport, onOpen }) {
   );
 }
 
+// ─── Schengen summary: where this passport needs an airport transit visa ───
+// The most common mistake: "Schengen" is not one rule. The EU-wide list covers
+// every state, national lists add single states (Annex 7B).
+function TransitSchengenSummary({ passport, onOpen }) {
+  const S = window.ETIAS && window.ETIAS.schengenStates;
+  if (!S || !window.schengenAtvFor) return null;
+  const entry = window.resolveStatus ? (window.resolveStatus(passport, "DE") || {}).status : null;
+  if (S.includes(passport) || entry === "vf" || entry === "idc" || entry === "self") return null; // can enter anyway
+  const all = window.schengenAtvFor(passport);
+  // Cyprus keeps its own list but is not in Schengen: the map shows it, this summary does not.
+  const states = all.needs ? [] : (all.states || []).filter(x => S.includes(x) && x !== "CY")
+    .sort((a, b) => window.countryName(a).localeCompare(window.countryName(b)));
+  return (
+    <section className="p-sec">
+      <div className={"note " + (all.needs || states.length ? "note-warn" : "note-ok")}>
+        <span className="note-k" style={{ fontWeight: 600 }}>{window.t("tmap.schengen_title")}</span>
+        <span className="note-s">
+          {all.needs ? window.t("tmap.atv_common")
+            : states.length ? <>{window.t("tmap.atv_states", { list: "\u0001" }).split("\u0001")[0]}
+                {states.map((x, i) => <React.Fragment key={x}>{i ? ", " : ""}<button type="button" className="link-quiet" style={{ padding: 0, border: 0, background: "none", cursor: "pointer", font: "inherit" }} onClick={() => onOpen(x)}>{window.countryName(x)}</button></React.Fragment>)}{window.t("tmap.atv_states", { list: "\u0001" }).split("\u0001")[1]}</>
+            : window.t("tmap.atv_none")}
+        </span>
+        <span className="note-s" style={{ display: "block", marginTop: 4 }}>{window.t("tmap.schengen_entry")}</span>
+      </div>
+    </section>
+  );
+}
+
 // ─── Hub list ───────────────────────────────────────────────────────────────
 function TransitHubList({ passport, onOpen }) {
   const hubs = window.COMMON_TRANSIT_HUBS || [];
-  // SCHENGEN maps to Germany (Frankfurt) as the canonical Schengen hub.
-  const repIso = (area) => area === "SCHENGEN" ? "DE" : area;
+  // Schengen hubs carry their state: the airport transit visa lists differ by state.
   const rows = hubs.map(h => {
-    const iso = repIso(h.area);
+    const iso = h.state || h.area;
     const t = window.transitStatusForGlobe(passport, iso);
     // Hubs named after a whole country ("United States", "Singapore") follow the interface language.
     const c = window.byIso2[iso];
     // City hubs follow the interface language too ("London" → "Londra"); the English name is the fallback.
-    const hubLabel = c && h.hubLabel === c.name.replace(/\s*\(.*\)$/, "") ? window.countryName(iso) : tr("hub." + h.area, h.hubLabel);
+    const hubLabel = c && h.hubLabel === c.name.replace(/\s*\(.*\)$/, "") ? window.countryName(iso) : tr("hub." + iso, h.hubLabel);
     return { ...h, hubLabel, iso, t, line: transitLine(t) };
   });
   return (
@@ -315,7 +393,7 @@ function TransitHubList({ passport, onOpen }) {
       <Caption n={3}>{window.t("tmap.hubs")}</Caption>
       <ul className="ledger">
         {rows.map(r => (
-          <li key={r.area}>
+          <li key={r.iso}>
             <button type="button" className="lg-row" onClick={() => onOpen(r.iso)}>
               {r.line ? <Swatch s={r.line.s} /> : <span className="sw sw-all" aria-hidden="true" />}
               <span className="lg-label" style={{ whiteSpace: "normal" }}>{r.hubLabel}</span>

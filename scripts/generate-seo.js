@@ -41,7 +41,7 @@ const DATA = (() => {
   // The rule files below feed the "Before you go" block of the destination pages (/visa/<cc>/).
   for (const f of ["countries.js", "country-names.js", "passports.js", "visa-overrides.js", "mrz.js",
                    "passport-validity-rules.js", "travel-advisories.js", "visa-fees.js", "etias-rules.js",
-                   "esta-rules.js", "transit-visa-rules.js", "affiliates.js", "changelog.js", "official-sources.js"]) {
+                   "esta-rules.js", "transit-visa-data.js", "transit-visa-rules.js", "affiliates.js", "changelog.js", "official-sources.js"]) {
     vm.runInContext(fs.readFileSync(path.join(ROOT, "data", f), "utf8"), ctx, { filename: f });
   }
   return ctx;
@@ -648,8 +648,9 @@ const VLOC = {
     etiasLink: "ETIAS checker",
     esta: (e) => `ESTA: travellers entering under the Visa Waiver Program need an approved ESTA (fee ${e.applicationFee}, valid ${e.validityYears} years).`,
     estaLink: "ESTA rules",
-    transit: (area, names) => `Airport transit: nationalities that need a transit visa when changing planes in ${area}: ${names}. Exemptions apply.`,
+    transit: (area, names) => `Airport transit: nationalities that need an airport transit visa when changing planes in ${area}, even without leaving the transit area: ${names}. Exemptions apply.`,
     transitAll: "all nationalities",
+    transitNoAirside: (area) => `Airport transit: ${area} has no airside transit. Every connecting passenger goes through immigration and needs a visa, or an electronic authorisation where the passport qualifies.`,
     transitLink: "Open the transit map",
     schengen: "the Schengen Area",
     faqHead: (the) => `${the.charAt(0).toUpperCase() + the.slice(1)} entry: frequently asked questions`,
@@ -729,8 +730,9 @@ const VLOC = {
     etiasLink: "ETIAS denetleyicisi",
     esta: (e) => `ESTA: Vize Muafiyeti Programı ile giren yolcuların onaylı bir ESTA'sı olmalı (ücret ${e.applicationFee}, ${e.validityYears} yıl geçerli).`,
     estaLink: "ESTA kuralları",
-    transit: (area, names) => `Havalimanı transiti: ${area} üzerinden aktarma yaparken transit vizesi gereken uyruklar: ${names}. Muafiyetler geçerli olabilir.`,
+    transit: (area, names) => `Havalimanı transiti: ${area} üzerinden aktarma yaparken, transit alanından çıkmasalar bile havalimanı transit vizesi gereken uyruklar: ${names}. Muafiyetler geçerli olabilir.`,
     transitAll: "tüm uyruklar",
+    transitNoAirside: (area) => `Havalimanı transiti: ${area} için havalimanı içi transit yok. Aktarma yapan herkes pasaport kontrolünden geçer; vize ya da pasaportu uygunsa elektronik izin gerekir.`,
     transitLink: "Transit haritasını aç",
     schengen: "Schengen Bölgesi",
     faqHead: (name) => `${name} girişi: sık sorulan sorular`,
@@ -870,17 +872,20 @@ function renderDestPage(destCountry, allPassports, lang, ads) {
   }
   const area = DATA.transitAreaForDest && DATA.transitAreaForDest(dest);
   const trRule = area && DATA.TRANSIT_RULES[area];
-  if (trRule) {
+  // Unverified airside lists (Singapore, Hong Kong) are not stated as fact.
+  if (trRule && trRule.kind !== "unverified") {
+    const areaName = lang === "tr" ? cn(dest, "tr") : theEn(dest, cn(dest, "en"));
     let names = null;
-    if (trRule.requiredFor === "*") names = V.transitAll;
-    else if (Array.isArray(trRule.requiredFor)) {
-      const list = trRule.requiredFor.filter(iso => SNAPSHOT[iso] && iso !== dest).map(pName).sort(collator.compare);
+    if (trRule.kind === "visa") {
+      before.push(`${escapeHtml(V.transitNoAirside(areaName))} <a href="${P("/transit-map/")}">${escapeHtml(V.transitLink)}</a>.`);
+    } else if (Array.isArray(trRule.requiredFor)) {
+      // Schengen: the EU-wide list plus this state's own national list (Annex 7B).
+      const nat = area === "SCHENGEN" && DATA.SCHENGEN_NATIONAL_ATV ? DATA.SCHENGEN_NATIONAL_ATV.byNationality : {};
+      const req = trRule.requiredFor.concat(Object.keys(nat).filter(n => nat[n].includes(dest) && !trRule.requiredFor.includes(n)));
+      const list = req.filter(iso => SNAPSHOT[iso] && iso !== dest).map(pName).sort(collator.compare);
       if (list.length) names = LOC[lang].join(list);
     }
-    if (names) {
-      const areaName = area === "SCHENGEN" ? V.schengen : (lang === "tr" ? cn(area, "tr") : theEn(area, cn(area, "en")));
-      before.push(`${escapeHtml(V.transit(areaName, names))} <a href="${P("/transit-map/")}">${escapeHtml(V.transitLink)}</a>.`);
-    }
+    if (names) before.push(`${escapeHtml(V.transit(areaName, names))} <a href="${P("/transit-map/")}">${escapeHtml(V.transitLink)}</a>.`);
   }
   const off = DATA.officialSource && DATA.officialSource(dest);
   const officialHtml = off ? (() => {
@@ -993,7 +998,7 @@ ${trRow ? `  <p class="tr-answer"><strong>${escapeHtml(V.trAnswerHead)}</strong>
     <p class="chk-follow"><a id="chk-follow" href="${P("/alerts/")}?watch=${dest.toLowerCase()}">${escapeHtml(V.follow(lang === "tr" ? label : the))} →</a></p>
   </section>
   <script type="application/json" id="chk-data">${chkJson}</script>
-  <script src="/assets/share-card.js?v=20261127e" defer></script>
+  <script src="/assets/share-card.js?v=20261127t" defer></script>
   <script>(function(){var d=JSON.parse(document.getElementById("chk-data").textContent),sel=document.getElementById("chk-sel"),out=document.getElementById("chk-out"),map=document.getElementById("chk-map");
 sel.addEventListener("change",function(){var v=sel.value;if(!v||!d.p[v]){out.hidden=true;out.textContent="";map.href=d.mapBase;var ab0=document.getElementById("aff-box");if(ab0)ab0.hidden=false;return}
 var e=d.p[v],nm=sel.options[sel.selectedIndex].text,t=d.who.replace("{name}",nm)+": "+d.ph[e[0]]+(e[1]?d.days.replace("{n}",e[1]):"")+". ";

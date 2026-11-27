@@ -150,7 +150,7 @@ function plTransit(pps, code) {
   const ap = (window.AIRPORTS || {})[c];
   if (!ap) return { code: c, unknown: true, loaded: !!window.AIRPORTS };
   if (!window.transitLeg) return { code: c, unknown: true, loaded: true };
-  const rk = { self: -1, free: 0, twov: 1, vr: 2 };
+  const rk = { self: -1, free: 0, twov: 1, auth: 1, atv: 2, vr: 2 };
   let best = null;
   for (const p of pps) {
     const leg = window.transitLeg(p, null, c, null);
@@ -252,8 +252,8 @@ function plChecklist(e, ctx) {
   out.push({ key: iso + ":flight", text: pt("ck_flight"), partner: "flights" });
   out.push({ key: iso + ":stay", text: pt("ck_stay"), partner: "hotels" });
 
-  if (e.stop.via && e.transit && e.transit.leg && (e.transit.leg.status.status === "vr" || e.transit.leg.status.status === "twov") && !e.transit.leg.status.generic) {
-    out.push({ key: iso + ":transit", text: pt("ck_transit", { code: e.stop.via }), detail: e.transit.leg.status.status === "vr" ? pt("tr_vr") : pt("tr_twov", { h: e.transit.leg.status.twovHours || "" }) });
+  if (e.stop.via && e.transit && e.transit.leg && ["vr", "atv", "auth", "twov"].includes(e.transit.leg.status.status) && !e.transit.leg.status.generic) {
+    out.push({ key: iso + ":transit", text: pt("ck_transit", { code: e.stop.via }), detail: ({ vr: pt("tr_vr"), atv: pt("tr_atv"), auth: pt("tr_auth") })[e.transit.leg.status.status] || pt("tr_twov", { h: e.transit.leg.status.twovHours || "" }) });
   }
   out.push({ key: iso + ":docs", text: pt("ck_docs"), detail: pt("ck_docs_d") });
   const adv = plAdvisory(iso);
@@ -818,6 +818,8 @@ function PlTransitRow({ transit, stop }) {
   if (s.status === "self") body = pt("tr_self");
   else if (s.generic) body = plNoData();
   else if (s.status === "vr") body = <strong className="pl-warn">{pt("tr_vr")}</strong>;
+  else if (s.status === "atv") body = <strong className="pl-warn">{pt("tr_atv")}</strong>;
+  else if (s.status === "auth") body = <strong>{pt("tr_auth")}</strong>;
   else if (s.status === "twov") body = <strong>{pt("tr_twov", { h: s.twovHours || "" })}</strong>;
   else body = <strong>{pt("tr_free")}</strong>;
   const o = window.TRANSIT_REQUIRED_OVERRIDES;

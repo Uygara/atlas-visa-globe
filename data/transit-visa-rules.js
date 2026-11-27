@@ -28,48 +28,53 @@
 window.TRANSIT_RULES = {
 
   // ─── Schengen Area (Type A airport transit visa) ─────────────────────
-  // Source: EU Visa Code Annex IV; updated 2024.
-  // Pakistanis transiting Frankfurt → Toronto without leaving airside
-  // STILL need Schengen ATV unless an exemption applies. This is the
-  // single most-missed rule.
+  // requiredFor = the EU-wide common list, Visa Code (Reg. 810/2009) Annex IV,
+  // consolidated text read on EUR-Lex 2026-11-27: 12 nationalities. Sudan and
+  // Syria are NOT on it; they sit on national lists (SCHENGEN_NATIONAL_ATV below).
+  // Exemptions = Visa Code Article 3(5), same reading. A UK or Australian visa
+  // does NOT exempt anyone from a Schengen ATV.
   SCHENGEN: {
     label: "Schengen (Type A airport transit)",
-    requiredFor: ["AF","BD","ER","ET","GH","IR","IQ","NG","PK","SO","LK","SD","SY"],
+    kind: "atv",
+    requiredFor: ["AF","BD","CD","ER","ET","GH","IR","IQ","NG","PK","SO","LK"],
     exemptions: [
-      { holds: ["US","CA","JP","GB"], note: "Holders of a valid US, Canadian, Japanese or UK visa (or residence permit) are exempt" },
-      { holds: ["SCHENGEN"],          note: "Schengen visa or residence permit holders are exempt" },
-      { holds: ["AU"],                note: "Australian residence permit holders are exempt" },
-      { passportType: "diplomatic",   note: "Diplomatic passport holders are exempt" },
-      { holds: ["EEA"],               note: "EEA (Iceland, Liechtenstein, Norway) residents are exempt" },
+      { holds: ["SCHENGEN","SCHENGEN-RES"], key: "schengen", note: "A valid Schengen visa (C or D) or a residence permit of a Schengen state" },
+      { holds: ["IE","CY"],  key: "ie_cy",    note: "A valid visa or residence permit of Ireland or Cyprus" },
+      { holds: ["US","CA","JP"], key: "us_ca_jp", leg: true, note: "A valid US, Canadian or Japanese visa, when flying to that country or another non-Schengen country, or coming back from it after using the visa" },
+      { holds: ["US-RES","CA-RES","JP-RES","AD","SM"], key: "permits", note: "A residence permit of the US, Canada, Japan, Andorra or San Marino from the official list (Visa Code Annex V)" },
+      { holds: ["EU-FAMILY"], key: "eu_family", note: "Family members of EU citizens" },
+      { passportType: "diplomatic", key: "diplomatic", note: "Diplomatic passport holders and flight crew" },
     ],
     twovHours: null,
     twovEligible: [],
-    notes: "Individual Schengen states may add nationalities to the ATV list. Verify with the embassy of the transit country before flying.",
-    source: "https://home-affairs.ec.europa.eu/policies/schengen-borders-and-visa/visa-policy_en",
+    notes: "The airport transit visa only covers staying airside. Landing in or flying on to another Schengen state, or changing airports, is entry and needs a Schengen visa.",
+    source: "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02009R0810-20200202",
   },
 
   // ─── United Kingdom (Direct Airside Transit Visa) ────────────────────
-  // The UK list is broader than Schengen's — covers ~35 nationalities.
-  // Source: gov.uk visit-uk-in-transit
+  // Nationality list: Schedule 1 of the Immigration (Passenger Transit Visa) Order 2014.
   GB: {
     label: "United Kingdom (Direct Airside Transit Visa, DATV)",
-    requiredFor: [
-      "AF","BD","BY","BI","CM","CN","CU","CD","ER","ET","GH","IR","IQ","JO",
-      "KE","LB","LR","LY","ML","MD","MM","NG","KP","PK","PS","SL","SO","LK",
-      "SD","SY","TJ","TM","UZ","YE","ZW",
+    kind: "atv",
+    requiredFor: [ // fallback; data/transit-visa-data.js (legislation.gov.uk, daily) replaces it
+      "AF","AL","AO","BD","BI","BW","BY","CD","CG","CI","CM","CN","CO","DM",
+      "DZ","EG","ER","ET","GE","GH","GM","GN","GW","HN","IN","IQ","IR","JM",
+      "JO","KE","LB","LC","LK","LR","LS","LY","MD","MK","MM","MN","MW","NA",
+      "NG","NI","NP","NR","PK","PS","RS","RU","RW","SD","SL","SN","SO","SS",
+      "SV","SY","SZ","TL","TR","TT","TZ","UG","VN","VU","XK","YE","ZA","ZW",
     ],
+    // Exemptions: Article 4 of the Immigration (Passenger Transit Visa) Order 2014,
+    // read on legislation.gov.uk 2026-11-27, plus gov.uk/transit-visa (ETA, visitor visa).
     exemptions: [
-      { holds: ["US"],         note: "Valid US visa AND travelling to/from the US (within 6 months): exempt" },
-      { holds: ["CA"],         note: "Valid Canadian visa AND travelling to/from Canada: exempt" },
-      { holds: ["AU"],         note: "Valid Australian visa AND travelling to/from Australia: exempt" },
-      { holds: ["NZ"],         note: "Valid New Zealand visa AND travelling to/from New Zealand: exempt" },
-      { holds: ["SCHENGEN"],   note: "Schengen visa Cat C/D AND travelling to/from a Schengen state (within 6 months): exempt" },
-      { holds: ["IE"],         note: "Irish biometric visa Cat C/D: exempt" },
-      { passportType: "diplomatic", note: "Diplomatic / service passport in some cases: verify with carrier" },
+      { holds: ["US","CA","AU","NZ"], key: "gb_visa4", leg: true, note: "A valid visa for the US, Canada, Australia or New Zealand (or one that expired less than six months after you last entered with it)" },
+      { holds: ["US-RES","CA-RES","AU-RES","NZ-RES"], key: "gb_pr", note: "Permanent residence of the US (green card), Canada, Australia or New Zealand" },
+      { holds: ["SCHENGEN-RES"], key: "gb_eea", note: "A long-stay (D) visa or residence permit of an EEA state or Switzerland" },
+      { holds: ["IE"], key: "gb_ie", note: "A valid Irish biometric visa" },
+      { holds: ["GB"], key: "gb_own", note: "A UK Standard Visitor visa or an ETA" },
     ],
     twovHours: null, twovEligible: [],
-    notes: "DATV is NOT a landside visa. To leave the airport you need a Visitor in Transit Visa instead. Always check before connecting through London Heathrow.",
-    source: "https://www.gov.uk/transit-visa",
+    notes: "The DATV covers staying airside only. If you pass UK border control (for example to collect bags or change airports) you need a Visitor in Transit visa.",
+    source: "https://www.legislation.gov.uk/uksi/2014/2702/article/4",
   },
 
   // ─── United States (no airside transit) ─────────────────────────────
@@ -77,6 +82,7 @@ window.TRANSIT_RULES = {
   // The C-1 transit visa is needed unless the passport is ESTA-eligible.
   US: {
     label: "United States (no airside transit anywhere)",
+    kind: "visa",
     requiredFor: "*",
     exemptions: [
       { holds: ["ESTA"], note: "Visa Waiver Program nationalities can use ESTA, but you still clear immigration" },
@@ -90,6 +96,7 @@ window.TRANSIT_RULES = {
   // ─── Canada (no general airside transit; CTAS for select Chinese) ───
   CA: {
     label: "Canada (Transit Visa required; CTAS exception)",
+    kind: "visa",
     requiredFor: "*",
     exemptions: [
       { holds: ["CA"], note: "Holders of a valid Canadian visa / eTA: covered" },
@@ -118,6 +125,7 @@ window.TRANSIT_RULES = {
   // which third-country visas qualify. requiredFor (airside transit visa) not confirmed there.
   SG: {
     label: "Singapore (Visa-Free Transit Facility, 96h)",
+    kind: "unverified",
     requiredFor: ["AF","BD","IN","MM","PK","CN","PS","SY","TM","UZ"],
     exemptions: [
       { holds: ["AU","CA","DE","JP","NZ","CH","GB","US"],
@@ -149,6 +157,7 @@ window.TRANSIT_RULES = {
   // ─── Hong Kong (visa-free transit, generous) ────────────────────────
   HK: {
     label: "Hong Kong (visa-free transit, 7 to 14 days for most)",
+    kind: "unverified",
     requiredFor: ["AF","AL","CU","KP","LA","MN","NG","SO","LK","TJ","TM","VN"],
     exemptions: [
       { holds: ["US","GB","CA","AU","JP","SCHENGEN"],
@@ -194,6 +203,89 @@ window.TRANSIT_RULES = {
   },
 };
 
+// ── Schengen national airport transit visa lists ─────────────────────────
+// On top of the common list, single member states require an ATV from more
+// nationalities (Visa Code Art. 3(2)). Source: Visa Code Handbook Annex 7B,
+// version of 1 July 2026, as published by the Norwegian Directorate of
+// Immigration (UDI). Read 2026-11-27. Keys are nationalities; values are the
+// states (ISO2; the annex writes Greece as EL) where that nationality needs an
+// ATV even airside. Cyprus is included: it keeps its own list.
+// Re-read the annex when its date changes and update `asOf` + `checked`
+// (tools/audit-data.js warns after 180 days).
+window.SCHENGEN_NATIONAL_ATV = {
+  asOf: "2026-07-01",
+  checked: "2026-11-27",
+  source: "https://www.udiregelverk.no/rettskilder/internasjonale-rettskilder/schengen2/visumhandboken/annex-07/",
+  byNationality: {
+    AM: ["CZ","PL"],
+    AO: ["FR"],
+    BF: ["ES"],
+    BI: ["BE"],
+    BO: ["FR"],
+    CF: ["ES","FR","NL"],
+    CG: ["GR","ES","FR"],
+    CI: ["ES","FR"],
+    CM: ["GR","ES","FR","CY"],
+    CU: ["CZ","DE","ES","FR","NL","PL","CH"],
+    DJ: ["ES"],
+    DO: ["BE","FR"],
+    DZ: ["CZ"],
+    EG: ["CZ","ES","PL","RO"],
+    GM: ["ES"],
+    GN: ["BE","ES","FR","NL","PT"],
+    GW: ["BE","ES","NL"],
+    HT: ["BE","ES","FR"],
+    IN: ["CZ","RO"],
+    JO: ["DE"],
+    KE: ["ES"],
+    LB: ["CZ","DE","RO"],
+    LR: ["ES"],
+    LY: ["CZ"],
+    MA: ["RO"],
+    ML: ["CZ","DE","ES","FR"],
+    MR: ["CZ","ES","FR","NL"],
+    NE: ["CZ"],
+    NP: ["BE","ES","FR","NL","RO"],
+    PH: ["FR"],
+    PS: ["BE","CZ","ES","FR","RO"],
+    RU: ["CZ","ES","FR"],
+    SD: ["BE","CZ","DE","GR","ES","FR","CY","NL"],
+    SL: ["ES","FR","NL"],
+    SN: ["ES","FR","IT","NL","PT"],
+    SS: ["BE","CZ","DE","FR","NL"],
+    SY: ["BE","CZ","DK","DE","GR","ES","FR","IT","NL","AT","RO","NO","CH"],
+    TD: ["CZ","ES","FR","NL"],
+    TG: ["ES","FR"],
+    TJ: ["BE","ES","IT","RO"],
+    TN: ["RO"],
+    TR: ["BE","CZ","DE","ES","FR","CY","NL","NO","CH"],
+    UZ: ["BE","ES","FR","IT","PT","RO"],
+    YE: ["BE","CZ","ES","NL","RO"],
+  },
+  // Footnotes of the annex that change the answer for a nationality in one state.
+  conditions: {
+    "RU:FR": "France: only when the flight to France started in Armenia, Azerbaijan, Belarus, Egypt, Georgia, Moldova, Türkiye or Ukraine.",
+    "JO:DE": "Germany: not needed with a valid visa for Australia, Israel or New Zealand and a ticket to that country (or home from it), if the onward flight leaves within 12 hours.",
+    "HT:BE": "Belgium: ordinary passports only.",
+    "YE:BE": "Belgium: ordinary passports only.",
+    "PS:FR": "France: applies to the travel document for Palestinian refugees.",
+  },
+};
+
+// States where `passport` needs an ATV airside: the common list covers every
+// Schengen state; national lists add single states.
+window.schengenAtvFor = function (passport, state) {
+  const pp = String(passport || "").toUpperCase();
+  const common = (window.TRANSIT_RULES.SCHENGEN.requiredFor || []).includes(pp);
+  const nat = (window.SCHENGEN_NATIONAL_ATV.byNationality[pp] || []);
+  if (state) {
+    const st = String(state).toUpperCase();
+    return { needs: common || nat.includes(st), basis: common ? "common" : (nat.includes(st) ? "national" : null),
+      condition: window.SCHENGEN_NATIONAL_ATV.conditions[pp + ":" + st] || null };
+  }
+  return { needs: common, basis: common ? "common" : null, states: common ? null : nat.slice() };
+};
+
 // Apply auto-scraped overrides (data/transit-visa-data.js, refreshed daily).
 // Loaded before this file when present; we merge the nationality lists over
 // the built-in defaults so the map stays current without hand-editing.
@@ -219,11 +311,17 @@ window.transitVisaRule = function (passportIso, transitArea, opts) {
   if (!rule) return null;
   const passport = String(passportIso || "").toUpperCase();
   const held = new Set((opts?.holds || []).map(h => String(h).toUpperCase()));
+  const state = opts && opts.state ? String(opts.state).toUpperCase() : null;
 
   // Default: no transit visa needed
-  let needs = false;
-  if (rule.requiredFor === "*" && passport) needs = true;
+  let needs = false, basis = null, condition = null, nationalStates = null;
+  if (transitArea === "SCHENGEN") {
+    const s = window.schengenAtvFor(passport, state);
+    needs = s.needs; basis = s.basis; condition = s.condition || null;
+    if (!state && s.states && s.states.length) nationalStates = s.states;
+  } else if (rule.requiredFor === "*" && passport) needs = true;
   else if (Array.isArray(rule.requiredFor) && rule.requiredFor.includes(passport)) needs = true;
+  if (needs && !basis) basis = rule.requiredFor === "*" ? "all" : "list";
 
   // Check exemptions
   let exemption = null;
@@ -245,28 +343,36 @@ window.transitVisaRule = function (passportIso, transitArea, opts) {
   return {
     transitArea,
     label: rule.label,
+    kind: rule.kind || "atv",
     needs: needs && !exemption,
+    basis,
+    condition,
+    nationalStates,
     exemption,
+    exemptions: rule.exemptions || [],
     twov,
     twovHours: rule.twovHours || null,
     notes: rule.notes || "",
-    source: rule.source || null,
+    source: (basis === "national" && window.SCHENGEN_NATIONAL_ATV.source) || rule.source || null,
   };
 };
 
 // ── Transit-map globe resolver ────────────────────────────────────────
 // Maps any destination ISO2 to a single transit status for the standalone
 // /transit-map/ globe, given the traveller's passport:
-//   "self"  — the passport's own country
-//   "vr"    — a transit visa IS required (red)
-//   "twov"  — no transit visa, but only via a time-limited Transit-Without-
-//             Visa programme (amber); twovHours carries the cap
-//   "free"  — airside transit open / no transit visa needed (green)
-//   "na"    — not a country we hold transit rules for (neutral land)
+//   "self"    the passport's own country
+//   "free"    you may change planes there without any visa (a rule we track,
+//             or `generic`: you can even enter the country visa-free)
+//   "twov"    no visa, but only via a time-limited Transit-Without-Visa programme
+//   "auth"    no airside transit; you clear immigration with an electronic
+//             authorisation (US ESTA, Canada eTA) instead of a visa
+//   "atv"     an airport transit visa is needed even airside (Schengen ATV, UK DATV)
+//   "vr"      no airside transit at all; a full transit or visitor visa is needed (US, Canada)
+//   "unknown" not a country we hold transit rules for, and you need a visa to
+//             enter it: airside transit is often allowed but we can't confirm it
 //
-// The countries we can colour are the Schengen states (resolved via the
-// SCHENGEN rule) plus each standalone hub key in TRANSIT_RULES that is
-// itself an ISO2 (GB/US/CA/JP/SG/CN/HK/AE/QA/TR).
+// The countries with real rules are the Schengen states (common + national
+// ATV lists) plus each hub key in TRANSIT_RULES that is itself an ISO2.
 
 window.transitAreaForDest = function (destIso2) {
   const iso = String(destIso2 || "").toUpperCase();
@@ -276,26 +382,44 @@ window.transitAreaForDest = function (destIso2) {
   return null;
 };
 
+const _TRANSIT_EASY_ENTRY = new Set(["self", "idc", "vf"]);
+function _transitEntryStatus(pp, iso) {
+  try { return window.resolveStatus ? (window.resolveStatus(pp, iso) || {}).status : null; } catch (e) { return null; }
+}
+
 window.transitStatusForGlobe = function (passport, destIso2, opts) {
   const pp = String(passport || "").toUpperCase();
   const iso = String(destIso2 || "").toUpperCase();
   if (pp && iso === pp) return { status: "self" };
   const area = window.transitAreaForDest(iso);
+  const entry = _transitEntryStatus(pp, iso);
   if (!area) {
-    // Whole-world coverage: the vast majority of countries permit airside
-    // (international-zone) transit without a transit visa. We mark every
-    // non-hub country "free" but flag it `generic` so the UI can note it's
-    // the general case rather than a country-specific rule we track.
-    return { status: "free", generic: true };
+    // No transit rule tracked. If the passport can enter the country without a
+    // visa, changing planes there is certainly fine. Otherwise we say we don't know.
+    if (_TRANSIT_EASY_ENTRY.has(entry)) return { status: "free", generic: true, byEntry: true };
+    return { status: "unknown", generic: true };
   }
-  const res = window.transitVisaRule(pp, area, opts);
-  if (!res) return { status: "free", generic: true };
+  const res = window.transitVisaRule(pp, area, { ...(opts || {}), state: area === "SCHENGEN" ? iso : null });
+  if (!res) return { status: "unknown", generic: true };
   const base = {
-    area, label: res.label, twovHours: res.twovHours,
-    exemption: res.exemption, notes: res.notes, source: res.source,
+    area, state: area === "SCHENGEN" ? iso : null, label: res.label, kind: res.kind,
+    twovHours: res.twovHours, basis: res.basis, condition: res.condition,
+    exemption: res.exemption, exemptions: res.exemptions, notes: res.notes, source: res.source,
+    byEntry: _TRANSIT_EASY_ENTRY.has(entry),
   };
-  if (res.needs) return { status: "vr", ...base };
-  if (res.twov)  return { status: "twov", ...base };
+  if (res.needs) {
+    if (res.kind === "visa") {
+      // US/Canada: everyone clears immigration. Visa-free passports need ESTA/eTA
+      // (shown as "eta" on the visa map) or nothing at all.
+      if (_TRANSIT_EASY_ENTRY.has(entry)) return { status: "free", ...base };
+      if (entry === "eta") return { status: "auth", ...base };
+      if (res.twov) return { status: "twov", ...base };
+      return { status: "vr", ...base };
+    }
+    if (res.kind === "unverified") return { status: "unknown", ...base, unverified: true };
+    return { status: "atv", ...base };
+  }
+  if (res.twov && !base.byEntry) return { status: "twov", ...base };
   return { status: "free", ...base };
 };
 
@@ -323,8 +447,8 @@ window.transitLeg = function (passport, fromCode, viaCode, toCode, opts) {
   const sameZone = (a, b) => a && b && (a === b || (area === "SCHENGEN" && inSchengen(a) && inSchengen(b)));
   const entry = touches.some((iso) => sameZone(iso, viaIso));
   const rule = area && window.TRANSIT_RULES[area];
-  const legExemptions = !entry && rule && status.status === "vr"
-    ? (rule.exemptions || []).filter((ex) => /to\/from|to or from/i.test(ex.note || "")
+  const legExemptions = !entry && rule && (status.status === "vr" || status.status === "atv")
+    ? (rule.exemptions || []).filter((ex) => (ex.leg || /to\/from|to or from/i.test(ex.note || ""))
         && (ex.holds || []).some((h) => touches.includes(String(h).toUpperCase())))
     : [];
   const third = fromIso && toIso ? !(fromIso === toIso || sameZone(fromIso, viaIso) || sameZone(toIso, viaIso)) : null;
@@ -336,8 +460,11 @@ window.transitLeg = function (passport, fromCode, viaCode, toCode, opts) {
 window.TRANSIT_GLOBE_COLOR = {
   self: "var(--self)",
   free: "var(--vf)",
-  twov: "var(--voa)",
+  twov: "var(--eta)",
+  auth: "var(--ev)",
+  atv:  "var(--voa)",
   vr:   "var(--vr)",
+  unknown: "var(--na)",
   na:   "var(--land)",
 };
 
@@ -348,7 +475,11 @@ window.COMMON_TRANSIT_HUBS = [
   { area: "AE",       hubLabel: "Dubai / Abu Dhabi", airports: ["DXB","AUH"] },
   { area: "QA",       hubLabel: "Doha",              airports: ["DOH"] },
   { area: "TR",       hubLabel: "Istanbul",          airports: ["IST","SAW"] },
-  { area: "SCHENGEN", hubLabel: "Frankfurt / Amsterdam / Paris", airports: ["FRA","AMS","CDG"] },
+  { area: "SCHENGEN", state: "DE", hubLabel: "Frankfurt / Munich", airports: ["FRA","MUC"] },
+  { area: "SCHENGEN", state: "NL", hubLabel: "Amsterdam", airports: ["AMS"] },
+  { area: "SCHENGEN", state: "FR", hubLabel: "Paris", airports: ["CDG"] },
+  { area: "SCHENGEN", state: "IT", hubLabel: "Rome / Milan", airports: ["FCO","MXP"] },
+  { area: "SCHENGEN", state: "AT", hubLabel: "Vienna", airports: ["VIE"] },
   { area: "GB",       hubLabel: "London",            airports: ["LHR","LGW"] },
   { area: "US",       hubLabel: "United States",     airports: ["JFK","LAX","ORD","ATL"] },
   { area: "CA",       hubLabel: "Toronto / Vancouver", airports: ["YYZ","YVR"] },

@@ -124,7 +124,10 @@ function TransitMapApp() {
     style: {
       marginTop: 10
     }
-  }, window.t("tmap.pick_prompt"))), passport && selected && React.createElement(TransitDetail, {
+  }, window.t("tmap.pick_prompt"))), passport && React.createElement(TransitSchengenSummary, {
+    passport: passport,
+    onOpen: openCountry
+  }), passport && selected && React.createElement(TransitDetail, {
     passport: passport,
     iso2: selected,
     onClose: function onClose() {
@@ -262,11 +265,20 @@ function TransitLegend() {
     s: "vf",
     k: "tmap.legend_free"
   }, {
-    s: "voa",
+    s: "eta",
     k: "tmap.legend_twov"
+  }, {
+    s: "ev",
+    k: "tmap.legend_auth"
+  }, {
+    s: "voa",
+    k: "tmap.legend_atv"
   }, {
     s: "vr",
     k: "tmap.legend_vr"
+  }, {
+    s: "na",
+    k: "tmap.legend_unknown"
   }];
   return React.createElement("div", {
     className: "map-key map-key-below overlay-card"
@@ -280,29 +292,131 @@ function TransitLegend() {
     }), React.createElement("span", null, window.t(i.k)));
   })));
 }
+var AUTH_DOC = {
+  US: "ESTA",
+  CA: "eTA"
+};
 function transitLine(t) {
   if (t.status === "vr") return {
     label: window.t("tmap.needs_visa"),
     color: TG_COLOR.vr,
     s: "vr"
   };
+  if (t.status === "atv") return {
+    label: window.t("tmap.atv"),
+    color: TG_COLOR.atv,
+    s: "voa"
+  };
+  if (t.status === "auth") return {
+    label: window.t("tmap.auth", {
+      doc: AUTH_DOC[t.area] || "ETA"
+    }),
+    color: TG_COLOR.auth,
+    s: "ev"
+  };
   if (t.status === "twov") return {
     label: window.t("tmap.twov_ok", {
       n: t.twovHours
     }),
     color: TG_COLOR.twov,
-    s: "voa"
+    s: "eta"
   };
   if (t.status === "free") return {
     label: window.t("tmap.free_ok"),
     color: TG_COLOR.free,
     s: "vf"
   };
+  if (t.status === "unknown") return {
+    label: window.t("tmap.unknown"),
+    color: TG_COLOR.unknown,
+    s: "na"
+  };
   return null;
 }
-function TransitHover(_ref2) {
-  var hover = _ref2.hover,
-    passport = _ref2.passport;
+function transitWhy(passport, iso2, t) {
+  var country = window.countryName(iso2);
+  var out = [];
+  if (t.status === "unknown") out.push(window.t(t.unverified ? "tmap.why_unverified" : "tmap.why_unknown", {
+    country: country
+  }));else if (t.generic && t.byEntry) out.push(window.t("tmap.why_entry_free"));else if (t.status === "atv" && t.area === "SCHENGEN") out.push(window.t(t.basis === "common" ? "tmap.why_common" : "tmap.why_national", {
+    country: country
+  }));else if (t.status === "atv" && t.area === "GB") out.push(window.t("tmap.why_gb"));else if (t.status === "auth") {
+    out.push(window.t("tmap.why_no_airside", {
+      country: country
+    }));
+    out.push(window.t("tmap.why_auth", {
+      doc: AUTH_DOC[t.area] || "ETA"
+    }));
+  } else if (t.status === "vr" && t.kind === "visa") out.push(window.t("tmap.why_no_airside", {
+    country: country
+  }));else if (t.status === "free" && t.byEntry) out.push(window.t("tmap.why_entry_free"));else if (t.status === "free" && t.area === "SCHENGEN") out.push(window.t("tmap.why_free_schengen", {
+    country: country
+  }));
+  if (t.area === "SCHENGEN" && !t.byEntry && (t.status === "free" || t.status === "atv")) out.push(window.t("tmap.schengen_entry"));
+  if (t.condition) out.push(tr("tmap.cond_" + passport + "_" + t.state, t.condition));
+  return out;
+}
+function TransitExemptions(_ref2) {
+  var t = _ref2.t;
+  if (t.status !== "atv" || !t.exemptions || !t.exemptions.length) return null;
+  return React.createElement("div", {
+    className: "note note-info"
+  }, React.createElement("span", {
+    className: "note-k",
+    style: {
+      fontWeight: 600
+    }
+  }, window.t("tmap.exemptions")), React.createElement("ul", {
+    className: "note-s",
+    style: {
+      margin: "4px 0 0",
+      paddingInlineStart: 18
+    }
+  }, t.exemptions.map(function (ex, i) {
+    return React.createElement("li", {
+      key: i
+    }, tr("tmap.ex_" + ex.key, ex.note));
+  })), t.area === "SCHENGEN" && React.createElement("span", {
+    className: "note-s",
+    style: {
+      display: "block",
+      marginTop: 4
+    }
+  }, window.t("tmap.no_uk_visa")));
+}
+function fmtDay(iso) {
+  try {
+    return new Date(iso + "T00:00:00Z").toLocaleDateString(window.ATLAS_LANG || "en", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+      timeZone: "UTC"
+    });
+  } catch (e) {
+    return iso;
+  }
+}
+function TransitSource(_ref3) {
+  var t = _ref3.t;
+  if (!t.source) return null;
+  var nat = t.area === "SCHENGEN" && t.basis === "national" && window.SCHENGEN_NATIONAL_ATV;
+  return React.createElement("p", {
+    className: "p-fine",
+    style: {
+      margin: "6px 0 0"
+    }
+  }, React.createElement("a", {
+    className: "link-quiet",
+    href: t.source,
+    target: "_blank",
+    rel: "noopener noreferrer"
+  }, window.t("tmap.source"), " \u2192"), nat && React.createElement("span", null, " · " + window.t("tmap.checked", {
+    date: fmtDay(nat.checked)
+  })));
+}
+function TransitHover(_ref4) {
+  var hover = _ref4.hover,
+    passport = _ref4.passport;
   var dest = window.byIso2[hover.iso2];
   if (!dest || !passport) return null;
   var t = window.transitStatusForGlobe(passport, hover.iso2);
@@ -325,10 +439,10 @@ function TransitHover(_ref2) {
     className: "hovercard-row hovercard-cap"
   }, window.t("tmap.legend_na")));
 }
-function TransitDetail(_ref3) {
-  var passport = _ref3.passport,
-    iso2 = _ref3.iso2,
-    onClose = _ref3.onClose;
+function TransitDetail(_ref5) {
+  var passport = _ref5.passport,
+    iso2 = _ref5.iso2,
+    onClose = _ref5.onClose;
   var dest = window.byIso2[iso2];
   var t = window.transitStatusForGlobe(passport, iso2);
   var line = transitLine(t);
@@ -370,29 +484,22 @@ function TransitDetail(_ref3) {
     style: {
       marginTop: 10
     }
-  }, window.t("tmap.legend_na")), t.generic && React.createElement("p", {
+  }, window.t("tmap.legend_na")), transitWhy(passport, iso2, t).map(function (x, i) {
+    return React.createElement("p", {
+      key: i,
+      className: "entry-note"
+    }, x);
+  }), React.createElement(TransitExemptions, {
+    t: t
+  }), t.notes && t.area !== "SCHENGEN" && !t.byEntry && t.status !== "unknown" && React.createElement("p", {
     className: "entry-note"
-  }, window.t("tmap.generic_note")), t.exemption && t.exemption.note && React.createElement("div", {
-    className: "note note-ok"
-  }, React.createElement("span", {
-    className: "note-k",
-    style: {
-      fontWeight: 500
-    }
-  }, window.t("tmap.exempt_via", {
-    note: t.exemption.note
-  }))), t.notes && React.createElement("p", {
-    className: "entry-note"
-  }, t.notes), t.source && React.createElement("a", {
-    className: "link-quiet",
-    href: t.source,
-    target: "_blank",
-    rel: "noopener noreferrer"
-  }, window.t("tmap.source"), " \u2192"));
+  }, tr("tmap.note_" + t.area, t.notes)), React.createElement(TransitSource, {
+    t: t
+  }));
 }
-function TransitLegChecker(_ref4) {
-  var passport = _ref4.passport,
-    onOpen = _ref4.onOpen;
+function TransitLegChecker(_ref6) {
+  var passport = _ref6.passport,
+    onOpen = _ref6.onOpen;
   var _useState1 = useState({
       from: "",
       via: "",
@@ -497,24 +604,20 @@ function TransitLegChecker(_ref4) {
   }, window.t("tmap.leg_not_transit", {
     country: window.countryName(leg.viaIso)
   }))) : React.createElement(React.Fragment, null, line && React.createElement("div", {
-    className: "note " + (t.status === "vr" ? "note-risk" : t.status === "twov" ? "note-warn" : "note-ok")
+    className: "note " + (t.status === "vr" || t.status === "atv" ? "note-risk" : t.status === "free" ? "note-ok" : "note-warn")
   }, React.createElement("span", {
     className: "note-k",
     style: {
       fontWeight: 600
     }
-  }, line.label)), t.generic && React.createElement("p", {
-    className: "entry-note"
-  }, window.t("tmap.generic_note")), t.exemption && t.exemption.note && React.createElement("div", {
-    className: "note note-ok"
-  }, React.createElement("span", {
-    className: "note-k",
-    style: {
-      fontWeight: 500
-    }
-  }, window.t("tmap.exempt_via", {
-    note: t.exemption.note
-  }))), leg.legExemptions.map(function (ex, i) {
+  }, line.label)), transitWhy(passport, leg.viaIso, t).filter(function (x) {
+    return x !== window.t("tmap.schengen_entry");
+  }).map(function (x, i) {
+    return React.createElement("p", {
+      key: i,
+      className: "entry-note"
+    }, x);
+  }), leg.legExemptions.map(function (ex, i) {
     return React.createElement("div", {
       key: i,
       className: "note note-info"
@@ -532,9 +635,9 @@ function TransitLegChecker(_ref4) {
     className: "entry-note"
   }, window.t("tmap.leg_third", {
     answer: window.t(leg.thirdCountry ? "tmap.leg_yes" : "tmap.leg_no")
-  })), t.notes && React.createElement("p", {
+  })), t.notes && t.area !== "SCHENGEN" && !t.byEntry && t.status !== "unknown" && React.createElement("p", {
     className: "entry-note"
-  }, t.notes)), React.createElement("button", {
+  }, tr("tmap.note_" + t.area, t.notes))), React.createElement("button", {
     type: "button",
     className: "btn",
     style: {
@@ -547,18 +650,68 @@ function TransitLegChecker(_ref4) {
     country: window.countryName(leg.viaIso)
   }))));
 }
-function TransitHubList(_ref5) {
-  var passport = _ref5.passport,
-    onOpen = _ref5.onOpen;
+function TransitSchengenSummary(_ref7) {
+  var passport = _ref7.passport,
+    onOpen = _ref7.onOpen;
+  var S = window.ETIAS && window.ETIAS.schengenStates;
+  if (!S || !window.schengenAtvFor) return null;
+  var entry = window.resolveStatus ? (window.resolveStatus(passport, "DE") || {}).status : null;
+  if (S.includes(passport) || entry === "vf" || entry === "idc" || entry === "self") return null;
+  var all = window.schengenAtvFor(passport);
+  var states = all.needs ? [] : (all.states || []).filter(function (x) {
+    return S.includes(x) && x !== "CY";
+  }).sort(function (a, b) {
+    return window.countryName(a).localeCompare(window.countryName(b));
+  });
+  return React.createElement("section", {
+    className: "p-sec"
+  }, React.createElement("div", {
+    className: "note " + (all.needs || states.length ? "note-warn" : "note-ok")
+  }, React.createElement("span", {
+    className: "note-k",
+    style: {
+      fontWeight: 600
+    }
+  }, window.t("tmap.schengen_title")), React.createElement("span", {
+    className: "note-s"
+  }, all.needs ? window.t("tmap.atv_common") : states.length ? React.createElement(React.Fragment, null, window.t("tmap.atv_states", {
+    list: "\x01"
+  }).split("\x01")[0], states.map(function (x, i) {
+    return React.createElement(React.Fragment, {
+      key: x
+    }, i ? ", " : "", React.createElement("button", {
+      type: "button",
+      className: "link-quiet",
+      style: {
+        padding: 0,
+        border: 0,
+        background: "none",
+        cursor: "pointer",
+        font: "inherit"
+      },
+      onClick: function onClick() {
+        return onOpen(x);
+      }
+    }, window.countryName(x)));
+  }), window.t("tmap.atv_states", {
+    list: "\x01"
+  }).split("\x01")[1]) : window.t("tmap.atv_none")), React.createElement("span", {
+    className: "note-s",
+    style: {
+      display: "block",
+      marginTop: 4
+    }
+  }, window.t("tmap.schengen_entry"))));
+}
+function TransitHubList(_ref8) {
+  var passport = _ref8.passport,
+    onOpen = _ref8.onOpen;
   var hubs = window.COMMON_TRANSIT_HUBS || [];
-  var repIso = function repIso(area) {
-    return area === "SCHENGEN" ? "DE" : area;
-  };
   var rows = hubs.map(function (h) {
-    var iso = repIso(h.area);
+    var iso = h.state || h.area;
     var t = window.transitStatusForGlobe(passport, iso);
     var c = window.byIso2[iso];
-    var hubLabel = c && h.hubLabel === c.name.replace(/\s*\(.*\)$/, "") ? window.countryName(iso) : tr("hub." + h.area, h.hubLabel);
+    var hubLabel = c && h.hubLabel === c.name.replace(/\s*\(.*\)$/, "") ? window.countryName(iso) : tr("hub." + iso, h.hubLabel);
     return _objectSpread(_objectSpread({}, h), {}, {
       hubLabel: hubLabel,
       iso: iso,
@@ -574,7 +727,7 @@ function TransitHubList(_ref5) {
     className: "ledger"
   }, rows.map(function (r) {
     return React.createElement("li", {
-      key: r.area
+      key: r.iso
     }, React.createElement("button", {
       type: "button",
       className: "lg-row",

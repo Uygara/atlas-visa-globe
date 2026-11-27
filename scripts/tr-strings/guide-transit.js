@@ -10,7 +10,7 @@ module.exports = {
   "51fa456c": `<strong>Sorulacak ilk soru:</strong> bagajlarım son varış noktasına kadar mı kaydedilecek ve uluslararası bölgede mi kalacağım? Evetse airside'sındır. Bagajları almak, havaalanı değiştirmek ya da güvenli alandan çıkmak zorundaysan landside'sındır, ve varış noktasının normal giriş kuralları geçerlidir.`,
   "16b58dd1": `İnsanları şaşırtan havaalanları`,
   "848411d6": `Salt airside transitte bile bazı ülkeler belirli uyruklardan özel bir transit vizesi ister:`,
-  "2d10cbb3": `<strong>Schengen Bölgesi</strong>, Bölge'ye girmeden aktarma yapılsa bile belirli bir uyruk listesi için Havaalanı Transit Vizesi (ATV) uygular.`,
+  "f42df8ea": `<strong>Schengen Bölgesi</strong>, Bölge'ye girmeden aktarma yapılsa bile belirli bir uyruk listesi için Havaalanı Transit Vizesi (ATV) uygular. Bazı üye ülkeler kendi listelerine başka uyrukları da ekler; bu yüzden cevap Frankfurt'ta başka, Roma'da başka olabilir. <a href="/transit-map/">Transit haritası</a> bunu havalimanı havalimanı gösterir.`,
   "0fc32808": `<strong>Birleşik Krallık</strong>, birçok uyruk için Doğrudan Airside Transit Vizesi (DATV) şartı uygular ve liste bariz değildir. Yolcular sıklıkla muaf olmadıkları hâlde muaf olduklarını varsayar.`,
   "42f8e015": `<strong>Amerika Birleşik Devletleri</strong> en büyük örnektir: airside transit <em>yoktur</em>. Steril bir uluslararası bölge bulunmadığından, bir ABD havaalanından aktarma yapan her yolcu göçmenlik kontrolünden geçmek zorundadır ve bu yüzden vizesiz giriş (ESTA ile) ya da C-1 transit vizesi gerekir. ABD üzerinden aktarma, vize açısından bir giriştir.`,
   "74222201": `<strong>Kanada</strong>, uyruğa ve kullanılan transit programına göre aktarmalar için eTA ya da transit vizesi ister.`,

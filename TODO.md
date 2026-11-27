@@ -14,6 +14,8 @@
    ROADMAP R6'nın kalanı (rehberlerde "bildirim al"), A3 ölçümü (GA4 `share_answer`), R5 deneyimleri (`node tools/experiences-review.js`). iVisa canlı (19 Kasım): GA4'te
    `affiliate_click` olayını izle, 19 Aralık'ta tıklama ve sipariş sayısını yaz. 17 Aralık'ta `/visa/` sayfalarının etkisini ölç
    (`docs/autopilot-log.md` en üst kayıt).
+   Transit haritası (27 Kasım): Schengen ATV listeleri ülke bazında; Annex 7B yeni sürüm çıkınca (udiregelverk.no annex-07)
+   `SCHENGEN_NATIONAL_ATV`'yi güncelle. Takip edilmeyen hub'lar (AU, NZ, MX, IE, KR…) gri; resmî kaynakla eklenebilir.
 1. **Android test APK'sını telefonda dene**: GitHub → Actions → "Android build" → son çalışma → `travelnow-debug-apk`.
    Telefonda "bilinmeyen kaynaklardan yükleme"ye izin verip kur. Hata/izlenim varsa yaz, düzeltirim.
 2. **Google Play hesabı** açıldıysa: yükleme anahtarını üretip imzalı AAB'yi CI'dan alırım, kapalı test kanalını kurarız.

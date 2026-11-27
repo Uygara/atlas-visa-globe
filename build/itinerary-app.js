@@ -278,6 +278,8 @@ function plTransit(pps, code) {
     self: -1,
     free: 0,
     twov: 1,
+    auth: 1,
+    atv: 2,
     vr: 2
   };
   var best = null;
@@ -479,13 +481,17 @@ function plChecklist(e, ctx) {
     text: pt("ck_stay"),
     partner: "hotels"
   });
-  if (e.stop.via && e.transit && e.transit.leg && (e.transit.leg.status.status === "vr" || e.transit.leg.status.status === "twov") && !e.transit.leg.status.generic) {
+  if (e.stop.via && e.transit && e.transit.leg && ["vr", "atv", "auth", "twov"].includes(e.transit.leg.status.status) && !e.transit.leg.status.generic) {
     out.push({
       key: iso + ":transit",
       text: pt("ck_transit", {
         code: e.stop.via
       }),
-      detail: e.transit.leg.status.status === "vr" ? pt("tr_vr") : pt("tr_twov", {
+      detail: {
+        vr: pt("tr_vr"),
+        atv: pt("tr_atv"),
+        auth: pt("tr_auth")
+      }[e.transit.leg.status.status] || pt("tr_twov", {
         h: e.transit.leg.status.twovHours || ""
       })
     });
@@ -1700,7 +1706,9 @@ function PlTransitRow(_ref0) {
   var body;
   if (s.status === "self") body = pt("tr_self");else if (s.generic) body = plNoData();else if (s.status === "vr") body = React.createElement("strong", {
     className: "pl-warn"
-  }, pt("tr_vr"));else if (s.status === "twov") body = React.createElement("strong", null, pt("tr_twov", {
+  }, pt("tr_vr"));else if (s.status === "atv") body = React.createElement("strong", {
+    className: "pl-warn"
+  }, pt("tr_atv"));else if (s.status === "auth") body = React.createElement("strong", null, pt("tr_auth"));else if (s.status === "twov") body = React.createElement("strong", null, pt("tr_twov", {
     h: s.twovHours || ""
   }));else body = React.createElement("strong", null, pt("tr_free"));
   var o = window.TRANSIT_REQUIRED_OVERRIDES;
