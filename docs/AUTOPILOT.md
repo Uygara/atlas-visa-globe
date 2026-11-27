@@ -46,6 +46,10 @@ visitors who stay (engaged sessions, pages per session), and a site with no brok
 - `node tools/analytics-report.js` (run it from the main checkout, which holds `.secrets/`).
 - Append one line to `.autopilot/metrics.tsv`: date, GA users, sessions, engaged %, SC clicks, SC impressions,
   CTR, avg position. Compare with the previous rows, not only last week.
+- `node tools/experiences-review.js`: traveller experiences (ROADMAP R5). The site refuses links, emails, @names and
+  phone or passport numbers when a post is written; the weekly workflow `experiences-review.yml` hides any that slip
+  through. You read each new and each hidden post: delete (`--delete <id>`) anything that is an ad, abuse, a
+  how-to-evade-border-checks tip, or identifies someone. Do not edit posts and do not write any yourself.
 - Read the signals: pages with many impressions and low CTR (title/description work), queries at position 8 to 20
   (content depth, internal links), queries we have no page for (new page), traffic spikes from one country with
   0 s sessions (bots, ignore), referrers that send engaged visitors (more of what they link to).

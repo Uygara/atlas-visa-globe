@@ -1367,6 +1367,9 @@ function DetailCard(_ref15) {
   }), !groupActive && React.createElement(RecentChanges, {
     passport: passport,
     destIso2: iso2
+  }), !groupActive && !incoming && React.createElement(ExperiencesBox, {
+    passport: passport,
+    destIso2: iso2
   }), React.createElement(AffiliatePartners, {
     status: r.status,
     iso2: iso2
@@ -2859,3 +2862,309 @@ function PanelFooter() {
 Object.assign(window, {
   Panel: Panel
 });
+function expMonthLabel(m) {
+  var d = new Date(m + "-01T00:00:00Z");
+  if (isNaN(d)) return m;
+  try {
+    return d.toLocaleDateString(window.ATLAS_LANG || undefined, {
+      month: "long",
+      year: "numeric",
+      timeZone: "UTC"
+    });
+  } catch (e) {
+    return m;
+  }
+}
+function ExperienceForm(_ref41) {
+  var passport = _ref41.passport,
+    destIso2 = _ref41.destIso2,
+    onDone = _ref41.onDone,
+    onCancel = _ref41.onCancel;
+  var X = window.ATLAS_EXPERIENCES;
+  var now = new Date();
+  var thisMonth = now.getUTCFullYear() + "-" + String(now.getUTCMonth() + 1).padStart(2, "0");
+  var _useStateC = useStateC(""),
+    _useStateC2 = _slicedToArray(_useStateC, 2),
+    route = _useStateC2[0],
+    setRoute = _useStateC2[1];
+  var _useStateC3 = useStateC(thisMonth),
+    _useStateC4 = _slicedToArray(_useStateC3, 2),
+    month = _useStateC4[0],
+    setMonth = _useStateC4[1];
+  var _useStateC5 = useStateC(""),
+    _useStateC6 = _slicedToArray(_useStateC5, 2),
+    days = _useStateC6[0],
+    setDays = _useStateC6[1];
+  var _useStateC7 = useStateC(""),
+    _useStateC8 = _slicedToArray(_useStateC7, 2),
+    text = _useStateC8[0],
+    setText = _useStateC8[1];
+  var _useStateC9 = useStateC(null),
+    _useStateC0 = _slicedToArray(_useStateC9, 2),
+    err = _useStateC0[0],
+    setErr = _useStateC0[1];
+  var _useStateC1 = useStateC(false),
+    _useStateC10 = _slicedToArray(_useStateC1, 2),
+    busy = _useStateC10[0],
+    setBusy = _useStateC10[1];
+  var msg = function msg(code) {
+    var map = {
+      "short": "err.short",
+      "long": "err.long",
+      pii: "err.pii",
+      month: "err.month",
+      days: "err.days",
+      exists: "err.exists",
+      rate: "err.rate"
+    };
+    return window.t("exp." + (map[code] || "err.generic"), {
+      n: code === "long" ? X.MAX : X.MIN
+    });
+  };
+  var submit = function submit(e) {
+    e.preventDefault();
+    if (busy) return;
+    var d = days === "" ? null : Number(days);
+    var x = {
+      passport: passport,
+      dest: destIso2,
+      route: route,
+      month: month,
+      days: d,
+      text: text,
+      lang: window.ATLAS_LANG || "en"
+    };
+    var bad = route ? X.check(x) : "route";
+    if (bad) {
+      setErr(bad === "route" ? window.t("exp.f_route") : msg(bad));
+      return;
+    }
+    setBusy(true);
+    setErr(null);
+    X.add(x).then(onDone, function (er) {
+      setBusy(false);
+      var c = er && (er.code || "");
+      setErr(msg(/already|exists/.test(c) ? "exists" : /permission|denied/.test(c) ? "rate" : c));
+    });
+  };
+  return React.createElement("form", {
+    className: "exp-form",
+    onSubmit: submit
+  }, React.createElement("label", {
+    className: "exp-l"
+  }, window.t("exp.f_route"), React.createElement("select", {
+    className: "field",
+    value: route,
+    onChange: function onChange(e) {
+      return setRoute(e.target.value);
+    }
+  }, React.createElement("option", {
+    value: ""
+  }, "-"), X.ROUTES.map(function (r) {
+    return React.createElement("option", {
+      key: r,
+      value: r
+    }, window.t("exp.route." + r));
+  }))), React.createElement("div", {
+    className: "exp-row2"
+  }, React.createElement("label", {
+    className: "exp-l"
+  }, window.t("exp.f_month"), React.createElement("input", {
+    className: "field",
+    type: "month",
+    min: "2015-01",
+    max: thisMonth,
+    value: month,
+    onChange: function onChange(e) {
+      return setMonth(e.target.value);
+    }
+  })), React.createElement("label", {
+    className: "exp-l"
+  }, window.t("exp.f_days"), React.createElement("input", {
+    className: "field",
+    type: "number",
+    inputMode: "numeric",
+    min: "0",
+    max: "365",
+    value: days,
+    onChange: function onChange(e) {
+      return setDays(e.target.value);
+    }
+  }))), React.createElement("label", {
+    className: "exp-l"
+  }, window.t("exp.f_text"), React.createElement("textarea", {
+    className: "field",
+    rows: "5",
+    maxLength: X.MAX,
+    value: text,
+    onChange: function onChange(e) {
+      return setText(e.target.value);
+    }
+  })), React.createElement("p", {
+    className: "p-fine"
+  }, window.t("exp.f_rules")), err && React.createElement("p", {
+    className: "note note-risk",
+    role: "alert"
+  }, React.createElement("span", {
+    className: "note-k"
+  }, err)), React.createElement("div", {
+    className: "exp-actions"
+  }, React.createElement("button", {
+    type: "submit",
+    className: "btn btn-primary",
+    disabled: busy
+  }, window.t("exp.f_send")), React.createElement("button", {
+    type: "button",
+    className: "btn",
+    onClick: onCancel
+  }, window.t("exp.f_cancel"))));
+}
+function ExperienceRow(_ref42) {
+  var e = _ref42.e,
+    onChanged = _ref42.onChanged;
+  var X = window.ATLAS_EXPERIENCES;
+  var _useStateC11 = useStateC(false),
+    _useStateC12 = _slicedToArray(_useStateC11, 2),
+    confirm = _useStateC12[0],
+    setConfirm = _useStateC12[1];
+  var del = function del() {
+    if (!confirm) {
+      setConfirm(true);
+      return;
+    }
+    X.remove(e).then(onChanged, onChanged);
+  };
+  var rep = function rep() {
+    X.report(e).then(onChanged, onChanged);
+  };
+  return React.createElement("li", {
+    className: "exp-item" + (e.hidden ? " is-hidden" : "")
+  }, React.createElement("div", {
+    className: "exp-meta"
+  }, React.createElement("span", {
+    className: "mono"
+  }, expMonthLabel(e.month)), React.createElement("span", null, window.t("exp.route." + e.route)), e.days != null && React.createElement("span", null, window.t("exp.took", {
+    n: e.days
+  })), e.mine && React.createElement("span", {
+    className: "tag"
+  }, window.t("exp.mine"))), React.createElement("p", {
+    className: "exp-text",
+    "data-no-i18n": true
+  }, e.text), e.hidden && React.createElement("p", {
+    className: "p-fine"
+  }, window.t("exp.hidden")), React.createElement("div", {
+    className: "exp-foot"
+  }, e.mine ? React.createElement("button", {
+    type: "button",
+    className: "exp-link",
+    onClick: del
+  }, window.t(confirm ? "exp.del_confirm" : "exp.delete")) : X.signedIn() && (e.reportedByMe ? React.createElement("span", {
+    className: "p-fine"
+  }, window.t("exp.reported")) : React.createElement("button", {
+    type: "button",
+    className: "exp-link",
+    onClick: rep
+  }, window.t("exp.report")))));
+}
+function ExperiencesBox(_ref43) {
+  var passport = _ref43.passport,
+    destIso2 = _ref43.destIso2;
+  useLangTick();
+  var X = window.ATLAS_EXPERIENCES;
+  var _useStateC13 = useStateC(false),
+    _useStateC14 = _slicedToArray(_useStateC13, 2),
+    open = _useStateC14[0],
+    setOpen = _useStateC14[1];
+  var _useStateC15 = useStateC(null),
+    _useStateC16 = _slicedToArray(_useStateC15, 2),
+    list = _useStateC16[0],
+    setList = _useStateC16[1];
+  var _useStateC17 = useStateC(false),
+    _useStateC18 = _slicedToArray(_useStateC17, 2),
+    writing = _useStateC18[0],
+    setWriting = _useStateC18[1];
+  var _useStateC19 = useStateC(0),
+    _useStateC20 = _slicedToArray(_useStateC19, 2),
+    tick = _useStateC20[0],
+    setTick = _useStateC20[1];
+  useEffectC(function () {
+    setOpen(false);
+    setList(null);
+    setWriting(false);
+  }, [passport, destIso2]);
+  useEffectC(function () {
+    var a = window.ATLAS_ACCOUNT;
+    if (!a || !a.onChange) return undefined;
+    return a.onChange(function () {
+      return setTick(function (t) {
+        return t + 1;
+      });
+    });
+  }, []);
+  useEffectC(function () {
+    if (!open || !passport) return;
+    var live = true;
+    X.list(passport, destIso2).then(function (l) {
+      if (live) setList(l);
+    }, function () {
+      if (live) setList([]);
+    });
+    return function () {
+      live = false;
+    };
+  }, [open, passport, destIso2, tick]);
+  if (!X || !X.enabled() || !passport || passport === destIso2) return null;
+  var reload = function reload() {
+    setWriting(false);
+    setTick(function (t) {
+      return t + 1;
+    });
+  };
+  var mine = list && list.some(function (e) {
+    return e.mine;
+  });
+  var vars = {
+    passport: window.countryName(passport),
+    dest: window.countryName(destIso2)
+  };
+  var shown = list ? list.filter(function (e) {
+    return !e.hidden || e.mine;
+  }) : [];
+  return React.createElement("details", {
+    className: "exp-box",
+    open: open,
+    onToggle: function onToggle(e) {
+      return setOpen(e.currentTarget.open);
+    }
+  }, React.createElement("summary", null, window.t("exp.title"), list && shown.length > 0 ? " (" + shown.length + ")" : ""), React.createElement("p", {
+    className: "p-fine"
+  }, window.t("exp.sub", vars)), list === null && open && React.createElement("p", {
+    className: "p-fine"
+  }, "\u2026"), list && shown.length === 0 && React.createElement("p", {
+    className: "p-fine"
+  }, window.t("exp.empty")), shown.length > 0 && React.createElement("ul", {
+    className: "exp-list"
+  }, shown.map(function (e) {
+    return React.createElement(ExperienceRow, {
+      key: e.id,
+      e: e,
+      onChanged: reload
+    });
+  })), list && !mine && !writing && (X.signedIn() ? React.createElement("button", {
+    type: "button",
+    className: "btn",
+    onClick: function onClick() {
+      return setWriting(true);
+    }
+  }, window.t("exp.share")) : React.createElement("a", {
+    className: "btn",
+    href: (window.ATLAS_LANG === "tr" ? "/tr" : "") + "/account/"
+  }, window.t("exp.signin"))), writing && React.createElement(ExperienceForm, {
+    passport: passport,
+    destIso2: destIso2,
+    onDone: reload,
+    onCancel: function onCancel() {
+      return setWriting(false);
+    }
+  }));
+}

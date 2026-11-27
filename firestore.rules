@@ -4,7 +4,9 @@ rules_version = '2';
 // Paste into Firebase console → Firestore Database → Rules → Publish.
 //
 // One document per signed-in person: users/{uid} = { v: 1, updatedAt, data }.
-// Nobody can read or write anyone else's document, and nothing else exists.
+// Nobody can read or write anyone else's document. The only shared data are the
+// traveller experiences below.
+// Published by .github/workflows/firestore-rules.yml on every push to main that changes this file.
 service cloud.firestore {
   match /databases/{database}/documents {
     match /users/{uid} {
@@ -30,6 +32,64 @@ service cloud.firestore {
         && (!('tz' in request.resource.data) || (request.resource.data.tz is string && request.resource.data.tz.size() <= 40))
         && (!('sent' in request.resource.data) || (request.resource.data.sent is list && request.resource.data.sent.size() <= 80))
         && request.resource.data.updatedAt == request.time;
+    }
+
+    // Traveller experiences (roadmap R5, assets/experiences.js). Public to read while
+    // visible; written only by a signed-in person, one post per person per pair
+    // (document id {uid}_{PP-DD}), at most one post every 10 minutes (posters/{uid}),
+    // no links, e-mail addresses, @handles, phone or passport numbers. Three reports
+    // from different accounts hide a post; only its author (or the weekly review with
+    // the Admin SDK) can delete it.
+    function expPII() {
+      return '(?is).*(https?:|www[.]|@[a-z0-9_.]{2,}|[a-z0-9-]+[.](com|net|org|io|info|co|ru|cn|me|ly|link|xyz|app)\\b|[0-9](?:[ ()-]?[0-9]){8,}|\\b[a-z]{1,2}[0-9]{7,8}\\b).*';
+    }
+    function validExperience(id) {
+      let d = request.resource.data;
+      return d.keys().hasOnly(['uid', 'passport', 'dest', 'pair', 'route', 'month', 'days', 'text', 'lang', 'createdAt', 'reports', 'visible'])
+        && d.keys().hasAll(['uid', 'passport', 'dest', 'pair', 'route', 'month', 'text', 'createdAt', 'reports', 'visible'])
+        && d.uid == request.auth.uid
+        && d.passport is string && d.passport.matches('[A-Z]{2}')
+        && d.dest is string && d.dest.matches('[A-Z]{2}')
+        && d.passport != d.dest
+        && d.pair == d.passport + '-' + d.dest
+        && id == request.auth.uid + '_' + d.pair
+        && d.route in ['evisa', 'embassy', 'arrival', 'eta', 'free', 'other']
+        && d.month is string && d.month.matches('20[0-9]{2}-(0[1-9]|1[0-2])')
+        && (!('days' in d) || (d.days is int && d.days >= 0 && d.days <= 365))
+        && (!('lang' in d) || (d.lang is string && d.lang.size() <= 2))
+        && d.text is string && d.text.size() >= 40 && d.text.size() <= 1000
+        && !d.text.matches(expPII())
+        && d.createdAt == request.time && d.reports == 0 && d.visible == true
+        && getAfter(/databases/$(database)/documents/posters/$(request.auth.uid)).data.last == request.time
+        && (!exists(/databases/$(database)/documents/posters/$(request.auth.uid))
+            || get(/databases/$(database)/documents/posters/$(request.auth.uid)).data.last < request.time - duration.value(10, 'm'));
+    }
+    match /experiences/{id} {
+      allow read: if resource == null || resource.data.visible == true
+        || (request.auth != null && resource.data.uid == request.auth.uid);
+      allow create: if request.auth != null && validExperience(id);
+      allow delete: if request.auth != null && resource.data.uid == request.auth.uid;
+      // A report: +1, hidden from the third on, once per account, never on one's own post.
+      allow update: if request.auth != null
+        && resource.data.uid != request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['reports', 'visible'])
+        && request.resource.data.reports == resource.data.reports + 1
+        && request.resource.data.visible == (resource.data.visible && request.resource.data.reports < 3)
+        && !exists(/databases/$(database)/documents/experiences/$(id)/reports/$(request.auth.uid))
+        && existsAfter(/databases/$(database)/documents/experiences/$(id)/reports/$(request.auth.uid));
+      // The report record itself holds nothing; its id is the reporting account.
+      match /reports/{rid} {
+        allow create: if request.auth != null && request.auth.uid == rid
+          && request.resource.data.size() == 0
+          && getAfter(/databases/$(database)/documents/experiences/$(id)).data.reports
+             == get(/databases/$(database)/documents/experiences/$(id)).data.reports + 1;
+      }
+    }
+    match /posters/{uid} {
+      allow read, delete: if request.auth != null && request.auth.uid == uid;
+      allow create, update: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['last'])
+        && request.resource.data.last == request.time;
     }
 
     match /{document=**} {
