@@ -103,6 +103,7 @@ const LOC = {
     metaLine: (n, date) => `${n} destinations · Updated ${date} · Public visa-policy records, checked against official sources`,
     relatedLinks: "Related",
     feedShort: "Follow changes (RSS)",
+    alertsShort: "Get a notification when a rule for this passport changes",
     panelAdd: "Add to my panel",
     feedTitle: (name) => `${name} passport: visa rule changes`,
     feedDesc: (name) => `Destinations whose entry rule changed for ${name} passport holders, found by the daily comparison of public visa-policy sources (mainly Wikipedia). Check the official source before you travel.`,
@@ -213,6 +214,7 @@ const LOC = {
     metaLine: (n, date) => `${n} ülke · Güncelleme ${date} · Kamuya açık vize kayıtları, resmî kaynaklarla kontrol edilir`,
     relatedLinks: "İlgili",
     feedShort: "Değişiklikleri takip et (RSS)",
+    alertsShort: "Bu pasaportun bir kuralı değişince bildirim al",
     panelAdd: "Panelime ekle",
     feedTitle: (name) => `${name} pasaportu: vize kuralı değişiklikleri`,
     feedDesc: (name) => `${name} pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.`,
@@ -544,6 +546,7 @@ ${masthead({ path: enPath, i18n: false, lang })}
     <h2>${escapeHtml(L.relatedLinks)}</h2>
     <ul>
       <li><a href="${P(`/visa/${slug}/`)}">${escapeHtml(L.toVisa({ iso: passport, label: name }))}</a></li>
+      <li><a href="${P("/alerts/")}?p=${slug}">${escapeHtml(L.alertsShort)}</a></li>
       <li><a href="${L.prefix}/passport/${slug}/feed.xml" type="application/rss+xml">${escapeHtml(L.feedShort)}</a></li>
       <li><a href="${P("/panel/")}">${escapeHtml(L.panelAdd)}</a></li>
     </ul>
@@ -619,6 +622,7 @@ const VLOC = {
     who: (name) => `Citizens of ${name}`,
     more: "All destinations for this passport",
     mapBtn: "Open on the map →",
+    follow: (the) => `Get a notification when the rule for ${the} changes`,
     scoreLabel: "passports can enter without a visa application",
     beforeHead: "Before you go",
     affHead: "Help with the application",
@@ -694,6 +698,7 @@ const VLOC = {
     who: (name) => `${name} pasaportu`,
     more: "Bu pasaportla gidilecek tüm ülkeler",
     mapBtn: "Haritada aç →",
+    follow: (label) => `${label} kuralı değişince bildirim al`,
     scoreLabel: "pasaport vize başvurusu yapmadan girebiliyor",
     beforeHead: "Gitmeden önce",
     affHead: "Başvuru için yardım",
@@ -946,7 +951,7 @@ ${ads.loader}
 })}</script>
 <script type="application/ld+json">${JSON.stringify(faqSchema)}</script>
 ${headAssets({ enPath, lang })}
-<style>.wrap{max-width:820px}.checker{padding:20px 22px}.checker label{display:block;font-weight:650;margin-bottom:10px}.checker select{width:100%;max-width:420px}.chk-out{margin:12px 0 0;font-size:var(--fs-lg)}.chk-map{margin:14px 0 0}details.vl{margin:0 0 10px}details.vl .n{margin-inline-start:8px;font-family:var(--font-mono);font-size:var(--fs-xs);font-weight:500;color:var(--ink-3)}.before ul{padding-inline-start:20px}.before li{margin:0 0 10px;max-width:var(--measure)}.before .fees{columns:2 220px;margin:6px 0 0}.before .fees li{margin:0 0 4px}.aff p{max-width:var(--measure)}.aff .ad-label{margin:8px 0 0;font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--ink-3)}.tr-answer{margin:2px 0 14px;font-size:var(--fs-md)}</style>
+<style>.wrap{max-width:820px}.checker{padding:20px 22px}.checker label{display:block;font-weight:650;margin-bottom:10px}.checker select{width:100%;max-width:420px}.chk-out{margin:12px 0 0;font-size:var(--fs-lg)}.chk-map{margin:14px 0 0}.chk-follow{margin:12px 0 0;font-size:var(--fs-sm)}details.vl{margin:0 0 10px}details.vl .n{margin-inline-start:8px;font-family:var(--font-mono);font-size:var(--fs-xs);font-weight:500;color:var(--ink-3)}.before ul{padding-inline-start:20px}.before li{margin:0 0 10px;max-width:var(--measure)}.before .fees{columns:2 220px;margin:6px 0 0}.before .fees li{margin:0 0 4px}.aff p{max-width:var(--measure)}.aff .ad-label{margin:8px 0 0;font-family:var(--font-mono);font-size:var(--fs-xs);color:var(--ink-3)}.tr-answer{margin:2px 0 14px;font-size:var(--fs-md)}</style>
 </head>
 <body>
 ${masthead({ path: enPath, i18n: false, lang })}
@@ -961,13 +966,14 @@ ${trRow ? `  <p class="tr-answer"><strong>${escapeHtml(V.trAnswerHead)}</strong>
     <select id="chk-sel"><option value="">${escapeHtml(V.choose)}</option>${options}</select>
     <p class="chk-out" id="chk-out" aria-live="polite" hidden></p>
     <p class="chk-map"><a class="primary" id="chk-map" href="${lang === "tr" ? "/tr/" : "/"}">${escapeHtml(V.mapBtn)}</a></p>
+    <p class="chk-follow"><a id="chk-follow" href="${P("/alerts/")}?watch=${dest.toLowerCase()}">${escapeHtml(V.follow(lang === "tr" ? label : the))} →</a></p>
   </section>
   <script type="application/json" id="chk-data">${chkJson}</script>
   <script>(function(){var d=JSON.parse(document.getElementById("chk-data").textContent),sel=document.getElementById("chk-sel"),out=document.getElementById("chk-out"),map=document.getElementById("chk-map");
 sel.addEventListener("change",function(){var v=sel.value;if(!v||!d.p[v]){out.hidden=true;out.textContent="";map.href=d.mapBase;var ab0=document.getElementById("aff-box");if(ab0)ab0.hidden=false;return}
 var e=d.p[v],nm=sel.options[sel.selectedIndex].text,t=d.who.replace("{name}",nm)+": "+d.ph[e[0]]+(e[1]?d.days.replace("{n}",e[1]):"")+". ";
 var ab=document.getElementById("aff-box");if(ab)ab.hidden=!/^(ev|vr|eta)$/.test(e[0]);
-out.textContent=t;var a=document.createElement("a");a.href=d.pp+v.toLowerCase()+"/";a.textContent=d.more;out.appendChild(a);out.hidden=false;map.href=d.mapBase+"?p="+v});
+out.textContent=t;var a=document.createElement("a");a.href=d.pp+v.toLowerCase()+"/";a.textContent=d.more;out.appendChild(a);out.hidden=false;map.href=d.mapBase+"?p="+v;var fl=document.getElementById("chk-follow");if(fl)fl.href=fl.href.replace(/&p=[A-Z]+$/,"")+"&p="+v});
 // Answer straight away for a passport we already know: ?p=XX in the link, else the one chosen on the map
 // (atlas.passport, read only; this page never writes it). The select stays editable.
 (function(){var v="";try{v=(new URLSearchParams(location.search).get("p")||"").toUpperCase()}catch(x){}
