@@ -74,7 +74,7 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
-- **Round 31 (2026-11-27: residence-permit audit):** Owner report: TR passport + Schengen permit showed Greenland as
+- **Round 32 (2026-11-27: residence-permit audit):** Owner report: TR passport + Schengen permit showed Greenland as
   visa required. Wrong since 20 Mar 2026 (Danish Immigration Service: a Schengen residence permit now replaces the
   Greenland visa; a Schengen visa still does not). GL is aliased to DK for the base status, so the permit layer never
   saw it: fixed with SCHENGEN_PERMIT_EXTRA + a GL caveat. The "any nationality" permit table was re-audited (119 rows):
@@ -82,6 +82,13 @@ EN in those four (engine ready — just add dict entries).
   for GCC) and unfound rules (TN, NI) removed; a SCHENGEN bloc added (Balkans, MD, CR, DO, QA). Georgia, Colombia,
   Morocco left out until their country lists are read. Mexico: caveat only (permanent permits only).
   `tools/audit-data.js` now asserts known permit answers. Gotcha: Montenegro needs a visa for TR since 1 Nov 2026.
+- **Round 31 (2026-11-27: roadmap items, PRs #9-#11 and the A3 PR):** Schengen calculator hides the empty ring and
+  planner until a trip exists (trip form first on phones). R6: /visa/<cc>/ and /passport/<cc>/ link to /alerts/?watch= / ?p=;
+  alerts-page.js adds the country and fills the passport only when empty. Push now sends apply-by reminders for dated stops
+  in atlas.trips (a week before, and when due); the job's sandbox loads passports.js, visa-overrides.js, visa-fees.js;
+  privacy EN + TR updated. A3: "Share this answer" on /visa/<cc>/ (assets/share-card.js, canvas image + ?p= link, GA4
+  `share_answer`). Pair pages deferred (thin-content risk) until the 17 Dec GSC check. Gotcha: data/static-i18n.js keys are
+  the English text, so editing EN copy means editing the key in all six languages; its ?v= stamp was not bumped (883 files).
 
 - **Round 30 (2026-11-27: search + AI reach):** GSC's 9k-impression "maldives visa requirements" problem is intent, not
   rank: Google shows /passport/mv/ to people visiting the Maldives. Passport h1 is now "<X> passport: visa-free countries"

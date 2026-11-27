@@ -1,6 +1,6 @@
 # travelnow.info: açık işler
 
-> Güncelleme: 2026-11-23 · **Yalnızca açık işler.** Biten iş silinir; ne yapıldığı `STATE.md`'de. Öncelik: **P1**
+> Güncelleme: 2026-11-27 · **Yalnızca açık işler.** Biten iş silinir; ne yapıldığı `STATE.md`'de. Öncelik: **P1**
 > sıradaki, **P2** yakında, **P3** sonra. Kurallar ve oturum rutini `CLAUDE.md`'de. Mobil: `MOBILE-SETUP.md`.
 > Oturum başında: `node tools/analytics-report.js` (GA4 + Search Console, ~40 satır).
 
@@ -10,7 +10,8 @@
    denetim uyarısı bunu bekliyor);
    yatırımla vatandaşlıkta "Source (report)" satırlarını resmî sayfayla doğrula (GD, PT, GR, TR, EG, JO, KH, NR); BAE, Güney Kore ve Çin listeleri, ücretlerin resmî sayfalardan yeniden girilmesi
    (`verified` alanı), Nauru. Oturum izni tablosunda kalanlar (Gürcistan, Kolombiya, Fas, Körfez, İrlanda) ROADMAP D10'da. Günlük denetim `node tools/audit-data.js`; sorun çıkarsa GitHub'da "data-audit" issue açılır.
-   31 Aralık 2026: Kore K-ETA muafiyeti ve Çin vizesiz uygulaması bitiyor, uzatılmış mı bak. A3 paylaşılabilir kartlar. D6 İpek'te. iVisa canlı (19 Kasım): GA4'te
+   31 Aralık 2026: Kore K-ETA muafiyeti ve Çin vizesiz uygulaması bitiyor, uzatılmış mı bak. D6 İpek'te. Bildirimler canlı (27 Kasım): `node tools/usage-report.js` ile push cihaz sayısını izle;
+   ROADMAP R6'nın kalanı (rehberlerde "bildirim al"), A3 ölçümü (GA4 `share_answer`). iVisa canlı (19 Kasım): GA4'te
    `affiliate_click` olayını izle, 19 Aralık'ta tıklama ve sipariş sayısını yaz. 17 Aralık'ta `/visa/` sayfalarının etkisini ölç
    (`docs/autopilot-log.md` en üst kayıt).
 1. **Android test APK'sını telefonda dene**: GitHub → Actions → "Android build" → son çalışma → `travelnow-debug-apk`.
@@ -53,10 +54,6 @@
 
 - [ ] **P1 · GA4 özel boyutları (3 dk)**: analytics.google.com → Yönetici → Özel tanımlar → Özel boyut oluştur, kapsam "Etkinlik":
       `passport`, `destination`, `via`, `method`, `platform` (parametre adı aynı). Böylece pasaport seçimi ve açılan ülke raporlarda görünür.
-- [ ] **P1 · GitHub gizli anahtarı (2 dk)**: github.com/Uygara/atlas-visa-globe → Settings → Secrets and variables →
-      Actions → New repository secret → ad `FIREBASE_SERVICE_ACCOUNT`, değer: `.secrets/firebase-admin.json`
-      dosyasının tüm içeriği. Bu olmadan günlük bildirimler ve yeni kayıt bildirimi (`signups.yml`) gitmez (adım atlanır, hata vermez). **En acil iş:** sitede
-      "bildirimleri aç" düğmesi zaten çalışıyor, açan kişiye hiçbir şey gitmiyor (26 Kasım çalışmasında adım "skipped").
 - [ ] **P1 · Firebase Console: telefonla giriş**: Authentication → Sign-in method → Phone → Etkinleştir; Settings →
       SMS region policy → yalnızca kullanıcı ülkeleri (sahte SMS maliyetine karşı). Kota dolarsa Blaze kararı senin.
 - [ ] **P1 · Google Play Console hesabı (25 $)**: play.google.com/console, kişisel hesap, kimlik doğrulama. Yeni kişisel
@@ -81,7 +78,6 @@
 - [ ] **P1 · Play yükleme anahtarı + imzalı AAB**: Play hesabı açılınca. Anahtar `.secrets/`'ta kalır; sen 4 GitHub gizli
       anahtarı eklersin (`ANDROID_UPLOAD_*`), CI `travelnow-release-aab` üretir. Play App Signing açık olacak.
 - [ ] **P2 · Mağaza ekran görüntüleri**: app/www'den headless Chrome ile, EN + TR, 6 adet (`store/play-listing.md` sonu).
-- [ ] **P2 · Bildirim kuralı 3: son başvuru hatırlatması** (`applyPlan()` mantığı `backend/dispatch-push.js`'e).
 - [ ] **P2 · Rehber yazıları**: Search Console'daki aramalar çoğunlukla "<ülke> passport visa free countries". Pasaport
       sayfaları bunu hedefliyor; ek olarak ESTA/eTA/UK ETA/ETIAS karşılaştırması (ücret ve tarih yazmadan) ve
       "e-Vize sahte siteleri" yazıları.

@@ -623,6 +623,7 @@ const VLOC = {
     more: "All destinations for this passport",
     mapBtn: "Open on the map →",
     follow: (the) => `Get a notification when the rule for ${the} changes`,
+    share: { btn: "Share this answer", copied: "Link copied", route: "{from} passport → {to}", line: "{from} passport to {to}", stay: "Stay up to {n} days", checked: (date) => `Checked against our data of ${date}. Rules change, so confirm with the official source before you travel.` },
     scoreLabel: "passports can enter without a visa application",
     beforeHead: "Before you go",
     affHead: "Help with the application",
@@ -699,6 +700,7 @@ const VLOC = {
     more: "Bu pasaportla gidilecek tüm ülkeler",
     mapBtn: "Haritada aç →",
     follow: (label) => `${label} kuralı değişince bildirim al`,
+    share: { btn: "Bu cevabı paylaş", copied: "Bağlantı kopyalandı", route: "{from} pasaportu → {to}", line: "{from} pasaportuyla {to}", stay: "{n} güne kadar kalış", checked: (date) => `${date} tarihli verimize göre. Kurallar değişebilir; yola çıkmadan resmî kaynaktan doğrula.` },
     scoreLabel: "pasaport vize başvurusu yapmadan girebiliyor",
     beforeHead: "Gitmeden önce",
     affHead: "Başvuru için yardım",
@@ -800,7 +802,8 @@ function renderDestPage(destCountry, allPassports, lang, ads) {
   const ppHref = (iso) => P(`/passport/${iso.toLowerCase()}/`);
 
   // Checker: this destination's column only (passport ISO2 → [status, days]).
-  const chk = { p: {}, ph: V.phrase, days: V.days("{n}"), who: V.who("{name}"), pp: P("/passport/"), more: V.more, mapBase: `${lang === "tr" ? "/tr/" : "/"}` };
+  const chk = { p: {}, ph: V.phrase, days: V.days("{n}"), who: V.who("{name}"), pp: P("/passport/"), more: V.more, mapBase: `${lang === "tr" ? "/tr/" : "/"}`,
+    share: { copied: V.share.copied, route: V.share.route, line: V.share.line, stay: V.share.stay, checked: V.share.checked(fmtDate(snap, lang)), dest: label } };
   rows.forEach(r => { chk.p[r.iso] = [r.status, r.days]; });
   const chkJson = JSON.stringify(chk).replace(/</g, "\\u003c");
   const options = rows.map(r => `<option value="${r.iso}">${escapeHtml(r.name)}</option>`).join("");
@@ -965,10 +968,11 @@ ${trRow ? `  <p class="tr-answer"><strong>${escapeHtml(V.trAnswerHead)}</strong>
     <label for="chk-sel">${escapeHtml(V.checkHead)}</label>
     <select id="chk-sel"><option value="">${escapeHtml(V.choose)}</option>${options}</select>
     <p class="chk-out" id="chk-out" aria-live="polite" hidden></p>
-    <p class="chk-map"><a class="primary" id="chk-map" href="${lang === "tr" ? "/tr/" : "/"}">${escapeHtml(V.mapBtn)}</a></p>
+    <p class="chk-map"><a class="primary" id="chk-map" href="${lang === "tr" ? "/tr/" : "/"}">${escapeHtml(V.mapBtn)}</a> <button type="button" class="btn" id="chk-share" hidden>${escapeHtml(V.share.btn)}</button> <span id="chk-share-status" class="fine" aria-live="polite"></span></p>
     <p class="chk-follow"><a id="chk-follow" href="${P("/alerts/")}?watch=${dest.toLowerCase()}">${escapeHtml(V.follow(lang === "tr" ? label : the))} →</a></p>
   </section>
   <script type="application/json" id="chk-data">${chkJson}</script>
+  <script src="/assets/share-card.js?v=20261127b" defer></script>
   <script>(function(){var d=JSON.parse(document.getElementById("chk-data").textContent),sel=document.getElementById("chk-sel"),out=document.getElementById("chk-out"),map=document.getElementById("chk-map");
 sel.addEventListener("change",function(){var v=sel.value;if(!v||!d.p[v]){out.hidden=true;out.textContent="";map.href=d.mapBase;var ab0=document.getElementById("aff-box");if(ab0)ab0.hidden=false;return}
 var e=d.p[v],nm=sel.options[sel.selectedIndex].text,t=d.who.replace("{name}",nm)+": "+d.ph[e[0]]+(e[1]?d.days.replace("{n}",e[1]):"")+". ";
