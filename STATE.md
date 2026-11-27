@@ -74,6 +74,13 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 37 (2026-11-27: Turkish passport rows from the Turkish MFA list):** compared all ~190 rows of the MFA
+  list with the site. `TR_MFA_ROWS` in data/visa-overrides.js overrides 30 rows where the MFA names a mechanism or
+  stay length (KR K-ETA 90, TW eVisa, MX air eVisa, LB 90...). Audit check "turkish passport answers (MFA list)".
+  Russia stays ev/30 (MFA confirms). MFA bare "visa required" was NOT applied over site eVisa rows (MFA omits
+  eVisas). Open conflicts needing destination sources: BD SN GW MH GQ GM FM VC SR DO SZ. Extra transit hubs
+  IE/AU/NZ/SG went in PR #22. Live check of both pending (browser was offline). mfa.gov.tr is readable only via
+  the web-fetch agent, not curl.
 - **Round 36 (2026-11-27: transit map by Schengen state):** the transit map treated Schengen as one rule and showed
   every untracked country green. Now `SCHENGEN_NATIONAL_ATV` in `data/transit-visa-rules.js` holds the national airport
   transit visa lists (Visa Code Handbook Annex 7B, 1 Jul 2026, read via UDI's copy) and the common list is Annex IV's 12
