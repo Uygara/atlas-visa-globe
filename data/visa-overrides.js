@@ -166,6 +166,20 @@ window.ENTRY_CAVEATS = {
   TH: { whenStatus: ["vf"],
         note: "Tayland 15 Eylül 2026'da 60 günlük muafiyeti kaldırdı; 60 ülke için 30 günlük muafiyet yalnızca turizm amaçlı. Turizm dışında bir amaçla gidiyorsan Tayland büyükelçiliğine danış. Kaynak: Tayland Dışişleri Bakanlığı.",
         noteEn: "Thailand ended its 60-day exemption on 15 September 2026; the 30-day exemption for 60 countries covers tourism only. If you travel for another purpose, ask a Thai embassy. Source: Thai Ministry of Foreign Affairs." },
+  // Greenland is outside Schengen. Danish Immigration Service, "Entry to the Faroe Islands or
+  // Greenland" (updated 06-11-2026) and its news item of 20-03-2026 "New access to entry to the
+  // Faroe Islands and Greenland for third-country nationals":
+  // https://www.nyidanmark.dk/en-GB/You-want-to-apply/short-stay-visa/Visa-to-the-Faroe-Island-or-Greenland
+  GL: { whenStatus: ["vr", "vf"],
+        note: "Grönland Schengen alanında değil. Schengen vizesi Grönland'da geçerli değil; vize gereken pasaportlar Danimarka temsilciliğinden Grönland için geçerli vize alır. 20 Mart 2026'dan beri Danimarka'nın ya da başka bir Schengen ülkesinin geçerli oturum izni bu vizenin yerini tutuyor (ulusal D vizesi tutmuyor). Kaynak: Danimarka Göçmenlik Servisi (nyidanmark.dk).",
+        noteEn: "Greenland is not in the Schengen Area. A Schengen visa is not valid there; visa-required passports need a visa marked valid for Greenland from a Danish mission. Since 20 March 2026 a valid residence permit from Denmark or another Schengen country replaces that visa (a national D visa does not). Source: Danish Immigration Service (nyidanmark.dk)." },
+  // Mexico: a valid multiple-entry visa of CA, JP, UK, US or a Schengen state, or a PERMANENT
+  // residence permit of those (and Chile, Colombia), gives 180 days visa-free. Temporary EU
+  // residence cards are not accepted, so a Schengen permit does not repaint Mexico on the map.
+  // Source: Visa policy of Mexico (Wikipedia, read 2026-11-27), citing the INM.
+  MX: { whenStatus: ["ev", "vr"],
+        note: "Pasaportunda geçerli çok girişli ABD, Kanada, Birleşik Krallık, Japonya veya Schengen vizesi ya da bu ülkelerden birinin süresiz oturum izni varsa Meksika'ya 180 güne kadar vizesiz girersin. Süreli Schengen oturum kartları kabul edilmiyor.",
+        noteEn: "With a valid multiple-entry US, Canadian, UK, Japanese or Schengen visa in your passport, or a permanent residence permit from one of these countries, you can enter Mexico visa-free for up to 180 days. Temporary Schengen residence cards are not accepted." },
 };
 
 // Return the caveat note for a (destination, status) pair, or null. Language-aware.
@@ -365,6 +379,13 @@ window.applyThailandList = function (r, passportIso2, destIso2) {
 // therefore makes all four reachable. Sources: Visa policy of Andorra /
 // Monaco / San Marino / Vatican City (Wikipedia).
 const _SCHENGEN_ADJACENT = new Set(["AD", "MC", "SM", "VA"]);
+// Outside Schengen but open to Schengen residence-permit holders: Greenland, since 20 March 2026
+// (a Schengen VISA is still not valid there). Danish Immigration Service, updated 06-11-2026:
+// https://www.nyidanmark.dk/en-GB/You-want-to-apply/short-stay-visa/Visa-to-the-Faroe-Island-or-Greenland
+// The map aliases GL to DK for the base status, so without this a Schengen permit left GL red
+// (owner report 2026-11-27). The Faroe Islands follow the same rule but are not on the map.
+const _SCHENGEN_PERMIT_EXTRA = new Set(["GL"]);
+window.SCHENGEN_PERMIT_EXTRA = _SCHENGEN_PERMIT_EXTRA;
 // Each bloc's own home territory: holding the bloc's residence permit by
 // definition lets you enter that territory (a US Green Card holder enters the
 // US; UK ILR enters the UK; …). The third-country tables below deliberately
@@ -389,139 +410,95 @@ const _PERMIT_HOME_TERRITORY = {
 
 const _ACCESS_BETTER = { idc: 0, vf: 1, eta: 2, ev: 3, voa: 4, vr: 5, ban: 6 };
 
-// Global "any-passport" permit upgrades. visa-conditions.js encodes per-passport
-// shortcuts (IN→TR ev if you hold US/GB/SCHENGEN, etc.) but those entries are
-// thin for some blocs — only 8 CA, 6 AU, 0 GCC rules exist. So toggling a CA or
-// AU permit visibly does nothing for most users. This table fixes that by
-// listing destinations whose published visa policy says "holders of a valid
-// {US/GB/CA/AU/SCHENGEN/GCC} visa or residence enter visa-free (or eVisa) —
-// regardless of nationality." Every entry is sourced against the destination's
-// "Visa policy of X" Wikipedia article. We deliberately keep this conservative;
-// the per-passport rules in visa-conditions.js still override when present.
+// Global "any-passport" permit upgrades: destinations whose own visa policy says holders of a
+// valid {bloc} visa or residence permit get an easier status, for (nearly) every nationality that
+// otherwise needs a visa. Per-passport rules in visa-conditions.js still apply on top.
+//
+// Re-audited 2026-11-27 against each destination's "Visa policy of <country>" page (Wikipedia,
+// citing the government source). The earlier table promised entry to any nationality in cases
+// that cover only a named list (Philippines, Peru, Bahamas, Taiwan, Oman, Jordan), listed blocs
+// the destination does not accept (Kosovo with a US/UK/CA/AU document, Costa Rica with a UK
+// document, Albania with a CA/AU/GCC document, Türkiye with a CA/AU/GCC document) and rules not
+// found at all (Tunisia, Nicaragua). Those rows are gone. Rows that could not be confirmed
+// (Georgia, Colombia, Morocco: the country lists did not load) are left out until checked; the
+// per-passport rules for e.g. India keep their sourced Georgia row. Türkiye's conditional e-Visa
+// is limited to listed nationalities, so it stays per passport in visa-conditions.js.
+// A Schengen permit had no effect outside the Schengen Area before this audit, although the
+// Western Balkans, Moldova, Costa Rica, the Dominican Republic and Qatar accept it.
+// Rows marked "visa only" accept the bloc's visa but not every residence document; the picker
+// bloc covers both, so they are kept.
 //
 // Shape: bloc → destIso2 → { status, days }
-// Schengen is omitted here because the dedicated 29-state Schengen-Area
-// block above already handles internal Schengen-permit travel.
 window._PERMIT_GLOBAL_UPGRADES = {
-  // US visa or Green Card. Sources: Wikipedia "Visa policy of <country>".
-  US: {
-    MX: { status: "vf", days: 180 },   // Mexico — any valid US visa.
-    BS: { status: "vf", days: 90 },    // Bahamas.
-    BZ: { status: "vf", days: 30 },    // Belize.
-    CR: { status: "vf", days: 30 },    // Costa Rica (with valid US/CA/SCHENGEN/UK visa).
-    PA: { status: "vf", days: 180 },   // Panama.
-    DO: { status: "vf", days: 30 },    // Dominican Republic.
-    SV: { status: "vf", days: 90 },    // El Salvador (CA-4).
-    HN: { status: "vf", days: 90 },    // Honduras.
-    NI: { status: "vf", days: 90 },    // Nicaragua.
-    CO: { status: "vf", days: 90 },    // Colombia.
-    PE: { status: "vf", days: 180 },   // Peru.
-    GT: { status: "vf", days: 90 },    // Guatemala.
-    GE: { status: "vf", days: 90 },    // Georgia — any valid Schengen/US/UK/etc.
-    BA: { status: "vf", days: 30 },    // Bosnia & Herzegovina.
-    AL: { status: "vf", days: 90 },    // Albania.
-    ME: { status: "vf", days: 30 },    // Montenegro.
-    MK: { status: "vf", days: 15 },    // North Macedonia.
-    RS: { status: "vf", days: 90 },    // Serbia.
-    XK: { status: "vf", days: 15 },    // Kosovo.
-    MD: { status: "vf", days: 90 },    // Moldova.
-    PH: { status: "vf", days: 14 },    // Philippines (US visa exempts visa).
-    TW: { status: "vf", days: 30 },    // Taiwan (valid US/UK/CA/EU/JP visa).
-    OM: { status: "vf", days: 14 },    // Oman.
-    QA: { status: "ev", days: 30 },    // Qatar — eVisa-on-arrival with US visa.
-    TR: { status: "ev", days: 30 },    // Türkiye — Stamp/eVisa available with US visa.
+  SCHENGEN: {
+    CR: { status: "vf", days: 30 },    // Costa Rica: CA, Schengen or US multiple-entry visa or residence.
+    DO: { status: "vf", days: 30 },    // Dominican Republic: visa or residence card of Schengen, CA, CY, IE, UK, US.
+    AL: { status: "vf", days: 90 },    // Albania: multiple-entry visa (used once) or residence of Schengen, UK, US.
+    BA: { status: "vf", days: 30 },    // Bosnia and Herzegovina: multiple-entry visa or residence of Schengen or US.
+    ME: { status: "vf", days: 30 },    // Montenegro: visa or residence of Schengen, AU, CA, IE, JP, NZ, UK, US.
+    MK: { status: "vf", days: 15 },    // North Macedonia: temporary decision until 31 Dec 2026.
+    RS: { status: "vf", days: 90 },    // Serbia: multiple-entry visa or residence of Schengen, CY, IE, US; UK visa.
+    MD: { status: "vf", days: 90 },    // Moldova: visa or residence of Schengen, CA, UK, US (90 in 180).
+    XK: { status: "vf", days: 15 },    // Kosovo: only a multiple-entry Schengen visa or Schengen residence.
+    QA: { status: "eta", days: null }, // Qatar: Hayya A3 authorisation for Schengen, AU, CA, NZ, UK, US visa or residence.
   },
-  // UK visa or ILR — substantially overlaps with the US set in the Western
-  // Balkans / Caucasus / Caribbean.
-  GB: {
-    GE: { status: "vf", days: 90 },
+  US: {
+    MX: { status: "vf", days: 180 },   // Mexico: multiple-entry visa or permanent residence.
+    BZ: { status: "vf", days: 30 },    // Belize: multiple-entry visa or permanent residence.
+    CR: { status: "vf", days: 30 },
+    PA: { status: "vf", days: 30 },    // Panama: visitor visa used at least once, or residence.
+    DO: { status: "vf", days: 30 },
+    SV: { status: "vf", days: 180 },   // El Salvador (CA-4); a few nationalities excluded.
+    HN: { status: "vf", days: 90 },    // Honduras (CA-4); a few nationalities excluded.
+    GT: { status: "vf", days: 90 },    // Guatemala (CA-4); a few nationalities excluded.
     BA: { status: "vf", days: 30 },
     AL: { status: "vf", days: 90 },
     ME: { status: "vf", days: 30 },
     MK: { status: "vf", days: 15 },
     RS: { status: "vf", days: 90 },
-    XK: { status: "vf", days: 15 },
     MD: { status: "vf", days: 90 },
-    TR: { status: "ev", days: 30 },
-    QA: { status: "ev", days: 30 },
-    OM: { status: "vf", days: 14 },
-    PA: { status: "vf", days: 180 },
-    CR: { status: "vf", days: 30 },
-    TW: { status: "vf", days: 30 },
-    PH: { status: "vf", days: 14 },
+    QA: { status: "eta", days: null },
   },
-  // Canadian PR or valid visa. Narrower than the US/UK lists.
+  GB: {
+    PA: { status: "vf", days: 30 },
+    DO: { status: "vf", days: 30 },
+    AL: { status: "vf", days: 90 },
+    ME: { status: "vf", days: 30 },
+    MK: { status: "vf", days: 15 },
+    RS: { status: "vf", days: 90 },    // visa only, not a UK residence document.
+    MD: { status: "vf", days: 90 },
+    QA: { status: "eta", days: null },
+  },
   CA: {
     MX: { status: "vf", days: 180 },
-    PA: { status: "vf", days: 180 },
     CR: { status: "vf", days: 30 },
-    BA: { status: "vf", days: 30 },
-    AL: { status: "vf", days: 90 },
+    PA: { status: "vf", days: 30 },
+    DO: { status: "vf", days: 30 },
     ME: { status: "vf", days: 30 },
     MK: { status: "vf", days: 15 },
-    GE: { status: "vf", days: 90 },
-    PH: { status: "vf", days: 14 },
-    TW: { status: "vf", days: 30 },
-    TR: { status: "ev", days: 30 },
+    MD: { status: "vf", days: 90 },
+    QA: { status: "eta", days: null },
   },
-  // Australian / NZ PR or visa.
   AU: {
-    PA: { status: "vf", days: 180 },
-    CR: { status: "vf", days: 30 },
-    GE: { status: "vf", days: 90 },
-    BA: { status: "vf", days: 30 },
-    AL: { status: "vf", days: 90 },
+    PA: { status: "vf", days: 30 },
     ME: { status: "vf", days: 30 },
-    MK: { status: "vf", days: 15 },
-    TW: { status: "vf", days: 30 },
-    PH: { status: "vf", days: 14 },
-    TR: { status: "ev", days: 30 },
+    QA: { status: "eta", days: null },
   },
-  // GCC residence (UAE/SA/Kuwait/Qatar/Bahrain/Oman). The applyResidenceUpgrade
-  // permit expansion turns "GCC" into the 6 individual member codes; this
-  // global table is keyed on each member so each member's permit triggers
-  // the same upgrades.
-  AE: {
-    GE: { status: "vf", days: 90 },    // Georgia — any GCC residence.
-    AL: { status: "vf", days: 90 },
-    ME: { status: "vf", days: 30 },
-    MA: { status: "vf", days: 90 },    // Morocco (GCC residents).
-    TN: { status: "vf", days: 90 },    // Tunisia.
-    JO: { status: "voa", days: 60 },   // Jordan — VoA waived for GCC.
-    EG: { status: "voa", days: 30 },   // Egypt VoA confirmed for GCC.
-    TR: { status: "ev", days: 30 },
-  },
-  SA: {
-    GE: { status: "vf", days: 90 }, AL: { status: "vf", days: 90 },
-    ME: { status: "vf", days: 30 }, MA: { status: "vf", days: 90 },
-    TN: { status: "vf", days: 90 }, JO: { status: "voa", days: 60 },
-    EG: { status: "voa", days: 30 }, TR: { status: "ev", days: 30 },
-  },
-  KW: {
-    GE: { status: "vf", days: 90 }, AL: { status: "vf", days: 90 },
-    ME: { status: "vf", days: 30 }, MA: { status: "vf", days: 90 },
-    TN: { status: "vf", days: 90 }, JO: { status: "voa", days: 60 },
-    EG: { status: "voa", days: 30 }, TR: { status: "ev", days: 30 },
-  },
-  QA: {
-    GE: { status: "vf", days: 90 }, AL: { status: "vf", days: 90 },
-    ME: { status: "vf", days: 30 }, MA: { status: "vf", days: 90 },
-    TN: { status: "vf", days: 90 }, JO: { status: "voa", days: 60 },
-    EG: { status: "voa", days: 30 }, TR: { status: "ev", days: 30 },
-  },
-  BH: {
-    GE: { status: "vf", days: 90 }, AL: { status: "vf", days: 90 },
-    ME: { status: "vf", days: 30 }, MA: { status: "vf", days: 90 },
-    TN: { status: "vf", days: 90 }, JO: { status: "voa", days: 60 },
-    EG: { status: "voa", days: 30 }, TR: { status: "ev", days: 30 },
-  },
-  OM: {
-    GE: { status: "vf", days: 90 }, AL: { status: "vf", days: 90 },
-    ME: { status: "vf", days: 30 }, MA: { status: "vf", days: 90 },
-    TN: { status: "vf", days: 90 }, JO: { status: "voa", days: 60 },
-    EG: { status: "voa", days: 30 }, TR: { status: "ev", days: 30 },
-  },
+  // GCC residence: Egypt gives a visa on arrival to holders of a GCC residence permit, except
+  // nationals of AF, ET, IR, IL, ML, NE, PS, SD, SY (see _PERMIT_EXCLUDED below).
+  AE: { EG: { status: "voa", days: 30 } },
+  SA: { EG: { status: "voa", days: 30 } },
+  KW: { EG: { status: "voa", days: 30 } },
+  QA: { EG: { status: "voa", days: 30 } },
+  BH: { EG: { status: "voa", days: 30 } },
+  OM: { EG: { status: "voa", days: 30 } },
 };
+// Nationalities a destination excludes from its visa-or-permit rule: destIso2 → Set(passports).
+window._PERMIT_EXCLUDED = {
+  EG: new Set(["AF", "ET", "IR", "IL", "ML", "NE", "PS", "SD", "SY"]),
+  BA: new Set(["XK"]),
+};
+
 window.applyResidenceUpgrade = function (r, passportIso2, destIso2) {
   if (!r) return r;
   const permits = window.ATLAS_RESIDENCE_PERMITS;
@@ -546,7 +523,7 @@ window.applyResidenceUpgrade = function (r, passportIso2, destIso2) {
   // Schengen permit does NOT grant visa-free entry there. Bulgaria and Romania
   // joined Schengen in March 2024 (air/sea) and full land in 2025.
   if (held.has("SCHENGEN") &&
-      (_SCHENGEN_AREA.has(destIso2) || _SCHENGEN_ADJACENT.has(destIso2))) {
+      (_SCHENGEN_AREA.has(destIso2) || _SCHENGEN_ADJACENT.has(destIso2) || _SCHENGEN_PERMIT_EXTRA.has(destIso2))) {
     if (_ACCESS_BETTER.vf < bestRank) {
       best = { status: "vf", days: 90 };
       bestRank = _ACCESS_BETTER.vf;
@@ -570,7 +547,8 @@ window.applyResidenceUpgrade = function (r, passportIso2, destIso2) {
   // doesn't already have a better status. Held bloc codes (US/GB/CA/AU + the
   // 6 GCC members after expansion) each carry a small destination map; pick
   // the best upgrade across them.
-  if (window._PERMIT_GLOBAL_UPGRADES) {
+  const excluded = window._PERMIT_EXCLUDED && window._PERMIT_EXCLUDED[destIso2];
+  if (window._PERMIT_GLOBAL_UPGRADES && !(excluded && excluded.has(passportIso2))) {
     for (const code of held) {
       const m = window._PERMIT_GLOBAL_UPGRADES[code];
       if (!m) continue;
