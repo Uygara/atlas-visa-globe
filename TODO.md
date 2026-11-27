@@ -53,7 +53,8 @@
 
 - [ ] **P1 · GitHub gizli anahtarı (2 dk)**: github.com/Uygara/atlas-visa-globe → Settings → Secrets and variables →
       Actions → New repository secret → ad `FIREBASE_SERVICE_ACCOUNT`, değer: `.secrets/firebase-admin.json`
-      dosyasının tüm içeriği. Bu olmadan günlük bildirimler gitmez (adım atlanır, hata vermez).
+      dosyasının tüm içeriği. Bu olmadan günlük bildirimler gitmez (adım atlanır, hata vermez). **En acil iş:** sitede
+      "bildirimleri aç" düğmesi zaten çalışıyor, açan kişiye hiçbir şey gitmiyor (26 Kasım çalışmasında adım "skipped").
 - [ ] **P1 · Firebase Console: telefonla giriş**: Authentication → Sign-in method → Phone → Etkinleştir; Settings →
       SMS region policy → yalnızca kullanıcı ülkeleri (sahte SMS maliyetine karşı). Kota dolarsa Blaze kararı senin.
 - [ ] **P1 · Google Play Console hesabı (25 $)**: play.google.com/console, kişisel hesap, kimlik doğrulama. Yeni kişisel

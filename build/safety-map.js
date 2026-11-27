@@ -316,27 +316,9 @@ function SafetyMapApp() {
     style: {
       display: "block"
     }
-  }, React.createElement("div", {
-    style: {
-      display: "flex",
-      alignItems: "center",
-      gap: 8,
-      flexWrap: "wrap"
-    }
   }, React.createElement("h1", {
     className: "p-head-title"
-  }, tr("safety.title", "Travel safety map")), React.createElement("span", {
-    className: "stamp is-small",
-    style: {
-      "--st": "var(--foil)",
-      flex: "none"
-    }
-  }, React.createElement("span", {
-    className: "stamp-k",
-    style: {
-      fontSize: 12
-    }
-  }, tr("safety.draft", "Beta")))), React.createElement("p", {
+  }, tr("safety.title", "Travel safety map")), React.createElement("p", {
     className: "p-head-sub"
   }, tr("safety.subtitle", "Official government travel advisories on one map."))), React.createElement("section", {
     className: "p-sec"
