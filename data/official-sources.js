@@ -100,6 +100,52 @@ window.OFFICIAL_SOURCES = {
     source: "https://evisa.gov.vn/",
     checked: "2026-11-27",
   },
+  TR: {
+    portal: { name: "Republic of Türkiye e-Visa", url: "https://www.evisa.gov.tr/en/" },
+    rows: [
+      { k: "note", en: "the e-Visa covers tourism and commerce only; for work or study apply at a Turkish embassy or consulate", tr: "e-vize yalnızca turizm ve ticaret amaçlı yolculuk içindir; çalışma ya da eğitim için Türk büyükelçiliği veya konsolosluğuna başvurulur" },
+      { k: "processing", en: "issued online after the form and the fee payment, in about three minutes", tr: "form doldurulup ücret ödendikten sonra internetten, yaklaşık üç dakikada verilir" },
+    ],
+    source: "https://www.mfa.gov.tr/visa-information-for-foreigners.en.mfa",
+    checked: "2026-11-27",
+  },
+  JP: {
+    portal: { name: "Ministry of Foreign Affairs of Japan, JAPAN eVISA", url: "https://www.mofa.go.jp/j_info/visit/visa/visaonline.html" },
+    rows: [
+      { k: "stay", en: "visa-exempt nationalities get 90 days on arrival, except Indonesia and Thailand (15 days) and Brunei and Qatar (30 days)", tr: "vizeden muaf uyruklara girişte 90 gün verilir; Endonezya ve Tayland 15 gün, Brunei ve Katar 30 gün" },
+      { k: "note", en: "the eVISA is a single-entry tourist visa for ordinary passports, open only to people living in the countries listed on the page", tr: "eVISA, umuma mahsus pasaport sahiplerine verilen tek girişli turist vizesidir; yalnızca sayfada sayılan ülkelerde yaşayanlar başvurabilir" },
+    ],
+    source: "https://www.mofa.go.jp/j_info/visit/visa/short/novisa.html",
+    checked: "2026-11-27",
+  },
+  TH: {
+    portal: { name: "Thai e-Visa official website", url: "https://www.thaievisa.go.th/" },
+    rows: [
+      { k: "fee", en: "visa fees are not refunded, even if the visa is refused", tr: "vize ücretleri, vize reddedilse de iade edilmez" },
+      { k: "note", en: "apply only while you are outside Thailand; no documents are handed in person, and the approval email is shown to the airline and to immigration", tr: "başvuru yalnızca Tayland dışındayken yapılır; belgeler elden teslim edilmez, onay e-postası havayoluna ve göç memuruna gösterilir" },
+    ],
+    source: "https://www.thaievisa.go.th/",
+    checked: "2026-11-27",
+  },
+  SA: {
+    portal: { name: "Saudi eVisa (Visit Saudi)", url: "https://visa.visitsaudi.com/" },
+    rows: [
+      { k: "validity", en: "1 year, multiple entries", tr: "1 yıl, çoklu giriş" },
+      { k: "stay", en: "up to 90 days in the country", tr: "ülkede en fazla 90 gün" },
+      { k: "note", en: "covers tourism, events, family visits and Umrah (not Hajj); it does not cover study", tr: "turizm, etkinlik, aile ziyareti ve umreyi kapsar (hac hariç); eğitim için geçerli değildir" },
+    ],
+    source: "https://visa.visitsaudi.com/",
+    checked: "2026-11-27",
+  },
+  GE: {
+    portal: { name: "Georgia e-Visa portal", url: "https://www.evisa.gov.ge/GeoVisa/en/VisaApp" },
+    rows: [
+      { k: "stay", en: "short visits of less than 90 days only", tr: "yalnızca 90 günden kısa ziyaretler" },
+      { k: "note", en: "the passport must be valid at least 3 months beyond the visa, the form asks you to confirm travel insurance, and the details are checked at the border", tr: "pasaport vizenin bitişinden en az 3 ay sonrasına kadar geçerli olmalı, form seyahat sigortası onayı ister ve bilgiler sınırda denetlenir" },
+    ],
+    source: "https://www.evisa.gov.ge/GeoVisa/en/VisaApp",
+    checked: "2026-11-27",
+  },
   // One entry for every Schengen state (list from data/etias-rules.js): the fee and the processing
   // rules are set by the EU Visa Code, the application goes to the consulate of the main destination.
   SCHENGEN: {
