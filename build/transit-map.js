@@ -309,10 +309,15 @@ function transitLine(t) {
   };
   if (t.status === "auth") return {
     label: window.t("tmap.auth", {
-      doc: AUTH_DOC[t.area] || "ETA"
+      doc: t.authDoc || AUTH_DOC[t.area] || "ETA"
     }),
     color: TG_COLOR.auth,
     s: "ev"
+  };
+  if (t.status === "twov" && !t.twovHours) return {
+    label: window.t("tmap.cond_ok"),
+    color: TG_COLOR.twov,
+    s: "eta"
   };
   if (t.status === "twov") return {
     label: window.t("tmap.twov_ok", {
@@ -340,12 +345,16 @@ function transitWhy(passport, iso2, t) {
     country: country
   }));else if (t.generic && t.byEntry) out.push(window.t("tmap.why_entry_free"));else if (t.status === "atv" && t.area === "SCHENGEN") out.push(window.t(t.basis === "common" ? "tmap.why_common" : "tmap.why_national", {
     country: country
-  }));else if (t.status === "atv" && t.area === "GB") out.push(window.t("tmap.why_gb"));else if (t.status === "auth") {
+  }));else if (t.status === "atv" && t.area === "GB") out.push(window.t("tmap.why_gb"));else if (t.status === "atv") out.push(window.t("tmap.why_list", {
+    country: country
+  }));else if (t.status === "auth" && t.kind !== "visa") out.push(window.t("tmap.why_auth", {
+    doc: t.authDoc || "ETA"
+  }));else if (t.status === "auth") {
     out.push(window.t("tmap.why_no_airside", {
       country: country
     }));
     out.push(window.t("tmap.why_auth", {
-      doc: AUTH_DOC[t.area] || "ETA"
+      doc: t.authDoc || AUTH_DOC[t.area] || "ETA"
     }));
   } else if (t.status === "vr" && t.kind === "visa") out.push(window.t("tmap.why_no_airside", {
     country: country
@@ -353,7 +362,7 @@ function transitWhy(passport, iso2, t) {
     country: country
   }));
   if (t.area === "SCHENGEN" && !t.byEntry && (t.status === "free" || t.status === "atv")) out.push(window.t("tmap.schengen_entry"));
-  if (t.condition) out.push(tr("tmap.cond_" + passport + "_" + t.state, t.condition));
+  if (t.condition) out.push(tr("tmap.cond_" + passport + "_" + (t.state || t.area), t.condition));
   return out;
 }
 function TransitExemptions(_ref2) {
@@ -491,7 +500,7 @@ function TransitDetail(_ref5) {
     }, x);
   }), React.createElement(TransitExemptions, {
     t: t
-  }), t.notes && t.area !== "SCHENGEN" && !t.byEntry && t.status !== "unknown" && React.createElement("p", {
+  }), t.notes && t.area !== "SCHENGEN" && !(t.area === "AU" && t.status === "atv") && !t.byEntry && t.status !== "unknown" && React.createElement("p", {
     className: "entry-note"
   }, tr("tmap.note_" + t.area, t.notes)), React.createElement(TransitSource, {
     t: t
@@ -635,7 +644,7 @@ function TransitLegChecker(_ref6) {
     className: "entry-note"
   }, window.t("tmap.leg_third", {
     answer: window.t(leg.thirdCountry ? "tmap.leg_yes" : "tmap.leg_no")
-  })), t.notes && t.area !== "SCHENGEN" && !t.byEntry && t.status !== "unknown" && React.createElement("p", {
+  })), t.notes && t.area !== "SCHENGEN" && !(t.area === "AU" && t.status === "atv") && !t.byEntry && t.status !== "unknown" && React.createElement("p", {
     className: "entry-note"
   }, tr("tmap.note_" + t.area, t.notes))), React.createElement("button", {
     type: "button",
