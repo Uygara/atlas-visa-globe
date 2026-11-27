@@ -464,7 +464,10 @@ function Globe(_ref) {
     requestAnimationFrame(_step);
   }, [mode, size.w, size.h]);
   useEffect(function () {
-    if (!focusedCountry) return;
+    if (!focusedCountry) {
+      if (fitFocus && zoomRef.current > 1) applyZoom(1, true);
+      return;
+    }
     var c = window.byIso2[focusedCountry];
     if (!c) return;
     var lon = c.lon,
