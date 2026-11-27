@@ -94,13 +94,13 @@ async function devices(tok) {
 async function waitlist(tok) {
   const out = [];
   let next = "";
-  const mask = ["price", "country", "city", "lang", "src"].map((k) => "mask.fieldPaths=" + k).join("&");
+  const mask = ["price", "country", "city", "lang", "src", "product", "passport"].map((k) => "mask.fieldPaths=" + k).join("&");
   do {
     const j = await api(tok, `https://firestore.googleapis.com/v1/projects/${PROJECT}/databases/(default)/documents/waitlist?pageSize=300&${mask}` + (next ? "&pageToken=" + encodeURIComponent(next) : ""));
     for (const d of j.documents || []) {
       const f = d.fields || {};
       const v = (k) => (f[k] || {}).stringValue || "?";
-      out.push({ price: v("price"), country: v("country"), city: v("city"), lang: v("lang"), src: v("src"), created: Date.parse(d.createTime) || 0 });
+      out.push({ product: (f.product || {}).stringValue || "appt", passport: v("passport"), price: v("price"), country: v("country"), city: v("city"), lang: v("lang"), src: v("src"), created: Date.parse(d.createTime) || 0 });
     }
     next = j.nextPageToken || "";
   } while (next);
@@ -139,7 +139,11 @@ function weekly(list, key, weeks) {
       out.providers = n.reduce((m, a) => { for (const p of a.providers) m[p] = (m[p] || 0) + 1; return m; }, {}); } else out.accountsError = result.accounts.error;
     if (U) { out.watchlists = fresh(U, "created").filter((u) => u.watch > 0).length; out.watchlistTotal = U.filter((u) => u.watch > 0).length; } else out.usersError = result.users.error;
     if (D) { out.devices = fresh(D, "created").length; out.deviceTotal = D.length; } else out.devicesError = result.devices.error;
-    if (W) { out.waitlist = fresh(W, "created").length; out.waitlistTotal = W.length; } else out.waitlistError = result.waitlist.error;
+    if (W) {
+      const A = W.filter((w) => w.product === "appt"), T = W.filter((w) => w.product === "pass");
+      out.waitlist = fresh(A, "created").length; out.waitlistTotal = A.length;
+      out.pass = fresh(T, "created").length; out.passTotal = T.length;
+    } else out.waitlistError = result.waitlist.error;
     console.log(JSON.stringify(out));
     return;
   }
@@ -153,9 +157,12 @@ function weekly(list, key, weeks) {
       passports: U.filter((u) => u.watch > 0).reduce((m, u) => { const p = u.passport || "?"; m[p] = (m[p] || 0) + 1; return m; }, {}) } : result.users,
     devices: D ? { total: D.length, new1d: since(D, "created", 1), new7d: since(D, "created", 7), new30d: since(D, "created", 30),
       byPlatform: D.reduce((m, d) => { m[d.platform] = (m[d.platform] || 0) + 1; return m; }, {}) } : result.devices,
-    waitlist: W ? { total: W.length, new7d: since(W, "created", 7), new30d: since(W, "created", 30),
-      paying: W.filter((w) => w.price !== "0").length, byPrice: tally(W, "price"), byCountry: tally(W, "country"),
-      byCity: tally(W, "city"), bySource: tally(W, "src") } : result.waitlist,
+    waitlist: W ? (() => { const A = W.filter((w) => w.product === "appt"); return { total: A.length, new7d: since(A, "created", 7), new30d: since(A, "created", 30),
+      paying: A.filter((w) => w.price !== "0").length, byPrice: tally(A, "price"), byCountry: tally(A, "country"),
+      byCity: tally(A, "city"), bySource: tally(A, "src") }; })() : result.waitlist,
+    travelPass: W ? (() => { const T = W.filter((w) => w.product === "pass"); return { total: T.length, new7d: since(T, "created", 7), new30d: since(T, "created", 30),
+      paying: T.filter((w) => w.price !== "0").length, byPrice: tally(T, "price"), byLang: tally(T, "lang"),
+      byPassport: tally(T, "passport"), bySource: tally(T, "src") }; })() : result.waitlist,
   };
   if (AS_JSON) { console.log(JSON.stringify(summary)); return; }
   const a = summary.accounts, al = summary.alerts, d = summary.devices;
@@ -165,5 +172,8 @@ function weekly(list, key, weeks) {
   console.log("Notification devices: " + (d.error ? "error " + d.error : `${d.total} total · new 1d ${d.new1d} · 7d ${d.new7d} · 30d ${d.new30d} · ${JSON.stringify(d.byPlatform)}`));
   const w = summary.waitlist;
   console.log("Appointment-alert waiting list: " + (w.error ? "error " + w.error : `${w.total} total · new 7d ${w.new7d} · 30d ${w.new30d} · would pay ${w.paying} · price ${JSON.stringify(w.byPrice)}`));
+  const tp = summary.travelPass;
+  console.log("Travel Pass waiting list: " + (tp.error ? "error " + tp.error : `${tp.total} total · new 7d ${tp.new7d} · 30d ${tp.new30d} · would pay ${tp.paying} · option ${JSON.stringify(tp.byPrice)}`));
+  if (!tp.error && tp.total) console.log("  lang " + JSON.stringify(tp.byLang) + " · passport " + JSON.stringify(tp.byPassport) + " · source " + JSON.stringify(tp.bySource));
   if (!w.error && w.total) console.log("  country " + JSON.stringify(w.byCountry) + " · city " + JSON.stringify(w.byCity) + " · source " + JSON.stringify(w.bySource));
 })().catch((e) => { console.error("usage-report: " + e.message); process.exit(1); });

@@ -81,6 +81,9 @@ EN in those four (engine ready — just add dict entries).
   rules, written over the REST API with no SDK. GA4: `affiliate_click` partner axa-schengen, `waitlist_cta`,
   `waitlist_signup`. Counts in usage-report.js, analytics-report.js and the signups workflow. Plan and decision
   thresholds: `docs/revenue-test.md`. No new features until 27 Dec.
+  Same day, Uygar asked for a global, recurring option: `/travel-pass/` (English only) waiting list for a yearly plan
+  ($3/mo, $29/yr, $49/yr family), same Firestore collection with `product: "pass"` and id sha256("pass:"+email).
+  Linked from the English passport pages and the calculator. B2B API noted in the plan, not built.
 - **Round 37 (2026-11-27: Turkish passport rows from the Turkish MFA list):** compared all ~190 rows of the MFA
   list with the site. `TR_MFA_ROWS` in data/visa-overrides.js overrides 30 rows where the MFA names a mechanism or
   stay length (KR K-ETA 90, TW eVisa, MX air eVisa, LB 90...). Audit check "turkish passport answers (MFA list)".

@@ -13,6 +13,11 @@ module.exports = {
   "8abcb329": `<a href="/appointment-alert/?src=checklist" data-appt-link="" onclick="window.gtag&amp;&amp;gtag('event','waitlist_cta',{placement:'checklist'})">Randevu alarmı listesine yazıl</a>`,
   "9cd5f271": `<a href="/appointment-alert/?src=calculator" data-appt-link="" onclick="window.gtag&amp;&amp;gtag('event','waitlist_cta',{placement:'calculator'})">Randevu alarmı listesine yazıl</a>`,
 
+  // Travel Pass box on the calculator (the pass page itself is English only)
+  "52b28546": `Günlerin bitmeden önce uyarı ister misin?`,
+  "c185ad85": `Travel Pass adında yıllık bir plan hazırlıyoruz: kaydettiğin seyahatlerden Schengen günlerini sayar ve süreyi aşmana bir hafta kala seni uyarır. Pasaportunun ya da vizenin süresi dolmadan önce de hatırlatır.`,
+  "3361c081": `<a href="/travel-pass/?src=calculator" data-pass-link="" onclick="window.gtag&amp;&amp;gtag('event','waitlist_cta',{product:'pass',placement:'calculator'})">Travel Pass'e bak (İngilizce sayfa)</a>`,
+
   // /appointment-alert/
   "f3c38e5f": `Schengen vize randevusu alarmı`,
   "ea225909": `Türkiye'de Schengen vizesi için randevu bulmak haftalar sürebiliyor; boşalan yerler çoğu zaman birkaç dakikada doluyor. Başvuracağın vize merkezinde randevu açıldığında sana haber veren ücretli bir alarm hizmeti düşünüyoruz.`,
