@@ -66,6 +66,7 @@ const OFFICIAL_LISTS = [
   { what: "Schengen airport transit visa common list and exemptions (Visa Code Annex IV, Art. 3)", checked: "2026-11-27", url: "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02009R0810-20200202" },
   { what: "Schengen national airport transit visa lists (Visa Code Handbook Annex 7B, SCHENGEN_NATIONAL_ATV)", checked: ctx.SCHENGEN_NATIONAL_ATV.checked, url: ctx.SCHENGEN_NATIONAL_ATV.source },
   { what: "UK DATV exemptions (Transit Visa Order 2014, art. 4)", checked: "2026-11-27", url: "https://www.legislation.gov.uk/uksi/2014/2702/article/4" },
+  { what: "Turkish MFA visa list for Turkish citizens (TR_MFA_ROWS)", checked: "2026-11-27", url: ctx.TR_MFA_SOURCE },
   { what: "Ireland transit visa list", checked: "2026-11-27", url: "https://www.irishimmigration.ie/at-the-border/transit-including-transfer-visa-advice/" },
   { what: "Australia transit without visa list", checked: "2026-11-27", url: "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/transit-771/travellers-eligible-to-transit-without-visa" },
   { what: "New Zealand transit visa waiver list", checked: "2026-11-27", url: "https://www.immigration.govt.nz/visit/transiting-through-new-zealand/transit-visa-waiver-countries-and-territories/" },
@@ -213,6 +214,15 @@ const EU = new Set(["AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR",
   const bad = CASES.filter(([p, d, want]) => (ctx.transitStatusForGlobe(p, d) || {}).status !== want)
     .map(([p, d, want, why]) => `${p}>${d}=${(ctx.transitStatusForGlobe(p, d) || {}).status} (want ${want}: ${why})`);
   check("airport transit answers", bad, "wrong");
+  // Turkish passport: rows taken from the Turkish MFA list (TR_MFA_ROWS in data/visa-overrides.js) and two
+  // rows that already matched it. vf may show as idc where an ID-card agreement exists.
+  const trWant = { ...ctx.TR_MFA_ROWS, RU: { status: "ev", days: 30 }, TH: { status: "vf", days: 30 } };
+  const trBad = Object.entries(trWant).filter(([d, w]) => {
+    const r = ctx.resolveStatus("TR", d) || {};
+    const st = r.status === "idc" ? "vf" : r.status;
+    return st !== w.status || (w.days != null && r.days !== w.days);
+  }).map(([d, w]) => `TR>${d}=${(ctx.resolveStatus("TR", d) || {}).status}/${(ctx.resolveStatus("TR", d) || {}).days} (want ${w.status}/${w.days})`);
+  check("turkish passport answers (MFA list)", trBad, "wrong");
   const ANNEX_IV = "AF BD CD ER ET GH IR IQ NG PK SO LK";
   const common = (ctx.TRANSIT_RULES.SCHENGEN.requiredFor || []).slice().sort().join(" ");
   check("Schengen ATV common list = Visa Code Annex IV", common === ANNEX_IV.split(" ").sort().join(" ") ? [] : [common], "differs");

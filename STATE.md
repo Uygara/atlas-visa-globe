@@ -109,7 +109,7 @@ EN in those four (engine ready — just add dict entries).
   `assets/experiences.js`, `ExperiencesBox` at the end of components/panel.jsx. The box probes once per page load and stays
   hidden until the live rules accept the query. Publishing the rules from CI failed with 403 (service account lacks Firebase
   Rules Admin): owner step in TODO.md. Privacy (EN + TR) and terms (EN only, no TR twin) updated; weekly
-  `experiences-review.yml`. Stamps 20261127u. Gotcha: the sandbox cannot reach unpkg, so UI tests route React/D3 from npm.
+  `experiences-review.yml`. Stamps 20261127v. Gotcha: the sandbox cannot reach unpkg, so UI tests route React/D3 from npm.
 
 - **Round 32 (2026-11-27: residence-permit audit):** Owner report: TR passport + Schengen permit showed Greenland as
   visa required. Wrong since 20 Mar 2026 (Danish Immigration Service: a Schengen residence permit now replaces the
