@@ -2,7 +2,7 @@
 // Nothing here comes from Wikipedia, aggregators or memory. A field we could not read on the
 // official page is left out, never guessed. Every entry carries the page it was read from and the
 // date it was read; `node tools/audit-data.js` warns when an entry is older than 120 days and
-// `node tools/check-official-links.js` reports links that no longer answer.
+// its CI run (env CI) warns about links that no longer answer.
 //
 // Schema (keyed by destination ISO2, or SCHENGEN for every Schengen state):
 //   portal:  { name, url }     the official place to apply (visa centre, e-visa or ETA portal)
@@ -144,6 +144,35 @@ window.OFFICIAL_SOURCES = {
       { k: "note", en: "the passport must be valid at least 3 months beyond the visa, the form asks you to confirm travel insurance, and the details are checked at the border", tr: "pasaport vizenin bitişinden en az 3 ay sonrasına kadar geçerli olmalı, form seyahat sigortası onayı ister ve bilgiler sınırda denetlenir" },
     ],
     source: "https://www.evisa.gov.ge/GeoVisa/en/VisaApp",
+    checked: "2026-11-27",
+  },
+  ID: {
+    portal: { name: "Indonesia Directorate General of Immigration, eVisa", url: "https://evisa.imigrasi.go.id/" },
+    rows: [
+      { k: "note", en: "every traveller must submit an arrival card within 3 days before arriving; it can be filed on this site", tr: "her yolcu varıştan önceki 3 gün içinde varış kartı göndermek zorunda; bu sitede doldurulabilir" },
+      { k: "note", en: "the electronic visa on arrival (e-VOA) can be applied for in advance, for up to 5 people at once; pay by Mastercard, Visa, JCB or SIMPONI", tr: "elektronik varışta vize (e-VOA) önceden alınabilir, tek seferde en fazla 5 kişi için; ödeme Mastercard, Visa, JCB ya da SIMPONI ile" },
+    ],
+    source: "https://evisa.imigrasi.go.id/",
+    checked: "2026-11-27",
+  },
+  LK: {
+    portal: { name: "Sri Lanka Department of Immigration and Emigration, ETA", url: "https://www.eta.gov.lk/slvisa/" },
+    rows: [
+      { k: "fee", en: "free tourist ETA for 30 days since 25 May 2026 for nationals of 40 countries, among them Türkiye, the UK, the US, India, China, Russia and most of western Europe", tr: "25 Mayıs 2026'dan beri 40 ülkenin vatandaşlarına 30 günlük ücretsiz turist ETA'sı; aralarında Türkiye, Birleşik Krallık, ABD, Hindistan, Çin, Rusya ve Batı Avrupa'nın çoğu var" },
+      { k: "note", en: "every foreign visitor, including those 40 nationalities, needs an ETA before arriving", tr: "bu 40 ülke dâhil her yabancı ziyaretçinin varıştan önce ETA alması gerekir" },
+    ],
+    source: "https://www.eta.gov.lk/slvisa/",
+    checked: "2026-11-27",
+  },
+  BR: {
+    portal: { name: "Brazil e-Visa portal (VFS)", url: "https://brazil.vfsevisa.com/" },
+    rows: [
+      { k: "fee", en: "e-Visa USD 80.90 for citizens of Australia, Canada and the United States", tr: "Avustralya, Kanada ve ABD vatandaşları için e-vize 80,90 USD", price: 80.9, cur: "USD" },
+      { k: "stay", en: "up to 90 days, for tourism or business", tr: "turizm ya da iş için en fazla 90 gün" },
+      { k: "processing", en: "the e-Visa arrives by email within a few days when the requirements are met", tr: "şartlar sağlanırsa e-vize birkaç gün içinde e-postayla gelir" },
+      { k: "note", en: "required for those three nationalities since 10 April 2025; the passport must be valid for the whole trip with 2 blank visa pages", tr: "bu üç uyruk için 10 Nisan 2025'ten beri zorunlu; pasaport yolculuk boyunca geçerli olmalı ve 2 boş vize sayfası bulunmalı" },
+    ],
+    source: "https://www.gov.br/mre/pt-br/consulado-miami/information-about-visas-in-english/electronic-visitor-visa-e-visa",
     checked: "2026-11-27",
   },
   // One entry for every Schengen state (list from data/etias-rules.js): the fee and the processing
