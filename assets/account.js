@@ -123,6 +123,8 @@
     });
     var toUser = function (u) { return u && { uid: u.uid, email: u.email, phone: u.phoneNumber, name: u.displayName, photo: u.photoURL, provider: (u.providerData[0] || {}).providerId }; };
     return {
+      // Firestore handle for assets/experiences.js (traveller experiences, roadmap R5).
+      fs: function () { return ready; },
       watch: function (cb) {
         ready.then(function (x) {
           x.A.getRedirectResult(x.auth).catch(function (e) { set({ error: e.code || e.message }); });
@@ -267,9 +269,13 @@
       destroy: function (uid) {
         return ready.then(function (x) {
           var u = x.auth.currentUser;
-          // Firestore does not cascade: remove the device tokens with the person.
+          // Firestore does not cascade: remove the device tokens and the person's
+          // published experiences (experiences/{uid}_{pair}, posters/{uid}) with the person.
           return x.F.getDocs(x.F.collection(x.db, "users", uid, "devices"))
             .then(function (snap) { return Promise.all(snap.docs.map(function (d) { return x.F.deleteDoc(d.ref); })); })
+            .then(function () { return x.F.getDocs(x.F.query(x.F.collection(x.db, "experiences"), x.F.where("uid", "==", uid))); })
+            .then(function (snap) { return Promise.all(snap.docs.map(function (d) { return x.F.deleteDoc(d.ref); })); })
+            .then(function () { return x.F.deleteDoc(x.F.doc(x.db, "posters", uid)); })
             .then(function () { return x.F.deleteDoc(x.F.doc(x.db, "users", uid)); })
             .then(function () { return x.A.deleteUser(u); })
             .catch(function (e) {
@@ -345,7 +351,12 @@
       signOut: function () { return later().then(function () { rawRemove.call(ls, USER); cb && cb(null); }); },
       load: function () { return later(get(CLOUD) || {}); },
       save: function (uid, data) { rawSet.call(ls, CLOUD, JSON.stringify(data)); return later(); },
-      destroy: function () { return later().then(function () { rawRemove.call(ls, CLOUD); rawRemove.call(ls, USER); cb && cb(null); }); },
+      destroy: function (uid) { return later().then(function () {
+        var all = get("atlas.account.mock.exp") || {};
+        Object.keys(all).forEach(function (id) { if (all[id].uid === uid) delete all[id]; });
+        rawSet.call(ls, "atlas.account.mock.exp", JSON.stringify(all));
+        rawRemove.call(ls, CLOUD); rawRemove.call(ls, USER); cb && cb(null);
+      }); },
     };
   }
 
@@ -442,6 +453,8 @@
     return Promise.resolve(before).catch(function () {}).then(function () { return backend.signOut(); });
   };
   api.syncNow = function () { return sync(false); };
+  // Firestore for other modules (null in mock mode, where they keep their own local store).
+  api.firestore = function () { return backend.fs ? backend.fs() : null; };
   api.deleteAccount = function () {
     if (!state.user) return Promise.resolve();
     return backend.destroy(state.user.uid);

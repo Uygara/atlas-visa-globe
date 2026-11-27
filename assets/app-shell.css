@@ -734,3 +734,20 @@ html[dir="rtl"] .note-go, html[dir="rtl"] .cta-go { display: inline-block; trans
 .cl-m { font-size: 10.5px; color: var(--ink-3); text-transform: uppercase; }
 .cl-night-sw { background: var(--night) !important; opacity: 0.45; }
 
+
+/* Traveller experiences under the country card (components/panel.jsx, assets/experiences.js). */
+.exp-box { margin: 0 0 10px; padding: 10px 12px; background: var(--paper); border: 1px solid var(--rule); border-radius: var(--radius); }
+.exp-box > summary { cursor: pointer; font-weight: 600; color: var(--ink-2); font-size: var(--fs-sm); }
+.exp-box[open] > summary { margin-bottom: 6px; }
+.exp-list { list-style: none; margin: 8px 0; padding: 0; display: grid; gap: 10px; }
+.exp-item { padding: 10px 12px; border-inline-start: 3px solid var(--rule-strong); background: var(--paper-raised, var(--paper)); border-radius: var(--radius); }
+.exp-item.is-hidden { opacity: .65; border-inline-start-style: dashed; }
+.exp-meta { display: flex; flex-wrap: wrap; gap: 4px 10px; font-size: var(--fs-xs); color: var(--ink-3); }
+.exp-text { margin: 6px 0 0; font-size: var(--fs-sm); line-height: 1.5; white-space: pre-wrap; overflow-wrap: anywhere; }
+.exp-foot { margin-top: 6px; }
+.exp-link { background: none; border: 0; padding: 4px 0; color: var(--ink-3); font: inherit; font-size: var(--fs-xs); text-decoration: underline; cursor: pointer; }
+.exp-form { display: grid; gap: 10px; margin-top: 8px; }
+.exp-l { display: grid; gap: 4px; font-size: var(--fs-xs); color: var(--ink-2); font-weight: 600; }
+.exp-l .field, .exp-l textarea { width: 100%; font-weight: 400; }
+.exp-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.exp-actions { display: flex; gap: 8px; flex-wrap: wrap; }

@@ -998,6 +998,7 @@ function DetailCard({ passport, compare, iso2, onClose, direction, groupPassport
       {!groupActive && <NewsBox passport={passport} destIso2={iso2} />}
       {!groupActive && <RecentChanges passport={passport} destIso2={iso2} />}
 
+      {!groupActive && !incoming && <ExperiencesBox passport={passport} destIso2={iso2} />}
       <AffiliatePartners status={r.status} iso2={iso2} />
       <AlertsCTA iso2={iso2} destName={window.countryName(iso2)} />
       <AdSlot slotKey="sidebar" />
@@ -1914,3 +1915,136 @@ function PanelFooter() {
 }
 
 Object.assign(window, { Panel });
+
+
+// ─── Traveller experiences (roadmap R5; assets/experiences.js, firestore.rules) ───
+// A closed section under the country card for the chosen passport → this country.
+// Posts load only when it is opened, so browsing the map costs no database reads.
+function expMonthLabel(m) {
+  const d = new Date(m + "-01T00:00:00Z");
+  if (isNaN(d)) return m;
+  try { return d.toLocaleDateString(window.ATLAS_LANG || undefined, { month: "long", year: "numeric", timeZone: "UTC" }); } catch (e) { return m; }
+}
+
+function ExperienceForm({ passport, destIso2, onDone, onCancel }) {
+  const X = window.ATLAS_EXPERIENCES;
+  const now = new Date();
+  const thisMonth = now.getUTCFullYear() + "-" + String(now.getUTCMonth() + 1).padStart(2, "0");
+  const [route, setRoute] = useStateC("");
+  const [month, setMonth] = useStateC(thisMonth);
+  const [days, setDays] = useStateC("");
+  const [text, setText] = useStateC("");
+  const [err, setErr] = useStateC(null);
+  const [busy, setBusy] = useStateC(false);
+  const msg = (code) => {
+    const map = { short: "err.short", long: "err.long", pii: "err.pii", month: "err.month", days: "err.days", exists: "err.exists", rate: "err.rate" };
+    return window.t("exp." + (map[code] || "err.generic"), { n: code === "long" ? X.MAX : X.MIN });
+  };
+  const submit = (e) => {
+    e.preventDefault();
+    if (busy) return;
+    const d = days === "" ? null : Number(days);
+    const x = { passport, dest: destIso2, route, month, days: d, text, lang: window.ATLAS_LANG || "en" };
+    const bad = route ? X.check(x) : "route";
+    if (bad) { setErr(bad === "route" ? window.t("exp.f_route") : msg(bad)); return; }
+    setBusy(true); setErr(null);
+    X.add(x).then(onDone, (er) => {
+      setBusy(false);
+      const c = er && (er.code || "");
+      setErr(msg(/already|exists/.test(c) ? "exists" : /permission|denied/.test(c) ? "rate" : c));
+    });
+  };
+  return (
+    <form className="exp-form" onSubmit={submit}>
+      <label className="exp-l">{window.t("exp.f_route")}
+        <select className="field" value={route} onChange={e => setRoute(e.target.value)}>
+          <option value="">-</option>
+          {X.ROUTES.map(r => <option key={r} value={r}>{window.t("exp.route." + r)}</option>)}
+        </select>
+      </label>
+      <div className="exp-row2">
+        <label className="exp-l">{window.t("exp.f_month")}
+          <input className="field" type="month" min="2015-01" max={thisMonth} value={month} onChange={e => setMonth(e.target.value)} />
+        </label>
+        <label className="exp-l">{window.t("exp.f_days")}
+          <input className="field" type="number" inputMode="numeric" min="0" max="365" value={days} onChange={e => setDays(e.target.value)} />
+        </label>
+      </div>
+      <label className="exp-l">{window.t("exp.f_text")}
+        <textarea className="field" rows="5" maxLength={X.MAX} value={text} onChange={e => setText(e.target.value)} />
+      </label>
+      <p className="p-fine">{window.t("exp.f_rules")}</p>
+      {err && <p className="note note-risk" role="alert"><span className="note-k">{err}</span></p>}
+      <div className="exp-actions">
+        <button type="submit" className="btn btn-primary" disabled={busy}>{window.t("exp.f_send")}</button>
+        <button type="button" className="btn" onClick={onCancel}>{window.t("exp.f_cancel")}</button>
+      </div>
+    </form>
+  );
+}
+
+function ExperienceRow({ e, onChanged }) {
+  const X = window.ATLAS_EXPERIENCES;
+  const [confirm, setConfirm] = useStateC(false);
+  const del = () => { if (!confirm) { setConfirm(true); return; } X.remove(e).then(onChanged, onChanged); };
+  const rep = () => { X.report(e).then(onChanged, onChanged); };
+  return (
+    <li className={"exp-item" + (e.hidden ? " is-hidden" : "")}>
+      <div className="exp-meta">
+        <span className="mono">{expMonthLabel(e.month)}</span>
+        <span>{window.t("exp.route." + e.route)}</span>
+        {e.days != null && <span>{window.t("exp.took", { n: e.days })}</span>}
+        {e.mine && <span className="tag">{window.t("exp.mine")}</span>}
+      </div>
+      <p className="exp-text" data-no-i18n>{e.text}</p>
+      {e.hidden && <p className="p-fine">{window.t("exp.hidden")}</p>}
+      <div className="exp-foot">
+        {e.mine
+          ? <button type="button" className="exp-link" onClick={del}>{window.t(confirm ? "exp.del_confirm" : "exp.delete")}</button>
+          : (X.signedIn() && (e.reportedByMe
+              ? <span className="p-fine">{window.t("exp.reported")}</span>
+              : <button type="button" className="exp-link" onClick={rep}>{window.t("exp.report")}</button>))}
+      </div>
+    </li>
+  );
+}
+
+function ExperiencesBox({ passport, destIso2 }) {
+  useLangTick();
+  const X = window.ATLAS_EXPERIENCES;
+  const [open, setOpen] = useStateC(false);
+  const [list, setList] = useStateC(null);
+  const [writing, setWriting] = useStateC(false);
+  const [tick, setTick] = useStateC(0);
+  useEffectC(() => { setOpen(false); setList(null); setWriting(false); }, [passport, destIso2]);
+  // Sign-in finishes after the page loads: reload the list, so "your post" and report buttons appear.
+  useEffectC(() => {
+    const a = window.ATLAS_ACCOUNT;
+    if (!a || !a.onChange) return undefined;
+    return a.onChange(() => setTick(t => t + 1));
+  }, []);
+  useEffectC(() => {
+    if (!open || !passport) return;
+    let live = true;
+    X.list(passport, destIso2).then(l => { if (live) setList(l); }, () => { if (live) setList([]); });
+    return () => { live = false; };
+  }, [open, passport, destIso2, tick]);
+  if (!X || !X.enabled() || !passport || passport === destIso2) return null;
+  const reload = () => { setWriting(false); setTick(t => t + 1); };
+  const mine = list && list.some(e => e.mine);
+  const vars = { passport: window.countryName(passport), dest: window.countryName(destIso2) };
+  const shown = list ? list.filter(e => !e.hidden || e.mine) : [];
+  return (
+    <details className="exp-box" open={open} onToggle={e => setOpen(e.currentTarget.open)}>
+      <summary>{window.t("exp.title")}{list && shown.length > 0 ? " (" + shown.length + ")" : ""}</summary>
+      <p className="p-fine">{window.t("exp.sub", vars)}</p>
+      {list === null && open && <p className="p-fine">…</p>}
+      {list && shown.length === 0 && <p className="p-fine">{window.t("exp.empty")}</p>}
+      {shown.length > 0 && <ul className="exp-list">{shown.map(e => <ExperienceRow key={e.id} e={e} onChanged={reload} />)}</ul>}
+      {list && !mine && !writing && (X.signedIn()
+        ? <button type="button" className="btn" onClick={() => setWriting(true)}>{window.t("exp.share")}</button>
+        : <a className="btn" href={(window.ATLAS_LANG === "tr" ? "/tr" : "") + "/account/"}>{window.t("exp.signin")}</a>)}
+      {writing && <ExperienceForm passport={passport} destIso2={destIso2} onDone={reload} onCancel={() => setWriting(false)} />}
+    </details>
+  );
+}
