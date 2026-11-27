@@ -86,7 +86,7 @@ Durum: `açık` · `sürüyor` · `bekliyor: <neyi>` · `bitti <hash>`
 
 ### Aşama 3: topluluk
 
-- **R5 · Deneyim paylaşımı** · açık (R1 sonrası) · Pasaport → ülke çifti için kullanıcıların başvuru deneyimi
+- **R5 · Deneyim paylaşımı** · bitti 2026-11-27, kurallar yayınlanınca açılır (bekliyor: hizmet hesabına Rules Admin rolü, `TODO.md`) · Harita ülke kartında kapalı "Gezgin deneyimleri" kutusu; `firestore.rules` + 26 emülatör testi, `.github/workflows/firestore-rules.yml`, haftalık `experiences-review.yml`. Ekran görüntüsü yükleme bilerek yok (pasaport numarası ve ad sızar). İlk tasarım: Pasaport → ülke çifti için kullanıcıların başvuru deneyimi
   (ne zaman, hangi yolla, kaç gün sürdü, ne sordular). Yan panelde blog benzeri akış. Kurallar: yalnızca giriş
   yapmış kullanıcı yazar; bağlantı ve kişisel veri (telefon, e-posta, pasaport no.) otomatik engellenir; uzunluk ve
   sıklık sınırı; "bildir" düğmesi, 3 bildirimde gizlenir; otopilot her hafta gizlenenleri ve şüphelileri inceler.

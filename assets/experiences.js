@@ -121,6 +121,13 @@
     check: check,
     enabled: function () { return !!acct().enabled; },
     signedIn: function () { return !!user(); },
+    // One cheap query per page load: false while the live rules do not know "experiences" yet,
+    // so the site never offers a form that cannot save.
+    available: function () {
+      if (!acct().enabled) return Promise.resolve(false);
+      if (!window.__expAvail) window.__expAvail = store().then(function (s) { return s.list("ZZ-ZZ", null); }).then(function () { return true; }, function () { return false; });
+      return window.__expAvail;
+    },
     list: function (passport, dest) {
       var pair = pairOf(passport, dest);
       return store().then(function (s) { return s.list(pair, me()); });
