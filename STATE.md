@@ -74,6 +74,15 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 36 (2026-11-27: transit map by Schengen state):** the transit map treated Schengen as one rule and showed
+  every untracked country green. Now `SCHENGEN_NATIONAL_ATV` in `data/transit-visa-rules.js` holds the national airport
+  transit visa lists (Visa Code Handbook Annex 7B, 1 Jul 2026, read via UDI's copy) and the common list is Annex IV's 12
+  (Sudan and Syria were wrongly on it). Turkish passports need an ATV in DE, NL, FR, BE, ES, CZ, CH, NO and Cyprus.
+  Statuses: free / twov / auth (ESTA, eTA) / atv / vr / unknown (grey, "ask your airline"). Exemptions follow Visa Code
+  Art. 3(5) (a UK or Australian visa does not exempt) and UK Transit Order art. 4. SG/HK lists are marked unverified.
+  /transit-visa/ now loads transit-visa-data.js (it showed the old UK list without Turkey). audit-data checks 22 known answers.
+  Gotchas: the Annex 7B PDF is only reachable in Chrome (WAF); its text was decoded in-page, columns mapped by x position.
+
 - **Round 35 (2026-11-27: official application facts on /visa/ pages):** new `data/official-sources.js`, keyed by
   destination: official portal link, fee, processing time, stay, validity and notes, each read by hand from the
   government page with a source link and a `checked` date. First set: GB, US (ESTA), CA (eTA), AU (ETA 601), KR (K-ETA),
@@ -100,7 +109,7 @@ EN in those four (engine ready — just add dict entries).
   `assets/experiences.js`, `ExperiencesBox` at the end of components/panel.jsx. The box probes once per page load and stays
   hidden until the live rules accept the query. Publishing the rules from CI failed with 403 (service account lacks Firebase
   Rules Admin): owner step in TODO.md. Privacy (EN + TR) and terms (EN only, no TR twin) updated; weekly
-  `experiences-review.yml`. Stamps 20261127e. Gotcha: the sandbox cannot reach unpkg, so UI tests route React/D3 from npm.
+  `experiences-review.yml`. Stamps 20261127t. Gotcha: the sandbox cannot reach unpkg, so UI tests route React/D3 from npm.
 
 - **Round 32 (2026-11-27: residence-permit audit):** Owner report: TR passport + Schengen permit showed Greenland as
   visa required. Wrong since 20 Mar 2026 (Danish Immigration Service: a Schengen residence permit now replaces the

@@ -17,9 +17,7 @@ window.TRANSIT_REQUIRED_OVERRIDES = {
     "NG",
     "PK",
     "SO",
-    "LK",
-    "SD",
-    "SY"
+    "LK"
   ],
   "GB": [
     "AF",
@@ -95,6 +93,6 @@ window.TRANSIT_REQUIRED_OVERRIDES = {
   ],
   "source": {
     "GB": "https://www.legislation.gov.uk/uksi/2014/2702/schedule/1",
-    "SCHENGEN": "EU Visa Code common Annex (airport transit visa)"
+    "SCHENGEN": "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02009R0810-20200202"
   }
 };

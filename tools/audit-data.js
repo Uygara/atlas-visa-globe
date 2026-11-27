@@ -16,7 +16,8 @@ const ctx = { console };
 ctx.window = ctx;
 vm.createContext(ctx);
 for (const f of ["countries.js", "country-names.js", "passports.js", "visa-overrides.js", "visa-conditions.js",
-                 "visa-fees.js", "etias-rules.js", "esta-rules.js", "changelog.js", "official-sources.js"]) {
+                 "visa-fees.js", "etias-rules.js", "esta-rules.js", "changelog.js", "official-sources.js",
+                 "transit-visa-data.js", "transit-visa-rules.js"]) {
   vm.runInContext(fs.readFileSync(path.join(ROOT, "data", f), "utf8"), ctx, { filename: f });
 }
 const SNAP = JSON.parse(fs.readFileSync(path.join(ROOT, "data", "passports-snapshot.json"), "utf8"));
@@ -62,6 +63,9 @@ const OFFICIAL_LISTS = [
   { what: "Passport validity rules (data/passport-validity-rules.js, /passport-validity/)", checked: "2026-11-21", url: "data/passport-validity-rules.js" },
   { what: "Turkish Schengen visa checklist (data/visa-checklists.js)", checked: "2026-11-21", url: "/visa-checklist/tr-schengen/" },
   { what: "Transit hubs other than Schengen/UK (data/transit-visa-rules.js)", checked: "2026-11-21", url: "data/transit-visa-rules.js" },
+  { what: "Schengen airport transit visa common list and exemptions (Visa Code Annex IV, Art. 3)", checked: "2026-11-27", url: "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02009R0810-20200202" },
+  { what: "Schengen national airport transit visa lists (Visa Code Handbook Annex 7B, SCHENGEN_NATIONAL_ATV)", checked: ctx.SCHENGEN_NATIONAL_ATV.checked, url: ctx.SCHENGEN_NATIONAL_ATV.source },
+  { what: "UK DATV exemptions (Transit Visa Order 2014, art. 4)", checked: "2026-11-27", url: "https://www.legislation.gov.uk/uksi/2014/2702/article/4" },
   { what: "Invitation-letter rules (data/loi-required.js)", checked: "2026-11-21", url: "data/loi-required.js" },
   { what: "Residence-permit upgrades (_PERMIT_GLOBAL_UPGRADES in data/visa-overrides.js)", checked: "2026-11-27", url: "data/visa-overrides.js" },
   { what: "Greenland entry for Schengen residence-permit holders (Danish Immigration Service)", checked: "2026-11-27", url: "https://www.nyidanmark.dk/en-GB/You-want-to-apply/short-stay-visa/Visa-to-the-Faroe-Island-or-Greenland" },
@@ -165,6 +169,44 @@ const EU = new Set(["AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR",
   for (const [bloc, m] of Object.entries(ctx._PERMIT_GLOBAL_UPGRADES || {}))
     for (const [d, r] of Object.entries(m)) if (!STATUSES.has(r.status) || !ctx.byIso2[d]) badRows.push(`${bloc}>${d}`);
   check("permit table rows valid", badRows, "rows");
+}
+{
+  // Airport transit: known answers from the official lists, re-checked on every run.
+  const CASES = [
+    // [passport, transit country, expected status, why]
+    ["TR", "DE", "atv", "Annex 7B: Germany lists Turkey"],
+    ["TR", "NL", "atv", "Annex 7B: Netherlands lists Turkey"],
+    ["TR", "FR", "atv", "Annex 7B: France lists Turkey"],
+    ["TR", "BE", "atv", "Annex 7B: Belgium lists Turkey"],
+    ["TR", "ES", "atv", "Annex 7B: Spain lists Turkey"],
+    ["TR", "CZ", "atv", "Annex 7B: Czechia lists Turkey"],
+    ["TR", "CH", "atv", "Annex 7B: Switzerland lists Turkey"],
+    ["TR", "NO", "atv", "Annex 7B: Norway lists Turkey"],
+    ["TR", "IT", "free", "Italy has no ATV for Turkish citizens"],
+    ["TR", "AT", "free", "Austria has no ATV for Turkish citizens"],
+    ["TR", "GR", "free", "Greece has no ATV for Turkish citizens"],
+    ["TR", "GB", "atv", "UK DATV list (Transit Visa Order 2014, Schedule 1) includes Turkey"],
+    ["TR", "US", "vr", "US has no airside transit; Turkish citizens need a visa"],
+    ["DE", "US", "auth", "Visa Waiver passports need ESTA"],
+    ["US", "DE", "free", "Visa-free into Schengen"],
+    ["PK", "IT", "atv", "Pakistan is on the EU-wide list (Annex IV)"],
+    ["SY", "DE", "atv", "Annex 7B: Germany lists Syria"],
+    ["SY", "PT", "free", "Syria is not on the EU-wide list; Portugal has no national ATV for it"],
+    ["IN", "CZ", "atv", "Annex 7B: Czechia lists India"],
+    ["IN", "DE", "free", "Germany dropped India from its list"],
+    ["RU", "FR", "atv", "Annex 7B: France lists Russia (conditional)"],
+    ["EG", "ES", "atv", "Annex 7B: Spain lists Egypt"],
+  ];
+  const bad = CASES.filter(([p, d, want]) => (ctx.transitStatusForGlobe(p, d) || {}).status !== want)
+    .map(([p, d, want, why]) => `${p}>${d}=${(ctx.transitStatusForGlobe(p, d) || {}).status} (want ${want}: ${why})`);
+  check("airport transit answers", bad, "wrong");
+  const ANNEX_IV = "AF BD CD ER ET GH IR IQ NG PK SO LK";
+  const common = (ctx.TRANSIT_RULES.SCHENGEN.requiredFor || []).slice().sort().join(" ");
+  check("Schengen ATV common list = Visa Code Annex IV", common === ANNEX_IV.split(" ").sort().join(" ") ? [] : [common], "differs");
+  const S = new Set(ctx.ETIAS.schengenStates), badStates = [];
+  for (const [n, list] of Object.entries(ctx.SCHENGEN_NATIONAL_ATV.byNationality))
+    for (const st of list) if (!S.has(st) || !ctx.byIso2[n]) badStates.push(`${n}>${st}`);
+  check("national ATV rows valid", badStates, "rows");
 }
 {
   const { reconcile, loadResolver } = require(path.join(ROOT, "backend", "changelog.js"));

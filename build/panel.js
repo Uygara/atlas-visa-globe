@@ -1658,7 +1658,7 @@ function transitNoteFor(passport, destIso2) {
   var entry = window.resolveStatus(passport, destIso2);
   if (EASY_ENTRY.has(entry.status)) return null;
   var t = window.transitStatusForGlobe(passport, destIso2);
-  if (t.status === "vr") return {
+  if (t.status === "vr" || t.status === "atv") return {
     tone: "note-warn",
     key: "detail.transit_dest_vr"
   };

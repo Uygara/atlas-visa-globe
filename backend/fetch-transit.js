@@ -30,9 +30,12 @@ const UA = "AtlasVisaGlobe/1.0 (https://travelnow.info; transit-refresh)";
 const DRY_RUN = process.argv.includes("--dry-run");
 const MIN_GB = 40; // the Order lists ~70; anything well below means a bad parse
 
-// EU-wide Schengen Airport Transit Visa common list (Annex). Individual member
-// states may add nationalities, but this is the harmonised set. Stable.
-const SCHENGEN_COMMON = ["AF","BD","CD","ER","ET","GH","IR","IQ","NG","PK","SO","LK","SD","SY"];
+// EU-wide Schengen Airport Transit Visa common list: Visa Code (Reg. 810/2009)
+// Annex IV, consolidated text read on EUR-Lex 2026-11-27 (12 nationalities).
+// Sudan and Syria are on national lists only (SCHENGEN_NATIONAL_ATV in
+// data/transit-visa-rules.js). This constant is authoritative: it is written
+// every run, never carried over from the previous file.
+const SCHENGEN_COMMON = ["AF","BD","CD","ER","ET","GH","IR","IQ","NG","PK","SO","LK"];
 
 // Wikipedia / legal name variants the iso-map doesn't carry verbatim.
 const NAME_ALIASES = {
@@ -113,15 +116,13 @@ function serialize(data) {
   const prev = readPrevious();
   const out = {
     lastUpdated: new Date().toISOString().slice(0, 10),
-    SCHENGEN: prev.SCHENGEN && prev.SCHENGEN.length >= 10 ? prev.SCHENGEN : SCHENGEN_COMMON,
+    SCHENGEN: SCHENGEN_COMMON,
     GB: prev.GB || [],
     source: {
       GB: "https://www.legislation.gov.uk/uksi/2014/2702/schedule/1",
-      SCHENGEN: "EU Visa Code common Annex (airport transit visa)",
+      SCHENGEN: "https://eur-lex.europa.eu/legal-content/EN/TXT/HTML/?uri=CELEX:02009R0810-20200202",
     },
   };
-  // Schengen: ensure the verified common list (in case prev was stale/short).
-  if (out.SCHENGEN.length < 10) out.SCHENGEN = SCHENGEN_COMMON;
 
   try {
     const gb = await fetchUKDatv();
