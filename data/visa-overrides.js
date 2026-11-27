@@ -51,6 +51,33 @@ CUBA_EVISA_INELIGIBLE.forEach((pp) => {
   note: "K-ETA requirement temporarily waived through 31 Dec 2026: visa-free for now.",
 };
 
+// Turkish ordinary passports: rows where the Turkish Ministry of Foreign Affairs list names the
+// mechanism or the number of days and the scraped table disagreed. Read 2026-11-27:
+// https://www.mfa.gov.tr/turk-vatandaslarinin-tabi-oldugu-vize-uygulamalari.tr.mfa
+// Rows where the MFA only says "visa required" but the destination's own policy offers an eVisa
+// or visa on arrival are left alone (the MFA list does not mention those options everywhere).
+// tools/audit-data.js re-checks every row ("turkish passport answers").
+window.TR_MFA_SOURCE = "https://www.mfa.gov.tr/turk-vatandaslarinin-tabi-oldugu-vize-uygulamalari.tr.mfa";
+window.TR_MFA_ROWS = {
+  KR: { status: "eta", days: 90, note: "Visa-free for 90 days, but a K-ETA is required before travel." },
+  TW: { status: "ev", days: 30, note: "Free 30-day single-entry eVisa. The visa on arrival ended on 15 Jan 2026." },
+  ID: { status: "vf", days: 30, note: "Visa-free for 30 days; submit the All Indonesia arrival declaration (QR code)." },
+  LB: { status: "vf", days: 90, note: "Visa-free for 90 days in any 180." },
+  WS: { status: "vf", days: 90 }, PW: { status: "vf", days: null }, TO: { status: "vf", days: 30 }, TV: { status: "vf", days: 30 },
+  KN: { status: "vf", days: 90 },
+  HT: { status: "voa", days: 90, note: "Tourist card on arrival, 90 days, USD 10." },
+  KW: { status: "voa", days: 90, note: "Free 90-day visa issued at the border." },
+  CV: { status: "voa", days: null, note: "Visa at the border or before travel." },
+  AG: { status: "vf", days: 90 }, BH: { status: "ev", days: 30 }, FJ: { status: "vf", days: 90 },
+  KZ: { status: "vf", days: 90, note: "90 days in any 180. From 1 Jul 2027 an electronic permit (qazeta.kz) is required at least 72 hours before travel." },
+  CR: { status: "vf", days: 30, note: "30 days in any 180, can be extended to 90." },
+  MO: { status: "vf", days: 30 }, MU: { status: "vf", days: 30 },
+  MX: { status: "ev", days: 30, note: "30-day single-entry eVisa for arrivals by air." },
+  PE: { status: "vf", days: 90 }, LC: { status: "vf", days: 42 }, TT: { status: "vf", days: 30 },
+  VU: { status: "vf", days: 30 }, ZM: { status: "vf", days: 30 }, GE: { status: "vf", days: 365 },
+};
+Object.assign((window.STATUS_OVERRIDES["TR"] = window.STATUS_OVERRIDES["TR"] || {}), window.TR_MFA_ROWS);
+
 // Israeli passport — states with no diplomatic relations with Israel that refuse
 // Israeli passport holders entry outright. Wikipedia's "Visa requirements for
 // Israeli citizens" marks these "Travel illegal under Israeli law" — origin-side
