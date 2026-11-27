@@ -98,6 +98,13 @@ function Globe({
   // over the country layer; regionFill(feature) returns each one's colour.
   regionFeatures,
   regionFill,
+  // regionInteractive: provinces take hover/click. A province feature carries
+  // properties { id, c: iso2 }; hover then holds { iso2, region: id }, and a
+  // click calls onRegionClick(feature) (falling back to onCountryClick(c)).
+  regionInteractive,
+  onRegionClick,
+  // fitFocus: zoom to the focused country's size instead of a fixed 2.2x.
+  fitFocus,
   // ── Route overlay (used by the Itinerary globe) ──────────────────────────
   // arcs: [{ from: iso2, to: iso2 }] — great-circle routes drawn over the map.
   // stopMarkers: [{ iso2, label }] — numbered dots at each stop centroid.
@@ -422,13 +429,31 @@ function Globe({
     const c = window.byIso2[focusedCountry];
     if (!c) return;
 
-    // Zoom to a sensible level for showing detail of a country
-    applyZoom(2.2, true);
+    // Zoom to a sensible level for showing detail of a country. With fitFocus
+    // the zoom follows the country's size (its largest polygon, so overseas
+    // territories do not shrink France to a dot) and centres on its middle.
+    let lon = c.lon, lat = c.lat, zoom = 2.2;
+    const fit = fitFocus && topology ? fitFor(topology.features, focusedCountry, mode) : null;
+    if (fit) { lon = fit.lon; lat = fit.lat; zoom = fit.zoom; }
+    // Flat map: the X pan is a rotation and Y a translate, so put the country
+    // in the middle first (no tween), then zoom around it.
+    if (fit && mode === "flat" && projRef.current) {
+      const proj = projRef.current;
+      rotRef.current = [-lon, 0, 0];
+      proj.rotate(rotRef.current);
+      proj.scale(baseScaleRef.current * Math.max(1, Math.min(8, zoom)));
+      proj.translate([size.w / 2, size.h / 2]);
+      const pt = proj([lon, lat]);
+      panRef.current = [0, pt ? size.h / 2 - pt[1] : 0];
+      applyZoom(zoom, false);
+      return;
+    }
+    applyZoom(zoom, true);
 
     if (mode === "flat") return;
 
     // Animate rotation to face this country
-    const target = [-c.lon, -c.lat, 0];
+    const target = [-lon, -lat, 0];
     const start = [...rotRef.current];
     const t0 = performance.now();
     const dur = 800;
@@ -451,7 +476,7 @@ function Globe({
       if (t < 1) requestAnimationFrame(tween);
     };
     requestAnimationFrame(tween);
-  }, [focusedCountry, mode, applyZoom]);
+  }, [focusedCountry, mode, applyZoom, fitFocus, fitFocus ? topology : null]);
 
   // ─── Drag + auto-rotate ────────────────────────────────────────────────────
   useEffect(() => {
@@ -800,7 +825,10 @@ function Globe({
   }, [passport, filter, resolveOne, groupActive, comparePassport, direction, fillResolver]);
 
   const opacityFor = useCallback((iso2) => {
-    if (fillResolver) return 1;
+    if (fillResolver) {
+      const res = fillResolver(iso2);
+      return res && res.opacity != null ? res.opacity : 1;
+    }
     if (!passport && !groupActive) return 1;
     if (filter === "all") return 1;
     const r = resolveOne(iso2);
@@ -833,6 +861,18 @@ function Globe({
   const handleLeave = () => {
     setHover(null);
     onCountryHover?.(null);
+  };
+  const handleRegionEnter = (e, f) => {
+    const p = f.properties || {};
+    if (!p.c) return;
+    const rect = wrapRef.current.getBoundingClientRect();
+    setHover({ iso2: p.c, region: p.id, x: e.clientX - rect.left, y: e.clientY - rect.top });
+  };
+  const handleRegionClick = (f) => {
+    if (dragMovedRef.current) { dragMovedRef.current = false; return; }
+    const p = f.properties || {};
+    if (onRegionClick) onRegionClick(f);
+    else if (p.c) onCountryClick?.(p.c);
   };
   const handleClick = (feature) => {
     // A drag that happens to end on a country is not a selection.
@@ -993,7 +1033,7 @@ function Globe({
 
         {/* Provinces / states of one country, above the country layer. */}
         {regionFeatures && regionFeatures.length > 0 && (
-          <g style={{ pointerEvents: "none" }}>
+          <g style={{ pointerEvents: regionInteractive ? "auto" : "none" }}>
             {regionFeatures.map((f, i) => (
               <path
                 key={(f.properties && f.properties.id) || `r-${i}`}
@@ -1004,6 +1044,9 @@ function Globe({
                 stroke="var(--paper-raised)"
                 strokeWidth="0.5"
                 strokeOpacity="0.7"
+                onMouseEnter={regionInteractive ? (e) => handleRegionEnter(e, f) : undefined}
+                onMouseLeave={regionInteractive ? handleLeave : undefined}
+                onClick={regionInteractive ? () => handleRegionClick(f) : undefined}
               />
             ))}
           </g>
@@ -1153,6 +1196,33 @@ const FEATURE_NAME_TO_ISO2 = {
   "Siachen Glacier": null, // unmapped, will stay neutral
   "Indian Ocean Ter.": "AU",
 };
+
+// Centre and zoom that frame one country: the bounds of its largest polygon,
+// so a far-off island or territory does not decide the zoom.
+function fitFor(features, iso2, mode) {
+  const f = features.find(x => featureToIso2(x) === iso2);
+  if (!f || !f.geometry) return null;
+  let geom = f.geometry;
+  if (geom.type === "MultiPolygon") {
+    let best = null, bestA = -1;
+    for (const coords of geom.coordinates) {
+      const g = { type: "Polygon", coordinates: coords };
+      const a = d3.geoArea(g);
+      if (a > bestA) { bestA = a; best = g; }
+    }
+    geom = best;
+  }
+  const [[x0, y0], [x1, y1]] = d3.geoBounds(geom);
+  const lonSpan = x1 >= x0 ? x1 - x0 : x1 + 360 - x0;
+  const lat = (y0 + y1) / 2;
+  let lon = x0 + lonSpan / 2;
+  if (lon > 180) lon -= 360;
+  const extent = Math.max(lonSpan * Math.cos(lat * Math.PI / 180), y1 - y0, 1);
+  let zoom;
+  if (mode === "flat") zoom = 120 / extent;
+  else zoom = 0.7 / Math.sin(Math.min(extent, 170) * Math.PI / 360);
+  return { lon, lat, zoom: Math.max(1.3, Math.min(8, zoom)) };
+}
 
 function featureToIso2(feature) {
   if (!feature) return null;
