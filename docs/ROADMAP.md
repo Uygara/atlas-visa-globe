@@ -110,6 +110,11 @@ Durum: `açık` · `sürüyor` · `bekliyor: <neyi>` · `bitti <hash>`
   Yeni Zelanda, Türkiye, Japonya, Tayland (Dışişleri listeleri, 15 Eylül 2026), ETIAS, ESTA; Wikipedia'dan çıkarılan koşullar ve doğrulanmamış ücretler kaldırıldı;
   günlük denetim `tools/audit-data.js` (sorun olursa "data-audit" issue). Kalan: BAE, Güney Kore, Çin, Hindistan e-vize listesi; ücretleri resmî sayfalardan `verified` tarihiyle yeniden girmek;
   Nauru'nun AB anlaşması yürürlükte mi.
+  2026-11-27: oturum izni/vize ile giriş tablosu denetlendi (Grönland hatası düzeltildi, 40'a yakın dayanaksız satır
+  kaldırıldı). Kalan: Gürcistan, Kolombiya, Fas listeleri; Körfez oturumunun altı ülkenin hepsini "vizesiz" açması
+  (gerçekte çoğu e-vize ve meslek şartlı); İrlanda'nın İngiltere vizesiyle giriş programı 31 Ekim 2026 sonrası uzatıldı mı.
+  Kalite süreci önerisi: her kuralda kaynak bağlantısı + son kontrol tarihi (detay kartında görünür), kullanıcı
+  "bu yanlış" bildirimi, denetim testinde bilinen cevaplar listesi büyür.
 
 ## Değerlendirilecek
 
