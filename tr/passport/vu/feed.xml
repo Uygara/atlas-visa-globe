@@ -5,8 +5,14 @@
   <link>https://travelnow.info/tr/passport/vu/</link>
   <description>Vanuatu pasaportuyla giriş kuralı değişen ülkeler. Kamuya açık vize politikası kaynaklarının (çoğunlukla Wikipedia) günlük karşılaştırmasından. Yola çıkmadan önce resmî kaynağa bak.</description>
   <language>tr</language>
-  <lastBuildDate>Thu, 21 May 2026 00:00:00 GMT</lastBuildDate>
+  <lastBuildDate>Sat, 28 Nov 2026 00:00:00 GMT</lastBuildDate>
   <atom:link href="https://travelnow.info/tr/passport/vu/feed.xml" rel="self" type="application/rss+xml"/>
-
+  <item>
+    <title>Karadağ: Vizesiz → Vize gerekli</title>
+    <link>https://travelnow.info/tr/visa/me/</link>
+    <guid isPermaLink="false">travelnow-VU-ME-2026-11-28-vr</guid>
+    <pubDate>Sat, 28 Nov 2026 00:00:00 GMT</pubDate>
+    <description>Vanuatu pasaportu için Karadağ: önce vizesiz, şimdi vize gerekli. 28 Kasım 2026 tarihli günlük veri kontrolünde görüldü.</description>
+  </item>
 </channel>
 </rss>
