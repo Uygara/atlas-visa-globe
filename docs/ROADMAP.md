@@ -131,7 +131,10 @@ Durum: `açık` · `sürüyor` · `bekliyor: <neyi>` · `bitti <hash>`
 
 ## Değerlendirilecek
 
-- **B1 · Acentelere markalı vize denetleyicisi** · doğrulanıyor (2026-11-28) · `/for-agencies/` pilot talebi + İpek'in görüşmeleri
+- **B2 · Ücretli başvuru kontrolü (Schengen, TR)** · sıradaki (2026-11-28) · Pazar araştırmasında en güçlü kanıt: Get Brazil Visa
+  ayda 933 ziyaretçiyle son 30 günde 3.959 $ (tek seferlik 599 $). Plan: checklist sayfasında üç fiyatlı "öde" testi, İpek 5 dosyayı
+  elle kontrol eder. Önce hukuki soru: ücretli vize danışmanlığı acente belgesi ister mi.
+- **B1 · Acentelere markalı vize denetleyicisi** · zayıfladı, pasif bekliyor (2026-11-28; VisaHQ kutusu ücretsiz ve komisyon ödüyor) · `/for-agencies/` pilot talebi + İpek'in görüşmeleri
   (`docs/revenue-test.md`). 5 "öderim" çıkarsa: API anahtarı ve alan adı kilidi, logo/renk ayarı, her cevapta kaynak ve kontrol
   tarihi, ülke bazlı değişiklik e-postası, abonelik ödemesi. Aynı anahtar sistemi geliştirici API'sine de açılır.
 

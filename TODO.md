@@ -28,10 +28,13 @@
 
 ## Senin yapacakların (hesap, ödeme, onay; benim yapamadıklarım)
 
-- [ ] **P1 · Acente pilotu görüşmeleri (İpek, 2 hafta)**: travelnow.info/tr/for-agencies/ bağlantısıyla 40 acente
-      ve 10 vize danışmanına yaz ya da ara. Hedef 5 yazılı "öderim" ya da 3 ücretli pilot. Gelen talepleri
-      `node tools/usage-report.js` "Agency pilot requests" satırında gör, e-postayı Firebase konsolu → Firestore → waitlist
-      (product = agency) içinden al ve iki iş günü içinde dön (sayfa bunu söz veriyor).
+- [ ] **P1 · Ücretli Schengen dosya kontrolü testi (İpek, 2 hafta)**: pazar araştırması (28 Kasım, Claude Doc
+      https://claude.ai/artifact/H1xTamcQnFG5wvfRFYCGfX) acenteleri değil başvuru sahibini öne aldı. İpek 5 kişinin dosyasını
+      gerçek ücretle elle kontrol eder; süre ve bulunan hatalar yazılır. Önce bir hukukçuya: ücretli vize danışmanlığı için
+      acente belgesi gerekir mi? Eşik: 10 "öde" tıklaması + 3 gerçek ödeme.
+- [ ] **P2 · Acente pilot talepleri**: /for-agencies/ yayında, ama acentelerin ödeyeceği zayıf (VisaHQ kutusu ücretsiz ve
+      komisyon ödüyor). 40 acente görüşmesi yapılmayacak. Gelen talebe iki iş günü içinde dön: `node tools/usage-report.js`
+      "Agency pilot requests", e-posta Firebase konsolu → Firestore → waitlist (product = agency).
 
 - [ ] **P1 · AXA Schengen ortaklığı (Tradedoubler, 15 dk)**: sigorta kutusu canlıda ama şimdilik komisyonsuz.
       1) publisher.tradedoubler.com/public/aSignup.action?language=en&country=fr adresinde yayıncı hesabı aç (site: travelnow.info,
