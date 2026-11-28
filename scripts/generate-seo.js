@@ -1026,7 +1026,7 @@ ${trRow ? `  <p class="tr-answer"><strong>${escapeHtml(V.trAnswerHead)}</strong>
     <p class="chk-follow"><a id="chk-follow" href="${P("/alerts/")}?watch=${dest.toLowerCase()}">${escapeHtml(V.follow(lang === "tr" ? label : the))} →</a></p>
   </section>
   <script type="application/json" id="chk-data">${chkJson}</script>
-  <script src="/assets/share-card.js?v=20261127w" defer></script>
+  <script src="/assets/share-card.js?v=20261128a" defer></script>
   <script>(function(){var d=JSON.parse(document.getElementById("chk-data").textContent),sel=document.getElementById("chk-sel"),out=document.getElementById("chk-out"),map=document.getElementById("chk-map");
 sel.addEventListener("change",function(){var v=sel.value;if(!v||!d.p[v]){out.hidden=true;out.textContent="";map.href=d.mapBase;var ab0=document.getElementById("aff-box");if(ab0)ab0.hidden=false;return}
 var e=d.p[v],nm=sel.options[sel.selectedIndex].text,t=d.who.replace("{name}",nm)+": "+d.ph[e[0]]+(e[1]?d.days.replace("{n}",e[1]):"")+". ";
@@ -1052,6 +1052,8 @@ Array.prototype.forEach.call(document.querySelectorAll(".lg-row"),function(a){a.
   ${officialHtml}${beforeHtml}
 
   ${schengenHtml}${ivisaHtml}
+
+  ${lang === "en" ? `<section class="card" id="pass-box"><h2>Travel often?</h2><p>We are planning Travel Pass: day counts for your trips with a warning before you overstay, passport expiry reminders and alerts for every passport in your family. Join the waiting list if you would use it.</p><p class="cta-row"><a href="/travel-pass/?src=visa_${dest.toLowerCase()}" onclick="window.gtag&&gtag('event','waitlist_cta',{product:'pass',placement:'visa_page',destination:'${dest}'})">See Travel Pass</a></p></section>` : ""}
 
   ${passportCta}
 

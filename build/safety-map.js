@@ -19,6 +19,7 @@ var ADVISORIES = window.TRAVEL_ADVISORIES || {
   sources: {}
 };
 var ADMIN1_INDEX_URL = "/data/admin1/index.json";
+var ADMIN1_WORLD_URL = "/data/admin1/world.json";
 var LEVEL_COLOR = {
   0: "var(--na)",
   1: "var(--risk1)",
@@ -228,9 +229,64 @@ function SafetyMapApp() {
     if (p.id && p.id === pickedRegion) return "var(--ink)";
     return LEVEL_COLOR[lv || 0];
   }, [selected, pickedRegion]);
+  var _useState11 = useState(null),
+    _useState12 = _slicedToArray(_useState11, 2),
+    worldRegions = _useState12[0],
+    setWorldRegions = _useState12[1];
+  useEffect(function () {
+    var alive = true;
+    var load = function load() {
+      return fetch(ADMIN1_WORLD_URL).then(function (r) {
+        return r.ok ? r.json() : Promise.reject(new Error("no world provinces"));
+      }).then(function (topo) {
+        if (!alive) return;
+        var out = [];
+        for (var _i3 = 0, _Object$keys = Object.keys(REGION_LEVELS); _i3 < _Object$keys.length; _i3++) {
+          var iso2 = _Object$keys[_i3];
+          var obj = topo.objects[iso2];
+          if (!obj) continue;
+          var own = countryLevelOf(iso2);
+          var _iterator3 = _createForOfIteratorHelper(topojson.feature(topo, obj).features),
+            _step3;
+          try {
+            for (_iterator3.s(); !(_step3 = _iterator3.n()).done;) {
+              var f = _step3.value;
+              var id = f.properties && f.properties.id || f.id;
+              var lv = REGION_LEVELS[iso2][id];
+              if (!lv || lv === own) continue;
+              f.properties = {
+                id: id,
+                c: iso2
+              };
+              out.push(f);
+            }
+          } catch (err) {
+            _iterator3.e(err);
+          } finally {
+            _iterator3.f();
+          }
+        }
+        setWorldRegions(out);
+      })["catch"](function () {});
+    };
+    if (window.requestIdleCallback) window.requestIdleCallback(load, {
+      timeout: 1500
+    });else setTimeout(load, 300);
+    return function () {
+      alive = false;
+    };
+  }, []);
   var regionFeatures = useMemo(function () {
-    return regions && regions.iso2 === selected ? regions.features : null;
-  }, [regions, selected]);
+    if (selected) return regions && regions.iso2 === selected ? regions.features : null;
+    if (!worldRegions) return null;
+    var list = filter ? worldRegions.filter(function (f) {
+      return REGION_LEVELS[f.properties.c][f.properties.id] === filter;
+    }) : worldRegions;
+    return list.length ? list : null;
+  }, [regions, selected, worldRegions, filter]);
+  var regionBorders = useCallback(function (f) {
+    return !!selected && f.properties.c === selected;
+  }, [selected]);
   var hoverRenderer = useCallback(function (hover) {
     return React.createElement(SafetyHover, {
       hover: hover,
@@ -284,8 +340,13 @@ function SafetyMapApp() {
     regionFeatures: regionFeatures,
     regionFill: regionFill,
     regionInteractive: true,
+    regionBorders: regionBorders,
     onRegionClick: function onRegionClick(f) {
-      return setPickedRegion(function (id) {
+      if (!selected || f.properties.c !== selected) {
+        open(f.properties.c);
+        return;
+      }
+      setPickedRegion(function (id) {
         return id === f.properties.id ? null : f.properties.id;
       });
     }
@@ -358,7 +419,7 @@ function SafetyMapApp() {
     style: {
       marginTop: 6
     }
-  }, tr("safety.rule_note", "Each country shows its country-wide level: the strictest of the three governments. Where some provinces are rated higher, the country card says so. Tap a country to see its provinces."))), React.createElement("section", {
+  }, tr("safety.rule_note", "Each country shows its country-wide level: the strictest of the three governments. Provinces with their own warning are coloured in their level. Tap a country to see its province borders."))), React.createElement("section", {
     className: "p-sec"
   }, React.createElement(Caption, {
     n: 2
@@ -462,15 +523,15 @@ function LevelLedger(_ref5) {
 }
 function RecentlyUpdated(_ref6) {
   var onOpen = _ref6.onOpen;
-  var _useState11 = useState(false),
-    _useState12 = _slicedToArray(_useState11, 2),
-    expanded = _useState12[0],
-    setExpanded = _useState12[1];
+  var _useState13 = useState(false),
+    _useState14 = _slicedToArray(_useState13, 2),
+    expanded = _useState14[0],
+    setExpanded = _useState14[1];
   var rows = useMemo(function () {
     var out = [];
-    for (var _i3 = 0, _Object$entries2 = Object.entries(ADVISORIES.countries); _i3 < _Object$entries2.length; _i3++) {
+    for (var _i4 = 0, _Object$entries2 = Object.entries(ADVISORIES.countries); _i4 < _Object$entries2.length; _i4++) {
       var _daysSince;
-      var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i3], 2),
+      var _Object$entries2$_i = _slicedToArray(_Object$entries2[_i4], 2),
         iso2 = _Object$entries2$_i[0],
         c = _Object$entries2$_i[1];
       if (!window.byIso2[iso2] || !c.uk || !c.uk.updates || !c.uk.updates.length) continue;
@@ -653,10 +714,10 @@ function SafetyHover(_ref8) {
 }
 function SafetySearch(_ref9) {
   var onPick = _ref9.onPick;
-  var _useState13 = useState(""),
-    _useState14 = _slicedToArray(_useState13, 2),
-    q = _useState14[0],
-    setQ = _useState14[1];
+  var _useState15 = useState(""),
+    _useState16 = _slicedToArray(_useState15, 2),
+    q = _useState16[0],
+    setQ = _useState16[1];
   var results = useMemo(function () {
     var ql = q.toLowerCase().trim();
     if (!ql) return [];

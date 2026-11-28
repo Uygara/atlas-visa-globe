@@ -102,6 +102,9 @@ function Globe({
   // properties { id, c: iso2 }; hover then holds { iso2, region: id }, and a
   // click calls onRegionClick(feature) (falling back to onCountryClick(c)).
   regionInteractive,
+  // regionBorders(feature) => false draws that province without a visible
+  // outline (stroked in its own fill so no seam shows). Default: outlined.
+  regionBorders,
   onRegionClick,
   // fitFocus: zoom to the focused country's size instead of a fixed 2.2x.
   fitFocus,
@@ -1042,9 +1045,9 @@ function Globe({
                 className="region"
                 d=""
                 fill={regionFill ? regionFill(f) : "none"}
-                stroke="var(--paper-raised)"
+                stroke={regionBorders && !regionBorders(f) ? (regionFill ? regionFill(f) : "none") : "var(--paper-raised)"}
                 strokeWidth="0.5"
-                strokeOpacity="0.7"
+                strokeOpacity={regionBorders && !regionBorders(f) ? 1 : 0.7}
                 onMouseEnter={regionInteractive ? (e) => handleRegionEnter(e, f) : undefined}
                 onMouseLeave={regionInteractive ? handleLeave : undefined}
                 onClick={regionInteractive ? () => handleRegionClick(f) : undefined}
