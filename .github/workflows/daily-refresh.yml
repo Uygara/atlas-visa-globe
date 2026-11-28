@@ -176,6 +176,9 @@ jobs:
             echo "No changes."
           else
             git commit -m "data: daily refresh $(date -u +%Y-%m-%d)"
+            # Files the job touched but does not commit (build output, logs) would block the rebase below
+            # ("cannot pull with rebase: You have unstaged changes", 2026-11-28): set them aside.
+            git stash push --include-untracked -q || true
             # Someone may have pushed while this job ran (2026-09-24 failed that way):
             # rebase this data commit on top and retry, keeping the freshly generated files.
             for attempt in 1 2 3; do
