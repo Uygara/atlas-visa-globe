@@ -28,6 +28,11 @@
 
 ## Senin yapacakların (hesap, ödeme, onay; benim yapamadıklarım)
 
+- [ ] **P1 · Acente pilotu görüşmeleri (İpek, 2 hafta)**: travelnow.info/tr/for-agencies/ bağlantısıyla 40 acente
+      ve 10 vize danışmanına yaz ya da ara. Hedef 5 yazılı "öderim" ya da 3 ücretli pilot. Gelen talepleri
+      `node tools/usage-report.js` "Agency pilot requests" satırında gör, e-postayı Firebase konsolu → Firestore → waitlist
+      (product = agency) içinden al ve iki iş günü içinde dön (sayfa bunu söz veriyor).
+
 - [ ] **P1 · AXA Schengen ortaklığı (Tradedoubler, 15 dk)**: sigorta kutusu canlıda ama şimdilik komisyonsuz.
       1) publisher.tradedoubler.com/public/aSignup.action?language=en&country=fr adresinde yayıncı hesabı aç (site: travelnow.info,
       ödeme ve vergi bilgisi burada istenir). 2) publisher.fr@tradedoubler.com adresine konu "AFFILIATION AXA SCHENGEN" olan

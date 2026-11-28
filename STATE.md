@@ -74,6 +74,13 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 40 (2026-11-28: agency pilot):** Paid-product ranking (Claude Doc linked in `docs/revenue-test.md`) put a
+  white-label visa checker for travel agencies first: B2B does not depend on our ~124 users/week. `/for-agencies/`
+  (EN + TR twin, Turkish in "siz" because it addresses businesses) explains the agency version, planned prices
+  ($19/$49 a month) and takes pilot requests into `waitlist` (product "agency", fields org + site; rules + 8 emulator
+  tests). usage-report lists agency names; signups issue counts them. Privacy EN + TR updated. Footer link "For agencies".
+  Validation is sales, not code: İpek contacts 40 agencies (TODO). Branded build only after 5 written yes / 3 paid pilots.
+
 - **Round 39 (2026-11-28: rule changes same day):** Montenegro → Türkiye is visa required (Presidential Decision 12026,
   Official Gazette 33443, 27 Nov 2026, ordinary passports only); override in `data/visa-overrides.js`, audit check
   "recent official rule changes". The daily refresh was scheduled 06:00 UTC but GitHub started it at 15:45-16:40,

@@ -93,24 +93,27 @@ service cloud.firestore {
     }
 
     // Waiting lists for the demand test (Nov 2026): the Schengen appointment alert
-    // (/appointment-alert/, product 'appt' or absent) and the global Travel Pass (/travel-pass/, product 'pass').
+    // (/appointment-alert/, product 'appt' or absent) the global Travel Pass (/travel-pass/, product 'pass') and
+    // the travel-agency pilot (/for-agencies/, product 'agency', with the agency's name and website).
     // Anyone may add one entry; nobody can read, change or delete it from the web.
-    // The document id is the SHA-256 hex of the lower-cased address ('pass:' + address for the
-    // Travel Pass), so the same address can't be added twice to one list (a second create is refused). tools/usage-report.js counts them
+    // The document id is the SHA-256 hex of the lower-cased address ('pass:' or 'agency:' + address for the
+    // Travel Pass and the agency pilot), so the same address can't be added twice to one list (a second create is refused). tools/usage-report.js counts them
     // with the Admin SDK; addresses are only used to write once the service opens.
     match /waitlist/{id} {
       allow create: if id.matches('[0-9a-f]{64}')
-        && request.resource.data.keys().hasOnly(['email', 'lang', 'country', 'city', 'price', 'src', 'consent', 'product', 'passport'])
+        && request.resource.data.keys().hasOnly(['email', 'lang', 'country', 'city', 'price', 'src', 'consent', 'product', 'passport', 'org', 'site'])
         && request.resource.data.keys().hasAll(['email', 'lang', 'price', 'consent'])
         && request.resource.data.email is string
         && request.resource.data.email.size() <= 254
         && request.resource.data.email.matches('[^@ ]+@[^@ ]+[.][^@ ]+')
         && request.resource.data.lang in ['en', 'tr']
-        && request.resource.data.price in ['0', '99', '199', '299', '3m', '29y', '49y']
+        && request.resource.data.price in ['0', '99', '199', '299', '3m', '29y', '49y', '19m', '49m', 'talk']
         && request.resource.data.consent == true
         && (!('country' in request.resource.data) || (request.resource.data.country is string && request.resource.data.country.matches('[A-Z]{2}|any')))
         && (!('city' in request.resource.data) || request.resource.data.city in ['ist', 'ank', 'izm', 'other'])
-        && (!('product' in request.resource.data) || request.resource.data.product in ['appt', 'pass'])
+        && (!('product' in request.resource.data) || request.resource.data.product in ['appt', 'pass', 'agency'])
+        && (!('org' in request.resource.data) || (request.resource.data.org is string && request.resource.data.org.size() <= 120))
+        && (!('site' in request.resource.data) || (request.resource.data.site is string && request.resource.data.site.size() <= 200))
         && (!('passport' in request.resource.data) || (request.resource.data.passport is string && request.resource.data.passport.matches('[A-Z]{2}')))
         && (!('src' in request.resource.data) || (request.resource.data.src is string && request.resource.data.src.size() <= 40));
     }

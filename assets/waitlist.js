@@ -1,6 +1,7 @@
 // Waiting lists for the demand test: the Schengen appointment alert (/appointment-alert/ and the
 // Turkish twin, product "appt") and the global Travel Pass (/travel-pass/, product "pass", taken
-// from the form's data-product). The pass id is sha256("pass:" + email) so one address can join both.
+// from the form's data-product) and the travel-agency pilot (/for-agencies/, product "agency",
+// with the agency's name and website). Ids are sha256("pass:" or "agency:" + email) so one address can join all.
 // A demand test: one Firestore document per address in waitlist/{sha256(email)}, written with
 // the public web API key through the REST API (no SDK). firestore.rules allows create only, so
 // nobody can read the list from the web and a second sign-up with the same address is refused.
@@ -10,7 +11,7 @@
   if (!form) return;
   var msgEl = document.getElementById("wl-msg");
   var btn = document.getElementById("wl-submit");
-  var product = form.getAttribute("data-product") === "pass" ? "pass" : "appt";
+  var product = { pass: "pass", agency: "agency" }[form.getAttribute("data-product")] || "appt";
   var lang = (document.documentElement.lang || "en").slice(0, 2) === "tr" ? "tr" : "en";
   var src = "";
   try { src = (new URLSearchParams(location.search).get("src") || "direct").replace(/[^a-z0-9_-]/gi, "").slice(0, 40); } catch (e) { src = "direct"; }
@@ -33,6 +34,7 @@
     var email = String(form.email.value || "").trim().toLowerCase();
     var priceEl = form.querySelector('input[name="price"]:checked');
     if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) || email.length > 254) return show("bad-email");
+    if (product === "agency" && !String(form.org.value || "").trim()) return show("no-org");
     if (!priceEl) return show("no-price");
     if (!form.consent.checked) return show("no-consent");
     var cfg = window.ACCOUNT_CONFIG;
@@ -45,8 +47,14 @@
       // The passport already chosen on the site (local storage), if any; disclosed in the page's notice.
       try { var pp = String(localStorage.getItem("atlas.passport") || "").toUpperCase(); if (/^[A-Z]{2}$/.test(pp)) data.passport = pp; } catch (e) {}
     }
+    if (product === "agency") {
+      data.product = "agency";
+      data.org = String(form.org.value || "").trim().slice(0, 120);
+      var site = String(form.site.value || "").trim().slice(0, 200);
+      if (site) data.site = site;
+    }
     btn.disabled = true;
-    crypto.subtle.digest("SHA-256", new TextEncoder().encode(product === "pass" ? "pass:" + email : email)).then(function (h) {
+    crypto.subtle.digest("SHA-256", new TextEncoder().encode(product === "appt" ? email : product + ":" + email)).then(function (h) {
       var fields = {};
       Object.keys(data).forEach(function (k) {
         fields[k] = typeof data[k] === "boolean" ? { booleanValue: data[k] } : { stringValue: data[k] };

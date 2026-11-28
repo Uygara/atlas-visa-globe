@@ -1026,7 +1026,7 @@ ${trRow ? `  <p class="tr-answer"><strong>${escapeHtml(V.trAnswerHead)}</strong>
     <p class="chk-follow"><a id="chk-follow" href="${P("/alerts/")}?watch=${dest.toLowerCase()}">${escapeHtml(V.follow(lang === "tr" ? label : the))} →</a></p>
   </section>
   <script type="application/json" id="chk-data">${chkJson}</script>
-  <script src="/assets/share-card.js?v=20261128a" defer></script>
+  <script src="/assets/share-card.js?v=20261128b" defer></script>
   <script>(function(){var d=JSON.parse(document.getElementById("chk-data").textContent),sel=document.getElementById("chk-sel"),out=document.getElementById("chk-out"),map=document.getElementById("chk-map");
 sel.addEventListener("change",function(){var v=sel.value;if(!v||!d.p[v]){out.hidden=true;out.textContent="";map.href=d.mapBase;var ab0=document.getElementById("aff-box");if(ab0)ab0.hidden=false;return}
 var e=d.p[v],nm=sel.options[sel.selectedIndex].text,t=d.who.replace("{name}",nm)+": "+d.ph[e[0]]+(e[1]?d.days.replace("{n}",e[1]):"")+". ";
@@ -1239,7 +1239,7 @@ function renderSitemap(allPassports, destinations) {
     ...guides.map(g => [`/guides/${g}/`, 0.85]),
     ["/alerts/", 0.7], ["/panel/", 0.7],["/digital-nomad-visa/", 0.9], ["/citizenship-by-investment/", 0.9],
     ["/transit-map/", 0.95], ["/safety-map/", 0.9], ["/climate-map/", 0.85], ["/etias/", 0.95], ["/passport-validity/", 0.95],
-    ["/visa-shortcuts/", 0.9], ["/esta-rules/", 0.9], ["/visa-checklist/tr-schengen/", 0.9], ["/appointment-alert/", 0.6], ["/travel-pass/", 0.6],
+    ["/visa-shortcuts/", 0.9], ["/esta-rules/", 0.9], ["/visa-checklist/tr-schengen/", 0.9], ["/appointment-alert/", 0.6], ["/travel-pass/", 0.6], ["/for-agencies/", 0.6],
     ["/schengen-calculator/", 0.95], ["/itinerary/", 0.8], ["/about/", 0.6], ["/contact/", 0.5],
     ["/privacy/", 0.3], ["/terms/", 0.3], ["/passport/", 0.8],
     ...allPassports.map(iso => [`/passport/${iso.toLowerCase()}/`, 0.6]),

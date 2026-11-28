@@ -57,7 +57,7 @@
     "/guides/etias-2026-explained/", "/guides/how-we-count/", "/guides/passport-validity-six-month-rule/",
     "/guides/schengen-90-180-rule/", "/guides/transit-visa-guide/",
     "/guides/visa-types-explained/", "/passport-validity/",
-    "/schengen-calculator/", "/visa-checklist/tr-schengen/", "/appointment-alert/",
+    "/schengen-calculator/", "/visa-checklist/tr-schengen/", "/appointment-alert/", "/for-agencies/",
     "/visa-shortcuts/", "/passport/", "/visa/", "/reports/", "/open-data/"
   ];
   function isTrPath(p) { return /^\/tr(\/|$)/.test(p); }

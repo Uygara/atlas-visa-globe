@@ -49,6 +49,7 @@ jobs:
             if (j.devices) lines.push(`- Bildirime izin veren yeni cihaz: ${j.devices}. Toplam ${j.deviceTotal}.`);
             if (j.waitlist) lines.push(`- Randevu alarmı bekleme listesine yeni kayıt: ${j.waitlist}. Toplam ${j.waitlistTotal}.`);
             if (j.pass) lines.push(`- Travel Pass bekleme listesine yeni kayıt: ${j.pass}. Toplam ${j.passTotal}.`);
+            if (j.agency) lines.push(`- Yeni acente pilot talebi: ${j.agency}. Toplam ${j.agencyTotal}. İki iş günü içinde dön (node tools/usage-report.js).`);
             const errs = ["accountsError", "usersError", "devicesError", "waitlistError"].filter((k) => j[k]);
             if (errs.length) lines.push("- Okunamayan kaynak: " + errs.map((k) => j[k]).join("; "));
             process.stdout.write(lines.join("\n"));

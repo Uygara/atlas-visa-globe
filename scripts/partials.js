@@ -13,7 +13,7 @@
 const { PRIMARY, GROUPS, SUPPORT, INSTAGRAM, isCurrent } = require("../assets/site-nav.js");
 const { makeT, hasTr, toTr, hreflang } = require("./locales");
 
-const ASSET_VERSION = "20261128a";
+const ASSET_VERSION = "20261128b";
 
 function esc(s) {
   return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -170,7 +170,7 @@ ${items.map(([h, label]) => `        <li><a href="${href(h)}">${esc(t(label))}</
 ${col("Maps", [["/", "Visa map"], ["/transit-map/", "Transit map"], ["/safety-map/", "Safety map"], ["/climate-map/", "Climate map"]])}
 ${col("Tools", [["/itinerary/", "Travel planner"], ["/panel/", "My panel"], ["/schengen-calculator/", "Schengen calc"], ["/etias/", "ETIAS 2026"], ["/passport-validity/", "Passport validity"], ["/alerts/", "Alerts"], ["/travel-pass/", "Travel Pass"], ["/appointment-alert/", "Appointment alert"]])}
 ${col("Read", [["/guides/", "Guides"], ["/passport/", "All passports"], ["/visa/", "Visa by destination"], ["/visa-shortcuts/", "Visa shortcuts"], ["/digital-nomad-visa/", "Digital nomad visas"], ["/citizenship-by-investment/", "Citizenship by investment"], ["/open-data/", "Open data"]])}
-${col("The project", [["/about/", "About"], ["/contact/", "Contact"], ["/privacy/", "Privacy"], ["/terms/", "Terms"], [SUPPORT.href, "Support"], ["https://www.instagram.com/travelnow.info/", "Instagram"], ["https://github.com/Uygara/atlas-visa-globe", "Source on GitHub"]])}
+${col("The project", [["/about/", "About"], ["/for-agencies/", "For agencies"], ["/contact/", "Contact"], ["/privacy/", "Privacy"], ["/terms/", "Terms"], [SUPPORT.href, "Support"], ["https://www.instagram.com/travelnow.info/", "Instagram"], ["https://github.com/Uygara/atlas-visa-globe", "Source on GitHub"]])}
   </div>
 </footer>`;
 }

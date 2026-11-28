@@ -41,6 +41,25 @@ TR tarafı çok daha yüksek dönüşüm ve ödeme isteği gösteriyorsa yön T�
 
 Arada kalırsa bir ay daha ölç; trafik çok düşükse (bekleme listesi < 300 görüntüleme) sonuç anlamsızdır, önce trafik sorunu.
 
+## Acente pilotu (28 Kasım'da eklendi)
+Yön değişikliği: bireysel abonelik bugünkü trafikle (haftada ~124 kullanıcı) ayda 100 
+- Travel Pass'in çoğu parçası bugün ücretsiz olan özelliklerin üstüne kurulu. Ücretsiz uyarılarla yetinen bir kitle
+  bulunursa bu sonucun kendisi bilgidir: o zaman abonelik değil, sigorta ve başvuru ortaklıkları ana gelir olur.
+- Diğer global ve düzenli gelir yolu B2B: doğrulanmış vize verisini seyahat acentelerine, İK/relocation şirketlerine
+  ve uygulamalara API olarak satmak. Bu testte kurulmuyor; 27 Aralık kararından sonra ele alınacak.
+- Randevu alarmının yasal ve güvenilir bir veri kaynağı henüz yok. VFS/iData kazımak kullanım şartlarına aykırı; kullanıcı
+  bildirimi ve resmî duyurular daha yavaş. Talep çıkarsa önce bu soru çözülmeli, sonra ödeme altyapısı.
+- AXA Schengen'in komisyon oranı herkese açık değil ("pazarlığa açık"). Gerçek oran Tradedoubler onayından sonra görülecek.
+ı geçemez; gelir bizim trafiğimize
+bağlı olmayan B2B taraftan gelmeli. Fikir sıralaması: https://claude.ai/artifact/H1xTamcQnFG5wvfRFYCGfX
+- `/for-agencies/` (EN + TR, "siz" diliyle): acentenin logosuyla çalışan vize denetleyicisi için pilot talebi.
+  Başlangıç 19 $/ay, Acente 49 $/ay, "önce konuşalım", "yalnızca ücretsizse". Kayıt `waitlist/{sha256("agency:" + e-posta)}`,
+  `product: "agency"`, `org`, `site`. `node tools/usage-report.js` "Agency pilot requests" satırı acente adlarını listeler;
+  e-posta Firebase konsolunda. Sayfa her talebe iki iş günü içinde dönüş sözü veriyor.
+- Asıl doğrulama satış görüşmesi: İpek 40 acente ve 10 vize danışmanına bu sayfanın bağlantısıyla yazar.
+  Ölçüt (4 hafta): 5 yazılı "öderim" ya da 3 ücretli pilot → markalı sürüm ve ödeme kurulur. 0-1 → B2B yönü yeniden düşünülür.
+- Markalı sürüm, kaynak etiketi ve değişiklik e-postası henüz yok; sayfa bunları "acente sürümü" olarak anlatıyor.
+
 ## Bilinen sınırlar
 - Travel Pass'in çoğu parçası bugün ücretsiz olan özelliklerin üstüne kurulu. Ücretsiz uyarılarla yetinen bir kitle
   bulunursa bu sonucun kendisi bilgidir: o zaman abonelik değil, sigorta ve başvuru ortaklıkları ana gelir olur.

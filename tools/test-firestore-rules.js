@@ -1,4 +1,4 @@
-// Tests firestore.rules against the Firestore emulator: accounts and traveller experiences.
+// Tests firestore.rules against the Firestore emulator: accounts, traveller experiences and the waiting lists.
 // Needs Java and these packages (not in the repo's package.json, CI installs them):
 //   npm i --no-save firebase-tools@13 @firebase/rules-unit-testing@3 firebase@10
 //   npx firebase emulators:exec --only firestore --project demo-travelnow "node tools/test-firestore-rules.js"
@@ -88,6 +88,20 @@ async function t(name, fn) {
     await assertSucceeds(deleteDoc(doc(db("carol"), "experiences", "carol_TR-FR")));
   });
   await t("the author cannot edit the text", () => assertFails(setDoc(doc(db("alice"), "experiences", "alice_TR-FR"), exp("alice", { text: TEXT + " Edited later." }))));
+
+  // Waiting lists (demand tests): create only, never read; the agency pilot adds org and site.
+  const WL = "a".repeat(64), WL2 = "b".repeat(64), WL3 = "c".repeat(64);
+  const agency = (over) => Object.assign({ email: "desk@agency.example", lang: "tr", price: "19m", consent: true, product: "agency",
+    org: "Örnek Turizm", site: "https://agency.example", country: "TR", src: "direct" }, over || {});
+  await t("an agency pilot request can be added", () => assertSucceeds(setDoc(doc(db(null), "waitlist", WL), agency())));
+  await t("the same address cannot be added twice", () => assertFails(setDoc(doc(db(null), "waitlist", WL), agency({ price: "49m" }))));
+  await t("the waiting list cannot be read", () => assertFails(getDoc(doc(db(null), "waitlist", WL))));
+  await t("an agency name over 120 characters is refused", () => assertFails(setDoc(doc(db(null), "waitlist", WL2), agency({ org: "x".repeat(121) }))));
+  await t("an unknown price is refused", () => assertFails(setDoc(doc(db(null), "waitlist", WL2), agency({ price: "1000" }))));
+  await t("a request without consent is refused", () => assertFails(setDoc(doc(db(null), "waitlist", WL2), agency({ consent: false }))));
+  await t("an unknown field is refused", () => assertFails(setDoc(doc(db(null), "waitlist", WL2), agency({ phone: "123" }))));
+  await t("a Travel Pass entry still works", () => assertSucceeds(setDoc(doc(db(null), "waitlist", WL3),
+    { email: "me@example.com", lang: "en", price: "29y", consent: true, product: "pass", passport: "TR" })));
 
   await env.cleanup();
   console.log(`\n${n} passed${failed ? `, ${failed} FAILED` : ""}`);
