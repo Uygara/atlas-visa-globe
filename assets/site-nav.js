@@ -26,7 +26,9 @@
     { key: "nav.grp_calc", en: "Tools", top: true, pos: 4, items: [
       { href: "/schengen-calculator/", key: "nav.schengen90",  en: "Schengen 90/180",   dkey: "nav.d_schengen", den: "How many days are left" },
       { href: "/passport-validity/",   key: "nav.validity",    en: "Passport validity", dkey: "nav.d_validity", den: "The 3-month and 6-month rules" },
-      { href: "/etias/",               key: "nav.etias",       en: "ETIAS 2026",        dkey: "nav.d_etias",    den: "European travel authorization" }
+      { href: "/etias/",               key: "nav.etias",       en: "ETIAS 2026",        dkey: "nav.d_etias",    den: "European travel authorization" },
+      { href: "/travel-pass/",         key: "nav.pass",        en: "Travel Pass",       dkey: "nav.d_pass",     den: "Day counts and expiry reminders (planned)" },
+      { href: "/appointment-alert/",   key: "nav.appt",        en: "Appointment alert", dkey: "nav.d_appt",     den: "Schengen visa slots in Türkiye (planned)" }
     ] },
     { key: "nav.grp_read", en: "Read and explore", top: true, pos: 5, items: [
       { href: "/passport/",                  key: "nav.passports", en: "Passports" },
