@@ -17,6 +17,11 @@ module.exports = {
     description: "Türkiye'deki vize merkezinde Schengen randevusu açıldığında haber veren alarmın bekleme listesine yazıl. Hizmet henüz yok; önce talebi ölçüyoruz.",
     ogDescription: "Vize merkezinde Schengen randevusu açıldığında haber al. Bekleme listesine yazıl.",
   },
+  "/for-agencies/": {
+    title: "Seyahat acenteleri için vize denetleyicisi: pilot · travelnow.info",
+    description: "Acentenin sitesinde, kendi logonla çalışan vize denetleyicisi: 200 pasaport, her ülke, her gün güncel. Pilot için başvur.",
+    ogDescription: "Acentenin markasıyla vize cevapları, her cevapta kaynak. Pilot için başvur.",
+  },
   "/privacy/": {
     title: "Gizlilik politikası · travelnow.info",
     description: "travelnow.info ve uygulamasının hangi kişisel verileri, neden ve ne kadar süre işlediği; verilerine nasıl erişip silebileceğin.",

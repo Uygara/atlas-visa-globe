@@ -90,17 +90,18 @@ async function devices(tok) {
 }
 
 // Firestore waitlist/{sha256}: the Schengen appointment-alert waiting list (/appointment-alert/).
-// Only the answers are read here; the address field is never requested (mask).
+// Only the answers are read here; the address field is never requested (mask). Agency pilot
+// requests (product "agency") also carry the agency name and website, which are business details.
 async function waitlist(tok) {
   const out = [];
   let next = "";
-  const mask = ["price", "country", "city", "lang", "src", "product", "passport"].map((k) => "mask.fieldPaths=" + k).join("&");
+  const mask = ["price", "country", "city", "lang", "src", "product", "passport", "org", "site"].map((k) => "mask.fieldPaths=" + k).join("&");
   do {
     const j = await api(tok, `https://firestore.googleapis.com/v1/projects/${PROJECT}/databases/(default)/documents/waitlist?pageSize=300&${mask}` + (next ? "&pageToken=" + encodeURIComponent(next) : ""));
     for (const d of j.documents || []) {
       const f = d.fields || {};
       const v = (k) => (f[k] || {}).stringValue || "?";
-      out.push({ product: (f.product || {}).stringValue || "appt", passport: v("passport"), price: v("price"), country: v("country"), city: v("city"), lang: v("lang"), src: v("src"), created: Date.parse(d.createTime) || 0 });
+      out.push({ product: (f.product || {}).stringValue || "appt", passport: v("passport"), price: v("price"), country: v("country"), city: v("city"), lang: v("lang"), src: v("src"), org: v("org"), site: v("site"), created: Date.parse(d.createTime) || 0 });
     }
     next = j.nextPageToken || "";
   } while (next);
@@ -143,6 +144,8 @@ function weekly(list, key, weeks) {
       const A = W.filter((w) => w.product === "appt"), T = W.filter((w) => w.product === "pass");
       out.waitlist = fresh(A, "created").length; out.waitlistTotal = A.length;
       out.pass = fresh(T, "created").length; out.passTotal = T.length;
+      const G = W.filter((w) => w.product === "agency");
+      out.agency = fresh(G, "created").length; out.agencyTotal = G.length;
     } else out.waitlistError = result.waitlist.error;
     console.log(JSON.stringify(out));
     return;
@@ -163,6 +166,8 @@ function weekly(list, key, weeks) {
     travelPass: W ? (() => { const T = W.filter((w) => w.product === "pass"); return { total: T.length, new7d: since(T, "created", 7), new30d: since(T, "created", 30),
       paying: T.filter((w) => w.price !== "0").length, byPrice: tally(T, "price"), byLang: tally(T, "lang"),
       byPassport: tally(T, "passport"), bySource: tally(T, "src") }; })() : result.waitlist,
+    agency: W ? (() => { const G = W.filter((w) => w.product === "agency"); return { total: G.length, new7d: since(G, "created", 7),
+      byPrice: tally(G, "price"), list: G.sort((a, b) => b.created - a.created).slice(0, 20).map((g) => ({ org: g.org, site: g.site, country: g.country, price: g.price, lang: g.lang, created: new Date(g.created).toISOString().slice(0, 10) })) }; })() : result.waitlist,
   };
   if (AS_JSON) { console.log(JSON.stringify(summary)); return; }
   const a = summary.accounts, al = summary.alerts, d = summary.devices;
@@ -175,5 +180,8 @@ function weekly(list, key, weeks) {
   const tp = summary.travelPass;
   console.log("Travel Pass waiting list: " + (tp.error ? "error " + tp.error : `${tp.total} total · new 7d ${tp.new7d} · 30d ${tp.new30d} · would pay ${tp.paying} · option ${JSON.stringify(tp.byPrice)}`));
   if (!tp.error && tp.total) console.log("  lang " + JSON.stringify(tp.byLang) + " · passport " + JSON.stringify(tp.byPassport) + " · source " + JSON.stringify(tp.bySource));
+  const ag = summary.agency;
+  console.log("Agency pilot requests: " + (ag.error ? "error " + ag.error : `${ag.total} total · new 7d ${ag.new7d} · plan ${JSON.stringify(ag.byPrice)} (reply within 2 working days; email in Firebase console → waitlist)`));
+  if (!ag.error) for (const g of ag.list) console.log(`  ${g.created} ${g.org} · ${g.site} · ${g.country} · ${g.price} · ${g.lang}`);
   if (!w.error && w.total) console.log("  country " + JSON.stringify(w.byCountry) + " · city " + JSON.stringify(w.byCity) + " · source " + JSON.stringify(w.bySource));
 })().catch((e) => { console.error("usage-report: " + e.message); process.exit(1); });

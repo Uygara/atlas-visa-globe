@@ -131,6 +131,10 @@ Durum: `açık` · `sürüyor` · `bekliyor: <neyi>` · `bitti <hash>`
 
 ## Değerlendirilecek
 
+- **B1 · Acentelere markalı vize denetleyicisi** · doğrulanıyor (2026-11-28) · `/for-agencies/` pilot talebi + İpek'in görüşmeleri
+  (`docs/revenue-test.md`). 5 "öderim" çıkarsa: API anahtarı ve alan adı kilidi, logo/renk ayarı, her cevapta kaynak ve kontrol
+  tarihi, ülke bazlı değişiklik e-postası, abonelik ödemesi. Aynı anahtar sistemi geliştirici API'sine de açılır.
+
 - Uygulamada veri tazeliği (mağaza güncellemesi olmadan JSON indirme), `TODO.md`de de var.
 - Başvuru son tarihi hatırlatması: bitti (2026-11-27), `dispatch-push.js` push olarak gönderiyor (bir hafta önce + günü geldiğinde).
   E-postası Resend bekliyor; eski `dispatch-reminders.js` Cloudflare KV'ye bağlı ve çalışmıyor, R1 e-posta işiyle birlikte silinmeli.
