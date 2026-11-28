@@ -34,10 +34,8 @@ const PAGES = [
     url: "https://www.mfa.gov.tr/yabancilarin-tabi-oldugu-vize-rejimi.tr.mfa" },
   { id: "tr-mfa-foreigners-en", name: "Türkiye MFA: visa information for foreigners (EN)",
     url: "https://www.mfa.gov.tr/visa-information-for-foreigners.en.mfa" },
-  { id: "eu-visa-policy", name: "European Commission: Schengen visa policy",
-    url: "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy_en" },
-  { id: "eu-council-visa-policy", name: "Council of the EU: EU visa policy (suspension mechanism, new waivers)",
-    url: "https://www.consilium.europa.eu/en/policies/eu-visa-policy/" },
+  // EU pages (home-affairs.ec.europa.eu, consilium.europa.eu) refuse GitHub runners (404/403); EU
+  // changes reach us through the news searches and the Wikipedia edit feed instead.
   { id: "uk-visitor-visa-list", name: "UK: visa nationals list (Immigration Rules Appendix Visitor: Visa national list)",
     url: "https://www.gov.uk/guidance/immigration-rules/immigration-rules-appendix-visitor-visa-national-list" },
   { id: "uk-eta", name: "UK: who needs an ETA",
