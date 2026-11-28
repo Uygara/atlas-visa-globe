@@ -35,7 +35,9 @@ const PAGES = [
   { id: "tr-mfa-foreigners-en", name: "Türkiye MFA: visa information for foreigners (EN)",
     url: "https://www.mfa.gov.tr/visa-information-for-foreigners.en.mfa" },
   { id: "eu-visa-policy", name: "European Commission: Schengen visa policy",
-    url: "https://home-affairs.ec.europa.eu/policies/schengen-borders-and-visa/visa-policy_en" },
+    url: "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy_en" },
+  { id: "eu-council-visa-policy", name: "Council of the EU: EU visa policy (suspension mechanism, new waivers)",
+    url: "https://www.consilium.europa.eu/en/policies/eu-visa-policy/" },
   { id: "uk-visitor-visa-list", name: "UK: visa nationals list (Immigration Rules Appendix Visitor: Visa national list)",
     url: "https://www.gov.uk/guidance/immigration-rules/immigration-rules-appendix-visitor-visa-national-list" },
   { id: "uk-eta", name: "UK: who needs an ETA",
@@ -71,7 +73,8 @@ function decode(s) {
 function htmlToLines(html) {
   let s = html
     .replace(/<!--[\s\S]*?-->/g, " ")
-    .replace(/<(script|style|noscript|svg|head|nav|footer|form)[\s\S]*?<\/\1>/gi, " ")
+    // No "form" here: ASP.NET sites such as mfa.gov.tr put the whole page inside one <form>.
+    .replace(/<(script|style|noscript|svg|head|nav|footer)\b[\s\S]*?<\/\1>/gi, " ")
     .replace(/<\/(p|div|li|tr|h[1-6]|table|ul|ol|section|article|dd|dt)>|<br\s*\/?>/gi, "\n")
     .replace(/<\/t[dh]>/gi, " | ")
     .replace(/<[^>]+>/g, " ");
@@ -167,7 +170,12 @@ async function checkNews(st, out) {
   for (const n of NEWS) {
     const url = `https://news.google.com/rss/search?q=${encodeURIComponent(n.q + " when:2d")}&hl=${n.hl}&gl=${n.gl}&ceid=${n.gl}:${n.hl.split("-")[0]}`;
     let xml;
-    try { xml = await get(url, "application/rss+xml"); } catch (e) { console.log(`FAIL  news ${n.q}: ${e.message}`); continue; }
+    // Google News answers 503 to quick bursts: space the searches and retry once.
+    await new Promise((r) => setTimeout(r, 3000));
+    try { xml = await get(url, "application/rss+xml"); } catch (e) {
+      await new Promise((r) => setTimeout(r, 15000));
+      try { xml = await get(url, "application/rss+xml"); } catch (e2) { console.log(`FAIL  news ${n.q}: ${e2.message}`); continue; }
+    }
     for (const m of xml.matchAll(/<item>([\s\S]*?)<\/item>/g)) {
       const pick = (tag) => { const x = m[1].match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)</${tag}>`)); return x ? decode(x[1].replace(/<!\[CDATA\[|\]\]>/g, "")).trim() : ""; };
       const title = pick("title"), link = pick("link"), date = Date.parse(pick("pubDate"));
