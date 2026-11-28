@@ -1,11 +1,14 @@
 # travelnow.info: açık işler
 
-> Güncelleme: 2026-11-27 · **Yalnızca açık işler.** Biten iş silinir; ne yapıldığı `STATE.md`'de. Öncelik: **P1**
+> Güncelleme: 2026-11-28 · **Yalnızca açık işler.** Biten iş silinir; ne yapıldığı `STATE.md`'de. Öncelik: **P1**
 > sıradaki, **P2** yakında, **P3** sonra. Kurallar ve oturum rutini `CLAUDE.md`'de. Mobil: `MOBILE-SETUP.md`.
 > Oturum başında: `node tools/analytics-report.js` (GA4 + Search Console, ~40 satır).
 
 ## ▶ Yeni oturumda buradan başla
 
+00. **Kural takibi (28 Kasım):** GitHub'da açık `rule-change` issue varsa önce onu `docs/RULE-WATCH.md`'ye göre işle
+   (resmî kaynakla doğrula, override + denetim satırı, kapat). Her sabah zamanlanmış bir Claude görevi de bunu yapıyor.
+   İlk günlerde gürültülü sayfa olursa `backend/watch-sources.js`'de o sayfayı sıkılaştır.
 0. **Gelir testi (27 Kasım – 27 Aralık, yeni özellik yok):** `docs/revenue-test.md`. Her oturumda
    `node tools/analytics-report.js` "revenue test" satırı ve `node tools/usage-report.js` iki bekleme listesi satırı (randevu alarmı TR, Travel Pass global).
    27 Aralık'ta tablodaki ölçütlere göre karar ver. Tradedoubler bağlantısı gelince `_redirects` ve `go/axa-schengen*/index.html`'i değiştir.

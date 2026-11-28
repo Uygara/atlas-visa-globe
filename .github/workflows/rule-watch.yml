@@ -1,0 +1,53 @@
+name: Rule watch
+
+# Reads official visa pages, Türkiye's Official Gazette and news searches every six hours
+# (backend/watch-sources.js). Anything new goes into one open "rule-change" issue, which emails
+# the repository owner. Visa data is never changed here: a person or Claude confirms the change
+# on the official page first (docs/RULE-WATCH.md).
+
+on:
+  schedule:
+    - cron: "7 1,7,13,19 * * *"   # 04:07, 10:07, 16:07, 22:07 Türkiye time
+  workflow_dispatch: {}
+
+concurrency:
+  group: rule-watch
+  cancel-in-progress: false
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # What was seen last time lives in the Actions cache, not in git, so the watch never
+      # triggers a site deploy. A lost cache only means one quiet run that stores a new baseline.
+      - name: Restore watch state
+        uses: actions/cache@v4
+        with:
+          path: backend/watch
+          key: rule-watch-${{ github.run_id }}
+          restore-keys: rule-watch-
+
+      - name: Check sources
+        run: node backend/watch-sources.js
+
+      - name: Open or update the rule-change issue
+        if: hashFiles('watch-report.md') != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          num="$(gh issue list --label rule-change --state open --json number --jq '.[0].number' || true)"
+          if [ -n "$num" ]; then
+            gh issue comment "$num" --body-file watch-report.md
+          else
+            gh label create rule-change --color D93F0B --description "Possible visa rule change to confirm" 2>/dev/null || true
+            gh issue create --title "Possible visa rule changes to confirm" --label rule-change --body-file watch-report.md
+          fi

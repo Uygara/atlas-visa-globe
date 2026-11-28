@@ -594,7 +594,7 @@ const T = {
 
     // Header / tagline
     "header.tagline":            "Where can your passport take you?",
-    "header.updated":            "Updated",
+    "header.updated":            "Checked",
 
     // Continents (for DetailCard)
     "cont.EU": "Europe", "cont.AS": "Asia", "cont.AF": "Africa",
@@ -1313,7 +1313,7 @@ const T = {
     "group.remove":              "{name} kaldır",
 
     "header.tagline":            "Pasaportun seni nereye götürebilir?",
-    "header.updated":            "Güncellendi",
+    "header.updated":            "Son kontrol",
 
     "cont.EU": "Avrupa", "cont.AS": "Asya", "cont.AF": "Afrika",
     "cont.NA": "K. Amerika", "cont.SA": "G. Amerika", "cont.OC": "Okyanusya",
@@ -1611,7 +1611,7 @@ const T = {
     "picker.search": "Buscar…", "picker.no_matches_short": "Sin coincidencias.",
     "picker.pick_second": "Elige un segundo pasaporte…",
     "group.label": "Grupo", "group.add_passport": "+ Añadir pasaporte", "group.remove": "Quitar {name}",
-    "header.tagline": "¿A dónde te puede llevar tu pasaporte?", "header.updated": "Actualizado",
+    "header.tagline": "¿A dónde te puede llevar tu pasaporte?", "header.updated": "Revisado",
     "cont.EU": "Europa", "cont.AS": "Asia", "cont.AF": "África", "cont.NA": "N. América",
     "cont.SA": "S. América", "cont.OC": "Oceanía", "cont.AN": "Antártida",
     "detail.close": "Cerrar", "detail.vs": "vs", "detail.per_member": "Por miembro",
@@ -2073,7 +2073,7 @@ const T = {
     "picker.search": "Suchen…", "picker.no_matches_short": "Keine Treffer.",
     "picker.pick_second": "Zweiten Pass wählen…",
     "group.label": "Gruppe", "group.add_passport": "+ Pass hinzufügen", "group.remove": "{name} entfernen",
-    "header.tagline": "Wohin bringt dich dein Pass?", "header.updated": "Aktualisiert",
+    "header.tagline": "Wohin bringt dich dein Pass?", "header.updated": "Geprüft",
     "cont.EU": "Europa", "cont.AS": "Asien", "cont.AF": "Afrika", "cont.NA": "N.-Amerika",
     "cont.SA": "S.-Amerika", "cont.OC": "Ozeanien", "cont.AN": "Antarktis",
     "detail.close": "Schließen", "detail.vs": "vs", "detail.per_member": "Pro Mitglied",
@@ -2534,7 +2534,7 @@ const T = {
     "picker.search": "Rechercher…", "picker.no_matches_short": "Aucun résultat.",
     "picker.pick_second": "Choisir un second passeport…",
     "group.label": "Groupe", "group.add_passport": "+ Ajouter passeport", "group.remove": "Retirer {name}",
-    "header.tagline": "Où ton passeport peut-il t'emmener ?", "header.updated": "Mis à jour",
+    "header.tagline": "Où ton passeport peut-il t'emmener ?", "header.updated": "Vérifié le",
     "cont.EU": "Europe", "cont.AS": "Asie", "cont.AF": "Afrique", "cont.NA": "Am. du N.",
     "cont.SA": "Am. du S.", "cont.OC": "Océanie", "cont.AN": "Antarctique",
     "detail.close": "Fermer", "detail.vs": "vs", "detail.per_member": "Par membre",
@@ -2995,7 +2995,7 @@ const T = {
     "picker.search": "ابحث…", "picker.no_matches_short": "لا نتائج.",
     "picker.pick_second": "اختر جواز سفر ثانٍ…",
     "group.label": "مجموعة", "group.add_passport": "+ أضف جوازًا", "group.remove": "إزالة {name}",
-    "header.tagline": "إلى أين يأخذك جواز سفرك؟", "header.updated": "محدّث",
+    "header.tagline": "إلى أين يأخذك جواز سفرك؟", "header.updated": "آخر فحص",
     "cont.EU": "أوروبا", "cont.AS": "آسيا", "cont.AF": "أفريقيا", "cont.NA": "أمريكا الشمالية",
     "cont.SA": "أمريكا الجنوبية", "cont.OC": "أوقيانوسيا", "cont.AN": "أنتاركتيكا",
     "detail.close": "إغلاق", "detail.vs": "مقابل", "detail.per_member": "لكل عضو",
