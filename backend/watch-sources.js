@@ -16,6 +16,9 @@
 
 const fs = require("fs");
 const path = require("path");
+// node-fetch, not the built-in fetch: the Turkish MFA answers 403 to the built-in one from GitHub
+// runners, while backend/fetch-advisories.js (node-fetch) reads the same site every day.
+const fetch = require("node-fetch");
 
 const ROOT = path.resolve(__dirname, "..");
 const DIR = path.join(__dirname, "watch");
@@ -32,9 +35,7 @@ const PAGES = [
   { id: "tr-mfa-foreigners-en", name: "Türkiye MFA: visa information for foreigners (EN)",
     url: "https://www.mfa.gov.tr/visa-information-for-foreigners.en.mfa" },
   { id: "eu-visa-policy", name: "European Commission: Schengen visa policy",
-    url: "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy_en" },
-  { id: "eu-etias-who", name: "ETIAS: who needs an ETIAS",
-    url: "https://travel-europe.europa.eu/etias/who-should-apply_en" },
+    url: "https://home-affairs.ec.europa.eu/policies/schengen-borders-and-visa/visa-policy_en" },
   { id: "uk-visitor-visa-list", name: "UK: visa nationals list (Immigration Rules Appendix Visitor: Visa national list)",
     url: "https://www.gov.uk/guidance/immigration-rules/immigration-rules-appendix-visitor-visa-national-list" },
   { id: "uk-eta", name: "UK: who needs an ETA",
@@ -52,7 +53,9 @@ const NEWS = [
   { q: '"visa exemption" suspended OR extended OR abolished', hl: "en-US", gl: "US" },
 ];
 const NEWS_MAX_AGE_H = 48;
-const NEWS_MAX_ITEMS = 25;
+const NEWS_MAX_ITEMS = 15;
+// Only headlines that say something changed; "visa-free countries list 2026" articles are not leads.
+const NEWS_CHANGE = /suspend|reinstat|introduc|abolish|scrap|lift|waive|end[s]? visa|new visa|from (1|\d+) |askıya|kaldır|getir|başlıyor|başladı|sona er|muafiyet(i)? (tanı|uzat)|zorunluluğu/i;
 
 // ── text helpers ───────────────────────────────────────────────────────────
 function decode(s) {
@@ -84,14 +87,10 @@ function lineDiff(oldLines, newLines) {
 }
 
 async function get(url, accept = "text/html") {
-  const ctl = new AbortController();
-  const t = setTimeout(() => ctl.abort(), 30000);
-  try {
-    const r = await fetch(url, { signal: ctl.signal, redirect: "follow",
-      headers: { "User-Agent": UA, Accept: accept, "Accept-Language": "tr,en;q=0.8" } });
-    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-    return await r.text();
-  } finally { clearTimeout(t); }
+  const r = await fetch(url, { timeout: 30000, redirect: "follow",
+    headers: { "User-Agent": UA, Accept: accept, "Accept-Language": "tr,en;q=0.8" } });
+  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+  return await r.text();
 }
 
 function loadState() {
@@ -145,9 +144,11 @@ async function checkGazette(st, out) {
   rec.fails = 0; rec.checked = new Date().toISOString();
   const seen = new Set(st.seen);
   const hits = [];
+  let links = 0;
   // Each entry is a link to the act; keep the link text that mentions visas or passports.
   for (const m of html.matchAll(/<a[^>]+href="([^"]+)"[^>]*>([\s\S]*?)<\/a>/gi)) {
     const text = decode(m[2].replace(/<[^>]+>/g, " ")).replace(/\s+/g, " ").trim();
+    links++;
     if (text.length < 15 || !KEYWORDS.test(text)) continue;
     const href = new URL(m[1], url).href;
     const key = `rg:${href}`;
@@ -155,7 +156,7 @@ async function checkGazette(st, out) {
     st.seen.push(key);
     hits.push(`- ${text} (${href})`);
   }
-  console.log(`gazette ${ymd}: ${hits.length} new visa or passport entries`);
+  console.log(`gazette ${ymd}: ${links} links, ${hits.length} new visa or passport entries`);
   if (hits.length) out.gazette.push(...hits);
 }
 
@@ -170,7 +171,7 @@ async function checkNews(st, out) {
     for (const m of xml.matchAll(/<item>([\s\S]*?)<\/item>/g)) {
       const pick = (tag) => { const x = m[1].match(new RegExp(`<${tag}[^>]*>([\\s\\S]*?)</${tag}>`)); return x ? decode(x[1].replace(/<!\[CDATA\[|\]\]>/g, "")).trim() : ""; };
       const title = pick("title"), link = pick("link"), date = Date.parse(pick("pubDate"));
-      if (!title || !link || (date && date < cutoff)) continue;
+      if (!title || !link || (date && date < cutoff) || !NEWS_CHANGE.test(title)) continue;
       const key = `news:${title.toLowerCase().replace(/\W+/g, " ").trim().slice(0, 120)}`;
       if (seen.has(key)) continue;
       seen.add(key); st.seen.push(key);

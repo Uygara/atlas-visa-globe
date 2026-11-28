@@ -7,7 +7,7 @@ that gap without letting a script write visa data.
 ## What runs
 
 - `.github/workflows/rule-watch.yml`, every six hours, runs `backend/watch-sources.js`. It reads:
-  - official pages (Türkiye MFA lists in both directions, European Commission visa policy, ETIAS,
+  - official pages (Türkiye MFA lists in both directions, European Commission visa policy,
     UK visa nationals and ETA pages) and stores their visible text; a changed line is reported;
   - Türkiye's Official Gazette of the day: new entries that mention visas or passports;
   - Google News searches in Turkish and English: new headlines, as leads only.

@@ -27,6 +27,10 @@ jobs:
         with:
           node-version: "20"
 
+      - name: Install deps
+        working-directory: backend
+        run: npm ci
+
       # What was seen last time lives in the Actions cache, not in git, so the watch never
       # triggers a site deploy. A lost cache only means one quiet run that stores a new baseline.
       - name: Restore watch state
