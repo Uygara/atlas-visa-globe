@@ -18,6 +18,7 @@ const { useState, useEffect, useMemo, useCallback, useRef } = React;
 
 const ADVISORIES = window.TRAVEL_ADVISORIES || { countries: {}, sources: {} };
 const ADMIN1_INDEX_URL = "/data/admin1/index.json";
+const ADMIN1_WORLD_URL = "/data/admin1/world.json";
 const LEVEL_COLOR = { 0: "var(--na)", 1: "var(--risk1)", 2: "var(--risk2)", 3: "var(--risk3)", 4: "var(--risk4)" };
 // A source older than this is shown as stale — the US reissues some advisories
 // only once a year, and a 2025 date must not look like today's news.
@@ -143,10 +144,50 @@ function SafetyMapApp() {
     return LEVEL_COLOR[lv || 0];
   }, [selected, pickedRegion]);
 
-  // Provinces are drawn only in the drill-down, for the picked country.
-  const regionFeatures = useMemo(() => (
-    regions && regions.iso2 === selected ? regions.features : null
-  ), [regions, selected]);
+  // Warned provinces of every country, shown on the world view without a
+  // click: data/admin1/world.json is a coarse merge of all province outlines
+  // (tools/build-admin1-world.js), loaded after the first paint. Only the
+  // provinces whose level differs from their country's are kept; a province
+  // without its own warning keeps the country's level, none is ever guessed.
+  const [worldRegions, setWorldRegions] = useState(null);
+  useEffect(() => {
+    let alive = true;
+    const load = () => fetch(ADMIN1_WORLD_URL)
+      .then(r => (r.ok ? r.json() : Promise.reject(new Error("no world provinces"))))
+      .then(topo => {
+        if (!alive) return;
+        const out = [];
+        for (const iso2 of Object.keys(REGION_LEVELS)) {
+          const obj = topo.objects[iso2];
+          if (!obj) continue;
+          const own = countryLevelOf(iso2);
+          for (const f of topojson.feature(topo, obj).features) {
+            const id = (f.properties && f.properties.id) || f.id;
+            const lv = REGION_LEVELS[iso2][id];
+            if (!lv || lv === own) continue;
+            f.properties = { id, c: iso2 };
+            out.push(f);
+          }
+        }
+        setWorldRegions(out);
+      })
+      .catch(() => {});
+    // The timeout makes sure it still loads in a busy or background tab.
+    if (window.requestIdleCallback) window.requestIdleCallback(load, { timeout: 1500 });
+    else setTimeout(load, 300);
+    return () => { alive = false; };
+  }, []);
+
+  // World view: the warned provinces in their own colour, with no outlines, so
+  // each country still reads as one shape. Drill-down: every province of the
+  // picked country, outlined; the rest of the world stays faded and flat.
+  const regionFeatures = useMemo(() => {
+    if (selected) return regions && regions.iso2 === selected ? regions.features : null;
+    if (!worldRegions) return null;
+    const list = filter ? worldRegions.filter(f => REGION_LEVELS[f.properties.c][f.properties.id] === filter) : worldRegions;
+    return list.length ? list : null;
+  }, [regions, selected, worldRegions, filter]);
+  const regionBorders = useCallback((f) => !!selected && f.properties.c === selected, [selected]);
 
   const hoverRenderer = useCallback((hover) => <SafetyHover hover={hover} names={regionNames} />, [regionNames]);
 
@@ -183,7 +224,12 @@ function SafetyMapApp() {
           regionFeatures={regionFeatures}
           regionFill={regionFill}
           regionInteractive
-          onRegionClick={(f) => setPickedRegion(id => (id === f.properties.id ? null : f.properties.id))}
+          regionBorders={regionBorders}
+          onRegionClick={(f) => {
+            // World view: a tap on a province opens its country. Drill-down: it picks the province.
+            if (!selected || f.properties.c !== selected) { open(f.properties.c); return; }
+            setPickedRegion(id => (id === f.properties.id ? null : f.properties.id));
+          }}
         />
         {selected && (
           <div style={{ position: "absolute", insetInlineStart: 12, top: 12, zIndex: 6, display: "flex", flexDirection: "column", alignItems: "flex-start", gap: 8, maxWidth: "calc(100% - 24px)" }}>
@@ -214,7 +260,7 @@ function SafetyMapApp() {
         <section className="p-sec">
           <Caption n={1}>{tr("safety.levels", "Countries by level")}</Caption>
           <LevelLedger filter={filter} setFilter={setFilter} />
-          <p className="p-fine" style={{ marginTop: 6 }}>{tr("safety.rule_note", "Each country shows its country-wide level: the strictest of the three governments. Where some provinces are rated higher, the country card says so. Tap a country to see its provinces.")}</p>
+          <p className="p-fine" style={{ marginTop: 6 }}>{tr("safety.rule_note", "Each country shows its country-wide level: the strictest of the three governments. Provinces with their own warning are coloured in their level. Tap a country to see its province borders.")}</p>
         </section>
 
         <section className="p-sec">

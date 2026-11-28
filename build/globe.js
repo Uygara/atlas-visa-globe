@@ -142,6 +142,7 @@ function Globe(_ref) {
     regionFeatures = _ref.regionFeatures,
     regionFill = _ref.regionFill,
     regionInteractive = _ref.regionInteractive,
+    regionBorders = _ref.regionBorders,
     onRegionClick = _ref.onRegionClick,
     fitFocus = _ref.fitFocus,
     arcs = _ref.arcs,
@@ -1206,9 +1207,9 @@ function Globe(_ref) {
       className: "region",
       d: "",
       fill: regionFill ? regionFill(f) : "none",
-      stroke: "var(--paper-raised)",
+      stroke: regionBorders && !regionBorders(f) ? regionFill ? regionFill(f) : "none" : "var(--paper-raised)",
       strokeWidth: "0.5",
-      strokeOpacity: "0.7",
+      strokeOpacity: regionBorders && !regionBorders(f) ? 1 : 0.7,
       onMouseEnter: regionInteractive ? function (e) {
         return handleRegionEnter(e, f);
       } : undefined,
