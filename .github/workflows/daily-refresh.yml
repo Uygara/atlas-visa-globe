@@ -2,8 +2,16 @@ name: Daily visa refresh
 
 on:
   schedule:
-    - cron: "0 6 * * *"   # 06:00 UTC every day
+    # GitHub starts scheduled runs late when many jobs share a slot: the old "0 6 * * *" ran at
+    # 15:45-16:40 UTC, so the site showed yesterday's date for most of the Turkish day.
+    # Off-the-hour minutes start sooner; the second run is a same-day backup and catches news.
+    - cron: "23 0 * * *"   # 00:23 UTC (03:23 Türkiye)
+    - cron: "41 11 * * *"  # 11:41 UTC (14:41 Türkiye)
   workflow_dispatch: {}
+
+concurrency:
+  group: daily-refresh
+  cancel-in-progress: false
 
 jobs:
   refresh:
@@ -119,6 +127,8 @@ jobs:
           fi
 
       - name: Dispatch alert emails (if subscribers exist)
+        # Once a day: the 11:41 backup run must not send the same emails twice.
+        if: github.event.schedule != '41 11 * * *'
         # Soft-fails if Cloudflare/Resend secrets aren't configured yet —
         # the script just logs "skipping" and exits 0.
         run: node backend/dispatch-alerts.js
@@ -132,6 +142,8 @@ jobs:
           FROM_EMAIL:                 ${{ vars.FROM_EMAIL }}
 
       - name: Dispatch itinerary apply-by reminders (Pro tier)
+        # Once a day: the 11:41 backup run must not send the same emails twice.
+        if: github.event.schedule != '41 11 * * *'
         # Same soft-fail behaviour. Sends apply-in-N-days emails for any
         # itinerary stored via POST /api/reminders on Pro subscribers.
         run: node backend/dispatch-reminders.js

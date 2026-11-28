@@ -223,6 +223,14 @@ const EU = new Set(["AT","BE","BG","HR","CY","CZ","DK","EE","FI","FR","DE","GR",
     return st !== w.status || (w.days != null && r.days !== w.days);
   }).map(([d, w]) => `TR>${d}=${(ctx.resolveStatus("TR", d) || {}).status}/${(ctx.resolveStatus("TR", d) || {}).days} (want ${w.status}/${w.days})`);
   check("turkish passport answers (MFA list)", trBad, "wrong");
+  // Recent rule changes taken from official decisions (newer than the scraped tables).
+  const RECENT = [
+    ["ME", "TR", "vr", "Türkiye suspended visa-free entry for Montenegrin ordinary passports, 27 Nov 2026"],
+    ["TR", "ME", "vr", "Montenegro requires visas from Turkish ordinary passports since 1 Nov 2026"],
+  ];
+  const recentBad = RECENT.filter(([p, d, want]) => (ctx.resolveStatus(p, d) || {}).status !== want)
+    .map(([p, d, want, why]) => `${p}>${d}=${(ctx.resolveStatus(p, d) || {}).status} (want ${want}: ${why})`);
+  check("recent official rule changes", recentBad, "wrong");
   const ANNEX_IV = "AF BD CD ER ET GH IR IQ NG PK SO LK";
   const common = (ctx.TRANSIT_RULES.SCHENGEN.requiredFor || []).slice().sort().join(" ");
   check("Schengen ATV common list = Visa Code Annex IV", common === ANNEX_IV.split(" ").sort().join(" ") ? [] : [common], "differs");

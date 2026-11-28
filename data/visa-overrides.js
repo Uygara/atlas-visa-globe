@@ -78,6 +78,16 @@ window.TR_MFA_ROWS = {
 };
 Object.assign((window.STATUS_OVERRIDES["TR"] = window.STATUS_OVERRIDES["TR"] || {}), window.TR_MFA_ROWS);
 
+// Montenegrin ordinary passports → Türkiye: the 2008 visa exemption agreement is suspended for
+// ordinary ("umuma mahsus") passports by Presidential Decision 12026 of 26 Nov 2026, in force on
+// publication in the Official Gazette 33443 of 27 Nov 2026 (reply to Montenegro's visa requirement
+// for Turkish citizens from 1 Nov 2026). Diplomatic, service and special passports are not covered.
+// Wikipedia still listed 90 days visa-free when this was added (2026-11-28).
+(window.STATUS_OVERRIDES["ME"] = window.STATUS_OVERRIDES["ME"] || {})["TR"] = {
+  status: "vr", days: null,
+  note: "Visa required since 27 Nov 2026: Türkiye suspended visa-free entry for Montenegrin ordinary passports (Presidential Decision 12026).",
+};
+
 // Israeli passport — states with no diplomatic relations with Israel that refuse
 // Israeli passport holders entry outright. Wikipedia's "Visa requirements for
 // Israeli citizens" marks these "Travel illegal under Israeli law" — origin-side

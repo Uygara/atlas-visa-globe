@@ -74,6 +74,14 @@ EN in those four (engine ready — just add dict entries).
 
 ## What we did this arc, and how
 
+- **Round 39 (2026-11-28: rule changes same day):** Montenegro → Türkiye is visa required (Presidential Decision 12026,
+  Official Gazette 33443, 27 Nov 2026, ordinary passports only); override in `data/visa-overrides.js`, audit check
+  "recent official rule changes". The daily refresh was scheduled 06:00 UTC but GitHub started it at 15:45-16:40,
+  so the site showed yesterday's date most of the day: now 00:23 and 11:41 UTC (emails only on the first run).
+  Header label is "Son kontrol / Checked" (the date is when sources were read, not when data changed).
+  New rule watch (`docs/RULE-WATCH.md`): every 6 h reads TR MFA lists, EU, UK pages, the Official Gazette and news
+  searches, posts anything new to one `rule-change` issue. State is in the Actions cache, so no deploy churn.
+  It never writes data. Gotcha: gov sites are blocked from the cloud container; the watch only runs in Actions.
 - **Round 38 (2026-11-27: revenue test, 30 days):** AXA Schengen insurance box (partner link via `/go/axa-schengen[-tr]`
   in `_redirects` + `go/*/index.html` fallback; Tradedoubler not approved yet, so no commission until the link is swapped)
   on the TR Schengen checklist, the Schengen calculator and the 29 Schengen `/visa/<cc>/` pages. Appointment-alert
